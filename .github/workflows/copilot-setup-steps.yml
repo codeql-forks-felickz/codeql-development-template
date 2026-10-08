@@ -37,3 +37,21 @@ jobs:
       - name: Copilot Setup - Install CodeQL workspace packs
         shell: bash
         run: ./scripts/install-codeql-packs.sh
+
+      # The MCP server requires Node.js ^24.15.0 || >=26.0.0 (and npm >=11.6.2).
+      - name: Copilot Setup - Setup Node.js for CodeQL MCP server
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          node-version: "26"
+
+      - name: Copilot Setup - Install CodeQL MCP server and tool-pack dependencies
+        shell: bash
+        run: |
+          npm install --global codeql-development-mcp-server@2.27.1
+          codeql-development-mcp-server-setup-packs
+
+      - name: Copilot Setup - Verify CodeQL MCP server is available
+        shell: bash
+        run: |
+          codeql version
+          command -v codeql-development-mcp-server
