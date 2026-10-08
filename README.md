@@ -46,6 +46,29 @@ This uses `codeql pack ls` to discover all packs in the workspace and runs `code
 
 > **Note:** The generated `codeql-pack.lock.yml` files should be committed to your repository to ensure reproducible dependency resolution across your team.
 
+### Step 2a (Optional): Enable the CodeQL MCP Server for Copilot Coding Agent
+
+The 'copilot-setup-steps' workflow also installs the [CodeQL Development MCP Server](https://github.com/advanced-security/codeql-development-mcp-server) (`codeql-development-mcp-server`) into the agent environment. Installing it does not connect it: a repository administrator must register it once under **Settings → Copilot → Coding agent → MCP configuration**, preserving any existing entries:
+
+```json
+{
+  "mcpServers": {
+    "ql-mcp": {
+      "type": "local",
+      "command": "codeql-development-mcp-server",
+      "args": [],
+      "tools": ["*"]
+    }
+  }
+}
+```
+
+See [GitHub's documentation on extending Copilot coding agent with MCP](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/configure-mcp-servers) for details. Notes:
+
+- The setup workflow must be merged to the **default branch** before Copilot uses it.
+- Copilot Coding Agent supports MCP **tools** only (not MCP prompts or resources), so the prompts in this repository remain the primary guidance.
+- Check the agent session logs to confirm `ql-mcp` connected and its tools were called. The `ql-tdd-agent` falls back to the `codeql` CLI if it is not connected.
+
 ### Step 3: Create an Issue for the CodeQL query or data extension you want to develop
 
 1. **Navigate to Issues** in your new repository
