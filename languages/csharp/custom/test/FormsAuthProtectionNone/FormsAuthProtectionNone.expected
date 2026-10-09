@@ -1,0 +1,2 @@
+| Web.config:5:7:5:74 | protection=None | Forms authentication ticket protection is disabled ('protection="None"'), so the ticket is neither encrypted nor validated. |
+| Web.config:11:9:11:56 | protection= none  | Forms authentication ticket protection is disabled ('protection=" none "'), so the ticket is neither encrypted nor validated. |
