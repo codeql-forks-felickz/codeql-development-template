@@ -1,0 +1,5 @@
+{
+  "name": "statically-served-credentials-test",
+  "version": "1.0.0",
+  "main": "server.js"
+}
