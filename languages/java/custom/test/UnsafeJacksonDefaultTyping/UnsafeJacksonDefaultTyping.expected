@@ -1,0 +1,29 @@
+edges
+| JacksonCookieDeserialization.java:43:32:43:51 | base64Payload : String | JacksonCookieDeserialization.java:44:39:44:51 | base64Payload : String | provenance |  |
+| JacksonCookieDeserialization.java:44:39:44:51 | base64Payload : String | JacksonCookieDeserialization.java:44:12:44:52 | decode(...) : byte[] | provenance | MaD:47689 |
+| JacksonCookieDeserialization.java:47:53:47:72 | base64Payload : String | JacksonCookieDeserialization.java:49:48:49:60 | base64Payload : String | provenance |  |
+| JacksonCookieDeserialization.java:49:48:49:60 | base64Payload : String | JacksonCookieDeserialization.java:43:32:43:51 | base64Payload : String | provenance |  |
+| JacksonCookieDeserialization.java:49:48:49:60 | base64Payload : String | JacksonCookieDeserialization.java:49:41:49:61 | decode(...) | provenance | MaD:47689 |
+| JacksonCookieDeserialization.java:65:26:65:89 | cookie : String | JacksonCookieDeserialization.java:67:43:67:48 | cookie : String | provenance |  |
+| JacksonCookieDeserialization.java:67:43:67:48 | cookie : String | JacksonCookieDeserialization.java:47:53:47:72 | base64Payload : String | provenance |  |
+| JacksonCookieDeserialization.java:97:49:97:65 | getValue(...) : String | JacksonCookieDeserialization.java:97:22:97:66 | decode(...) | provenance | Src:MaD:48669 MaD:47689 |
+nodes
+| JacksonCookieDeserialization.java:43:32:43:51 | base64Payload : String | semmle.label | base64Payload : String |
+| JacksonCookieDeserialization.java:44:12:44:52 | decode(...) : byte[] | semmle.label | decode(...) : byte[] |
+| JacksonCookieDeserialization.java:44:39:44:51 | base64Payload : String | semmle.label | base64Payload : String |
+| JacksonCookieDeserialization.java:47:53:47:72 | base64Payload : String | semmle.label | base64Payload : String |
+| JacksonCookieDeserialization.java:49:41:49:61 | decode(...) | semmle.label | decode(...) |
+| JacksonCookieDeserialization.java:49:48:49:60 | base64Payload : String | semmle.label | base64Payload : String |
+| JacksonCookieDeserialization.java:65:26:65:89 | cookie : String | semmle.label | cookie : String |
+| JacksonCookieDeserialization.java:67:43:67:48 | cookie : String | semmle.label | cookie : String |
+| JacksonCookieDeserialization.java:97:22:97:66 | decode(...) | semmle.label | decode(...) |
+| JacksonCookieDeserialization.java:97:49:97:65 | getValue(...) : String | semmle.label | getValue(...) : String |
+| JacksonCookieDeserialization.java:103:22:103:38 | getValue(...) | semmle.label | getValue(...) |
+| JacksonCookieDeserialization.java:109:22:109:38 | getValue(...) | semmle.label | getValue(...) |
+subpaths
+| JacksonCookieDeserialization.java:49:48:49:60 | base64Payload : String | JacksonCookieDeserialization.java:43:32:43:51 | base64Payload : String | JacksonCookieDeserialization.java:44:12:44:52 | decode(...) : byte[] | JacksonCookieDeserialization.java:49:41:49:61 | decode(...) |
+#select
+| JacksonCookieDeserialization.java:49:12:49:76 | readValue(...) | JacksonCookieDeserialization.java:65:26:65:89 | cookie : String | JacksonCookieDeserialization.java:49:41:49:61 | decode(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | JacksonCookieDeserialization.java:65:26:65:89 | cookie | user-provided value |
+| JacksonCookieDeserialization.java:97:9:97:81 | readValue(...) | JacksonCookieDeserialization.java:97:49:97:65 | getValue(...) : String | JacksonCookieDeserialization.java:97:22:97:66 | decode(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | JacksonCookieDeserialization.java:97:49:97:65 | getValue(...) | user-provided value |
+| JacksonCookieDeserialization.java:103:9:103:53 | readValue(...) | JacksonCookieDeserialization.java:103:22:103:38 | getValue(...) | JacksonCookieDeserialization.java:103:22:103:38 | getValue(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | JacksonCookieDeserialization.java:103:22:103:38 | getValue(...) | user-provided value |
+| JacksonCookieDeserialization.java:109:9:109:53 | readValue(...) | JacksonCookieDeserialization.java:109:22:109:38 | getValue(...) | JacksonCookieDeserialization.java:109:22:109:38 | getValue(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | JacksonCookieDeserialization.java:109:22:109:38 | getValue(...) | user-provided value |
