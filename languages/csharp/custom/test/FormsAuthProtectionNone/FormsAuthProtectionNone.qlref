@@ -1,0 +1,2 @@
+query: FormsAuthProtectionNone/FormsAuthProtectionNone.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
