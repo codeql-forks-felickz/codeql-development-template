@@ -1,0 +1,93 @@
+edges
+| FunctionFieldDispatch.go:52:16:52:17 | SSA def(in) | FunctionFieldDispatch.go:53:24:53:25 | in | provenance |  |
+| FunctionFieldDispatch.go:53:24:53:25 | in | FunctionFieldDispatch.go:53:9:53:26 | call to Fields | provenance | MaD:2241 |
+| FunctionFieldDispatch.go:53:24:53:25 | in | FunctionFieldDispatch.go:53:9:53:26 | call to Fields [array] | provenance | MaD:2241 |
+| FunctionFieldDispatch.go:56:31:56:32 | SSA def(in) | FunctionFieldDispatch.go:62:21:62:22 | in | provenance |  |
+| FunctionFieldDispatch.go:62:11:62:23 | call to shellArgs | FunctionFieldDispatch.go:66:22:66:28 | index expression | provenance | Sink:MaD:2077 |
+| FunctionFieldDispatch.go:62:11:62:23 | call to shellArgs [array] | FunctionFieldDispatch.go:66:22:66:25 | args [array] | provenance |  |
+| FunctionFieldDispatch.go:62:21:62:22 | in | FunctionFieldDispatch.go:52:16:52:17 | SSA def(in) | provenance |  |
+| FunctionFieldDispatch.go:62:21:62:22 | in | FunctionFieldDispatch.go:62:11:62:23 | call to shellArgs | provenance | MaD:2241 |
+| FunctionFieldDispatch.go:62:21:62:22 | in | FunctionFieldDispatch.go:62:11:62:23 | call to shellArgs [array] | provenance | MaD:2241 |
+| FunctionFieldDispatch.go:66:22:66:25 | args [array] | FunctionFieldDispatch.go:66:22:66:28 | index expression | provenance | Sink:MaD:2077 |
+| FunctionFieldDispatch.go:72:34:72:35 | SSA def(in) | FunctionFieldDispatch.go:73:20:73:21 | in | provenance |  |
+| FunctionFieldDispatch.go:73:10:73:22 | call to shellArgs | FunctionFieldDispatch.go:77:54:77:60 | index expression | provenance | Sink:MaD:2078 |
+| FunctionFieldDispatch.go:73:10:73:22 | call to shellArgs [array] | FunctionFieldDispatch.go:77:54:77:57 | args [array] | provenance |  |
+| FunctionFieldDispatch.go:73:20:73:21 | in | FunctionFieldDispatch.go:52:16:52:17 | SSA def(in) | provenance |  |
+| FunctionFieldDispatch.go:73:20:73:21 | in | FunctionFieldDispatch.go:73:10:73:22 | call to shellArgs | provenance | MaD:2241 |
+| FunctionFieldDispatch.go:73:20:73:21 | in | FunctionFieldDispatch.go:73:10:73:22 | call to shellArgs [array] | provenance | MaD:2241 |
+| FunctionFieldDispatch.go:77:54:77:57 | args [array] | FunctionFieldDispatch.go:77:54:77:60 | index expression | provenance | Sink:MaD:2078 |
+| FunctionFieldDispatch.go:88:14:88:18 | selection of URL | FunctionFieldDispatch.go:88:14:88:26 | call to Query | provenance | Src:MaD:2006 MaD:2068 |
+| FunctionFieldDispatch.go:88:14:88:26 | call to Query | FunctionFieldDispatch.go:88:14:88:39 | call to Get | provenance | MaD:2076 |
+| FunctionFieldDispatch.go:88:14:88:39 | call to Get | FunctionFieldDispatch.go:89:10:89:14 | value | provenance |  |
+| FunctionFieldDispatch.go:89:10:89:14 | value | FunctionFieldDispatch.go:98:10:98:24 | call to getUserInput | provenance |  |
+| FunctionFieldDispatch.go:91:9:91:28 | call to FormValue | FunctionFieldDispatch.go:98:10:98:24 | call to getUserInput | provenance | Src:MaD:1994  |
+| FunctionFieldDispatch.go:98:10:98:24 | call to getUserInput | FunctionFieldDispatch.go:99:39:99:40 | in | provenance |  |
+| FunctionFieldDispatch.go:99:39:99:40 | in | FunctionFieldDispatch.go:56:31:56:32 | SSA def(in) | provenance | AdditionalTaintStep |
+| FunctionFieldDispatch.go:99:39:99:40 | in | FunctionFieldDispatch.go:72:34:72:35 | SSA def(in) | provenance | AdditionalTaintStep |
+| FunctionFieldDispatch.go:115:13:115:15 | SSA def(arg) | FunctionFieldDispatch.go:116:27:116:29 | arg | provenance |  |
+| FunctionFieldDispatch.go:120:10:120:27 | call to FormValue | FunctionFieldDispatch.go:115:13:115:15 | SSA def(arg) | provenance | Src:MaD:1994 AdditionalTaintStep |
+| RequestFlow.go:14:34:14:36 | SSA def(cmd) | RequestFlow.go:15:46:15:48 | cmd | provenance |  |
+| RequestFlow.go:20:11:20:30 | call to FormValue | RequestFlow.go:21:35:21:62 | ...+... | provenance | Src:MaD:1994  |
+| RequestFlow.go:21:35:21:62 | ...+... | RequestFlow.go:14:34:14:36 | SSA def(cmd) | provenance |  |
+| RequestFlow.go:26:11:26:15 | selection of URL | RequestFlow.go:26:11:26:23 | call to Query | provenance | Src:MaD:2006 MaD:2068 |
+| RequestFlow.go:26:11:26:23 | call to Query | RequestFlow.go:26:11:26:36 | call to Get | provenance | MaD:2076 |
+| RequestFlow.go:26:11:26:36 | call to Get | RequestFlow.go:27:27:27:44 | ...+... | provenance |  |
+| RequestFlow.go:29:11:29:44 | call to Fields | RequestFlow.go:30:15:30:22 | index expression | provenance | Sink:MaD:2077 |
+| RequestFlow.go:29:11:29:44 | call to Fields [array] | RequestFlow.go:30:15:30:19 | parts [array] | provenance |  |
+| RequestFlow.go:29:26:29:43 | call to FormValue | RequestFlow.go:29:11:29:44 | call to Fields | provenance | Src:MaD:1994 MaD:2241 |
+| RequestFlow.go:29:26:29:43 | call to FormValue | RequestFlow.go:29:11:29:44 | call to Fields [array] | provenance | Src:MaD:1994 MaD:2241 |
+| RequestFlow.go:30:15:30:19 | parts [array] | RequestFlow.go:30:15:30:22 | index expression | provenance | Sink:MaD:2077 |
+nodes
+| FunctionFieldDispatch.go:52:16:52:17 | SSA def(in) | semmle.label | SSA def(in) |
+| FunctionFieldDispatch.go:53:9:53:26 | call to Fields | semmle.label | call to Fields |
+| FunctionFieldDispatch.go:53:9:53:26 | call to Fields [array] | semmle.label | call to Fields [array] |
+| FunctionFieldDispatch.go:53:24:53:25 | in | semmle.label | in |
+| FunctionFieldDispatch.go:56:31:56:32 | SSA def(in) | semmle.label | SSA def(in) |
+| FunctionFieldDispatch.go:62:11:62:23 | call to shellArgs | semmle.label | call to shellArgs |
+| FunctionFieldDispatch.go:62:11:62:23 | call to shellArgs [array] | semmle.label | call to shellArgs [array] |
+| FunctionFieldDispatch.go:62:21:62:22 | in | semmle.label | in |
+| FunctionFieldDispatch.go:66:22:66:25 | args [array] | semmle.label | args [array] |
+| FunctionFieldDispatch.go:66:22:66:28 | index expression | semmle.label | index expression |
+| FunctionFieldDispatch.go:72:34:72:35 | SSA def(in) | semmle.label | SSA def(in) |
+| FunctionFieldDispatch.go:73:10:73:22 | call to shellArgs | semmle.label | call to shellArgs |
+| FunctionFieldDispatch.go:73:10:73:22 | call to shellArgs [array] | semmle.label | call to shellArgs [array] |
+| FunctionFieldDispatch.go:73:20:73:21 | in | semmle.label | in |
+| FunctionFieldDispatch.go:77:54:77:57 | args [array] | semmle.label | args [array] |
+| FunctionFieldDispatch.go:77:54:77:60 | index expression | semmle.label | index expression |
+| FunctionFieldDispatch.go:88:14:88:18 | selection of URL | semmle.label | selection of URL |
+| FunctionFieldDispatch.go:88:14:88:26 | call to Query | semmle.label | call to Query |
+| FunctionFieldDispatch.go:88:14:88:39 | call to Get | semmle.label | call to Get |
+| FunctionFieldDispatch.go:89:10:89:14 | value | semmle.label | value |
+| FunctionFieldDispatch.go:91:9:91:28 | call to FormValue | semmle.label | call to FormValue |
+| FunctionFieldDispatch.go:98:10:98:24 | call to getUserInput | semmle.label | call to getUserInput |
+| FunctionFieldDispatch.go:99:39:99:40 | in | semmle.label | in |
+| FunctionFieldDispatch.go:115:13:115:15 | SSA def(arg) | semmle.label | SSA def(arg) |
+| FunctionFieldDispatch.go:116:27:116:29 | arg | semmle.label | arg |
+| FunctionFieldDispatch.go:120:10:120:27 | call to FormValue | semmle.label | call to FormValue |
+| RequestFlow.go:14:34:14:36 | SSA def(cmd) | semmle.label | SSA def(cmd) |
+| RequestFlow.go:15:46:15:48 | cmd | semmle.label | cmd |
+| RequestFlow.go:20:11:20:30 | call to FormValue | semmle.label | call to FormValue |
+| RequestFlow.go:21:35:21:62 | ...+... | semmle.label | ...+... |
+| RequestFlow.go:26:11:26:15 | selection of URL | semmle.label | selection of URL |
+| RequestFlow.go:26:11:26:23 | call to Query | semmle.label | call to Query |
+| RequestFlow.go:26:11:26:36 | call to Get | semmle.label | call to Get |
+| RequestFlow.go:27:27:27:44 | ...+... | semmle.label | ...+... |
+| RequestFlow.go:29:11:29:44 | call to Fields | semmle.label | call to Fields |
+| RequestFlow.go:29:11:29:44 | call to Fields [array] | semmle.label | call to Fields [array] |
+| RequestFlow.go:29:26:29:43 | call to FormValue | semmle.label | call to FormValue |
+| RequestFlow.go:30:15:30:19 | parts [array] | semmle.label | parts [array] |
+| RequestFlow.go:30:15:30:22 | index expression | semmle.label | index expression |
+subpaths
+| FunctionFieldDispatch.go:62:21:62:22 | in | FunctionFieldDispatch.go:52:16:52:17 | SSA def(in) | FunctionFieldDispatch.go:53:9:53:26 | call to Fields | FunctionFieldDispatch.go:62:11:62:23 | call to shellArgs |
+| FunctionFieldDispatch.go:62:21:62:22 | in | FunctionFieldDispatch.go:52:16:52:17 | SSA def(in) | FunctionFieldDispatch.go:53:9:53:26 | call to Fields [array] | FunctionFieldDispatch.go:62:11:62:23 | call to shellArgs [array] |
+| FunctionFieldDispatch.go:73:20:73:21 | in | FunctionFieldDispatch.go:52:16:52:17 | SSA def(in) | FunctionFieldDispatch.go:53:9:53:26 | call to Fields | FunctionFieldDispatch.go:73:10:73:22 | call to shellArgs |
+| FunctionFieldDispatch.go:73:20:73:21 | in | FunctionFieldDispatch.go:52:16:52:17 | SSA def(in) | FunctionFieldDispatch.go:53:9:53:26 | call to Fields [array] | FunctionFieldDispatch.go:73:10:73:22 | call to shellArgs [array] |
+#select
+| FunctionFieldDispatch.go:66:22:66:28 | index expression | FunctionFieldDispatch.go:88:14:88:18 | selection of URL | FunctionFieldDispatch.go:66:22:66:28 | index expression | This command depends on a $@. | FunctionFieldDispatch.go:88:14:88:18 | selection of URL | user-provided value |
+| FunctionFieldDispatch.go:66:22:66:28 | index expression | FunctionFieldDispatch.go:91:9:91:28 | call to FormValue | FunctionFieldDispatch.go:66:22:66:28 | index expression | This command depends on a $@. | FunctionFieldDispatch.go:91:9:91:28 | call to FormValue | user-provided value |
+| FunctionFieldDispatch.go:77:54:77:60 | index expression | FunctionFieldDispatch.go:88:14:88:18 | selection of URL | FunctionFieldDispatch.go:77:54:77:60 | index expression | This command depends on a $@. | FunctionFieldDispatch.go:88:14:88:18 | selection of URL | user-provided value |
+| FunctionFieldDispatch.go:77:54:77:60 | index expression | FunctionFieldDispatch.go:91:9:91:28 | call to FormValue | FunctionFieldDispatch.go:77:54:77:60 | index expression | This command depends on a $@. | FunctionFieldDispatch.go:91:9:91:28 | call to FormValue | user-provided value |
+| FunctionFieldDispatch.go:116:27:116:29 | arg | FunctionFieldDispatch.go:120:10:120:27 | call to FormValue | FunctionFieldDispatch.go:116:27:116:29 | arg | This command depends on a $@. | FunctionFieldDispatch.go:120:10:120:27 | call to FormValue | user-provided value |
+| RequestFlow.go:15:46:15:48 | cmd | RequestFlow.go:20:11:20:30 | call to FormValue | RequestFlow.go:15:46:15:48 | cmd | This command depends on a $@. | RequestFlow.go:20:11:20:30 | call to FormValue | user-provided value |
+| RequestFlow.go:27:27:27:44 | ...+... | RequestFlow.go:26:11:26:15 | selection of URL | RequestFlow.go:27:27:27:44 | ...+... | This command depends on a $@. | RequestFlow.go:26:11:26:15 | selection of URL | user-provided value |
+| RequestFlow.go:30:15:30:22 | index expression | RequestFlow.go:29:26:29:43 | call to FormValue | RequestFlow.go:30:15:30:22 | index expression | This command depends on a $@. | RequestFlow.go:29:26:29:43 | call to FormValue | user-provided value |
