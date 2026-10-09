@@ -1,0 +1,2 @@
+query: MassAssignmentExtraFields/MassAssignmentExtraFields.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
