@@ -1,0 +1,74 @@
+#select
+| CodeDomProviderCodeInjection.cs:23:86:23:88 | access to local variable src | CodeDomProviderCodeInjection.cs:12:46:12:63 | call to method GetStream : NetworkStream | CodeDomProviderCodeInjection.cs:23:86:23:88 | access to local variable src | This code compilation depends on a $@. | CodeDomProviderCodeInjection.cs:12:46:12:63 | call to method GetStream | user-provided value |
+| CodeDomProviderCodeInjection.cs:34:69:34:71 | access to local variable src | CodeDomProviderCodeInjection.cs:12:46:12:63 | call to method GetStream : NetworkStream | CodeDomProviderCodeInjection.cs:34:69:34:71 | access to local variable src | This code compilation depends on a $@. | CodeDomProviderCodeInjection.cs:12:46:12:63 | call to method GetStream | user-provided value |
+| CodeDomProviderCodeInjection.cs:49:73:49:93 | call to method ToString | CodeDomProviderCodeInjection.cs:12:46:12:63 | call to method GetStream : NetworkStream | CodeDomProviderCodeInjection.cs:49:73:49:93 | call to method ToString | This code compilation depends on a $@. | CodeDomProviderCodeInjection.cs:12:46:12:63 | call to method GetStream | user-provided value |
+| CodeDomProviderCodeInjection.cs:57:82:57:88 | access to local variable sources | CodeDomProviderCodeInjection.cs:12:46:12:63 | call to method GetStream : NetworkStream | CodeDomProviderCodeInjection.cs:57:82:57:88 | access to local variable sources | This code compilation depends on a $@. | CodeDomProviderCodeInjection.cs:12:46:12:63 | call to method GetStream | user-provided value |
+| CodeDomProviderCodeInjection.cs:64:100:64:108 | access to local variable userInput | CodeDomProviderCodeInjection.cs:12:46:12:63 | call to method GetStream : NetworkStream | CodeDomProviderCodeInjection.cs:64:100:64:108 | access to local variable userInput | This code compilation depends on a $@. | CodeDomProviderCodeInjection.cs:12:46:12:63 | call to method GetStream | user-provided value |
+edges
+| CodeDomProviderCodeInjection.cs:12:20:12:25 | access to local variable reader : StreamReader | CodeDomProviderCodeInjection.cs:14:20:14:25 | access to local variable reader : StreamReader | provenance |  |
+| CodeDomProviderCodeInjection.cs:12:29:12:64 | object creation of type StreamReader : StreamReader | CodeDomProviderCodeInjection.cs:12:20:12:25 | access to local variable reader : StreamReader | provenance |  |
+| CodeDomProviderCodeInjection.cs:12:46:12:63 | call to method GetStream : NetworkStream | CodeDomProviderCodeInjection.cs:12:29:12:64 | object creation of type StreamReader : StreamReader | provenance | Src:MaD:1883 MaD:1198 |
+| CodeDomProviderCodeInjection.cs:14:20:14:25 | access to local variable reader : StreamReader | CodeDomProviderCodeInjection.cs:14:20:14:36 | call to method ReadLine : String | provenance | MaD:1234 |
+| CodeDomProviderCodeInjection.cs:14:20:14:36 | call to method ReadLine : String | CodeDomProviderCodeInjection.cs:21:28:21:48 | call to method ReadUntrusted : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:14:20:14:36 | call to method ReadLine : String | CodeDomProviderCodeInjection.cs:29:28:29:48 | call to method ReadUntrusted : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:14:20:14:36 | call to method ReadLine : String | CodeDomProviderCodeInjection.cs:40:23:40:43 | call to method ReadUntrusted : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:14:20:14:36 | call to method ReadLine : String | CodeDomProviderCodeInjection.cs:55:28:55:48 | call to method ReadUntrusted : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:14:20:14:36 | call to method ReadLine : String | CodeDomProviderCodeInjection.cs:63:28:63:48 | call to method ReadUntrusted : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:14:20:14:36 | call to method ReadLine : String | CodeDomProviderCodeInjection.cs:70:28:70:48 | call to method ReadUntrusted : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:21:16:21:24 | access to local variable userInput : String | CodeDomProviderCodeInjection.cs:22:16:22:18 | access to local variable src : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:21:28:21:48 | call to method ReadUntrusted : String | CodeDomProviderCodeInjection.cs:21:16:21:24 | access to local variable userInput : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:22:16:22:18 | access to local variable src : String | CodeDomProviderCodeInjection.cs:23:86:23:88 | access to local variable src | provenance |  |
+| CodeDomProviderCodeInjection.cs:29:16:29:24 | access to local variable userInput : String | CodeDomProviderCodeInjection.cs:30:91:30:99 | access to local variable userInput : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:29:28:29:48 | call to method ReadUntrusted : String | CodeDomProviderCodeInjection.cs:29:16:29:24 | access to local variable userInput : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:30:16:30:18 | access to local variable src : String | CodeDomProviderCodeInjection.cs:34:69:34:71 | access to local variable src | provenance |  |
+| CodeDomProviderCodeInjection.cs:30:22:30:100 | call to method Format : String | CodeDomProviderCodeInjection.cs:30:16:30:18 | access to local variable src : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:30:91:30:99 | access to local variable userInput : String | CodeDomProviderCodeInjection.cs:30:22:30:100 | call to method Format : String | provenance | MaD:2905 |
+| CodeDomProviderCodeInjection.cs:40:16:40:19 | access to local variable data : String | CodeDomProviderCodeInjection.cs:44:27:44:56 | ... + ... : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:40:23:40:43 | call to method ReadUntrusted : String | CodeDomProviderCodeInjection.cs:40:16:40:19 | access to local variable data : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:44:9:44:18 | [post] access to local variable sourceCode : StringBuilder | CodeDomProviderCodeInjection.cs:49:73:49:82 | access to local variable sourceCode : StringBuilder | provenance |  |
+| CodeDomProviderCodeInjection.cs:44:27:44:56 | ... + ... : String | CodeDomProviderCodeInjection.cs:44:9:44:18 | [post] access to local variable sourceCode : StringBuilder | provenance | MaD:1982 |
+| CodeDomProviderCodeInjection.cs:49:73:49:82 | access to local variable sourceCode : StringBuilder | CodeDomProviderCodeInjection.cs:49:73:49:93 | call to method ToString | provenance | MaD:2074 |
+| CodeDomProviderCodeInjection.cs:55:16:55:24 | access to local variable userInput : String | CodeDomProviderCodeInjection.cs:56:57:56:96 | ... + ... : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:55:28:55:48 | call to method ReadUntrusted : String | CodeDomProviderCodeInjection.cs:55:16:55:24 | access to local variable userInput : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:56:18:56:24 | access to local variable sources : null [element] : String | CodeDomProviderCodeInjection.cs:57:82:57:88 | access to local variable sources | provenance |  |
+| CodeDomProviderCodeInjection.cs:56:41:56:98 | { ..., ... } : null [element] : String | CodeDomProviderCodeInjection.cs:56:18:56:24 | access to local variable sources : null [element] : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:56:57:56:96 | ... + ... : String | CodeDomProviderCodeInjection.cs:56:41:56:98 | { ..., ... } : null [element] : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:63:16:63:24 | access to local variable userInput : String | CodeDomProviderCodeInjection.cs:64:100:64:108 | access to local variable userInput | provenance |  |
+| CodeDomProviderCodeInjection.cs:63:28:63:48 | call to method ReadUntrusted : String | CodeDomProviderCodeInjection.cs:63:16:63:24 | access to local variable userInput : String | provenance |  |
+| CodeDomProviderCodeInjection.cs:70:16:70:24 | access to local variable userInput : String | CodeDomProviderCodeInjection.cs:72:70:72:78 | access to local variable userInput | provenance |  |
+| CodeDomProviderCodeInjection.cs:70:28:70:48 | call to method ReadUntrusted : String | CodeDomProviderCodeInjection.cs:70:16:70:24 | access to local variable userInput : String | provenance |  |
+nodes
+| CodeDomProviderCodeInjection.cs:12:20:12:25 | access to local variable reader : StreamReader | semmle.label | access to local variable reader : StreamReader |
+| CodeDomProviderCodeInjection.cs:12:29:12:64 | object creation of type StreamReader : StreamReader | semmle.label | object creation of type StreamReader : StreamReader |
+| CodeDomProviderCodeInjection.cs:12:46:12:63 | call to method GetStream : NetworkStream | semmle.label | call to method GetStream : NetworkStream |
+| CodeDomProviderCodeInjection.cs:14:20:14:25 | access to local variable reader : StreamReader | semmle.label | access to local variable reader : StreamReader |
+| CodeDomProviderCodeInjection.cs:14:20:14:36 | call to method ReadLine : String | semmle.label | call to method ReadLine : String |
+| CodeDomProviderCodeInjection.cs:21:16:21:24 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
+| CodeDomProviderCodeInjection.cs:21:28:21:48 | call to method ReadUntrusted : String | semmle.label | call to method ReadUntrusted : String |
+| CodeDomProviderCodeInjection.cs:22:16:22:18 | access to local variable src : String | semmle.label | access to local variable src : String |
+| CodeDomProviderCodeInjection.cs:23:86:23:88 | access to local variable src | semmle.label | access to local variable src |
+| CodeDomProviderCodeInjection.cs:29:16:29:24 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
+| CodeDomProviderCodeInjection.cs:29:28:29:48 | call to method ReadUntrusted : String | semmle.label | call to method ReadUntrusted : String |
+| CodeDomProviderCodeInjection.cs:30:16:30:18 | access to local variable src : String | semmle.label | access to local variable src : String |
+| CodeDomProviderCodeInjection.cs:30:22:30:100 | call to method Format : String | semmle.label | call to method Format : String |
+| CodeDomProviderCodeInjection.cs:30:91:30:99 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
+| CodeDomProviderCodeInjection.cs:34:69:34:71 | access to local variable src | semmle.label | access to local variable src |
+| CodeDomProviderCodeInjection.cs:40:16:40:19 | access to local variable data : String | semmle.label | access to local variable data : String |
+| CodeDomProviderCodeInjection.cs:40:23:40:43 | call to method ReadUntrusted : String | semmle.label | call to method ReadUntrusted : String |
+| CodeDomProviderCodeInjection.cs:44:9:44:18 | [post] access to local variable sourceCode : StringBuilder | semmle.label | [post] access to local variable sourceCode : StringBuilder |
+| CodeDomProviderCodeInjection.cs:44:27:44:56 | ... + ... : String | semmle.label | ... + ... : String |
+| CodeDomProviderCodeInjection.cs:49:73:49:82 | access to local variable sourceCode : StringBuilder | semmle.label | access to local variable sourceCode : StringBuilder |
+| CodeDomProviderCodeInjection.cs:49:73:49:93 | call to method ToString | semmle.label | call to method ToString |
+| CodeDomProviderCodeInjection.cs:55:16:55:24 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
+| CodeDomProviderCodeInjection.cs:55:28:55:48 | call to method ReadUntrusted : String | semmle.label | call to method ReadUntrusted : String |
+| CodeDomProviderCodeInjection.cs:56:18:56:24 | access to local variable sources : null [element] : String | semmle.label | access to local variable sources : null [element] : String |
+| CodeDomProviderCodeInjection.cs:56:41:56:98 | { ..., ... } : null [element] : String | semmle.label | { ..., ... } : null [element] : String |
+| CodeDomProviderCodeInjection.cs:56:57:56:96 | ... + ... : String | semmle.label | ... + ... : String |
+| CodeDomProviderCodeInjection.cs:57:82:57:88 | access to local variable sources | semmle.label | access to local variable sources |
+| CodeDomProviderCodeInjection.cs:63:16:63:24 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
+| CodeDomProviderCodeInjection.cs:63:28:63:48 | call to method ReadUntrusted : String | semmle.label | call to method ReadUntrusted : String |
+| CodeDomProviderCodeInjection.cs:64:100:64:108 | access to local variable userInput | semmle.label | access to local variable userInput |
+| CodeDomProviderCodeInjection.cs:70:16:70:24 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
+| CodeDomProviderCodeInjection.cs:70:28:70:48 | call to method ReadUntrusted : String | semmle.label | call to method ReadUntrusted : String |
+| CodeDomProviderCodeInjection.cs:72:70:72:78 | access to local variable userInput | semmle.label | access to local variable userInput |
+subpaths
