@@ -2,4 +2,5 @@ name: languages-java-custom-test
 version: 0.0.2
 dependencies:
   languages-java-custom-src: ${workspace}
+  codeql/java-queries: "*"
 extractor: java
