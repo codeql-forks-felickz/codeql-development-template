@@ -1,0 +1,10 @@
+| jose_app.py:10:19:15:9 | ControlFlowNode for Attribute() | This JWT is decoded with signature verification disabled by $@. | jose_app.py:5:20:5:24 | ControlFlowNode for False | this value |
+| pyjwt_app.py:12:12:12:65 | ControlFlowNode for Attribute() | This JWT is decoded with signature verification disabled by $@. | pyjwt_app.py:12:59:12:63 | ControlFlowNode for False | this value |
+| pyjwt_app.py:16:12:16:99 | ControlFlowNode for Attribute() | This JWT is decoded with signature verification disabled by $@. | pyjwt_app.py:16:93:16:97 | ControlFlowNode for False | this value |
+| pyjwt_app.py:20:12:20:110 | ControlFlowNode for Attribute() | This JWT is decoded with signature verification disabled by $@. | pyjwt_app.py:5:20:5:24 | ControlFlowNode for False | this value |
+| pyjwt_app.py:25:12:25:76 | ControlFlowNode for Attribute() | This JWT is decoded with signature verification disabled by $@. | pyjwt_app.py:24:33:24:37 | ControlFlowNode for False | this value |
+| pyjwt_app.py:29:12:29:90 | ControlFlowNode for Attribute() | This JWT is decoded with signature verification disabled by $@. | pyjwt_app.py:6:43:6:47 | ControlFlowNode for False | this value |
+| pyjwt_app.py:33:12:33:54 | ControlFlowNode for Attribute() | This JWT is decoded with signature verification disabled by $@. | pyjwt_app.py:33:49:33:53 | ControlFlowNode for False | this value |
+| pyjwt_app.py:37:12:37:47 | ControlFlowNode for Attribute() | This JWT is decoded with signature verification disabled by $@. | pyjwt_app.py:37:42:37:46 | ControlFlowNode for False | this value |
+| pyjwt_app.py:41:12:41:74 | ControlFlowNode for Attribute() | This JWT is decoded with signature verification disabled by $@. | pyjwt_app.py:41:68:41:72 | ControlFlowNode for False | this value |
+| pyjwt_app.py:45:12:45:69 | ControlFlowNode for Attribute() | This JWT is decoded with signature verification disabled by $@. | pyjwt_app.py:45:63:45:67 | ControlFlowNode for False | this value |

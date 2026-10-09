@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A JSON Web Token (JWT) is only trustworthy if its signature is checked against a secret or
+public key. PyJWT and python-jose allow signature checking to be turned off, either through
+<code>options={"verify_signature": False}</code> or, in PyJWT 1.x, through <code>verify=False</code>.
+When the decoded claims are then used to identify or authorize a user, an attacker can forge a
+token with arbitrary claims, for example to impersonate another user or escalate privileges.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Always decode tokens with signature verification enabled, passing the expected key and an
+explicit list of allowed algorithms. If unverified claims are needed (for example to pick a key
+by its <code>kid</code> header), only use them to select the key and then decode the same token
+again with verification enabled before trusting any claim.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, the token is decoded with signature verification disabled by a
+module-level constant, so any token is accepted:
+</p>
+<sample src="examples/bad.py" />
+<p>
+The fix is to remove the option, so that the signature is verified with the secret key:
+</p>
+<sample src="examples/good.py" />
+</example>
+
+<references>
+<li>CWE: <a href="https://cwe.mitre.org/data/definitions/347.html">CWE-347: Improper Verification of Cryptographic Signature</a>.</li>
+<li>PyJWT: <a href="https://pyjwt.readthedocs.io/en/stable/usage.html#reading-the-claimset-without-validation">Reading the Claimset without Validation</a>.</li>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html">JSON Web Token Cheat Sheet</a>.</li>
+</references>
+</qhelp>

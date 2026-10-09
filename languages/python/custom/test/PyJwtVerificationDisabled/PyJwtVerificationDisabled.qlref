@@ -1,0 +1,2 @@
+query: PyJwtVerificationDisabled/PyJwtVerificationDisabled.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
