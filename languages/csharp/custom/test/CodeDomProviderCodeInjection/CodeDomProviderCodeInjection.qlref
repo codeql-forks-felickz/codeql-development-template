@@ -1,0 +1,2 @@
+query: CodeDomProviderCodeInjection/CodeDomProviderCodeInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

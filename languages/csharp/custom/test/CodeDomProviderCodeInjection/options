@@ -1,0 +1,1 @@
+semmle-extractor-options: /r:System.Net.Sockets.dll /r:System.Net.Primitives.dll
