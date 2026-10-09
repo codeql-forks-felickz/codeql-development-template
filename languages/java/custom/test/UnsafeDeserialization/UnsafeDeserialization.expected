@@ -1,0 +1,61 @@
+edges
+| ServletDeserialization.java:17:18:17:73 | decode(...) : byte[] | ServletDeserialization.java:18:5:18:56 | new ObjectInputStream(...) | provenance | inputStreamWrapper |
+| ServletDeserialization.java:17:18:17:73 | decode(...) : byte[] | ServletDeserialization.java:18:27:18:55 | new ByteArrayInputStream(...) : ByteArrayInputStream | provenance | inputStreamWrapper |
+| ServletDeserialization.java:17:18:17:73 | decode(...) : byte[] | ServletDeserialization.java:18:52:18:54 | raw : byte[] | provenance |  |
+| ServletDeserialization.java:17:45:17:72 | getParameter(...) : String | ServletDeserialization.java:17:18:17:73 | decode(...) : byte[] | provenance | Src:MaD:48699 MaD:47689 |
+| ServletDeserialization.java:18:27:18:55 | new ByteArrayInputStream(...) : ByteArrayInputStream | ServletDeserialization.java:18:5:18:56 | new ObjectInputStream(...) | provenance | MaD:46545 |
+| ServletDeserialization.java:18:27:18:55 | new ByteArrayInputStream(...) : ByteArrayInputStream | ServletDeserialization.java:18:5:18:56 | new ObjectInputStream(...) | provenance | inputStreamWrapper |
+| ServletDeserialization.java:18:52:18:54 | raw : byte[] | ServletDeserialization.java:18:27:18:55 | new ByteArrayInputStream(...) : ByteArrayInputStream | provenance | MaD:46505 |
+| ServletDeserialization.java:21:20:21:48 | getParameter(...) : String | ServletDeserialization.java:22:55:22:59 | state : String | provenance | Src:MaD:48699  |
+| ServletDeserialization.java:22:19:22:67 | parseBase64Binary(...) : byte[] | ServletDeserialization.java:23:51:23:80 | new ByteArrayInputStream(...) : ByteArrayInputStream | provenance | inputStreamWrapper |
+| ServletDeserialization.java:22:19:22:67 | parseBase64Binary(...) : byte[] | ServletDeserialization.java:23:76:23:79 | data : byte[] | provenance |  |
+| ServletDeserialization.java:22:19:22:67 | parseBase64Binary(...) : byte[] | ServletDeserialization.java:24:18:24:20 | ois | provenance | inputStreamWrapper |
+| ServletDeserialization.java:22:55:22:59 | state : String | ServletDeserialization.java:22:55:22:66 | trim(...) : String | provenance | MaD:46687 |
+| ServletDeserialization.java:22:55:22:66 | trim(...) : String | ServletDeserialization.java:22:19:22:67 | parseBase64Binary(...) : byte[] | provenance | MaD:0 |
+| ServletDeserialization.java:23:29:23:81 | new ObjectInputStream(...) : ObjectInputStream | ServletDeserialization.java:24:18:24:20 | ois | provenance |  |
+| ServletDeserialization.java:23:51:23:80 | new ByteArrayInputStream(...) : ByteArrayInputStream | ServletDeserialization.java:23:29:23:81 | new ObjectInputStream(...) : ObjectInputStream | provenance | MaD:46545 |
+| ServletDeserialization.java:23:51:23:80 | new ByteArrayInputStream(...) : ByteArrayInputStream | ServletDeserialization.java:24:18:24:20 | ois | provenance | inputStreamWrapper |
+| ServletDeserialization.java:23:76:23:79 | data : byte[] | ServletDeserialization.java:23:51:23:80 | new ByteArrayInputStream(...) : ByteArrayInputStream | provenance | MaD:46505 |
+| ServletDeserialization.java:29:22:29:45 | getInputStream(...) : ServletInputStream | ServletDeserialization.java:32:17:32:18 | in : ServletInputStream | provenance | Src:MaD:48698  |
+| ServletDeserialization.java:32:17:32:18 | in : ServletInputStream | ServletDeserialization.java:32:25:32:29 | chunk [post update] : byte[] | provenance | MaD:46536 |
+| ServletDeserialization.java:32:25:32:29 | chunk [post update] : byte[] | ServletDeserialization.java:33:17:33:21 | chunk : byte[] | provenance |  |
+| ServletDeserialization.java:33:7:33:9 | buf [post update] : ByteArrayOutputStream | ServletDeserialization.java:35:19:35:21 | buf : ByteArrayOutputStream | provenance |  |
+| ServletDeserialization.java:33:17:33:21 | chunk : byte[] | ServletDeserialization.java:33:7:33:9 | buf [post update] : ByteArrayOutputStream | provenance | MaD:46547 |
+| ServletDeserialization.java:35:19:35:21 | buf : ByteArrayOutputStream | ServletDeserialization.java:35:19:35:35 | toByteArray(...) : byte[] | provenance | MaD:46506 |
+| ServletDeserialization.java:35:19:35:35 | toByteArray(...) : byte[] | ServletDeserialization.java:36:58:36:87 | new ByteArrayInputStream(...) : ByteArrayInputStream | provenance | inputStreamWrapper |
+| ServletDeserialization.java:35:19:35:35 | toByteArray(...) : byte[] | ServletDeserialization.java:36:83:36:86 | body : byte[] | provenance |  |
+| ServletDeserialization.java:35:19:35:35 | toByteArray(...) : byte[] | ServletDeserialization.java:37:5:37:14 | bodyStream | provenance | inputStreamWrapper |
+| ServletDeserialization.java:36:36:36:88 | new ObjectInputStream(...) : ObjectInputStream | ServletDeserialization.java:37:5:37:14 | bodyStream | provenance |  |
+| ServletDeserialization.java:36:58:36:87 | new ByteArrayInputStream(...) : ByteArrayInputStream | ServletDeserialization.java:36:36:36:88 | new ObjectInputStream(...) : ObjectInputStream | provenance | MaD:46545 |
+| ServletDeserialization.java:36:58:36:87 | new ByteArrayInputStream(...) : ByteArrayInputStream | ServletDeserialization.java:37:5:37:14 | bodyStream | provenance | inputStreamWrapper |
+| ServletDeserialization.java:36:83:36:86 | body : byte[] | ServletDeserialization.java:36:58:36:87 | new ByteArrayInputStream(...) : ByteArrayInputStream | provenance | MaD:46505 |
+nodes
+| ServletDeserialization.java:17:18:17:73 | decode(...) : byte[] | semmle.label | decode(...) : byte[] |
+| ServletDeserialization.java:17:45:17:72 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ServletDeserialization.java:18:5:18:56 | new ObjectInputStream(...) | semmle.label | new ObjectInputStream(...) |
+| ServletDeserialization.java:18:27:18:55 | new ByteArrayInputStream(...) : ByteArrayInputStream | semmle.label | new ByteArrayInputStream(...) : ByteArrayInputStream |
+| ServletDeserialization.java:18:52:18:54 | raw : byte[] | semmle.label | raw : byte[] |
+| ServletDeserialization.java:21:20:21:48 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ServletDeserialization.java:22:19:22:67 | parseBase64Binary(...) : byte[] | semmle.label | parseBase64Binary(...) : byte[] |
+| ServletDeserialization.java:22:55:22:59 | state : String | semmle.label | state : String |
+| ServletDeserialization.java:22:55:22:66 | trim(...) : String | semmle.label | trim(...) : String |
+| ServletDeserialization.java:23:29:23:81 | new ObjectInputStream(...) : ObjectInputStream | semmle.label | new ObjectInputStream(...) : ObjectInputStream |
+| ServletDeserialization.java:23:51:23:80 | new ByteArrayInputStream(...) : ByteArrayInputStream | semmle.label | new ByteArrayInputStream(...) : ByteArrayInputStream |
+| ServletDeserialization.java:23:76:23:79 | data : byte[] | semmle.label | data : byte[] |
+| ServletDeserialization.java:24:18:24:20 | ois | semmle.label | ois |
+| ServletDeserialization.java:29:22:29:45 | getInputStream(...) : ServletInputStream | semmle.label | getInputStream(...) : ServletInputStream |
+| ServletDeserialization.java:32:17:32:18 | in : ServletInputStream | semmle.label | in : ServletInputStream |
+| ServletDeserialization.java:32:25:32:29 | chunk [post update] : byte[] | semmle.label | chunk [post update] : byte[] |
+| ServletDeserialization.java:33:7:33:9 | buf [post update] : ByteArrayOutputStream | semmle.label | buf [post update] : ByteArrayOutputStream |
+| ServletDeserialization.java:33:17:33:21 | chunk : byte[] | semmle.label | chunk : byte[] |
+| ServletDeserialization.java:35:19:35:21 | buf : ByteArrayOutputStream | semmle.label | buf : ByteArrayOutputStream |
+| ServletDeserialization.java:35:19:35:35 | toByteArray(...) : byte[] | semmle.label | toByteArray(...) : byte[] |
+| ServletDeserialization.java:36:36:36:88 | new ObjectInputStream(...) : ObjectInputStream | semmle.label | new ObjectInputStream(...) : ObjectInputStream |
+| ServletDeserialization.java:36:58:36:87 | new ByteArrayInputStream(...) : ByteArrayInputStream | semmle.label | new ByteArrayInputStream(...) : ByteArrayInputStream |
+| ServletDeserialization.java:36:83:36:86 | body : byte[] | semmle.label | body : byte[] |
+| ServletDeserialization.java:37:5:37:14 | bodyStream | semmle.label | bodyStream |
+subpaths
+#select
+| ServletDeserialization.java:18:5:18:69 | readObject(...) | ServletDeserialization.java:17:45:17:72 | getParameter(...) : String | ServletDeserialization.java:18:5:18:56 | new ObjectInputStream(...) | Unsafe deserialization depends on a $@. | ServletDeserialization.java:17:45:17:72 | getParameter(...) | user-provided value |
+| ServletDeserialization.java:24:18:24:33 | readObject(...) | ServletDeserialization.java:21:20:21:48 | getParameter(...) : String | ServletDeserialization.java:24:18:24:20 | ois | Unsafe deserialization depends on a $@. | ServletDeserialization.java:21:20:21:48 | getParameter(...) | user-provided value |
+| ServletDeserialization.java:37:5:37:27 | readObject(...) | ServletDeserialization.java:29:22:29:45 | getInputStream(...) : ServletInputStream | ServletDeserialization.java:37:5:37:14 | bodyStream | Unsafe deserialization depends on a $@. | ServletDeserialization.java:29:22:29:45 | getInputStream(...) | user-provided value |
