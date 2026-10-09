@@ -1,57 +1,58 @@
-# frozen_string_literal: true
 class UsersController < ApplicationController
-  skip_before_action :has_info
-  skip_before_action :authenticated, only: [:new, :create]
+  skip_before_action :authenticated, only: [:new, :create, :signup]
 
-  def new
-    @user = User.new
+  # Public signup action: `user_params` permits every key, so a client can set `user[admin]=true`.
+  def signup
+    @user = User.new(user_params) # $ Alert
   end
 
   def create
-    user = User.new(user_params)
-    if user.save
-      session[:user_id] = user.id
-      redirect_to home_dashboard_index_path
-    else
-      @user = user
-      flash[:error] = user.errors.full_messages.to_sentence
-      redirect_to :signup
-    end
+    user = User.new(user_params) # $ Alert
+    user.save
   end
 
-  def account_settings
-    @user = current_user
+  def create_inline
+    User.create(params.require(:user).permit!) # $ Alert
+  end
+
+  def create_unsafe_hash
+    User.new(unsafe_user_params) # $ Alert
+  end
+
+  def create_empty_hash
+    User.new(nested_any_params) # $ Alert
   end
 
   def update
-    message = false
+    user = User.find(params[:id])
+    user.update(user_params) # $ Alert
+  end
 
-    user = User.where("id = '#{params[:user][:id]}'")[0]
+  # Fully specified strong parameters are safe.
+  def create_safe
+    User.new(safe_user_params)
+  end
 
-    if user
-      user.update(user_params_without_password)
-      if params[:user][:password].present? && (params[:user][:password] == params[:user][:password_confirmation])
-        user.password = params[:user][:password]
-      end
-      message = true if user.save!
-      respond_to do |format|
-        format.html { redirect_to user_account_settings_path(user_id: current_user.id) }
-        format.json { render json: {msg: message ? "success" : "false "} }
-      end
-    else
-      flash[:error] = "Could not update user!"
-      redirect_to user_account_settings_path(user_id: current_user.id)
-    end
+  def update_safe
+    user = User.find(params[:id])
+    user.update(safe_user_params)
   end
 
   private
 
   def user_params
-    params.require(:user).permit!
+    params.require(:user).permit! # $ Source
   end
 
-  # unpermitted attributes are ignored in production
-  def user_params_without_password
-    params.require(:user).permit(:email, :admin, :first_name, :last_name)
+  def unsafe_user_params
+    params[:user].to_unsafe_h # $ Source
+  end
+
+  def nested_any_params
+    params.require(:user).permit(:email, settings: {}) # $ Source
+  end
+
+  def safe_user_params
+    params.require(:user).permit(:email, :first_name, :last_name)
   end
 end
