@@ -1,0 +1,11 @@
+| aiohttp_app.py:15:44:15:48 | ControlFlowNode for False | Setting 'secure' disables the 'secure' flag of the aiohttp-session cookie. |
+| config.py:10:29:10:33 | ControlFlowNode for False | Setting 'SESSION_COOKIE_SECURE' disables the 'secure' flag of the session cookie. |
+| django_views.py:6:5:6:83 | ControlFlowNode for Attribute() | Cookie is added to response without the 'secure' flag being set. |
+| django_views.py:7:5:7:84 | ControlFlowNode for Attribute() | Cookie is added to response without the 'secure' flag being set. |
+| django_views.py:14:5:14:75 | ControlFlowNode for Attribute() | Cookie is added to response without the 'secure' flag being set. |
+| flask_app.py:5:39:5:43 | ControlFlowNode for False | Setting 'SESSION_COOKIE_SECURE' disables the 'secure' flag of the session cookie. |
+| flask_app.py:8:45:8:49 | ControlFlowNode for False | Setting 'SESSION_COOKIE_SECURE' disables the 'secure' flag of the session cookie. |
+| flask_app.py:9:47:9:51 | ControlFlowNode for False | Setting 'SESSION_COOKIE_SECURE' disables the 'secure' flag of the session cookie. |
+| flask_app.py:31:5:31:77 | ControlFlowNode for Attribute() | Cookie is added to response without the 'secure' flag being set. |
+| settings.py:4:25:4:29 | ControlFlowNode for False | Setting 'SESSION_COOKIE_SECURE' disables the 'secure' flag of the session cookie. |
+| settings.py:5:22:5:26 | ControlFlowNode for False | Setting 'CSRF_COOKIE_SECURE' disables the 'secure' flag of the CSRF cookie. |
