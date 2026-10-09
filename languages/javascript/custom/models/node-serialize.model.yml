@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      # node-serialize evaluates serialized function values (`_$$ND_FUNC$$_`) on unserialize,
+      # so untrusted input reaching it leads to remote code execution (CWE-502).
+      - ["node-serialize", "Member[unserialize].Argument[0]", "unsafe-deserialization"]
