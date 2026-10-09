@@ -1,0 +1,143 @@
+#select
+| test.py:19:10:19:13 | ControlFlowNode for body | test.py:8:26:8:32 | ControlFlowNode for ImportMember | test.py:19:10:19:13 | ControlFlowNode for body | This code execution depends on remote content fetched from a URL controlled by a $@. | test.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |
+| test.py:26:10:26:16 | ControlFlowNode for program | test.py:8:26:8:32 | ControlFlowNode for ImportMember | test.py:26:10:26:16 | ControlFlowNode for program | This code execution depends on remote content fetched from a URL controlled by a $@. | test.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |
+| test.py:45:10:45:18 | ControlFlowNode for Attribute | test.py:8:26:8:32 | ControlFlowNode for ImportMember | test.py:45:10:45:18 | ControlFlowNode for Attribute | This code execution depends on remote content fetched from a URL controlled by a $@. | test.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |
+| test.py:84:18:84:24 | ControlFlowNode for program | test.py:79:16:79:19 | ControlFlowNode for self | test.py:84:18:84:24 | ControlFlowNode for program | This code execution depends on remote content fetched from a URL controlled by a $@. | test.py:79:16:79:19 | ControlFlowNode for self | user-provided value |
+edges
+| test.py:8:26:8:32 | ControlFlowNode for ImportMember | test.py:8:26:8:32 | ControlFlowNode for request | provenance |  |
+| test.py:8:26:8:32 | ControlFlowNode for request | test.py:17:11:17:17 | ControlFlowNode for request | provenance |  |
+| test.py:8:26:8:32 | ControlFlowNode for request | test.py:24:33:24:39 | ControlFlowNode for request | provenance |  |
+| test.py:8:26:8:32 | ControlFlowNode for request | test.py:32:23:32:29 | ControlFlowNode for request | provenance |  |
+| test.py:8:26:8:32 | ControlFlowNode for request | test.py:37:38:37:44 | ControlFlowNode for request | provenance |  |
+| test.py:8:26:8:32 | ControlFlowNode for request | test.py:44:22:44:28 | ControlFlowNode for request | provenance |  |
+| test.py:8:26:8:32 | ControlFlowNode for request | test.py:51:10:51:16 | ControlFlowNode for request | provenance |  |
+| test.py:12:16:12:18 | ControlFlowNode for url | test.py:12:67:12:69 | ControlFlowNode for url | provenance |  |
+| test.py:12:44:12:99 | ControlFlowNode for Attribute() | test.py:12:21:12:100 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:12:67:12:69 | ControlFlowNode for url | test.py:12:44:12:99 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:17:5:17:7 | ControlFlowNode for url | test.py:18:35:18:37 | ControlFlowNode for url | provenance |  |
+| test.py:17:11:17:17 | ControlFlowNode for request | test.py:17:5:17:7 | ControlFlowNode for url | provenance | AdditionalTaintStep |
+| test.py:18:5:18:8 | ControlFlowNode for body | test.py:19:10:19:13 | ControlFlowNode for body | provenance |  |
+| test.py:18:12:18:38 | ControlFlowNode for Attribute() | test.py:18:12:18:45 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:18:12:18:45 | ControlFlowNode for Attribute() | test.py:18:5:18:8 | ControlFlowNode for body | provenance |  |
+| test.py:18:35:18:37 | ControlFlowNode for url | test.py:18:12:18:38 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:24:10:24:56 | ControlFlowNode for Attribute() | test.py:24:61:24:64 | ControlFlowNode for resp | provenance |  |
+| test.py:24:33:24:39 | ControlFlowNode for request | test.py:24:33:24:55 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
+| test.py:24:33:24:55 | ControlFlowNode for Subscript | test.py:24:10:24:56 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:24:61:24:64 | ControlFlowNode for resp | test.py:25:19:25:22 | ControlFlowNode for resp | provenance |  |
+| test.py:25:9:25:15 | ControlFlowNode for program | test.py:26:10:26:16 | ControlFlowNode for program | provenance |  |
+| test.py:25:19:25:22 | ControlFlowNode for resp | test.py:25:19:25:29 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:25:19:25:29 | ControlFlowNode for Attribute() | test.py:25:9:25:15 | ControlFlowNode for program | provenance |  |
+| test.py:32:10:32:46 | ControlFlowNode for Attribute() | test.py:32:10:32:51 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| test.py:32:10:32:46 | ControlFlowNode for Attribute() | test.py:32:10:32:51 | ControlFlowNode for Attribute | provenance | Config |
+| test.py:32:23:32:29 | ControlFlowNode for request | test.py:32:23:32:45 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
+| test.py:32:23:32:45 | ControlFlowNode for Subscript | test.py:32:10:32:46 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| test.py:32:23:32:45 | ControlFlowNode for Subscript | test.py:32:10:32:46 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:37:5:37:8 | ControlFlowNode for resp | test.py:39:18:39:21 | ControlFlowNode for resp | provenance |  |
+| test.py:37:12:37:73 | ControlFlowNode for Attribute() | test.py:37:5:37:8 | ControlFlowNode for resp | provenance |  |
+| test.py:37:25:37:72 | ControlFlowNode for BinaryExpr | test.py:37:12:37:73 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| test.py:37:25:37:72 | ControlFlowNode for BinaryExpr | test.py:37:12:37:73 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:37:38:37:44 | ControlFlowNode for request | test.py:37:25:37:72 | ControlFlowNode for BinaryExpr | provenance | AdditionalTaintStep |
+| test.py:39:18:39:21 | ControlFlowNode for resp | test.py:39:18:39:29 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| test.py:39:18:39:21 | ControlFlowNode for resp | test.py:39:18:39:29 | ControlFlowNode for Attribute | provenance | Config |
+| test.py:39:18:39:29 | ControlFlowNode for Attribute | test.py:39:10:39:50 | ControlFlowNode for compile() | provenance | AdditionalTaintStep |
+| test.py:44:5:44:8 | ControlFlowNode for resp | test.py:45:10:45:13 | ControlFlowNode for resp | provenance |  |
+| test.py:44:12:44:45 | ControlFlowNode for Attribute() | test.py:44:5:44:8 | ControlFlowNode for resp | provenance |  |
+| test.py:44:22:44:28 | ControlFlowNode for request | test.py:44:22:44:44 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
+| test.py:44:22:44:44 | ControlFlowNode for Subscript | test.py:44:12:44:45 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:45:10:45:13 | ControlFlowNode for resp | test.py:45:10:45:18 | ControlFlowNode for Attribute | provenance | Config |
+| test.py:51:10:51:16 | ControlFlowNode for request | test.py:51:10:51:29 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
+| test.py:79:16:79:19 | ControlFlowNode for self | test.py:80:9:80:19 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| test.py:79:16:79:19 | ControlFlowNode for self | test.py:80:9:80:19 | IterableElement | provenance | AdditionalTaintStep |
+| test.py:79:16:79:19 | ControlFlowNode for self | test.py:80:15:80:19 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| test.py:80:9:80:19 | ControlFlowNode for Tuple | test.py:80:15:80:19 | ControlFlowNode for query | provenance |  |
+| test.py:80:9:80:19 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:80:15:80:19 | ControlFlowNode for query | provenance |  |
+| test.py:80:9:80:19 | IterableElement | test.py:80:9:80:19 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| test.py:80:15:80:19 | ControlFlowNode for query | test.py:81:159:81:163 | ControlFlowNode for query | provenance |  |
+| test.py:81:9:81:14 | ControlFlowNode for params [Any dictionary element] | test.py:83:99:83:104 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| test.py:81:18:81:165 | ControlFlowNode for dict() [Any dictionary element] | test.py:81:9:81:14 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| test.py:81:23:81:164 | ControlFlowNode for .0 [List element, Attribute string] | test.py:81:98:81:102 | ControlFlowNode for match [Attribute string] | provenance |  |
+| test.py:81:23:81:164 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | test.py:81:18:81:165 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| test.py:81:24:81:91 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:81:24:81:91 | ControlFlowNode for Yield [List element, Tuple element at index 1] | provenance |  |
+| test.py:81:50:81:91 | ControlFlowNode for Attribute() | test.py:81:24:81:91 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| test.py:81:71:81:75 | ControlFlowNode for match [Attribute string] | test.py:81:71:81:90 | ControlFlowNode for Attribute() | provenance | re.Match.group |
+| test.py:81:71:81:90 | ControlFlowNode for Attribute() | test.py:81:50:81:91 | ControlFlowNode for Attribute() | provenance | MaD:120 |
+| test.py:81:98:81:102 | ControlFlowNode for match [Attribute string] | test.py:81:71:81:75 | ControlFlowNode for match [Attribute string] | provenance |  |
+| test.py:81:107:81:164 | ControlFlowNode for Attribute() [List element, Attribute string] | test.py:81:23:81:164 | ControlFlowNode for .0 [List element, Attribute string] | provenance |  |
+| test.py:81:107:81:164 | ControlFlowNode for Attribute() [List element, Attribute string] | test.py:81:23:81:164 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | provenance | re.Match.group |
+| test.py:81:159:81:163 | ControlFlowNode for query | test.py:81:107:81:164 | ControlFlowNode for Attribute() [List element, Attribute string] | provenance | re.finditer |
+| test.py:83:13:83:19 | ControlFlowNode for program | test.py:84:18:84:24 | ControlFlowNode for program | provenance |  |
+| test.py:83:23:83:124 | ControlFlowNode for Attribute() | test.py:83:13:83:19 | ControlFlowNode for program | provenance |  |
+| test.py:83:24:83:116 | ControlFlowNode for IfExp | test.py:83:23:83:124 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| test.py:83:24:83:116 | ControlFlowNode for IfExp | test.py:83:23:83:124 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:83:93:83:116 | ControlFlowNode for FETCH() | test.py:83:24:83:116 | ControlFlowNode for IfExp | provenance |  |
+| test.py:83:99:83:104 | ControlFlowNode for params [Any dictionary element] | test.py:83:99:83:115 | ControlFlowNode for Subscript | provenance |  |
+| test.py:83:99:83:115 | ControlFlowNode for Subscript | test.py:12:16:12:18 | ControlFlowNode for url | provenance |  |
+| test.py:83:99:83:115 | ControlFlowNode for Subscript | test.py:83:93:83:116 | ControlFlowNode for FETCH() | provenance | Config |
+nodes
+| test.py:8:26:8:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| test.py:8:26:8:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:12:16:12:18 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| test.py:12:21:12:100 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:12:44:12:99 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:12:67:12:69 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| test.py:17:5:17:7 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| test.py:17:11:17:17 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:18:5:18:8 | ControlFlowNode for body | semmle.label | ControlFlowNode for body |
+| test.py:18:12:18:38 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:18:12:18:45 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:18:35:18:37 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| test.py:19:10:19:13 | ControlFlowNode for body | semmle.label | ControlFlowNode for body |
+| test.py:24:10:24:56 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:24:33:24:39 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:24:33:24:55 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:24:61:24:64 | ControlFlowNode for resp | semmle.label | ControlFlowNode for resp |
+| test.py:25:9:25:15 | ControlFlowNode for program | semmle.label | ControlFlowNode for program |
+| test.py:25:19:25:22 | ControlFlowNode for resp | semmle.label | ControlFlowNode for resp |
+| test.py:25:19:25:29 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:26:10:26:16 | ControlFlowNode for program | semmle.label | ControlFlowNode for program |
+| test.py:32:10:32:46 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:32:10:32:51 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:32:23:32:29 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:32:23:32:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:37:5:37:8 | ControlFlowNode for resp | semmle.label | ControlFlowNode for resp |
+| test.py:37:12:37:73 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:37:25:37:72 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| test.py:37:38:37:44 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:39:10:39:50 | ControlFlowNode for compile() | semmle.label | ControlFlowNode for compile() |
+| test.py:39:18:39:21 | ControlFlowNode for resp | semmle.label | ControlFlowNode for resp |
+| test.py:39:18:39:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:44:5:44:8 | ControlFlowNode for resp | semmle.label | ControlFlowNode for resp |
+| test.py:44:12:44:45 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:44:22:44:28 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:44:22:44:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:45:10:45:13 | ControlFlowNode for resp | semmle.label | ControlFlowNode for resp |
+| test.py:45:10:45:18 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:51:10:51:16 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:51:10:51:29 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:79:16:79:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| test.py:80:9:80:19 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| test.py:80:9:80:19 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:80:9:80:19 | IterableElement | semmle.label | IterableElement |
+| test.py:80:15:80:19 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:81:9:81:14 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| test.py:81:18:81:165 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| test.py:81:23:81:164 | ControlFlowNode for .0 [List element, Attribute string] | semmle.label | ControlFlowNode for .0 [List element, Attribute string] |
+| test.py:81:23:81:164 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| test.py:81:24:81:91 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:81:24:81:91 | ControlFlowNode for Yield [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for Yield [List element, Tuple element at index 1] |
+| test.py:81:50:81:91 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:81:71:81:75 | ControlFlowNode for match [Attribute string] | semmle.label | ControlFlowNode for match [Attribute string] |
+| test.py:81:71:81:90 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:81:98:81:102 | ControlFlowNode for match [Attribute string] | semmle.label | ControlFlowNode for match [Attribute string] |
+| test.py:81:107:81:164 | ControlFlowNode for Attribute() [List element, Attribute string] | semmle.label | ControlFlowNode for Attribute() [List element, Attribute string] |
+| test.py:81:159:81:163 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:83:13:83:19 | ControlFlowNode for program | semmle.label | ControlFlowNode for program |
+| test.py:83:23:83:124 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:83:24:83:116 | ControlFlowNode for IfExp | semmle.label | ControlFlowNode for IfExp |
+| test.py:83:93:83:116 | ControlFlowNode for FETCH() | semmle.label | ControlFlowNode for FETCH() |
+| test.py:83:99:83:104 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| test.py:83:99:83:115 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:84:18:84:24 | ControlFlowNode for program | semmle.label | ControlFlowNode for program |
+subpaths
+| test.py:81:107:81:164 | ControlFlowNode for Attribute() [List element, Attribute string] | test.py:81:23:81:164 | ControlFlowNode for .0 [List element, Attribute string] | test.py:81:24:81:91 | ControlFlowNode for Yield [List element, Tuple element at index 1] | test.py:81:23:81:164 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| test.py:83:99:83:115 | ControlFlowNode for Subscript | test.py:12:16:12:18 | ControlFlowNode for url | test.py:12:21:12:100 | ControlFlowNode for Attribute() | test.py:83:93:83:116 | ControlFlowNode for FETCH() |
