@@ -1,0 +1,4 @@
+| SpringCookies.java:12:12:13:58 | header(...) | Sensitive cookie is added to response without the 'HttpOnly' flag being set. |
+| SpringCookies.java:18:12:19:90 | header(...) | Sensitive cookie is added to response without the 'HttpOnly' flag being set. |
+| SpringCookies.java:26:12:26:70 | header(...) | Sensitive cookie is added to response without the 'HttpOnly' flag being set. |
+| SpringCookies.java:30:5:30:86 | addCookie(...) | Sensitive cookie is added to response without the 'HttpOnly' flag being set. |
