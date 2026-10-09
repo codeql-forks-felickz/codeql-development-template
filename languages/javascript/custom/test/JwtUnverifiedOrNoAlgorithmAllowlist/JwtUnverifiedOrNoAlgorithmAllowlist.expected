@@ -1,0 +1,10 @@
+| backend/order/order-manager.js:7:20:7:63 | jose.ut ... ons[1]) | JWT is decoded without signature verification; the token comes from a $@. | backend/order/order-manager.js:3:20:3:24 | event | user-provided value |
+| decode.js:13:18:13:34 | jwt.decode(token) | JWT is decoded without signature verification; the token comes from a $@. | decode.js:12:17:12:41 | req.hea ... ization | user-provided value |
+| decode.js:19:16:19:43 | jwtDeco ... .token) | JWT is decoded without signature verification; the token comes from a $@. | decode.js:19:26:19:36 | req.cookies | user-provided value |
+| decode.js:26:30:26:63 | Buffer. ... 64url") | JWT is decoded without signature verification; the token comes from a $@. | decode.js:25:17:25:40 | req.get ... ation") | user-provided value |
+| insecurity.ts:8:35:8:76 | express ... as any) | JWT is verified with a $@ but without an algorithm allowlist, allowing algorithm confusion. | insecurity.ts:8:57:8:65 | publicKey | public key |
+| verify.js:16:9:16:41 | express ... cKey }) | JWT is verified with a $@ but without an algorithm allowlist, allowing algorithm confusion. | verify.js:16:30:16:38 | publicKey | public key |
+| verify.js:19:9:19:66 | express ... true }) | JWT is verified with a $@ but without an algorithm allowlist, allowing algorithm confusion. | verify.js:19:30:19:36 | rsaCert | public key |
+| verify.js:30:18:30:55 | jwt.ver ... licKey) | JWT is verified with a $@ but without an algorithm allowlist, allowing algorithm confusion. | verify.js:30:46:30:54 | publicKey | public key |
+| verify.js:36:18:36:73 | jwt.ver ... "me" }) | JWT is verified with a $@ but without an algorithm allowlist, allowing algorithm confusion. | verify.js:36:46:36:54 | publicKey | public key |
+| verify.js:48:7:48:44 | jws.ver ... licKey) | JWT is verified with a $@ but without an algorithm allowlist, allowing algorithm confusion. | verify.js:48:35:48:43 | publicKey | public key |
