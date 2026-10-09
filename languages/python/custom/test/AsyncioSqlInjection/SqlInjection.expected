@@ -1,0 +1,179 @@
+#select
+| app.py:27:31:27:80 | ControlFlowNode for BinaryExpr | app.py:19:26:19:32 | ControlFlowNode for request | app.py:27:31:27:80 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | app.py:19:26:19:32 | ControlFlowNode for request | user-provided value |
+| app.py:51:27:51:76 | ControlFlowNode for BinaryExpr | app.py:44:29:44:35 | ControlFlowNode for request | app.py:51:27:51:76 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | app.py:44:29:44:35 | ControlFlowNode for request | user-provided value |
+| app.py:72:24:72:73 | ControlFlowNode for BinaryExpr | app.py:66:28:66:34 | ControlFlowNode for request | app.py:72:24:72:73 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | app.py:66:28:66:34 | ControlFlowNode for request | user-provided value |
+| dao_aiomysql.py:14:27:14:79 | ControlFlowNode for BinaryExpr | app.py:44:29:44:35 | ControlFlowNode for request | dao_aiomysql.py:14:27:14:79 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | app.py:44:29:44:35 | ControlFlowNode for request | user-provided value |
+| dao_aiomysql.py:19:29:19:76 | ControlFlowNode for Fstring | app.py:44:29:44:35 | ControlFlowNode for request | dao_aiomysql.py:19:29:19:76 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:44:29:44:35 | ControlFlowNode for request | user-provided value |
+| dao_aiomysql.py:28:23:28:70 | ControlFlowNode for Fstring | app.py:44:29:44:35 | ControlFlowNode for request | dao_aiomysql.py:28:23:28:70 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:44:29:44:35 | ControlFlowNode for request | user-provided value |
+| dao_aiomysql.py:32:23:32:70 | ControlFlowNode for Fstring | app.py:44:29:44:35 | ControlFlowNode for request | dao_aiomysql.py:32:23:32:70 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:44:29:44:35 | ControlFlowNode for request | user-provided value |
+| dao_aiomysql.py:38:31:38:78 | ControlFlowNode for Fstring | app.py:44:29:44:35 | ControlFlowNode for request | dao_aiomysql.py:38:31:38:78 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:44:29:44:35 | ControlFlowNode for request | user-provided value |
+| dao_aiomysql.py:42:24:42:71 | ControlFlowNode for Fstring | app.py:44:29:44:35 | ControlFlowNode for request | dao_aiomysql.py:42:24:42:71 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:44:29:44:35 | ControlFlowNode for request | user-provided value |
+| dao_aiomysql.py:46:30:46:83 | ControlFlowNode for Fstring | app.py:44:29:44:35 | ControlFlowNode for request | dao_aiomysql.py:46:30:46:83 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:44:29:44:35 | ControlFlowNode for request | user-provided value |
+| dao_aiopg.py:14:27:14:79 | ControlFlowNode for BinaryExpr | app.py:19:26:19:32 | ControlFlowNode for request | dao_aiopg.py:14:27:14:79 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | app.py:19:26:19:32 | ControlFlowNode for request | user-provided value |
+| dao_aiopg.py:19:27:19:74 | ControlFlowNode for Fstring | app.py:19:26:19:32 | ControlFlowNode for request | dao_aiopg.py:19:27:19:74 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:19:26:19:32 | ControlFlowNode for request | user-provided value |
+| dao_aiopg.py:24:33:24:80 | ControlFlowNode for Fstring | app.py:19:26:19:32 | ControlFlowNode for request | dao_aiopg.py:24:33:24:80 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:19:26:19:32 | ControlFlowNode for request | user-provided value |
+| dao_aiopg.py:33:23:33:70 | ControlFlowNode for Fstring | app.py:19:26:19:32 | ControlFlowNode for request | dao_aiopg.py:33:23:33:70 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:19:26:19:32 | ControlFlowNode for request | user-provided value |
+| dao_aiopg.py:37:23:37:70 | ControlFlowNode for Fstring | app.py:19:26:19:32 | ControlFlowNode for request | dao_aiopg.py:37:23:37:70 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:19:26:19:32 | ControlFlowNode for request | user-provided value |
+| dao_aiopg.py:43:31:43:78 | ControlFlowNode for Fstring | app.py:19:26:19:32 | ControlFlowNode for request | dao_aiopg.py:43:31:43:78 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:19:26:19:32 | ControlFlowNode for request | user-provided value |
+| dao_aiopg.py:48:27:48:74 | ControlFlowNode for Fstring | app.py:19:26:19:32 | ControlFlowNode for request | dao_aiopg.py:48:27:48:74 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:19:26:19:32 | ControlFlowNode for request | user-provided value |
+| dao_aiopg.py:52:24:52:71 | ControlFlowNode for Fstring | app.py:19:26:19:32 | ControlFlowNode for request | dao_aiopg.py:52:24:52:71 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:19:26:19:32 | ControlFlowNode for request | user-provided value |
+| dao_aiopg.py:56:30:56:83 | ControlFlowNode for Fstring | app.py:19:26:19:32 | ControlFlowNode for request | dao_aiopg.py:56:30:56:83 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:19:26:19:32 | ControlFlowNode for request | user-provided value |
+| dao_asyncpg.py:8:24:8:71 | ControlFlowNode for Fstring | app.py:66:28:66:34 | ControlFlowNode for request | dao_asyncpg.py:8:24:8:71 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:66:28:66:34 | ControlFlowNode for request | user-provided value |
+| dao_asyncpg.py:12:22:12:68 | ControlFlowNode for Fstring | app.py:66:28:66:34 | ControlFlowNode for request | dao_asyncpg.py:12:22:12:68 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:66:28:66:34 | ControlFlowNode for request | user-provided value |
+| dao_asyncpg.py:20:25:20:71 | ControlFlowNode for Fstring | app.py:66:28:66:34 | ControlFlowNode for request | dao_asyncpg.py:20:25:20:71 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:66:28:66:34 | ControlFlowNode for request | user-provided value |
+| dao_asyncpg.py:22:29:22:76 | ControlFlowNode for Fstring | app.py:66:28:66:34 | ControlFlowNode for request | dao_asyncpg.py:22:29:22:76 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:66:28:66:34 | ControlFlowNode for request | user-provided value |
+| dao_asyncpg.py:26:24:26:71 | ControlFlowNode for Fstring | app.py:66:28:66:34 | ControlFlowNode for request | dao_asyncpg.py:26:24:26:71 | ControlFlowNode for Fstring | This SQL query depends on a $@. | app.py:66:28:66:34 | ControlFlowNode for request | user-provided value |
+edges
+| app.py:19:26:19:32 | ControlFlowNode for request | app.py:20:5:20:8 | ControlFlowNode for data | provenance | AdditionalTaintStep |
+| app.py:20:5:20:8 | ControlFlowNode for data | app.py:21:5:21:8 | ControlFlowNode for name | provenance |  |
+| app.py:21:5:21:8 | ControlFlowNode for name | app.py:27:31:27:80 | ControlFlowNode for BinaryExpr | provenance |  |
+| app.py:21:5:21:8 | ControlFlowNode for name | app.py:30:38:30:41 | ControlFlowNode for name | provenance |  |
+| app.py:21:5:21:8 | ControlFlowNode for name | app.py:31:59:31:62 | ControlFlowNode for name | provenance |  |
+| app.py:21:5:21:8 | ControlFlowNode for name | app.py:32:53:32:56 | ControlFlowNode for name | provenance |  |
+| app.py:21:5:21:8 | ControlFlowNode for name | app.py:35:53:35:56 | ControlFlowNode for name | provenance |  |
+| app.py:21:5:21:8 | ControlFlowNode for name | app.py:36:71:36:74 | ControlFlowNode for name | provenance |  |
+| app.py:21:5:21:8 | ControlFlowNode for name | app.py:37:57:37:60 | ControlFlowNode for name | provenance |  |
+| app.py:21:5:21:8 | ControlFlowNode for name | app.py:38:64:38:67 | ControlFlowNode for name | provenance |  |
+| app.py:21:5:21:8 | ControlFlowNode for name | app.py:39:53:39:56 | ControlFlowNode for name | provenance |  |
+| app.py:21:5:21:8 | ControlFlowNode for name | app.py:40:52:40:55 | ControlFlowNode for name | provenance |  |
+| app.py:30:38:30:41 | ControlFlowNode for name | dao_aiopg.py:7:36:7:39 | ControlFlowNode for name | provenance |  |
+| app.py:31:59:31:62 | ControlFlowNode for name | dao_aiopg.py:17:63:17:66 | ControlFlowNode for name | provenance |  |
+| app.py:32:53:32:56 | ControlFlowNode for name | dao_aiopg.py:22:51:22:54 | ControlFlowNode for name | provenance |  |
+| app.py:35:53:35:56 | ControlFlowNode for name | dao_aiopg.py:32:49:32:52 | ControlFlowNode for name | provenance |  |
+| app.py:36:71:36:74 | ControlFlowNode for name | dao_aiopg.py:36:78:36:81 | ControlFlowNode for name | provenance |  |
+| app.py:37:57:37:60 | ControlFlowNode for name | dao_aiopg.py:40:46:40:49 | ControlFlowNode for name | provenance |  |
+| app.py:38:64:38:67 | ControlFlowNode for name | dao_aiopg.py:46:53:46:56 | ControlFlowNode for name | provenance |  |
+| app.py:39:53:39:56 | ControlFlowNode for name | dao_aiopg.py:51:41:51:44 | ControlFlowNode for name | provenance |  |
+| app.py:40:52:40:55 | ControlFlowNode for name | dao_aiopg.py:55:40:55:43 | ControlFlowNode for name | provenance |  |
+| app.py:44:29:44:35 | ControlFlowNode for request | app.py:45:5:45:8 | ControlFlowNode for data | provenance | AdditionalTaintStep |
+| app.py:45:5:45:8 | ControlFlowNode for data | app.py:46:5:46:8 | ControlFlowNode for name | provenance |  |
+| app.py:46:5:46:8 | ControlFlowNode for name | app.py:51:27:51:76 | ControlFlowNode for BinaryExpr | provenance |  |
+| app.py:46:5:46:8 | ControlFlowNode for name | app.py:54:41:54:44 | ControlFlowNode for name | provenance |  |
+| app.py:46:5:46:8 | ControlFlowNode for name | app.py:55:62:55:65 | ControlFlowNode for name | provenance |  |
+| app.py:46:5:46:8 | ControlFlowNode for name | app.py:58:56:58:59 | ControlFlowNode for name | provenance |  |
+| app.py:46:5:46:8 | ControlFlowNode for name | app.py:59:74:59:77 | ControlFlowNode for name | provenance |  |
+| app.py:46:5:46:8 | ControlFlowNode for name | app.py:60:63:60:66 | ControlFlowNode for name | provenance |  |
+| app.py:46:5:46:8 | ControlFlowNode for name | app.py:61:59:61:62 | ControlFlowNode for name | provenance |  |
+| app.py:46:5:46:8 | ControlFlowNode for name | app.py:62:58:62:61 | ControlFlowNode for name | provenance |  |
+| app.py:54:41:54:44 | ControlFlowNode for name | dao_aiomysql.py:7:36:7:39 | ControlFlowNode for name | provenance |  |
+| app.py:55:62:55:65 | ControlFlowNode for name | dao_aiomysql.py:17:66:17:69 | ControlFlowNode for name | provenance |  |
+| app.py:58:56:58:59 | ControlFlowNode for name | dao_aiomysql.py:27:52:27:55 | ControlFlowNode for name | provenance |  |
+| app.py:59:74:59:77 | ControlFlowNode for name | dao_aiomysql.py:31:82:31:85 | ControlFlowNode for name | provenance |  |
+| app.py:60:63:60:66 | ControlFlowNode for name | dao_aiomysql.py:35:49:35:52 | ControlFlowNode for name | provenance |  |
+| app.py:61:59:61:62 | ControlFlowNode for name | dao_aiomysql.py:41:41:41:44 | ControlFlowNode for name | provenance |  |
+| app.py:62:58:62:61 | ControlFlowNode for name | dao_aiomysql.py:45:40:45:43 | ControlFlowNode for name | provenance |  |
+| app.py:66:28:66:34 | ControlFlowNode for request | app.py:67:5:67:8 | ControlFlowNode for data | provenance | AdditionalTaintStep |
+| app.py:67:5:67:8 | ControlFlowNode for data | app.py:68:5:68:8 | ControlFlowNode for name | provenance |  |
+| app.py:68:5:68:8 | ControlFlowNode for name | app.py:72:24:72:73 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:23 |
+| app.py:68:5:68:8 | ControlFlowNode for name | app.py:75:40:75:43 | ControlFlowNode for name | provenance |  |
+| app.py:68:5:68:8 | ControlFlowNode for name | app.py:76:58:76:61 | ControlFlowNode for name | provenance |  |
+| app.py:68:5:68:8 | ControlFlowNode for name | app.py:78:64:78:67 | ControlFlowNode for name | provenance |  |
+| app.py:68:5:68:8 | ControlFlowNode for name | app.py:79:82:79:85 | ControlFlowNode for name | provenance |  |
+| app.py:75:40:75:43 | ControlFlowNode for name | dao_asyncpg.py:7:36:7:39 | ControlFlowNode for name | provenance |  |
+| app.py:76:58:76:61 | ControlFlowNode for name | dao_asyncpg.py:11:73:11:76 | ControlFlowNode for name | provenance |  |
+| app.py:78:64:78:67 | ControlFlowNode for name | dao_asyncpg.py:19:48:19:51 | ControlFlowNode for name | provenance |  |
+| app.py:79:82:79:85 | ControlFlowNode for name | dao_asyncpg.py:25:71:25:74 | ControlFlowNode for name | provenance |  |
+| dao_aiomysql.py:7:36:7:39 | ControlFlowNode for name | dao_aiomysql.py:14:74:14:77 | ControlFlowNode for name | provenance |  |
+| dao_aiomysql.py:14:74:14:77 | ControlFlowNode for name | dao_aiomysql.py:14:74:14:78 | ControlFlowNode for Tuple [Tuple element at index 0] | provenance |  |
+| dao_aiomysql.py:14:74:14:78 | ControlFlowNode for Tuple [Tuple element at index 0] | dao_aiomysql.py:14:27:14:79 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:0 |
+| dao_aiomysql.py:17:66:17:69 | ControlFlowNode for name | dao_aiomysql.py:19:29:19:76 | ControlFlowNode for Fstring | provenance | Sink:MaD:0 |
+| dao_aiomysql.py:27:52:27:55 | ControlFlowNode for name | dao_aiomysql.py:28:23:28:70 | ControlFlowNode for Fstring | provenance | Sink:MaD:0 |
+| dao_aiomysql.py:31:82:31:85 | ControlFlowNode for name | dao_aiomysql.py:32:23:32:70 | ControlFlowNode for Fstring | provenance | Sink:MaD:0 |
+| dao_aiomysql.py:35:49:35:52 | ControlFlowNode for name | dao_aiomysql.py:38:31:38:78 | ControlFlowNode for Fstring | provenance | Sink:MaD:0 |
+| dao_aiomysql.py:41:41:41:44 | ControlFlowNode for name | dao_aiomysql.py:42:24:42:71 | ControlFlowNode for Fstring | provenance | Sink:MaD:1 |
+| dao_aiomysql.py:45:40:45:43 | ControlFlowNode for name | dao_aiomysql.py:46:30:46:83 | ControlFlowNode for Fstring | provenance | Sink:MaD:1 |
+| dao_aiopg.py:7:36:7:39 | ControlFlowNode for name | dao_aiopg.py:14:74:14:77 | ControlFlowNode for name | provenance |  |
+| dao_aiopg.py:14:74:14:77 | ControlFlowNode for name | dao_aiopg.py:14:74:14:78 | ControlFlowNode for Tuple [Tuple element at index 0] | provenance |  |
+| dao_aiopg.py:14:74:14:78 | ControlFlowNode for Tuple [Tuple element at index 0] | dao_aiopg.py:14:27:14:79 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:9 |
+| dao_aiopg.py:17:63:17:66 | ControlFlowNode for name | dao_aiopg.py:19:27:19:74 | ControlFlowNode for Fstring | provenance | Sink:MaD:9 |
+| dao_aiopg.py:22:51:22:54 | ControlFlowNode for name | dao_aiopg.py:24:33:24:80 | ControlFlowNode for Fstring | provenance | Sink:MaD:9 |
+| dao_aiopg.py:32:49:32:52 | ControlFlowNode for name | dao_aiopg.py:33:23:33:70 | ControlFlowNode for Fstring | provenance | Sink:MaD:9 |
+| dao_aiopg.py:36:78:36:81 | ControlFlowNode for name | dao_aiopg.py:37:23:37:70 | ControlFlowNode for Fstring | provenance | Sink:MaD:9 |
+| dao_aiopg.py:40:46:40:49 | ControlFlowNode for name | dao_aiopg.py:43:31:43:78 | ControlFlowNode for Fstring | provenance | Sink:MaD:9 |
+| dao_aiopg.py:46:53:46:56 | ControlFlowNode for name | dao_aiopg.py:48:27:48:74 | ControlFlowNode for Fstring | provenance | Sink:MaD:9 |
+| dao_aiopg.py:51:41:51:44 | ControlFlowNode for name | dao_aiopg.py:52:24:52:71 | ControlFlowNode for Fstring | provenance | Sink:MaD:10 |
+| dao_aiopg.py:55:40:55:43 | ControlFlowNode for name | dao_aiopg.py:56:30:56:83 | ControlFlowNode for Fstring | provenance | Sink:MaD:10 |
+| dao_asyncpg.py:7:36:7:39 | ControlFlowNode for name | dao_asyncpg.py:8:24:8:71 | ControlFlowNode for Fstring | provenance | Sink:MaD:23 |
+| dao_asyncpg.py:11:73:11:76 | ControlFlowNode for name | dao_asyncpg.py:12:22:12:68 | ControlFlowNode for Fstring | provenance | Sink:MaD:23 |
+| dao_asyncpg.py:19:48:19:51 | ControlFlowNode for name | dao_asyncpg.py:20:25:20:71 | ControlFlowNode for Fstring | provenance | Sink:MaD:23 |
+| dao_asyncpg.py:19:48:19:51 | ControlFlowNode for name | dao_asyncpg.py:22:29:22:76 | ControlFlowNode for Fstring | provenance | Sink:MaD:23 |
+| dao_asyncpg.py:25:71:25:74 | ControlFlowNode for name | dao_asyncpg.py:26:24:26:71 | ControlFlowNode for Fstring | provenance | Sink:MaD:23 |
+nodes
+| app.py:19:26:19:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| app.py:20:5:20:8 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+| app.py:21:5:21:8 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:27:31:27:80 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| app.py:30:38:30:41 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:31:59:31:62 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:32:53:32:56 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:35:53:35:56 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:36:71:36:74 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:37:57:37:60 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:38:64:38:67 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:39:53:39:56 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:40:52:40:55 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:44:29:44:35 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| app.py:45:5:45:8 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+| app.py:46:5:46:8 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:51:27:51:76 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| app.py:54:41:54:44 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:55:62:55:65 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:58:56:58:59 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:59:74:59:77 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:60:63:60:66 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:61:59:61:62 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:62:58:62:61 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:66:28:66:34 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| app.py:67:5:67:8 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+| app.py:68:5:68:8 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:72:24:72:73 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| app.py:75:40:75:43 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:76:58:76:61 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:78:64:78:67 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:79:82:79:85 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiomysql.py:7:36:7:39 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiomysql.py:14:27:14:79 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| dao_aiomysql.py:14:74:14:77 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiomysql.py:14:74:14:78 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| dao_aiomysql.py:17:66:17:69 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiomysql.py:19:29:19:76 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_aiomysql.py:27:52:27:55 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiomysql.py:28:23:28:70 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_aiomysql.py:31:82:31:85 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiomysql.py:32:23:32:70 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_aiomysql.py:35:49:35:52 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiomysql.py:38:31:38:78 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_aiomysql.py:41:41:41:44 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiomysql.py:42:24:42:71 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_aiomysql.py:45:40:45:43 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiomysql.py:46:30:46:83 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_aiopg.py:7:36:7:39 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiopg.py:14:27:14:79 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| dao_aiopg.py:14:74:14:77 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiopg.py:14:74:14:78 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| dao_aiopg.py:17:63:17:66 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiopg.py:19:27:19:74 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_aiopg.py:22:51:22:54 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiopg.py:24:33:24:80 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_aiopg.py:32:49:32:52 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiopg.py:33:23:33:70 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_aiopg.py:36:78:36:81 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiopg.py:37:23:37:70 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_aiopg.py:40:46:40:49 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiopg.py:43:31:43:78 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_aiopg.py:46:53:46:56 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiopg.py:48:27:48:74 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_aiopg.py:51:41:51:44 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiopg.py:52:24:52:71 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_aiopg.py:55:40:55:43 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_aiopg.py:56:30:56:83 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_asyncpg.py:7:36:7:39 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_asyncpg.py:8:24:8:71 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_asyncpg.py:11:73:11:76 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_asyncpg.py:12:22:12:68 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_asyncpg.py:19:48:19:51 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_asyncpg.py:20:25:20:71 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_asyncpg.py:22:29:22:76 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| dao_asyncpg.py:25:71:25:74 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| dao_asyncpg.py:26:24:26:71 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+subpaths
