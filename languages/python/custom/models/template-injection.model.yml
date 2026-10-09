@@ -1,0 +1,26 @@
+# Server-side template injection (CWE-1336) sinks that are not covered by the
+# built-in `TemplateConstruction` models in `codeql/python-all`.
+#
+# The built-in models already cover the positional template-source argument of
+# `flask.render_template_string`, `flask.stream_template_string`,
+# `jinja2.Template` and `jinja2.Environment().from_string` (reported by
+# `py/template-injection`). `py/template-injection` does not consume
+# data-extension sinks, so the remaining gaps are modeled as `code-injection`
+# sinks (these engines compile template source into executable Python) and are
+# reported by `py/code-injection`. Rows avoid the positional arguments that are
+# already modeled to prevent duplicate alerts.
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      - ["flask", "Member[current_app].Member[jinja_env].Member[from_string].Argument[0,source:]", "code-injection"]
+      - [
+          "flask",
+          "Member[Flask].ReturnValue.Member[jinja_env].Member[from_string].Argument[0,source:]",
+          "code-injection"
+        ]
+      - ["flask", "Member[render_template_string,stream_template_string].Argument[source:]", "code-injection"]
+      - ["jinja2", "Member[Environment].ReturnValue.Member[from_string].Argument[source:]", "code-injection"]
+      - ["jinja2", "Member[Template].Argument[source:]", "code-injection"]
+      - ["tornado", "Member[template].Member[Template].Argument[0,template_string:]", "code-injection"]
