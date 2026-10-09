@@ -1,0 +1,10 @@
+| ServletCookies.java:8:5:8:25 | addCookie(...) | Cookie is added to response without the 'secure' flag being set. |
+| ServletCookies.java:14:5:14:25 | addCookie(...) | Cookie is added to response without the 'secure' flag being set. |
+| ServletCookies.java:31:5:31:83 | addHeader(...) | 'Set-Cookie' header is added to response without the 'Secure' attribute. |
+| ServletCookies.java:36:5:36:44 | setHeader(...) | 'Set-Cookie' header is added to response without the 'Secure' attribute. |
+| SpringCookies.java:12:12:13:58 | header(...) | Cookie is added to response without the 'secure' flag being set. |
+| SpringCookies.java:18:12:19:100 | header(...) | Cookie is added to response without the 'secure' flag being set. |
+| SpringCookies.java:26:12:26:70 | header(...) | Cookie is added to response without the 'secure' flag being set. |
+| SpringCookies.java:32:5:32:58 | add(...) | Cookie is added to response without the 'secure' flag being set. |
+| SpringCookies.java:38:5:38:95 | set(...) | Cookie is added to response without the 'secure' flag being set. |
+| SpringCookies.java:43:5:43:88 | addCookie(...) | Cookie is added to response without the 'secure' flag being set. |
