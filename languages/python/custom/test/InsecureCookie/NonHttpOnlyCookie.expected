@@ -1,0 +1,10 @@
+| aiohttp_app.py:9:59:9:63 | ControlFlowNode for False | Setting 'httponly' disables the 'HttpOnly' flag of the aiohttp-session cookie. |
+| config.py:11:31:11:35 | ControlFlowNode for False | Setting 'SESSION_COOKIE_HTTPONLY' disables the 'HttpOnly' flag of the session cookie. |
+| django_views.py:6:5:6:83 | ControlFlowNode for Attribute() | Sensitive server cookie is set without HttpOnly flag. |
+| django_views.py:7:5:7:84 | ControlFlowNode for Attribute() | Sensitive server cookie is set without HttpOnly flag. |
+| django_views.py:14:5:14:75 | ControlFlowNode for Attribute() | Sensitive server cookie is set without HttpOnly flag. |
+| flask_app.py:6:41:6:45 | ControlFlowNode for False | Setting 'SESSION_COOKIE_HTTPONLY' disables the 'HttpOnly' flag of the session cookie. |
+| flask_app.py:7:43:7:47 | ControlFlowNode for False | Setting 'SESSION_COOKIE_HTTPONLY' disables the 'HttpOnly' flag of the session cookie. |
+| flask_app.py:9:78:9:82 | ControlFlowNode for False | Setting 'SESSION_COOKIE_HTTPONLY' disables the 'HttpOnly' flag of the session cookie. |
+| flask_app.py:31:5:31:77 | ControlFlowNode for Attribute() | Sensitive server cookie is set without HttpOnly flag. |
+| settings.py:3:27:3:31 | ControlFlowNode for False | Setting 'SESSION_COOKIE_HTTPONLY' disables the 'HttpOnly' flag of the session cookie. |
