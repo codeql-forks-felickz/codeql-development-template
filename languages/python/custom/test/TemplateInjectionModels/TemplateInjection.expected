@@ -1,0 +1,31 @@
+#select
+| flask_jinja2.py:12:28:12:42 | ControlFlowNode for BinaryExpr | flask_jinja2.py:2:39:2:45 | ControlFlowNode for ImportMember | flask_jinja2.py:12:28:12:42 | ControlFlowNode for BinaryExpr | This template construction depends on a $@. | flask_jinja2.py:2:39:2:45 | ControlFlowNode for ImportMember | user-provided value |
+| flask_jinja2.py:13:28:13:42 | ControlFlowNode for BinaryExpr | flask_jinja2.py:2:39:2:45 | ControlFlowNode for ImportMember | flask_jinja2.py:13:28:13:42 | ControlFlowNode for BinaryExpr | This template construction depends on a $@. | flask_jinja2.py:2:39:2:45 | ControlFlowNode for ImportMember | user-provided value |
+| flask_jinja2.py:14:31:14:45 | ControlFlowNode for BinaryExpr | flask_jinja2.py:2:39:2:45 | ControlFlowNode for ImportMember | flask_jinja2.py:14:31:14:45 | ControlFlowNode for BinaryExpr | This template construction depends on a $@. | flask_jinja2.py:2:39:2:45 | ControlFlowNode for ImportMember | user-provided value |
+| flask_jinja2.py:15:64:15:78 | ControlFlowNode for BinaryExpr | flask_jinja2.py:2:39:2:45 | ControlFlowNode for ImportMember | flask_jinja2.py:15:64:15:78 | ControlFlowNode for BinaryExpr | This template construction depends on a $@. | flask_jinja2.py:2:39:2:45 | ControlFlowNode for ImportMember | user-provided value |
+| flask_jinja2.py:16:21:16:35 | ControlFlowNode for BinaryExpr | flask_jinja2.py:2:39:2:45 | ControlFlowNode for ImportMember | flask_jinja2.py:16:21:16:35 | ControlFlowNode for BinaryExpr | This template construction depends on a $@. | flask_jinja2.py:2:39:2:45 | ControlFlowNode for ImportMember | user-provided value |
+edges
+| flask_jinja2.py:2:39:2:45 | ControlFlowNode for ImportMember | flask_jinja2.py:2:39:2:45 | ControlFlowNode for request | provenance |  |
+| flask_jinja2.py:2:39:2:45 | ControlFlowNode for request | flask_jinja2.py:11:12:11:18 | ControlFlowNode for request | provenance |  |
+| flask_jinja2.py:11:5:11:8 | ControlFlowNode for name | flask_jinja2.py:12:28:12:42 | ControlFlowNode for BinaryExpr | provenance |  |
+| flask_jinja2.py:11:5:11:8 | ControlFlowNode for name | flask_jinja2.py:13:28:13:42 | ControlFlowNode for BinaryExpr | provenance |  |
+| flask_jinja2.py:11:5:11:8 | ControlFlowNode for name | flask_jinja2.py:14:31:14:45 | ControlFlowNode for BinaryExpr | provenance |  |
+| flask_jinja2.py:11:5:11:8 | ControlFlowNode for name | flask_jinja2.py:15:64:15:78 | ControlFlowNode for BinaryExpr | provenance |  |
+| flask_jinja2.py:11:5:11:8 | ControlFlowNode for name | flask_jinja2.py:16:21:16:35 | ControlFlowNode for BinaryExpr | provenance |  |
+| flask_jinja2.py:11:12:11:18 | ControlFlowNode for request | flask_jinja2.py:11:12:11:23 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| flask_jinja2.py:11:12:11:23 | ControlFlowNode for Attribute | flask_jinja2.py:11:12:11:35 | ControlFlowNode for Attribute() | provenance | dict.get |
+| flask_jinja2.py:11:12:11:23 | ControlFlowNode for Attribute | flask_jinja2.py:11:12:11:35 | ControlFlowNode for Attribute() | provenance | dict.get(name) |
+| flask_jinja2.py:11:12:11:35 | ControlFlowNode for Attribute() | flask_jinja2.py:11:5:11:8 | ControlFlowNode for name | provenance |  |
+nodes
+| flask_jinja2.py:2:39:2:45 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| flask_jinja2.py:2:39:2:45 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_jinja2.py:11:5:11:8 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| flask_jinja2.py:11:12:11:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_jinja2.py:11:12:11:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_jinja2.py:11:12:11:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| flask_jinja2.py:12:28:12:42 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| flask_jinja2.py:13:28:13:42 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| flask_jinja2.py:14:31:14:45 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| flask_jinja2.py:15:64:15:78 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| flask_jinja2.py:16:21:16:35 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths
