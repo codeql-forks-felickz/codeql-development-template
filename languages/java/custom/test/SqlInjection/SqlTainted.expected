@@ -1,0 +1,22 @@
+#select
+| org/example/jsp/SqlInjectionJspScriptlets.java:26:38:26:42 | query | org/example/jsp/SqlInjectionJspScriptlets.java:21:19:21:50 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:26:38:26:42 | query | This query depends on a $@. | org/example/jsp/SqlInjectionJspScriptlets.java:21:19:21:50 | getParameter(...) | user-provided value |
+| org/example/jsp/SqlInjectionJspScriptlets.java:35:40:35:87 | ... + ... | org/example/jsp/SqlInjectionJspScriptlets.java:32:21:32:50 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:35:40:35:87 | ... + ... | This query depends on a $@. | org/example/jsp/SqlInjectionJspScriptlets.java:32:21:32:50 | getParameter(...) | user-provided value |
+| org/example/jsp/SqlInjectionJspScriptlets.java:49:25:49:29 | query | org/example/jsp/SqlInjectionJspScriptlets.java:44:33:44:65 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:49:25:49:29 | query | This query depends on a $@. | org/example/jsp/SqlInjectionJspScriptlets.java:44:33:44:65 | getParameter(...) | user-provided value |
+| org/example/jsp/SqlInjectionJspScriptlets.java:56:23:56:23 | q | org/example/jsp/SqlInjectionJspScriptlets.java:55:55:55:79 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:56:23:56:23 | q | This query depends on a $@. | org/example/jsp/SqlInjectionJspScriptlets.java:55:55:55:79 | getParameter(...) | user-provided value |
+edges
+| org/example/jsp/SqlInjectionJspScriptlets.java:21:19:21:50 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:26:38:26:42 | query | provenance | Src:MaD:48669 Sink:MaD:47151 |
+| org/example/jsp/SqlInjectionJspScriptlets.java:32:21:32:50 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:35:40:35:87 | ... + ... | provenance | Src:MaD:48669 Sink:MaD:47151 |
+| org/example/jsp/SqlInjectionJspScriptlets.java:44:24:44:65 | (...)... : String | org/example/jsp/SqlInjectionJspScriptlets.java:49:25:49:29 | query | provenance | Sink:MaD:47151 |
+| org/example/jsp/SqlInjectionJspScriptlets.java:44:33:44:65 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:44:24:44:65 | (...)... : String | provenance | Src:MaD:48669  |
+| org/example/jsp/SqlInjectionJspScriptlets.java:55:55:55:79 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:56:23:56:23 | q | provenance | Src:MaD:48669 Sink:MaD:47151 |
+nodes
+| org/example/jsp/SqlInjectionJspScriptlets.java:21:19:21:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| org/example/jsp/SqlInjectionJspScriptlets.java:26:38:26:42 | query | semmle.label | query |
+| org/example/jsp/SqlInjectionJspScriptlets.java:32:21:32:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| org/example/jsp/SqlInjectionJspScriptlets.java:35:40:35:87 | ... + ... | semmle.label | ... + ... |
+| org/example/jsp/SqlInjectionJspScriptlets.java:44:24:44:65 | (...)... : String | semmle.label | (...)... : String |
+| org/example/jsp/SqlInjectionJspScriptlets.java:44:33:44:65 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| org/example/jsp/SqlInjectionJspScriptlets.java:49:25:49:29 | query | semmle.label | query |
+| org/example/jsp/SqlInjectionJspScriptlets.java:55:55:55:79 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| org/example/jsp/SqlInjectionJspScriptlets.java:56:23:56:23 | q | semmle.label | q |
+subpaths
