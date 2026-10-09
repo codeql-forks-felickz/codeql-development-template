@@ -1,0 +1,26 @@
+# Models for the `aiopg` PyPI package (https://aiopg.readthedocs.io/).
+#
+# The upstream `codeql/python-all` QL models (semmle/python/frameworks/Aiopg.qll)
+# only recognize connections/cursors obtained directly from `aiopg.connect()` or
+# `aiopg.create_pool()`. These rows add the objects that are only identifiable by
+# their type annotation (e.g. `conn: aiopg.connection.Connection`), which is the
+# common case when a pool is stored on an application object (`app["db"]`).
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      - ["aiopg.Cursor", "Member[execute].Argument[0,operation:]", "sql-injection"]
+      - ["aiopg.sa.SAConnection", "Member[execute,scalar].Argument[0,query:]", "sql-injection"]
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data:
+      - ["aiopg.Connection", "aiopg.Pool", "Member[acquire].ReturnValue.Awaited"]
+      - ["aiopg.Connection", "aiopg.connection.Connection", ""]
+      - ["aiopg.Cursor", "aiopg.Connection", "Member[cursor].ReturnValue.Awaited"]
+      - ["aiopg.Cursor", "aiopg.Pool", "Member[cursor].ReturnValue.Awaited"]
+      - ["aiopg.Cursor", "aiopg.connection.Cursor", ""]
+      - ["aiopg.Pool", "aiopg.pool.Pool", ""]
+      - ["aiopg.sa.SAConnection", "aiopg.sa.connection.SAConnection", ""]

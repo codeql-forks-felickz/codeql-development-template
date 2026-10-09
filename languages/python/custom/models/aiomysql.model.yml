@@ -1,0 +1,29 @@
+# Models for the `aiomysql` PyPI package (https://aiomysql.readthedocs.io/).
+#
+# The upstream `codeql/python-all` QL models (semmle/python/frameworks/Aiomysql.qll)
+# only recognize connections/cursors obtained directly from `aiomysql.connect()` or
+# `aiomysql.create_pool()`. These rows add the objects that are only identifiable by
+# their type annotation (e.g. `conn: aiomysql.Connection`).
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      - ["aiomysql.Cursor", "Member[execute,executemany].Argument[0,query:]", "sql-injection"]
+      - ["aiomysql.sa.SAConnection", "Member[execute,scalar].Argument[0,query:]", "sql-injection"]
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data:
+      - ["aiomysql.Connection", "aiomysql.Pool", "Member[acquire].ReturnValue.Awaited"]
+      - ["aiomysql.Connection", "aiomysql.connection.Connection", ""]
+      - ["aiomysql.Cursor", "aiomysql", "Member[DictCursor,SSCursor,SSDictCursor].Instance"]
+      - [
+          "aiomysql.Cursor",
+          "aiomysql",
+          "Member[cursors].Member[Cursor,DeserializationCursor,DictCursor,SSCursor,SSDictCursor].Instance"
+        ]
+      - ["aiomysql.Cursor", "aiomysql.Connection", "Member[cursor].ReturnValue.Awaited"]
+      - ["aiomysql.Pool", "aiomysql.pool.Pool", ""]
+      - ["aiomysql.sa.SAConnection", "aiomysql.sa.connection.SAConnection", ""]

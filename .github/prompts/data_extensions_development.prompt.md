@@ -187,7 +187,7 @@ Data extensions support three primary workflows. An agent should follow the appr
 3. **Create the YAML file** — use the naming convention `<library>-<module>.model.yml` and the appropriate column format for the language
 4. **Place the file** — choose one of two paths depending on scope:
    - **Single repository:** Place the `.model.yml` directly in `.github/codeql/extensions/<pack-name>/` — no `qlpack.yml` is needed; Code Scanning picks up extensions from this directory automatically
-   - **Model pack (reusable across repos):** Place the file under a pack directory (e.g., `languages/<language>/custom/src/`) with a `qlpack.yml` that declares `extensionTargets` and `dataExtensions`
+   - **Model pack (reusable across repos):** Place the file under a pack directory (e.g., `languages/<language>/custom/models/`) with a `qlpack.yml` that declares `library: true`, `extensionTargets` and `dataExtensions` (model packs cannot declare `dependencies`, so they cannot live in the `custom/src` query pack). To unit test them, add the model pack and `codeql/<language>-queries` as dependencies of `languages/<language>/custom/test/qlpack.yml` and reference the stock query from a `.qlref`
 5. **Test locally** — run a targeted query against a sample database to confirm new findings appear (see "Model Pack / Data Extension Options" below for `--additional-packs` usage):
    ```bash
    codeql query run \
@@ -202,7 +202,7 @@ Data extensions support three primary workflows. An agent should follow the appr
 
 1. **Find the existing model file** — check these locations in order:
    - `.github/codeql/extensions/` in the current repository
-   - `languages/<lang>/custom/src/` in this template repository
+   - `languages/<lang>/custom/models/` in this template repository
    - Published model packs (search GHCR or your org's CodeQL pack registry)
    - **Note:** Models in upstream `codeql/<lang>-all` packs cannot be edited directly — create a custom model pack that adds new rows alongside the built-in models
 2. **Add new rows** to the appropriate extensible predicate section (`sinkModel`, `sourceModel`, `summaryModel`, etc.) — do not remove existing rows unless they are incorrect
@@ -454,7 +454,7 @@ codeql query run \
 # Use a local (unpublished) model pack during development
 codeql query run \
     --database=/path/to/db \
-    --additional-packs=languages/<language>/custom/src \
+    --additional-packs=languages/<language>/custom/models \
     --output=results.bqrs \
     -- path/to/MyQuery.ql
 ```
@@ -469,7 +469,7 @@ codeql query run \
 
 ```bash
 codeql test run \
-    --additional-packs=languages/<language>/custom/src \
+    --additional-packs=languages/<language>/custom/models \
     --keep-databases \
     --show-extractor-output \
     -- languages/<language>/<pack-basename>/test/<QueryBasename>/
