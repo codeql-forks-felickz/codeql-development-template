@@ -1,0 +1,3 @@
+| AccountService.asmx.cs:11:23:11:37 | TransferBalance | This action is missing an authorization check. |
+| AccountService.asmx.cs:20:21:20:33 | DeleteAccount | This action is missing an authorization check. |
+| AccountService.asmx.cs:94:28:94:40 | TransferFunds | This action is missing an authorization check. |
