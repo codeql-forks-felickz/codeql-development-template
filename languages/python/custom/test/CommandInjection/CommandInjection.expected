@@ -1,0 +1,137 @@
+#select
+| django_upload.py:9:15:9:100 | ControlFlowNode for BinaryExpr | django_upload.py:13:12:13:18 | ControlFlowNode for request | django_upload.py:9:15:9:100 | ControlFlowNode for BinaryExpr | This command line depends on a $@. | django_upload.py:13:12:13:18 | ControlFlowNode for request | user-provided value |
+| django_upload.py:22:15:22:47 | ControlFlowNode for BinaryExpr | django_upload.py:19:17:19:23 | ControlFlowNode for request | django_upload.py:22:15:22:47 | ControlFlowNode for BinaryExpr | This command line depends on a $@. | django_upload.py:19:17:19:23 | ControlFlowNode for request | user-provided value |
+| http_server.py:17:28:17:57 | ControlFlowNode for BinaryExpr | http_server.py:9:16:9:19 | ControlFlowNode for self | http_server.py:17:28:17:57 | ControlFlowNode for BinaryExpr | This command line depends on a $@. | http_server.py:9:16:9:19 | ControlFlowNode for self | user-provided value |
+| http_server.py:18:37:18:66 | ControlFlowNode for BinaryExpr | http_server.py:9:16:9:19 | ControlFlowNode for self | http_server.py:18:37:18:66 | ControlFlowNode for BinaryExpr | This command line depends on a $@. | http_server.py:9:16:9:19 | ControlFlowNode for self | user-provided value |
+| http_server.py:26:19:26:47 | ControlFlowNode for BinaryExpr | http_server.py:22:17:22:20 | ControlFlowNode for self | http_server.py:26:19:26:47 | ControlFlowNode for BinaryExpr | This command line depends on a $@. | http_server.py:22:17:22:20 | ControlFlowNode for self | user-provided value |
+| http_server.py:29:27:29:31 | ControlFlowNode for value | http_server.py:22:17:22:20 | ControlFlowNode for self | http_server.py:29:27:29:31 | ControlFlowNode for value | This command line depends on a $@. | http_server.py:22:17:22:20 | ControlFlowNode for self | user-provided value |
+| http_server.py:34:33:34:47 | ControlFlowNode for BinaryExpr | http_server.py:31:16:31:19 | ControlFlowNode for self | http_server.py:34:33:34:47 | ControlFlowNode for BinaryExpr | This command line depends on a $@. | http_server.py:31:16:31:19 | ControlFlowNode for self | user-provided value |
+edges
+| django_upload.py:7:25:7:29 | ControlFlowNode for title | django_upload.py:9:95:9:99 | ControlFlowNode for title | provenance |  |
+| django_upload.py:9:67:9:100 | ControlFlowNode for BinaryExpr | django_upload.py:9:15:9:100 | ControlFlowNode for BinaryExpr | provenance |  |
+| django_upload.py:9:78:9:99 | ControlFlowNode for Tuple [Tuple element at index 1] | django_upload.py:9:67:9:100 | ControlFlowNode for BinaryExpr | provenance |  |
+| django_upload.py:9:95:9:99 | ControlFlowNode for title | django_upload.py:9:78:9:99 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| django_upload.py:13:12:13:18 | ControlFlowNode for request | django_upload.py:14:12:14:23 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| django_upload.py:14:5:14:8 | ControlFlowNode for name | django_upload.py:15:25:15:28 | ControlFlowNode for name | provenance |  |
+| django_upload.py:14:12:14:23 | ControlFlowNode for Attribute | django_upload.py:14:12:14:42 | ControlFlowNode for Attribute() | provenance | dict.get |
+| django_upload.py:14:12:14:42 | ControlFlowNode for Attribute() | django_upload.py:14:5:14:8 | ControlFlowNode for name | provenance |  |
+| django_upload.py:15:25:15:28 | ControlFlowNode for name | django_upload.py:7:25:7:29 | ControlFlowNode for title | provenance |  |
+| django_upload.py:19:17:19:23 | ControlFlowNode for request | django_upload.py:20:5:20:5 | ControlFlowNode for f | provenance | AdditionalTaintStep |
+| django_upload.py:19:17:19:23 | ControlFlowNode for request | django_upload.py:21:13:21:24 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| django_upload.py:20:5:20:5 | ControlFlowNode for f | django_upload.py:22:15:22:47 | ControlFlowNode for BinaryExpr | provenance | AdditionalTaintStep |
+| django_upload.py:21:5:21:9 | ControlFlowNode for title | django_upload.py:22:15:22:47 | ControlFlowNode for BinaryExpr | provenance |  |
+| django_upload.py:21:13:21:24 | ControlFlowNode for Attribute | django_upload.py:21:13:21:41 | ControlFlowNode for Attribute() | provenance | dict.get |
+| django_upload.py:21:13:21:41 | ControlFlowNode for Attribute() | django_upload.py:21:5:21:9 | ControlFlowNode for title | provenance |  |
+| http_server.py:9:16:9:19 | ControlFlowNode for self | http_server.py:11:9:11:19 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| http_server.py:9:16:9:19 | ControlFlowNode for self | http_server.py:11:9:11:19 | IterableElement | provenance | AdditionalTaintStep |
+| http_server.py:9:16:9:19 | ControlFlowNode for self | http_server.py:11:15:11:19 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| http_server.py:11:9:11:19 | ControlFlowNode for Tuple | http_server.py:11:15:11:19 | ControlFlowNode for query | provenance |  |
+| http_server.py:11:9:11:19 | ControlFlowNode for Tuple [Tuple element at index 1] | http_server.py:11:15:11:19 | ControlFlowNode for query | provenance |  |
+| http_server.py:11:9:11:19 | IterableElement | http_server.py:11:9:11:19 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| http_server.py:11:15:11:19 | ControlFlowNode for query | http_server.py:13:145:13:149 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| http_server.py:12:9:12:14 | ControlFlowNode for params [Any dictionary element] | http_server.py:17:42:17:47 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server.py:12:9:12:14 | ControlFlowNode for params [Any dictionary element] | http_server.py:18:51:18:56 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server.py:12:18:15:9 | ControlFlowNode for dict() [Any dictionary element] | http_server.py:12:9:12:14 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server.py:13:13:14:91 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | http_server.py:12:18:15:9 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| http_server.py:13:14:13:152 | ControlFlowNode for Tuple [Tuple element at index 1] | http_server.py:13:14:13:152 | ControlFlowNode for Yield [List element, Tuple element at index 1] | provenance |  |
+| http_server.py:13:14:13:152 | ControlFlowNode for Yield [List element, Tuple element at index 1] | http_server.py:13:13:14:91 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | provenance |  |
+| http_server.py:13:40:13:152 | ControlFlowNode for Attribute() | http_server.py:13:14:13:152 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| http_server.py:13:61:13:151 | ControlFlowNode for Attribute() | http_server.py:13:40:13:152 | ControlFlowNode for Attribute() | provenance | MaD:120 |
+| http_server.py:13:70:13:150 | ControlFlowNode for Attribute() | http_server.py:13:61:13:151 | ControlFlowNode for Attribute() | provenance | str.join |
+| http_server.py:13:70:13:150 | ControlFlowNode for Attribute() [List element] | http_server.py:13:61:13:151 | ControlFlowNode for Attribute() | provenance | str.join |
+| http_server.py:13:145:13:149 | ControlFlowNode for query | http_server.py:13:70:13:150 | ControlFlowNode for Attribute() | provenance | re.findall |
+| http_server.py:13:145:13:149 | ControlFlowNode for query | http_server.py:13:70:13:150 | ControlFlowNode for Attribute() [List element] | provenance | re.findall |
+| http_server.py:17:42:17:47 | ControlFlowNode for params [Any dictionary element] | http_server.py:17:42:17:57 | ControlFlowNode for Subscript | provenance |  |
+| http_server.py:17:42:17:57 | ControlFlowNode for Subscript | http_server.py:17:28:17:57 | ControlFlowNode for BinaryExpr | provenance |  |
+| http_server.py:18:51:18:56 | ControlFlowNode for params [Any dictionary element] | http_server.py:18:51:18:66 | ControlFlowNode for Subscript | provenance |  |
+| http_server.py:18:51:18:66 | ControlFlowNode for Subscript | http_server.py:18:37:18:66 | ControlFlowNode for BinaryExpr | provenance |  |
+| http_server.py:22:17:22:20 | ControlFlowNode for self | http_server.py:24:39:24:47 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| http_server.py:24:9:24:13 | ControlFlowNode for query | http_server.py:25:23:25:51 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| http_server.py:24:9:24:13 | ControlFlowNode for query | http_server.py:27:13:27:22 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| http_server.py:24:9:24:13 | ControlFlowNode for query | http_server.py:27:13:27:22 | IterableElement | provenance | AdditionalTaintStep |
+| http_server.py:24:9:24:13 | ControlFlowNode for query | http_server.py:27:18:27:22 | ControlFlowNode for value | provenance | AdditionalTaintStep |
+| http_server.py:24:17:24:48 | ControlFlowNode for Attribute() | http_server.py:24:9:24:13 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| http_server.py:24:39:24:47 | ControlFlowNode for Attribute | http_server.py:24:17:24:48 | ControlFlowNode for Attribute() | provenance | MaD:116 |
+| http_server.py:25:9:25:14 | ControlFlowNode for params | http_server.py:26:19:26:47 | ControlFlowNode for BinaryExpr | provenance |  |
+| http_server.py:25:9:25:14 | ControlFlowNode for params [Any dictionary element] | http_server.py:26:34:26:39 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server.py:25:18:25:52 | ControlFlowNode for dict() | http_server.py:25:9:25:14 | ControlFlowNode for params | provenance |  |
+| http_server.py:25:18:25:52 | ControlFlowNode for dict() [Any dictionary element] | http_server.py:25:9:25:14 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server.py:25:23:25:51 | ControlFlowNode for Attribute() | http_server.py:25:18:25:52 | ControlFlowNode for dict() | provenance | builtins.dict |
+| http_server.py:25:23:25:51 | ControlFlowNode for Attribute() | http_server.py:25:18:25:52 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| http_server.py:26:34:26:39 | ControlFlowNode for params [Any dictionary element] | http_server.py:26:34:26:47 | ControlFlowNode for Subscript | provenance |  |
+| http_server.py:26:34:26:47 | ControlFlowNode for Subscript | http_server.py:26:19:26:47 | ControlFlowNode for BinaryExpr | provenance |  |
+| http_server.py:27:13:27:22 | ControlFlowNode for Tuple | http_server.py:27:18:27:22 | ControlFlowNode for value | provenance |  |
+| http_server.py:27:13:27:22 | ControlFlowNode for Tuple [Tuple element at index 1] | http_server.py:27:18:27:22 | ControlFlowNode for value | provenance |  |
+| http_server.py:27:13:27:22 | IterableElement | http_server.py:27:13:27:22 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| http_server.py:27:18:27:22 | ControlFlowNode for value | http_server.py:29:27:29:31 | ControlFlowNode for value | provenance |  |
+| http_server.py:31:16:31:19 | ControlFlowNode for self | http_server.py:33:9:33:16 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| http_server.py:31:16:31:19 | ControlFlowNode for self | http_server.py:33:9:33:16 | IterableElement | provenance | AdditionalTaintStep |
+| http_server.py:31:16:31:19 | ControlFlowNode for self | http_server.py:33:12:33:16 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| http_server.py:33:9:33:16 | ControlFlowNode for Tuple | http_server.py:33:12:33:16 | ControlFlowNode for query | provenance |  |
+| http_server.py:33:9:33:16 | ControlFlowNode for Tuple [Tuple element at index 1] | http_server.py:33:12:33:16 | ControlFlowNode for query | provenance |  |
+| http_server.py:33:9:33:16 | IterableElement | http_server.py:33:9:33:16 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| http_server.py:33:12:33:16 | ControlFlowNode for query | http_server.py:34:43:34:47 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| http_server.py:34:43:34:47 | ControlFlowNode for query | http_server.py:34:33:34:47 | ControlFlowNode for BinaryExpr | provenance |  |
+nodes
+| django_upload.py:7:25:7:29 | ControlFlowNode for title | semmle.label | ControlFlowNode for title |
+| django_upload.py:9:15:9:100 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| django_upload.py:9:67:9:100 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| django_upload.py:9:78:9:99 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| django_upload.py:9:95:9:99 | ControlFlowNode for title | semmle.label | ControlFlowNode for title |
+| django_upload.py:13:12:13:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| django_upload.py:14:5:14:8 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| django_upload.py:14:12:14:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| django_upload.py:14:12:14:42 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| django_upload.py:15:25:15:28 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| django_upload.py:19:17:19:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| django_upload.py:20:5:20:5 | ControlFlowNode for f | semmle.label | ControlFlowNode for f |
+| django_upload.py:21:5:21:9 | ControlFlowNode for title | semmle.label | ControlFlowNode for title |
+| django_upload.py:21:13:21:24 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| django_upload.py:21:13:21:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| django_upload.py:22:15:22:47 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| http_server.py:9:16:9:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| http_server.py:11:9:11:19 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| http_server.py:11:9:11:19 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| http_server.py:11:9:11:19 | IterableElement | semmle.label | IterableElement |
+| http_server.py:11:15:11:19 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| http_server.py:12:9:12:14 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server.py:12:18:15:9 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| http_server.py:13:13:14:91 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| http_server.py:13:14:13:152 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| http_server.py:13:14:13:152 | ControlFlowNode for Yield [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for Yield [List element, Tuple element at index 1] |
+| http_server.py:13:40:13:152 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server.py:13:61:13:151 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server.py:13:70:13:150 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server.py:13:70:13:150 | ControlFlowNode for Attribute() [List element] | semmle.label | ControlFlowNode for Attribute() [List element] |
+| http_server.py:13:145:13:149 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| http_server.py:17:28:17:57 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| http_server.py:17:42:17:47 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server.py:17:42:17:57 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| http_server.py:18:37:18:66 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| http_server.py:18:51:18:56 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server.py:18:51:18:66 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| http_server.py:22:17:22:20 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| http_server.py:24:9:24:13 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| http_server.py:24:17:24:48 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server.py:24:39:24:47 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| http_server.py:25:9:25:14 | ControlFlowNode for params | semmle.label | ControlFlowNode for params |
+| http_server.py:25:9:25:14 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server.py:25:18:25:52 | ControlFlowNode for dict() | semmle.label | ControlFlowNode for dict() |
+| http_server.py:25:18:25:52 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| http_server.py:25:23:25:51 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server.py:26:19:26:47 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| http_server.py:26:34:26:39 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server.py:26:34:26:47 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| http_server.py:27:13:27:22 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| http_server.py:27:13:27:22 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| http_server.py:27:13:27:22 | IterableElement | semmle.label | IterableElement |
+| http_server.py:27:18:27:22 | ControlFlowNode for value | semmle.label | ControlFlowNode for value |
+| http_server.py:29:27:29:31 | ControlFlowNode for value | semmle.label | ControlFlowNode for value |
+| http_server.py:31:16:31:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| http_server.py:33:9:33:16 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| http_server.py:33:9:33:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| http_server.py:33:9:33:16 | IterableElement | semmle.label | IterableElement |
+| http_server.py:33:12:33:16 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| http_server.py:34:33:34:47 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| http_server.py:34:43:34:47 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+subpaths
