@@ -1,0 +1,175 @@
+# Models for the http4k Kotlin HTTP toolkit core module (`org.http4k:http4k-core`).
+# https://github.com/http4k/http4k
+#
+# Signatures were verified against the compiled http4k-core 5.13.0.0 and 6.58.0.0 jars.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      # Request (and HTTP client response) data.
+      - ["org.http4k.core", "HttpMessage", True, "bodyString", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.core", "HttpMessage", True, "getBody", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.core", "HttpMessage", True, "header", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.core", "HttpMessage", True, "headerValues", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.core", "Request", True, "getUri", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.core", "Request", True, "queries", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.core", "Request", True, "query", "(String)", "", "ReturnValue", "remote", "manual"]
+      # Kotlin extension functions `Request.form(name)` and `Request.cookie(name)`.
+      - ["org.http4k.core.body", "FormBodyKt", False, "form", "(Request,String)", "", "ReturnValue", "remote", "manual"]
+      - [
+          "org.http4k.core.cookie",
+          "CookieExtensionsKt",
+          False,
+          "cookie",
+          "(Request,String)",
+          "",
+          "ReturnValue",
+          "remote",
+          "manual"
+        ]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      # `Response.body(...)` writes the HTTP response body. http4k responses are not
+      # HTML-encoded and the content type cannot be checked by a data extension.
+      - ["org.http4k.core", "Response", True, "body", "(Body)", "", "Argument[0]", "html-injection", "manual"]
+      - [
+          "org.http4k.core",
+          "Response",
+          True,
+          "body",
+          "(InputStream,Long)",
+          "",
+          "Argument[0]",
+          "html-injection",
+          "manual"
+        ]
+      - ["org.http4k.core", "Response", True, "body", "(String)", "", "Argument[0]", "html-injection", "manual"]
+      # Response header values. http4k only strips CR/LF from header values from
+      # version 6.49.0.0, so `response-splitting` applies to earlier versions.
+      # `url-redirection` covers `Response(Status.FOUND).header("Location", value)`;
+      # the header name cannot be constrained by a data extension.
+      - [
+          "org.http4k.core",
+          "Response",
+          True,
+          "header",
+          "(String,String)",
+          "",
+          "Argument[1]",
+          "response-splitting",
+          "manual"
+        ]
+      - [
+          "org.http4k.core",
+          "Response",
+          True,
+          "header",
+          "(String,String)",
+          "",
+          "Argument[1]",
+          "url-redirection",
+          "manual"
+        ]
+      - [
+          "org.http4k.core",
+          "Response",
+          True,
+          "replaceHeader",
+          "(String,String)",
+          "",
+          "Argument[1]",
+          "response-splitting",
+          "manual"
+        ]
+      - [
+          "org.http4k.core",
+          "Response",
+          True,
+          "replaceHeader",
+          "(String,String)",
+          "",
+          "Argument[1]",
+          "url-redirection",
+          "manual"
+        ]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.http4k.core", "Body", True, "getPayload", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Body", True, "getStream", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Body", True, "getText", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - [
+          "org.http4k.core",
+          "Body",
+          False,
+          "create",
+          "(InputStream,Long)",
+          "",
+          "Argument[0]",
+          "ReturnValue",
+          "taint",
+          "manual"
+        ]
+      - ["org.http4k.core", "Body", False, "create", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - [
+          "org.http4k.core",
+          "Body$Companion",
+          False,
+          "create",
+          "(InputStream,Long)",
+          "",
+          "Argument[0]",
+          "ReturnValue",
+          "taint",
+          "manual"
+        ]
+      - [
+          "org.http4k.core",
+          "Body$Companion",
+          False,
+          "create",
+          "(String)",
+          "",
+          "Argument[0]",
+          "ReturnValue",
+          "taint",
+          "manual"
+        ]
+      - ["org.http4k.core", "Uri", False, "getAuthority", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "getFragment", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "getHost", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "getPath", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "getQuery", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "getScheme", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "getUserInfo", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "toString", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - [
+          "org.http4k.core",
+          "UriKt",
+          False,
+          "queryParametersEncoded",
+          "(Uri)",
+          "",
+          "Argument[0]",
+          "ReturnValue",
+          "taint",
+          "manual"
+        ]
+      - [
+          "org.http4k.core.cookie",
+          "Cookie",
+          False,
+          "getValue",
+          "()",
+          "",
+          "Argument[this]",
+          "ReturnValue",
+          "taint",
+          "manual"
+        ]

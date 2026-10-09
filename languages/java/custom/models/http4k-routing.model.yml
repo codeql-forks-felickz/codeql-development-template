@@ -1,0 +1,11 @@
+# Models for the http4k routing extensions (`org.http4k.routing`, shipped in `org.http4k:http4k-core`).
+#
+# `Request.path(name)` returns a path parameter. It is compiled into `RoutingKt`
+# in http4k 5.x and into `ExtensionsKt` in http4k 6.x.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.http4k.routing", "ExtensionsKt", False, "path", "(Request,String)", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.routing", "RoutingKt", False, "path", "(Request,String)", "", "ReturnValue", "remote", "manual"]

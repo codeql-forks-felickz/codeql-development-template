@@ -1,0 +1,81 @@
+#select
+| Http4kRoutes.kt:24:28:24:67 | "..." | Http4kRoutes.kt:22:18:22:34 | get(...) : Void | Http4kRoutes.kt:24:28:24:67 | "..." | This query depends on a $@. | Http4kRoutes.kt:22:18:22:34 | get(...) | user-provided value |
+| Http4kRoutes.kt:31:28:31:67 | "..." | Http4kRoutes.kt:29:18:29:46 | invoke(...) : Void | Http4kRoutes.kt:31:28:31:67 | "..." | This query depends on a $@. | Http4kRoutes.kt:29:18:29:46 | invoke(...) | user-provided value |
+| Http4kRoutes.kt:38:28:38:67 | "..." | Http4kRoutes.kt:36:18:36:62 | extract(...) : Void | Http4kRoutes.kt:38:28:38:67 | "..." | This query depends on a $@. | Http4kRoutes.kt:36:18:36:62 | extract(...) | user-provided value |
+| Http4kRoutes.kt:45:28:45:70 | "..." | Http4kRoutes.kt:43:18:43:44 | header(...) : String | Http4kRoutes.kt:45:28:45:70 | "..." | This query depends on a $@. | Http4kRoutes.kt:43:18:43:44 | header(...) | user-provided value |
+| Http4kRoutes.kt:52:28:52:70 | "..." | Http4kRoutes.kt:50:18:50:50 | headerValues(...) : List | Http4kRoutes.kt:52:28:52:70 | "..." | This query depends on a $@. | Http4kRoutes.kt:50:18:50:50 | headerValues(...) | user-provided value |
+| Http4kRoutes.kt:59:28:59:70 | "..." | Http4kRoutes.kt:57:18:57:38 | queries(...) : List | Http4kRoutes.kt:59:28:59:70 | "..." | This query depends on a $@. | Http4kRoutes.kt:57:18:57:38 | queries(...) | user-provided value |
+| Http4kRoutes.kt:66:28:66:70 | "..." | Http4kRoutes.kt:64:18:64:28 | getUri(...) : Uri | Http4kRoutes.kt:66:28:66:70 | "..." | This query depends on a $@. | Http4kRoutes.kt:64:18:64:28 | getUri(...) | user-provided value |
+| Http4kRoutes.kt:73:28:73:70 | "..." | Http4kRoutes.kt:71:18:71:28 | getUri(...) : Uri | Http4kRoutes.kt:73:28:73:70 | "..." | This query depends on a $@. | Http4kRoutes.kt:71:18:71:28 | getUri(...) | user-provided value |
+| Http4kRoutes.kt:80:28:80:70 | "..." | Http4kRoutes.kt:78:18:78:35 | form(...) : String | Http4kRoutes.kt:80:28:80:70 | "..." | This query depends on a $@. | Http4kRoutes.kt:78:18:78:35 | form(...) | user-provided value |
+| Http4kRoutes.kt:87:28:87:70 | "..." | Http4kRoutes.kt:85:18:85:42 | cookie(...) : Cookie | Http4kRoutes.kt:87:28:87:70 | "..." | This query depends on a $@. | Http4kRoutes.kt:85:18:85:42 | cookie(...) | user-provided value |
+| Http4kRoutes.kt:94:28:94:70 | "..." | Http4kRoutes.kt:92:18:92:35 | path(...) : String | Http4kRoutes.kt:94:28:94:70 | "..." | This query depends on a $@. | Http4kRoutes.kt:92:18:92:35 | path(...) | user-provided value |
+edges
+| Http4kRoutes.kt:22:18:22:34 | get(...) : Void | Http4kRoutes.kt:24:28:24:67 | "..." | provenance | Src:MaD:9 Sink:MaD:1 |
+| Http4kRoutes.kt:29:18:29:46 | invoke(...) : Void | Http4kRoutes.kt:31:28:31:67 | "..." | provenance | Src:MaD:10 Sink:MaD:1 |
+| Http4kRoutes.kt:36:18:36:62 | extract(...) : Void | Http4kRoutes.kt:38:28:38:67 | "..." | provenance | Src:MaD:8 Sink:MaD:1 |
+| Http4kRoutes.kt:43:18:43:44 | header(...) : String | Http4kRoutes.kt:45:28:45:70 | "..." | provenance | Src:MaD:4 Sink:MaD:1 |
+| Http4kRoutes.kt:50:18:50:50 | headerValues(...) : List | Http4kRoutes.kt:50:18:50:53 | get(...) : String | provenance | Src:MaD:5 MaD:12 |
+| Http4kRoutes.kt:50:18:50:53 | get(...) : String | Http4kRoutes.kt:52:28:52:70 | "..." | provenance | Sink:MaD:1 |
+| Http4kRoutes.kt:57:18:57:38 | queries(...) : List | Http4kRoutes.kt:57:18:57:41 | get(...) : String | provenance | Src:MaD:7 MaD:12 |
+| Http4kRoutes.kt:57:18:57:41 | get(...) : String | Http4kRoutes.kt:59:28:59:70 | "..." | provenance | Sink:MaD:1 |
+| Http4kRoutes.kt:64:18:64:28 | getUri(...) : Uri | Http4kRoutes.kt:64:18:64:34 | getQuery(...) : String | provenance | Src:MaD:6 MaD:15 |
+| Http4kRoutes.kt:64:18:64:34 | getQuery(...) : String | Http4kRoutes.kt:64:18:64:56 | substringAfter$default(...) : String | provenance | MaD:13 |
+| Http4kRoutes.kt:64:18:64:56 | substringAfter$default(...) : String | Http4kRoutes.kt:66:28:66:70 | "..." | provenance | Sink:MaD:1 |
+| Http4kRoutes.kt:71:18:71:28 | getUri(...) : Uri | Http4kRoutes.kt:71:18:71:53 | queryParametersEncoded(...) : Uri | provenance | Src:MaD:6 MaD:16 |
+| Http4kRoutes.kt:71:18:71:53 | queryParametersEncoded(...) : Uri | Http4kRoutes.kt:71:18:71:59 | getQuery(...) : String | provenance | MaD:15 |
+| Http4kRoutes.kt:71:18:71:59 | getQuery(...) : String | Http4kRoutes.kt:73:28:73:70 | "..." | provenance | Sink:MaD:1 |
+| Http4kRoutes.kt:78:18:78:35 | form(...) : String | Http4kRoutes.kt:80:28:80:70 | "..." | provenance | Src:MaD:2 Sink:MaD:1 |
+| Http4kRoutes.kt:85:18:85:42 | <implicit cast> : Cookie | Http4kRoutes.kt:85:18:85:49 | getValue(...) : String | provenance | MaD:14 |
+| Http4kRoutes.kt:85:18:85:42 | cookie(...) : Cookie | Http4kRoutes.kt:85:18:85:42 | <implicit cast> : Cookie | provenance | Src:MaD:3  |
+| Http4kRoutes.kt:85:18:85:49 | getValue(...) : String | Http4kRoutes.kt:87:28:87:70 | "..." | provenance | Sink:MaD:1 |
+| Http4kRoutes.kt:92:18:92:35 | path(...) : String | Http4kRoutes.kt:94:28:94:70 | "..." | provenance | Src:MaD:11 Sink:MaD:1 |
+models
+| 1 | Sink: java.sql; Statement; true; executeQuery; ; ; Argument[0]; sql-injection; manual |
+| 2 | Source: org.http4k.core.body; FormBodyKt; false; form; (Request,String); ; ReturnValue; remote; manual |
+| 3 | Source: org.http4k.core.cookie; CookieExtensionsKt; false; cookie; (Request,String); ; ReturnValue; remote; manual |
+| 4 | Source: org.http4k.core; HttpMessage; true; header; (String); ; ReturnValue; remote; manual |
+| 5 | Source: org.http4k.core; HttpMessage; true; headerValues; (String); ; ReturnValue; remote; manual |
+| 6 | Source: org.http4k.core; Request; true; getUri; (); ; ReturnValue; remote; manual |
+| 7 | Source: org.http4k.core; Request; true; queries; (String); ; ReturnValue; remote; manual |
+| 8 | Source: org.http4k.lens; LensExtractor; true; extract; (Object); ; ReturnValue; remote; manual |
+| 9 | Source: org.http4k.lens; LensExtractor; true; get; (Object); ; ReturnValue; remote; manual |
+| 10 | Source: org.http4k.lens; LensExtractor; true; invoke; (Object); ; ReturnValue; remote; manual |
+| 11 | Source: org.http4k.routing; ExtensionsKt; false; path; (Request,String); ; ReturnValue; remote; manual |
+| 12 | Summary: java.util; List; true; get; (int); ; Argument[this].Element; ReturnValue; value; manual |
+| 13 | Summary: kotlin.text; StringsKt; false; substringAfter; (String,String,String); ; Argument[0]; ReturnValue; taint; df-generated |
+| 14 | Summary: org.http4k.core.cookie; Cookie; false; getValue; (); ; Argument[this]; ReturnValue; taint; manual |
+| 15 | Summary: org.http4k.core; Uri; false; getQuery; (); ; Argument[this]; ReturnValue; taint; manual |
+| 16 | Summary: org.http4k.core; UriKt; false; queryParametersEncoded; (Uri); ; Argument[0]; ReturnValue; taint; manual |
+nodes
+| Http4kRoutes.kt:22:18:22:34 | get(...) : Void | semmle.label | get(...) : Void |
+| Http4kRoutes.kt:24:28:24:67 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:29:18:29:46 | invoke(...) : Void | semmle.label | invoke(...) : Void |
+| Http4kRoutes.kt:31:28:31:67 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:36:18:36:62 | extract(...) : Void | semmle.label | extract(...) : Void |
+| Http4kRoutes.kt:38:28:38:67 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:43:18:43:44 | header(...) : String | semmle.label | header(...) : String |
+| Http4kRoutes.kt:45:28:45:70 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:50:18:50:50 | headerValues(...) : List | semmle.label | headerValues(...) : List |
+| Http4kRoutes.kt:50:18:50:53 | get(...) : String | semmle.label | get(...) : String |
+| Http4kRoutes.kt:52:28:52:70 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:57:18:57:38 | queries(...) : List | semmle.label | queries(...) : List |
+| Http4kRoutes.kt:57:18:57:41 | get(...) : String | semmle.label | get(...) : String |
+| Http4kRoutes.kt:59:28:59:70 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:64:18:64:28 | getUri(...) : Uri | semmle.label | getUri(...) : Uri |
+| Http4kRoutes.kt:64:18:64:34 | getQuery(...) : String | semmle.label | getQuery(...) : String |
+| Http4kRoutes.kt:64:18:64:56 | substringAfter$default(...) : String | semmle.label | substringAfter$default(...) : String |
+| Http4kRoutes.kt:66:28:66:70 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:71:18:71:28 | getUri(...) : Uri | semmle.label | getUri(...) : Uri |
+| Http4kRoutes.kt:71:18:71:53 | queryParametersEncoded(...) : Uri | semmle.label | queryParametersEncoded(...) : Uri |
+| Http4kRoutes.kt:71:18:71:59 | getQuery(...) : String | semmle.label | getQuery(...) : String |
+| Http4kRoutes.kt:73:28:73:70 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:78:18:78:35 | form(...) : String | semmle.label | form(...) : String |
+| Http4kRoutes.kt:80:28:80:70 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:85:18:85:42 | <implicit cast> : Cookie | semmle.label | <implicit cast> : Cookie |
+| Http4kRoutes.kt:85:18:85:42 | cookie(...) : Cookie | semmle.label | cookie(...) : Cookie |
+| Http4kRoutes.kt:85:18:85:49 | getValue(...) : String | semmle.label | getValue(...) : String |
+| Http4kRoutes.kt:87:28:87:70 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:92:18:92:35 | path(...) : String | semmle.label | path(...) : String |
+| Http4kRoutes.kt:94:28:94:70 | "..." | semmle.label | "..." |
+subpaths

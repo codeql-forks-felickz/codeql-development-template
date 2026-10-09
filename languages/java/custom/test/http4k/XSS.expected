@@ -1,0 +1,54 @@
+#select
+| Http4kRoutes.kt:111:15:111:53 | "..." | Http4kRoutes.kt:108:16:108:36 | query(...) : String | Http4kRoutes.kt:111:15:111:53 | "..." | Cross-site scripting vulnerability due to a $@. | Http4kRoutes.kt:108:16:108:36 | query(...) | user-provided value |
+| Http4kRoutes.kt:116:37:116:50 | "..." | Http4kRoutes.kt:115:16:115:35 | bodyString(...) : String | Http4kRoutes.kt:116:37:116:50 | "..." | Cross-site scripting vulnerability due to a $@. | Http4kRoutes.kt:115:16:115:35 | bodyString(...) | user-provided value |
+| Http4kRoutes.kt:121:37:121:50 | "..." | Http4kRoutes.kt:120:16:120:27 | getBody(...) : Body | Http4kRoutes.kt:121:37:121:50 | "..." | Cross-site scripting vulnerability due to a $@. | Http4kRoutes.kt:120:16:120:27 | getBody(...) | user-provided value |
+| Http4kRoutes.kt:126:37:126:50 | "..." | Http4kRoutes.kt:125:23:125:34 | getBody(...) : Body | Http4kRoutes.kt:126:37:126:50 | "..." | Cross-site scripting vulnerability due to a $@. | Http4kRoutes.kt:125:23:125:34 | getBody(...) | user-provided value |
+| Http4kRoutes.kt:131:37:131:56 | create(...) | Http4kRoutes.kt:130:16:130:68 | invoke(...) : Void | Http4kRoutes.kt:131:37:131:56 | create(...) | Cross-site scripting vulnerability due to a $@. | Http4kRoutes.kt:130:16:130:68 | invoke(...) | user-provided value |
+edges
+| Http4kRoutes.kt:108:16:108:36 | query(...) : String | Http4kRoutes.kt:111:15:111:53 | "..." | provenance | Src:MaD:5 Sink:MaD:2 |
+| Http4kRoutes.kt:115:16:115:35 | bodyString(...) : String | Http4kRoutes.kt:116:37:116:50 | "..." | provenance | Src:MaD:3 Sink:MaD:2 |
+| Http4kRoutes.kt:120:16:120:27 | getBody(...) : Body | Http4kRoutes.kt:120:16:120:34 | getStream(...) : InputStream | provenance | Src:MaD:4 MaD:13 |
+| Http4kRoutes.kt:120:16:120:34 | getStream(...) : InputStream | Http4kRoutes.kt:120:16:120:51 | bufferedReader$default(...) : BufferedReader | provenance | MaD:8 |
+| Http4kRoutes.kt:120:16:120:51 | bufferedReader$default(...) : BufferedReader | Http4kRoutes.kt:120:16:120:62 | readText(...) : String | provenance | MaD:9 |
+| Http4kRoutes.kt:120:16:120:62 | readText(...) : String | Http4kRoutes.kt:121:37:121:50 | "..." | provenance | Sink:MaD:2 |
+| Http4kRoutes.kt:125:16:125:51 | String(...) : String | Http4kRoutes.kt:126:37:126:50 | "..." | provenance | Sink:MaD:2 |
+| Http4kRoutes.kt:125:23:125:34 | getBody(...) : Body | Http4kRoutes.kt:125:23:125:42 | getPayload(...) : ByteBuffer | provenance | Src:MaD:4 MaD:12 |
+| Http4kRoutes.kt:125:23:125:42 | getPayload(...) : ByteBuffer | Http4kRoutes.kt:125:23:125:50 | array(...) : byte[] | provenance | MaD:7 |
+| Http4kRoutes.kt:125:23:125:50 | array(...) : byte[] | Http4kRoutes.kt:125:44:125:50 | <implicit not null> : byte[] | provenance |  |
+| Http4kRoutes.kt:125:44:125:50 | <implicit not null> : byte[] | Http4kRoutes.kt:125:16:125:51 | String(...) : String | provenance | MaD:10 |
+| Http4kRoutes.kt:130:16:130:68 | invoke(...) : Void | Http4kRoutes.kt:131:42:131:55 | "..." : String | provenance | Src:MaD:6  |
+| Http4kRoutes.kt:131:42:131:55 | "..." : String | Http4kRoutes.kt:131:37:131:56 | create(...) | provenance | MaD:11 Sink:MaD:1 |
+models
+| 1 | Sink: org.http4k.core; Response; true; body; (Body); ; Argument[0]; html-injection; manual |
+| 2 | Sink: org.http4k.core; Response; true; body; (String); ; Argument[0]; html-injection; manual |
+| 3 | Source: org.http4k.core; HttpMessage; true; bodyString; (); ; ReturnValue; remote; manual |
+| 4 | Source: org.http4k.core; HttpMessage; true; getBody; (); ; ReturnValue; remote; manual |
+| 5 | Source: org.http4k.core; Request; true; query; (String); ; ReturnValue; remote; manual |
+| 6 | Source: org.http4k.lens; LensExtractor; true; invoke; (Object); ; ReturnValue; remote; manual |
+| 7 | Summary: java.nio; ByteBuffer; false; array; (); ; Argument[this]; ReturnValue; taint; manual |
+| 8 | Summary: kotlin.io; ByteStreamsKt; false; bufferedReader; (InputStream,Charset); ; Argument[0]; ReturnValue; taint; df-generated |
+| 9 | Summary: kotlin.io; TextStreamsKt; false; readText; (Reader); ; Argument[0]; ReturnValue; taint; df-generated |
+| 10 | Summary: kotlin.text; StringsKt; false; String; (byte[]); ; Argument[0]; ReturnValue; taint; df-generated |
+| 11 | Summary: org.http4k.core; Body$Companion; false; create; (String); ; Argument[0]; ReturnValue; taint; manual |
+| 12 | Summary: org.http4k.core; Body; true; getPayload; (); ; Argument[this]; ReturnValue; taint; manual |
+| 13 | Summary: org.http4k.core; Body; true; getStream; (); ; Argument[this]; ReturnValue; taint; manual |
+nodes
+| Http4kRoutes.kt:108:16:108:36 | query(...) : String | semmle.label | query(...) : String |
+| Http4kRoutes.kt:111:15:111:53 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:115:16:115:35 | bodyString(...) : String | semmle.label | bodyString(...) : String |
+| Http4kRoutes.kt:116:37:116:50 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:120:16:120:27 | getBody(...) : Body | semmle.label | getBody(...) : Body |
+| Http4kRoutes.kt:120:16:120:34 | getStream(...) : InputStream | semmle.label | getStream(...) : InputStream |
+| Http4kRoutes.kt:120:16:120:51 | bufferedReader$default(...) : BufferedReader | semmle.label | bufferedReader$default(...) : BufferedReader |
+| Http4kRoutes.kt:120:16:120:62 | readText(...) : String | semmle.label | readText(...) : String |
+| Http4kRoutes.kt:121:37:121:50 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:125:16:125:51 | String(...) : String | semmle.label | String(...) : String |
+| Http4kRoutes.kt:125:23:125:34 | getBody(...) : Body | semmle.label | getBody(...) : Body |
+| Http4kRoutes.kt:125:23:125:42 | getPayload(...) : ByteBuffer | semmle.label | getPayload(...) : ByteBuffer |
+| Http4kRoutes.kt:125:23:125:50 | array(...) : byte[] | semmle.label | array(...) : byte[] |
+| Http4kRoutes.kt:125:44:125:50 | <implicit not null> : byte[] | semmle.label | <implicit not null> : byte[] |
+| Http4kRoutes.kt:126:37:126:50 | "..." | semmle.label | "..." |
+| Http4kRoutes.kt:130:16:130:68 | invoke(...) : Void | semmle.label | invoke(...) : Void |
+| Http4kRoutes.kt:131:37:131:56 | create(...) | semmle.label | create(...) |
+| Http4kRoutes.kt:131:42:131:55 | "..." : String | semmle.label | "..." : String |
+subpaths
