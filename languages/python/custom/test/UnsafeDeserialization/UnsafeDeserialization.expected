@@ -1,0 +1,70 @@
+edges
+| test.py:10:16:10:19 | ControlFlowNode for self | test.py:11:9:11:19 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| test.py:10:16:10:19 | ControlFlowNode for self | test.py:11:9:11:19 | IterableElement | provenance | AdditionalTaintStep |
+| test.py:10:16:10:19 | ControlFlowNode for self | test.py:11:15:11:19 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| test.py:11:9:11:19 | ControlFlowNode for Tuple | test.py:11:15:11:19 | ControlFlowNode for query | provenance |  |
+| test.py:11:9:11:19 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:11:15:11:19 | ControlFlowNode for query | provenance |  |
+| test.py:11:9:11:19 | IterableElement | test.py:11:9:11:19 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| test.py:11:15:11:19 | ControlFlowNode for query | test.py:13:92:13:96 | ControlFlowNode for query | provenance |  |
+| test.py:11:15:11:19 | ControlFlowNode for query | test.py:15:22:15:64 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| test.py:13:52:13:97 | ControlFlowNode for Attribute() [Attribute string] | test.py:13:52:13:106 | ControlFlowNode for Attribute() | provenance | re.Match.group |
+| test.py:13:52:13:106 | ControlFlowNode for Attribute() | test.py:13:22:13:107 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| test.py:13:92:13:96 | ControlFlowNode for query | test.py:13:52:13:97 | ControlFlowNode for Attribute() [Attribute string] | provenance | re.Match |
+| test.py:23:22:23:25 | ControlFlowNode for self | test.py:24:67:24:75 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| test.py:23:22:23:25 | ControlFlowNode for self | test.py:24:67:24:75 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| test.py:23:22:23:25 | ControlFlowNode for self [Return] [Attribute params] | test.py:27:9:27:12 | [post] ControlFlowNode for self [Attribute params] | provenance |  |
+| test.py:24:9:24:12 | [post] ControlFlowNode for self [Attribute params] | test.py:23:22:23:25 | ControlFlowNode for self [Return] [Attribute params] | provenance |  |
+| test.py:24:9:24:12 | [post] ControlFlowNode for self [Attribute params] | test.py:23:22:23:25 | ControlFlowNode for self [Return] [Attribute params] | provenance |  |
+| test.py:24:23:24:83 | ControlFlowNode for Attribute() | test.py:24:9:24:12 | [post] ControlFlowNode for self [Attribute params] | provenance |  |
+| test.py:24:23:24:83 | ControlFlowNode for Attribute() | test.py:24:9:24:12 | [post] ControlFlowNode for self [Attribute params] | provenance |  |
+| test.py:24:45:24:76 | ControlFlowNode for Attribute() | test.py:24:45:24:82 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| test.py:24:45:24:76 | ControlFlowNode for Attribute() | test.py:24:45:24:82 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| test.py:24:45:24:82 | ControlFlowNode for Attribute | test.py:24:23:24:83 | ControlFlowNode for Attribute() | provenance | MaD:115 |
+| test.py:24:45:24:82 | ControlFlowNode for Attribute | test.py:24:23:24:83 | ControlFlowNode for Attribute() | provenance | MaD:115 |
+| test.py:24:67:24:75 | ControlFlowNode for Attribute | test.py:24:45:24:76 | ControlFlowNode for Attribute() | provenance | MaD:116 |
+| test.py:24:67:24:75 | ControlFlowNode for Attribute | test.py:24:45:24:76 | ControlFlowNode for Attribute() | provenance | MaD:116 |
+| test.py:26:16:26:19 | ControlFlowNode for self | test.py:27:9:27:12 | ControlFlowNode for self | provenance |  |
+| test.py:27:9:27:12 | ControlFlowNode for self | test.py:23:22:23:25 | ControlFlowNode for self | provenance |  |
+| test.py:27:9:27:12 | ControlFlowNode for self | test.py:27:9:27:12 | [post] ControlFlowNode for self [Attribute params] | provenance | AdditionalTaintStep |
+| test.py:27:9:27:12 | [post] ControlFlowNode for self [Attribute params] | test.py:29:39:29:42 | ControlFlowNode for self [Attribute params] | provenance |  |
+| test.py:29:39:29:42 | ControlFlowNode for self [Attribute params] | test.py:29:39:29:49 | ControlFlowNode for Attribute | provenance |  |
+| test.py:29:39:29:49 | ControlFlowNode for Attribute | test.py:29:22:29:63 | ControlFlowNode for Attribute() | provenance |  |
+| test.py:29:39:29:49 | ControlFlowNode for Attribute | test.py:29:22:29:63 | ControlFlowNode for Attribute() | provenance | Decoding-Base64 |
+nodes
+| test.py:10:16:10:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| test.py:11:9:11:19 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| test.py:11:9:11:19 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:11:9:11:19 | IterableElement | semmle.label | IterableElement |
+| test.py:11:15:11:19 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:13:22:13:107 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:13:52:13:97 | ControlFlowNode for Attribute() [Attribute string] | semmle.label | ControlFlowNode for Attribute() [Attribute string] |
+| test.py:13:52:13:106 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:13:92:13:96 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:15:22:15:64 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:23:22:23:25 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| test.py:23:22:23:25 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| test.py:23:22:23:25 | ControlFlowNode for self [Return] [Attribute params] | semmle.label | ControlFlowNode for self [Return] [Attribute params] |
+| test.py:23:22:23:25 | ControlFlowNode for self [Return] [Attribute params] | semmle.label | ControlFlowNode for self [Return] [Attribute params] |
+| test.py:24:9:24:12 | [post] ControlFlowNode for self [Attribute params] | semmle.label | [post] ControlFlowNode for self [Attribute params] |
+| test.py:24:9:24:12 | [post] ControlFlowNode for self [Attribute params] | semmle.label | [post] ControlFlowNode for self [Attribute params] |
+| test.py:24:23:24:83 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:24:23:24:83 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:24:45:24:76 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:24:45:24:76 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:24:45:24:82 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:24:45:24:82 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:24:67:24:75 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:24:67:24:75 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:26:16:26:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| test.py:27:9:27:12 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| test.py:27:9:27:12 | [post] ControlFlowNode for self [Attribute params] | semmle.label | [post] ControlFlowNode for self [Attribute params] |
+| test.py:29:22:29:63 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:29:39:29:42 | ControlFlowNode for self [Attribute params] | semmle.label | ControlFlowNode for self [Attribute params] |
+| test.py:29:39:29:49 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+subpaths
+| test.py:27:9:27:12 | ControlFlowNode for self | test.py:23:22:23:25 | ControlFlowNode for self | test.py:23:22:23:25 | ControlFlowNode for self [Return] [Attribute params] | test.py:27:9:27:12 | [post] ControlFlowNode for self [Attribute params] |
+#select
+| test.py:13:22:13:107 | ControlFlowNode for Attribute() | test.py:10:16:10:19 | ControlFlowNode for self | test.py:13:22:13:107 | ControlFlowNode for Attribute() | Unsafe deserialization depends on a $@. | test.py:10:16:10:19 | ControlFlowNode for self | user-provided value |
+| test.py:15:22:15:64 | ControlFlowNode for Attribute() | test.py:10:16:10:19 | ControlFlowNode for self | test.py:15:22:15:64 | ControlFlowNode for Attribute() | Unsafe deserialization depends on a $@. | test.py:10:16:10:19 | ControlFlowNode for self | user-provided value |
+| test.py:29:22:29:63 | ControlFlowNode for Attribute() | test.py:23:22:23:25 | ControlFlowNode for self | test.py:29:22:29:63 | ControlFlowNode for Attribute() | Unsafe deserialization depends on a $@. | test.py:23:22:23:25 | ControlFlowNode for self | user-provided value |
+| test.py:29:22:29:63 | ControlFlowNode for Attribute() | test.py:26:16:26:19 | ControlFlowNode for self | test.py:29:22:29:63 | ControlFlowNode for Attribute() | Unsafe deserialization depends on a $@. | test.py:26:16:26:19 | ControlFlowNode for self | user-provided value |
