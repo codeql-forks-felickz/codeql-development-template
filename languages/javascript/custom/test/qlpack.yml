@@ -1,5 +1,9 @@
 name: languages-javascript-custom-test
 version: 0.0.2
 dependencies:
+  codeql/javascript-queries: "*"
+  languages-javascript-custom-models: ${workspace}
   languages-javascript-custom-src: ${workspace}
 extractor: javascript
+dataExtensions:
+  - "threat-models.ext.yml"

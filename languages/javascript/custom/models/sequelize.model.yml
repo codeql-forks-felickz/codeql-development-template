@@ -1,0 +1,15 @@
+extensions:
+  # Rows read through Sequelize model finders are stored data. They are modeled
+  # with the `database` threat model kind (part of the `local` group), so they are
+  # only used when "Remote and local sources" (or `--threat-model=local`) is enabled.
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      - ["sequelize.Model", "Member[find,findById,findByPk,findByPrimary,findOne].ReturnValue.Awaited", "database"]
+      - ["sequelize.Model", "Member[all,findAll].ReturnValue.Awaited.ArrayElement", "database"]
+      - [
+          "sequelize.Model",
+          "Member[findAndCount,findAndCountAll].ReturnValue.Awaited.Member[rows].ArrayElement",
+          "database"
+        ]
