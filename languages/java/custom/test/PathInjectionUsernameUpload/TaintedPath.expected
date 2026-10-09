@@ -1,0 +1,75 @@
+#select
+| JakartaServletUpload.java:12:20:12:54 | ... + ... | JakartaServletUpload.java:9:27:9:58 | getParameter(...) : String | JakartaServletUpload.java:12:20:12:54 | ... + ... | This path depends on a $@. | JakartaServletUpload.java:9:27:9:58 | getParameter(...) | user-provided value |
+| JavaxServletUpload.java:12:20:12:54 | ... + ... | JavaxServletUpload.java:9:27:9:58 | getParameter(...) : String | JavaxServletUpload.java:12:20:12:54 | ... + ... | This path depends on a $@. | JavaxServletUpload.java:9:27:9:58 | getParameter(...) | user-provided value |
+| ProfileController.java:25:25:25:38 | new File(...) | ProfileController.java:18:13:18:78 | username : String | ProfileController.java:25:25:25:38 | new File(...) | This path depends on a $@. | ProfileController.java:18:13:18:78 | username | user-provided value |
+| ProfileController.java:28:25:28:28 | dest | ProfileController.java:18:13:18:78 | username : String | ProfileController.java:28:25:28:28 | dest | This path depends on a $@. | ProfileController.java:18:13:18:78 | username | user-provided value |
+| ProfileController.java:31:25:31:72 | new File(...) | ProfileController.java:18:13:18:78 | username : String | ProfileController.java:31:25:31:72 | new File(...) | This path depends on a $@. | ProfileController.java:18:13:18:78 | username | user-provided value |
+| ProfileController.java:34:25:34:63 | get(...) | ProfileController.java:18:13:18:78 | username : String | ProfileController.java:34:25:34:63 | get(...) | This path depends on a $@. | ProfileController.java:18:13:18:78 | username | user-provided value |
+| ProfileController.java:35:25:35:71 | resolve(...) | ProfileController.java:18:13:18:78 | username : String | ProfileController.java:35:25:35:71 | resolve(...) | This path depends on a $@. | ProfileController.java:18:13:18:78 | username | user-provided value |
+| ProfileController.java:38:30:38:74 | new File(...) | ProfileController.java:18:13:18:78 | username : String | ProfileController.java:38:30:38:74 | new File(...) | This path depends on a $@. | ProfileController.java:18:13:18:78 | username | user-provided value |
+| ProfileController.java:56:29:56:42 | new File(...) | ProfileController.java:45:13:45:78 | username : String | ProfileController.java:56:29:56:42 | new File(...) | This path depends on a $@. | ProfileController.java:45:13:45:78 | username | user-provided value |
+| ProfileController.java:56:29:56:42 | new File(...) | ProfileController.java:46:13:46:78 | file : MultipartFile | ProfileController.java:56:29:56:42 | new File(...) | This path depends on a $@. | ProfileController.java:46:13:46:78 | file | user-provided value |
+| ProfileController.java:56:29:56:42 | new File(...) | ProfileController.java:54:32:54:57 | getOriginalFilename(...) : String | ProfileController.java:56:29:56:42 | new File(...) | This path depends on a $@. | ProfileController.java:54:32:54:57 | getOriginalFilename(...) | user-provided value |
+edges
+| JakartaServletUpload.java:9:27:9:58 | getParameter(...) : String | JakartaServletUpload.java:12:20:12:54 | ... + ... | provenance | Src:MaD:6 Sink:MaD:1 |
+| JavaxServletUpload.java:9:27:9:58 | getParameter(...) : String | JavaxServletUpload.java:12:20:12:54 | ... + ... | provenance | Src:MaD:7 Sink:MaD:3 |
+| ProfileController.java:18:13:18:78 | username : String | ProfileController.java:25:34:25:37 | path : String | provenance |  |
+| ProfileController.java:18:13:18:78 | username : String | ProfileController.java:27:30:27:64 | ... + ... : String | provenance |  |
+| ProfileController.java:18:13:18:78 | username : String | ProfileController.java:31:25:31:72 | new File(...) | provenance | AdditionalTaintStep Sink:MaD:4 |
+| ProfileController.java:18:13:18:78 | username : String | ProfileController.java:34:46:34:62 | ... + ... : String | provenance |  |
+| ProfileController.java:18:13:18:78 | username : String | ProfileController.java:35:54:35:70 | ... + ... : String | provenance |  |
+| ProfileController.java:18:13:18:78 | username : String | ProfileController.java:38:39:38:73 | ... + ... : String | provenance |  |
+| ProfileController.java:25:34:25:37 | path : String | ProfileController.java:25:25:25:38 | new File(...) | provenance | MaD:9 Sink:MaD:4 |
+| ProfileController.java:27:21:27:65 | new File(...) : File | ProfileController.java:28:25:28:28 | dest | provenance | Sink:MaD:4 |
+| ProfileController.java:27:30:27:64 | ... + ... : String | ProfileController.java:27:21:27:65 | new File(...) : File | provenance | MaD:9 |
+| ProfileController.java:34:25:34:63 | new ..[] { .. } : String[] [[]] : String | ProfileController.java:34:25:34:63 | get(...) | provenance | MaD:12 Sink:MaD:5 |
+| ProfileController.java:34:46:34:62 | ... + ... : String | ProfileController.java:34:25:34:63 | new ..[] { .. } : String[] [[]] : String | provenance |  |
+| ProfileController.java:35:54:35:70 | ... + ... : String | ProfileController.java:35:25:35:71 | resolve(...) | provenance | MaD:11 Sink:MaD:5 |
+| ProfileController.java:38:39:38:73 | ... + ... : String | ProfileController.java:38:30:38:74 | new File(...) | provenance | MaD:9 Sink:MaD:2 |
+| ProfileController.java:45:13:45:78 | username : String | ProfileController.java:56:38:56:41 | path : String | provenance |  |
+| ProfileController.java:46:13:46:78 | file : MultipartFile | ProfileController.java:54:32:54:35 | file : MultipartFile | provenance |  |
+| ProfileController.java:54:32:54:35 | file : MultipartFile | ProfileController.java:54:32:54:57 | getOriginalFilename(...) : String | provenance | MaD:13 |
+| ProfileController.java:54:32:54:57 | getOriginalFilename(...) : String | ProfileController.java:54:32:54:112 | substring(...) : String | provenance | Src:MaD:8 MaD:10 |
+| ProfileController.java:54:32:54:112 | substring(...) : String | ProfileController.java:56:38:56:41 | path : String | provenance |  |
+| ProfileController.java:56:38:56:41 | path : String | ProfileController.java:56:29:56:42 | new File(...) | provenance | MaD:9 Sink:MaD:4 |
+models
+| 1 | Sink: jakarta.servlet.http; Part; true; write; (String); ; Argument[0]; path-injection; manual |
+| 2 | Sink: java.io; FileOutputStream; false; FileOutputStream; ; ; Argument[0]; path-injection; manual |
+| 3 | Sink: javax.servlet.http; Part; true; write; (String); ; Argument[0]; path-injection; manual |
+| 4 | Sink: org.springframework.web.multipart; MultipartFile; true; transferTo; (File); ; Argument[0]; path-injection; manual |
+| 5 | Sink: org.springframework.web.multipart; MultipartFile; true; transferTo; (Path); ; Argument[0]; path-injection; manual |
+| 6 | Source: jakarta.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 7 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 8 | Source: org.springframework.web.multipart; MultipartFile; true; getOriginalFilename; (); ; ReturnValue; remote; manual |
+| 9 | Summary: java.io; File; false; File; ; ; Argument[0]; Argument[this]; taint; manual |
+| 10 | Summary: java.lang; String; false; substring; ; ; Argument[this]; ReturnValue; taint; manual |
+| 11 | Summary: java.nio.file; Path; true; resolve; ; ; Argument[0]; ReturnValue; taint; manual |
+| 12 | Summary: java.nio.file; Paths; true; get; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+| 13 | Summary: org.springframework.web.multipart; MultipartFile; true; getOriginalFilename; ; ; Argument[this]; ReturnValue; taint; manual |
+nodes
+| JakartaServletUpload.java:9:27:9:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JakartaServletUpload.java:12:20:12:54 | ... + ... | semmle.label | ... + ... |
+| JavaxServletUpload.java:9:27:9:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JavaxServletUpload.java:12:20:12:54 | ... + ... | semmle.label | ... + ... |
+| ProfileController.java:18:13:18:78 | username : String | semmle.label | username : String |
+| ProfileController.java:25:25:25:38 | new File(...) | semmle.label | new File(...) |
+| ProfileController.java:25:34:25:37 | path : String | semmle.label | path : String |
+| ProfileController.java:27:21:27:65 | new File(...) : File | semmle.label | new File(...) : File |
+| ProfileController.java:27:30:27:64 | ... + ... : String | semmle.label | ... + ... : String |
+| ProfileController.java:28:25:28:28 | dest | semmle.label | dest |
+| ProfileController.java:31:25:31:72 | new File(...) | semmle.label | new File(...) |
+| ProfileController.java:34:25:34:63 | get(...) | semmle.label | get(...) |
+| ProfileController.java:34:25:34:63 | new ..[] { .. } : String[] [[]] : String | semmle.label | new ..[] { .. } : String[] [[]] : String |
+| ProfileController.java:34:46:34:62 | ... + ... : String | semmle.label | ... + ... : String |
+| ProfileController.java:35:25:35:71 | resolve(...) | semmle.label | resolve(...) |
+| ProfileController.java:35:54:35:70 | ... + ... : String | semmle.label | ... + ... : String |
+| ProfileController.java:38:30:38:74 | new File(...) | semmle.label | new File(...) |
+| ProfileController.java:38:39:38:73 | ... + ... : String | semmle.label | ... + ... : String |
+| ProfileController.java:45:13:45:78 | username : String | semmle.label | username : String |
+| ProfileController.java:46:13:46:78 | file : MultipartFile | semmle.label | file : MultipartFile |
+| ProfileController.java:54:32:54:35 | file : MultipartFile | semmle.label | file : MultipartFile |
+| ProfileController.java:54:32:54:57 | getOriginalFilename(...) : String | semmle.label | getOriginalFilename(...) : String |
+| ProfileController.java:54:32:54:112 | substring(...) : String | semmle.label | substring(...) : String |
+| ProfileController.java:56:29:56:42 | new File(...) | semmle.label | new File(...) |
+| ProfileController.java:56:38:56:41 | path : String | semmle.label | path : String |
+subpaths

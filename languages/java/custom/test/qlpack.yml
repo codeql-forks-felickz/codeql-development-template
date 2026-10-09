@@ -1,5 +1,7 @@
 name: languages-java-custom-test
 version: 0.0.2
 dependencies:
+  codeql/java-queries: "*"
+  languages-java-custom-models: ${workspace}
   languages-java-custom-src: ${workspace}
 extractor: java
