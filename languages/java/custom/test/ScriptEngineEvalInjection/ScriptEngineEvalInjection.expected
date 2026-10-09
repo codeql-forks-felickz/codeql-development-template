@@ -1,0 +1,23 @@
+WARNING: unused method 'getCall' (ScriptEngineEvalInjection.ql:45,14-21)
+edges
+| ScriptEngineEvalInjection.java:15:30:15:63 | getParameter(...) : String | ScriptEngineEvalInjection.java:16:24:16:25 | js | provenance | Src:MaD:48695  |
+| ScriptEngineEvalInjection.java:26:27:26:91 | new StringReader(...) : StringReader | ScriptEngineEvalInjection.java:27:24:27:29 | reader | provenance |  |
+| ScriptEngineEvalInjection.java:26:44:26:90 | ... + ... : String | ScriptEngineEvalInjection.java:26:27:26:91 | new StringReader(...) : StringReader | provenance | MaD:46546 |
+| ScriptEngineEvalInjection.java:26:57:26:90 | getParameter(...) : String | ScriptEngineEvalInjection.java:26:44:26:90 | ... + ... : String | provenance | Src:MaD:48695  |
+| ScriptEngineEvalInjection.java:32:30:32:63 | getParameter(...) : String | ScriptEngineEvalInjection.java:33:35:33:36 | js | provenance | Src:MaD:48695  |
+nodes
+| ScriptEngineEvalInjection.java:15:30:15:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ScriptEngineEvalInjection.java:16:24:16:25 | js | semmle.label | js |
+| ScriptEngineEvalInjection.java:21:24:21:52 | getHeader(...) | semmle.label | getHeader(...) |
+| ScriptEngineEvalInjection.java:26:27:26:91 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| ScriptEngineEvalInjection.java:26:44:26:90 | ... + ... : String | semmle.label | ... + ... : String |
+| ScriptEngineEvalInjection.java:26:57:26:90 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ScriptEngineEvalInjection.java:27:24:27:29 | reader | semmle.label | reader |
+| ScriptEngineEvalInjection.java:32:30:32:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ScriptEngineEvalInjection.java:33:35:33:36 | js | semmle.label | js |
+subpaths
+#select
+| ScriptEngineEvalInjection.java:16:24:16:25 | js | ScriptEngineEvalInjection.java:15:30:15:63 | getParameter(...) : String | ScriptEngineEvalInjection.java:16:24:16:25 | js | Script source evaluated by a ScriptEngine depends on a $@. | ScriptEngineEvalInjection.java:15:30:15:63 | getParameter(...) | user-provided value |
+| ScriptEngineEvalInjection.java:21:24:21:52 | getHeader(...) | ScriptEngineEvalInjection.java:21:24:21:52 | getHeader(...) | ScriptEngineEvalInjection.java:21:24:21:52 | getHeader(...) | Script source evaluated by a ScriptEngine depends on a $@. | ScriptEngineEvalInjection.java:21:24:21:52 | getHeader(...) | user-provided value |
+| ScriptEngineEvalInjection.java:27:24:27:29 | reader | ScriptEngineEvalInjection.java:26:57:26:90 | getParameter(...) : String | ScriptEngineEvalInjection.java:27:24:27:29 | reader | Script source evaluated by a ScriptEngine depends on a $@. | ScriptEngineEvalInjection.java:26:57:26:90 | getParameter(...) | user-provided value |
+| ScriptEngineEvalInjection.java:33:35:33:36 | js | ScriptEngineEvalInjection.java:32:30:32:63 | getParameter(...) : String | ScriptEngineEvalInjection.java:33:35:33:36 | js | Script source evaluated by a ScriptEngine depends on a $@. | ScriptEngineEvalInjection.java:32:30:32:63 | getParameter(...) | user-provided value |
