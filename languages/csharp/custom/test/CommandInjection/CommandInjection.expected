@@ -1,0 +1,123 @@
+#select
+| CommandInjection.cs:22:55:22:73 | ... + ... | CommandInjection.cs:20:60:20:62 | req : CommandRequest | CommandInjection.cs:22:55:22:73 | ... + ... | This command line depends on a $@. | CommandInjection.cs:20:60:20:62 | req | user-provided value |
+| CommandInjection.cs:37:38:37:75 | object creation of type List<String> | CommandInjection.cs:35:70:35:72 | req : CommandRequest | CommandInjection.cs:37:38:37:75 | object creation of type List<String> | This command line depends on a $@. | CommandInjection.cs:35:70:35:72 | req | user-provided value |
+| CommandInjection.cs:77:59:77:77 | ... + ... | CommandInjection.cs:75:49:75:51 | req : CommandRequest | CommandInjection.cs:77:59:77:77 | ... + ... | This command line depends on a $@. | CommandInjection.cs:75:49:75:51 | req | user-provided value |
+| CommandInjection.cs:90:28:90:30 | access to parameter cmd | CommandInjection.cs:28:66:28:68 | req : CommandRequest | CommandInjection.cs:90:28:90:30 | access to parameter cmd | This command line depends on a $@. | CommandInjection.cs:28:66:28:68 | req | user-provided value |
+| CommandInjection.cs:90:28:90:30 | access to parameter cmd | WebForms.cs:111:61:111:79 | access to field txtClientExecutable : TextBox | CommandInjection.cs:90:28:90:30 | access to parameter cmd | This command line depends on a $@. | WebForms.cs:111:61:111:79 | access to field txtClientExecutable | user-provided value |
+edges
+| CommandInjection.cs:20:60:20:62 | req : CommandRequest | CommandInjection.cs:22:55:22:73 | ... + ... | provenance |  |
+| CommandInjection.cs:28:66:28:68 | req : CommandRequest | CommandInjection.cs:30:38:30:48 | access to property Command : String | provenance |  |
+| CommandInjection.cs:30:38:30:48 | access to property Command : String | CommandInjection.cs:86:54:86:56 | cmd : String | provenance |  |
+| CommandInjection.cs:35:70:35:72 | req : CommandRequest | CommandInjection.cs:37:63:37:73 | access to property Command : String | provenance |  |
+| CommandInjection.cs:37:63:37:73 | access to property Command : String | CommandInjection.cs:37:38:37:75 | object creation of type List<String> | provenance | MaD:649 |
+| CommandInjection.cs:75:49:75:51 | req : CommandRequest | CommandInjection.cs:77:59:77:77 | ... + ... | provenance |  |
+| CommandInjection.cs:86:54:86:56 | cmd : String | CommandInjection.cs:90:28:90:30 | access to parameter cmd | provenance |  |
+| WebForms.cs:36:23:36:25 | this : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:40:24:40:32 | this access : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:40:24:40:32 | access to field _settings : IDictionary<String,String> [element, property Value] : String | WebForms.cs:40:24:40:37 | access to indexer : String | provenance | MaD:654 |
+| WebForms.cs:40:24:40:32 | this access : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:40:24:40:32 | access to field _settings : IDictionary<String,String> [element, property Value] : String | provenance |  |
+| WebForms.cs:44:44:44:48 | value : String | WebForms.cs:44:80:44:84 | access to parameter value : String | provenance |  |
+| WebForms.cs:44:53:44:61 | [post] access to field _settings : Dictionary<T,T> [element, property Value] : String | WebForms.cs:44:53:44:61 | [post] this access : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:44:53:44:61 | [post] access to field _settings : IDictionary<T,T> [element, property Value] : String | WebForms.cs:44:53:44:61 | [post] this access : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:44:53:44:61 | [post] this access : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:44:21:44:23 | this [Return] : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:44:80:44:84 | access to parameter value : String | WebForms.cs:44:53:44:61 | [post] access to field _settings : Dictionary<T,T> [element, property Value] : String | provenance | MaD:658 |
+| WebForms.cs:44:80:44:84 | access to parameter value : String | WebForms.cs:44:53:44:61 | [post] access to field _settings : IDictionary<T,T> [element, property Value] : String | provenance | MaD:658 |
+| WebForms.cs:58:43:58:52 | configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:58:71:58:80 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:58:57:58:67 | [post] this access : MySqlDbProvider [field _clientExec] : String | WebForms.cs:58:16:58:30 | this [Return] : MySqlDbProvider [field _clientExec] : String | provenance |  |
+| WebForms.cs:58:71:58:80 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:36:23:36:25 | this : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:58:71:58:80 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:58:71:58:113 | call to method Get : String | provenance | MaD:654 |
+| WebForms.cs:58:71:58:113 | call to method Get : String | WebForms.cs:58:57:58:67 | [post] this access : MySqlDbProvider [field _clientExec] : String | provenance |  |
+| WebForms.cs:60:21:60:34 | this : MySqlDbProvider [field _clientExec] : String | WebForms.cs:60:75:60:85 | this access : MySqlDbProvider [field _clientExec] : String | provenance |  |
+| WebForms.cs:60:75:60:85 | access to field _clientExec : String | CommandInjection.cs:86:54:86:56 | cmd : String | provenance |  |
+| WebForms.cs:60:75:60:85 | this access : MySqlDbProvider [field _clientExec] : String | WebForms.cs:60:75:60:85 | access to field _clientExec : String | provenance |  |
+| WebForms.cs:67:44:67:53 | configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:67:72:67:81 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:67:58:67:68 | [post] this access : SqliteDbProvider [field _clientExec] : String | WebForms.cs:67:16:67:31 | this [Return] : SqliteDbProvider [field _clientExec] : String | provenance |  |
+| WebForms.cs:67:72:67:81 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:36:23:36:25 | this : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:67:72:67:81 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:67:72:67:114 | call to method Get : String | provenance | MaD:654 |
+| WebForms.cs:67:72:67:114 | call to method Get : String | WebForms.cs:67:58:67:68 | [post] this access : SqliteDbProvider [field _clientExec] : String | provenance |  |
+| WebForms.cs:69:21:69:34 | this : SqliteDbProvider [field _clientExec] : String | WebForms.cs:69:75:69:85 | this access : SqliteDbProvider [field _clientExec] : String | provenance |  |
+| WebForms.cs:69:75:69:85 | access to field _clientExec : String | CommandInjection.cs:86:54:86:56 | cmd : String | provenance |  |
+| WebForms.cs:69:75:69:85 | this access : SqliteDbProvider [field _clientExec] : String | WebForms.cs:69:75:69:85 | access to field _clientExec : String | provenance |  |
+| WebForms.cs:74:53:74:62 | configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:81:48:81:57 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:74:53:74:62 | configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:83:49:83:58 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:81:48:81:57 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:58:43:58:52 | configFile : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:81:48:81:57 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:81:28:81:58 | object creation of type MySqlDbProvider : MySqlDbProvider [field _clientExec] : String | provenance | MaD:654 |
+| WebForms.cs:83:49:83:58 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:67:44:67:53 | configFile : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:83:49:83:58 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:83:28:83:59 | object creation of type SqliteDbProvider : SqliteDbProvider [field _clientExec] : String | provenance | MaD:654 |
+| WebForms.cs:101:30:101:39 | [post] access to local variable configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:102:67:102:76 | access to local variable configFile : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:102:13:102:38 | access to property CurrentDbProvider : MySqlDbProvider [field _clientExec] : String | WebForms.cs:103:13:103:38 | access to property CurrentDbProvider : MySqlDbProvider [field _clientExec] : String | provenance |  |
+| WebForms.cs:102:13:102:38 | access to property CurrentDbProvider : SqliteDbProvider [field _clientExec] : String | WebForms.cs:103:13:103:38 | access to property CurrentDbProvider : SqliteDbProvider [field _clientExec] : String | provenance |  |
+| WebForms.cs:102:42:102:77 | call to method Create : MySqlDbProvider [field _clientExec] : String | WebForms.cs:102:13:102:38 | access to property CurrentDbProvider : MySqlDbProvider [field _clientExec] : String | provenance |  |
+| WebForms.cs:102:42:102:77 | call to method Create : SqliteDbProvider [field _clientExec] : String | WebForms.cs:102:13:102:38 | access to property CurrentDbProvider : SqliteDbProvider [field _clientExec] : String | provenance |  |
+| WebForms.cs:102:67:102:76 | access to local variable configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:74:53:74:62 | configFile : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:102:67:102:76 | access to local variable configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:102:42:102:77 | call to method Create : MySqlDbProvider [field _clientExec] : String | provenance | MaD:654 |
+| WebForms.cs:102:67:102:76 | access to local variable configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:102:42:102:77 | call to method Create : SqliteDbProvider [field _clientExec] : String | provenance | MaD:654 |
+| WebForms.cs:103:13:103:38 | access to property CurrentDbProvider : MySqlDbProvider [field _clientExec] : String | WebForms.cs:60:21:60:34 | this : MySqlDbProvider [field _clientExec] : String | provenance |  |
+| WebForms.cs:103:13:103:38 | access to property CurrentDbProvider : SqliteDbProvider [field _clientExec] : String | WebForms.cs:69:21:69:34 | this : SqliteDbProvider [field _clientExec] : String | provenance |  |
+| WebForms.cs:106:50:106:59 | configFile [Return] : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:101:30:101:39 | [post] access to local variable configFile : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:111:17:111:26 | [post] access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:106:50:106:59 | configFile [Return] : ConfigFile [field _settings, element, property Value] : String | provenance |  |
+| WebForms.cs:111:61:111:79 | access to field txtClientExecutable : TextBox | WebForms.cs:111:61:111:84 | access to property Text : String | provenance | MaD:2252 |
+| WebForms.cs:111:61:111:84 | access to property Text : String | WebForms.cs:44:44:44:48 | value : String | provenance |  |
+| WebForms.cs:111:61:111:84 | access to property Text : String | WebForms.cs:111:17:111:26 | [post] access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | provenance | MaD:658 |
+nodes
+| CommandInjection.cs:20:60:20:62 | req : CommandRequest | semmle.label | req : CommandRequest |
+| CommandInjection.cs:22:55:22:73 | ... + ... | semmle.label | ... + ... |
+| CommandInjection.cs:28:66:28:68 | req : CommandRequest | semmle.label | req : CommandRequest |
+| CommandInjection.cs:30:38:30:48 | access to property Command : String | semmle.label | access to property Command : String |
+| CommandInjection.cs:35:70:35:72 | req : CommandRequest | semmle.label | req : CommandRequest |
+| CommandInjection.cs:37:38:37:75 | object creation of type List<String> | semmle.label | object creation of type List<String> |
+| CommandInjection.cs:37:63:37:73 | access to property Command : String | semmle.label | access to property Command : String |
+| CommandInjection.cs:75:49:75:51 | req : CommandRequest | semmle.label | req : CommandRequest |
+| CommandInjection.cs:77:59:77:77 | ... + ... | semmle.label | ... + ... |
+| CommandInjection.cs:86:54:86:56 | cmd : String | semmle.label | cmd : String |
+| CommandInjection.cs:90:28:90:30 | access to parameter cmd | semmle.label | access to parameter cmd |
+| WebForms.cs:36:23:36:25 | this : ConfigFile [field _settings, element, property Value] : String | semmle.label | this : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:40:24:40:32 | access to field _settings : IDictionary<String,String> [element, property Value] : String | semmle.label | access to field _settings : IDictionary<String,String> [element, property Value] : String |
+| WebForms.cs:40:24:40:32 | this access : ConfigFile [field _settings, element, property Value] : String | semmle.label | this access : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:40:24:40:37 | access to indexer : String | semmle.label | access to indexer : String |
+| WebForms.cs:44:21:44:23 | this [Return] : ConfigFile [field _settings, element, property Value] : String | semmle.label | this [Return] : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:44:44:44:48 | value : String | semmle.label | value : String |
+| WebForms.cs:44:53:44:61 | [post] access to field _settings : Dictionary<T,T> [element, property Value] : String | semmle.label | [post] access to field _settings : Dictionary<T,T> [element, property Value] : String |
+| WebForms.cs:44:53:44:61 | [post] access to field _settings : IDictionary<T,T> [element, property Value] : String | semmle.label | [post] access to field _settings : IDictionary<T,T> [element, property Value] : String |
+| WebForms.cs:44:53:44:61 | [post] this access : ConfigFile [field _settings, element, property Value] : String | semmle.label | [post] this access : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:44:80:44:84 | access to parameter value : String | semmle.label | access to parameter value : String |
+| WebForms.cs:58:16:58:30 | this [Return] : MySqlDbProvider [field _clientExec] : String | semmle.label | this [Return] : MySqlDbProvider [field _clientExec] : String |
+| WebForms.cs:58:43:58:52 | configFile : ConfigFile [field _settings, element, property Value] : String | semmle.label | configFile : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:58:57:58:67 | [post] this access : MySqlDbProvider [field _clientExec] : String | semmle.label | [post] this access : MySqlDbProvider [field _clientExec] : String |
+| WebForms.cs:58:71:58:80 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | semmle.label | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:58:71:58:113 | call to method Get : String | semmle.label | call to method Get : String |
+| WebForms.cs:60:21:60:34 | this : MySqlDbProvider [field _clientExec] : String | semmle.label | this : MySqlDbProvider [field _clientExec] : String |
+| WebForms.cs:60:75:60:85 | access to field _clientExec : String | semmle.label | access to field _clientExec : String |
+| WebForms.cs:60:75:60:85 | this access : MySqlDbProvider [field _clientExec] : String | semmle.label | this access : MySqlDbProvider [field _clientExec] : String |
+| WebForms.cs:67:16:67:31 | this [Return] : SqliteDbProvider [field _clientExec] : String | semmle.label | this [Return] : SqliteDbProvider [field _clientExec] : String |
+| WebForms.cs:67:44:67:53 | configFile : ConfigFile [field _settings, element, property Value] : String | semmle.label | configFile : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:67:58:67:68 | [post] this access : SqliteDbProvider [field _clientExec] : String | semmle.label | [post] this access : SqliteDbProvider [field _clientExec] : String |
+| WebForms.cs:67:72:67:81 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | semmle.label | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:67:72:67:114 | call to method Get : String | semmle.label | call to method Get : String |
+| WebForms.cs:69:21:69:34 | this : SqliteDbProvider [field _clientExec] : String | semmle.label | this : SqliteDbProvider [field _clientExec] : String |
+| WebForms.cs:69:75:69:85 | access to field _clientExec : String | semmle.label | access to field _clientExec : String |
+| WebForms.cs:69:75:69:85 | this access : SqliteDbProvider [field _clientExec] : String | semmle.label | this access : SqliteDbProvider [field _clientExec] : String |
+| WebForms.cs:74:53:74:62 | configFile : ConfigFile [field _settings, element, property Value] : String | semmle.label | configFile : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:81:28:81:58 | object creation of type MySqlDbProvider : MySqlDbProvider [field _clientExec] : String | semmle.label | object creation of type MySqlDbProvider : MySqlDbProvider [field _clientExec] : String |
+| WebForms.cs:81:48:81:57 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | semmle.label | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:83:28:83:59 | object creation of type SqliteDbProvider : SqliteDbProvider [field _clientExec] : String | semmle.label | object creation of type SqliteDbProvider : SqliteDbProvider [field _clientExec] : String |
+| WebForms.cs:83:49:83:58 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | semmle.label | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:101:30:101:39 | [post] access to local variable configFile : ConfigFile [field _settings, element, property Value] : String | semmle.label | [post] access to local variable configFile : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:102:13:102:38 | access to property CurrentDbProvider : MySqlDbProvider [field _clientExec] : String | semmle.label | access to property CurrentDbProvider : MySqlDbProvider [field _clientExec] : String |
+| WebForms.cs:102:13:102:38 | access to property CurrentDbProvider : SqliteDbProvider [field _clientExec] : String | semmle.label | access to property CurrentDbProvider : SqliteDbProvider [field _clientExec] : String |
+| WebForms.cs:102:42:102:77 | call to method Create : MySqlDbProvider [field _clientExec] : String | semmle.label | call to method Create : MySqlDbProvider [field _clientExec] : String |
+| WebForms.cs:102:42:102:77 | call to method Create : SqliteDbProvider [field _clientExec] : String | semmle.label | call to method Create : SqliteDbProvider [field _clientExec] : String |
+| WebForms.cs:102:67:102:76 | access to local variable configFile : ConfigFile [field _settings, element, property Value] : String | semmle.label | access to local variable configFile : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:103:13:103:38 | access to property CurrentDbProvider : MySqlDbProvider [field _clientExec] : String | semmle.label | access to property CurrentDbProvider : MySqlDbProvider [field _clientExec] : String |
+| WebForms.cs:103:13:103:38 | access to property CurrentDbProvider : SqliteDbProvider [field _clientExec] : String | semmle.label | access to property CurrentDbProvider : SqliteDbProvider [field _clientExec] : String |
+| WebForms.cs:106:50:106:59 | configFile [Return] : ConfigFile [field _settings, element, property Value] : String | semmle.label | configFile [Return] : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:111:17:111:26 | [post] access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | semmle.label | [post] access to parameter configFile : ConfigFile [field _settings, element, property Value] : String |
+| WebForms.cs:111:61:111:79 | access to field txtClientExecutable : TextBox | semmle.label | access to field txtClientExecutable : TextBox |
+| WebForms.cs:111:61:111:84 | access to property Text : String | semmle.label | access to property Text : String |
+subpaths
+| WebForms.cs:58:71:58:80 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:36:23:36:25 | this : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:40:24:40:37 | access to indexer : String | WebForms.cs:58:71:58:113 | call to method Get : String |
+| WebForms.cs:67:72:67:81 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:36:23:36:25 | this : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:40:24:40:37 | access to indexer : String | WebForms.cs:67:72:67:114 | call to method Get : String |
+| WebForms.cs:81:48:81:57 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:58:43:58:52 | configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:58:16:58:30 | this [Return] : MySqlDbProvider [field _clientExec] : String | WebForms.cs:81:28:81:58 | object creation of type MySqlDbProvider : MySqlDbProvider [field _clientExec] : String |
+| WebForms.cs:83:49:83:58 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:67:44:67:53 | configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:67:16:67:31 | this [Return] : SqliteDbProvider [field _clientExec] : String | WebForms.cs:83:28:83:59 | object creation of type SqliteDbProvider : SqliteDbProvider [field _clientExec] : String |
+| WebForms.cs:102:67:102:76 | access to local variable configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:74:53:74:62 | configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:81:28:81:58 | object creation of type MySqlDbProvider : MySqlDbProvider [field _clientExec] : String | WebForms.cs:102:42:102:77 | call to method Create : MySqlDbProvider [field _clientExec] : String |
+| WebForms.cs:102:67:102:76 | access to local variable configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:74:53:74:62 | configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:83:28:83:59 | object creation of type SqliteDbProvider : SqliteDbProvider [field _clientExec] : String | WebForms.cs:102:42:102:77 | call to method Create : SqliteDbProvider [field _clientExec] : String |
+| WebForms.cs:111:61:111:84 | access to property Text : String | WebForms.cs:44:44:44:48 | value : String | WebForms.cs:44:21:44:23 | this [Return] : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:111:17:111:26 | [post] access to parameter configFile : ConfigFile [field _settings, element, property Value] : String |
