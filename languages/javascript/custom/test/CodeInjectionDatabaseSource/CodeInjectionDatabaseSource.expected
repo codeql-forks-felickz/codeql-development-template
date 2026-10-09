@@ -1,0 +1,46 @@
+edges
+| routes/defineStyle.js:8:9:8:15 | profile | routes/defineStyle.js:9:19:9:25 | profile | provenance |  |
+| routes/defineStyle.js:8:19:8:58 | await P ... id } }) | routes/defineStyle.js:8:9:8:15 | profile | provenance |  |
+| routes/defineStyle.js:9:19:9:25 | profile | routes/defineStyle.js:9:19:9:29 | profile.bio | provenance |  |
+| routes/defineStyle.js:11:8:11:22 | counted.rows[0] | routes/defineStyle.js:11:8:11:26 | counted.rows[0].bio | provenance |  |
+| routes/userProfile.ts:4:9:4:12 | user | routes/userProfile.ts:5:18:5:21 | user | provenance |  |
+| routes/userProfile.ts:4:16:4:43 | await U ... yPk(id) | routes/userProfile.ts:4:9:4:12 | user | provenance |  |
+| routes/userProfile.ts:5:7:5:14 | username | routes/userProfile.ts:7:18:7:25 | username | provenance |  |
+| routes/userProfile.ts:5:18:5:21 | user | routes/userProfile.ts:5:7:5:14 | username | provenance |  |
+| routes/userProfile.ts:7:11:7:14 | code | routes/userProfile.ts:8:21:8:24 | code | provenance |  |
+| routes/userProfile.ts:7:18:7:25 | username | routes/userProfile.ts:7:18:7:60 | usernam ... th - 1) | provenance |  |
+| routes/userProfile.ts:7:18:7:60 | usernam ... th - 1) | routes/userProfile.ts:7:11:7:14 | code | provenance |  |
+| routes/userProfile.ts:14:9:14:12 | user | routes/userProfile.ts:15:21:15:24 | user | provenance |  |
+| routes/userProfile.ts:14:16:14:57 | await U ... id } }) | routes/userProfile.ts:14:9:14:12 | user | provenance |  |
+| routes/userProfile.ts:15:21:15:24 | user | routes/userProfile.ts:15:15:15:39 | '`' + u ... e + '`' | provenance |  |
+| routes/userProfile.ts:20:14:20:17 | user | routes/userProfile.ts:21:10:21:13 | user | provenance |  |
+| routes/userProfile.ts:21:10:21:13 | user | routes/userProfile.ts:21:10:21:22 | user.username | provenance |  |
+nodes
+| routes/defineStyle.js:8:9:8:15 | profile | semmle.label | profile |
+| routes/defineStyle.js:8:19:8:58 | await P ... id } }) | semmle.label | await P ... id } }) |
+| routes/defineStyle.js:9:19:9:25 | profile | semmle.label | profile |
+| routes/defineStyle.js:9:19:9:29 | profile.bio | semmle.label | profile.bio |
+| routes/defineStyle.js:11:8:11:22 | counted.rows[0] | semmle.label | counted.rows[0] |
+| routes/defineStyle.js:11:8:11:26 | counted.rows[0].bio | semmle.label | counted.rows[0].bio |
+| routes/userProfile.ts:4:9:4:12 | user | semmle.label | user |
+| routes/userProfile.ts:4:16:4:43 | await U ... yPk(id) | semmle.label | await U ... yPk(id) |
+| routes/userProfile.ts:5:7:5:14 | username | semmle.label | username |
+| routes/userProfile.ts:5:18:5:21 | user | semmle.label | user |
+| routes/userProfile.ts:7:11:7:14 | code | semmle.label | code |
+| routes/userProfile.ts:7:18:7:25 | username | semmle.label | username |
+| routes/userProfile.ts:7:18:7:60 | usernam ... th - 1) | semmle.label | usernam ... th - 1) |
+| routes/userProfile.ts:8:21:8:24 | code | semmle.label | code |
+| routes/userProfile.ts:14:9:14:12 | user | semmle.label | user |
+| routes/userProfile.ts:14:16:14:57 | await U ... id } }) | semmle.label | await U ... id } }) |
+| routes/userProfile.ts:15:15:15:39 | '`' + u ... e + '`' | semmle.label | '`' + u ... e + '`' |
+| routes/userProfile.ts:15:21:15:24 | user | semmle.label | user |
+| routes/userProfile.ts:20:14:20:17 | user | semmle.label | user |
+| routes/userProfile.ts:21:10:21:13 | user | semmle.label | user |
+| routes/userProfile.ts:21:10:21:22 | user.username | semmle.label | user.username |
+subpaths
+#select
+| routes/defineStyle.js:9:19:9:29 | profile.bio | routes/defineStyle.js:8:19:8:58 | await P ... id } }) | routes/defineStyle.js:9:19:9:29 | profile.bio | This code execution depends on a $@. | routes/defineStyle.js:8:19:8:58 | await P ... id } }) | user-provided value |
+| routes/defineStyle.js:11:8:11:26 | counted.rows[0].bio | routes/defineStyle.js:11:8:11:22 | counted.rows[0] | routes/defineStyle.js:11:8:11:26 | counted.rows[0].bio | This code execution depends on a $@. | routes/defineStyle.js:11:8:11:22 | counted.rows[0] | user-provided value |
+| routes/userProfile.ts:8:21:8:24 | code | routes/userProfile.ts:4:16:4:43 | await U ... yPk(id) | routes/userProfile.ts:8:21:8:24 | code | This code execution depends on a $@. | routes/userProfile.ts:4:16:4:43 | await U ... yPk(id) | user-provided value |
+| routes/userProfile.ts:15:15:15:39 | '`' + u ... e + '`' | routes/userProfile.ts:14:16:14:57 | await U ... id } }) | routes/userProfile.ts:15:15:15:39 | '`' + u ... e + '`' | This code execution depends on a $@. | routes/userProfile.ts:14:16:14:57 | await U ... id } }) | user-provided value |
+| routes/userProfile.ts:21:10:21:22 | user.username | routes/userProfile.ts:20:14:20:17 | user | routes/userProfile.ts:21:10:21:22 | user.username | This code execution depends on a $@. | routes/userProfile.ts:20:14:20:17 | user | user-provided value |

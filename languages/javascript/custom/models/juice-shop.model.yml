@@ -1,0 +1,10 @@
+extensions:
+  # Repository-specific bridge for `class User extends Model` style Sequelize models.
+  # Static calls on a subclass of `sequelize.Model` (e.g. `UserModel.findByPk(...)`)
+  # are not reachable through API graphs, so the exported model class is mapped to
+  # `sequelize.Model` via its `file:<relative path>` module.
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["sequelize.Model", "file:models/user.ts", "Member[UserModel]"]

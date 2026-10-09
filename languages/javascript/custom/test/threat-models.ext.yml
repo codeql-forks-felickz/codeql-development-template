@@ -1,0 +1,8 @@
+extensions:
+  # Enable the `database` threat model for these tests, as code scanning does
+  # when the "Remote and local sources" threat model setting is selected.
+  - addsTo:
+      pack: codeql/threat-models
+      extensible: threatModelConfiguration
+    data:
+      - ["database", true, 0]
