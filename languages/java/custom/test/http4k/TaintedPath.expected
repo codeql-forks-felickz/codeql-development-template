@@ -1,0 +1,33 @@
+#select
+| Http4kRoutes.kt:170:37:170:55 | new File(...) | Http4kRoutes.kt:169:16:169:27 | getBody(...) : Body | Http4kRoutes.kt:170:37:170:55 | new File(...) | This path depends on a $@. | Http4kRoutes.kt:169:16:169:27 | getBody(...) | user-provided value |
+| Http4kRoutes.kt:175:37:175:55 | new File(...) | Http4kRoutes.kt:174:16:174:26 | getUri(...) : Uri | Http4kRoutes.kt:175:37:175:55 | new File(...) | This path depends on a $@. | Http4kRoutes.kt:174:16:174:26 | getUri(...) | user-provided value |
+edges
+| Http4kRoutes.kt:169:16:169:27 | getBody(...) : Body | Http4kRoutes.kt:169:16:169:34 | getStream(...) : InputStream | provenance | Src:MaD:2 MaD:7 |
+| Http4kRoutes.kt:169:16:169:34 | getStream(...) : InputStream | Http4kRoutes.kt:169:16:169:51 | bufferedReader$default(...) : BufferedReader | provenance | MaD:5 |
+| Http4kRoutes.kt:169:16:169:51 | bufferedReader$default(...) : BufferedReader | Http4kRoutes.kt:169:16:169:62 | readText(...) : String | provenance | MaD:6 |
+| Http4kRoutes.kt:169:16:169:62 | readText(...) : String | Http4kRoutes.kt:170:42:170:54 | "..." : String | provenance |  |
+| Http4kRoutes.kt:170:42:170:54 | "..." : String | Http4kRoutes.kt:170:37:170:55 | new File(...) | provenance | MaD:4 Sink:MaD:1 |
+| Http4kRoutes.kt:174:16:174:26 | getUri(...) : Uri | Http4kRoutes.kt:174:16:174:31 | getPath(...) : String | provenance | Src:MaD:3 MaD:8 |
+| Http4kRoutes.kt:174:16:174:31 | getPath(...) : String | Http4kRoutes.kt:175:42:175:54 | "..." : String | provenance |  |
+| Http4kRoutes.kt:175:42:175:54 | "..." : String | Http4kRoutes.kt:175:37:175:55 | new File(...) | provenance | MaD:4 Sink:MaD:1 |
+models
+| 1 | Sink: kotlin.io; FilesKt; false; readText; (File,Charset); ; Argument[0]; path-injection[read]; ai-manual |
+| 2 | Source: org.http4k.core; HttpMessage; true; getBody; (); ; ReturnValue; remote; manual |
+| 3 | Source: org.http4k.core; Request; true; getUri; (); ; ReturnValue; remote; manual |
+| 4 | Summary: java.io; File; false; File; ; ; Argument[0]; Argument[this]; taint; manual |
+| 5 | Summary: kotlin.io; ByteStreamsKt; false; bufferedReader; (InputStream,Charset); ; Argument[0]; ReturnValue; taint; df-generated |
+| 6 | Summary: kotlin.io; TextStreamsKt; false; readText; (Reader); ; Argument[0]; ReturnValue; taint; df-generated |
+| 7 | Summary: org.http4k.core; Body; true; getStream; (); ; Argument[this]; ReturnValue; taint; manual |
+| 8 | Summary: org.http4k.core; Uri; false; getPath; (); ; Argument[this]; ReturnValue; taint; manual |
+nodes
+| Http4kRoutes.kt:169:16:169:27 | getBody(...) : Body | semmle.label | getBody(...) : Body |
+| Http4kRoutes.kt:169:16:169:34 | getStream(...) : InputStream | semmle.label | getStream(...) : InputStream |
+| Http4kRoutes.kt:169:16:169:51 | bufferedReader$default(...) : BufferedReader | semmle.label | bufferedReader$default(...) : BufferedReader |
+| Http4kRoutes.kt:169:16:169:62 | readText(...) : String | semmle.label | readText(...) : String |
+| Http4kRoutes.kt:170:37:170:55 | new File(...) | semmle.label | new File(...) |
+| Http4kRoutes.kt:170:42:170:54 | "..." : String | semmle.label | "..." : String |
+| Http4kRoutes.kt:174:16:174:26 | getUri(...) : Uri | semmle.label | getUri(...) : Uri |
+| Http4kRoutes.kt:174:16:174:31 | getPath(...) : String | semmle.label | getPath(...) : String |
+| Http4kRoutes.kt:175:37:175:55 | new File(...) | semmle.label | new File(...) |
+| Http4kRoutes.kt:175:42:175:54 | "..." : String | semmle.label | "..." : String |
+subpaths
