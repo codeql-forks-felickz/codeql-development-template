@@ -1,0 +1,40 @@
+#select
+| app/controllers/users_controller.rb:6:22:6:32 | call to user_params | app/controllers/users_controller.rb:44:5:44:10 | call to params | app/controllers/users_controller.rb:6:22:6:32 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | app/controllers/users_controller.rb:44:5:44:10 | call to params | this remote flow source |
+| app/controllers/users_controller.rb:10:21:10:31 | call to user_params | app/controllers/users_controller.rb:44:5:44:10 | call to params | app/controllers/users_controller.rb:10:21:10:31 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | app/controllers/users_controller.rb:44:5:44:10 | call to params | this remote flow source |
+| app/controllers/users_controller.rb:15:17:15:45 | call to permit! | app/controllers/users_controller.rb:15:17:15:22 | call to params | app/controllers/users_controller.rb:15:17:15:45 | call to permit! | This mass assignment operation can assign user-controlled attributes from $@. | app/controllers/users_controller.rb:15:17:15:22 | call to params | this remote flow source |
+| app/controllers/users_controller.rb:19:14:19:31 | call to unsafe_user_params | app/controllers/users_controller.rb:48:5:48:10 | call to params | app/controllers/users_controller.rb:19:14:19:31 | call to unsafe_user_params | This mass assignment operation can assign user-controlled attributes from $@. | app/controllers/users_controller.rb:48:5:48:10 | call to params | this remote flow source |
+| app/controllers/users_controller.rb:23:14:23:30 | call to nested_any_params | app/controllers/users_controller.rb:52:5:52:10 | call to params | app/controllers/users_controller.rb:23:14:23:30 | call to nested_any_params | This mass assignment operation can assign user-controlled attributes from $@. | app/controllers/users_controller.rb:52:5:52:10 | call to params | this remote flow source |
+| app/controllers/users_controller.rb:28:17:28:27 | call to user_params | app/controllers/users_controller.rb:44:5:44:10 | call to params | app/controllers/users_controller.rb:28:17:28:27 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | app/controllers/users_controller.rb:44:5:44:10 | call to params | this remote flow source |
+edges
+| app/controllers/users_controller.rb:15:17:15:22 | call to params | app/controllers/users_controller.rb:15:17:15:37 | call to require | provenance |  |
+| app/controllers/users_controller.rb:15:17:15:37 | call to require | app/controllers/users_controller.rb:15:17:15:45 | call to permit! | provenance | Config |
+| app/controllers/users_controller.rb:44:5:44:10 | call to params | app/controllers/users_controller.rb:44:5:44:25 | call to require | provenance |  |
+| app/controllers/users_controller.rb:44:5:44:25 | call to require | app/controllers/users_controller.rb:44:5:44:33 | call to permit! | provenance | Config |
+| app/controllers/users_controller.rb:44:5:44:33 | call to permit! | app/controllers/users_controller.rb:6:22:6:32 | call to user_params | provenance |  |
+| app/controllers/users_controller.rb:44:5:44:33 | call to permit! | app/controllers/users_controller.rb:10:21:10:31 | call to user_params | provenance |  |
+| app/controllers/users_controller.rb:44:5:44:33 | call to permit! | app/controllers/users_controller.rb:28:17:28:27 | call to user_params | provenance |  |
+| app/controllers/users_controller.rb:48:5:48:10 | call to params | app/controllers/users_controller.rb:48:5:48:17 | ...[...] | provenance |  |
+| app/controllers/users_controller.rb:48:5:48:17 | ...[...] | app/controllers/users_controller.rb:48:5:48:29 | call to to_unsafe_h | provenance | Config |
+| app/controllers/users_controller.rb:48:5:48:29 | call to to_unsafe_h | app/controllers/users_controller.rb:19:14:19:31 | call to unsafe_user_params | provenance |  |
+| app/controllers/users_controller.rb:52:5:52:10 | call to params | app/controllers/users_controller.rb:52:5:52:25 | call to require | provenance |  |
+| app/controllers/users_controller.rb:52:5:52:25 | call to require | app/controllers/users_controller.rb:52:5:52:54 | call to permit | provenance | Config |
+| app/controllers/users_controller.rb:52:5:52:54 | call to permit | app/controllers/users_controller.rb:23:14:23:30 | call to nested_any_params | provenance |  |
+nodes
+| app/controllers/users_controller.rb:6:22:6:32 | call to user_params | semmle.label | call to user_params |
+| app/controllers/users_controller.rb:10:21:10:31 | call to user_params | semmle.label | call to user_params |
+| app/controllers/users_controller.rb:15:17:15:22 | call to params | semmle.label | call to params |
+| app/controllers/users_controller.rb:15:17:15:37 | call to require | semmle.label | call to require |
+| app/controllers/users_controller.rb:15:17:15:45 | call to permit! | semmle.label | call to permit! |
+| app/controllers/users_controller.rb:19:14:19:31 | call to unsafe_user_params | semmle.label | call to unsafe_user_params |
+| app/controllers/users_controller.rb:23:14:23:30 | call to nested_any_params | semmle.label | call to nested_any_params |
+| app/controllers/users_controller.rb:28:17:28:27 | call to user_params | semmle.label | call to user_params |
+| app/controllers/users_controller.rb:44:5:44:10 | call to params | semmle.label | call to params |
+| app/controllers/users_controller.rb:44:5:44:25 | call to require | semmle.label | call to require |
+| app/controllers/users_controller.rb:44:5:44:33 | call to permit! | semmle.label | call to permit! |
+| app/controllers/users_controller.rb:48:5:48:10 | call to params | semmle.label | call to params |
+| app/controllers/users_controller.rb:48:5:48:17 | ...[...] | semmle.label | ...[...] |
+| app/controllers/users_controller.rb:48:5:48:29 | call to to_unsafe_h | semmle.label | call to to_unsafe_h |
+| app/controllers/users_controller.rb:52:5:52:10 | call to params | semmle.label | call to params |
+| app/controllers/users_controller.rb:52:5:52:25 | call to require | semmle.label | call to require |
+| app/controllers/users_controller.rb:52:5:52:54 | call to permit | semmle.label | call to permit |
+subpaths
