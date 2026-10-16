@@ -1,0 +1,156 @@
+#select
+| test.py:16:18:16:48 | ControlFlowNode for Attribute() | test.py:8:20:8:23 | ControlFlowNode for self | test.py:16:18:16:48 | ControlFlowNode for Attribute() | This path depends on a $@. | test.py:8:20:8:23 | ControlFlowNode for self | user-provided value |
+| test.py:21:14:21:22 | ControlFlowNode for Subscript | test.py:18:32:18:35 | ControlFlowNode for self | test.py:21:14:21:22 | ControlFlowNode for Subscript | This path depends on a $@. | test.py:18:32:18:35 | ControlFlowNode for self | user-provided value |
+| test.py:26:14:26:22 | ControlFlowNode for Subscript | test.py:23:34:23:37 | ControlFlowNode for self | test.py:26:14:26:22 | ControlFlowNode for Subscript | This path depends on a $@. | test.py:23:34:23:37 | ControlFlowNode for self | user-provided value |
+| test.py:30:29:30:33 | ControlFlowNode for query | test.py:28:32:28:35 | ControlFlowNode for self | test.py:30:29:30:33 | ControlFlowNode for query | This path depends on a $@. | test.py:28:32:28:35 | ControlFlowNode for self | user-provided value |
+| test.py:36:18:36:26 | ControlFlowNode for Subscript | test.py:33:29:33:32 | ControlFlowNode for self | test.py:36:18:36:26 | ControlFlowNode for Subscript | This path depends on a $@. | test.py:33:29:33:32 | ControlFlowNode for self | user-provided value |
+edges
+| test.py:8:20:8:23 | ControlFlowNode for self | test.py:10:9:10:19 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| test.py:8:20:8:23 | ControlFlowNode for self | test.py:10:9:10:19 | IterableElement | provenance | AdditionalTaintStep |
+| test.py:8:20:8:23 | ControlFlowNode for self | test.py:10:15:10:19 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| test.py:10:9:10:19 | ControlFlowNode for Tuple | test.py:10:15:10:19 | ControlFlowNode for query | provenance |  |
+| test.py:10:9:10:19 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:10:15:10:19 | ControlFlowNode for query | provenance |  |
+| test.py:10:9:10:19 | IterableElement | test.py:10:9:10:19 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| test.py:10:15:10:19 | ControlFlowNode for query | test.py:12:121:12:125 | ControlFlowNode for query | provenance | Config |
+| test.py:11:9:11:14 | ControlFlowNode for params [Any dictionary element] | test.py:16:34:16:39 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| test.py:11:18:14:9 | ControlFlowNode for dict() [Any dictionary element] | test.py:11:9:11:14 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| test.py:12:13:13:71 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | test.py:11:18:14:9 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| test.py:12:14:12:128 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:12:14:12:128 | ControlFlowNode for Yield [List element, Tuple element at index 1] | provenance |  |
+| test.py:12:14:12:128 | ControlFlowNode for Yield [List element, Tuple element at index 1] | test.py:12:13:13:71 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | provenance |  |
+| test.py:12:28:12:128 | ControlFlowNode for Attribute() | test.py:12:14:12:128 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| test.py:12:49:12:127 | ControlFlowNode for Attribute() | test.py:12:28:12:128 | ControlFlowNode for Attribute() | provenance | MaD:120 |
+| test.py:12:58:12:126 | ControlFlowNode for Attribute() | test.py:12:49:12:127 | ControlFlowNode for Attribute() | provenance | str.join |
+| test.py:12:58:12:126 | ControlFlowNode for Attribute() [List element] | test.py:12:49:12:127 | ControlFlowNode for Attribute() | provenance | str.join |
+| test.py:12:121:12:125 | ControlFlowNode for query | test.py:12:58:12:126 | ControlFlowNode for Attribute() | provenance | re.findall |
+| test.py:12:121:12:125 | ControlFlowNode for query | test.py:12:58:12:126 | ControlFlowNode for Attribute() [List element] | provenance | re.findall |
+| test.py:16:34:16:39 | ControlFlowNode for params [Any dictionary element] | test.py:16:34:16:47 | ControlFlowNode for Subscript | provenance |  |
+| test.py:16:34:16:47 | ControlFlowNode for Subscript | test.py:16:18:16:48 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:18:32:18:35 | ControlFlowNode for self | test.py:19:9:19:16 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| test.py:18:32:18:35 | ControlFlowNode for self | test.py:19:9:19:16 | IterableElement | provenance | AdditionalTaintStep |
+| test.py:18:32:18:35 | ControlFlowNode for self | test.py:19:12:19:16 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| test.py:19:9:19:16 | ControlFlowNode for Tuple | test.py:19:12:19:16 | ControlFlowNode for query | provenance |  |
+| test.py:19:9:19:16 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:19:12:19:16 | ControlFlowNode for query | provenance |  |
+| test.py:19:9:19:16 | IterableElement | test.py:19:9:19:16 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| test.py:19:12:19:16 | ControlFlowNode for query | test.py:20:27:20:31 | ControlFlowNode for query | provenance | Config |
+| test.py:20:9:20:14 | ControlFlowNode for values [Any dictionary element] | test.py:21:14:21:19 | ControlFlowNode for values [Any dictionary element] | provenance |  |
+| test.py:20:18:20:51 | ControlFlowNode for dict() [Any dictionary element] | test.py:20:9:20:14 | ControlFlowNode for values [Any dictionary element] | provenance |  |
+| test.py:20:23:20:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | test.py:20:18:20:51 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| test.py:20:24:20:31 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:20:24:20:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | provenance |  |
+| test.py:20:24:20:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | test.py:20:23:20:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | provenance |  |
+| test.py:20:27:20:31 | ControlFlowNode for query | test.py:20:24:20:31 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| test.py:21:14:21:19 | ControlFlowNode for values [Any dictionary element] | test.py:21:14:21:22 | ControlFlowNode for Subscript | provenance |  |
+| test.py:23:34:23:37 | ControlFlowNode for self | test.py:24:9:24:16 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| test.py:23:34:23:37 | ControlFlowNode for self | test.py:24:9:24:16 | IterableElement | provenance | AdditionalTaintStep |
+| test.py:23:34:23:37 | ControlFlowNode for self | test.py:24:12:24:16 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| test.py:24:9:24:16 | ControlFlowNode for Tuple | test.py:24:12:24:16 | ControlFlowNode for query | provenance |  |
+| test.py:24:9:24:16 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:24:12:24:16 | ControlFlowNode for query | provenance |  |
+| test.py:24:9:24:16 | IterableElement | test.py:24:9:24:16 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| test.py:24:12:24:16 | ControlFlowNode for query | test.py:25:19:25:23 | ControlFlowNode for query | provenance | Config |
+| test.py:25:9:25:14 | ControlFlowNode for values [List element] | test.py:26:14:26:19 | ControlFlowNode for values [List element] | provenance |  |
+| test.py:25:18:25:42 | ControlFlowNode for ListComp [List element] | test.py:25:9:25:14 | ControlFlowNode for values [List element] | provenance |  |
+| test.py:25:19:25:23 | ControlFlowNode for Yield [List element] | test.py:25:18:25:42 | ControlFlowNode for ListComp [List element] | provenance |  |
+| test.py:25:19:25:23 | ControlFlowNode for query | test.py:25:19:25:23 | ControlFlowNode for Yield [List element] | provenance |  |
+| test.py:26:14:26:19 | ControlFlowNode for values [List element] | test.py:26:14:26:22 | ControlFlowNode for Subscript | provenance |  |
+| test.py:28:32:28:35 | ControlFlowNode for self | test.py:29:9:29:16 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| test.py:28:32:28:35 | ControlFlowNode for self | test.py:29:9:29:16 | IterableElement | provenance | AdditionalTaintStep |
+| test.py:28:32:28:35 | ControlFlowNode for self | test.py:29:12:29:16 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| test.py:29:9:29:16 | ControlFlowNode for Tuple | test.py:29:12:29:16 | ControlFlowNode for query | provenance |  |
+| test.py:29:9:29:16 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:29:12:29:16 | ControlFlowNode for query | provenance |  |
+| test.py:29:9:29:16 | IterableElement | test.py:29:9:29:16 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| test.py:29:12:29:16 | ControlFlowNode for query | test.py:30:29:30:33 | ControlFlowNode for query | provenance | Config |
+| test.py:33:29:33:32 | ControlFlowNode for self | test.py:34:13:34:16 | ControlFlowNode for part | provenance | AdditionalTaintStep |
+| test.py:34:13:34:16 | ControlFlowNode for part | test.py:35:23:35:26 | ControlFlowNode for part | provenance | Config |
+| test.py:35:13:35:18 | ControlFlowNode for values [List element] | test.py:36:18:36:23 | ControlFlowNode for values [List element] | provenance |  |
+| test.py:35:22:35:45 | ControlFlowNode for ListComp [List element] | test.py:35:13:35:18 | ControlFlowNode for values [List element] | provenance |  |
+| test.py:35:23:35:26 | ControlFlowNode for Yield [List element] | test.py:35:22:35:45 | ControlFlowNode for ListComp [List element] | provenance |  |
+| test.py:35:23:35:26 | ControlFlowNode for part | test.py:35:23:35:26 | ControlFlowNode for Yield [List element] | provenance |  |
+| test.py:36:18:36:23 | ControlFlowNode for values [List element] | test.py:36:18:36:26 | ControlFlowNode for Subscript | provenance |  |
+| test.py:38:36:38:39 | ControlFlowNode for self | test.py:42:23:42:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | provenance | AdditionalTaintStep |
+| test.py:38:36:38:39 | ControlFlowNode for self | test.py:42:27:42:31 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| test.py:42:9:42:14 | ControlFlowNode for values [Any dictionary element] | test.py:43:14:43:19 | ControlFlowNode for values [Any dictionary element] | provenance |  |
+| test.py:42:18:42:51 | ControlFlowNode for dict() [Any dictionary element] | test.py:42:9:42:14 | ControlFlowNode for values [Any dictionary element] | provenance |  |
+| test.py:42:23:42:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | test.py:42:18:42:51 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| test.py:42:24:42:31 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:42:24:42:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | provenance |  |
+| test.py:42:27:42:31 | ControlFlowNode for query | test.py:42:24:42:31 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| test.py:43:14:43:19 | ControlFlowNode for values [Any dictionary element] | test.py:43:14:43:22 | ControlFlowNode for Subscript | provenance |  |
+| test.py:45:20:45:23 | ControlFlowNode for self | test.py:47:9:47:16 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| test.py:45:20:45:23 | ControlFlowNode for self | test.py:47:9:47:16 | IterableElement | provenance | AdditionalTaintStep |
+| test.py:45:20:45:23 | ControlFlowNode for self | test.py:47:12:47:16 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| test.py:47:9:47:16 | ControlFlowNode for Tuple | test.py:47:12:47:16 | ControlFlowNode for query | provenance |  |
+| test.py:47:9:47:16 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:47:12:47:16 | ControlFlowNode for query | provenance |  |
+| test.py:47:9:47:16 | IterableElement | test.py:47:9:47:16 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| test.py:47:12:47:16 | ControlFlowNode for query | test.py:48:14:48:18 | ControlFlowNode for query | provenance |  |
+nodes
+| test.py:8:20:8:23 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| test.py:10:9:10:19 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| test.py:10:9:10:19 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:10:9:10:19 | IterableElement | semmle.label | IterableElement |
+| test.py:10:15:10:19 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:11:9:11:14 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| test.py:11:18:14:9 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| test.py:12:13:13:71 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| test.py:12:14:12:128 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:12:14:12:128 | ControlFlowNode for Yield [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for Yield [List element, Tuple element at index 1] |
+| test.py:12:28:12:128 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:12:49:12:127 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:12:58:12:126 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:12:58:12:126 | ControlFlowNode for Attribute() [List element] | semmle.label | ControlFlowNode for Attribute() [List element] |
+| test.py:12:121:12:125 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:16:18:16:48 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:16:34:16:39 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| test.py:16:34:16:47 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:18:32:18:35 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| test.py:19:9:19:16 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| test.py:19:9:19:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:19:9:19:16 | IterableElement | semmle.label | IterableElement |
+| test.py:19:12:19:16 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:20:9:20:14 | ControlFlowNode for values [Any dictionary element] | semmle.label | ControlFlowNode for values [Any dictionary element] |
+| test.py:20:18:20:51 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| test.py:20:23:20:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| test.py:20:24:20:31 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:20:24:20:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for Yield [List element, Tuple element at index 1] |
+| test.py:20:27:20:31 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:21:14:21:19 | ControlFlowNode for values [Any dictionary element] | semmle.label | ControlFlowNode for values [Any dictionary element] |
+| test.py:21:14:21:22 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:23:34:23:37 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| test.py:24:9:24:16 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| test.py:24:9:24:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:24:9:24:16 | IterableElement | semmle.label | IterableElement |
+| test.py:24:12:24:16 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:25:9:25:14 | ControlFlowNode for values [List element] | semmle.label | ControlFlowNode for values [List element] |
+| test.py:25:18:25:42 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:25:19:25:23 | ControlFlowNode for Yield [List element] | semmle.label | ControlFlowNode for Yield [List element] |
+| test.py:25:19:25:23 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:26:14:26:19 | ControlFlowNode for values [List element] | semmle.label | ControlFlowNode for values [List element] |
+| test.py:26:14:26:22 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:28:32:28:35 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| test.py:29:9:29:16 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| test.py:29:9:29:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:29:9:29:16 | IterableElement | semmle.label | IterableElement |
+| test.py:29:12:29:16 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:30:29:30:33 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:33:29:33:32 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| test.py:34:13:34:16 | ControlFlowNode for part | semmle.label | ControlFlowNode for part |
+| test.py:35:13:35:18 | ControlFlowNode for values [List element] | semmle.label | ControlFlowNode for values [List element] |
+| test.py:35:22:35:45 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:35:23:35:26 | ControlFlowNode for Yield [List element] | semmle.label | ControlFlowNode for Yield [List element] |
+| test.py:35:23:35:26 | ControlFlowNode for part | semmle.label | ControlFlowNode for part |
+| test.py:36:18:36:23 | ControlFlowNode for values [List element] | semmle.label | ControlFlowNode for values [List element] |
+| test.py:36:18:36:26 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:38:36:38:39 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| test.py:42:9:42:14 | ControlFlowNode for values [Any dictionary element] | semmle.label | ControlFlowNode for values [Any dictionary element] |
+| test.py:42:18:42:51 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| test.py:42:23:42:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| test.py:42:24:42:31 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:42:24:42:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for Yield [List element, Tuple element at index 1] |
+| test.py:42:27:42:31 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:43:14:43:19 | ControlFlowNode for values [Any dictionary element] | semmle.label | ControlFlowNode for values [Any dictionary element] |
+| test.py:43:14:43:22 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:45:20:45:23 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| test.py:47:9:47:16 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| test.py:47:9:47:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:47:9:47:16 | IterableElement | semmle.label | IterableElement |
+| test.py:47:12:47:16 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| test.py:48:14:48:18 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+subpaths
+| test.py:38:36:38:39 | ControlFlowNode for self | test.py:42:27:42:31 | ControlFlowNode for query | test.py:42:24:42:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | test.py:42:23:42:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
