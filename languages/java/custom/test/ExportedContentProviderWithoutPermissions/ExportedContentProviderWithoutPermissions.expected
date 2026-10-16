@@ -1,0 +1,2 @@
+| AndroidManifest.xml:10:9:10:144 | provider | Exported provider 'com.example.notes.NotesProvider' does not require any permission to read or write its data. |
+| AndroidManifest.xml:11:9:11:152 | provider | Exported provider 'com.example.notes.AccountProvider' does not require any permission to read or write its data. |

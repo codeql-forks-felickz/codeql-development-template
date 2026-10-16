@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/VulnerableLab" useHttpOnly="false"> <!-- $ Alert -->
+    <Resource name="jdbc/lab" auth="Container" type="javax.sql.DataSource" />
+</Context>

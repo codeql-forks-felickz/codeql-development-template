@@ -1,6 +1,0 @@
-edges
-nodes
-| App.kt:27:23:27:28 | getIntent(...) | semmle.label | getIntent(...) |
-subpaths
-#select
-| App.kt:27:23:27:28 | getIntent(...) | App.kt:27:23:27:28 | getIntent(...) | App.kt:27:23:27:28 | getIntent(...) | This Intent can be set with arbitrary flags from a $@, and used to give access to internal content providers. | App.kt:27:23:27:28 | getIntent(...) | user-provided value |

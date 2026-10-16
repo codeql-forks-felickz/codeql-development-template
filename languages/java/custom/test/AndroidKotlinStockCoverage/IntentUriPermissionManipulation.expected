@@ -1,0 +1,6 @@
+#select
+| Activities.kt:25:23:25:28 | getIntent(...) | Activities.kt:25:23:25:28 | getIntent(...) | Activities.kt:25:23:25:28 | getIntent(...) | This Intent can be set with arbitrary flags from a $@, and used to give access to internal content providers. | Activities.kt:25:23:25:28 | getIntent(...) | user-provided value |
+edges
+nodes
+| Activities.kt:25:23:25:28 | getIntent(...) | semmle.label | getIntent(...) |
+subpaths

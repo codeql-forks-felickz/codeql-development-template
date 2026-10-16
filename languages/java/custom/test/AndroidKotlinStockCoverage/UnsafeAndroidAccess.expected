@@ -1,0 +1,46 @@
+#select
+| Activities.kt:45:29:45:45 | getDataString(...) | Activities.kt:45:29:45:34 | getIntent(...) : Intent | Activities.kt:45:29:45:45 | getDataString(...) | Unsafe resource fetching in Android WebView due to $@. | Activities.kt:45:29:45:34 | getIntent(...) | user input vulnerable to cross-origin and sensitive resource disclosure attacks |
+| Activities.kt:47:42:47:65 | <Stmt> | Activities.kt:47:29:47:34 | getIntent(...) : Intent | Activities.kt:47:42:47:65 | <Stmt> | Unsafe resource fetching in Android WebView due to $@. | Activities.kt:47:29:47:34 | getIntent(...) | user input vulnerable to cross-origin and sensitive resource disclosure attacks |
+| Activities.kt:49:44:49:59 | <Stmt> | Activities.kt:49:29:49:34 | getIntent(...) : Intent | Activities.kt:49:44:49:59 | <Stmt> | Unsafe resource fetching in Android WebView due to $@. | Activities.kt:49:29:49:34 | getIntent(...) | user input vulnerable to cross-origin and sensitive resource disclosure attacks |
+| Activities.kt:70:29:70:32 | data | Activities.kt:65:24:65:29 | getIntent(...) : Intent | Activities.kt:70:29:70:32 | data | Unsafe resource fetching in Android WebView due to $@. | Activities.kt:65:24:65:29 | getIntent(...) | user input vulnerable to cross-origin and sensitive resource disclosure attacks |
+edges
+| Activities.kt:45:29:45:34 | <implicit not null> : Intent | Activities.kt:45:29:45:45 | getDataString(...) | provenance | MaD:318 |
+| Activities.kt:45:29:45:34 | getIntent(...) : Intent | Activities.kt:45:29:45:34 | <implicit not null> : Intent | provenance |  |
+| Activities.kt:47:29:47:34 | <implicit not null> : Intent | Activities.kt:47:29:47:39 | getData(...) : Uri | provenance | MaD:317 |
+| Activities.kt:47:29:47:34 | getIntent(...) : Intent | Activities.kt:47:29:47:34 | <implicit not null> : Intent | provenance |  |
+| Activities.kt:47:29:47:39 | <implicit cast> : Uri | Activities.kt:47:29:47:65 | getQueryParameter(...) : String | provenance | MaD:507 |
+| Activities.kt:47:29:47:39 | getData(...) : Uri | Activities.kt:47:29:47:39 | <implicit cast> : Uri | provenance |  |
+| Activities.kt:47:29:47:65 | getQueryParameter(...) : String | Activities.kt:47:42:47:65 | <Stmt> | provenance |  |
+| Activities.kt:49:29:49:34 | <implicit not null> : Intent | Activities.kt:49:29:49:41 | getExtras(...) : Bundle | provenance | MaD:319 |
+| Activities.kt:49:29:49:34 | getIntent(...) : Intent | Activities.kt:49:29:49:34 | <implicit not null> : Intent | provenance |  |
+| Activities.kt:49:29:49:41 | <implicit cast> : Bundle | Activities.kt:49:29:49:59 | getString(...) : String | provenance | MaD:552 |
+| Activities.kt:49:29:49:41 | getExtras(...) : Bundle | Activities.kt:49:29:49:41 | <implicit cast> : Bundle | provenance |  |
+| Activities.kt:49:29:49:59 | getString(...) : String | Activities.kt:49:44:49:59 | <Stmt> | provenance |  |
+| Activities.kt:65:24:65:29 | <implicit not null> : Intent | Activities.kt:65:24:65:34 | getData(...) : Uri | provenance | MaD:317 |
+| Activities.kt:65:24:65:29 | getIntent(...) : Intent | Activities.kt:65:24:65:29 | <implicit not null> : Intent | provenance |  |
+| Activities.kt:65:24:65:34 | <implicit cast> : Uri | Activities.kt:65:24:65:60 | getQueryParameter(...) : String | provenance | MaD:507 |
+| Activities.kt:65:24:65:34 | getData(...) : Uri | Activities.kt:65:24:65:34 | <implicit cast> : Uri | provenance |  |
+| Activities.kt:65:24:65:60 | getQueryParameter(...) : String | Activities.kt:70:29:70:32 | data | provenance |  |
+nodes
+| Activities.kt:45:29:45:34 | <implicit not null> : Intent | semmle.label | <implicit not null> : Intent |
+| Activities.kt:45:29:45:34 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| Activities.kt:45:29:45:45 | getDataString(...) | semmle.label | getDataString(...) |
+| Activities.kt:47:29:47:34 | <implicit not null> : Intent | semmle.label | <implicit not null> : Intent |
+| Activities.kt:47:29:47:34 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| Activities.kt:47:29:47:39 | <implicit cast> : Uri | semmle.label | <implicit cast> : Uri |
+| Activities.kt:47:29:47:39 | getData(...) : Uri | semmle.label | getData(...) : Uri |
+| Activities.kt:47:29:47:65 | getQueryParameter(...) : String | semmle.label | getQueryParameter(...) : String |
+| Activities.kt:47:42:47:65 | <Stmt> | semmle.label | <Stmt> |
+| Activities.kt:49:29:49:34 | <implicit not null> : Intent | semmle.label | <implicit not null> : Intent |
+| Activities.kt:49:29:49:34 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| Activities.kt:49:29:49:41 | <implicit cast> : Bundle | semmle.label | <implicit cast> : Bundle |
+| Activities.kt:49:29:49:41 | getExtras(...) : Bundle | semmle.label | getExtras(...) : Bundle |
+| Activities.kt:49:29:49:59 | getString(...) : String | semmle.label | getString(...) : String |
+| Activities.kt:49:44:49:59 | <Stmt> | semmle.label | <Stmt> |
+| Activities.kt:65:24:65:29 | <implicit not null> : Intent | semmle.label | <implicit not null> : Intent |
+| Activities.kt:65:24:65:29 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| Activities.kt:65:24:65:34 | <implicit cast> : Uri | semmle.label | <implicit cast> : Uri |
+| Activities.kt:65:24:65:34 | getData(...) : Uri | semmle.label | getData(...) : Uri |
+| Activities.kt:65:24:65:60 | getQueryParameter(...) : String | semmle.label | getQueryParameter(...) : String |
+| Activities.kt:70:29:70:32 | data | semmle.label | data |
+subpaths

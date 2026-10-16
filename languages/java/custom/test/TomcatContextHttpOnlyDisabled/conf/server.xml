@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Server port="8005" shutdown="SHUTDOWN">
+  <Service name="Catalina">
+    <Engine name="Catalina" defaultHost="localhost">
+      <Host name="localhost" appBase="webapps">
+        <Context path="/admin" docBase="admin" useHttpOnly=" FALSE " /> <!-- $ Alert -->
+        <!-- Safe: HttpOnly enabled explicitly. -->
+        <Context path="/shop" docBase="shop" useHttpOnly="true" />
+        <Context path="/legacy" docBase="legacy" useHttpOnly="no" /> <!-- $ Alert -->
+        <!-- Safe: resolved from a system property at runtime. -->
+        <Context path="/configurable" docBase="configurable" useHttpOnly="${session.cookie.httponly}" />
+        <!-- Safe: default value is true. -->
+        <Context path="/docs" docBase="docs" />
+      </Host>
+    </Engine>
+  </Service>
+</Server>
