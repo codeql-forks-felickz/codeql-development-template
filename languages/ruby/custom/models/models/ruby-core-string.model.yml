@@ -1,0 +1,12 @@
+extensions:
+  # `String#to_sym` and its alias `String#intern` return a Symbol whose name is
+  # the (possibly attacker-controlled) receiver string. `codeql/ruby-all` has no
+  # flow summary for them, so taint was dropped at e.g.
+  # `params[:field].keys.map { |k| k.to_sym }`. The resulting symbol is commonly
+  # interpolated or joined into raw SQL fragments (`select`, `order`, ...).
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: summaryModel
+    data:
+      - ["any", "Method[intern]", "Argument[self]", "ReturnValue", "taint"]
+      - ["any", "Method[to_sym]", "Argument[self]", "ReturnValue", "taint"]
