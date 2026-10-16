@@ -1,0 +1,13 @@
+#select
+| UrlPreview.java:17:26:17:26 | u | UrlPreview.java:15:21:15:47 | getParameter(...) : String | UrlPreview.java:17:26:17:26 | u | Potential server-side request forgery due to a $@. | UrlPreview.java:15:21:15:47 | getParameter(...) | user-provided value |
+edges
+| UrlPreview.java:15:21:15:47 | getParameter(...) : String | UrlPreview.java:16:21:16:26 | target : String | provenance | Src:MaD:48669  |
+| UrlPreview.java:16:13:16:27 | new URL(...) : URL | UrlPreview.java:17:26:17:26 | u | provenance | Sink:MaD:46863 |
+| UrlPreview.java:16:21:16:26 | target : String | UrlPreview.java:16:13:16:27 | new URL(...) : URL | provenance | Config |
+| UrlPreview.java:16:21:16:26 | target : String | UrlPreview.java:16:13:16:27 | new URL(...) : URL | provenance | MaD:46905 |
+nodes
+| UrlPreview.java:15:21:15:47 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlPreview.java:16:13:16:27 | new URL(...) : URL | semmle.label | new URL(...) : URL |
+| UrlPreview.java:16:21:16:26 | target : String | semmle.label | target : String |
+| UrlPreview.java:17:26:17:26 | u | semmle.label | u |
+subpaths
