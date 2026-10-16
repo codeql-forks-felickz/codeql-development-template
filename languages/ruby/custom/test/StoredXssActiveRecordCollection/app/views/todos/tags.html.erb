@@ -1,0 +1,4 @@
+<% @tags.each do |tag| %>
+  <%# GOOD: not an ActiveRecord relation %>
+  <%= raw(tag.upcase) %>
+<% end %>
