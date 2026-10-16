@@ -1,0 +1,102 @@
+#select
+| mongodb-or/app.js:11:33:11:98 | { $or:  ... ch }] } | mongodb-or/app.js:11:49:11:64 | req.query.search | mongodb-or/app.js:11:33:11:98 | { $or:  ... ch }] } | This query object depends on a $@. | mongodb-or/app.js:11:49:11:64 | req.query.search | user-provided value |
+| mongodb-or/app.js:11:33:11:98 | { $or:  ... ch }] } | mongodb-or/app.js:11:78:11:93 | req.query.search | mongodb-or/app.js:11:33:11:98 | { $or:  ... ch }] } | This query object depends on a $@. | mongodb-or/app.js:11:78:11:93 | req.query.search | user-provided value |
+| mongodb-or/app.js:21:33:21:49 | { $nor: clauses } | mongodb-or/app.js:20:36:20:51 | req.query.search | mongodb-or/app.js:21:33:21:49 | { $nor: clauses } | This query object depends on a $@. | mongodb-or/app.js:20:36:20:51 | req.query.search | user-provided value |
+| mongodb-or/app.js:32:36:32:51 | { $or: clauses } | mongodb-or/app.js:31:28:31:43 | req.query.author | mongodb-or/app.js:32:36:32:51 | { $or: clauses } | This query object depends on a $@. | mongodb-or/app.js:31:28:31:43 | req.query.author | user-provided value |
+| mongodb-or/app.js:42:39:42:43 | query | mongodb-or/app.js:41:65:41:79 | req.query.title | mongodb-or/app.js:42:39:42:43 | query | This query object depends on a $@. | mongodb-or/app.js:41:65:41:79 | req.query.title | user-provided value |
+| mongoose-and/db.js:16:38:16:89 | { $and: ... rd }] } | mongoose-and/app.js:9:17:9:28 | request.body | mongoose-and/db.js:16:38:16:89 | { $and: ... rd }] } | This query object depends on a $@. | mongoose-and/app.js:9:17:9:28 | request.body | user-provided value |
+| mongoose-and/db.js:16:38:16:89 | { $and: ... rd }] } | mongoose-and/app.js:10:20:10:31 | request.body | mongoose-and/db.js:16:38:16:89 | { $and: ... rd }] } | This query object depends on a $@. | mongoose-and/app.js:10:20:10:31 | request.body | user-provided value |
+edges
+| mongodb-or/app.js:11:49:11:64 | req.query.search | mongodb-or/app.js:11:33:11:98 | { $or:  ... ch }] } | provenance | Config |
+| mongodb-or/app.js:11:78:11:93 | req.query.search | mongodb-or/app.js:11:33:11:98 | { $or:  ... ch }] } | provenance | Config |
+| mongodb-or/app.js:20:36:20:51 | req.query.search | mongodb-or/app.js:21:33:21:49 | { $nor: clauses } | provenance | Config |
+| mongodb-or/app.js:31:28:31:43 | req.query.author | mongodb-or/app.js:32:36:32:51 | { $or: clauses } | provenance | Config |
+| mongodb-or/app.js:41:11:41:15 | query | mongodb-or/app.js:42:39:42:43 | query | provenance |  |
+| mongodb-or/app.js:41:19:41:87 | { $and: ... }] }] } | mongodb-or/app.js:41:11:41:15 | query | provenance |  |
+| mongodb-or/app.js:41:65:41:79 | req.query.title | mongodb-or/app.js:41:11:41:15 | query | provenance | Config |
+| mongodb-or/app.js:41:65:41:79 | req.query.title | mongodb-or/app.js:41:19:41:87 | { $and: ... }] }] } | provenance | Config |
+| mongodb-or/app.js:41:65:41:79 | req.query.title | mongodb-or/app.js:42:39:42:43 | query | provenance | Config |
+| mongodb-or/app.js:82:41:82:56 | req.query.search | mongodb-or/app.js:82:33:82:58 | { name: ... earch } | provenance | Config |
+| mongoose-and/app.js:9:9:9:13 | email | mongoose-and/app.js:11:33:11:37 | email | provenance |  |
+| mongoose-and/app.js:9:17:9:28 | request.body | mongoose-and/app.js:9:17:9:34 | request.body.email | provenance | Config |
+| mongoose-and/app.js:9:17:9:34 | request.body.email | mongoose-and/app.js:9:9:9:13 | email | provenance |  |
+| mongoose-and/app.js:10:9:10:16 | password | mongoose-and/app.js:11:40:11:47 | password | provenance |  |
+| mongoose-and/app.js:10:20:10:31 | request.body | mongoose-and/app.js:10:20:10:40 | request ... assword | provenance | Config |
+| mongoose-and/app.js:10:20:10:40 | request ... assword | mongoose-and/app.js:10:9:10:16 | password | provenance |  |
+| mongoose-and/app.js:11:31:11:49 | { email, password } [email] | mongoose-and/db.js:14:22:14:32 | credentials [email] | provenance |  |
+| mongoose-and/app.js:11:31:11:49 | { email, password } [password] | mongoose-and/db.js:14:22:14:32 | credentials [password] | provenance |  |
+| mongoose-and/app.js:11:33:11:37 | email | mongoose-and/app.js:11:31:11:49 | { email, password } [email] | provenance |  |
+| mongoose-and/app.js:11:40:11:47 | password | mongoose-and/app.js:11:31:11:49 | { email, password } [password] | provenance |  |
+| mongoose-and/app.js:23:9:23:13 | email | mongoose-and/app.js:25:36:25:40 | email | provenance |  |
+| mongoose-and/app.js:23:17:23:28 | request.body | mongoose-and/app.js:23:17:23:34 | request.body.email | provenance | Config |
+| mongoose-and/app.js:23:17:23:34 | request.body.email | mongoose-and/app.js:23:9:23:13 | email | provenance |  |
+| mongoose-and/app.js:25:34:25:52 | { email, password } [email] | mongoose-and/db.js:4:25:4:28 | user [email] | provenance |  |
+| mongoose-and/app.js:25:36:25:40 | email | mongoose-and/app.js:25:34:25:52 | { email, password } [email] | provenance |  |
+| mongoose-and/db.js:4:25:4:28 | user [email] | mongoose-and/db.js:5:31:5:34 | user [email] | provenance |  |
+| mongoose-and/db.js:5:9:5:27 | { email, password } [email] | mongoose-and/db.js:5:11:5:15 | email | provenance |  |
+| mongoose-and/db.js:5:11:5:15 | email | mongoose-and/db.js:5:11:5:15 | email | provenance |  |
+| mongoose-and/db.js:5:11:5:15 | email | mongoose-and/db.js:6:49:6:53 | email | provenance |  |
+| mongoose-and/db.js:5:31:5:34 | user [email] | mongoose-and/db.js:5:9:5:27 | { email, password } [email] | provenance |  |
+| mongoose-and/db.js:6:49:6:53 | email | mongoose-and/db.js:6:40:6:55 | { email: email } | provenance | Config |
+| mongoose-and/db.js:14:22:14:32 | credentials [email] | mongoose-and/db.js:15:31:15:41 | credentials [email] | provenance |  |
+| mongoose-and/db.js:14:22:14:32 | credentials [password] | mongoose-and/db.js:15:31:15:41 | credentials [password] | provenance |  |
+| mongoose-and/db.js:15:9:15:27 | { email, password } [email] | mongoose-and/db.js:15:11:15:15 | email | provenance |  |
+| mongoose-and/db.js:15:9:15:27 | { email, password } [password] | mongoose-and/db.js:15:18:15:25 | password | provenance |  |
+| mongoose-and/db.js:15:11:15:15 | email | mongoose-and/db.js:15:11:15:15 | email | provenance |  |
+| mongoose-and/db.js:15:11:15:15 | email | mongoose-and/db.js:16:56:16:60 | email | provenance |  |
+| mongoose-and/db.js:15:18:15:25 | password | mongoose-and/db.js:15:18:15:25 | password | provenance |  |
+| mongoose-and/db.js:15:18:15:25 | password | mongoose-and/db.js:16:77:16:84 | password | provenance |  |
+| mongoose-and/db.js:15:31:15:41 | credentials [email] | mongoose-and/db.js:15:9:15:27 | { email, password } [email] | provenance |  |
+| mongoose-and/db.js:15:31:15:41 | credentials [password] | mongoose-and/db.js:15:9:15:27 | { email, password } [password] | provenance |  |
+| mongoose-and/db.js:16:56:16:60 | email | mongoose-and/db.js:16:38:16:89 | { $and: ... rd }] } | provenance | Config |
+| mongoose-and/db.js:16:77:16:84 | password | mongoose-and/db.js:16:38:16:89 | { $and: ... rd }] } | provenance | Config |
+nodes
+| mongodb-or/app.js:11:33:11:98 | { $or:  ... ch }] } | semmle.label | { $or:  ... ch }] } |
+| mongodb-or/app.js:11:49:11:64 | req.query.search | semmle.label | req.query.search |
+| mongodb-or/app.js:11:78:11:93 | req.query.search | semmle.label | req.query.search |
+| mongodb-or/app.js:20:36:20:51 | req.query.search | semmle.label | req.query.search |
+| mongodb-or/app.js:21:33:21:49 | { $nor: clauses } | semmle.label | { $nor: clauses } |
+| mongodb-or/app.js:31:28:31:43 | req.query.author | semmle.label | req.query.author |
+| mongodb-or/app.js:32:36:32:51 | { $or: clauses } | semmle.label | { $or: clauses } |
+| mongodb-or/app.js:41:11:41:15 | query | semmle.label | query |
+| mongodb-or/app.js:41:19:41:87 | { $and: ... }] }] } | semmle.label | { $and: ... }] }] } |
+| mongodb-or/app.js:41:65:41:79 | req.query.title | semmle.label | req.query.title |
+| mongodb-or/app.js:42:39:42:43 | query | semmle.label | query |
+| mongodb-or/app.js:82:33:82:58 | { name: ... earch } | semmle.label | { name: ... earch } |
+| mongodb-or/app.js:82:41:82:56 | req.query.search | semmle.label | req.query.search |
+| mongoose-and/app.js:9:9:9:13 | email | semmle.label | email |
+| mongoose-and/app.js:9:17:9:28 | request.body | semmle.label | request.body |
+| mongoose-and/app.js:9:17:9:34 | request.body.email | semmle.label | request.body.email |
+| mongoose-and/app.js:10:9:10:16 | password | semmle.label | password |
+| mongoose-and/app.js:10:20:10:31 | request.body | semmle.label | request.body |
+| mongoose-and/app.js:10:20:10:40 | request ... assword | semmle.label | request ... assword |
+| mongoose-and/app.js:11:31:11:49 | { email, password } [email] | semmle.label | { email, password } [email] |
+| mongoose-and/app.js:11:31:11:49 | { email, password } [password] | semmle.label | { email, password } [password] |
+| mongoose-and/app.js:11:33:11:37 | email | semmle.label | email |
+| mongoose-and/app.js:11:40:11:47 | password | semmle.label | password |
+| mongoose-and/app.js:23:9:23:13 | email | semmle.label | email |
+| mongoose-and/app.js:23:17:23:28 | request.body | semmle.label | request.body |
+| mongoose-and/app.js:23:17:23:34 | request.body.email | semmle.label | request.body.email |
+| mongoose-and/app.js:25:34:25:52 | { email, password } [email] | semmle.label | { email, password } [email] |
+| mongoose-and/app.js:25:36:25:40 | email | semmle.label | email |
+| mongoose-and/db.js:4:25:4:28 | user [email] | semmle.label | user [email] |
+| mongoose-and/db.js:5:9:5:27 | { email, password } [email] | semmle.label | { email, password } [email] |
+| mongoose-and/db.js:5:11:5:15 | email | semmle.label | email |
+| mongoose-and/db.js:5:11:5:15 | email | semmle.label | email |
+| mongoose-and/db.js:5:31:5:34 | user [email] | semmle.label | user [email] |
+| mongoose-and/db.js:6:40:6:55 | { email: email } | semmle.label | { email: email } |
+| mongoose-and/db.js:6:49:6:53 | email | semmle.label | email |
+| mongoose-and/db.js:14:22:14:32 | credentials [email] | semmle.label | credentials [email] |
+| mongoose-and/db.js:14:22:14:32 | credentials [password] | semmle.label | credentials [password] |
+| mongoose-and/db.js:15:9:15:27 | { email, password } [email] | semmle.label | { email, password } [email] |
+| mongoose-and/db.js:15:9:15:27 | { email, password } [password] | semmle.label | { email, password } [password] |
+| mongoose-and/db.js:15:11:15:15 | email | semmle.label | email |
+| mongoose-and/db.js:15:11:15:15 | email | semmle.label | email |
+| mongoose-and/db.js:15:18:15:25 | password | semmle.label | password |
+| mongoose-and/db.js:15:18:15:25 | password | semmle.label | password |
+| mongoose-and/db.js:15:31:15:41 | credentials [email] | semmle.label | credentials [email] |
+| mongoose-and/db.js:15:31:15:41 | credentials [password] | semmle.label | credentials [password] |
+| mongoose-and/db.js:16:38:16:89 | { $and: ... rd }] } | semmle.label | { $and: ... rd }] } |
+| mongoose-and/db.js:16:56:16:60 | email | semmle.label | email |
+| mongoose-and/db.js:16:77:16:84 | password | semmle.label | password |
+subpaths
