@@ -1,0 +1,1 @@
+| Web.config:9:7:9:26 | allow | This authorization rule allows all users, including anonymous users, to access the application, although it configures authentication. |

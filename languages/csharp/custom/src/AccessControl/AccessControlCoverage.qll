@@ -190,3 +190,56 @@ predicate isProtectedOnlyByAuthentication(ActionMethod m) {
   not isRestrictingAuthorizationAttribute(getAnApplicableAttribute(m)) and
   not isAllowAnonymousAttributeType(getAnApplicableAttribute(m).getType())
 }
+
+/** Holds if `a` is an `[AllowAnonymous]` attribute. */
+predicate isAllowAnonymousAttribute(Attribute a) { isAllowAnonymousAttributeType(a.getType()) }
+
+/**
+ * Holds if `a` is an attribute that may require authentication or authorization, such as
+ * `[Authorize]`, a custom authorization attribute or a `[PrincipalPermission]` demand.
+ */
+predicate isAuthorizationAttribute(Attribute a) {
+  not isAllowAnonymousAttribute(a) and
+  a.getType().getABaseType*().getName().regexpMatch("(?i).*(auth|permission|principal|role).*")
+}
+
+/**
+ * Holds if `m` has an HTTP method attribute for a verb that is expected to change server
+ * state (`POST`, `PUT`, `PATCH` or `DELETE`).
+ */
+predicate hasMutatingHttpVerb(ActionMethod m) {
+  m.getOverridee*()
+      .getAnAttribute()
+      .getType()
+      .hasFullyQualifiedName(["Microsoft.AspNetCore.Mvc", "System.Web.Mvc", "System.Web.Http"],
+        ["HttpPostAttribute", "HttpPutAttribute", "HttpPatchAttribute", "HttpDeleteAttribute"])
+}
+
+/**
+ * Holds if the name of `m` indicates that it is part of an authentication flow, such as
+ * logging in or registering, which is expected to be reachable anonymously.
+ */
+predicate isAuthenticationFlow(ActionMethod m) {
+  splitWords(m.getName())
+      .regexpMatch("(.*_)?(log_?in|log_?on|log_?out|log_?off|sign_?in|sign_?up|sign_?out|register|token|authenticate|forgot|reset|confirm|verify|challenge|callback|error)(_.*)?")
+}
+
+/**
+ * Holds if the application configures authorization globally, for example by registering an
+ * `AuthorizeFilter` or a global `[Authorize]` filter, calling `RequireAuthorization()` on the
+ * endpoints, or setting an authorization `FallbackPolicy`.
+ */
+predicate hasGlobalAuthorizationPolicy() {
+  exists(ObjectCreation oc | oc.fromSource() |
+    oc.getObjectType().hasName("AuthorizeFilter")
+    or
+    isAuthorizeAttributeType(oc.getObjectType())
+  )
+  or
+  exists(MethodCall mc | mc.fromSource() | mc.getTarget().hasName("RequireAuthorization"))
+  or
+  exists(AssignableDefinition def |
+    def.getTarget().(Property).hasName(["FallbackPolicy", "DefaultPolicy"]) and
+    def.getExpr().fromSource()
+  )
+}
