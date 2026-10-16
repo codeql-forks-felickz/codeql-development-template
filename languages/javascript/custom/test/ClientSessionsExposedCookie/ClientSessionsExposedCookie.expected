@@ -1,0 +1,2 @@
+| app.js:7:9:15:2 | session ...   },\\n}) | Sensitive server cookie is missing 'httpOnly' flag. |
+| app.js:19:9:23:2 | session ... ons,\\n}) | Sensitive server cookie is missing 'httpOnly' flag. |
