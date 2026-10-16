@@ -1,0 +1,13 @@
+#select
+edges
+nodes
+subpaths
+testFailures
+| needle/research.js:8:49:8:77 | // $ So ... ed-xss] | Missing result: Source[js/reflected-xss] |
+| needle/research.js:15:24:15:51 | // $ Al ... ed-xss] | Missing result: Alert[js/reflected-xss] |
+| needle/research.js:22:71:22:99 | // $ So ... ed-xss] | Missing result: Source[js/reflected-xss] |
+| needle/research.js:23:30:23:57 | // $ Al ... ed-xss] | Missing result: Alert[js/reflected-xss] |
+| needle/research.js:28:75:28:103 | // $ So ... ed-xss] | Missing result: Source[js/reflected-xss] |
+| needle/research.js:29:21:29:48 | // $ Al ... ed-xss] | Missing result: Alert[js/reflected-xss] |
+| needle/research.js:34:56:34:84 | // $ So ... ed-xss] | Missing result: Source[js/reflected-xss] |
+| needle/research.js:35:28:35:55 | // $ Al ... ed-xss] | Missing result: Alert[js/reflected-xss] |

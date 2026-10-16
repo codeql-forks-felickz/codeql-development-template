@@ -1,0 +1,31 @@
+# Angular 14+ `inject()`-based dependency injection.
+#
+# The stock Angular model recognizes `ActivatedRoute` and `DomSanitizer` instances only through
+# type annotations (e.g. `constructor(private route: ActivatedRoute)`). Services obtained via
+# `private readonly route = inject(ActivatedRoute)` have no type annotation, so their URL-derived
+# sources and `bypassSecurityTrust*` sinks were not recognized.
+#
+# The member names used below (`snapshot.queryParams`, `bypassSecurityTrustHtml`, ...) are specific
+# to `ActivatedRoute` and `DomSanitizer`, so the injected token does not need to be constrained.
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      - ['@angular/core', 'Member[inject].ReturnValue.Member[snapshot].Member[queryParams]', 'browser-url-query']
+      - ['@angular/core', 'Member[inject].ReturnValue.Member[snapshot].Member[queryParamMap].Member[get,getAll].ReturnValue', 'browser-url-query']
+      - ['@angular/core', 'Member[inject].ReturnValue.Member[snapshot].Member[params]', 'browser-url-path']
+      - ['@angular/core', 'Member[inject].ReturnValue.Member[snapshot].Member[paramMap].Member[get,getAll].ReturnValue', 'browser-url-path']
+      - ['@angular/core', 'Member[inject].ReturnValue.Member[snapshot].Member[fragment]', 'browser-url-fragment']
+      - ['@angular/core', 'Member[inject].ReturnValue.Member[queryParams].Member[subscribe].Argument[0].Parameter[0]', 'browser-url-query']
+      - ['@angular/core', 'Member[inject].ReturnValue.Member[queryParamMap].Member[subscribe].Argument[0].Parameter[0].Member[get,getAll].ReturnValue', 'browser-url-query']
+      - ['@angular/core', 'Member[inject].ReturnValue.Member[params].Member[subscribe].Argument[0].Parameter[0]', 'browser-url-path']
+      - ['@angular/core', 'Member[inject].ReturnValue.Member[paramMap].Member[subscribe].Argument[0].Parameter[0].Member[get,getAll].ReturnValue', 'browser-url-path']
+      - ['@angular/core', 'Member[inject].ReturnValue.Member[fragment].Member[subscribe].Argument[0].Parameter[0]', 'browser-url-fragment']
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ['@angular/core', 'Member[inject].ReturnValue.Member[bypassSecurityTrustHtml,bypassSecurityTrustStyle].Argument[0]', 'html-injection']
+      - ['@angular/core', 'Member[inject].ReturnValue.Member[bypassSecurityTrustScript].Argument[0]', 'code-injection']
