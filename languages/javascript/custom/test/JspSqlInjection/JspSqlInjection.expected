@@ -1,0 +1,6 @@
+| vulnerability/change-info.jsp:19:9:19:76 | stmt.executeUpdate("Update users set about='"+info+"' where id="+id) | This JSP scriptlet passes a SQL query built from user-controlled request data to 'executeUpdate'. |
+| vulnerability/search.jsp:9:3:9:37 | ResultSet rs = st.executeQuery(sql) | This JSP scriptlet passes a SQL query built from user-controlled request data to 'executeQuery'. |
+| vulnerability/search.jsp:13:3:13:49 | PreparedStatement ps = con.prepareStatement(q2) | This JSP scriptlet passes a SQL query built from user-controlled request data to 'prepareStatement'. |
+| vulnerability/search.jsp:14:3:14:90 | st.executeQuery("SELECT * FROM users WHERE name='" + request.getParameter("user") + "'") | This JSP scriptlet passes a SQL query built from user-controlled request data to 'executeQuery'. |
+| vulnerability/search.jsp:18:15:18:103 | st.executeUpdate("DELETE FROM carts WHERE owner='" + request.getParameter("owner") + "'") | This JSP scriptlet passes a SQL query built from user-controlled request data to 'executeUpdate'. |
+| vulnerability/search.jsp:22:3:22:32 | st.executeQuery(sb.toString()) | This JSP scriptlet passes a SQL query built from user-controlled request data to 'executeQuery'. |
