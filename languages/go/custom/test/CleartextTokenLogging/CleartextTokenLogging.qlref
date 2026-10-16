@@ -1,0 +1,2 @@
+query: CleartextTokenLogging/CleartextTokenLogging.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

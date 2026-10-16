@@ -1,0 +1,8 @@
+#select
+| main.go:76:28:76:35 | password | main.go:63:66:63:73 | SSA def(password) | main.go:76:28:76:35 | password | $@ flows to a logging call. | main.go:63:66:63:73 | SSA def(password) | Sensitive data returned by an access to password |
+edges
+| main.go:63:66:63:73 | SSA def(password) | main.go:76:28:76:35 | password | provenance |  |
+nodes
+| main.go:63:66:63:73 | SSA def(password) | semmle.label | SSA def(password) |
+| main.go:76:28:76:35 | password | semmle.label | password |
+subpaths
