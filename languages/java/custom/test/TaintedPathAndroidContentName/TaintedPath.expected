@@ -1,0 +1,100 @@
+#select
+| com/example/shop/ChooserActivity.java:42:13:42:20 | fileTemp | com/example/shop/ChooserActivity.java:19:19:19:29 | getIntent(...) : Intent | com/example/shop/ChooserActivity.java:42:13:42:20 | fileTemp | This path depends on a $@. | com/example/shop/ChooserActivity.java:19:19:19:29 | getIntent(...) | user-provided value |
+| com/example/shop/KotlinChooserActivity.kt:28:9:28:16 | fileTemp | com/example/shop/KotlinChooserActivity.kt:18:23:18:28 | getIntent(...) : Intent | com/example/shop/KotlinChooserActivity.kt:28:9:28:16 | fileTemp | This path depends on a $@. | com/example/shop/KotlinChooserActivity.kt:18:23:18:28 | getIntent(...) | user-provided value |
+edges
+| com/example/shop/ChooserActivity.java:19:19:19:29 | getIntent(...) : Intent | com/example/shop/ChooserActivity.java:19:19:19:79 | getParcelableExtra(...) : Uri | provenance | MaD:326 |
+| com/example/shop/ChooserActivity.java:19:19:19:79 | getParcelableExtra(...) : Uri | com/example/shop/ChooserActivity.java:20:50:20:52 | uri : Uri | provenance |  |
+| com/example/shop/ChooserActivity.java:19:19:19:79 | getParcelableExtra(...) : Uri | com/example/shop/ChooserActivity.java:21:45:21:47 | uri : Uri | provenance |  |
+| com/example/shop/ChooserActivity.java:20:27:20:53 | getFilenameFromContent(...) : String | com/example/shop/ChooserActivity.java:37:44:37:66 | originalFilename : String | provenance |  |
+| com/example/shop/ChooserActivity.java:20:50:20:52 | uri : Uri | com/example/shop/ChooserActivity.java:20:27:20:53 | getFilenameFromContent(...) : String | provenance | MaD:292 |
+| com/example/shop/ChooserActivity.java:20:50:20:52 | uri : Uri | com/example/shop/ChooserActivity.java:20:27:20:53 | getFilenameFromContent(...) : String | provenance | MaD:293 |
+| com/example/shop/ChooserActivity.java:20:50:20:52 | uri : Uri | com/example/shop/ChooserActivity.java:25:43:25:49 | uri : Uri | provenance |  |
+| com/example/shop/ChooserActivity.java:21:23:21:60 | fromFile(...) : Uri | com/example/shop/ChooserActivity.java:22:31:22:37 | fileUri : Uri | provenance |  |
+| com/example/shop/ChooserActivity.java:21:36:21:59 | new File(...) : File | com/example/shop/ChooserActivity.java:21:23:21:60 | fromFile(...) : Uri | provenance | MaD:492 |
+| com/example/shop/ChooserActivity.java:21:45:21:47 | uri : Uri | com/example/shop/ChooserActivity.java:21:45:21:58 | toString(...) : String | provenance | MaD:515 |
+| com/example/shop/ChooserActivity.java:21:45:21:58 | toString(...) : String | com/example/shop/ChooserActivity.java:21:36:21:59 | new File(...) : File | provenance | MaD:46512 |
+| com/example/shop/ChooserActivity.java:22:31:22:37 | fileUri : Uri | com/example/shop/ChooserActivity.java:22:31:22:58 | getLastPathSegment(...) : String | provenance | MaD:503 |
+| com/example/shop/ChooserActivity.java:22:31:22:58 | getLastPathSegment(...) : String | com/example/shop/ChooserActivity.java:37:44:37:66 | originalFilename : String | provenance |  |
+| com/example/shop/ChooserActivity.java:25:43:25:49 | uri : Uri | com/example/shop/ChooserActivity.java:27:76:27:78 | uri : Uri | provenance |  |
+| com/example/shop/ChooserActivity.java:27:25:28:78 | query(...) : Cursor | com/example/shop/ChooserActivity.java:32:24:32:29 | cursor : Cursor | provenance |  |
+| com/example/shop/ChooserActivity.java:27:76:27:78 | uri : Uri | com/example/shop/ChooserActivity.java:27:25:28:78 | query(...) : Cursor | provenance | MaD:292 |
+| com/example/shop/ChooserActivity.java:27:76:27:78 | uri : Uri | com/example/shop/ChooserActivity.java:27:25:28:78 | query(...) : Cursor | provenance | MaD:293 |
+| com/example/shop/ChooserActivity.java:32:24:32:29 | cursor : Cursor | com/example/shop/ChooserActivity.java:32:24:32:52 | getString(...) : String | provenance | MaD:403 |
+| com/example/shop/ChooserActivity.java:32:24:32:52 | getString(...) : String | com/example/shop/ChooserActivity.java:34:16:34:23 | fileName : String | provenance |  |
+| com/example/shop/ChooserActivity.java:37:44:37:66 | originalFilename : String | com/example/shop/ChooserActivity.java:42:13:42:20 | fileTemp | provenance | AdditionalTaintStep Sink:MaD:46435 |
+| com/example/shop/KotlinChooserActivity.kt:18:23:18:28 | <implicit not null> : Intent | com/example/shop/KotlinChooserActivity.kt:18:23:18:90 | getParcelableExtra(...) : Parcelable | provenance | MaD:326 |
+| com/example/shop/KotlinChooserActivity.kt:18:23:18:28 | getIntent(...) : Intent | com/example/shop/KotlinChooserActivity.kt:18:23:18:28 | <implicit not null> : Intent | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:18:23:18:90 | getParcelableExtra(...) : Parcelable | com/example/shop/KotlinChooserActivity.kt:18:23:18:97 | (...)... : Uri | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:18:23:18:97 | (...)... : Uri | com/example/shop/KotlinChooserActivity.kt:19:43:19:45 | uri : Uri | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:18:23:18:97 | (...)... : Uri | com/example/shop/KotlinChooserActivity.kt:20:37:20:39 | uri : Uri | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:19:31:19:46 | getFilename(...) : String | com/example/shop/KotlinChooserActivity.kt:25:44:25:68 | originalFilename : String | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:19:43:19:45 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:19:31:19:46 | getFilename(...) : String | provenance | MaD:292 |
+| com/example/shop/KotlinChooserActivity.kt:19:43:19:45 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:19:31:19:46 | getFilename(...) : String | provenance | MaD:293 |
+| com/example/shop/KotlinChooserActivity.kt:19:43:19:45 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:19:31:19:46 | getFilename(...) : String | provenance | MaD:503 |
+| com/example/shop/KotlinChooserActivity.kt:19:43:19:45 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:32:21:32:28 | uri : Uri | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:20:23:20:52 | <implicit not null> : Uri | com/example/shop/KotlinChooserActivity.kt:21:43:21:45 | uri : Uri | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:20:23:20:52 | fromFile(...) : Uri | com/example/shop/KotlinChooserActivity.kt:20:23:20:52 | <implicit not null> : Uri | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:20:32:20:51 | new File(...) : File | com/example/shop/KotlinChooserActivity.kt:20:23:20:52 | fromFile(...) : Uri | provenance | MaD:492 |
+| com/example/shop/KotlinChooserActivity.kt:20:37:20:39 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:20:37:20:50 | toString(...) : String | provenance | MaD:515 |
+| com/example/shop/KotlinChooserActivity.kt:20:37:20:50 | toString(...) : String | com/example/shop/KotlinChooserActivity.kt:20:32:20:51 | new File(...) : File | provenance | MaD:46512 |
+| com/example/shop/KotlinChooserActivity.kt:21:31:21:46 | getFilename(...) : String | com/example/shop/KotlinChooserActivity.kt:25:44:25:68 | originalFilename : String | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:21:43:21:45 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:21:31:21:46 | getFilename(...) : String | provenance | MaD:292 |
+| com/example/shop/KotlinChooserActivity.kt:21:43:21:45 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:21:31:21:46 | getFilename(...) : String | provenance | MaD:293 |
+| com/example/shop/KotlinChooserActivity.kt:21:43:21:45 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:21:31:21:46 | getFilename(...) : String | provenance | MaD:503 |
+| com/example/shop/KotlinChooserActivity.kt:21:43:21:45 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:32:21:32:28 | uri : Uri | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:25:44:25:68 | originalFilename : String | com/example/shop/KotlinChooserActivity.kt:28:9:28:16 | fileTemp | provenance | AdditionalTaintStep Sink:MaD:46435 |
+| com/example/shop/KotlinChooserActivity.kt:32:21:32:28 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:36:24:36:26 | uri : Uri | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:32:21:32:28 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:38:76:38:78 | uri : Uri | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:36:24:36:26 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:36:24:36:42 | getLastPathSegment(...) : String | provenance | MaD:503 |
+| com/example/shop/KotlinChooserActivity.kt:36:24:36:42 | getLastPathSegment(...) : String | com/example/shop/KotlinChooserActivity.kt:45:16:45:23 | fileName : String | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:38:54:38:136 | query(...) : Cursor | com/example/shop/KotlinChooserActivity.kt:42:28:42:33 | <implicit cast> : Cursor | provenance |  |
+| com/example/shop/KotlinChooserActivity.kt:38:76:38:78 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:38:54:38:136 | query(...) : Cursor | provenance | MaD:292 |
+| com/example/shop/KotlinChooserActivity.kt:38:76:38:78 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:38:54:38:136 | query(...) : Cursor | provenance | MaD:293 |
+| com/example/shop/KotlinChooserActivity.kt:42:28:42:33 | <implicit cast> : Cursor | com/example/shop/KotlinChooserActivity.kt:42:28:42:56 | getString(...) : String | provenance | MaD:403 |
+| com/example/shop/KotlinChooserActivity.kt:42:28:42:56 | getString(...) : String | com/example/shop/KotlinChooserActivity.kt:45:16:45:23 | fileName : String | provenance |  |
+nodes
+| com/example/shop/ChooserActivity.java:19:19:19:29 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| com/example/shop/ChooserActivity.java:19:19:19:79 | getParcelableExtra(...) : Uri | semmle.label | getParcelableExtra(...) : Uri |
+| com/example/shop/ChooserActivity.java:20:27:20:53 | getFilenameFromContent(...) : String | semmle.label | getFilenameFromContent(...) : String |
+| com/example/shop/ChooserActivity.java:20:50:20:52 | uri : Uri | semmle.label | uri : Uri |
+| com/example/shop/ChooserActivity.java:21:23:21:60 | fromFile(...) : Uri | semmle.label | fromFile(...) : Uri |
+| com/example/shop/ChooserActivity.java:21:36:21:59 | new File(...) : File | semmle.label | new File(...) : File |
+| com/example/shop/ChooserActivity.java:21:45:21:47 | uri : Uri | semmle.label | uri : Uri |
+| com/example/shop/ChooserActivity.java:21:45:21:58 | toString(...) : String | semmle.label | toString(...) : String |
+| com/example/shop/ChooserActivity.java:22:31:22:37 | fileUri : Uri | semmle.label | fileUri : Uri |
+| com/example/shop/ChooserActivity.java:22:31:22:58 | getLastPathSegment(...) : String | semmle.label | getLastPathSegment(...) : String |
+| com/example/shop/ChooserActivity.java:25:43:25:49 | uri : Uri | semmle.label | uri : Uri |
+| com/example/shop/ChooserActivity.java:27:25:28:78 | query(...) : Cursor | semmle.label | query(...) : Cursor |
+| com/example/shop/ChooserActivity.java:27:76:27:78 | uri : Uri | semmle.label | uri : Uri |
+| com/example/shop/ChooserActivity.java:32:24:32:29 | cursor : Cursor | semmle.label | cursor : Cursor |
+| com/example/shop/ChooserActivity.java:32:24:32:52 | getString(...) : String | semmle.label | getString(...) : String |
+| com/example/shop/ChooserActivity.java:34:16:34:23 | fileName : String | semmle.label | fileName : String |
+| com/example/shop/ChooserActivity.java:37:44:37:66 | originalFilename : String | semmle.label | originalFilename : String |
+| com/example/shop/ChooserActivity.java:42:13:42:20 | fileTemp | semmle.label | fileTemp |
+| com/example/shop/KotlinChooserActivity.kt:18:23:18:28 | <implicit not null> : Intent | semmle.label | <implicit not null> : Intent |
+| com/example/shop/KotlinChooserActivity.kt:18:23:18:28 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| com/example/shop/KotlinChooserActivity.kt:18:23:18:90 | getParcelableExtra(...) : Parcelable | semmle.label | getParcelableExtra(...) : Parcelable |
+| com/example/shop/KotlinChooserActivity.kt:18:23:18:97 | (...)... : Uri | semmle.label | (...)... : Uri |
+| com/example/shop/KotlinChooserActivity.kt:19:31:19:46 | getFilename(...) : String | semmle.label | getFilename(...) : String |
+| com/example/shop/KotlinChooserActivity.kt:19:43:19:45 | uri : Uri | semmle.label | uri : Uri |
+| com/example/shop/KotlinChooserActivity.kt:20:23:20:52 | <implicit not null> : Uri | semmle.label | <implicit not null> : Uri |
+| com/example/shop/KotlinChooserActivity.kt:20:23:20:52 | fromFile(...) : Uri | semmle.label | fromFile(...) : Uri |
+| com/example/shop/KotlinChooserActivity.kt:20:32:20:51 | new File(...) : File | semmle.label | new File(...) : File |
+| com/example/shop/KotlinChooserActivity.kt:20:37:20:39 | uri : Uri | semmle.label | uri : Uri |
+| com/example/shop/KotlinChooserActivity.kt:20:37:20:50 | toString(...) : String | semmle.label | toString(...) : String |
+| com/example/shop/KotlinChooserActivity.kt:21:31:21:46 | getFilename(...) : String | semmle.label | getFilename(...) : String |
+| com/example/shop/KotlinChooserActivity.kt:21:43:21:45 | uri : Uri | semmle.label | uri : Uri |
+| com/example/shop/KotlinChooserActivity.kt:25:44:25:68 | originalFilename : String | semmle.label | originalFilename : String |
+| com/example/shop/KotlinChooserActivity.kt:28:9:28:16 | fileTemp | semmle.label | fileTemp |
+| com/example/shop/KotlinChooserActivity.kt:32:21:32:28 | uri : Uri | semmle.label | uri : Uri |
+| com/example/shop/KotlinChooserActivity.kt:36:24:36:26 | uri : Uri | semmle.label | uri : Uri |
+| com/example/shop/KotlinChooserActivity.kt:36:24:36:42 | getLastPathSegment(...) : String | semmle.label | getLastPathSegment(...) : String |
+| com/example/shop/KotlinChooserActivity.kt:38:54:38:136 | query(...) : Cursor | semmle.label | query(...) : Cursor |
+| com/example/shop/KotlinChooserActivity.kt:38:76:38:78 | uri : Uri | semmle.label | uri : Uri |
+| com/example/shop/KotlinChooserActivity.kt:42:28:42:33 | <implicit cast> : Cursor | semmle.label | <implicit cast> : Cursor |
+| com/example/shop/KotlinChooserActivity.kt:42:28:42:56 | getString(...) : String | semmle.label | getString(...) : String |
+| com/example/shop/KotlinChooserActivity.kt:45:16:45:23 | fileName : String | semmle.label | fileName : String |
+subpaths
+| com/example/shop/ChooserActivity.java:20:50:20:52 | uri : Uri | com/example/shop/ChooserActivity.java:25:43:25:49 | uri : Uri | com/example/shop/ChooserActivity.java:34:16:34:23 | fileName : String | com/example/shop/ChooserActivity.java:20:27:20:53 | getFilenameFromContent(...) : String |
+| com/example/shop/KotlinChooserActivity.kt:19:43:19:45 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:32:21:32:28 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:45:16:45:23 | fileName : String | com/example/shop/KotlinChooserActivity.kt:19:31:19:46 | getFilename(...) : String |
+| com/example/shop/KotlinChooserActivity.kt:21:43:21:45 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:32:21:32:28 | uri : Uri | com/example/shop/KotlinChooserActivity.kt:45:16:45:23 | fileName : String | com/example/shop/KotlinChooserActivity.kt:21:31:21:46 | getFilename(...) : String |
