@@ -1,5 +1,6 @@
 name: languages-cpp-custom-test
 version: 0.0.2
 dependencies:
+  codeql/cpp-queries: "*"
   languages-cpp-custom-src: ${workspace}
 extractor: cpp

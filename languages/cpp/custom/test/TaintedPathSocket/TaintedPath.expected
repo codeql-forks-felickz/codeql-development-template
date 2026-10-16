@@ -1,0 +1,56 @@
+#select
+| test.c:43:25:43:28 | data | test.c:38:35:38:58 | recv output argument | test.c:43:25:43:28 | *data | This argument to a file access function is derived from $@ and then passed to fopen(path). | test.c:38:35:38:58 | recv output argument | user input (buffer read by recv) |
+| test.c:62:25:62:28 | data | test.c:57:36:57:59 | recv output argument | test.c:62:25:62:28 | *data | This argument to a file access function is derived from $@ and then passed to fopen(path). | test.c:57:36:57:59 | recv output argument | user input (buffer read by recv) |
+| test.c:82:14:82:17 | data | test.c:79:40:79:63 | recv output argument | test.c:82:14:82:17 | *data | This argument to a file access function is derived from $@ and then passed to badSink_41(data), which calls fopen(path). | test.c:79:40:79:63 | recv output argument | user input (buffer read by recv) |
+| test.c:100:25:100:28 | data | test.c:89:40:89:63 | recv output argument | test.c:100:25:100:28 | *data | This argument to a file access function is derived from $@ and then passed to fopen(path). | test.c:89:40:89:63 | recv output argument | user input (buffer read by recv) |
+edges
+| test.c:21:33:21:36 | *data | test.c:21:33:21:36 | *data | provenance |  |
+| test.c:38:35:38:58 | recv output argument | test.c:40:3:40:50 | ... = ... | provenance |  |
+| test.c:40:3:40:50 | ... = ... | test.c:41:17:41:20 | *data | provenance |  |
+| test.c:40:3:40:50 | ... = ... | test.c:43:25:43:28 | *data | provenance |  |
+| test.c:41:17:41:20 | *data | test.c:21:33:21:36 | *data | provenance |  |
+| test.c:41:17:41:20 | *data | test.c:41:17:41:20 | stripNewlines output argument | provenance |  |
+| test.c:41:17:41:20 | stripNewlines output argument | test.c:43:25:43:28 | *data | provenance |  |
+| test.c:57:36:57:59 | recv output argument | test.c:59:3:59:50 | ... = ... | provenance |  |
+| test.c:59:3:59:50 | ... = ... | test.c:60:17:60:20 | *data | provenance |  |
+| test.c:59:3:59:50 | ... = ... | test.c:62:25:62:28 | *data | provenance |  |
+| test.c:60:17:60:20 | *data | test.c:21:33:21:36 | *data | provenance |  |
+| test.c:60:17:60:20 | *data | test.c:60:17:60:20 | stripNewlines output argument | provenance |  |
+| test.c:60:17:60:20 | stripNewlines output argument | test.c:62:25:62:28 | *data | provenance |  |
+| test.c:79:40:79:63 | recv output argument | test.c:81:3:81:50 | ... = ... | provenance |  |
+| test.c:81:3:81:50 | ... = ... | test.c:82:14:82:17 | *data | provenance |  |
+| test.c:86:14:86:25 | **badSource_42 | test.c:98:10:98:21 | *call to badSource_42 | provenance |  |
+| test.c:89:40:89:63 | recv output argument | test.c:90:51:90:54 | *data | provenance |  |
+| test.c:89:40:89:63 | recv output argument | test.c:91:3:91:50 | ... = ... | provenance |  |
+| test.c:90:51:90:54 | *data | test.c:86:14:86:25 | **badSource_42 | provenance |  |
+| test.c:91:3:91:50 | ... = ... | test.c:92:10:92:13 | *data | provenance |  |
+| test.c:92:10:92:13 | *data | test.c:86:14:86:25 | **badSource_42 | provenance |  |
+| test.c:98:3:98:27 | *... = ... | test.c:100:25:100:28 | *data | provenance |  |
+| test.c:98:10:98:21 | *call to badSource_42 | test.c:98:3:98:27 | *... = ... | provenance |  |
+nodes
+| test.c:21:33:21:36 | *data | semmle.label | *data |
+| test.c:21:33:21:36 | *data | semmle.label | *data |
+| test.c:38:35:38:58 | recv output argument | semmle.label | recv output argument |
+| test.c:40:3:40:50 | ... = ... | semmle.label | ... = ... |
+| test.c:41:17:41:20 | *data | semmle.label | *data |
+| test.c:41:17:41:20 | stripNewlines output argument | semmle.label | stripNewlines output argument |
+| test.c:43:25:43:28 | *data | semmle.label | *data |
+| test.c:57:36:57:59 | recv output argument | semmle.label | recv output argument |
+| test.c:59:3:59:50 | ... = ... | semmle.label | ... = ... |
+| test.c:60:17:60:20 | *data | semmle.label | *data |
+| test.c:60:17:60:20 | stripNewlines output argument | semmle.label | stripNewlines output argument |
+| test.c:62:25:62:28 | *data | semmle.label | *data |
+| test.c:79:40:79:63 | recv output argument | semmle.label | recv output argument |
+| test.c:81:3:81:50 | ... = ... | semmle.label | ... = ... |
+| test.c:82:14:82:17 | *data | semmle.label | *data |
+| test.c:86:14:86:25 | **badSource_42 | semmle.label | **badSource_42 |
+| test.c:89:40:89:63 | recv output argument | semmle.label | recv output argument |
+| test.c:90:51:90:54 | *data | semmle.label | *data |
+| test.c:91:3:91:50 | ... = ... | semmle.label | ... = ... |
+| test.c:92:10:92:13 | *data | semmle.label | *data |
+| test.c:98:3:98:27 | *... = ... | semmle.label | *... = ... |
+| test.c:98:10:98:21 | *call to badSource_42 | semmle.label | *call to badSource_42 |
+| test.c:100:25:100:28 | *data | semmle.label | *data |
+subpaths
+| test.c:41:17:41:20 | *data | test.c:21:33:21:36 | *data | test.c:21:33:21:36 | *data | test.c:41:17:41:20 | stripNewlines output argument |
+| test.c:60:17:60:20 | *data | test.c:21:33:21:36 | *data | test.c:21:33:21:36 | *data | test.c:60:17:60:20 | stripNewlines output argument |
