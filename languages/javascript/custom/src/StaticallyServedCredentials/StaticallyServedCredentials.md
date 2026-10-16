@@ -29,9 +29,13 @@ app.use(express.static("public")); // BAD: the credential can be downloaded
 
 ## Limitations
 
-- Only files extracted by the JavaScript extractor are inspected (for example `.js`, `.ts`, `.json`, `.yml`/`.yaml`, `.html`). Files with other extensions, such as `.conf`, `.txt`, `.env` or `.properties`, are not present in the database, so credentials in them cannot be detected.
+- Only files extracted by the JavaScript extractor are inspected (for example `.js`, `.ts`, `.json`, `.yml`/`.yaml`, `.html`). Files with other extensions, such as `.conf`, `.txt`, `.env` or `.properties`, are not present in the database, so credentials in them cannot be detected. This holds for `codeql database create` as well as for query tests, and adding `include:**/*.conf` to `LGTM_INDEX_FILTERS` does not change it.
 - Folders served with absolute paths or paths containing `..` are not resolved.
 - This is a name-based heuristic (`@precision medium`), so it may report placeholder values.
+
+## Related queries
+
+- `js/protected-file-statically-served` reports authentication-protected views or files that are also statically served (see `ProtectedFileStaticallyServed`).
 
 ## References
 
