@@ -1,0 +1,2 @@
+query: SpringJspModelXss/SpringJspModelXss.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

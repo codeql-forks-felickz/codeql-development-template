@@ -1,0 +1,24 @@
+#select
+| LoginController.java:29:36:29:43 | username | LoginController.java:21:7:21:73 | username : String | LoginController.java:29:36:29:43 | username | Cross-site scripting vulnerability due to a $@ rendered by a JSP view through a Spring MVC model attribute. | LoginController.java:21:7:21:73 | username | user-provided value |
+| LoginController.java:30:34:30:39 | target | LoginController.java:20:7:20:69 | target : String | LoginController.java:30:34:30:39 | target | Cross-site scripting vulnerability due to a $@ rendered by a JSP view through a Spring MVC model attribute. | LoginController.java:20:7:20:69 | target | user-provided value |
+| LoginController.java:36:32:36:46 | ... + ... | LoginController.java:35:29:35:61 | name : String | LoginController.java:36:32:36:46 | ... + ... | Cross-site scripting vulnerability due to a $@ rendered by a JSP view through a Spring MVC model attribute. | LoginController.java:35:29:35:61 | name | user-provided value |
+| LoginController.java:43:28:43:28 | q | LoginController.java:41:30:41:56 | q : String | LoginController.java:43:28:43:28 | q | Cross-site scripting vulnerability due to a $@ rendered by a JSP view through a Spring MVC model attribute. | LoginController.java:41:30:41:56 | q | user-provided value |
+| LoginController.java:49:43:49:44 | id | LoginController.java:48:28:48:56 | id : String | LoginController.java:49:43:49:44 | id | Cross-site scripting vulnerability due to a $@ rendered by a JSP view through a Spring MVC model attribute. | LoginController.java:48:28:48:56 | id | user-provided value |
+edges
+| LoginController.java:20:7:20:69 | target : String | LoginController.java:30:34:30:39 | target | provenance |  |
+| LoginController.java:21:7:21:73 | username : String | LoginController.java:29:36:29:43 | username | provenance |  |
+| LoginController.java:35:29:35:61 | name : String | LoginController.java:36:32:36:46 | ... + ... | provenance |  |
+| LoginController.java:41:30:41:56 | q : String | LoginController.java:43:28:43:28 | q | provenance |  |
+| LoginController.java:48:28:48:56 | id : String | LoginController.java:49:43:49:44 | id | provenance |  |
+nodes
+| LoginController.java:20:7:20:69 | target : String | semmle.label | target : String |
+| LoginController.java:21:7:21:73 | username : String | semmle.label | username : String |
+| LoginController.java:29:36:29:43 | username | semmle.label | username |
+| LoginController.java:30:34:30:39 | target | semmle.label | target |
+| LoginController.java:35:29:35:61 | name : String | semmle.label | name : String |
+| LoginController.java:36:32:36:46 | ... + ... | semmle.label | ... + ... |
+| LoginController.java:41:30:41:56 | q : String | semmle.label | q : String |
+| LoginController.java:43:28:43:28 | q | semmle.label | q |
+| LoginController.java:48:28:48:56 | id : String | semmle.label | id : String |
+| LoginController.java:49:43:49:44 | id | semmle.label | id |
+subpaths
