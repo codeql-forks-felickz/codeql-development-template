@@ -1,0 +1,209 @@
+#select
+| captured_variable.py:16:18:16:48 | ControlFlowNode for Attribute() | captured_variable.py:8:20:8:23 | ControlFlowNode for self | captured_variable.py:16:18:16:48 | ControlFlowNode for Attribute() | This path depends on a $@. | captured_variable.py:8:20:8:23 | ControlFlowNode for self | user-provided value |
+| captured_variable.py:21:14:21:22 | ControlFlowNode for Subscript | captured_variable.py:18:32:18:35 | ControlFlowNode for self | captured_variable.py:21:14:21:22 | ControlFlowNode for Subscript | This path depends on a $@. | captured_variable.py:18:32:18:35 | ControlFlowNode for self | user-provided value |
+| captured_variable.py:26:14:26:22 | ControlFlowNode for Subscript | captured_variable.py:23:34:23:37 | ControlFlowNode for self | captured_variable.py:26:14:26:22 | ControlFlowNode for Subscript | This path depends on a $@. | captured_variable.py:23:34:23:37 | ControlFlowNode for self | user-provided value |
+| captured_variable.py:30:29:30:33 | ControlFlowNode for query | captured_variable.py:28:32:28:35 | ControlFlowNode for self | captured_variable.py:30:29:30:33 | ControlFlowNode for query | This path depends on a $@. | captured_variable.py:28:32:28:35 | ControlFlowNode for self | user-provided value |
+| captured_variable.py:36:18:36:26 | ControlFlowNode for Subscript | captured_variable.py:33:29:33:32 | ControlFlowNode for self | captured_variable.py:36:18:36:26 | ControlFlowNode for Subscript | This path depends on a $@. | captured_variable.py:33:29:33:32 | ControlFlowNode for self | user-provided value |
+| shell_file_command.py:14:9:19:15 | ControlFlowNode for BinaryExpr | shell_file_command.py:59:12:59:18 | ControlFlowNode for request | shell_file_command.py:14:9:19:15 | ControlFlowNode for BinaryExpr | This path depends on a $@. | shell_file_command.py:59:12:59:18 | ControlFlowNode for request | user-provided value |
+| shell_file_command.py:25:11:25:119 | ControlFlowNode for BinaryExpr | shell_file_command.py:59:12:59:18 | ControlFlowNode for request | shell_file_command.py:25:11:25:119 | ControlFlowNode for BinaryExpr | This path depends on a $@. | shell_file_command.py:59:12:59:18 | ControlFlowNode for request | user-provided value |
+| shell_file_command.py:30:65:30:95 | ControlFlowNode for Attribute() | shell_file_command.py:59:12:59:18 | ControlFlowNode for request | shell_file_command.py:30:65:30:95 | ControlFlowNode for Attribute() | This path depends on a $@. | shell_file_command.py:59:12:59:18 | ControlFlowNode for request | user-provided value |
+| shell_file_command.py:34:69:34:92 | ControlFlowNode for BinaryExpr | shell_file_command.py:59:12:59:18 | ControlFlowNode for request | shell_file_command.py:34:69:34:92 | ControlFlowNode for BinaryExpr | This path depends on a $@. | shell_file_command.py:59:12:59:18 | ControlFlowNode for request | user-provided value |
+edges
+| captured_variable.py:8:20:8:23 | ControlFlowNode for self | captured_variable.py:10:9:10:19 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| captured_variable.py:8:20:8:23 | ControlFlowNode for self | captured_variable.py:10:9:10:19 | IterableElement | provenance | AdditionalTaintStep |
+| captured_variable.py:8:20:8:23 | ControlFlowNode for self | captured_variable.py:10:15:10:19 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| captured_variable.py:10:9:10:19 | ControlFlowNode for Tuple | captured_variable.py:10:15:10:19 | ControlFlowNode for query | provenance |  |
+| captured_variable.py:10:9:10:19 | ControlFlowNode for Tuple [Tuple element at index 1] | captured_variable.py:10:15:10:19 | ControlFlowNode for query | provenance |  |
+| captured_variable.py:10:9:10:19 | IterableElement | captured_variable.py:10:9:10:19 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| captured_variable.py:10:15:10:19 | ControlFlowNode for query | captured_variable.py:12:121:12:125 | ControlFlowNode for query | provenance | Config |
+| captured_variable.py:11:9:11:14 | ControlFlowNode for params [Any dictionary element] | captured_variable.py:16:34:16:39 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| captured_variable.py:11:18:14:9 | ControlFlowNode for dict() [Any dictionary element] | captured_variable.py:11:9:11:14 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| captured_variable.py:12:13:13:71 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | captured_variable.py:11:18:14:9 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| captured_variable.py:12:14:12:128 | ControlFlowNode for Tuple [Tuple element at index 1] | captured_variable.py:12:14:12:128 | ControlFlowNode for Yield [List element, Tuple element at index 1] | provenance |  |
+| captured_variable.py:12:14:12:128 | ControlFlowNode for Yield [List element, Tuple element at index 1] | captured_variable.py:12:13:13:71 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | provenance |  |
+| captured_variable.py:12:28:12:128 | ControlFlowNode for Attribute() | captured_variable.py:12:14:12:128 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| captured_variable.py:12:49:12:127 | ControlFlowNode for Attribute() | captured_variable.py:12:28:12:128 | ControlFlowNode for Attribute() | provenance | MaD:120 |
+| captured_variable.py:12:58:12:126 | ControlFlowNode for Attribute() | captured_variable.py:12:49:12:127 | ControlFlowNode for Attribute() | provenance | str.join |
+| captured_variable.py:12:58:12:126 | ControlFlowNode for Attribute() [List element] | captured_variable.py:12:49:12:127 | ControlFlowNode for Attribute() | provenance | str.join |
+| captured_variable.py:12:121:12:125 | ControlFlowNode for query | captured_variable.py:12:58:12:126 | ControlFlowNode for Attribute() | provenance | re.findall |
+| captured_variable.py:12:121:12:125 | ControlFlowNode for query | captured_variable.py:12:58:12:126 | ControlFlowNode for Attribute() [List element] | provenance | re.findall |
+| captured_variable.py:16:34:16:39 | ControlFlowNode for params [Any dictionary element] | captured_variable.py:16:34:16:47 | ControlFlowNode for Subscript | provenance |  |
+| captured_variable.py:16:34:16:47 | ControlFlowNode for Subscript | captured_variable.py:16:18:16:48 | ControlFlowNode for Attribute() | provenance | Config |
+| captured_variable.py:18:32:18:35 | ControlFlowNode for self | captured_variable.py:19:9:19:16 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| captured_variable.py:18:32:18:35 | ControlFlowNode for self | captured_variable.py:19:9:19:16 | IterableElement | provenance | AdditionalTaintStep |
+| captured_variable.py:18:32:18:35 | ControlFlowNode for self | captured_variable.py:19:12:19:16 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| captured_variable.py:19:9:19:16 | ControlFlowNode for Tuple | captured_variable.py:19:12:19:16 | ControlFlowNode for query | provenance |  |
+| captured_variable.py:19:9:19:16 | ControlFlowNode for Tuple [Tuple element at index 1] | captured_variable.py:19:12:19:16 | ControlFlowNode for query | provenance |  |
+| captured_variable.py:19:9:19:16 | IterableElement | captured_variable.py:19:9:19:16 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| captured_variable.py:19:12:19:16 | ControlFlowNode for query | captured_variable.py:20:27:20:31 | ControlFlowNode for query | provenance | Config |
+| captured_variable.py:20:9:20:14 | ControlFlowNode for values [Any dictionary element] | captured_variable.py:21:14:21:19 | ControlFlowNode for values [Any dictionary element] | provenance |  |
+| captured_variable.py:20:18:20:51 | ControlFlowNode for dict() [Any dictionary element] | captured_variable.py:20:9:20:14 | ControlFlowNode for values [Any dictionary element] | provenance |  |
+| captured_variable.py:20:23:20:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | captured_variable.py:20:18:20:51 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| captured_variable.py:20:24:20:31 | ControlFlowNode for Tuple [Tuple element at index 1] | captured_variable.py:20:24:20:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | provenance |  |
+| captured_variable.py:20:24:20:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | captured_variable.py:20:23:20:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | provenance |  |
+| captured_variable.py:20:27:20:31 | ControlFlowNode for query | captured_variable.py:20:24:20:31 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| captured_variable.py:21:14:21:19 | ControlFlowNode for values [Any dictionary element] | captured_variable.py:21:14:21:22 | ControlFlowNode for Subscript | provenance |  |
+| captured_variable.py:23:34:23:37 | ControlFlowNode for self | captured_variable.py:24:9:24:16 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| captured_variable.py:23:34:23:37 | ControlFlowNode for self | captured_variable.py:24:9:24:16 | IterableElement | provenance | AdditionalTaintStep |
+| captured_variable.py:23:34:23:37 | ControlFlowNode for self | captured_variable.py:24:12:24:16 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| captured_variable.py:24:9:24:16 | ControlFlowNode for Tuple | captured_variable.py:24:12:24:16 | ControlFlowNode for query | provenance |  |
+| captured_variable.py:24:9:24:16 | ControlFlowNode for Tuple [Tuple element at index 1] | captured_variable.py:24:12:24:16 | ControlFlowNode for query | provenance |  |
+| captured_variable.py:24:9:24:16 | IterableElement | captured_variable.py:24:9:24:16 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| captured_variable.py:24:12:24:16 | ControlFlowNode for query | captured_variable.py:25:19:25:23 | ControlFlowNode for query | provenance | Config |
+| captured_variable.py:25:9:25:14 | ControlFlowNode for values [List element] | captured_variable.py:26:14:26:19 | ControlFlowNode for values [List element] | provenance |  |
+| captured_variable.py:25:18:25:42 | ControlFlowNode for ListComp [List element] | captured_variable.py:25:9:25:14 | ControlFlowNode for values [List element] | provenance |  |
+| captured_variable.py:25:19:25:23 | ControlFlowNode for Yield [List element] | captured_variable.py:25:18:25:42 | ControlFlowNode for ListComp [List element] | provenance |  |
+| captured_variable.py:25:19:25:23 | ControlFlowNode for query | captured_variable.py:25:19:25:23 | ControlFlowNode for Yield [List element] | provenance |  |
+| captured_variable.py:26:14:26:19 | ControlFlowNode for values [List element] | captured_variable.py:26:14:26:22 | ControlFlowNode for Subscript | provenance |  |
+| captured_variable.py:28:32:28:35 | ControlFlowNode for self | captured_variable.py:29:9:29:16 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| captured_variable.py:28:32:28:35 | ControlFlowNode for self | captured_variable.py:29:9:29:16 | IterableElement | provenance | AdditionalTaintStep |
+| captured_variable.py:28:32:28:35 | ControlFlowNode for self | captured_variable.py:29:12:29:16 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| captured_variable.py:29:9:29:16 | ControlFlowNode for Tuple | captured_variable.py:29:12:29:16 | ControlFlowNode for query | provenance |  |
+| captured_variable.py:29:9:29:16 | ControlFlowNode for Tuple [Tuple element at index 1] | captured_variable.py:29:12:29:16 | ControlFlowNode for query | provenance |  |
+| captured_variable.py:29:9:29:16 | IterableElement | captured_variable.py:29:9:29:16 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| captured_variable.py:29:12:29:16 | ControlFlowNode for query | captured_variable.py:30:29:30:33 | ControlFlowNode for query | provenance | Config |
+| captured_variable.py:33:29:33:32 | ControlFlowNode for self | captured_variable.py:34:13:34:16 | ControlFlowNode for part | provenance | AdditionalTaintStep |
+| captured_variable.py:34:13:34:16 | ControlFlowNode for part | captured_variable.py:35:23:35:26 | ControlFlowNode for part | provenance | Config |
+| captured_variable.py:35:13:35:18 | ControlFlowNode for values [List element] | captured_variable.py:36:18:36:23 | ControlFlowNode for values [List element] | provenance |  |
+| captured_variable.py:35:22:35:45 | ControlFlowNode for ListComp [List element] | captured_variable.py:35:13:35:18 | ControlFlowNode for values [List element] | provenance |  |
+| captured_variable.py:35:23:35:26 | ControlFlowNode for Yield [List element] | captured_variable.py:35:22:35:45 | ControlFlowNode for ListComp [List element] | provenance |  |
+| captured_variable.py:35:23:35:26 | ControlFlowNode for part | captured_variable.py:35:23:35:26 | ControlFlowNode for Yield [List element] | provenance |  |
+| captured_variable.py:36:18:36:23 | ControlFlowNode for values [List element] | captured_variable.py:36:18:36:26 | ControlFlowNode for Subscript | provenance |  |
+| captured_variable.py:38:36:38:39 | ControlFlowNode for self | captured_variable.py:42:23:42:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | provenance | AdditionalTaintStep |
+| captured_variable.py:38:36:38:39 | ControlFlowNode for self | captured_variable.py:42:27:42:31 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| captured_variable.py:42:9:42:14 | ControlFlowNode for values [Any dictionary element] | captured_variable.py:43:14:43:19 | ControlFlowNode for values [Any dictionary element] | provenance |  |
+| captured_variable.py:42:18:42:51 | ControlFlowNode for dict() [Any dictionary element] | captured_variable.py:42:9:42:14 | ControlFlowNode for values [Any dictionary element] | provenance |  |
+| captured_variable.py:42:23:42:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | captured_variable.py:42:18:42:51 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| captured_variable.py:42:24:42:31 | ControlFlowNode for Tuple [Tuple element at index 1] | captured_variable.py:42:24:42:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | provenance |  |
+| captured_variable.py:42:27:42:31 | ControlFlowNode for query | captured_variable.py:42:24:42:31 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| captured_variable.py:43:14:43:19 | ControlFlowNode for values [Any dictionary element] | captured_variable.py:43:14:43:22 | ControlFlowNode for Subscript | provenance |  |
+| captured_variable.py:45:20:45:23 | ControlFlowNode for self | captured_variable.py:47:9:47:16 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| captured_variable.py:45:20:45:23 | ControlFlowNode for self | captured_variable.py:47:9:47:16 | IterableElement | provenance | AdditionalTaintStep |
+| captured_variable.py:45:20:45:23 | ControlFlowNode for self | captured_variable.py:47:12:47:16 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| captured_variable.py:47:9:47:16 | ControlFlowNode for Tuple | captured_variable.py:47:12:47:16 | ControlFlowNode for query | provenance |  |
+| captured_variable.py:47:9:47:16 | ControlFlowNode for Tuple [Tuple element at index 1] | captured_variable.py:47:12:47:16 | ControlFlowNode for query | provenance |  |
+| captured_variable.py:47:9:47:16 | IterableElement | captured_variable.py:47:9:47:16 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| captured_variable.py:47:12:47:16 | ControlFlowNode for query | captured_variable.py:48:14:48:18 | ControlFlowNode for query | provenance |  |
+| shell_file_command.py:11:25:11:29 | ControlFlowNode for title | shell_file_command.py:19:10:19:14 | ControlFlowNode for title | provenance |  |
+| shell_file_command.py:17:9:19:15 | ControlFlowNode for BinaryExpr | shell_file_command.py:14:9:19:15 | ControlFlowNode for BinaryExpr | provenance |  |
+| shell_file_command.py:18:10:19:14 | ControlFlowNode for Tuple [Tuple element at index 1] | shell_file_command.py:17:9:19:15 | ControlFlowNode for BinaryExpr | provenance |  |
+| shell_file_command.py:19:10:19:14 | ControlFlowNode for title | shell_file_command.py:18:10:19:14 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| shell_file_command.py:23:18:23:22 | ControlFlowNode for title | shell_file_command.py:25:87:25:117 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| shell_file_command.py:25:25:25:118 | ControlFlowNode for Tuple [Tuple element at index 1] | shell_file_command.py:25:11:25:119 | ControlFlowNode for BinaryExpr | provenance |  |
+| shell_file_command.py:25:75:25:118 | ControlFlowNode for Attribute() | shell_file_command.py:25:25:25:118 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| shell_file_command.py:25:87:25:117 | ControlFlowNode for Attribute() | shell_file_command.py:25:75:25:118 | ControlFlowNode for Attribute() | provenance | MaD:104 |
+| shell_file_command.py:29:30:29:34 | ControlFlowNode for title | shell_file_command.py:30:65:30:95 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| shell_file_command.py:33:33:33:37 | ControlFlowNode for title | shell_file_command.py:34:69:34:92 | ControlFlowNode for BinaryExpr | provenance |  |
+| shell_file_command.py:53:23:53:27 | ControlFlowNode for title | shell_file_command.py:56:54:56:84 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| shell_file_command.py:59:12:59:18 | ControlFlowNode for request | shell_file_command.py:60:12:60:23 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| shell_file_command.py:60:5:60:8 | ControlFlowNode for name | shell_file_command.py:62:25:62:28 | ControlFlowNode for name | provenance |  |
+| shell_file_command.py:60:5:60:8 | ControlFlowNode for name | shell_file_command.py:63:18:63:21 | ControlFlowNode for name | provenance |  |
+| shell_file_command.py:60:5:60:8 | ControlFlowNode for name | shell_file_command.py:64:30:64:33 | ControlFlowNode for name | provenance |  |
+| shell_file_command.py:60:5:60:8 | ControlFlowNode for name | shell_file_command.py:65:33:65:36 | ControlFlowNode for name | provenance |  |
+| shell_file_command.py:60:5:60:8 | ControlFlowNode for name | shell_file_command.py:69:23:69:26 | ControlFlowNode for name | provenance |  |
+| shell_file_command.py:60:12:60:23 | ControlFlowNode for Attribute | shell_file_command.py:60:12:60:42 | ControlFlowNode for Attribute() | provenance | dict.get |
+| shell_file_command.py:60:12:60:42 | ControlFlowNode for Attribute() | shell_file_command.py:60:5:60:8 | ControlFlowNode for name | provenance |  |
+| shell_file_command.py:62:25:62:28 | ControlFlowNode for name | shell_file_command.py:11:25:11:29 | ControlFlowNode for title | provenance |  |
+| shell_file_command.py:63:18:63:21 | ControlFlowNode for name | shell_file_command.py:23:18:23:22 | ControlFlowNode for title | provenance |  |
+| shell_file_command.py:64:30:64:33 | ControlFlowNode for name | shell_file_command.py:29:30:29:34 | ControlFlowNode for title | provenance |  |
+| shell_file_command.py:65:33:65:36 | ControlFlowNode for name | shell_file_command.py:33:33:33:37 | ControlFlowNode for title | provenance |  |
+| shell_file_command.py:69:23:69:26 | ControlFlowNode for name | shell_file_command.py:53:23:53:27 | ControlFlowNode for title | provenance |  |
+nodes
+| captured_variable.py:8:20:8:23 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| captured_variable.py:10:9:10:19 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| captured_variable.py:10:9:10:19 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| captured_variable.py:10:9:10:19 | IterableElement | semmle.label | IterableElement |
+| captured_variable.py:10:15:10:19 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| captured_variable.py:11:9:11:14 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| captured_variable.py:11:18:14:9 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| captured_variable.py:12:13:13:71 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| captured_variable.py:12:14:12:128 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| captured_variable.py:12:14:12:128 | ControlFlowNode for Yield [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for Yield [List element, Tuple element at index 1] |
+| captured_variable.py:12:28:12:128 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| captured_variable.py:12:49:12:127 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| captured_variable.py:12:58:12:126 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| captured_variable.py:12:58:12:126 | ControlFlowNode for Attribute() [List element] | semmle.label | ControlFlowNode for Attribute() [List element] |
+| captured_variable.py:12:121:12:125 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| captured_variable.py:16:18:16:48 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| captured_variable.py:16:34:16:39 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| captured_variable.py:16:34:16:47 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| captured_variable.py:18:32:18:35 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| captured_variable.py:19:9:19:16 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| captured_variable.py:19:9:19:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| captured_variable.py:19:9:19:16 | IterableElement | semmle.label | IterableElement |
+| captured_variable.py:19:12:19:16 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| captured_variable.py:20:9:20:14 | ControlFlowNode for values [Any dictionary element] | semmle.label | ControlFlowNode for values [Any dictionary element] |
+| captured_variable.py:20:18:20:51 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| captured_variable.py:20:23:20:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| captured_variable.py:20:24:20:31 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| captured_variable.py:20:24:20:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for Yield [List element, Tuple element at index 1] |
+| captured_variable.py:20:27:20:31 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| captured_variable.py:21:14:21:19 | ControlFlowNode for values [Any dictionary element] | semmle.label | ControlFlowNode for values [Any dictionary element] |
+| captured_variable.py:21:14:21:22 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| captured_variable.py:23:34:23:37 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| captured_variable.py:24:9:24:16 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| captured_variable.py:24:9:24:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| captured_variable.py:24:9:24:16 | IterableElement | semmle.label | IterableElement |
+| captured_variable.py:24:12:24:16 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| captured_variable.py:25:9:25:14 | ControlFlowNode for values [List element] | semmle.label | ControlFlowNode for values [List element] |
+| captured_variable.py:25:18:25:42 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| captured_variable.py:25:19:25:23 | ControlFlowNode for Yield [List element] | semmle.label | ControlFlowNode for Yield [List element] |
+| captured_variable.py:25:19:25:23 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| captured_variable.py:26:14:26:19 | ControlFlowNode for values [List element] | semmle.label | ControlFlowNode for values [List element] |
+| captured_variable.py:26:14:26:22 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| captured_variable.py:28:32:28:35 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| captured_variable.py:29:9:29:16 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| captured_variable.py:29:9:29:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| captured_variable.py:29:9:29:16 | IterableElement | semmle.label | IterableElement |
+| captured_variable.py:29:12:29:16 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| captured_variable.py:30:29:30:33 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| captured_variable.py:33:29:33:32 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| captured_variable.py:34:13:34:16 | ControlFlowNode for part | semmle.label | ControlFlowNode for part |
+| captured_variable.py:35:13:35:18 | ControlFlowNode for values [List element] | semmle.label | ControlFlowNode for values [List element] |
+| captured_variable.py:35:22:35:45 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| captured_variable.py:35:23:35:26 | ControlFlowNode for Yield [List element] | semmle.label | ControlFlowNode for Yield [List element] |
+| captured_variable.py:35:23:35:26 | ControlFlowNode for part | semmle.label | ControlFlowNode for part |
+| captured_variable.py:36:18:36:23 | ControlFlowNode for values [List element] | semmle.label | ControlFlowNode for values [List element] |
+| captured_variable.py:36:18:36:26 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| captured_variable.py:38:36:38:39 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| captured_variable.py:42:9:42:14 | ControlFlowNode for values [Any dictionary element] | semmle.label | ControlFlowNode for values [Any dictionary element] |
+| captured_variable.py:42:18:42:51 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| captured_variable.py:42:23:42:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| captured_variable.py:42:24:42:31 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| captured_variable.py:42:24:42:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for Yield [List element, Tuple element at index 1] |
+| captured_variable.py:42:27:42:31 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| captured_variable.py:43:14:43:19 | ControlFlowNode for values [Any dictionary element] | semmle.label | ControlFlowNode for values [Any dictionary element] |
+| captured_variable.py:43:14:43:22 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| captured_variable.py:45:20:45:23 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| captured_variable.py:47:9:47:16 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| captured_variable.py:47:9:47:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| captured_variable.py:47:9:47:16 | IterableElement | semmle.label | IterableElement |
+| captured_variable.py:47:12:47:16 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| captured_variable.py:48:14:48:18 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| shell_file_command.py:11:25:11:29 | ControlFlowNode for title | semmle.label | ControlFlowNode for title |
+| shell_file_command.py:14:9:19:15 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| shell_file_command.py:17:9:19:15 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| shell_file_command.py:18:10:19:14 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| shell_file_command.py:19:10:19:14 | ControlFlowNode for title | semmle.label | ControlFlowNode for title |
+| shell_file_command.py:23:18:23:22 | ControlFlowNode for title | semmle.label | ControlFlowNode for title |
+| shell_file_command.py:25:11:25:119 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| shell_file_command.py:25:25:25:118 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| shell_file_command.py:25:75:25:118 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| shell_file_command.py:25:87:25:117 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| shell_file_command.py:29:30:29:34 | ControlFlowNode for title | semmle.label | ControlFlowNode for title |
+| shell_file_command.py:30:65:30:95 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| shell_file_command.py:33:33:33:37 | ControlFlowNode for title | semmle.label | ControlFlowNode for title |
+| shell_file_command.py:34:69:34:92 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| shell_file_command.py:53:23:53:27 | ControlFlowNode for title | semmle.label | ControlFlowNode for title |
+| shell_file_command.py:56:54:56:84 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| shell_file_command.py:59:12:59:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| shell_file_command.py:60:5:60:8 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| shell_file_command.py:60:12:60:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| shell_file_command.py:60:12:60:42 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| shell_file_command.py:62:25:62:28 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| shell_file_command.py:63:18:63:21 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| shell_file_command.py:64:30:64:33 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| shell_file_command.py:65:33:65:36 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| shell_file_command.py:69:23:69:26 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+subpaths
+| captured_variable.py:38:36:38:39 | ControlFlowNode for self | captured_variable.py:42:27:42:31 | ControlFlowNode for query | captured_variable.py:42:24:42:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | captured_variable.py:42:23:42:50 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |

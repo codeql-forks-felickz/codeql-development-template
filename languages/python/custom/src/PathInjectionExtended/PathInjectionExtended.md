@@ -1,6 +1,11 @@
 Accessing files using paths constructed from user-controlled data can allow an attacker to access unexpected resources, such as files outside an intended directory (CWE-22).
 
-The standard `py/path-injection` query loses track of user input when it is assigned to a local variable by tuple unpacking or by a `for` loop and that variable is then read inside a comprehension, generator expression, lambda or nested function. This query reports those additional flows. Results that `py/path-injection` already reports are not repeated.
+This query extends the standard `py/path-injection` query in two ways:
+
+* `py/path-injection` loses track of user input when it is assigned to a local variable by tuple unpacking or by a `for` loop and that variable is then read inside a comprehension, generator expression, lambda or nested function. This query follows that flow.
+* `py/path-injection` only considers file system APIs such as `open` or `shutil.move`. This query also considers file paths passed to operating system file commands such as `mv`, `cp` or `cat`, whether in a shell command string or in an argument list. Quoting the command (for example with `shlex.quote`) prevents command injection but not path traversal.
+
+Results that `py/path-injection` already reports are not repeated.
 
 ## Recommendation
 
@@ -28,6 +33,21 @@ Check the normalized path against a base directory before opening it:
         target = os.path.normpath(os.path.join(base, params["path"]))
         if target.startswith(base):
             content = open(target, "rb").read()  # GOOD
+```
+
+The following Django view moves an uploaded file to a destination built from the user-provided `name` field. A name such as `../../settings.py` moves the file outside the upload directory and can overwrite application files.
+
+```python
+def store_uploaded_file(title, uploaded_file):
+    subprocess.call(["mv", uploaded_file.temporary_file_path(), os.path.join(UPLOAD_DIR, title)])  # BAD
+```
+
+Strip directory components from the name before using it:
+
+```python
+def store_uploaded_file(title, uploaded_file):
+    safe = os.path.basename(title)
+    subprocess.call(["mv", uploaded_file.temporary_file_path(), os.path.join(UPLOAD_DIR, safe)])  # GOOD
 ```
 
 ## References
