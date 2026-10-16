@@ -7,6 +7,13 @@ edges
 | JacksonCookieDeserialization.java:65:26:65:89 | cookie : String | JacksonCookieDeserialization.java:67:43:67:48 | cookie : String | provenance |  |
 | JacksonCookieDeserialization.java:67:43:67:48 | cookie : String | JacksonCookieDeserialization.java:47:53:47:72 | base64Payload : String | provenance |  |
 | JacksonCookieDeserialization.java:97:49:97:65 | getValue(...) : String | JacksonCookieDeserialization.java:97:22:97:66 | decode(...) | provenance | Src:MaD:48669 MaD:47689 |
+| MetaAnnotatedController.java:60:34:60:53 | base64Payload : String | MetaAnnotatedController.java:61:41:61:53 | base64Payload : String | provenance |  |
+| MetaAnnotatedController.java:61:41:61:53 | base64Payload : String | MetaAnnotatedController.java:61:14:61:54 | decode(...) : byte[] | provenance | MaD:47689 |
+| MetaAnnotatedController.java:76:55:76:74 | base64Payload : String | MetaAnnotatedController.java:79:52:79:64 | base64Payload : String | provenance |  |
+| MetaAnnotatedController.java:79:52:79:64 | base64Payload : String | MetaAnnotatedController.java:60:34:60:53 | base64Payload : String | provenance |  |
+| MetaAnnotatedController.java:79:52:79:64 | base64Payload : String | MetaAnnotatedController.java:79:45:79:65 | decode(...) | provenance | MaD:47689 |
+| MetaAnnotatedController.java:102:26:102:97 | activityCookie : String | MetaAnnotatedController.java:107:60:107:73 | activityCookie : String | provenance |  |
+| MetaAnnotatedController.java:107:60:107:73 | activityCookie : String | MetaAnnotatedController.java:76:55:76:74 | base64Payload : String | provenance |  |
 nodes
 | JacksonCookieDeserialization.java:43:32:43:51 | base64Payload : String | semmle.label | base64Payload : String |
 | JacksonCookieDeserialization.java:44:12:44:52 | decode(...) : byte[] | semmle.label | decode(...) : byte[] |
@@ -20,10 +27,20 @@ nodes
 | JacksonCookieDeserialization.java:97:49:97:65 | getValue(...) : String | semmle.label | getValue(...) : String |
 | JacksonCookieDeserialization.java:103:22:103:38 | getValue(...) | semmle.label | getValue(...) |
 | JacksonCookieDeserialization.java:109:22:109:38 | getValue(...) | semmle.label | getValue(...) |
+| MetaAnnotatedController.java:60:34:60:53 | base64Payload : String | semmle.label | base64Payload : String |
+| MetaAnnotatedController.java:61:14:61:54 | decode(...) : byte[] | semmle.label | decode(...) : byte[] |
+| MetaAnnotatedController.java:61:41:61:53 | base64Payload : String | semmle.label | base64Payload : String |
+| MetaAnnotatedController.java:76:55:76:74 | base64Payload : String | semmle.label | base64Payload : String |
+| MetaAnnotatedController.java:79:45:79:65 | decode(...) | semmle.label | decode(...) |
+| MetaAnnotatedController.java:79:52:79:64 | base64Payload : String | semmle.label | base64Payload : String |
+| MetaAnnotatedController.java:102:26:102:97 | activityCookie : String | semmle.label | activityCookie : String |
+| MetaAnnotatedController.java:107:60:107:73 | activityCookie : String | semmle.label | activityCookie : String |
 subpaths
 | JacksonCookieDeserialization.java:49:48:49:60 | base64Payload : String | JacksonCookieDeserialization.java:43:32:43:51 | base64Payload : String | JacksonCookieDeserialization.java:44:12:44:52 | decode(...) : byte[] | JacksonCookieDeserialization.java:49:41:49:61 | decode(...) |
+| MetaAnnotatedController.java:79:52:79:64 | base64Payload : String | MetaAnnotatedController.java:60:34:60:53 | base64Payload : String | MetaAnnotatedController.java:61:14:61:54 | decode(...) : byte[] | MetaAnnotatedController.java:79:45:79:65 | decode(...) |
 #select
 | JacksonCookieDeserialization.java:49:12:49:76 | readValue(...) | JacksonCookieDeserialization.java:65:26:65:89 | cookie : String | JacksonCookieDeserialization.java:49:41:49:61 | decode(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | JacksonCookieDeserialization.java:65:26:65:89 | cookie | user-provided value |
 | JacksonCookieDeserialization.java:97:9:97:81 | readValue(...) | JacksonCookieDeserialization.java:97:49:97:65 | getValue(...) : String | JacksonCookieDeserialization.java:97:22:97:66 | decode(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | JacksonCookieDeserialization.java:97:49:97:65 | getValue(...) | user-provided value |
 | JacksonCookieDeserialization.java:103:9:103:53 | readValue(...) | JacksonCookieDeserialization.java:103:22:103:38 | getValue(...) | JacksonCookieDeserialization.java:103:22:103:38 | getValue(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | JacksonCookieDeserialization.java:103:22:103:38 | getValue(...) | user-provided value |
 | JacksonCookieDeserialization.java:109:9:109:53 | readValue(...) | JacksonCookieDeserialization.java:109:22:109:38 | getValue(...) | JacksonCookieDeserialization.java:109:22:109:38 | getValue(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | JacksonCookieDeserialization.java:109:22:109:38 | getValue(...) | user-provided value |
+| MetaAnnotatedController.java:79:16:79:80 | readValue(...) | MetaAnnotatedController.java:102:26:102:97 | activityCookie : String | MetaAnnotatedController.java:79:45:79:65 | decode(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | MetaAnnotatedController.java:102:26:102:97 | activityCookie | user-provided value |
