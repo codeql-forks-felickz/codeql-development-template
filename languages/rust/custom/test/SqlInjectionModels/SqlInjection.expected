@@ -1,0 +1,114 @@
+#select
+| main.rs:42:29:42:41 | &unsafe_query | main.rs:39:18:39:64 | ...::read_to_string(...) | main.rs:42:29:42:41 | &unsafe_query | This query depends on a $@. | main.rs:39:18:39:64 | ...::read_to_string(...) | user-provided value |
+| main.rs:55:31:55:42 | unsafe_query | main.rs:53:18:53:64 | ...::read_to_string(...) | main.rs:55:31:55:42 | unsafe_query | This query depends on a $@. | main.rs:53:18:53:64 | ...::read_to_string(...) | user-provided value |
+| main.rs:56:36:56:95 | MacroExpr | main.rs:53:18:53:64 | ...::read_to_string(...) | main.rs:56:36:56:95 | MacroExpr | This query depends on a $@. | main.rs:53:18:53:64 | ...::read_to_string(...) | user-provided value |
+| main.rs:59:14:59:42 | MacroExpr | main.rs:53:18:53:64 | ...::read_to_string(...) | main.rs:59:14:59:42 | MacroExpr | This query depends on a $@. | main.rs:53:18:53:64 | ...::read_to_string(...) | user-provided value |
+| main.rs:62:61:62:90 | &... | main.rs:53:18:53:64 | ...::read_to_string(...) | main.rs:62:61:62:90 | &... | This query depends on a $@. | main.rs:53:18:53:64 | ...::read_to_string(...) | user-provided value |
+| main.rs:65:32:65:90 | &... | main.rs:53:18:53:64 | ...::read_to_string(...) | main.rs:65:32:65:90 | &... | This query depends on a $@. | main.rs:53:18:53:64 | ...::read_to_string(...) | user-provided value |
+| main.rs:85:35:85:101 | MacroExpr | main.rs:83:41:92:5 | \|...\| ... | main.rs:85:35:85:101 | MacroExpr | This query depends on a $@. | main.rs:83:41:92:5 | \|...\| ... | user-provided value |
+edges
+| main.rs:39:9:39:14 | db_key | main.rs:41:32:41:75 | MacroExpr | provenance |  |
+| main.rs:39:18:39:64 | ...::read_to_string(...) | main.rs:39:18:39:64 | ...::read_to_string(...) [Ok] | provenance | Src:MaD:534  |
+| main.rs:39:18:39:64 | ...::read_to_string(...) [Ok] | main.rs:39:18:39:73 | ... .unwrap() | provenance | MaD:9445 |
+| main.rs:39:18:39:73 | ... .unwrap() | main.rs:39:9:39:14 | db_key | provenance |  |
+| main.rs:41:9:41:20 | unsafe_query | main.rs:42:30:42:41 | unsafe_query | provenance |  |
+| main.rs:41:32:41:75 | ...::format(...) | main.rs:41:32:41:75 | { ... } | provenance |  |
+| main.rs:41:32:41:75 | ...::must_use(...) | main.rs:41:9:41:20 | unsafe_query | provenance |  |
+| main.rs:41:32:41:75 | MacroExpr | main.rs:41:32:41:75 | ...::format(...) | provenance | MaD:351 |
+| main.rs:41:32:41:75 | { ... } | main.rs:41:32:41:75 | ...::must_use(...) | provenance | MaD:13301 |
+| main.rs:42:29:42:41 | &unsafe_query [&ref] | main.rs:42:29:42:41 | &unsafe_query | provenance | Sink:MaD:248 |
+| main.rs:42:30:42:41 | unsafe_query | main.rs:42:29:42:41 | &unsafe_query [&ref] | provenance |  |
+| main.rs:53:9:53:14 | db_key | main.rs:54:78:54:83 | db_key | provenance |  |
+| main.rs:53:9:53:14 | db_key | main.rs:56:44:56:94 | MacroExpr | provenance |  |
+| main.rs:53:9:53:14 | db_key | main.rs:59:22:59:41 | MacroExpr | provenance |  |
+| main.rs:53:9:53:14 | db_key | main.rs:62:70:62:89 | MacroExpr | provenance |  |
+| main.rs:53:9:53:14 | db_key | main.rs:65:41:65:89 | MacroExpr | provenance |  |
+| main.rs:53:18:53:64 | ...::read_to_string(...) | main.rs:53:18:53:64 | ...::read_to_string(...) [Ok] | provenance | Src:MaD:534  |
+| main.rs:53:18:53:64 | ...::read_to_string(...) [Ok] | main.rs:53:18:53:73 | ... .unwrap() | provenance | MaD:9445 |
+| main.rs:53:18:53:73 | ... .unwrap() | main.rs:53:9:53:14 | db_key | provenance |  |
+| main.rs:54:9:54:20 | unsafe_query | main.rs:55:31:55:42 | unsafe_query | provenance | Sink:MaD:3 |
+| main.rs:54:24:54:90 | ... + ... | main.rs:54:24:54:96 | ... + ... | provenance | MaD:370 |
+| main.rs:54:24:54:96 | ... + ... | main.rs:54:9:54:20 | unsafe_query | provenance |  |
+| main.rs:54:78:54:83 | db_key | main.rs:54:78:54:90 | db_key.trim() [&ref] | provenance | MaD:6228 |
+| main.rs:54:78:54:90 | db_key.trim() [&ref] | main.rs:54:24:54:90 | ... + ... | provenance | MaD:371 |
+| main.rs:56:44:56:94 | ...::format(...) | main.rs:56:44:56:94 | { ... } | provenance |  |
+| main.rs:56:44:56:94 | ...::must_use(...) | main.rs:56:36:56:95 | MacroExpr | provenance | Sink:MaD:3 |
+| main.rs:56:44:56:94 | MacroExpr | main.rs:56:44:56:94 | ...::format(...) | provenance | MaD:351 |
+| main.rs:56:44:56:94 | { ... } | main.rs:56:44:56:94 | ...::must_use(...) | provenance | MaD:13301 |
+| main.rs:59:22:59:41 | ...::format(...) | main.rs:59:22:59:41 | { ... } | provenance |  |
+| main.rs:59:22:59:41 | ...::must_use(...) | main.rs:59:14:59:42 | MacroExpr | provenance | Sink:MaD:1 |
+| main.rs:59:22:59:41 | MacroExpr | main.rs:59:22:59:41 | ...::format(...) | provenance | MaD:351 |
+| main.rs:59:22:59:41 | { ... } | main.rs:59:22:59:41 | ...::must_use(...) | provenance | MaD:13301 |
+| main.rs:62:61:62:90 | &... [&ref] | main.rs:62:61:62:90 | &... | provenance | Sink:MaD:2 |
+| main.rs:62:62:62:90 | MacroExpr | main.rs:62:61:62:90 | &... [&ref] | provenance |  |
+| main.rs:62:70:62:89 | ...::format(...) | main.rs:62:70:62:89 | { ... } | provenance |  |
+| main.rs:62:70:62:89 | ...::must_use(...) | main.rs:62:62:62:90 | MacroExpr | provenance |  |
+| main.rs:62:70:62:89 | MacroExpr | main.rs:62:70:62:89 | ...::format(...) | provenance | MaD:351 |
+| main.rs:62:70:62:89 | { ... } | main.rs:62:70:62:89 | ...::must_use(...) | provenance | MaD:13301 |
+| main.rs:65:32:65:90 | &... [&ref] | main.rs:65:32:65:90 | &... | provenance | Sink:MaD:0 |
+| main.rs:65:33:65:90 | MacroExpr | main.rs:65:32:65:90 | &... [&ref] | provenance |  |
+| main.rs:65:41:65:89 | ...::format(...) | main.rs:65:41:65:89 | { ... } | provenance |  |
+| main.rs:65:41:65:89 | ...::must_use(...) | main.rs:65:33:65:90 | MacroExpr | provenance |  |
+| main.rs:65:41:65:89 | MacroExpr | main.rs:65:41:65:89 | ...::format(...) | provenance | MaD:351 |
+| main.rs:65:41:65:89 | { ... } | main.rs:65:41:65:89 | ...::must_use(...) | provenance | MaD:13301 |
+| main.rs:83:41:92:5 | \|...\| ... | main.rs:83:42:83:62 | ...: String | provenance | Src:MaD:746  |
+| main.rs:83:42:83:62 | ...: String | main.rs:85:43:85:100 | MacroExpr | provenance |  |
+| main.rs:85:43:85:100 | ...::format(...) | main.rs:85:43:85:100 | { ... } | provenance |  |
+| main.rs:85:43:85:100 | ...::must_use(...) | main.rs:85:35:85:101 | MacroExpr | provenance | Sink:MaD:3 |
+| main.rs:85:43:85:100 | MacroExpr | main.rs:85:43:85:100 | ...::format(...) | provenance | MaD:351 |
+| main.rs:85:43:85:100 | { ... } | main.rs:85:43:85:100 | ...::must_use(...) | provenance | MaD:13301 |
+nodes
+| main.rs:39:9:39:14 | db_key | semmle.label | db_key |
+| main.rs:39:18:39:64 | ...::read_to_string(...) | semmle.label | ...::read_to_string(...) |
+| main.rs:39:18:39:64 | ...::read_to_string(...) [Ok] | semmle.label | ...::read_to_string(...) [Ok] |
+| main.rs:39:18:39:73 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:41:9:41:20 | unsafe_query | semmle.label | unsafe_query |
+| main.rs:41:32:41:75 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:41:32:41:75 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:41:32:41:75 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:41:32:41:75 | { ... } | semmle.label | { ... } |
+| main.rs:42:29:42:41 | &unsafe_query | semmle.label | &unsafe_query |
+| main.rs:42:29:42:41 | &unsafe_query [&ref] | semmle.label | &unsafe_query [&ref] |
+| main.rs:42:30:42:41 | unsafe_query | semmle.label | unsafe_query |
+| main.rs:53:9:53:14 | db_key | semmle.label | db_key |
+| main.rs:53:18:53:64 | ...::read_to_string(...) | semmle.label | ...::read_to_string(...) |
+| main.rs:53:18:53:64 | ...::read_to_string(...) [Ok] | semmle.label | ...::read_to_string(...) [Ok] |
+| main.rs:53:18:53:73 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:54:9:54:20 | unsafe_query | semmle.label | unsafe_query |
+| main.rs:54:24:54:90 | ... + ... | semmle.label | ... + ... |
+| main.rs:54:24:54:96 | ... + ... | semmle.label | ... + ... |
+| main.rs:54:78:54:83 | db_key | semmle.label | db_key |
+| main.rs:54:78:54:90 | db_key.trim() [&ref] | semmle.label | db_key.trim() [&ref] |
+| main.rs:55:31:55:42 | unsafe_query | semmle.label | unsafe_query |
+| main.rs:56:36:56:95 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:56:44:56:94 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:56:44:56:94 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:56:44:56:94 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:56:44:56:94 | { ... } | semmle.label | { ... } |
+| main.rs:59:14:59:42 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:59:22:59:41 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:59:22:59:41 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:59:22:59:41 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:59:22:59:41 | { ... } | semmle.label | { ... } |
+| main.rs:62:61:62:90 | &... | semmle.label | &... |
+| main.rs:62:61:62:90 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:62:62:62:90 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:62:70:62:89 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:62:70:62:89 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:62:70:62:89 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:62:70:62:89 | { ... } | semmle.label | { ... } |
+| main.rs:65:32:65:90 | &... | semmle.label | &... |
+| main.rs:65:32:65:90 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:65:33:65:90 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:65:41:65:89 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:65:41:65:89 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:65:41:65:89 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:65:41:65:89 | { ... } | semmle.label | { ... } |
+| main.rs:83:41:92:5 | \|...\| ... | semmle.label | \|...\| ... |
+| main.rs:83:42:83:62 | ...: String | semmle.label | ...: String |
+| main.rs:85:35:85:101 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:85:43:85:100 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:85:43:85:100 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:85:43:85:100 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:85:43:85:100 | { ... } | semmle.label | { ... } |
+subpaths
