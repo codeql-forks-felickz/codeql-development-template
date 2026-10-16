@@ -1,0 +1,2 @@
+query: RequestForgeryFunctionField/RequestForgeryFunctionField.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

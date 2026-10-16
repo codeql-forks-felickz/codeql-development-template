@@ -1,0 +1,31 @@
+#select
+| test.go:45:16:45:32 | call to Get | test.go:94:8:94:12 | selection of URL | test.go:45:25:45:31 | payload | The $@ of this request depends on a $@. | test.go:45:25:45:31 | payload | URL | test.go:94:8:94:12 | selection of URL | user-provided value |
+| test.go:113:13:113:28 | call to Get | test.go:122:18:122:38 | call to FormValue | test.go:113:22:113:27 | target | The $@ of this request depends on a $@. | test.go:113:22:113:27 | target | URL | test.go:122:18:122:38 | call to FormValue | user-provided value |
+edges
+| test.go:37:33:37:39 | SSA def(payload) | test.go:45:25:45:31 | payload | provenance |  |
+| test.go:94:8:94:12 | selection of URL | test.go:94:8:94:20 | call to Query | provenance | Src:MaD:2006 MaD:2068 |
+| test.go:94:8:94:20 | call to Query | test.go:94:8:94:33 | call to Get | provenance | MaD:2076 |
+| test.go:94:8:94:33 | call to Get | test.go:97:38:97:39 | in | provenance |  |
+| test.go:97:38:97:39 | in | test.go:37:33:37:39 | SSA def(payload) | provenance | Config |
+| test.go:112:17:112:22 | SSA def(target) | test.go:113:22:113:27 | target | provenance |  |
+| test.go:122:18:122:38 | call to FormValue | test.go:112:17:112:22 | SSA def(target) | provenance | Src:MaD:1994 Config |
+| test.go:135:18:135:23 | SSA def(target) | test.go:136:11:136:16 | target | provenance |  |
+| test.go:140:14:140:18 | selection of URL | test.go:140:14:140:26 | call to Query | provenance | Src:MaD:2006 MaD:2068 |
+| test.go:140:14:140:26 | call to Query | test.go:140:14:140:40 | call to Get | provenance | MaD:2076 |
+| test.go:140:14:140:40 | call to Get | test.go:135:18:135:23 | SSA def(target) | provenance |  |
+nodes
+| test.go:37:33:37:39 | SSA def(payload) | semmle.label | SSA def(payload) |
+| test.go:45:25:45:31 | payload | semmle.label | payload |
+| test.go:94:8:94:12 | selection of URL | semmle.label | selection of URL |
+| test.go:94:8:94:20 | call to Query | semmle.label | call to Query |
+| test.go:94:8:94:33 | call to Get | semmle.label | call to Get |
+| test.go:97:38:97:39 | in | semmle.label | in |
+| test.go:112:17:112:22 | SSA def(target) | semmle.label | SSA def(target) |
+| test.go:113:22:113:27 | target | semmle.label | target |
+| test.go:122:18:122:38 | call to FormValue | semmle.label | call to FormValue |
+| test.go:135:18:135:23 | SSA def(target) | semmle.label | SSA def(target) |
+| test.go:136:11:136:16 | target | semmle.label | target |
+| test.go:140:14:140:18 | selection of URL | semmle.label | selection of URL |
+| test.go:140:14:140:26 | call to Query | semmle.label | call to Query |
+| test.go:140:14:140:40 | call to Get | semmle.label | call to Get |
+subpaths
