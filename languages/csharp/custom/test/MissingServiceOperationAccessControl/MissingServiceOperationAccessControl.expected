@@ -1,0 +1,2 @@
+| Orders.svc.cs:32:21:32:37 | UpdateShipAddress | This service operation modifies the resource of the provided ID without checking that the caller is authorized to do so. |
+| Orders.svc.cs:99:21:99:31 | RemoveOrder | This service operation modifies the resource of the provided ID without checking that the caller is authorized to do so. |
