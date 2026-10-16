@@ -13,9 +13,12 @@ transmitted, rendered, logged or stored. This query reports several patterns tha
 | CWE-200 | A stored credential written to the `Text`/`Value` of a Web Forms control that is not in password mode. |
 | CWE-200 | A Razor view that renders a credential property with `@Model.Password`, `Html.DisplayFor`, `Html.TextBoxFor`, `Html.EditorFor` or `<input asp-for="Password">` without `type="password"`. |
 | CWE-256 | A model-bound entity whose password property is persisted through Entity Framework (`Add`/`Update`/`Attach`) without first being replaced, for example by a hash. |
+| CWE-256 | A plaintext password (or a hard-coded literal) bound to the password parameter of an `INSERT`/`UPDATE` command. |
+| CWE-256 | A connection password read from a plaintext file (`File.ReadAll*` and similar) and used in a connection string or `NetworkCredential`. |
 | CWE-256, CWE-315 | A password that is only Base64- or otherwise reversibly encoded before being stored in a database, file or cookie. |
 | CWE-257 | A password encrypted with a reversible cipher (`CryptoStream`, `ICryptoTransform`, `SymmetricAlgorithm.Encrypt*`) instead of being hashed. |
-| CWE-532 | An object whose `ToString()` includes a password property being written to a log. |
+| CWE-257 | A password column read from a `DataRow`/data reader that is Base64-decoded or decrypted back to plaintext. |
+| CWE-532 | A password, a connection string containing a password, or an object whose `ToString()` includes a password property, written to a log (`ILogger`, `Trace`, log4net, NLog, Serilog). |
 | CWE-798 | A hard-coded string or byte array used as the key of a `SymmetricSecurityKey` that signs tokens. |
 | CWE-312 | A payment-card number persisted unencrypted in an Entity Framework entity or an XML file. |
 

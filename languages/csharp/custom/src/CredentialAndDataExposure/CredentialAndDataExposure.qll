@@ -9,6 +9,7 @@ import csharp
 private import semmle.code.csharp.security.SensitiveActions
 private import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.Stored
 private import semmle.code.csharp.frameworks.Sql
 private import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
 
@@ -411,6 +412,133 @@ private module ReversibleEncodingConfig implements DataFlow::StateConfigSig {
 private module ReversibleEncodingFlow = TaintTracking::GlobalWithState<ReversibleEncodingConfig>;
 
 /* ------------------------------------------------------------------------- */
+/* CWE-256: plaintext password bound to an INSERT / UPDATE statement         */
+/* ------------------------------------------------------------------------- */
+/** Holds if `e` is the value bound to a password parameter of an `INSERT` or `UPDATE` command. */
+private predicate sqlPasswordParameterValue(Expr e) {
+  exists(Call c, Expr name |
+    (
+      c.(MethodCall).getTarget().hasName("AddWithValue") and
+      name = c.getArgument(0) and
+      e = c.getArgument(1)
+      or
+      c.(ObjectCreation)
+          .getObjectType()
+          .getABaseType*()
+          .hasFullyQualifiedName(["System.Data", "System.Data.Common"],
+            ["IDataParameter", "DbParameter"]) and
+      c.getNumberOfArguments() = 2 and
+      name = c.getArgument(0) and
+      e = c.getArgument(1) and
+      not e.getType() instanceof Enum
+    ) and
+    isCredentialName(name.getValue().regexpReplaceAll("^[@:?$]", "")) and
+    exists(Expr sql | isSqlWrite(sql) and sql.getEnclosingCallable() = c.getEnclosingCallable() |
+      sql = any(SqlExpr se).getSql() or
+      ExternalFlow::sinkNode(DataFlow::exprNode(sql), "sql-injection")
+    )
+  )
+}
+
+private module PlaintextPasswordSqlParameterConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source.asExpr() instanceof CredentialExpr
+    or
+    source.asExpr().(StringLiteral).getValue() != ""
+  }
+
+  predicate isSink(DataFlow::Node sink) { sqlPasswordParameterValue(sink.asExpr()) }
+
+  predicate isBarrier(DataFlow::Node node) {
+    isProtectionBarrier(node) or reversibleEncodingStep(_, node)
+  }
+}
+
+private module PlaintextPasswordSqlParameterFlow =
+  TaintTracking::Global<PlaintextPasswordSqlParameterConfig>;
+
+/* ------------------------------------------------------------------------- */
+/* CWE-256: password read from a plaintext file used as a credential          */
+/* ------------------------------------------------------------------------- */
+/** Holds if `e` is used as the password of a database or network connection. */
+private predicate connectionPasswordValue(Expr e) {
+  // a value appended right after a `Password` / `Pwd` key in a connection string literal
+  exists(AddExpr add, Expr left |
+    e = add.getRightOperand() and
+    left = [add.getLeftOperand(), add.getLeftOperand().(AddExpr).getRightOperand()] and
+    left.getValue().regexpMatch("(?is).*\\b(password|pwd)\\s*=\\s*")
+  )
+  or
+  // the same, inside an interpolated string
+  exists(InterpolatedStringExpr ise, int i |
+    e = ise.getChild(i) and
+    ise.getChild(i - 1).(Expr).getValue().regexpMatch("(?is).*\\b(password|pwd)\\s*=\\s*")
+  )
+  or
+  exists(Property p |
+    propertyWrite(e, p) and
+    p.hasName("Password") and
+    p.getDeclaringType()
+        .getABaseType*()
+        .hasFullyQualifiedName(["System.Data.Common", "System.Net"],
+          ["DbConnectionStringBuilder", "NetworkCredential"])
+  )
+  or
+  exists(ObjectCreation oc |
+    oc.getObjectType().hasFullyQualifiedName("System.Net", "NetworkCredential") and
+    e = oc.getArgument(1)
+  )
+}
+
+private module PlaintextCredentialFileConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof FileStreamStoredFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { connectionPasswordValue(sink.asExpr()) }
+
+  predicate isBarrier(DataFlow::Node node) { isProtectionBarrier(node) }
+}
+
+private module PlaintextCredentialFileFlow = TaintTracking::Global<PlaintextCredentialFileConfig>;
+
+/* ------------------------------------------------------------------------- */
+/* CWE-257: stored password decoded or decrypted back to plaintext           */
+/* ------------------------------------------------------------------------- */
+/** A read of a password column from a data row or data reader. */
+private class StoredPasswordRead extends ElementAccess {
+  StoredPasswordRead() {
+    isCredentialName(this.getAnIndex().getValue()) and
+    this.getQualifier()
+        .getType()
+        .(RefType)
+        .getABaseType*()
+        .hasFullyQualifiedName("System.Data", ["DataRow", "DataRowView", "IDataRecord"])
+  }
+}
+
+/** Holds if `e` is the input of a call that reverses an encoding or encryption. */
+private predicate decodedValue(Expr e) {
+  exists(Call c | e = c.getAnArgument() or e = c.(MethodCall).getQualifier() |
+    c.getTarget().getDeclaringType().hasFullyQualifiedName("System", "Convert") and
+    c.getTarget().hasName(["FromBase64String", "FromBase64CharArray", "FromHexString"])
+    or
+    c.getTarget().getName().regexpMatch("(?i).*(decode|decrypt|unprotect).*") and
+    not c.getTarget().getName().regexpMatch("(?i).*(url|html|xml|javascript|uri|ldap).*")
+  )
+}
+
+private module StoredPasswordRecoveryConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof StoredPasswordRead }
+
+  predicate isSink(DataFlow::Node sink) {
+    decodedValue(sink.asExpr()) and
+    // report the call site rather than the implementation of a decoding helper
+    not sink.getEnclosingCallable().getName().regexpMatch("(?i).*(decode|decrypt|unprotect).*")
+  }
+}
+
+private module StoredPasswordRecoveryFlow = TaintTracking::Global<StoredPasswordRecoveryConfig>;
+
+/* ------------------------------------------------------------------------- */
 /* CWE-257: password stored using reversible (symmetric) encryption          */
 /* ------------------------------------------------------------------------- */
 /** Holds if `e` is (locally) the result of creating a symmetric encryptor. */
@@ -516,19 +644,61 @@ private class CredentialStringConversion extends Expr {
   }
 }
 
+/** Holds if `sink` is a message written to a log. */
+private predicate logSink(DataFlow::Node sink) {
+  sink instanceof LogMessageSink
+  or
+  sink instanceof TraceMessageSink
+  or
+  // log4net, NLog and Serilog loggers that do not derive from an `ILogger` type
+  exists(MethodCall mc, Type t |
+    t = [mc.getQualifier().getType(), mc.getTarget().getDeclaringType()] and
+    t.(RefType)
+        .getABaseType*()
+        .getNamespace()
+        .getFullName()
+        .regexpMatch("(log4net|NLog|Serilog)(\\..*)?") and
+    mc.getTarget()
+        .getName()
+        .regexpMatch("(Debug|Info|Warn|Warning|Error|Fatal|Trace|Verbose|Information|Log|Write)(Format)?") and
+    sink.asExpr() = mc.getAnArgument()
+  )
+}
+
+/** A string literal for a connection string that embeds a non-empty `Password` or `Pwd` value. */
+private class PasswordConnectionString extends StringLiteral {
+  PasswordConnectionString() {
+    this.getValue().regexpMatch("(?is).*\\b(password|pwd)\\s*=\\s*[^;\\s{'\"].*")
+  }
+}
+
 private module CredentialToStringLogConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.asExpr() instanceof CredentialStringConversion
   }
 
-  predicate isSink(DataFlow::Node sink) {
-    sink instanceof LogMessageSink or sink instanceof TraceMessageSink
-  }
+  predicate isSink(DataFlow::Node sink) { logSink(sink) }
 
   predicate isBarrier(DataFlow::Node node) { isProtectionBarrier(node) }
 }
 
 private module CredentialToStringLogFlow = TaintTracking::Global<CredentialToStringLogConfig>;
+
+private module CredentialLogConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source.asExpr() instanceof CredentialExpr and
+    // reported through the `ToString()` call or conversion instead
+    not source.getEnclosingCallable() instanceof CredentialToString
+    or
+    source.asExpr() instanceof PasswordConnectionString
+  }
+
+  predicate isSink(DataFlow::Node sink) { logSink(sink) }
+
+  predicate isBarrier(DataFlow::Node node) { isProtectionBarrier(node) }
+}
+
+private module CredentialLogFlow = TaintTracking::Global<CredentialLogConfig>;
 
 /* ------------------------------------------------------------------------- */
 /* CWE-798: hard-coded JWT / token signing key                               */
@@ -712,6 +882,44 @@ predicate credentialAndDataExposure(
     message = "This token signing key is derived from $@ embedded in the source code." and
     related = source.asExpr() and
     relatedText = "a hard-coded value"
+  )
+  or
+  // CWE-256 (plaintext password bound to an INSERT / UPDATE)
+  exists(DataFlow::Node source, DataFlow::Node sink |
+    PlaintextPasswordSqlParameterFlow::flow(source, sink) and
+    alert = sink.asExpr() and
+    message =
+      "The password from $@ is stored in the database in plaintext instead of as a salted, one-way hash." and
+    related = source.asExpr() and
+    relatedText = "this expression"
+  )
+  or
+  // CWE-256 (password read from a plaintext file)
+  exists(DataFlow::Node source, DataFlow::Node sink |
+    PlaintextCredentialFileFlow::flow(source, sink) and
+    alert = sink.asExpr() and
+    message = "This connection password is read from $@, where it is stored unprotected." and
+    related = source.asExpr() and
+    relatedText = "a plaintext file"
+  )
+  or
+  // CWE-257 (stored password recovered)
+  exists(DataFlow::Node source, DataFlow::Node sink |
+    StoredPasswordRecoveryFlow::flow(source, sink) and
+    alert = sink.asExpr() and
+    message =
+      "The stored password from $@ is decoded back to plaintext, so passwords are stored in a recoverable format." and
+    related = source.asExpr() and
+    relatedText = "this column"
+  )
+  or
+  // CWE-532 (credential or connection string written to a log)
+  exists(DataFlow::Node source, DataFlow::Node sink |
+    CredentialLogFlow::flow(source, sink) and
+    alert = sink.asExpr() and
+    message = "This log entry includes $@, which contains a password." and
+    related = source.asExpr() and
+    relatedText = "this value"
   )
   or
   // CWE-312

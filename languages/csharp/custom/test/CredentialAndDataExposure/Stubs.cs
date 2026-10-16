@@ -237,3 +237,102 @@ namespace Mono.Data.Sqlite
         public void Dispose() { }
     }
 }
+
+namespace System.Data.SqlClient
+{
+    public sealed class SqlConnection : System.Data.Common.DbConnection
+    {
+        public SqlConnection(string connectionString) { }
+        public override string ConnectionString { get; set; }
+        public override string Database { get { return null; } }
+        public override string DataSource { get { return null; } }
+        public override string ServerVersion { get { return null; } }
+        public override System.Data.ConnectionState State { get { return default(System.Data.ConnectionState); } }
+        public override void ChangeDatabase(string databaseName) { }
+        public override void Close() { }
+        public override void Open() { }
+        protected override System.Data.Common.DbTransaction BeginDbTransaction(System.Data.IsolationLevel isolationLevel) { return null; }
+        protected override System.Data.Common.DbCommand CreateDbCommand() { return null; }
+    }
+
+    public sealed class SqlParameter : System.Data.Common.DbParameter
+    {
+        public SqlParameter(string parameterName, object value) { }
+        public override System.Data.DbType DbType { get; set; }
+        public override System.Data.ParameterDirection Direction { get; set; }
+        public override bool IsNullable { get; set; }
+        public override string ParameterName { get; set; }
+        public override int Size { get; set; }
+        public override string SourceColumn { get; set; }
+        public override bool SourceColumnNullMapping { get; set; }
+        public override object Value { get; set; }
+        public override void ResetDbType() { }
+    }
+
+    public sealed class SqlParameterCollection
+    {
+        public SqlParameter AddWithValue(string parameterName, object value) { return null; }
+        public SqlParameter Add(SqlParameter value) { return value; }
+    }
+
+    public sealed class SqlCommand : System.Data.IDbCommand
+    {
+        public SqlCommand(string cmdText, SqlConnection connection) { }
+        public string CommandText { get; set; }
+        public int CommandTimeout { get; set; }
+        public System.Data.CommandType CommandType { get; set; }
+        public System.Data.IDbConnection Connection { get; set; }
+        public SqlParameterCollection Parameters { get { return null; } }
+        System.Data.IDataParameterCollection System.Data.IDbCommand.Parameters { get { return null; } }
+        public System.Data.IDbTransaction Transaction { get; set; }
+        public System.Data.UpdateRowSource UpdatedRowSource { get; set; }
+        public void Cancel() { }
+        public System.Data.IDbDataParameter CreateParameter() { return null; }
+        public int ExecuteNonQuery() { return 0; }
+        public System.Data.IDataReader ExecuteReader() { return null; }
+        public System.Data.IDataReader ExecuteReader(System.Data.CommandBehavior behavior) { return null; }
+        public object ExecuteScalar() { return null; }
+        public void Prepare() { }
+        public void Dispose() { }
+    }
+
+    public class SqlException : System.Exception { }
+}
+
+namespace Mono.Data.Sqlite
+{
+    public class SqliteDataAdapter
+    {
+        public SqliteDataAdapter(string commandText, SqliteConnection connection) { }
+        public int Fill(System.Data.DataSet dataSet) { return 0; }
+    }
+}
+
+namespace log4net
+{
+    public interface ILog
+    {
+        void Info(object message);
+        void Error(object message, System.Exception exception);
+    }
+
+    public static class LogManager
+    {
+        public static ILog GetLogger(System.Type type) { return null; }
+    }
+}
+
+namespace NLog
+{
+    public enum LogLevel { Debug, Info, Warn, Error }
+
+    public class Logger
+    {
+        public void Log(LogLevel level, string message, System.Exception exception) { }
+    }
+
+    public static class LogManager
+    {
+        public static Logger GetLogger(string name) { return null; }
+    }
+}

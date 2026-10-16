@@ -101,6 +101,16 @@ namespace Cwe312.Models
             WriteCreditCardFile(document);
         }
 
+        // CWE-312: chained element lookup with an explicit `this` qualifier.
+        public void UpdateCardForUserChained()
+        {
+            XDocument document = this.ReadCreditCardFile();
+            var xElement = document.Descendants("CreditCard").FirstOrDefault(c => c.Element("Username").Value.Equals(Username));
+            xElement.Element("Expiry").Value = this.Expiry.ToString();
+            xElement.Element("Number").Value = this.Number; // $ Alert
+            WriteCreditCardFile(document);
+        }
+
         // Safe: only the user name is written.
         public void InsertUser()
         {
