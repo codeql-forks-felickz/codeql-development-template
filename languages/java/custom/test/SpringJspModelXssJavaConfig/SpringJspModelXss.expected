@@ -1,0 +1,8 @@
+#select
+| SearchController.java:10:24:10:24 | q | SearchController.java:9:24:9:50 | q : String | SearchController.java:10:24:10:24 | q | Cross-site scripting vulnerability due to a $@ rendered by a JSP view through a Spring MVC model attribute. | SearchController.java:9:24:9:50 | q | user-provided value |
+edges
+| SearchController.java:9:24:9:50 | q : String | SearchController.java:10:24:10:24 | q | provenance |  |
+nodes
+| SearchController.java:9:24:9:50 | q : String | semmle.label | q : String |
+| SearchController.java:10:24:10:24 | q | semmle.label | q |
+subpaths

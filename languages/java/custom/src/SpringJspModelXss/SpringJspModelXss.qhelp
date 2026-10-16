@@ -1,0 +1,63 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+In a Spring MVC application that renders views with JSP, values added to the model
+(<code>Model</code>, <code>ModelMap</code> or <code>ModelAndView</code>) are exposed to the
+JSP page as request attributes. JSP scriptlet expressions such as
+<code>&lt;%= request.getAttribute("name") %&gt;</code> and EL expressions such as
+<code>${name}</code> in template text do not HTML-encode their output. If a model attribute
+contains user input, the page is vulnerable to cross-site scripting.
+</p>
+<p>
+The standard <code>java/xss</code> query does not analyze JSP pages and therefore does not
+report this flow. This query reports user input that reaches a Spring MVC model attribute
+when the application configures a JSP view resolver (in Spring XML, Java configuration, or
+the <code>spring.mvc.view.suffix</code> Spring Boot property). Because the JSP page itself is
+not analyzed, the result may be a false positive if the page encodes the attribute (for
+example with <code>&lt;c:out&gt;</code> or <code>fn:escapeXml</code>).
+</p>
+</overview>
+
+<recommendation>
+<p>
+Encode the attribute for the context in which it is used in the JSP page, for example with
+<code>&lt;c:out value="${name}"/&gt;</code>, <code>${fn:escapeXml(name)}</code>, or the
+Spring <code>&lt;spring:escapeBody&gt;</code> tag. Alternatively, HTML-encode the value before
+adding it to the model, for example with <code>HtmlUtils.htmlEscape</code>.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following handler copies the <code>username</code> request parameter into the model,
+and the <code>login.jsp</code> view writes it into an HTML attribute without encoding:
+</p>
+<sample language="java">
+@RequestMapping(value = "/login", method = RequestMethod.GET)
+public String showLogin(@RequestParam("username") String username, Model model) {
+  model.addAttribute("username", username); // BAD
+  return "login";
+}
+</sample>
+<sample language="html">
+&lt;input type="text" name="user" value="&lt;%= request.getAttribute("username") %&gt;"&gt;
+</sample>
+<p>
+The value should be encoded, either in the JSP page or before it is added to the model:
+</p>
+<sample language="java">
+model.addAttribute("username", HtmlUtils.htmlEscape(username)); // GOOD
+</sample>
+</example>
+
+<references>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS Prevention Cheat Sheet</a>.</li>
+<li>Spring Framework: <a href="https://docs.spring.io/spring-framework/reference/web/webmvc-view/mvc-jsp.html">JSP and JSTL</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/79.html">CWE-79</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/116.html">CWE-116</a>.</li>
+</references>
+</qhelp>
