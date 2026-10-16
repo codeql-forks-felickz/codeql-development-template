@@ -1,0 +1,2 @@
+query: SessionCookieHttpOnlyDisabled/SessionCookieHttpOnlyDisabled.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
