@@ -1,0 +1,7 @@
+name: languages-java-custom-models
+version: 0.0.1
+library: true
+extensionTargets:
+  codeql/java-all: '*'
+dataExtensions:
+  - '**/*.model.yml'
