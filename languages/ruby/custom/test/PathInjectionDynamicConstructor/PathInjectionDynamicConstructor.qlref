@@ -1,0 +1,2 @@
+query: PathInjectionDynamicConstructor/PathInjectionDynamicConstructor.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
