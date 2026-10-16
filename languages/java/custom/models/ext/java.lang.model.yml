@@ -1,0 +1,10 @@
+extensions:
+  # Kotlin compiles `x.toString()` on Java types that do not redeclare `toString` (for example
+  # `EditText.text.toString()`, where `text` is an `android.text.Editable`) to a call to
+  # `java.lang.Object.toString()`, which has no stock taint summary. Propagate taint from
+  # the receiver so that tainted objects keep their taint when converted to a string.
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.lang", "Object", False, "toString", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

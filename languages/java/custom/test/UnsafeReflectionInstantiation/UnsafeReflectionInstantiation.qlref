@@ -1,0 +1,2 @@
+query: UnsafeReflectionInstantiation/UnsafeReflectionInstantiation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

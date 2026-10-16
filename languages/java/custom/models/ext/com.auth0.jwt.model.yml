@@ -1,0 +1,15 @@
+extensions:
+  # auth0 java-jwt: `JWT.decode` does not verify the signature, so every header and
+  # claim value read from the result is as untrusted as the token string itself.
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.auth0.jwt", "JWT", False, "decode", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["com.auth0.jwt", "JWTDecoder", False, "JWTDecoder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["com.auth0.jwt.interfaces", "Header", True, "getHeaderClaim", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["com.auth0.jwt.interfaces", "Header", True, "getKeyId", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["com.auth0.jwt.interfaces", "Payload", True, "getClaim", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["com.auth0.jwt.interfaces", "Payload", True, "getClaims", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["com.auth0.jwt.interfaces", "Payload", True, "getIssuer", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["com.auth0.jwt.interfaces", "Claim", True, "asString", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

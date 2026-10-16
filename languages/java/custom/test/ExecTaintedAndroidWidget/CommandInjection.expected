@@ -1,0 +1,11 @@
+#select
+| com/example/agoat/PingActivity.java:17:39:17:41 | cmd | com/example/agoat/PingActivity.java:15:34:15:45 | getText(...) : Editable | com/example/agoat/PingActivity.java:17:39:17:41 | cmd | This command line depends on a $@. | com/example/agoat/PingActivity.java:15:34:15:45 | getText(...) | user-provided value |
+edges
+| com/example/agoat/PingActivity.java:15:34:15:45 | getText(...) : Editable | com/example/agoat/PingActivity.java:15:34:15:56 | toString(...) : String | provenance | Src:MaD:725 MaD:46643 |
+| com/example/agoat/PingActivity.java:15:34:15:45 | getText(...) : Editable | com/example/agoat/PingActivity.java:17:39:17:41 | cmd | provenance | Src:MaD:725 AdditionalTaintStep Sink:MaD:46601 |
+| com/example/agoat/PingActivity.java:15:34:15:56 | toString(...) : String | com/example/agoat/PingActivity.java:17:39:17:41 | cmd | provenance | Sink:MaD:46601 |
+nodes
+| com/example/agoat/PingActivity.java:15:34:15:45 | getText(...) : Editable | semmle.label | getText(...) : Editable |
+| com/example/agoat/PingActivity.java:15:34:15:56 | toString(...) : String | semmle.label | toString(...) : String |
+| com/example/agoat/PingActivity.java:17:39:17:41 | cmd | semmle.label | cmd |
+subpaths

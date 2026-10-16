@@ -1,0 +1,51 @@
+#select
+| Test.java:24:19:24:81 | newInstance(...) | Test.java:21:22:21:52 | getParameter(...) : String | Test.java:24:19:24:63 | getDeclaredConstructor(...) | This reflective call uses a class selected by a $@ without an allowlist check. | Test.java:21:22:21:52 | getParameter(...) | user-provided value |
+| Test.java:31:12:31:44 | newInstance(...) | Test.java:30:19:30:47 | getParameter(...) : String | Test.java:31:12:31:30 | forName(...) | This reflective call uses a class selected by a $@ without an allowlist check. | Test.java:30:19:30:47 | getParameter(...) | user-provided value |
+| Test.java:38:12:38:43 | newInstance(...) | Test.java:36:19:36:47 | getParameter(...) : String | Test.java:38:12:38:29 | getConstructor(...) | This reflective call uses a class selected by a $@ without an allowlist check. | Test.java:36:19:36:47 | getParameter(...) | user-provided value |
+| Test.java:44:12:44:63 | invoke(...) | Test.java:43:19:43:49 | getParameter(...) : String | Test.java:44:12:44:50 | getMethod(...) | This reflective call uses a class selected by a $@ without an allowlist check. | Test.java:43:19:43:49 | getParameter(...) | user-provided value |
+edges
+| Test.java:15:33:15:46 | subject : String | Test.java:16:55:16:61 | subject : String | provenance |  |
+| Test.java:16:55:16:61 | subject : String | Test.java:16:55:16:74 | substring(...) : String | provenance | MaD:46690 |
+| Test.java:16:55:16:74 | substring(...) : String | Test.java:16:12:16:74 | ... + ... : String | provenance |  |
+| Test.java:21:22:21:52 | getParameter(...) : String | Test.java:22:73:22:79 | command : String | provenance | Src:MaD:48682  |
+| Test.java:22:25:22:93 | forName(...) : Class | Test.java:24:19:24:26 | cmdClass : Class | provenance |  |
+| Test.java:22:39:22:92 | ... + ... : String | Test.java:22:25:22:93 | forName(...) : Class | provenance | Config |
+| Test.java:22:65:22:80 | ucfirst(...) : String | Test.java:22:39:22:92 | ... + ... : String | provenance |  |
+| Test.java:22:73:22:79 | command : String | Test.java:15:33:15:46 | subject : String | provenance |  |
+| Test.java:22:73:22:79 | command : String | Test.java:22:65:22:80 | ucfirst(...) : String | provenance | MaD:46690 |
+| Test.java:24:19:24:26 | cmdClass : Class | Test.java:24:19:24:63 | getDeclaredConstructor(...) | provenance | Config |
+| Test.java:30:19:30:47 | getParameter(...) : String | Test.java:31:26:31:29 | name : String | provenance | Src:MaD:48682  |
+| Test.java:31:26:31:29 | name : String | Test.java:31:12:31:30 | forName(...) | provenance | Config |
+| Test.java:36:19:36:47 | getParameter(...) : String | Test.java:37:56:37:59 | name : String | provenance | Src:MaD:48682  |
+| Test.java:37:18:37:60 | loadClass(...) : Class | Test.java:38:12:38:12 | c : Class | provenance |  |
+| Test.java:37:56:37:59 | name : String | Test.java:37:18:37:60 | loadClass(...) : Class | provenance | Config |
+| Test.java:38:12:38:12 | c : Class | Test.java:38:12:38:29 | getConstructor(...) | provenance | Config |
+| Test.java:43:19:43:49 | getParameter(...) : String | Test.java:44:26:44:29 | name : String | provenance | Src:MaD:48682  |
+| Test.java:44:12:44:30 | forName(...) : Class | Test.java:44:12:44:50 | getMethod(...) | provenance | Config |
+| Test.java:44:26:44:29 | name : String | Test.java:44:12:44:30 | forName(...) : Class | provenance | Config |
+nodes
+| Test.java:15:33:15:46 | subject : String | semmle.label | subject : String |
+| Test.java:16:12:16:74 | ... + ... : String | semmle.label | ... + ... : String |
+| Test.java:16:55:16:61 | subject : String | semmle.label | subject : String |
+| Test.java:16:55:16:74 | substring(...) : String | semmle.label | substring(...) : String |
+| Test.java:21:22:21:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| Test.java:22:25:22:93 | forName(...) : Class | semmle.label | forName(...) : Class |
+| Test.java:22:39:22:92 | ... + ... : String | semmle.label | ... + ... : String |
+| Test.java:22:65:22:80 | ucfirst(...) : String | semmle.label | ucfirst(...) : String |
+| Test.java:22:73:22:79 | command : String | semmle.label | command : String |
+| Test.java:24:19:24:26 | cmdClass : Class | semmle.label | cmdClass : Class |
+| Test.java:24:19:24:63 | getDeclaredConstructor(...) | semmle.label | getDeclaredConstructor(...) |
+| Test.java:30:19:30:47 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| Test.java:31:12:31:30 | forName(...) | semmle.label | forName(...) |
+| Test.java:31:26:31:29 | name : String | semmle.label | name : String |
+| Test.java:36:19:36:47 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| Test.java:37:18:37:60 | loadClass(...) : Class | semmle.label | loadClass(...) : Class |
+| Test.java:37:56:37:59 | name : String | semmle.label | name : String |
+| Test.java:38:12:38:12 | c : Class | semmle.label | c : Class |
+| Test.java:38:12:38:29 | getConstructor(...) | semmle.label | getConstructor(...) |
+| Test.java:43:19:43:49 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| Test.java:44:12:44:30 | forName(...) : Class | semmle.label | forName(...) : Class |
+| Test.java:44:12:44:50 | getMethod(...) | semmle.label | getMethod(...) |
+| Test.java:44:26:44:29 | name : String | semmle.label | name : String |
+subpaths
+| Test.java:22:73:22:79 | command : String | Test.java:15:33:15:46 | subject : String | Test.java:16:12:16:74 | ... + ... : String | Test.java:22:65:22:80 | ucfirst(...) : String |
