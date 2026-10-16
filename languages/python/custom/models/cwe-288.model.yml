@@ -1,0 +1,12 @@
+# CWE-288 / CWE-022: user input used as (part of) a glob pattern.
+# A wildcard such as `*` supplied by an attacker matches arbitrary existing
+# files, e.g. any API key file, enabling authentication bypass / IDOR.
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      # pathlib.Path("/dir").glob(pattern) / .rglob(pattern)
+      - ["pathlib", "Member[Path,PosixPath,WindowsPath].ReturnValue.Member[glob,rglob].Argument[0,pattern:]", "path-injection"]
+      # glob.glob(pathname) / glob.iglob(pathname)
+      - ["glob", "Member[glob,iglob].Argument[0,pathname:]", "path-injection"]

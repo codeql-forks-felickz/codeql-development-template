@@ -1,0 +1,42 @@
+#select
+| app.py:14:33:14:55 | ControlFlowNode for BinaryExpr | app.py:4:26:4:32 | ControlFlowNode for ImportMember | app.py:14:33:14:55 | ControlFlowNode for BinaryExpr | This path depends on a $@. | app.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |
+| app.py:22:53:22:59 | ControlFlowNode for pattern | app.py:4:26:4:32 | ControlFlowNode for ImportMember | app.py:22:53:22:59 | ControlFlowNode for pattern | This path depends on a $@. | app.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |
+| app.py:28:61:28:67 | ControlFlowNode for pattern | app.py:4:26:4:32 | ControlFlowNode for ImportMember | app.py:28:61:28:67 | ControlFlowNode for pattern | This path depends on a $@. | app.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |
+| app.py:34:22:34:40 | ControlFlowNode for BinaryExpr | app.py:4:26:4:32 | ControlFlowNode for ImportMember | app.py:34:22:34:40 | ControlFlowNode for BinaryExpr | This path depends on a $@. | app.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |
+| app.py:40:37:40:55 | ControlFlowNode for BinaryExpr | app.py:4:26:4:32 | ControlFlowNode for ImportMember | app.py:40:37:40:55 | ControlFlowNode for BinaryExpr | This path depends on a $@. | app.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |
+edges
+| app.py:4:26:4:32 | ControlFlowNode for ImportMember | app.py:4:26:4:32 | ControlFlowNode for request | provenance |  |
+| app.py:4:26:4:32 | ControlFlowNode for request | app.py:13:11:13:17 | ControlFlowNode for request | provenance |  |
+| app.py:4:26:4:32 | ControlFlowNode for request | app.py:21:15:21:21 | ControlFlowNode for request | provenance |  |
+| app.py:4:26:4:32 | ControlFlowNode for request | app.py:27:15:27:21 | ControlFlowNode for request | provenance |  |
+| app.py:4:26:4:32 | ControlFlowNode for request | app.py:33:12:33:18 | ControlFlowNode for request | provenance |  |
+| app.py:4:26:4:32 | ControlFlowNode for request | app.py:39:12:39:18 | ControlFlowNode for request | provenance |  |
+| app.py:13:5:13:7 | ControlFlowNode for key | app.py:14:33:14:55 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:0 |
+| app.py:13:11:13:17 | ControlFlowNode for request | app.py:13:5:13:7 | ControlFlowNode for key | provenance | AdditionalTaintStep |
+| app.py:21:5:21:11 | ControlFlowNode for pattern | app.py:22:53:22:59 | ControlFlowNode for pattern | provenance | Sink:MaD:0 |
+| app.py:21:15:21:21 | ControlFlowNode for request | app.py:21:5:21:11 | ControlFlowNode for pattern | provenance | AdditionalTaintStep |
+| app.py:27:5:27:11 | ControlFlowNode for pattern | app.py:28:61:28:67 | ControlFlowNode for pattern | provenance | Sink:MaD:0 |
+| app.py:27:15:27:21 | ControlFlowNode for request | app.py:27:5:27:11 | ControlFlowNode for pattern | provenance | AdditionalTaintStep |
+| app.py:33:5:33:8 | ControlFlowNode for name | app.py:34:22:34:40 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:1 |
+| app.py:33:12:33:18 | ControlFlowNode for request | app.py:33:5:33:8 | ControlFlowNode for name | provenance | AdditionalTaintStep |
+| app.py:39:5:39:8 | ControlFlowNode for name | app.py:40:37:40:55 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:1 |
+| app.py:39:12:39:18 | ControlFlowNode for request | app.py:39:5:39:8 | ControlFlowNode for name | provenance | AdditionalTaintStep |
+nodes
+| app.py:4:26:4:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| app.py:4:26:4:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| app.py:13:5:13:7 | ControlFlowNode for key | semmle.label | ControlFlowNode for key |
+| app.py:13:11:13:17 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| app.py:14:33:14:55 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| app.py:21:5:21:11 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
+| app.py:21:15:21:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| app.py:22:53:22:59 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
+| app.py:27:5:27:11 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
+| app.py:27:15:27:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| app.py:28:61:28:67 | ControlFlowNode for pattern | semmle.label | ControlFlowNode for pattern |
+| app.py:33:5:33:8 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:33:12:33:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| app.py:34:22:34:40 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| app.py:39:5:39:8 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| app.py:39:12:39:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| app.py:40:37:40:55 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths
