@@ -1,0 +1,57 @@
+#select
+| CommentsController.cs:39:17:39:137 | ... + ... | CommentsController.cs:36:94:36:100 | comment : Comment | CommentsController.cs:39:17:39:137 | ... + ... | This query depends on $@. | CommentsController.cs:36:94:36:100 | comment : Comment | this ASP.NET Core MVC action method parameter |
+| CommentsController.cs:39:17:39:137 | call to operator implicit conversion | CommentsController.cs:36:94:36:100 | comment : Comment | CommentsController.cs:39:17:39:137 | call to operator implicit conversion | This query depends on $@. | CommentsController.cs:36:94:36:100 | comment : Comment | this ASP.NET Core MVC action method parameter |
+| CommentsController.cs:41:17:41:137 | ... + ... | CommentsController.cs:36:94:36:100 | comment : Comment | CommentsController.cs:41:17:41:137 | ... + ... | This query depends on $@. | CommentsController.cs:36:94:36:100 | comment : Comment | this ASP.NET Core MVC action method parameter |
+| CommentsController.cs:41:17:41:137 | call to operator implicit conversion | CommentsController.cs:36:94:36:100 | comment : Comment | CommentsController.cs:41:17:41:137 | call to operator implicit conversion | This query depends on $@. | CommentsController.cs:36:94:36:100 | comment : Comment | this ASP.NET Core MVC action method parameter |
+| CommentsController.cs:51:60:51:62 | access to local variable sql | CommentsController.cs:48:103:48:109 | comment : Comment | CommentsController.cs:51:60:51:62 | access to local variable sql | This query depends on $@. | CommentsController.cs:48:103:48:109 | comment : Comment | this ASP.NET Core MVC action method parameter |
+| CommentsController.cs:51:60:51:62 | call to operator implicit conversion | CommentsController.cs:48:103:48:109 | comment : Comment | CommentsController.cs:51:60:51:62 | call to operator implicit conversion | This query depends on $@. | CommentsController.cs:48:103:48:109 | comment : Comment | this ASP.NET Core MVC action method parameter |
+| CommentsController.cs:52:49:52:51 | access to local variable sql | CommentsController.cs:48:103:48:109 | comment : Comment | CommentsController.cs:52:49:52:51 | access to local variable sql | This query depends on $@. | CommentsController.cs:48:103:48:109 | comment : Comment | this ASP.NET Core MVC action method parameter |
+| CommentsController.cs:52:49:52:51 | call to operator implicit conversion | CommentsController.cs:48:103:48:109 | comment : Comment | CommentsController.cs:52:49:52:51 | call to operator implicit conversion | This query depends on $@. | CommentsController.cs:48:103:48:109 | comment : Comment | this ASP.NET Core MVC action method parameter |
+| CommentsController.cs:53:60:53:133 | call to method Format | CommentsController.cs:48:103:48:109 | comment : Comment | CommentsController.cs:53:60:53:133 | call to method Format | This query depends on $@. | CommentsController.cs:48:103:48:109 | comment : Comment | this ASP.NET Core MVC action method parameter |
+| CommentsController.cs:53:60:53:133 | call to operator implicit conversion | CommentsController.cs:48:103:48:109 | comment : Comment | CommentsController.cs:53:60:53:133 | call to operator implicit conversion | This query depends on $@. | CommentsController.cs:48:103:48:109 | comment : Comment | this ASP.NET Core MVC action method parameter |
+| CommentsController.cs:71:17:71:77 | ... + ... | CommentsController.cs:68:89:68:95 | comment : Comment | CommentsController.cs:71:17:71:77 | ... + ... | This query depends on $@. | CommentsController.cs:68:89:68:95 | comment : Comment | this ASP.NET Core MVC action method parameter |
+| CommentsController.cs:72:45:72:100 | $"..." | CommentsController.cs:68:89:68:95 | comment : Comment | CommentsController.cs:72:45:72:100 | $"..." | This query depends on $@. | CommentsController.cs:68:89:68:95 | comment : Comment | this ASP.NET Core MVC action method parameter |
+edges
+| CommentsController.cs:36:94:36:100 | comment : Comment | CommentsController.cs:39:17:39:137 | ... + ... | provenance |  |
+| CommentsController.cs:36:94:36:100 | comment : Comment | CommentsController.cs:39:17:39:137 | ... + ... : String | provenance |  |
+| CommentsController.cs:36:94:36:100 | comment : Comment | CommentsController.cs:41:17:41:137 | ... + ... | provenance |  |
+| CommentsController.cs:36:94:36:100 | comment : Comment | CommentsController.cs:41:17:41:137 | ... + ... : String | provenance |  |
+| CommentsController.cs:39:17:39:137 | ... + ... : String | CommentsController.cs:39:17:39:137 | call to operator implicit conversion | provenance | RawSqlStringConversionSummarizedCallable |
+| CommentsController.cs:41:17:41:137 | ... + ... : String | CommentsController.cs:41:17:41:137 | call to operator implicit conversion | provenance | RawSqlStringConversionSummarizedCallable |
+| CommentsController.cs:48:103:48:109 | comment : Comment | CommentsController.cs:50:20:50:22 | access to local variable sql : String | provenance |  |
+| CommentsController.cs:48:103:48:109 | comment : Comment | CommentsController.cs:53:119:53:132 | access to property Author : String | provenance |  |
+| CommentsController.cs:50:20:50:22 | access to local variable sql : String | CommentsController.cs:51:60:51:62 | access to local variable sql | provenance |  |
+| CommentsController.cs:50:20:50:22 | access to local variable sql : String | CommentsController.cs:51:60:51:62 | access to local variable sql : String | provenance |  |
+| CommentsController.cs:50:20:50:22 | access to local variable sql : String | CommentsController.cs:52:49:52:51 | access to local variable sql | provenance |  |
+| CommentsController.cs:50:20:50:22 | access to local variable sql : String | CommentsController.cs:52:49:52:51 | access to local variable sql : String | provenance |  |
+| CommentsController.cs:51:60:51:62 | access to local variable sql : String | CommentsController.cs:51:60:51:62 | call to operator implicit conversion | provenance | RawSqlStringConversionSummarizedCallable |
+| CommentsController.cs:52:49:52:51 | access to local variable sql : String | CommentsController.cs:52:49:52:51 | call to operator implicit conversion | provenance | RawSqlStringConversionSummarizedCallable |
+| CommentsController.cs:53:60:53:133 | call to method Format : String | CommentsController.cs:53:60:53:133 | call to operator implicit conversion | provenance | RawSqlStringConversionSummarizedCallable |
+| CommentsController.cs:53:119:53:132 | access to property Author : String | CommentsController.cs:53:60:53:133 | call to method Format | provenance | MaD:2905 |
+| CommentsController.cs:53:119:53:132 | access to property Author : String | CommentsController.cs:53:60:53:133 | call to method Format : String | provenance | MaD:2905 |
+| CommentsController.cs:68:89:68:95 | comment : Comment | CommentsController.cs:71:17:71:77 | ... + ... | provenance | Sink:MaD:184 |
+| CommentsController.cs:68:89:68:95 | comment : Comment | CommentsController.cs:72:45:72:100 | $"..." | provenance | Sink:MaD:182 |
+nodes
+| CommentsController.cs:36:94:36:100 | comment : Comment | semmle.label | comment : Comment |
+| CommentsController.cs:39:17:39:137 | ... + ... | semmle.label | ... + ... |
+| CommentsController.cs:39:17:39:137 | ... + ... : String | semmle.label | ... + ... : String |
+| CommentsController.cs:39:17:39:137 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
+| CommentsController.cs:41:17:41:137 | ... + ... | semmle.label | ... + ... |
+| CommentsController.cs:41:17:41:137 | ... + ... : String | semmle.label | ... + ... : String |
+| CommentsController.cs:41:17:41:137 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
+| CommentsController.cs:48:103:48:109 | comment : Comment | semmle.label | comment : Comment |
+| CommentsController.cs:50:20:50:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| CommentsController.cs:51:60:51:62 | access to local variable sql | semmle.label | access to local variable sql |
+| CommentsController.cs:51:60:51:62 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| CommentsController.cs:51:60:51:62 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
+| CommentsController.cs:52:49:52:51 | access to local variable sql | semmle.label | access to local variable sql |
+| CommentsController.cs:52:49:52:51 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| CommentsController.cs:52:49:52:51 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
+| CommentsController.cs:53:60:53:133 | call to method Format | semmle.label | call to method Format |
+| CommentsController.cs:53:60:53:133 | call to method Format : String | semmle.label | call to method Format : String |
+| CommentsController.cs:53:60:53:133 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
+| CommentsController.cs:53:119:53:132 | access to property Author : String | semmle.label | access to property Author : String |
+| CommentsController.cs:68:89:68:95 | comment : Comment | semmle.label | comment : Comment |
+| CommentsController.cs:71:17:71:77 | ... + ... | semmle.label | ... + ... |
+| CommentsController.cs:72:45:72:100 | $"..." | semmle.label | $"..." |
+subpaths

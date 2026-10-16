@@ -2,4 +2,5 @@ name: languages-csharp-custom-test
 version: 0.0.2
 dependencies:
   languages-csharp-custom-src: ${workspace}
+  codeql/csharp-queries: "*"
 extractor: csharp
