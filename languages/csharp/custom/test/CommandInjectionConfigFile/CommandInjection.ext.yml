@@ -1,0 +1,7 @@
+extensions:
+  # Enable the `file` threat model so values read from configuration files are sources.
+  - addsTo:
+      pack: codeql/threat-models
+      extensible: threatModelConfiguration
+    data:
+      - ["file", true, 0]

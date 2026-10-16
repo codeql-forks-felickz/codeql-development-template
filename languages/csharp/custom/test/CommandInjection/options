@@ -1,0 +1,1 @@
+semmle-extractor-options: --load-sources-from-project:${testdir}/../stubs/Stubs.csproj
