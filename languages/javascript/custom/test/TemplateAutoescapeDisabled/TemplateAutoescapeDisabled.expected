@@ -1,0 +1,8 @@
+| other-engines.js:4:43:4:47 | false | Nunjucks HTML autoescaping is disabled here, so template output is not escaped. |
+| other-engines.js:5:34:5:38 | false | Nunjucks HTML autoescaping is disabled here, so template output is not escaped. |
+| other-engines.js:6:92:6:96 | false | Nunjucks HTML autoescaping is disabled here, so template output is not escaped. |
+| other-engines.js:8:66:8:69 | true | Handlebars HTML autoescaping is disabled here, so template output is not escaped. |
+| server.js:11:15:11:19 | false | Swig HTML autoescaping is disabled here, so template output is not escaped. |
+| server.js:14:44:14:48 | false | Swig HTML autoescaping is disabled here, so template output is not escaped. |
+| server.js:15:61:15:65 | false | Swig HTML autoescaping is disabled here, so template output is not escaped. |
+| server.js:17:31:17:35 | false | Swig HTML autoescaping is disabled here, so template output is not escaped. |

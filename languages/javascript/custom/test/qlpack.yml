@@ -2,4 +2,6 @@ name: languages-javascript-custom-test
 version: 0.0.2
 dependencies:
   languages-javascript-custom-src: ${workspace}
+  languages-javascript-custom-models: ${workspace}
+  codeql/javascript-queries: "*"
 extractor: javascript

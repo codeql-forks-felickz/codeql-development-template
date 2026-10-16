@@ -1,0 +1,24 @@
+# Client-side HTTP response sources and flow summaries for the `response` threat model.
+#
+# The stock library already reports `ClientRequest` response data under the `response` threat
+# model, which JavaScript disables by default (codeql/javascript-all
+# ext/default-threat-models-fixup.model.yml). These rows only take effect when that threat model
+# is enabled, e.g. `threat-models: [remote, response]` in a code scanning configuration, and are
+# meant for finding stored / second-order XSS where an application renders data returned by its
+# own API.
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      # The resolved `fetch` response, also when the promise is returned from a helper function
+      # (the stock model only unwraps it locally).
+      - ['global', 'Member[fetch].ReturnValue.Awaited', 'response']
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: summaryModel
+    data:
+      - ['global', 'Member[Object].Member[values]', 'Argument[0]', 'ReturnValue.ArrayElement', 'taint']
+      - ['react-native-base64', 'Member[decode]', 'Argument[0]', 'ReturnValue', 'taint']
+      - ['react-native-base64', 'Member[default].Member[decode]', 'Argument[0]', 'ReturnValue', 'taint']

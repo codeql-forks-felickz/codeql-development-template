@@ -1,0 +1,45 @@
+#select
+| angular/play.component.ts:22:26:22:46 | message ... sername | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | angular/play.component.ts:22:26:22:46 | message ... sername | Cross-site scripting vulnerability due to $@. | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | user-provided value |
+| angular/play.component.ts:24:29:24:43 | message.content | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | angular/play.component.ts:24:29:24:43 | message.content | Cross-site scripting vulnerability due to $@. | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | user-provided value |
+| react/MessageView.jsx:27:49:27:124 | base64. ... cript") | react/MessageView.jsx:14:23:14:30 | response | react/MessageView.jsx:27:49:27:124 | base64. ... cript") | Cross-site scripting vulnerability due to $@. | react/MessageView.jsx:14:23:14:30 | response | user-provided value |
+edges
+| angular/play.component.ts:9:12:9:54 | this.ht ... sages') | angular/play.component.ts:19:5:19:36 | this.li ... ges(id) | provenance |  |
+| angular/play.component.ts:19:5:19:36 | this.li ... ges(id) | angular/play.component.ts:19:49:19:56 | response | provenance |  |
+| angular/play.component.ts:19:49:19:56 | response | angular/play.component.ts:20:8:20:15 | response | provenance |  |
+| angular/play.component.ts:20:7:20:25 | (response as any[]) | angular/play.component.ts:20:36:20:42 | message | provenance |  |
+| angular/play.component.ts:20:8:20:15 | response | angular/play.component.ts:20:7:20:25 | (response as any[]) | provenance |  |
+| angular/play.component.ts:20:36:20:42 | message | angular/play.component.ts:22:26:22:32 | message | provenance |  |
+| angular/play.component.ts:20:36:20:42 | message | angular/play.component.ts:24:29:24:35 | message | provenance |  |
+| angular/play.component.ts:22:26:22:32 | message | angular/play.component.ts:22:26:22:46 | message ... sername | provenance |  |
+| angular/play.component.ts:24:29:24:35 | message | angular/play.component.ts:24:29:24:43 | message.content | provenance |  |
+| react/MessageView.jsx:13:5:16:8 | API.cal ...      }) [PromiseValue] | react/MessageView.jsx:17:23:17:26 | data | provenance |  |
+| react/MessageView.jsx:14:23:14:30 | response | react/MessageView.jsx:15:16:15:23 | response | provenance |  |
+| react/MessageView.jsx:15:16:15:23 | response | react/MessageView.jsx:15:16:15:30 | response.json() | provenance |  |
+| react/MessageView.jsx:15:16:15:30 | response.json() | react/MessageView.jsx:13:5:16:8 | API.cal ...      }) [PromiseValue] | provenance |  |
+| react/MessageView.jsx:17:23:17:26 | data | react/MessageView.jsx:18:34:18:37 | data | provenance |  |
+| react/MessageView.jsx:18:34:18:37 | data | react/MessageView.jsx:18:34:18:45 | data.message | provenance |  |
+| react/MessageView.jsx:18:34:18:45 | data.message | react/MessageView.jsx:27:63:27:80 | this.state.msgData | provenance |  |
+| react/MessageView.jsx:27:49:27:81 | base64. ... sgData) | react/MessageView.jsx:27:49:27:124 | base64. ... cript") | provenance |  |
+| react/MessageView.jsx:27:63:27:80 | this.state.msgData | react/MessageView.jsx:27:49:27:81 | base64. ... sgData) | provenance |  |
+nodes
+| angular/play.component.ts:9:12:9:54 | this.ht ... sages') | semmle.label | this.ht ... sages') |
+| angular/play.component.ts:19:5:19:36 | this.li ... ges(id) | semmle.label | this.li ... ges(id) |
+| angular/play.component.ts:19:49:19:56 | response | semmle.label | response |
+| angular/play.component.ts:20:7:20:25 | (response as any[]) | semmle.label | (response as any[]) |
+| angular/play.component.ts:20:8:20:15 | response | semmle.label | response |
+| angular/play.component.ts:20:36:20:42 | message | semmle.label | message |
+| angular/play.component.ts:22:26:22:32 | message | semmle.label | message |
+| angular/play.component.ts:22:26:22:46 | message ... sername | semmle.label | message ... sername |
+| angular/play.component.ts:24:29:24:35 | message | semmle.label | message |
+| angular/play.component.ts:24:29:24:43 | message.content | semmle.label | message.content |
+| react/MessageView.jsx:13:5:16:8 | API.cal ...      }) [PromiseValue] | semmle.label | API.cal ...      }) [PromiseValue] |
+| react/MessageView.jsx:14:23:14:30 | response | semmle.label | response |
+| react/MessageView.jsx:15:16:15:23 | response | semmle.label | response |
+| react/MessageView.jsx:15:16:15:30 | response.json() | semmle.label | response.json() |
+| react/MessageView.jsx:17:23:17:26 | data | semmle.label | data |
+| react/MessageView.jsx:18:34:18:37 | data | semmle.label | data |
+| react/MessageView.jsx:18:34:18:45 | data.message | semmle.label | data.message |
+| react/MessageView.jsx:27:49:27:81 | base64. ... sgData) | semmle.label | base64. ... sgData) |
+| react/MessageView.jsx:27:49:27:124 | base64. ... cript") | semmle.label | base64. ... cript") |
+| react/MessageView.jsx:27:63:27:80 | this.state.msgData | semmle.label | this.state.msgData |
+subpaths

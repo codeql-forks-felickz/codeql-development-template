@@ -1,0 +1,10 @@
+#select
+| angular/search-result.component.ts:38:53:38:56 | code | angular/search-result.component.ts:37:18:37:43 | this.ro ... .params | angular/search-result.component.ts:38:53:38:56 | code | This code execution depends on a $@. | angular/search-result.component.ts:37:18:37:43 | this.ro ... .params | user-provided value |
+edges
+| angular/search-result.component.ts:37:11:37:14 | code | angular/search-result.component.ts:38:53:38:56 | code | provenance |  |
+| angular/search-result.component.ts:37:18:37:43 | this.ro ... .params | angular/search-result.component.ts:37:11:37:14 | code | provenance |  |
+nodes
+| angular/search-result.component.ts:37:11:37:14 | code | semmle.label | code |
+| angular/search-result.component.ts:37:18:37:43 | this.ro ... .params | semmle.label | this.ro ... .params |
+| angular/search-result.component.ts:38:53:38:56 | code | semmle.label | code |
+subpaths

@@ -1,0 +1,40 @@
+#select
+| angular/legacy-constructor-di.component.ts:14:57:14:57 | q | angular/legacy-constructor-di.component.ts:13:15:13:45 | this.ro ... yParams | angular/legacy-constructor-di.component.ts:14:57:14:57 | q | Cross-site scripting vulnerability due to $@. | angular/legacy-constructor-di.component.ts:13:15:13:45 | this.ro ... yParams | user-provided value |
+| angular/search-result.component.ts:16:65:16:74 | queryParam | angular/search-result.component.ts:13:30:13:60 | this.ro ... yParams | angular/search-result.component.ts:16:65:16:74 | queryParam | Cross-site scripting vulnerability due to $@. | angular/search-result.component.ts:13:30:13:60 | this.ro ... yParams | user-provided value |
+| angular/search-result.component.ts:22:63:22:66 | name | angular/search-result.component.ts:21:18:21:62 | this.ro ... 'name') | angular/search-result.component.ts:22:63:22:66 | name | Cross-site scripting vulnerability due to $@. | angular/search-result.component.ts:21:18:21:62 | this.ro ... 'name') | user-provided value |
+| angular/search-result.component.ts:27:65:27:72 | params.q | angular/search-result.component.ts:26:39:26:44 | params | angular/search-result.component.ts:27:65:27:72 | params.q | Cross-site scripting vulnerability due to $@. | angular/search-result.component.ts:26:39:26:44 | params | user-provided value |
+| angular/search-result.component.ts:33:63:33:66 | frag | angular/search-result.component.ts:32:18:32:45 | this.ro ... ragment | angular/search-result.component.ts:33:63:33:66 | frag | Cross-site scripting vulnerability due to $@. | angular/search-result.component.ts:32:18:32:45 | this.ro ... ragment | user-provided value |
+edges
+| angular/legacy-constructor-di.component.ts:13:11:13:11 | q | angular/legacy-constructor-di.component.ts:14:57:14:57 | q | provenance |  |
+| angular/legacy-constructor-di.component.ts:13:15:13:45 | this.ro ... yParams | angular/legacy-constructor-di.component.ts:13:11:13:11 | q | provenance |  |
+| angular/search-result.component.ts:13:9:13:18 | queryParam | angular/search-result.component.ts:15:20:15:29 | queryParam | provenance |  |
+| angular/search-result.component.ts:13:30:13:60 | this.ro ... yParams | angular/search-result.component.ts:13:9:13:18 | queryParam | provenance |  |
+| angular/search-result.component.ts:15:7:15:16 | queryParam | angular/search-result.component.ts:16:65:16:74 | queryParam | provenance |  |
+| angular/search-result.component.ts:15:20:15:29 | queryParam | angular/search-result.component.ts:15:20:15:36 | queryParam.trim() | provenance |  |
+| angular/search-result.component.ts:15:20:15:36 | queryParam.trim() | angular/search-result.component.ts:15:7:15:16 | queryParam | provenance |  |
+| angular/search-result.component.ts:21:11:21:14 | name | angular/search-result.component.ts:22:63:22:66 | name | provenance |  |
+| angular/search-result.component.ts:21:18:21:62 | this.ro ... 'name') | angular/search-result.component.ts:21:11:21:14 | name | provenance |  |
+| angular/search-result.component.ts:26:39:26:44 | params | angular/search-result.component.ts:27:65:27:70 | params | provenance |  |
+| angular/search-result.component.ts:27:65:27:70 | params | angular/search-result.component.ts:27:65:27:72 | params.q | provenance |  |
+| angular/search-result.component.ts:32:11:32:14 | frag | angular/search-result.component.ts:33:63:33:66 | frag | provenance |  |
+| angular/search-result.component.ts:32:18:32:45 | this.ro ... ragment | angular/search-result.component.ts:32:11:32:14 | frag | provenance |  |
+nodes
+| angular/legacy-constructor-di.component.ts:13:11:13:11 | q | semmle.label | q |
+| angular/legacy-constructor-di.component.ts:13:15:13:45 | this.ro ... yParams | semmle.label | this.ro ... yParams |
+| angular/legacy-constructor-di.component.ts:14:57:14:57 | q | semmle.label | q |
+| angular/search-result.component.ts:13:9:13:18 | queryParam | semmle.label | queryParam |
+| angular/search-result.component.ts:13:30:13:60 | this.ro ... yParams | semmle.label | this.ro ... yParams |
+| angular/search-result.component.ts:15:7:15:16 | queryParam | semmle.label | queryParam |
+| angular/search-result.component.ts:15:20:15:29 | queryParam | semmle.label | queryParam |
+| angular/search-result.component.ts:15:20:15:36 | queryParam.trim() | semmle.label | queryParam.trim() |
+| angular/search-result.component.ts:16:65:16:74 | queryParam | semmle.label | queryParam |
+| angular/search-result.component.ts:21:11:21:14 | name | semmle.label | name |
+| angular/search-result.component.ts:21:18:21:62 | this.ro ... 'name') | semmle.label | this.ro ... 'name') |
+| angular/search-result.component.ts:22:63:22:66 | name | semmle.label | name |
+| angular/search-result.component.ts:26:39:26:44 | params | semmle.label | params |
+| angular/search-result.component.ts:27:65:27:70 | params | semmle.label | params |
+| angular/search-result.component.ts:27:65:27:72 | params.q | semmle.label | params.q |
+| angular/search-result.component.ts:32:11:32:14 | frag | semmle.label | frag |
+| angular/search-result.component.ts:32:18:32:45 | this.ro ... ragment | semmle.label | this.ro ... ragment |
+| angular/search-result.component.ts:33:63:33:66 | frag | semmle.label | frag |
+subpaths

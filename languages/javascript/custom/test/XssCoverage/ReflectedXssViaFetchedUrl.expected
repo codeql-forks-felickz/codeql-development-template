@@ -1,0 +1,48 @@
+#select
+| needle/research.js:15:17:15:20 | body | needle/research.js:8:15:8:27 | req.query.url | needle/research.js:15:17:15:20 | body | Cross-site scripting vulnerability due to the response of a request to a $@. | needle/research.js:8:15:8:27 | req.query.url | user-controlled URL |
+| needle/research.js:23:14:23:26 | response.body | needle/research.js:22:14:22:26 | req.query.url | needle/research.js:23:14:23:26 | response.body | Cross-site scripting vulnerability due to the response of a request to a $@. | needle/research.js:22:14:22:26 | req.query.url | user-controlled URL |
+| needle/research.js:29:14:29:17 | body | needle/research.js:28:25:28:37 | req.query.url | needle/research.js:29:14:29:17 | body | Cross-site scripting vulnerability due to the response of a request to a $@. | needle/research.js:28:25:28:37 | req.query.url | user-controlled URL |
+| needle/research.js:35:12:35:24 | response.body | needle/research.js:34:40:34:52 | req.query.url | needle/research.js:35:12:35:24 | response.body | Cross-site scripting vulnerability due to the response of a request to a $@. | needle/research.js:34:40:34:52 | req.query.url | user-controlled URL |
+| needle/research.js:81:12:81:24 | response.data | needle/research.js:80:36:80:48 | req.query.url | needle/research.js:81:12:81:24 | response.data | Cross-site scripting vulnerability due to the response of a request to a $@. | needle/research.js:80:36:80:48 | req.query.url | user-controlled URL |
+edges
+| needle/research.js:8:15:8:27 | req.query.url | needle/research.js:9:47:9:50 | body | provenance | Config |
+| needle/research.js:9:47:9:50 | body | needle/research.js:15:17:15:20 | body | provenance |  |
+| needle/research.js:22:14:22:26 | req.query.url | needle/research.js:22:56:22:63 | response | provenance | Config |
+| needle/research.js:22:56:22:63 | response | needle/research.js:23:14:23:21 | response | provenance |  |
+| needle/research.js:23:14:23:21 | response | needle/research.js:23:14:23:26 | response.body | provenance |  |
+| needle/research.js:28:25:28:37 | req.query.url | needle/research.js:28:64:28:67 | body | provenance | Config |
+| needle/research.js:28:64:28:67 | body | needle/research.js:29:14:29:17 | body | provenance |  |
+| needle/research.js:34:9:34:16 | response | needle/research.js:35:12:35:19 | response | provenance |  |
+| needle/research.js:34:20:34:53 | await n ... ry.url) | needle/research.js:34:9:34:16 | response | provenance |  |
+| needle/research.js:34:26:34:53 | needle( ... ry.url) | needle/research.js:34:20:34:53 | await n ... ry.url) | provenance |  |
+| needle/research.js:34:40:34:52 | req.query.url | needle/research.js:34:26:34:53 | needle( ... ry.url) | provenance | Config |
+| needle/research.js:35:12:35:19 | response | needle/research.js:35:12:35:24 | response.body | provenance |  |
+| needle/research.js:80:9:80:16 | response | needle/research.js:81:12:81:19 | response | provenance |  |
+| needle/research.js:80:20:80:49 | await a ... ry.url) | needle/research.js:80:9:80:16 | response | provenance |  |
+| needle/research.js:80:26:80:49 | axios.g ... ry.url) | needle/research.js:80:20:80:49 | await a ... ry.url) | provenance |  |
+| needle/research.js:80:36:80:48 | req.query.url | needle/research.js:80:26:80:49 | axios.g ... ry.url) | provenance | Config |
+| needle/research.js:81:12:81:19 | response | needle/research.js:81:12:81:24 | response.data | provenance |  |
+nodes
+| needle/research.js:8:15:8:27 | req.query.url | semmle.label | req.query.url |
+| needle/research.js:9:47:9:50 | body | semmle.label | body |
+| needle/research.js:15:17:15:20 | body | semmle.label | body |
+| needle/research.js:22:14:22:26 | req.query.url | semmle.label | req.query.url |
+| needle/research.js:22:56:22:63 | response | semmle.label | response |
+| needle/research.js:23:14:23:21 | response | semmle.label | response |
+| needle/research.js:23:14:23:26 | response.body | semmle.label | response.body |
+| needle/research.js:28:25:28:37 | req.query.url | semmle.label | req.query.url |
+| needle/research.js:28:64:28:67 | body | semmle.label | body |
+| needle/research.js:29:14:29:17 | body | semmle.label | body |
+| needle/research.js:34:9:34:16 | response | semmle.label | response |
+| needle/research.js:34:20:34:53 | await n ... ry.url) | semmle.label | await n ... ry.url) |
+| needle/research.js:34:26:34:53 | needle( ... ry.url) | semmle.label | needle( ... ry.url) |
+| needle/research.js:34:40:34:52 | req.query.url | semmle.label | req.query.url |
+| needle/research.js:35:12:35:19 | response | semmle.label | response |
+| needle/research.js:35:12:35:24 | response.body | semmle.label | response.body |
+| needle/research.js:80:9:80:16 | response | semmle.label | response |
+| needle/research.js:80:20:80:49 | await a ... ry.url) | semmle.label | await a ... ry.url) |
+| needle/research.js:80:26:80:49 | axios.g ... ry.url) | semmle.label | axios.g ... ry.url) |
+| needle/research.js:80:36:80:48 | req.query.url | semmle.label | req.query.url |
+| needle/research.js:81:12:81:19 | response | semmle.label | response |
+| needle/research.js:81:12:81:24 | response.data | semmle.label | response.data |
+subpaths
