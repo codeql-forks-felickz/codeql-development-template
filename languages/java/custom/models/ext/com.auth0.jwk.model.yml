@@ -1,0 +1,10 @@
+extensions:
+  # auth0 jwks-rsa: the provider fetches the JWK set from the given URL or domain.
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.auth0.jwk", "JwkProviderBuilder", False, "JwkProviderBuilder", "(URL)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["com.auth0.jwk", "JwkProviderBuilder", False, "JwkProviderBuilder", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["com.auth0.jwk", "UrlJwkProvider", False, "UrlJwkProvider", "(URL)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["com.auth0.jwk", "UrlJwkProvider", False, "UrlJwkProvider", "(String)", "", "Argument[0]", "request-forgery", "manual"]
