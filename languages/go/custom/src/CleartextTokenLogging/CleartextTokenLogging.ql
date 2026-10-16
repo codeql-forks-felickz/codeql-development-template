@@ -21,4 +21,4 @@ import CleartextTokenLogging::Flow::PathGraph
 from CleartextTokenLogging::Flow::PathNode source, CleartextTokenLogging::Flow::PathNode sink
 where CleartextTokenLogging::Flow::flowPath(source, sink)
 select sink.getNode(), source, sink, "$@ flows to a logging call.", source.getNode(),
-  "Authentication token returned by " + source.getNode().(CleartextTokenLogging::Source).describe()
+  "An authentication token from " + source.getNode().(CleartextTokenLogging::Source).describe()

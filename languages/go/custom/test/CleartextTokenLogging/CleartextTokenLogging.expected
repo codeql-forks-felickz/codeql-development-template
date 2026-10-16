@@ -1,9 +1,9 @@
 #select
-| main.go:43:28:43:33 | signed | main.go:42:2:42:35 | extract:0 ... := ... | main.go:43:28:43:33 | signed | $@ flows to a logging call. | main.go:42:2:42:35 | extract:0 ... := ... | Authentication token returned by a signed JWT |
-| main.go:54:40:54:50 | accessToken | main.go:53:24:53:34 | SSA def(accessToken) | main.go:54:40:54:50 | accessToken | $@ flows to a logging call. | main.go:53:24:53:34 | SSA def(accessToken) | Authentication token returned by an access to accessToken |
-| main.go:58:49:58:62 | selection of RefreshToken | main.go:58:49:58:62 | selection of RefreshToken | main.go:58:49:58:62 | selection of RefreshToken | $@ flows to a logging call. | main.go:58:49:58:62 | selection of RefreshToken | Authentication token returned by an access to RefreshToken |
-| main.go:81:30:81:37 | fakeUser | main.go:80:2:80:33 | extract:0 ... := ... | main.go:81:30:81:37 | fakeUser | $@ flows to a logging call. | main.go:80:2:80:33 | extract:0 ... := ... | Authentication token returned by a call to CreateFakeToken |
-| main.go:85:12:85:17 | minted | main.go:50:2:50:27 | extract:0 return statement | main.go:85:12:85:17 | minted | $@ flows to a logging call. | main.go:50:2:50:27 | extract:0 return statement | Authentication token returned by a signed JWT |
+| main.go:43:28:43:33 | signed | main.go:42:2:42:35 | extract:0 ... := ... | main.go:43:28:43:33 | signed | $@ flows to a logging call. | main.go:42:2:42:35 | extract:0 ... := ... | An authentication token from a signed JWT |
+| main.go:54:40:54:50 | accessToken | main.go:53:24:53:34 | SSA def(accessToken) | main.go:54:40:54:50 | accessToken | $@ flows to a logging call. | main.go:53:24:53:34 | SSA def(accessToken) | An authentication token from an access to accessToken |
+| main.go:58:49:58:62 | selection of RefreshToken | main.go:58:49:58:62 | selection of RefreshToken | main.go:58:49:58:62 | selection of RefreshToken | $@ flows to a logging call. | main.go:58:49:58:62 | selection of RefreshToken | An authentication token from an access to RefreshToken |
+| main.go:81:30:81:37 | fakeUser | main.go:80:2:80:33 | extract:0 ... := ... | main.go:81:30:81:37 | fakeUser | $@ flows to a logging call. | main.go:80:2:80:33 | extract:0 ... := ... | An authentication token from a call to CreateFakeToken |
+| main.go:85:12:85:17 | minted | main.go:50:2:50:27 | extract:0 return statement | main.go:85:12:85:17 | minted | $@ flows to a logging call. | main.go:50:2:50:27 | extract:0 return statement | An authentication token from a signed JWT |
 edges
 | main.go:42:2:42:35 | extract:0 ... := ... | main.go:43:28:43:33 | signed | provenance |  |
 | main.go:50:2:50:27 | extract:0 return statement | main.go:84:2:84:31 | extract:0 ... := ... | provenance |  |

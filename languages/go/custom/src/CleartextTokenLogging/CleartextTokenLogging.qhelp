@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Authentication tokens such as signed JSON Web Tokens (JWTs), access tokens, refresh tokens and
+session tokens are active credentials. Anyone who reads a log file that contains such a token
+can replay it to impersonate the user or service it was issued to, until it expires or is revoked.
+Logs are frequently copied to aggregation systems and are readable by a wider audience than the
+application's secrets.
+</p>
+<p>
+The standard <code>go/clear-text-logging</code> query only treats password-like values, HTTP request
+headers and Kubernetes secrets as sensitive. This query additionally treats the result of signing a JWT
+(for example <code>Token.SignedString</code> from <code>github.com/golang-jwt/jwt</code> or
+<code>github.com/dgrijalva/jwt-go</code>) and string values whose names indicate a credential token
+as sensitive.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do not log authentication tokens. If a token must be correlated across log entries, log a
+non-reversible identifier instead, such as the token's <code>jti</code> claim or a cryptographic hash of
+the token.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example generates a token at startup and writes it to the log:
+</p>
+<sample language="go">
+token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+signed, _ := token.SignedString(key)
+log.Printf("issued token %s", signed) // BAD
+</sample>
+<p>
+Instead, log information that does not disclose the credential:
+</p>
+<sample language="go">
+token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+signed, _ := token.SignedString(key)
+log.Printf("issued token for %s", claims.Subject) // GOOD
+</sample>
+</example>
+
+<references>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">Logging Cheat Sheet</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/312.html">CWE-312</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/315.html">CWE-315</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/359.html">CWE-359</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/532.html">CWE-532</a>.</li>
+</references>
+</qhelp>
