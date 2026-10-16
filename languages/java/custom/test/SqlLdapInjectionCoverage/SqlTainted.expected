@@ -1,0 +1,10 @@
+#select
+| test/HqlServlet.java:16:39:16:65 | ... + ... | test/HqlServlet.java:29:25:29:46 | getParameter(...) : String | test/HqlServlet.java:16:39:16:65 | ... + ... | This query depends on a $@. | test/HqlServlet.java:29:25:29:46 | getParameter(...) | user-provided value |
+edges
+| test/HqlServlet.java:15:53:15:61 | id : String | test/HqlServlet.java:16:39:16:65 | ... + ... | provenance | Sink:MaD:52518 |
+| test/HqlServlet.java:29:25:29:46 | getParameter(...) : String | test/HqlServlet.java:15:53:15:61 | id : String | provenance | Src:MaD:48674  |
+nodes
+| test/HqlServlet.java:15:53:15:61 | id : String | semmle.label | id : String |
+| test/HqlServlet.java:16:39:16:65 | ... + ... | semmle.label | ... + ... |
+| test/HqlServlet.java:29:25:29:46 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+subpaths

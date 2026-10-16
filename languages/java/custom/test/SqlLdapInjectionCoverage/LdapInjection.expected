@@ -1,0 +1,48 @@
+#select
+| test/ApacheApiLdapFilter.java:12:37:12:56 | ... + ... | test/ApacheApiLdapFilter.java:11:19:11:42 | getParameter(...) : String | test/ApacheApiLdapFilter.java:12:37:12:56 | ... + ... | This LDAP query depends on a $@. | test/ApacheApiLdapFilter.java:11:19:11:42 | getParameter(...) | user-provided value |
+| test/ApacheApiLdapFilter.java:13:37:13:56 | ... + ... | test/ApacheApiLdapFilter.java:11:19:11:42 | getParameter(...) : String | test/ApacheApiLdapFilter.java:13:37:13:56 | ... + ... | This LDAP query depends on a $@. | test/ApacheApiLdapFilter.java:11:19:11:42 | getParameter(...) | user-provided value |
+| test/ApacheApiLdapFilter.java:14:52:14:71 | ... + ... | test/ApacheApiLdapFilter.java:11:19:11:42 | getParameter(...) : String | test/ApacheApiLdapFilter.java:14:52:14:71 | ... + ... | This LDAP query depends on a $@. | test/ApacheApiLdapFilter.java:11:19:11:42 | getParameter(...) | user-provided value |
+| test/ApacheApiLdapFilter.java:15:52:15:71 | ... + ... | test/ApacheApiLdapFilter.java:11:19:11:42 | getParameter(...) : String | test/ApacheApiLdapFilter.java:15:52:15:71 | ... + ... | This LDAP query depends on a $@. | test/ApacheApiLdapFilter.java:11:19:11:42 | getParameter(...) | user-provided value |
+| test/ApacheDsLdapLoginServlet.java:32:44:32:55 | filterString | test/ApacheDsLdapLoginServlet.java:23:18:23:43 | getParameter(...) : String | test/ApacheDsLdapLoginServlet.java:32:44:32:55 | filterString | This LDAP query depends on a $@. | test/ApacheDsLdapLoginServlet.java:23:18:23:43 | getParameter(...) | user-provided value |
+| test/ApacheDsLdapLoginServlet.java:32:44:32:55 | filterString | test/ApacheDsLdapLoginServlet.java:24:23:24:50 | getParameter(...) : String | test/ApacheDsLdapLoginServlet.java:32:44:32:55 | filterString | This LDAP query depends on a $@. | test/ApacheDsLdapLoginServlet.java:24:23:24:50 | getParameter(...) | user-provided value |
+| test/UnboundIdLdapController.java:17:68:17:73 | filter | test/UnboundIdLdapController.java:21:24:21:70 | username : String | test/UnboundIdLdapController.java:17:68:17:73 | filter | This LDAP query depends on a $@. | test/UnboundIdLdapController.java:21:24:21:70 | username | user-provided value |
+edges
+| test/ApacheApiLdapFilter.java:11:19:11:42 | getParameter(...) : String | test/ApacheApiLdapFilter.java:12:37:12:56 | ... + ... | provenance | Src:MaD:48674 Sink:MaD:1 |
+| test/ApacheApiLdapFilter.java:11:19:11:42 | getParameter(...) : String | test/ApacheApiLdapFilter.java:13:37:13:56 | ... + ... | provenance | Src:MaD:48674 Sink:MaD:2 |
+| test/ApacheApiLdapFilter.java:11:19:11:42 | getParameter(...) : String | test/ApacheApiLdapFilter.java:14:52:14:71 | ... + ... | provenance | Src:MaD:48674 Sink:MaD:3 |
+| test/ApacheApiLdapFilter.java:11:19:11:42 | getParameter(...) : String | test/ApacheApiLdapFilter.java:15:52:15:71 | ... + ... | provenance | Src:MaD:48674 Sink:MaD:4 |
+| test/ApacheDsLdapLoginServlet.java:23:18:23:43 | getParameter(...) : String | test/ApacheDsLdapLoginServlet.java:25:14:25:16 | uid : String | provenance | Src:MaD:48674  |
+| test/ApacheDsLdapLoginServlet.java:24:23:24:50 | getParameter(...) : String | test/ApacheDsLdapLoginServlet.java:25:19:25:26 | password : String | provenance | Src:MaD:48674  |
+| test/ApacheDsLdapLoginServlet.java:25:14:25:16 | uid : String | test/ApacheDsLdapLoginServlet.java:29:30:29:39 | uid : String | provenance |  |
+| test/ApacheDsLdapLoginServlet.java:25:19:25:26 | password : String | test/ApacheDsLdapLoginServlet.java:29:42:29:56 | password : String | provenance |  |
+| test/ApacheDsLdapLoginServlet.java:29:30:29:39 | uid : String | test/ApacheDsLdapLoginServlet.java:31:41:31:43 | uid : String | provenance |  |
+| test/ApacheDsLdapLoginServlet.java:29:42:29:56 | password : String | test/ApacheDsLdapLoginServlet.java:31:74:31:81 | password : String | provenance |  |
+| test/ApacheDsLdapLoginServlet.java:31:41:31:43 | uid : String | test/ApacheDsLdapLoginServlet.java:31:41:31:50 | trim(...) : String | provenance | MaD:46688 |
+| test/ApacheDsLdapLoginServlet.java:31:41:31:50 | trim(...) : String | test/ApacheDsLdapLoginServlet.java:32:44:32:55 | filterString | provenance | Sink:MaD:0 |
+| test/ApacheDsLdapLoginServlet.java:31:74:31:81 | password : String | test/ApacheDsLdapLoginServlet.java:31:74:31:88 | trim(...) : String | provenance | MaD:46688 |
+| test/ApacheDsLdapLoginServlet.java:31:74:31:88 | trim(...) : String | test/ApacheDsLdapLoginServlet.java:32:44:32:55 | filterString | provenance | Sink:MaD:0 |
+| test/UnboundIdLdapController.java:16:36:16:48 | filter : String | test/UnboundIdLdapController.java:17:68:17:73 | filter | provenance | Sink:MaD:1980 |
+| test/UnboundIdLdapController.java:21:24:21:70 | username : String | test/UnboundIdLdapController.java:23:24:23:47 | ... + ... : String | provenance |  |
+| test/UnboundIdLdapController.java:23:24:23:47 | ... + ... : String | test/UnboundIdLdapController.java:16:36:16:48 | filter : String | provenance |  |
+nodes
+| test/ApacheApiLdapFilter.java:11:19:11:42 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| test/ApacheApiLdapFilter.java:12:37:12:56 | ... + ... | semmle.label | ... + ... |
+| test/ApacheApiLdapFilter.java:13:37:13:56 | ... + ... | semmle.label | ... + ... |
+| test/ApacheApiLdapFilter.java:14:52:14:71 | ... + ... | semmle.label | ... + ... |
+| test/ApacheApiLdapFilter.java:15:52:15:71 | ... + ... | semmle.label | ... + ... |
+| test/ApacheDsLdapLoginServlet.java:23:18:23:43 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| test/ApacheDsLdapLoginServlet.java:24:23:24:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| test/ApacheDsLdapLoginServlet.java:25:14:25:16 | uid : String | semmle.label | uid : String |
+| test/ApacheDsLdapLoginServlet.java:25:19:25:26 | password : String | semmle.label | password : String |
+| test/ApacheDsLdapLoginServlet.java:29:30:29:39 | uid : String | semmle.label | uid : String |
+| test/ApacheDsLdapLoginServlet.java:29:42:29:56 | password : String | semmle.label | password : String |
+| test/ApacheDsLdapLoginServlet.java:31:41:31:43 | uid : String | semmle.label | uid : String |
+| test/ApacheDsLdapLoginServlet.java:31:41:31:50 | trim(...) : String | semmle.label | trim(...) : String |
+| test/ApacheDsLdapLoginServlet.java:31:74:31:81 | password : String | semmle.label | password : String |
+| test/ApacheDsLdapLoginServlet.java:31:74:31:88 | trim(...) : String | semmle.label | trim(...) : String |
+| test/ApacheDsLdapLoginServlet.java:32:44:32:55 | filterString | semmle.label | filterString |
+| test/UnboundIdLdapController.java:16:36:16:48 | filter : String | semmle.label | filter : String |
+| test/UnboundIdLdapController.java:17:68:17:73 | filter | semmle.label | filter |
+| test/UnboundIdLdapController.java:21:24:21:70 | username : String | semmle.label | username : String |
+| test/UnboundIdLdapController.java:23:24:23:47 | ... + ... : String | semmle.label | ... + ... : String |
+subpaths
