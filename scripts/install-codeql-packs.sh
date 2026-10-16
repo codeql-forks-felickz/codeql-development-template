@@ -13,7 +13,7 @@ Install CodeQL packs for all packs discovered in the CodeQL workspace.
 OPTIONS:
     --language <lang>  Install packs only for the specified language
                        Valid values: actions, cpp, csharp, go, java, javascript,
-                       python, ruby
+                       python, ruby, rust
     -h, --help         Show this help message
 
 By default, the script installs packs for all languages in the workspace.
@@ -44,7 +44,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 ## Validate language if provided
-VALID_LANGUAGES=("actions" "cpp" "csharp" "go" "java" "javascript" "python" "ruby")
+VALID_LANGUAGES=("actions" "cpp" "csharp" "go" "java" "javascript" "python" "ruby" "rust")
 if [[ -n "${LANGUAGE}" ]]; then
 	LANGUAGE_VALID=false
 	for valid_lang in "${VALID_LANGUAGES[@]}"; do

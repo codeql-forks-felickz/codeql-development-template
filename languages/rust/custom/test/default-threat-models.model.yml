@@ -1,0 +1,9 @@
+# Enable the `local` threat model (e.g. `file`, `commandargs`, `environment`) for
+# all tests in this pack, mirroring the upstream `codeql/rust-tests` pack.
+# NOTE: Code scanning default setup only enables `remote` sources by default.
+extensions:
+  - addsTo:
+      pack: codeql/threat-models
+      extensible: threatModelConfiguration
+    data:
+      - ["local", true, 0]
