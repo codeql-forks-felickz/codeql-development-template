@@ -1,0 +1,37 @@
+#select
+| app.js:3:48:3:50 | ref | app.js:2:11:2:32 | documen ... on.hash | app.js:3:48:3:50 | ref | This text is written into an AngularJS application page and may be compiled as a template, as it depends on a $@. | app.js:2:11:2:32 | documen ... on.hash | user-provided value |
+| login.html:19:28:19:86 | "Failed ... ] + "!" | login.html:14:7:14:28 | window. ... .search | login.html:19:28:19:86 | "Failed ... ] + "!" | This text is written into an AngularJS application page and may be compiled as a template, as it depends on a $@. | login.html:14:7:14:28 | window. ... .search | user-provided value |
+| login.html:23:57:23:71 | 'Hello ' + name | login.html:22:38:22:59 | window. ... .search | login.html:23:57:23:71 | 'Hello ' + name | This text is written into an AngularJS application page and may be compiled as a template, as it depends on a $@. | login.html:22:38:22:59 | window. ... .search | user-provided value |
+| login.html:24:79:24:82 | name | login.html:22:38:22:59 | window. ... .search | login.html:24:79:24:82 | name | This text is written into an AngularJS application page and may be compiled as a template, as it depends on a $@. | login.html:22:38:22:59 | window. ... .search | user-provided value |
+edges
+| app.js:2:5:2:7 | ref | app.js:3:48:3:50 | ref | provenance |  |
+| app.js:2:11:2:32 | documen ... on.hash | app.js:2:11:2:45 | documen ... ring(1) | provenance |  |
+| app.js:2:11:2:45 | documen ... ring(1) | app.js:2:5:2:7 | ref | provenance |  |
+| login.html:14:7:14:28 | window. ... .search | login.html:14:85:14:89 | value | provenance | Config |
+| login.html:14:85:14:89 | value | login.html:15:42:15:46 | value | provenance |  |
+| login.html:15:23:15:47 | decodeU ... (value) | login.html:19:67:19:80 | params['user'] | provenance | Config |
+| login.html:15:42:15:46 | value | login.html:15:23:15:47 | decodeU ... (value) | provenance |  |
+| login.html:19:67:19:80 | params['user'] | login.html:19:28:19:86 | "Failed ... ] + "!" | provenance |  |
+| login.html:22:18:22:60 | new URL ... search) [MapValue] | login.html:22:18:22:72 | new URL ... 'name') | provenance |  |
+| login.html:22:18:22:72 | new URL ... 'name') | login.html:23:68:23:71 | name | provenance |  |
+| login.html:22:18:22:72 | new URL ... 'name') | login.html:24:79:24:82 | name | provenance |  |
+| login.html:22:38:22:59 | window. ... .search | login.html:22:18:22:60 | new URL ... search) [MapValue] | provenance |  |
+| login.html:23:68:23:71 | name | login.html:23:57:23:71 | 'Hello ' + name | provenance |  |
+nodes
+| app.js:2:5:2:7 | ref | semmle.label | ref |
+| app.js:2:11:2:32 | documen ... on.hash | semmle.label | documen ... on.hash |
+| app.js:2:11:2:45 | documen ... ring(1) | semmle.label | documen ... ring(1) |
+| app.js:3:48:3:50 | ref | semmle.label | ref |
+| login.html:14:7:14:28 | window. ... .search | semmle.label | window. ... .search |
+| login.html:14:85:14:89 | value | semmle.label | value |
+| login.html:15:23:15:47 | decodeU ... (value) | semmle.label | decodeU ... (value) |
+| login.html:15:42:15:46 | value | semmle.label | value |
+| login.html:19:28:19:86 | "Failed ... ] + "!" | semmle.label | "Failed ... ] + "!" |
+| login.html:19:67:19:80 | params['user'] | semmle.label | params['user'] |
+| login.html:22:18:22:60 | new URL ... search) [MapValue] | semmle.label | new URL ... search) [MapValue] |
+| login.html:22:18:22:72 | new URL ... 'name') | semmle.label | new URL ... 'name') |
+| login.html:22:38:22:59 | window. ... .search | semmle.label | window. ... .search |
+| login.html:23:57:23:71 | 'Hello ' + name | semmle.label | 'Hello ' + name |
+| login.html:23:68:23:71 | name | semmle.label | name |
+| login.html:24:79:24:82 | name | semmle.label | name |
+subpaths
