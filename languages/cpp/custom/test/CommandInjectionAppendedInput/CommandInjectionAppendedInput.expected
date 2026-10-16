@@ -1,31 +1,43 @@
 #select
-| test.c:40:10:40:13 | data | test.c:29:31:29:54 | recv output argument | test.c:40:10:40:13 | *data | This argument to an OS command is derived from $@, appended in place to the existing command string in $@, and then passed to system(command). | test.c:29:31:29:54 | recv output argument | user input (buffer read by recv) | test.c:29:40:29:43 | data | data |
-| test.c:46:10:46:12 | cmd | test.c:45:14:45:30 | recv output argument | test.c:46:10:46:12 | *cmd | This argument to an OS command is derived from $@, appended in place to the existing command string in $@, and then passed to system(command). | test.c:45:14:45:30 | recv output argument | user input (buffer read by recv) | test.c:45:14:45:16 | cmd | cmd |
-| test.c:53:9:53:11 | cmd | test.c:52:12:52:20 | read output argument | test.c:53:9:53:11 | *cmd | This argument to an OS command is derived from $@, appended in place to the existing command string in $@, and then passed to popen(command). | test.c:52:12:52:20 | read output argument | user input (buffer read by read) | test.c:52:13:52:15 | cmd | cmd |
-| test.c:62:10:62:13 | data | test.c:61:9:61:22 | fgets output argument | test.c:62:10:62:13 | *data | This argument to an OS command is derived from $@, appended in place to the existing command string in $@, and then passed to system(command). | test.c:61:9:61:22 | fgets output argument | user input (string read by fgets) | test.c:61:9:61:12 | data | data |
-| test.c:79:11:79:16 | call to source | test.c:73:14:73:27 | recv output argument | test.c:79:11:79:16 | *call to source | This argument to an OS command is derived from $@, appended in place to the existing command string in $@, and then passed to execute(data), which calls system(command). | test.c:73:14:73:27 | recv output argument | user input (buffer read by recv) | test.c:73:14:73:17 | data | data |
+| test.c:43:10:43:13 | data | test.c:32:31:32:54 | recv output argument | test.c:43:10:43:13 | *data | This argument to an OS command is derived from $@, appended in place to the existing command string in $@, and then passed to system(command). | test.c:32:31:32:54 | recv output argument | user input (buffer read by recv) | test.c:32:40:32:43 | data | data |
+| test.c:49:10:49:12 | cmd | test.c:48:14:48:30 | recv output argument | test.c:49:10:49:12 | *cmd | This argument to an OS command is derived from $@, appended in place to the existing command string in $@, and then passed to system(command). | test.c:48:14:48:30 | recv output argument | user input (buffer read by recv) | test.c:48:14:48:16 | cmd | cmd |
+| test.c:56:9:56:11 | cmd | test.c:55:12:55:20 | read output argument | test.c:56:9:56:11 | *cmd | This argument to an OS command is derived from $@, appended in place to the existing command string in $@, and then passed to popen(command). | test.c:55:12:55:20 | read output argument | user input (buffer read by read) | test.c:55:13:55:15 | cmd | cmd |
+| test.c:65:10:65:13 | data | test.c:64:9:64:22 | fgets output argument | test.c:65:10:65:13 | *data | This argument to an OS command is derived from $@, appended in place to the existing command string in $@, and then passed to system(command). | test.c:64:9:64:22 | fgets output argument | user input (string read by fgets) | test.c:64:9:64:12 | data | data |
+| test.c:82:11:82:16 | call to source | test.c:76:14:76:27 | recv output argument | test.c:82:11:82:16 | *call to source | This argument to an OS command is derived from $@, appended in place to the existing command string in $@, and then passed to execute(data), which calls system(command). | test.c:76:14:76:27 | recv output argument | user input (buffer read by recv) | test.c:76:14:76:17 | data | data |
+| test.c:96:36:96:39 | data | test.c:89:14:89:37 | recv output argument | test.c:96:28:96:39 | *data | This argument to an OS command is derived from $@, appended in place to the existing command string in $@, and then passed to execlp. | test.c:89:14:89:37 | recv output argument | user input (buffer read by recv) | test.c:89:23:89:26 | data | data |
 edges
-| test.c:29:31:29:54 | recv output argument | test.c:33:7:33:54 | ... = ... | provenance |  |
-| test.c:29:31:29:54 | recv output argument | test.c:40:10:40:13 | *data | provenance |  |
-| test.c:33:7:33:54 | ... = ... | test.c:40:10:40:13 | *data | provenance |  |
-| test.c:45:14:45:30 | recv output argument | test.c:46:10:46:12 | *cmd | provenance |  |
-| test.c:52:12:52:20 | read output argument | test.c:53:9:53:11 | *cmd | provenance |  |
-| test.c:61:9:61:22 | fgets output argument | test.c:62:10:62:13 | *data | provenance |  |
-| test.c:71:14:71:19 | **source | test.c:79:11:79:16 | *call to source | provenance |  |
-| test.c:73:14:73:27 | recv output argument | test.c:74:10:74:13 | *data | provenance |  |
-| test.c:74:10:74:13 | *data | test.c:71:14:71:19 | **source | provenance |  |
+| test.c:32:31:32:54 | recv output argument | test.c:36:7:36:54 | ... = ... | provenance |  |
+| test.c:32:31:32:54 | recv output argument | test.c:43:10:43:13 | *data | provenance |  |
+| test.c:36:7:36:54 | ... = ... | test.c:43:10:43:13 | *data | provenance |  |
+| test.c:48:14:48:30 | recv output argument | test.c:49:10:49:12 | *cmd | provenance |  |
+| test.c:55:12:55:20 | read output argument | test.c:56:9:56:11 | *cmd | provenance |  |
+| test.c:64:9:64:22 | fgets output argument | test.c:65:10:65:13 | *data | provenance |  |
+| test.c:74:14:74:19 | **source | test.c:82:11:82:16 | *call to source | provenance |  |
+| test.c:76:14:76:27 | recv output argument | test.c:77:10:77:13 | *data | provenance |  |
+| test.c:77:10:77:13 | *data | test.c:74:14:74:19 | **source | provenance |  |
+| test.c:87:17:87:27 | **wide_source | test.c:95:19:95:29 | *call to wide_source | provenance |  |
+| test.c:89:14:89:37 | recv output argument | test.c:90:10:90:13 | *data | provenance |  |
+| test.c:90:10:90:13 | *data | test.c:87:17:87:27 | **wide_source | provenance |  |
+| test.c:95:19:95:29 | *call to wide_source | test.c:95:19:95:29 | *call to wide_source | provenance |  |
+| test.c:95:19:95:29 | *call to wide_source | test.c:96:28:96:39 | *data | provenance |  |
 nodes
-| test.c:29:31:29:54 | recv output argument | semmle.label | recv output argument |
-| test.c:33:7:33:54 | ... = ... | semmle.label | ... = ... |
-| test.c:40:10:40:13 | *data | semmle.label | *data |
-| test.c:45:14:45:30 | recv output argument | semmle.label | recv output argument |
-| test.c:46:10:46:12 | *cmd | semmle.label | *cmd |
-| test.c:52:12:52:20 | read output argument | semmle.label | read output argument |
-| test.c:53:9:53:11 | *cmd | semmle.label | *cmd |
-| test.c:61:9:61:22 | fgets output argument | semmle.label | fgets output argument |
-| test.c:62:10:62:13 | *data | semmle.label | *data |
-| test.c:71:14:71:19 | **source | semmle.label | **source |
-| test.c:73:14:73:27 | recv output argument | semmle.label | recv output argument |
-| test.c:74:10:74:13 | *data | semmle.label | *data |
-| test.c:79:11:79:16 | *call to source | semmle.label | *call to source |
+| test.c:32:31:32:54 | recv output argument | semmle.label | recv output argument |
+| test.c:36:7:36:54 | ... = ... | semmle.label | ... = ... |
+| test.c:43:10:43:13 | *data | semmle.label | *data |
+| test.c:48:14:48:30 | recv output argument | semmle.label | recv output argument |
+| test.c:49:10:49:12 | *cmd | semmle.label | *cmd |
+| test.c:55:12:55:20 | read output argument | semmle.label | read output argument |
+| test.c:56:9:56:11 | *cmd | semmle.label | *cmd |
+| test.c:64:9:64:22 | fgets output argument | semmle.label | fgets output argument |
+| test.c:65:10:65:13 | *data | semmle.label | *data |
+| test.c:74:14:74:19 | **source | semmle.label | **source |
+| test.c:76:14:76:27 | recv output argument | semmle.label | recv output argument |
+| test.c:77:10:77:13 | *data | semmle.label | *data |
+| test.c:82:11:82:16 | *call to source | semmle.label | *call to source |
+| test.c:87:17:87:27 | **wide_source | semmle.label | **wide_source |
+| test.c:89:14:89:37 | recv output argument | semmle.label | recv output argument |
+| test.c:90:10:90:13 | *data | semmle.label | *data |
+| test.c:95:19:95:29 | *call to wide_source | semmle.label | *call to wide_source |
+| test.c:95:19:95:29 | *call to wide_source | semmle.label | *call to wide_source |
+| test.c:96:28:96:39 | *data | semmle.label | *data |
 subpaths

@@ -1,9 +1,12 @@
 typedef unsigned long size_t;
 typedef long ssize_t;
+typedef int wchar_t;
 typedef struct FILE FILE;
 extern FILE *stdin;
 
 size_t strlen(const char *s);
+size_t wcslen(const wchar_t *s);
+int execlp(const char *file, const char *arg, ...);
 char *strcat(char *dest, const char *src);
 char *strchr(const char *s, int c);
 ssize_t recv(int sockfd, void *buf, size_t len, int flags);
@@ -77,6 +80,20 @@ static char *source(int sock, char *data) {
 void bad_interprocedural(int sock) {
   char data_buf[100] = FULL_COMMAND;
   execute(source(sock, data_buf)); // $ Alert
+}
+
+// Juliet `wchar_t_listen_socket_execlp` bad path: wide-string prefix measured with
+// `wcslen`, filled by `recv` in a separate function, then run via `sh -c`.
+static wchar_t *wide_source(int sock, wchar_t *data) {
+  size_t dataLen = wcslen(data);
+  recv(sock, (char *)(data + dataLen), sizeof(wchar_t) * (100 - dataLen - 1), 0); // $ Source
+  return data;
+}
+
+void bad_wide_execlp_sh_c(int sock) {
+  wchar_t dataBuffer[100] = L"ls ";
+  wchar_t *data = wide_source(sock, dataBuffer);
+  execlp("sh", "sh", "-c", (char *)data, (char *)0); // $ Alert
 }
 
 // GOOD: Juliet goodG2B path, a fixed string is appended.
