@@ -1,0 +1,2 @@
+query: UntrustedSearchPath/UntrustedSearchPath.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
