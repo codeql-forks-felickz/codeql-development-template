@@ -1,0 +1,30 @@
+#select
+| iron_app.rs:11:43:11:53 | request_url | iron_app.rs:9:27:9:33 | req.url | iron_app.rs:11:43:11:53 | request_url | The URL of this request depends on a $@. | iron_app.rs:9:27:9:33 | req.url | user-provided value |
+| warp_app.rs:7:19:7:54 | MacroExpr | warp_app.rs:5:43:14:5 | \|...\| ... | warp_app.rs:7:19:7:54 | MacroExpr | The URL of this request depends on a $@. | warp_app.rs:5:43:14:5 | \|...\| ... | user-provided value |
+edges
+| iron_app.rs:9:13:9:23 | request_url | iron_app.rs:11:43:11:53 | request_url | provenance | Sink:MaD:5271 |
+| iron_app.rs:9:27:9:33 | req.url | iron_app.rs:9:27:9:45 | ... .to_string() | provenance | MaD:364 |
+| iron_app.rs:9:27:9:45 | ... .to_string() | iron_app.rs:9:13:9:23 | request_url | provenance |  |
+| warp_app.rs:5:43:14:5 | \|...\| ... | warp_app.rs:5:44:5:64 | ...: String | provenance | Src:MaD:740  |
+| warp_app.rs:5:44:5:56 | tainted_param | warp_app.rs:7:41:7:53 | tainted_param | provenance | Config |
+| warp_app.rs:5:44:5:64 | ...: String | warp_app.rs:5:44:5:56 | tainted_param | provenance |  |
+| warp_app.rs:7:27:7:53 | ...::format(...) | warp_app.rs:7:27:7:53 | { ... } | provenance |  |
+| warp_app.rs:7:27:7:53 | ...::must_use(...) | warp_app.rs:7:19:7:54 | MacroExpr | provenance | Sink:MaD:5244 |
+| warp_app.rs:7:27:7:53 | MacroExpr | warp_app.rs:7:27:7:53 | ...::format(...) | provenance | MaD:346 |
+| warp_app.rs:7:27:7:53 | { ... } | warp_app.rs:7:27:7:53 | ...::must_use(...) | provenance | MaD:13296 |
+| warp_app.rs:7:41:7:53 | tainted_param | warp_app.rs:7:27:7:53 | MacroExpr | provenance |  |
+nodes
+| iron_app.rs:9:13:9:23 | request_url | semmle.label | request_url |
+| iron_app.rs:9:27:9:33 | req.url | semmle.label | req.url |
+| iron_app.rs:9:27:9:45 | ... .to_string() | semmle.label | ... .to_string() |
+| iron_app.rs:11:43:11:53 | request_url | semmle.label | request_url |
+| warp_app.rs:5:43:14:5 | \|...\| ... | semmle.label | \|...\| ... |
+| warp_app.rs:5:44:5:56 | tainted_param | semmle.label | tainted_param |
+| warp_app.rs:5:44:5:64 | ...: String | semmle.label | ...: String |
+| warp_app.rs:7:19:7:54 | MacroExpr | semmle.label | MacroExpr |
+| warp_app.rs:7:27:7:53 | ...::format(...) | semmle.label | ...::format(...) |
+| warp_app.rs:7:27:7:53 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| warp_app.rs:7:27:7:53 | MacroExpr | semmle.label | MacroExpr |
+| warp_app.rs:7:27:7:53 | { ... } | semmle.label | { ... } |
+| warp_app.rs:7:41:7:53 | tainted_param | semmle.label | tainted_param |
+subpaths
