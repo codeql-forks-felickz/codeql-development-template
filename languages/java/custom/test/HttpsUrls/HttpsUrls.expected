@@ -1,0 +1,16 @@
+#select
+| Client.kt:10:26:10:32 | baseUrl | Client.kt:8:36:8:42 | "http://" : String | Client.kt:10:26:10:32 | baseUrl | URL may have been constructed with HTTP protocol, using $@. | Client.kt:8:36:8:42 | "http://" | this HTTP URL |
+| Client.kt:17:26:17:45 | ... + ... | Client.kt:17:26:17:34 | "http://" : String | Client.kt:17:26:17:45 | ... + ... | URL may have been constructed with HTTP protocol, using $@. | Client.kt:17:26:17:34 | "http://" | this HTTP URL |
+| Client.kt:41:22:41:28 | baseUrl | Client.kt:39:32:39:38 | "http://" : String | Client.kt:41:22:41:28 | baseUrl | URL may have been constructed with HTTP protocol, using $@. | Client.kt:39:32:39:38 | "http://" | this HTTP URL |
+edges
+| Client.kt:8:36:8:42 | "http://" : String | Client.kt:10:26:10:32 | baseUrl | provenance | Sink:MaD:54215 |
+| Client.kt:17:26:17:34 | "http://" : String | Client.kt:17:26:17:45 | ... + ... | provenance | Sink:MaD:54215 |
+| Client.kt:39:32:39:38 | "http://" : String | Client.kt:41:22:41:28 | baseUrl | provenance | Sink:MaD:54215 |
+nodes
+| Client.kt:8:36:8:42 | "http://" : String | semmle.label | "http://" : String |
+| Client.kt:10:26:10:32 | baseUrl | semmle.label | baseUrl |
+| Client.kt:17:26:17:34 | "http://" : String | semmle.label | "http://" : String |
+| Client.kt:17:26:17:45 | ... + ... | semmle.label | ... + ... |
+| Client.kt:39:32:39:38 | "http://" : String | semmle.label | "http://" : String |
+| Client.kt:41:22:41:28 | baseUrl | semmle.label | baseUrl |
+subpaths

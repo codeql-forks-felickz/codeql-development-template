@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example">
+    <permission android:name="com.example.permission.READ" />
+    <application>
+        <provider android:name=".CredentialsProvider" android:authorities="com.example.provider" android:exported="true" android:readPermission="com.example.permission.READ" /> <!-- $ Alert -->
+        <provider android:name=".OtherProvider" android:authorities="com.example.other" android:exported="true" android:permission="com.example.permission.READ" />
+        <provider android:name=".PrivateProvider" android:authorities="com.example.private" android:exported="false" android:readPermission="com.example.permission.READ" />
+    </application>
+</manifest>

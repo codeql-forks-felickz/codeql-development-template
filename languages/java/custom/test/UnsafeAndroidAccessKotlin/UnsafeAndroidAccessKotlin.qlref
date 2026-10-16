@@ -1,0 +1,2 @@
+query: KotlinToStringTaint/UnsafeAndroidAccessKotlin.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
