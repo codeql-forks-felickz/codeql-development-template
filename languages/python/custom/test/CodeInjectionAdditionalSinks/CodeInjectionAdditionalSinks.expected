@@ -1,0 +1,26 @@
+#select
+| test.py:11:29:11:40 | ControlFlowNode for function_str | test.py:7:20:7:26 | ControlFlowNode for request | test.py:11:29:11:40 | ControlFlowNode for function_str | This code execution depends on a $@. | test.py:7:20:7:26 | ControlFlowNode for request | user-provided value |
+| test.py:17:38:17:47 | ControlFlowNode for expression | test.py:15:27:15:33 | ControlFlowNode for request | test.py:17:38:17:47 | ControlFlowNode for expression | This code execution depends on a $@. | test.py:15:27:15:33 | ControlFlowNode for request | user-provided value |
+| test.py:18:24:18:33 | ControlFlowNode for expression | test.py:15:27:15:33 | ControlFlowNode for request | test.py:18:24:18:33 | ControlFlowNode for expression | This code execution depends on a $@. | test.py:15:27:15:33 | ControlFlowNode for request | user-provided value |
+edges
+| test.py:7:20:7:26 | ControlFlowNode for request | test.py:8:20:8:31 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| test.py:8:5:8:16 | ControlFlowNode for function_str | test.py:11:29:11:40 | ControlFlowNode for function_str | provenance |  |
+| test.py:8:20:8:31 | ControlFlowNode for Attribute | test.py:8:20:8:47 | ControlFlowNode for Attribute() | provenance | dict.get |
+| test.py:8:20:8:47 | ControlFlowNode for Attribute() | test.py:8:5:8:16 | ControlFlowNode for function_str | provenance |  |
+| test.py:15:27:15:33 | ControlFlowNode for request | test.py:16:5:16:14 | ControlFlowNode for expression | provenance | AdditionalTaintStep |
+| test.py:16:5:16:14 | ControlFlowNode for expression | test.py:17:38:17:47 | ControlFlowNode for expression | provenance |  |
+| test.py:16:5:16:14 | ControlFlowNode for expression | test.py:18:24:18:33 | ControlFlowNode for expression | provenance |  |
+| test.py:22:17:22:23 | ControlFlowNode for request | test.py:24:10:24:28 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
+nodes
+| test.py:7:20:7:26 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:8:5:8:16 | ControlFlowNode for function_str | semmle.label | ControlFlowNode for function_str |
+| test.py:8:20:8:31 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:8:20:8:47 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:11:29:11:40 | ControlFlowNode for function_str | semmle.label | ControlFlowNode for function_str |
+| test.py:15:27:15:33 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:16:5:16:14 | ControlFlowNode for expression | semmle.label | ControlFlowNode for expression |
+| test.py:17:38:17:47 | ControlFlowNode for expression | semmle.label | ControlFlowNode for expression |
+| test.py:18:24:18:33 | ControlFlowNode for expression | semmle.label | ControlFlowNode for expression |
+| test.py:22:17:22:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:24:10:24:28 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+subpaths

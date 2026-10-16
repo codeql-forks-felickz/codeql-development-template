@@ -1,0 +1,48 @@
+#select
+| utility.py:18:13:18:23 | ControlFlowNode for output_code | views.py:12:18:12:24 | ControlFlowNode for request | utility.py:18:13:18:23 | ControlFlowNode for output_code | This Python source file content depends on a $@ and may be executed when the module is loaded. | views.py:12:18:12:24 | ControlFlowNode for request | user-provided value |
+| views.py:25:13:25:20 | ControlFlowNode for log_code | views.py:20:26:20:32 | ControlFlowNode for request | views.py:25:13:25:20 | ControlFlowNode for log_code | This Python source file content depends on a $@ and may be executed when the module is loaded. | views.py:20:26:20:32 | ControlFlowNode for request | user-provided value |
+| views.py:32:17:32:36 | ControlFlowNode for Subscript | views.py:30:19:30:25 | ControlFlowNode for request | views.py:32:17:32:36 | ControlFlowNode for Subscript | This Python source file content depends on a $@ and may be executed when the module is loaded. | views.py:30:19:30:25 | ControlFlowNode for request | user-provided value |
+| views.py:39:63:39:81 | ControlFlowNode for Subscript | views.py:38:19:38:25 | ControlFlowNode for request | views.py:39:63:39:81 | ControlFlowNode for Subscript | This Python source file content depends on a $@ and may be executed when the module is loaded. | views.py:38:19:38:25 | ControlFlowNode for request | user-provided value |
+edges
+| utility.py:4:20:4:23 | ControlFlowNode for code | utility.py:5:5:5:14 | ControlFlowNode for list_input | provenance |  |
+| utility.py:5:5:5:14 | ControlFlowNode for list_input | utility.py:10:31:10:47 | ControlFlowNode for Subscript | provenance |  |
+| utility.py:10:9:10:22 | [post] ControlFlowNode for extracted_code [List element] | utility.py:12:33:12:46 | ControlFlowNode for extracted_code [List element] | provenance |  |
+| utility.py:10:31:10:47 | ControlFlowNode for Subscript | utility.py:10:9:10:22 | [post] ControlFlowNode for extracted_code [List element] | provenance | list.append |
+| utility.py:12:5:12:15 | ControlFlowNode for list_output | utility.py:13:29:13:39 | ControlFlowNode for list_output | provenance |  |
+| utility.py:12:33:12:46 | ControlFlowNode for extracted_code [List element] | utility.py:12:5:12:15 | ControlFlowNode for list_output | provenance |  |
+| utility.py:13:5:13:15 | ControlFlowNode for output_code | utility.py:18:13:18:23 | ControlFlowNode for output_code | provenance |  |
+| utility.py:13:19:13:40 | ControlFlowNode for Attribute() | utility.py:13:5:13:15 | ControlFlowNode for output_code | provenance |  |
+| utility.py:13:29:13:39 | ControlFlowNode for list_output | utility.py:13:19:13:40 | ControlFlowNode for Attribute() | provenance | str.join |
+| views.py:12:18:12:24 | ControlFlowNode for request | views.py:13:5:13:15 | ControlFlowNode for python_code | provenance | AdditionalTaintStep |
+| views.py:13:5:13:15 | ControlFlowNode for python_code | views.py:14:27:14:37 | ControlFlowNode for python_code | provenance |  |
+| views.py:14:27:14:37 | ControlFlowNode for python_code | utility.py:4:20:4:23 | ControlFlowNode for code | provenance |  |
+| views.py:20:26:20:32 | ControlFlowNode for request | views.py:21:16:21:27 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| views.py:21:5:21:12 | ControlFlowNode for log_code | views.py:25:13:25:20 | ControlFlowNode for log_code | provenance |  |
+| views.py:21:16:21:27 | ControlFlowNode for Attribute | views.py:21:16:21:43 | ControlFlowNode for Attribute() | provenance | dict.get |
+| views.py:21:16:21:43 | ControlFlowNode for Attribute() | views.py:21:5:21:12 | ControlFlowNode for log_code | provenance |  |
+| views.py:30:19:30:25 | ControlFlowNode for request | views.py:32:17:32:36 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
+| views.py:38:19:38:25 | ControlFlowNode for request | views.py:39:63:39:81 | ControlFlowNode for Subscript | provenance | AdditionalTaintStep |
+nodes
+| utility.py:4:20:4:23 | ControlFlowNode for code | semmle.label | ControlFlowNode for code |
+| utility.py:5:5:5:14 | ControlFlowNode for list_input | semmle.label | ControlFlowNode for list_input |
+| utility.py:10:9:10:22 | [post] ControlFlowNode for extracted_code [List element] | semmle.label | [post] ControlFlowNode for extracted_code [List element] |
+| utility.py:10:31:10:47 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| utility.py:12:5:12:15 | ControlFlowNode for list_output | semmle.label | ControlFlowNode for list_output |
+| utility.py:12:33:12:46 | ControlFlowNode for extracted_code [List element] | semmle.label | ControlFlowNode for extracted_code [List element] |
+| utility.py:13:5:13:15 | ControlFlowNode for output_code | semmle.label | ControlFlowNode for output_code |
+| utility.py:13:19:13:40 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| utility.py:13:29:13:39 | ControlFlowNode for list_output | semmle.label | ControlFlowNode for list_output |
+| utility.py:18:13:18:23 | ControlFlowNode for output_code | semmle.label | ControlFlowNode for output_code |
+| views.py:12:18:12:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| views.py:13:5:13:15 | ControlFlowNode for python_code | semmle.label | ControlFlowNode for python_code |
+| views.py:14:27:14:37 | ControlFlowNode for python_code | semmle.label | ControlFlowNode for python_code |
+| views.py:20:26:20:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| views.py:21:5:21:12 | ControlFlowNode for log_code | semmle.label | ControlFlowNode for log_code |
+| views.py:21:16:21:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| views.py:21:16:21:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| views.py:25:13:25:20 | ControlFlowNode for log_code | semmle.label | ControlFlowNode for log_code |
+| views.py:30:19:30:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| views.py:32:17:32:36 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| views.py:38:19:38:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| views.py:39:63:39:81 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+subpaths
