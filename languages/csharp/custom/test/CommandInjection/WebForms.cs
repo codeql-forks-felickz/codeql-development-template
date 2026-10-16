@@ -10,6 +10,7 @@ namespace CommandInjectionTests
     {
         public const string KEY_DB_TYPE = "dbtype";
         public const string KEY_CLIENT_EXEC = "client";
+        public const string KEY_HOST = "host";
         public const string DB_TYPE_MYSQL = "MySql";
         public const string DB_TYPE_SQLITE = "Sqlite";
     }
@@ -54,10 +55,20 @@ namespace CommandInjectionTests
     public class MySqlDbProvider : IDbProvider
     {
         private readonly string _clientExec;
+        private readonly string _host;
 
-        public MySqlDbProvider(ConfigFile configFile) { _clientExec = configFile.Get(DbConstants.KEY_CLIENT_EXEC); }
+        public MySqlDbProvider(ConfigFile configFile)
+        {
+            _clientExec = configFile.Get(DbConstants.KEY_CLIENT_EXEC);
+            _host = configFile.Get(DbConstants.KEY_HOST);
+        }
 
-        public bool RecreateGoatDb() => Math.Abs(Util.RunProcessWithInput(_clientExec, "-f", "create.sql")) == 0;
+        public bool RecreateGoatDb()
+        {
+            // Both the executable and its command line arguments come from the configuration.
+            string args = string.Format("--host={0} -f", _host);
+            return Math.Abs(Util.RunProcessWithInput(_clientExec, args, "create.sql")) == 0;
+        }
     }
 
     public class SqliteDbProvider : IDbProvider
@@ -109,6 +120,10 @@ namespace CommandInjectionTests
                 configFile.Remove(DbConstants.KEY_CLIENT_EXEC);
             else
                 configFile.Set(DbConstants.KEY_CLIENT_EXEC, txtClientExecutable.Text); // $ Source=webforms
+            if (string.IsNullOrEmpty(txtServer.Text))
+                configFile.Remove(DbConstants.KEY_HOST);
+            else
+                configFile.Set(DbConstants.KEY_HOST, txtServer.Text); // $ Source=webforms
             configFile.Save();
         }
     }
@@ -117,5 +132,6 @@ namespace CommandInjectionTests
     public partial class RebuildDatabase
     {
         protected global::System.Web.UI.WebControls.TextBox txtClientExecutable;
+        protected global::System.Web.UI.WebControls.TextBox txtServer;
     }
 }

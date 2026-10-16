@@ -88,7 +88,7 @@ namespace CommandInjectionTests
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = cmd, // $ Alert=helper Alert=webforms
-                Arguments = args,
+                Arguments = args, // $ Alert=webforms
                 UseShellExecute = false,
             };
             using (Process process = new Process())
