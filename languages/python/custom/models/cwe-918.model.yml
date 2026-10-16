@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: summaryModel
+    data:
+      # Serializing a pydantic model to a `dict` (v1 `.dict()`, v2 `.model_dump()`)
+      # propagates taint from the model instance (for example a FastAPI request
+      # body) to the returned dictionary and its values.
+      # See https://docs.pydantic.dev/latest/concepts/serialization/#modelmodel_dump
+      - ["pydantic.BaseModel", "Member[dict,model_dump]", "Argument[self]", "ReturnValue", "taint"]

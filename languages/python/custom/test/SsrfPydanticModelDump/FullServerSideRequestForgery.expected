@@ -1,0 +1,38 @@
+#select
+| app.py:19:16:19:51 | ControlFlowNode for Attribute() | app.py:31:25:31:28 | ControlFlowNode for item | app.py:19:29:19:37 | ControlFlowNode for image_url | The full URL of this request depends on a $@. | app.py:31:25:31:28 | ControlFlowNode for item | user-provided value |
+| app.py:38:12:38:42 | ControlFlowNode for Attribute() | app.py:36:28:36:31 | ControlFlowNode for item | app.py:38:25:38:41 | ControlFlowNode for Subscript | The full URL of this request depends on a $@. | app.py:36:28:36:31 | ControlFlowNode for item | user-provided value |
+edges
+| app.py:18:26:18:34 | ControlFlowNode for image_url | app.py:19:29:19:37 | ControlFlowNode for image_url | provenance |  |
+| app.py:23:17:23:20 | ControlFlowNode for item | app.py:24:17:24:20 | ControlFlowNode for item | provenance |  |
+| app.py:24:5:24:13 | ControlFlowNode for item_dict | app.py:25:17:25:25 | ControlFlowNode for item_dict | provenance |  |
+| app.py:24:17:24:20 | ControlFlowNode for item | app.py:24:17:24:27 | ControlFlowNode for Attribute() | provenance | MaD:0 |
+| app.py:24:17:24:27 | ControlFlowNode for Attribute() | app.py:24:5:24:13 | ControlFlowNode for item_dict | provenance |  |
+| app.py:25:5:25:13 | ControlFlowNode for image_url | app.py:27:37:27:45 | ControlFlowNode for image_url | provenance |  |
+| app.py:25:17:25:25 | ControlFlowNode for item_dict | app.py:25:17:25:48 | ControlFlowNode for Attribute() | provenance | collection.pop |
+| app.py:25:17:25:48 | ControlFlowNode for Attribute() | app.py:25:5:25:13 | ControlFlowNode for image_url | provenance |  |
+| app.py:27:37:27:45 | ControlFlowNode for image_url | app.py:18:26:18:34 | ControlFlowNode for image_url | provenance |  |
+| app.py:31:25:31:28 | ControlFlowNode for item | app.py:32:24:32:27 | ControlFlowNode for item | provenance |  |
+| app.py:32:24:32:27 | ControlFlowNode for item | app.py:23:17:23:20 | ControlFlowNode for item | provenance |  |
+| app.py:36:28:36:31 | ControlFlowNode for item | app.py:37:12:37:15 | ControlFlowNode for item | provenance |  |
+| app.py:37:5:37:8 | ControlFlowNode for data | app.py:38:25:38:41 | ControlFlowNode for Subscript | provenance |  |
+| app.py:37:12:37:15 | ControlFlowNode for item | app.py:37:12:37:28 | ControlFlowNode for Attribute() | provenance | MaD:0 |
+| app.py:37:12:37:28 | ControlFlowNode for Attribute() | app.py:37:5:37:8 | ControlFlowNode for data | provenance |  |
+nodes
+| app.py:18:26:18:34 | ControlFlowNode for image_url | semmle.label | ControlFlowNode for image_url |
+| app.py:19:29:19:37 | ControlFlowNode for image_url | semmle.label | ControlFlowNode for image_url |
+| app.py:23:17:23:20 | ControlFlowNode for item | semmle.label | ControlFlowNode for item |
+| app.py:24:5:24:13 | ControlFlowNode for item_dict | semmle.label | ControlFlowNode for item_dict |
+| app.py:24:17:24:20 | ControlFlowNode for item | semmle.label | ControlFlowNode for item |
+| app.py:24:17:24:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| app.py:25:5:25:13 | ControlFlowNode for image_url | semmle.label | ControlFlowNode for image_url |
+| app.py:25:17:25:25 | ControlFlowNode for item_dict | semmle.label | ControlFlowNode for item_dict |
+| app.py:25:17:25:48 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| app.py:27:37:27:45 | ControlFlowNode for image_url | semmle.label | ControlFlowNode for image_url |
+| app.py:31:25:31:28 | ControlFlowNode for item | semmle.label | ControlFlowNode for item |
+| app.py:32:24:32:27 | ControlFlowNode for item | semmle.label | ControlFlowNode for item |
+| app.py:36:28:36:31 | ControlFlowNode for item | semmle.label | ControlFlowNode for item |
+| app.py:37:5:37:8 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+| app.py:37:12:37:15 | ControlFlowNode for item | semmle.label | ControlFlowNode for item |
+| app.py:37:12:37:28 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| app.py:38:25:38:41 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+subpaths
