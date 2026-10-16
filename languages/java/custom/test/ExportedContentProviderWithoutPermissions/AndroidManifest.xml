@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.notes">
+
+    <permission android:name="com.example.notes.permission.READ" android:protectionLevel="signature" />
+    <permission android:name="com.example.notes.permission.WRITE" android:protectionLevel="signature" />
+    <!-- No protectionLevel, so it defaults to normal (InsecureShop pattern). -->
+    <permission android:name="com.example.notes.permission.NORMAL_READ" />
+    <permission android:name="com.example.notes.permission.NORMAL_WRITE" android:protectionLevel="normal" />
+    <permission android:name="com.example.notes.permission.DANGEROUS" android:protectionLevel="dangerous" />
+
+    <application android:label="Notes">
+        <!-- Exported without any permission (AndroGoat / Goatlin pattern). -->
+        <provider android:name=".NotesProvider" android:authorities="com.example.notes.notes" android:enabled="true" android:exported="true" /> <!-- $ Alert -->
+        <provider android:name="com.example.notes.AccountProvider" android:authorities="com.example.notes.accounts" android:exported="true"></provider> <!-- $ Alert -->
+
+        <!-- Safe: not exported. -->
+        <provider android:name=".PrivateProvider" android:authorities="com.example.notes.private" android:exported="false" />
+        <!-- Safe: no exported attribute, so not exported for targetSdkVersion 17 and above. -->
+        <provider android:name=".DefaultProvider" android:authorities="com.example.notes.default" />
+        <!-- Safe: protected by a single permission. -->
+        <provider android:name=".FullPermissionProvider" android:authorities="com.example.notes.full" android:exported="true" android:permission="com.example.notes.permission.READ" />
+        <!-- Safe: protected by both read and write permissions. -->
+        <provider android:name=".ReadWriteProvider" android:authorities="com.example.notes.rw" android:exported="true" android:readPermission="com.example.notes.permission.READ" android:writePermission="com.example.notes.permission.WRITE" />
+        <!-- Not reported here: incomplete permissions are reported by java/android/incomplete-provider-permissions. -->
+        <provider android:name=".ReadOnlyProvider" android:authorities="com.example.notes.ro" android:exported="true" android:readPermission="com.example.notes.permission.READ" />
+        <!-- Only protected by permissions with the normal protection level. -->
+        <provider android:name=".InsecureShopProvider" android:authorities="com.example.notes.insecure" android:exported="true" android:readPermission="com.example.notes.permission.NORMAL_READ" /> <!-- $ Alert -->
+        <provider android:name=".NormalFullProvider" android:authorities="com.example.notes.normalfull" android:exported="true" android:permission="com.example.notes.permission.NORMAL_WRITE" /> <!-- $ Alert -->
+        <provider android:name=".NormalReadProvider" android:authorities="com.example.notes.normalread" android:exported="true" android:readPermission="com.example.notes.permission.NORMAL_READ" android:writePermission="com.example.notes.permission.WRITE" /> <!-- $ Alert -->
+        <provider android:name=".OverriddenReadProvider" android:authorities="com.example.notes.overridden" android:exported="true" android:permission="com.example.notes.permission.WRITE" android:readPermission="com.example.notes.permission.NORMAL_READ" /> <!-- $ Alert -->
+        <!-- Safe: the normal permission is overridden by signature read and write permissions. -->
+        <provider android:name=".OverriddenFullProvider" android:authorities="com.example.notes.overriddenfull" android:exported="true" android:permission="com.example.notes.permission.NORMAL_READ" android:readPermission="com.example.notes.permission.READ" android:writePermission="com.example.notes.permission.WRITE" />
+        <!-- Safe: dangerous permissions require user approval. -->
+        <provider android:name=".DangerousProvider" android:authorities="com.example.notes.dangerous" android:exported="true" android:permission="com.example.notes.permission.DANGEROUS" />
+        <!-- Safe: permission not declared in this manifest, so its protection level is unknown. -->
+        <provider android:name=".ExternalPermissionProvider" android:authorities="com.example.notes.external" android:exported="true" android:permission="com.example.other.permission.ACCESS" />
+        <!-- Safe: protected with path permissions. -->
+        <provider android:name=".PathProvider" android:authorities="com.example.notes.path" android:exported="true">
+            <path-permission android:pathPrefix="/" android:permission="com.example.notes.permission.READ" />
+        </provider>
+    </application>
+</manifest>

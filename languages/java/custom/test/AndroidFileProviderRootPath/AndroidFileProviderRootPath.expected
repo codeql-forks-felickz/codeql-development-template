@@ -1,0 +1,4 @@
+| res/xml/provider_paths.xml:3:5:3:39 | root-path | This FileProvider entry shares the device root directory, exposing every file readable by the application. |
+| res/xml/root_paths.xml:3:5:3:44 | root-path | This FileProvider entry shares the device root directory, exposing every file readable by the application. |
+| res/xml/root_paths.xml:4:5:4:38 | root-path | This FileProvider entry shares the device root directory, exposing every file readable by the application. |
+| res/xml/root_paths.xml:5:5:5:43 | root-path | This FileProvider entry shares the device root directory, exposing every file readable by the application. |

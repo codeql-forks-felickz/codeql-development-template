@@ -1,0 +1,5 @@
+| WebViewClients.kt:10:9:10:26 | proceed(...) | This call accepts all SSL certificates in $@ whenever the error handler is not null. | WebViewClients.kt:9:14:11:5 | onReceivedSslError | onReceivedSslError |
+| WebViewClients.kt:17:9:17:26 | proceed(...) | This call accepts all SSL certificates in $@ whenever the error handler is not null. | WebViewClients.kt:15:14:18:5 | onReceivedSslError | onReceivedSslError |
+| WebViewClients.kt:23:9:23:27 | proceed(...) | This call accepts all SSL certificates in $@ whenever the error handler is not null. | WebViewClients.kt:22:14:24:5 | onReceivedSslError | onReceivedSslError |
+| com/example/shop/JavaWebViewClients.java:13:17:13:33 | proceed(...) | This call accepts all SSL certificates in $@ whenever the error handler is not null. | com/example/shop/JavaWebViewClients.java:11:21:11:38 | onReceivedSslError | onReceivedSslError |
+| com/example/shop/JavaWebViewClients.java:24:13:24:29 | proceed(...) | This call accepts all SSL certificates in $@ whenever the error handler is not null. | com/example/shop/JavaWebViewClients.java:20:21:20:38 | onReceivedSslError | onReceivedSslError |

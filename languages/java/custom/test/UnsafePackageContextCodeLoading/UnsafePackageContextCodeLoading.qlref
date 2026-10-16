@@ -1,0 +1,2 @@
+query: UnsafePackageContextCodeLoading/UnsafePackageContextCodeLoading.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

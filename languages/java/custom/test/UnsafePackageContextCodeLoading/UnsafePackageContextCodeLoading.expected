@@ -1,0 +1,4 @@
+| LoginActivity.kt:11:38:11:135 | createPackageContext(...) | Code from another package is loaded with CONTEXT_INCLUDE_CODE and CONTEXT_IGNORE_SECURITY, skipping signature verification. |
+| com/example/shop/PluginLoader.java:9:33:9:137 | createPackageContext(...) | Code from another package is loaded with CONTEXT_INCLUDE_CODE and CONTEXT_IGNORE_SECURITY, skipping signature verification. |
+| com/example/shop/PluginLoader.java:14:33:14:87 | createPackageContext(...) | Code from another package is loaded with CONTEXT_INCLUDE_CODE and CONTEXT_IGNORE_SECURITY, skipping signature verification. |
+| com/example/shop/PluginLoader.java:20:33:20:80 | createPackageContext(...) | Code from another package is loaded with CONTEXT_INCLUDE_CODE and CONTEXT_IGNORE_SECURITY, skipping signature verification. |

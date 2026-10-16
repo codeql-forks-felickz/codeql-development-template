@@ -1,0 +1,2 @@
+query: ImproperWebViewCertificateValidationNullSafe/ImproperWebViewCertificateValidationNullSafe.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

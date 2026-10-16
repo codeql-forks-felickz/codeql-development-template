@@ -1,0 +1,2 @@
+query: ExportedContentProviderWithoutPermissions/ExportedContentProviderWithoutPermissions.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.shop">
+
+    <permission android:name="com.example.shop.permission.READ" />
+
+    <application android:label="Shop">
+        <activity android:name=".WebViewActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="com.example.shop" android:scheme="shop" />
+            </intent-filter>
+        </activity> <!-- $ Alert[java/android/implicitly-exported-component] -->
+        <activity android:name=".WebView2Activity">
+            <intent-filter>
+                <action android:name="com.example.shop.action.WEBVIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity> <!-- $ Alert[java/android/implicitly-exported-component] -->
+        <activity android:name=".ResultActivity" android:exported="true" />
+        <activity android:name=".PrivateActivity" android:exported="false" />
+        <provider android:name=".ShopProvider" android:authorities="com.example.shop.provider" android:exported="true" android:readPermission="com.example.shop.permission.READ" /> <!-- $ Alert[java/android/incomplete-provider-permissions] -->
+    </application>
+</manifest>
