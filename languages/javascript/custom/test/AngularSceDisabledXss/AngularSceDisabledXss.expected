@@ -1,0 +1,18 @@
+#select
+| pixi.html:34:38:34:50 | response.data | pixi.html:34:38:34:50 | response.data | pixi.html:34:38:34:50 | response.data | Cross-site scripting vulnerability: $@ is rendered as HTML by ng-bind-html while strict contextual escaping is disabled. | pixi.html:34:38:34:50 | response.data | this value |
+| pixi.html:40:30:40:42 | resp.data.bio | pixi.html:40:30:40:38 | resp.data | pixi.html:40:30:40:42 | resp.data.bio | Cross-site scripting vulnerability: $@ is rendered as HTML by ng-bind-html while strict contextual escaping is disabled. | pixi.html:40:30:40:38 | resp.data | this value |
+| pixi.html:44:30:44:33 | data | pixi.html:43:55:43:58 | data | pixi.html:44:30:44:33 | data | Cross-site scripting vulnerability: $@ is rendered as HTML by ng-bind-html while strict contextual escaping is disabled. | pixi.html:43:55:43:58 | data | this value |
+| pixi.html:47:33:47:54 | $locati ... h().msg | pixi.html:47:33:47:50 | $location.search() | pixi.html:47:33:47:54 | $locati ... h().msg | Cross-site scripting vulnerability: $@ is rendered as HTML by ng-bind-html while strict contextual escaping is disabled. | pixi.html:47:33:47:50 | $location.search() | this value |
+edges
+| pixi.html:40:30:40:38 | resp.data | pixi.html:40:30:40:42 | resp.data.bio | provenance |  |
+| pixi.html:43:55:43:58 | data | pixi.html:44:30:44:33 | data | provenance |  |
+| pixi.html:47:33:47:50 | $location.search() | pixi.html:47:33:47:54 | $locati ... h().msg | provenance |  |
+nodes
+| pixi.html:34:38:34:50 | response.data | semmle.label | response.data |
+| pixi.html:40:30:40:38 | resp.data | semmle.label | resp.data |
+| pixi.html:40:30:40:42 | resp.data.bio | semmle.label | resp.data.bio |
+| pixi.html:43:55:43:58 | data | semmle.label | data |
+| pixi.html:44:30:44:33 | data | semmle.label | data |
+| pixi.html:47:33:47:50 | $location.search() | semmle.label | $location.search() |
+| pixi.html:47:33:47:54 | $locati ... h().msg | semmle.label | $locati ... h().msg |
+subpaths

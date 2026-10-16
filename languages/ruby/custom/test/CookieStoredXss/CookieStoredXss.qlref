@@ -1,0 +1,2 @@
+query: CookieStoredXss/CookieStoredXss.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

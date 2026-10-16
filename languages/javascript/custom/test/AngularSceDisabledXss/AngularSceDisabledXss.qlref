@@ -1,0 +1,2 @@
+query: AngularSceDisabledXss/AngularSceDisabledXss.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
