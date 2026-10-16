@@ -1,0 +1,18 @@
+#select
+| app/views/admin/dashboard.html.erb:8:44:8:60 | ...[...] | app/views/admin/dashboard.html.erb:8:44:8:49 | call to params | app/views/admin/dashboard.html.erb:8:44:8:60 | ...[...] | Cross-site scripting vulnerability due to a $@ written into a JavaScript context. | app/views/admin/dashboard.html.erb:8:44:8:49 | call to params | user-provided value |
+| app/views/admin/dashboard.html.erb:11:18:11:25 | @user_id | app/controllers/admin_controller.rb:3:16:3:21 | call to params | app/views/admin/dashboard.html.erb:11:18:11:25 | @user_id | Cross-site scripting vulnerability due to a $@ written into a JavaScript context. | app/controllers/admin_controller.rb:3:16:3:21 | call to params | user-provided value |
+| app/views/admin/dashboard.html.erb:13:23:13:39 | ...[...] | app/views/admin/dashboard.html.erb:13:23:13:28 | call to params | app/views/admin/dashboard.html.erb:13:23:13:39 | ...[...] | Cross-site scripting vulnerability due to a $@ written into a JavaScript context. | app/views/admin/dashboard.html.erb:13:23:13:28 | call to params | user-provided value |
+edges
+| app/controllers/admin_controller.rb:3:16:3:21 | call to params | app/controllers/admin_controller.rb:3:16:3:31 | ...[...] | provenance |  |
+| app/controllers/admin_controller.rb:3:16:3:31 | ...[...] | app/views/admin/dashboard.html.erb:11:18:11:25 | @user_id | provenance | Config |
+| app/views/admin/dashboard.html.erb:8:44:8:49 | call to params | app/views/admin/dashboard.html.erb:8:44:8:60 | ...[...] | provenance |  |
+| app/views/admin/dashboard.html.erb:13:23:13:28 | call to params | app/views/admin/dashboard.html.erb:13:23:13:39 | ...[...] | provenance |  |
+nodes
+| app/controllers/admin_controller.rb:3:16:3:21 | call to params | semmle.label | call to params |
+| app/controllers/admin_controller.rb:3:16:3:31 | ...[...] | semmle.label | ...[...] |
+| app/views/admin/dashboard.html.erb:8:44:8:49 | call to params | semmle.label | call to params |
+| app/views/admin/dashboard.html.erb:8:44:8:60 | ...[...] | semmle.label | ...[...] |
+| app/views/admin/dashboard.html.erb:11:18:11:25 | @user_id | semmle.label | @user_id |
+| app/views/admin/dashboard.html.erb:13:23:13:28 | call to params | semmle.label | call to params |
+| app/views/admin/dashboard.html.erb:13:23:13:39 | ...[...] | semmle.label | ...[...] |
+subpaths

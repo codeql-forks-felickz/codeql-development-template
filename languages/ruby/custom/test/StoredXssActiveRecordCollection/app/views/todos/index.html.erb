@@ -1,0 +1,12 @@
+<ul>
+<% @todos.each do |todo| %>
+  <%# BAD: stored field of each record in an ActiveRecord relation rendered unescaped %>
+  <li><%= raw(todo.body) %></li> <%# $ Alert %>
+  <%# GOOD: default ERB output is HTML-escaped %>
+  <li><%= todo.body %></li>
+  <%# GOOD: `summary` is defined on the model, not a database field %>
+  <li><%= raw(todo.summary) %></li>
+  <%# GOOD: escaped before being marked as safe %>
+  <li><%= raw(html_escape(todo.body)) %></li>
+<% end %>
+</ul>

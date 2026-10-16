@@ -1,0 +1,14 @@
+#select
+| app/views/todos/archive.html.erb:4:21:4:29 | call to body | app/views/todos/archive.html.erb:4:21:4:29 | call to body | app/views/todos/archive.html.erb:4:21:4:29 | call to body | Stored cross-site scripting vulnerability due to $@. | app/views/todos/archive.html.erb:4:21:4:29 | call to body | stored value |
+| app/views/todos/archive.html.erb:9:11:9:19 | call to body | app/views/todos/archive.html.erb:9:11:9:19 | call to body | app/views/todos/archive.html.erb:9:11:9:19 | call to body | Stored cross-site scripting vulnerability due to $@. | app/views/todos/archive.html.erb:9:11:9:19 | call to body | stored value |
+| app/views/todos/index.html.erb:4:15:4:23 | call to body | app/views/todos/index.html.erb:4:15:4:23 | call to body | app/views/todos/index.html.erb:4:15:4:23 | call to body | Stored cross-site scripting vulnerability due to $@. | app/views/todos/index.html.erb:4:15:4:23 | call to body | stored value |
+| app/views/todos/recent.html.erb:3:11:3:19 | call to body | app/views/todos/recent.html.erb:3:11:3:19 | call to body | app/views/todos/recent.html.erb:3:11:3:19 | call to body | Stored cross-site scripting vulnerability due to $@. | app/views/todos/recent.html.erb:3:11:3:19 | call to body | stored value |
+| app/views/todos/show.html.erb:2:9:2:18 | call to body | app/views/todos/show.html.erb:2:9:2:18 | call to body | app/views/todos/show.html.erb:2:9:2:18 | call to body | Stored cross-site scripting vulnerability due to $@. | app/views/todos/show.html.erb:2:9:2:18 | call to body | stored value |
+edges
+nodes
+| app/views/todos/archive.html.erb:4:21:4:29 | call to body | semmle.label | call to body |
+| app/views/todos/archive.html.erb:9:11:9:19 | call to body | semmle.label | call to body |
+| app/views/todos/index.html.erb:4:15:4:23 | call to body | semmle.label | call to body |
+| app/views/todos/recent.html.erb:3:11:3:19 | call to body | semmle.label | call to body |
+| app/views/todos/show.html.erb:2:9:2:18 | call to body | semmle.label | call to body |
+subpaths

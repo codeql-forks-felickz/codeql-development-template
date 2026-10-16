@@ -1,0 +1,27 @@
+<div id="userDataTable"></div>
+<%# GOOD: HTML context, the default ERB escaping is sufficient %>
+<p><%= params[:admin_id] %></p>
+
+<script type="text/javascript">
+function loadTable() {
+  <%# BAD: request parameter inserted into an unquoted JavaScript expression %>
+  $("#userDataTable").load("/admin/" + <%= params[:admin_id] %> + "/get_all_users"); <%# $ Alert %>
+}
+<%# BAD: request parameter assigned via a controller instance variable %>
+var userId = <%= @user_id %>; <%# $ Alert %>
+<%# BAD: HTML escaping does not stop `${...}` in a template literal %>
+var url = `/admin/<%= params[:admin_id] %>/users`; <%# $ Alert %>
+<%# GOOD: inside a quoted string, quotes are HTML-escaped %>
+var name = "<%= params[:name] %>";
+var label = 'User: <%= params[:name] %>';
+<%# GOOD: converted to a number %>
+var id = <%= params[:admin_id].to_i %>;
+var page = <%= @page %>;
+<%# GOOD: serialized as a JSON literal %>
+var opts = <%= params[:name].to_json %>;
+<%# GOOD: not user controlled %>
+var limit = <%= 10 %>;
+</script>
+
+<%# GOOD: after the script element is closed %>
+<p>Admin <%= params[:admin_id] %></p>
