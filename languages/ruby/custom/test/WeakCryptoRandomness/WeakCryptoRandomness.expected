@@ -1,0 +1,65 @@
+#select
+| encryption.rb:12:14:12:22 | ... = ... | constants.rb:1:10:1:39 | "PPKLKAJDKGHALDJL482823458028" : String | encryption.rb:12:14:12:22 | ... = ... | A $@ is used as the initialization vector for this encryption. | constants.rb:1:10:1:39 | "PPKLKAJDKGHALDJL482823458028" | hard-coded value |
+| encryption.rb:45:17:45:34 | ... = ... | encryption.rb:45:17:45:34 | "0123456789abcdef" : String | encryption.rb:45:17:45:34 | ... = ... | A $@ is used as the initialization vector for this encryption. | encryption.rb:45:17:45:34 | "0123456789abcdef" | hard-coded value |
+| encryption.rb:54:17:54:18 | ... = ... | encryption.rb:50:10:50:27 | "fedcba9876543210" : String | encryption.rb:54:17:54:18 | ... = ... | A $@ is used as the initialization vector for this encryption. | encryption.rb:50:10:50:27 | "fedcba9876543210" | hard-coded value |
+| encryption.rb:62:17:62:25 | ... = ... | encryption.rb:62:17:62:20 | "\\0" : String | encryption.rb:62:17:62:25 | ... = ... | A $@ is used as the initialization vector for this encryption. | encryption.rb:62:17:62:20 | "\\0" | hard-coded value |
+| encryption.rb:70:17:70:34 | ... = ... | encryption.rb:70:17:70:34 | "AAAAAAAAAAAAAAAA" : String | encryption.rb:70:17:70:34 | ... = ... | A $@ is used as the initialization vector for this encryption. | encryption.rb:70:17:70:34 | "AAAAAAAAAAAAAAAA" | hard-coded value |
+edges
+| constants.rb:1:10:1:39 | "PPKLKAJDKGHALDJL482823458028" : String | encryption.rb:32:5:32:10 | APP_IV | provenance | Config |
+| encryption.rb:12:14:12:15 | call to iv | encryption.rb:12:14:12:22 | ...[...] | provenance |  |
+| encryption.rb:12:14:12:15 | call to iv | encryption.rb:12:14:12:22 | ...[...] : [collection] [element 0] | provenance |  |
+| encryption.rb:12:14:12:15 | call to iv | encryption.rb:12:14:12:22 | ...[...] : [collection] [element 1] | provenance |  |
+| encryption.rb:12:14:12:15 | call to iv | encryption.rb:12:14:12:22 | ...[...] : [collection] [element 2] | provenance |  |
+| encryption.rb:12:14:12:15 | call to iv | encryption.rb:12:14:12:22 | ...[...] : [collection] [element 3] | provenance |  |
+| encryption.rb:12:14:12:15 | call to iv | encryption.rb:12:14:12:22 | ...[...] : [collection] [element 4] | provenance |  |
+| encryption.rb:12:14:12:15 | call to iv | encryption.rb:12:14:12:22 | ...[...] : [collection] [element 5] | provenance |  |
+| encryption.rb:12:14:12:15 | call to iv | encryption.rb:12:14:12:22 | ...[...] : [collection] [element 6] | provenance |  |
+| encryption.rb:12:14:12:15 | call to iv | encryption.rb:12:14:12:22 | ...[...] : [collection] [element 7] | provenance |  |
+| encryption.rb:12:14:12:15 | call to iv | encryption.rb:12:14:12:22 | ...[...] : [collection] [element 8] | provenance |  |
+| encryption.rb:12:14:12:15 | call to iv | encryption.rb:12:14:12:22 | ...[...] : [collection] [element 9] | provenance |  |
+| encryption.rb:12:14:12:15 | call to iv | encryption.rb:12:14:12:22 | ...[...] : [collection] [element 10] | provenance |  |
+| encryption.rb:12:14:12:22 | ...[...] | encryption.rb:12:14:12:22 | ... = ... | provenance |  |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 0] | encryption.rb:12:14:12:22 | ... = ... | provenance |  |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 1] | encryption.rb:12:14:12:22 | ... = ... | provenance |  |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 2] | encryption.rb:12:14:12:22 | ... = ... | provenance |  |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 3] | encryption.rb:12:14:12:22 | ... = ... | provenance |  |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 4] | encryption.rb:12:14:12:22 | ... = ... | provenance |  |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 5] | encryption.rb:12:14:12:22 | ... = ... | provenance |  |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 6] | encryption.rb:12:14:12:22 | ... = ... | provenance |  |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 7] | encryption.rb:12:14:12:22 | ... = ... | provenance |  |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 8] | encryption.rb:12:14:12:22 | ... = ... | provenance |  |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 9] | encryption.rb:12:14:12:22 | ... = ... | provenance |  |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 10] | encryption.rb:12:14:12:22 | ... = ... | provenance |  |
+| encryption.rb:32:5:32:10 | APP_IV | encryption.rb:12:14:12:15 | call to iv | provenance |  |
+| encryption.rb:45:17:45:34 | "0123456789abcdef" : String | encryption.rb:45:17:45:34 | ... = ... | provenance |  |
+| encryption.rb:50:5:50:6 | iv : String | encryption.rb:54:17:54:18 | ... = ... | provenance |  |
+| encryption.rb:50:10:50:27 | "fedcba9876543210" : String | encryption.rb:50:5:50:6 | iv : String | provenance |  |
+| encryption.rb:62:17:62:20 | "\\0" : String | encryption.rb:62:17:62:25 | ... = ... | provenance |  |
+| encryption.rb:70:17:70:34 | "AAAAAAAAAAAAAAAA" : String | encryption.rb:70:17:70:34 | ... = ... | provenance |  |
+nodes
+| constants.rb:1:10:1:39 | "PPKLKAJDKGHALDJL482823458028" : String | semmle.label | "PPKLKAJDKGHALDJL482823458028" : String |
+| encryption.rb:12:14:12:15 | call to iv | semmle.label | call to iv |
+| encryption.rb:12:14:12:22 | ... = ... | semmle.label | ... = ... |
+| encryption.rb:12:14:12:22 | ...[...] | semmle.label | ...[...] |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 0] | semmle.label | ...[...] : [collection] [element 0] |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 1] | semmle.label | ...[...] : [collection] [element 1] |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 2] | semmle.label | ...[...] : [collection] [element 2] |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 3] | semmle.label | ...[...] : [collection] [element 3] |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 4] | semmle.label | ...[...] : [collection] [element 4] |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 5] | semmle.label | ...[...] : [collection] [element 5] |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 6] | semmle.label | ...[...] : [collection] [element 6] |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 7] | semmle.label | ...[...] : [collection] [element 7] |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 8] | semmle.label | ...[...] : [collection] [element 8] |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 9] | semmle.label | ...[...] : [collection] [element 9] |
+| encryption.rb:12:14:12:22 | ...[...] : [collection] [element 10] | semmle.label | ...[...] : [collection] [element 10] |
+| encryption.rb:32:5:32:10 | APP_IV | semmle.label | APP_IV |
+| encryption.rb:45:17:45:34 | "0123456789abcdef" : String | semmle.label | "0123456789abcdef" : String |
+| encryption.rb:45:17:45:34 | ... = ... | semmle.label | ... = ... |
+| encryption.rb:50:5:50:6 | iv : String | semmle.label | iv : String |
+| encryption.rb:50:10:50:27 | "fedcba9876543210" : String | semmle.label | "fedcba9876543210" : String |
+| encryption.rb:54:17:54:18 | ... = ... | semmle.label | ... = ... |
+| encryption.rb:62:17:62:20 | "\\0" : String | semmle.label | "\\0" : String |
+| encryption.rb:62:17:62:25 | ... = ... | semmle.label | ... = ... |
+| encryption.rb:70:17:70:34 | "AAAAAAAAAAAAAAAA" : String | semmle.label | "AAAAAAAAAAAAAAAA" : String |
+| encryption.rb:70:17:70:34 | ... = ... | semmle.label | ... = ... |
+subpaths
