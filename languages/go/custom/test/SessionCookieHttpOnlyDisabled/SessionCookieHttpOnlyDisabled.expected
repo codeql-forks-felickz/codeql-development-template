@@ -1,0 +1,8 @@
+| test.go:24:13:24:17 | false | The session cookie option 'HttpOnly' is set to false, exposing the session cookie to client-side scripts. |
+| test.go:32:60:32:64 | false | The session cookie option 'HttpOnly' is set to false, exposing the session cookie to client-side scripts. |
+| test.go:37:27:37:31 | false | The session cookie option 'HttpOnly' is set to false, exposing the session cookie to client-side scripts. |
+| test.go:42:59:42:72 | cookieHttpOnly | The session cookie option 'HttpOnly' is set to false, exposing the session cookie to client-side scripts. |
+| test.go:49:18:49:25 | httpOnly | The session cookie option 'HttpOnly' is set to false, exposing the session cookie to client-side scripts. |
+| test.go:56:79:56:83 | false | The session cookie option 'HttpOnly' is set to false, exposing the session cookie to client-side scripts. |
+| test.go:60:73:60:77 | false | The session cookie option 'HttpOnly' is set to false, exposing the session cookie to client-side scripts. |
+| test.go:65:42:65:46 | false | The session cookie option 'HttpOnly' is set to false, exposing the session cookie to client-side scripts. |

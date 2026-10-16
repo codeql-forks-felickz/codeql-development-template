@@ -1,0 +1,55 @@
+#select
+| test.go:55:23:55:23 | c | test.go:25:15:25:22 | selection of Header | test.go:55:23:55:23 | c | The payload of this JWT from a $@ is decoded and used without verifying its signature. | test.go:25:15:25:22 | selection of Header | user-controlled source |
+| test.go:74:28:74:61 | call to NewReader | test.go:65:26:65:33 | selection of Header | test.go:74:28:74:61 | call to NewReader | The payload of this JWT from a $@ is decoded and used without verifying its signature. | test.go:65:26:65:33 | selection of Header | user-controlled source |
+| test.go:93:23:93:29 | slice expression | test.go:82:2:82:33 | extract:0 ... := ... | test.go:93:23:93:29 | slice expression | The payload of this JWT from a $@ is decoded and used without verifying its signature. | test.go:82:2:82:33 | extract:0 ... := ... | user-controlled source |
+edges
+| test.go:25:15:25:22 | selection of Header | test.go:25:15:25:43 | call to Get | provenance | Src:MaD:2004 MaD:1979 |
+| test.go:25:15:25:43 | call to Get | test.go:26:26:26:34 | bearToken | provenance |  |
+| test.go:26:12:26:40 | call to Split | test.go:28:10:28:18 | index expression | provenance |  |
+| test.go:26:26:26:34 | bearToken | test.go:26:12:26:40 | call to Split | provenance | MaD:2252 |
+| test.go:28:10:28:18 | index expression | test.go:37:11:37:25 | call to extractToken | provenance |  |
+| test.go:37:11:37:25 | call to extractToken | test.go:41:21:41:25 | token | provenance |  |
+| test.go:41:21:41:25 | token | test.go:51:74:51:77 | index expression | provenance | Config |
+| test.go:51:2:51:78 | extract:0 ... := ... | test.go:55:23:55:23 | c | provenance |  |
+| test.go:51:74:51:77 | index expression | test.go:51:2:51:78 | extract:0 ... := ... | provenance | Config |
+| test.go:59:20:59:22 | SSA def(seg) | test.go:60:44:60:46 | seg | provenance |  |
+| test.go:60:44:60:46 | seg | test.go:60:2:60:47 | extract:0 return statement | provenance | Config |
+| test.go:65:26:65:33 | selection of Header | test.go:65:26:65:48 | call to Get | provenance | Src:MaD:2004 MaD:1979 |
+| test.go:65:26:65:48 | call to Get | test.go:69:32:69:39 | index expression | provenance | Config |
+| test.go:69:2:69:40 | extract:0 ... := ... | test.go:74:46:74:60 | type conversion | provenance |  |
+| test.go:69:32:69:39 | index expression | test.go:59:20:59:22 | SSA def(seg) | provenance |  |
+| test.go:69:32:69:39 | index expression | test.go:69:2:69:40 | extract:0 ... := ... | provenance | Config |
+| test.go:74:46:74:60 | type conversion | test.go:74:28:74:61 | call to NewReader | provenance | MaD:2246 |
+| test.go:82:2:82:33 | extract:0 ... := ... | test.go:86:25:86:36 | selection of Value | provenance | Src:MaD:1991  |
+| test.go:86:25:86:36 | selection of Value | test.go:88:53:88:60 | index expression | provenance | Config |
+| test.go:88:41:88:43 | buf [postupdate] | test.go:93:23:93:29 | slice expression | provenance |  |
+| test.go:88:46:88:61 | type conversion | test.go:88:41:88:43 | buf [postupdate] | provenance | Config |
+| test.go:88:53:88:60 | index expression | test.go:88:46:88:61 | type conversion | provenance |  |
+nodes
+| test.go:25:15:25:22 | selection of Header | semmle.label | selection of Header |
+| test.go:25:15:25:43 | call to Get | semmle.label | call to Get |
+| test.go:26:12:26:40 | call to Split | semmle.label | call to Split |
+| test.go:26:26:26:34 | bearToken | semmle.label | bearToken |
+| test.go:28:10:28:18 | index expression | semmle.label | index expression |
+| test.go:37:11:37:25 | call to extractToken | semmle.label | call to extractToken |
+| test.go:41:21:41:25 | token | semmle.label | token |
+| test.go:51:2:51:78 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
+| test.go:51:74:51:77 | index expression | semmle.label | index expression |
+| test.go:55:23:55:23 | c | semmle.label | c |
+| test.go:59:20:59:22 | SSA def(seg) | semmle.label | SSA def(seg) |
+| test.go:60:2:60:47 | extract:0 return statement | semmle.label | extract:0 return statement |
+| test.go:60:44:60:46 | seg | semmle.label | seg |
+| test.go:65:26:65:33 | selection of Header | semmle.label | selection of Header |
+| test.go:65:26:65:48 | call to Get | semmle.label | call to Get |
+| test.go:69:2:69:40 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
+| test.go:69:32:69:39 | index expression | semmle.label | index expression |
+| test.go:74:28:74:61 | call to NewReader | semmle.label | call to NewReader |
+| test.go:74:46:74:60 | type conversion | semmle.label | type conversion |
+| test.go:82:2:82:33 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
+| test.go:86:25:86:36 | selection of Value | semmle.label | selection of Value |
+| test.go:88:41:88:43 | buf [postupdate] | semmle.label | buf [postupdate] |
+| test.go:88:46:88:61 | type conversion | semmle.label | type conversion |
+| test.go:88:53:88:60 | index expression | semmle.label | index expression |
+| test.go:93:23:93:29 | slice expression | semmle.label | slice expression |
+subpaths
+| test.go:69:32:69:39 | index expression | test.go:59:20:59:22 | SSA def(seg) | test.go:60:2:60:47 | extract:0 return statement | test.go:69:2:69:40 | extract:0 ... := ... |
