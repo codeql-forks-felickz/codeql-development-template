@@ -1,0 +1,107 @@
+#select
+| AltoroDefault.cs:26:51:26:58 | access to local variable openFile | AltoroDefault.cs:50:31:50:49 | access to property QueryString : NameValueCollection | AltoroDefault.cs:26:51:26:58 | access to local variable openFile | This path depends on a $@. | AltoroDefault.cs:50:31:50:49 | access to property QueryString | user-provided value |
+| AltoroDefault.cs:35:47:35:52 | access to parameter myFile | AltoroDefault.cs:50:31:50:49 | access to property QueryString : NameValueCollection | AltoroDefault.cs:35:47:35:52 | access to parameter myFile | This path depends on a $@. | AltoroDefault.cs:50:31:50:49 | access to property QueryString | user-provided value |
+| GuardsController.cs:14:41:14:44 | access to parameter name | GuardsController.cs:11:38:11:41 | name : String | GuardsController.cs:14:41:14:44 | access to parameter name | This path depends on a $@. | GuardsController.cs:11:38:11:41 | name | user-provided value |
+| GuardsController.cs:21:41:21:44 | access to parameter name | GuardsController.cs:18:40:18:43 | name : String | GuardsController.cs:21:41:21:44 | access to parameter name | This path depends on a $@. | GuardsController.cs:18:40:18:43 | name | user-provided value |
+| GuardsController.cs:28:41:28:44 | access to parameter name | GuardsController.cs:25:49:25:52 | name : String | GuardsController.cs:28:41:28:44 | access to parameter name | This path depends on a $@. | GuardsController.cs:25:49:25:52 | name | user-provided value |
+| GuardsController.cs:34:37:34:40 | access to parameter name | GuardsController.cs:32:38:32:41 | name : String | GuardsController.cs:34:37:34:40 | access to parameter name | This path depends on a $@. | GuardsController.cs:32:38:32:41 | name | user-provided value |
+| JulietRelativePathTraversal81.cs:21:33:21:43 | ... + ... | JulietRelativePathTraversal81.cs:57:24:57:38 | access to property QueryString : NameValueCollection | JulietRelativePathTraversal81.cs:21:33:21:43 | ... + ... | This path depends on a $@. | JulietRelativePathTraversal81.cs:57:24:57:38 | access to property QueryString | user-provided value |
+| JulietRelativePathTraversal81.cs:21:33:21:43 | ... + ... | JulietRelativePathTraversal81.cs:75:27:75:36 | access to property Params : NameValueCollection | JulietRelativePathTraversal81.cs:21:33:21:43 | ... + ... | This path depends on a $@. | JulietRelativePathTraversal81.cs:75:27:75:36 | access to property Params | user-provided value |
+| JulietRelativePathTraversal81.cs:23:63:23:73 | ... + ... | JulietRelativePathTraversal81.cs:57:24:57:38 | access to property QueryString : NameValueCollection | JulietRelativePathTraversal81.cs:23:63:23:73 | ... + ... | This path depends on a $@. | JulietRelativePathTraversal81.cs:57:24:57:38 | access to property QueryString | user-provided value |
+| JulietRelativePathTraversal81.cs:23:63:23:73 | ... + ... | JulietRelativePathTraversal81.cs:75:27:75:36 | access to property Params : NameValueCollection | JulietRelativePathTraversal81.cs:23:63:23:73 | ... + ... | This path depends on a $@. | JulietRelativePathTraversal81.cs:75:27:75:36 | access to property Params | user-provided value |
+| UploadController.cs:17:47:17:54 | access to local variable filePath | UploadController.cs:14:40:14:43 | file : IFormFile | UploadController.cs:17:47:17:54 | access to local variable filePath | This path depends on a $@. | UploadController.cs:14:40:14:43 | file | user-provided value |
+| WebGoatPathManipulation.cs:25:48:25:55 | access to parameter fullPath | WebGoatPathManipulation.cs:13:31:13:49 | access to property QueryString : NameValueCollection | WebGoatPathManipulation.cs:25:48:25:55 | access to parameter fullPath | This path depends on a $@. | WebGoatPathManipulation.cs:13:31:13:49 | access to property QueryString | user-provided value |
+edges
+| AltoroDefault.cs:10:40:10:45 | myFile : String | AltoroDefault.cs:20:33:20:38 | access to parameter myFile : String | provenance |  |
+| AltoroDefault.cs:10:40:10:45 | myFile : String | AltoroDefault.cs:20:33:20:41 | (...) ... : Char | provenance |  |
+| AltoroDefault.cs:20:21:20:28 | access to local variable openFile : String | AltoroDefault.cs:26:51:26:58 | access to local variable openFile | provenance |  |
+| AltoroDefault.cs:20:33:20:38 | access to parameter myFile : String | AltoroDefault.cs:20:33:20:41 | access to indexer : Char | provenance | MaD:11 |
+| AltoroDefault.cs:20:33:20:41 | (...) ... : Char | AltoroDefault.cs:20:21:20:28 | access to local variable openFile : String | provenance |  |
+| AltoroDefault.cs:20:33:20:41 | access to indexer : Char | AltoroDefault.cs:20:33:20:41 | (...) ... : Char | provenance |  |
+| AltoroDefault.cs:33:46:33:51 | myFile : String | AltoroDefault.cs:35:47:35:52 | access to parameter myFile | provenance |  |
+| AltoroDefault.cs:50:17:50:26 | access to local variable fileToLoad : String | AltoroDefault.cs:52:22:52:31 | access to local variable fileToLoad : String | provenance |  |
+| AltoroDefault.cs:50:17:50:26 | access to local variable fileToLoad : String | AltoroDefault.cs:53:28:53:37 | access to local variable fileToLoad : String | provenance |  |
+| AltoroDefault.cs:50:31:50:49 | access to property QueryString : NameValueCollection | AltoroDefault.cs:50:17:50:26 | access to local variable fileToLoad : String | provenance |  |
+| AltoroDefault.cs:50:31:50:49 | access to property QueryString : NameValueCollection | AltoroDefault.cs:50:31:50:60 | access to indexer : String | provenance | MaD:12756 |
+| AltoroDefault.cs:50:31:50:60 | access to indexer : String | AltoroDefault.cs:50:17:50:26 | access to local variable fileToLoad : String | provenance |  |
+| AltoroDefault.cs:52:22:52:31 | access to local variable fileToLoad : String | AltoroDefault.cs:10:40:10:45 | myFile : String | provenance |  |
+| AltoroDefault.cs:53:28:53:37 | access to local variable fileToLoad : String | AltoroDefault.cs:33:46:33:51 | myFile : String | provenance |  |
+| GuardsController.cs:11:38:11:41 | name : String | GuardsController.cs:14:41:14:44 | access to parameter name | provenance |  |
+| GuardsController.cs:18:40:18:43 | name : String | GuardsController.cs:21:41:21:44 | access to parameter name | provenance |  |
+| GuardsController.cs:25:49:25:52 | name : String | GuardsController.cs:28:41:28:44 | access to parameter name | provenance |  |
+| GuardsController.cs:32:38:32:41 | name : String | GuardsController.cs:34:37:34:40 | access to parameter name | provenance |  |
+| JulietRelativePathTraversal81.cs:16:44:16:47 | data : String | JulietRelativePathTraversal81.cs:21:33:21:43 | ... + ... | provenance |  |
+| JulietRelativePathTraversal81.cs:16:44:16:47 | data : String | JulietRelativePathTraversal81.cs:23:63:23:73 | ... + ... | provenance | Sink:MaD:2 |
+| JulietRelativePathTraversal81.cs:57:17:57:20 | access to local variable data : String | JulietRelativePathTraversal81.cs:60:31:60:34 | access to local variable data : String | provenance |  |
+| JulietRelativePathTraversal81.cs:57:24:57:38 | access to property QueryString : NameValueCollection | JulietRelativePathTraversal81.cs:57:17:57:20 | access to local variable data : String | provenance |  |
+| JulietRelativePathTraversal81.cs:57:24:57:38 | access to property QueryString : NameValueCollection | JulietRelativePathTraversal81.cs:57:24:57:44 | access to indexer : String | provenance | MaD:12756 |
+| JulietRelativePathTraversal81.cs:57:24:57:44 | access to indexer : String | JulietRelativePathTraversal81.cs:57:17:57:20 | access to local variable data : String | provenance |  |
+| JulietRelativePathTraversal81.cs:60:31:60:34 | access to local variable data : String | JulietRelativePathTraversal81.cs:16:44:16:47 | data : String | provenance |  |
+| JulietRelativePathTraversal81.cs:75:20:75:23 | access to local variable data : String | JulietRelativePathTraversal81.cs:77:31:77:34 | access to local variable data : String | provenance |  |
+| JulietRelativePathTraversal81.cs:75:27:75:36 | access to property Params : NameValueCollection | JulietRelativePathTraversal81.cs:75:27:75:48 | call to method Get : String | provenance | MaD:12762 |
+| JulietRelativePathTraversal81.cs:75:27:75:48 | call to method Get : String | JulietRelativePathTraversal81.cs:75:20:75:23 | access to local variable data : String | provenance |  |
+| JulietRelativePathTraversal81.cs:77:31:77:34 | access to local variable data : String | JulietRelativePathTraversal81.cs:16:44:16:47 | data : String | provenance |  |
+| UploadController.cs:14:40:14:43 | file : IFormFile | UploadController.cs:16:56:16:59 | access to parameter file : IFormFile | provenance |  |
+| UploadController.cs:16:20:16:27 | access to local variable filePath : String | UploadController.cs:17:47:17:54 | access to local variable filePath | provenance |  |
+| UploadController.cs:16:31:16:69 | call to method Combine : String | UploadController.cs:16:20:16:27 | access to local variable filePath : String | provenance |  |
+| UploadController.cs:16:56:16:59 | access to parameter file : IFormFile | UploadController.cs:16:56:16:68 | access to property FileName : String | provenance | MaD:0 |
+| UploadController.cs:16:56:16:68 | access to property FileName : String | UploadController.cs:16:31:16:69 | call to method Combine : String | provenance | MaD:1166 |
+| WebGoatPathManipulation.cs:13:20:13:27 | access to local variable filename : String | WebGoatPathManipulation.cs:16:67:16:91 | ... + ... : String | provenance |  |
+| WebGoatPathManipulation.cs:13:20:13:27 | access to local variable filename : String | WebGoatPathManipulation.cs:17:74:17:98 | ... + ... : String | provenance |  |
+| WebGoatPathManipulation.cs:13:31:13:49 | access to property QueryString : NameValueCollection | WebGoatPathManipulation.cs:13:20:13:27 | access to local variable filename : String | provenance |  |
+| WebGoatPathManipulation.cs:13:31:13:49 | access to property QueryString : NameValueCollection | WebGoatPathManipulation.cs:13:31:13:61 | access to indexer : String | provenance | MaD:12756 |
+| WebGoatPathManipulation.cs:13:31:13:61 | access to indexer : String | WebGoatPathManipulation.cs:13:20:13:27 | access to local variable filename : String | provenance |  |
+| WebGoatPathManipulation.cs:16:59:16:92 | call to method MapPath : String | WebGoatPathManipulation.cs:23:109:23:116 | fullPath : String | provenance |  |
+| WebGoatPathManipulation.cs:16:67:16:91 | ... + ... : String | WebGoatPathManipulation.cs:16:59:16:92 | call to method MapPath : String | provenance | MaD:9 |
+| WebGoatPathManipulation.cs:17:59:17:99 | call to method MapPath : String | WebGoatPathManipulation.cs:23:109:23:116 | fullPath : String | provenance |  |
+| WebGoatPathManipulation.cs:17:74:17:98 | ... + ... : String | WebGoatPathManipulation.cs:17:59:17:99 | call to method MapPath : String | provenance | MaD:10 |
+| WebGoatPathManipulation.cs:23:109:23:116 | fullPath : String | WebGoatPathManipulation.cs:25:48:25:55 | access to parameter fullPath | provenance |  |
+nodes
+| AltoroDefault.cs:10:40:10:45 | myFile : String | semmle.label | myFile : String |
+| AltoroDefault.cs:20:21:20:28 | access to local variable openFile : String | semmle.label | access to local variable openFile : String |
+| AltoroDefault.cs:20:33:20:38 | access to parameter myFile : String | semmle.label | access to parameter myFile : String |
+| AltoroDefault.cs:20:33:20:41 | (...) ... : Char | semmle.label | (...) ... : Char |
+| AltoroDefault.cs:20:33:20:41 | access to indexer : Char | semmle.label | access to indexer : Char |
+| AltoroDefault.cs:26:51:26:58 | access to local variable openFile | semmle.label | access to local variable openFile |
+| AltoroDefault.cs:33:46:33:51 | myFile : String | semmle.label | myFile : String |
+| AltoroDefault.cs:35:47:35:52 | access to parameter myFile | semmle.label | access to parameter myFile |
+| AltoroDefault.cs:50:17:50:26 | access to local variable fileToLoad : String | semmle.label | access to local variable fileToLoad : String |
+| AltoroDefault.cs:50:31:50:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| AltoroDefault.cs:50:31:50:60 | access to indexer : String | semmle.label | access to indexer : String |
+| AltoroDefault.cs:52:22:52:31 | access to local variable fileToLoad : String | semmle.label | access to local variable fileToLoad : String |
+| AltoroDefault.cs:53:28:53:37 | access to local variable fileToLoad : String | semmle.label | access to local variable fileToLoad : String |
+| GuardsController.cs:11:38:11:41 | name : String | semmle.label | name : String |
+| GuardsController.cs:14:41:14:44 | access to parameter name | semmle.label | access to parameter name |
+| GuardsController.cs:18:40:18:43 | name : String | semmle.label | name : String |
+| GuardsController.cs:21:41:21:44 | access to parameter name | semmle.label | access to parameter name |
+| GuardsController.cs:25:49:25:52 | name : String | semmle.label | name : String |
+| GuardsController.cs:28:41:28:44 | access to parameter name | semmle.label | access to parameter name |
+| GuardsController.cs:32:38:32:41 | name : String | semmle.label | name : String |
+| GuardsController.cs:34:37:34:40 | access to parameter name | semmle.label | access to parameter name |
+| JulietRelativePathTraversal81.cs:16:44:16:47 | data : String | semmle.label | data : String |
+| JulietRelativePathTraversal81.cs:21:33:21:43 | ... + ... | semmle.label | ... + ... |
+| JulietRelativePathTraversal81.cs:23:63:23:73 | ... + ... | semmle.label | ... + ... |
+| JulietRelativePathTraversal81.cs:57:17:57:20 | access to local variable data : String | semmle.label | access to local variable data : String |
+| JulietRelativePathTraversal81.cs:57:24:57:38 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| JulietRelativePathTraversal81.cs:57:24:57:44 | access to indexer : String | semmle.label | access to indexer : String |
+| JulietRelativePathTraversal81.cs:60:31:60:34 | access to local variable data : String | semmle.label | access to local variable data : String |
+| JulietRelativePathTraversal81.cs:75:20:75:23 | access to local variable data : String | semmle.label | access to local variable data : String |
+| JulietRelativePathTraversal81.cs:75:27:75:36 | access to property Params : NameValueCollection | semmle.label | access to property Params : NameValueCollection |
+| JulietRelativePathTraversal81.cs:75:27:75:48 | call to method Get : String | semmle.label | call to method Get : String |
+| JulietRelativePathTraversal81.cs:77:31:77:34 | access to local variable data : String | semmle.label | access to local variable data : String |
+| UploadController.cs:14:40:14:43 | file : IFormFile | semmle.label | file : IFormFile |
+| UploadController.cs:16:20:16:27 | access to local variable filePath : String | semmle.label | access to local variable filePath : String |
+| UploadController.cs:16:31:16:69 | call to method Combine : String | semmle.label | call to method Combine : String |
+| UploadController.cs:16:56:16:59 | access to parameter file : IFormFile | semmle.label | access to parameter file : IFormFile |
+| UploadController.cs:16:56:16:68 | access to property FileName : String | semmle.label | access to property FileName : String |
+| UploadController.cs:17:47:17:54 | access to local variable filePath | semmle.label | access to local variable filePath |
+| WebGoatPathManipulation.cs:13:20:13:27 | access to local variable filename : String | semmle.label | access to local variable filename : String |
+| WebGoatPathManipulation.cs:13:31:13:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| WebGoatPathManipulation.cs:13:31:13:61 | access to indexer : String | semmle.label | access to indexer : String |
+| WebGoatPathManipulation.cs:16:59:16:92 | call to method MapPath : String | semmle.label | call to method MapPath : String |
+| WebGoatPathManipulation.cs:16:67:16:91 | ... + ... : String | semmle.label | ... + ... : String |
+| WebGoatPathManipulation.cs:17:59:17:99 | call to method MapPath : String | semmle.label | call to method MapPath : String |
+| WebGoatPathManipulation.cs:17:74:17:98 | ... + ... : String | semmle.label | ... + ... : String |
+| WebGoatPathManipulation.cs:23:109:23:116 | fullPath : String | semmle.label | fullPath : String |
+| WebGoatPathManipulation.cs:25:48:25:55 | access to parameter fullPath | semmle.label | access to parameter fullPath |
+subpaths

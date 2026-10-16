@@ -1,0 +1,2 @@
+query: TaintedPathExtended/TaintedPathExtended.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

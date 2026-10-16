@@ -1,0 +1,10 @@
+extensions:
+  # `Page.MapPath` and `HttpServerUtility.MapPath` only reject paths that leave the
+  # application root, so traversal segments can still reach other files inside the
+  # application (for example `../../Web.config`). Propagate taint through them.
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Web.UI", "Page", False, "MapPath", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["System.Web", "HttpServerUtility", False, "MapPath", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

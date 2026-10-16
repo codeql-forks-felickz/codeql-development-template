@@ -1,0 +1,10 @@
+extensions:
+  # The multipart file name and form field name of an uploaded file are supplied by the
+  # client, so they are tainted whenever the `IFormFile` itself is tainted (for example when
+  # it is an ASP.NET Core action method parameter).
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.AspNetCore.Http", "IFormFile", True, "get_FileName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.Http", "IFormFile", True, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

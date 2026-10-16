@@ -1,0 +1,13 @@
+extensions:
+  # Opening a `StreamReader` on a path reads the file at that path.
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Boolean)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.IO.FileStreamOptions)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Text.Encoding)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Text.Encoding,System.Boolean)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Text.Encoding,System.Boolean,System.Int32)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Text.Encoding,System.Boolean,System.IO.FileStreamOptions)", "", "Argument[0]", "path-injection", "manual"]
