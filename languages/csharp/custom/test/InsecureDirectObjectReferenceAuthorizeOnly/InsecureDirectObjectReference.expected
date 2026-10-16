@@ -1,0 +1,1 @@
+| UsersController.cs:149:30:149:41 | DeleteLegacy | This method may be missing authorization checks for which users can access the resource of the provided ID. |

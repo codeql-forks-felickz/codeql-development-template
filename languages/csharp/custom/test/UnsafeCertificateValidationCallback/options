@@ -1,0 +1,1 @@
+semmle-extractor-options: /r:System.Net.Primitives.dll /r:System.Net.ServicePoint.dll /r:System.Net.Http.dll /r:System.Net.Security.dll /r:System.Net.WebClient.dll /r:System.Net.Requests.dll /r:System.Security.Cryptography.dll /r:System.Security.Cryptography.X509Certificates.dll /r:System.ComponentModel.Primitives.dll /r:System.Private.Uri.dll
