@@ -1,7 +1,7 @@
 extensions:
   # `DataAdapter` constructors that take SQL command text as their first argument.
   # `codeql/csharp-all` models the `SqlDataAdapter` and `SQLiteDataAdapter` equivalents,
-  # but not the OleDb, ODBC, or MySQL provider adapters.
+  # but not the OleDb, ODBC, MySQL, or Mono.Data.Sqlite provider adapters.
   - addsTo:
       pack: codeql/csharp-all
       extensible: sinkModel
@@ -12,3 +12,5 @@ extensions:
       - ["System.Data.Odbc", "OdbcDataAdapter", False, "OdbcDataAdapter", "(System.String,System.String)", "", "Argument[0]", "sql-injection", "manual"]
       - ["MySql.Data.MySqlClient", "MySqlDataAdapter", False, "MySqlDataAdapter", "(System.String,MySql.Data.MySqlClient.MySqlConnection)", "", "Argument[0]", "sql-injection", "manual"]
       - ["MySql.Data.MySqlClient", "MySqlDataAdapter", False, "MySqlDataAdapter", "(System.String,System.String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["Mono.Data.Sqlite", "SqliteDataAdapter", False, "SqliteDataAdapter", "(System.String,Mono.Data.Sqlite.SqliteConnection)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["Mono.Data.Sqlite", "SqliteDataAdapter", False, "SqliteDataAdapter", "(System.String,System.String)", "", "Argument[0]", "sql-injection", "manual"]

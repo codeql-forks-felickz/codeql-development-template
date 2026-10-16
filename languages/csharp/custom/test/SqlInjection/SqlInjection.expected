@@ -8,14 +8,35 @@
 | SqlInjection.cs:86:34:86:81 | ... + ... | SqlInjection.cs:86:66:86:76 | access to field txtUserName : TextBox | SqlInjection.cs:86:34:86:81 | ... + ... | This query depends on $@. | SqlInjection.cs:86:66:86:76 | access to field txtUserName : TextBox | this ASP.NET user input |
 | SqlInjection.cs:95:33:95:37 | access to local variable query | SqlInjection.cs:94:67:94:80 | access to property Params : NameValueCollection | SqlInjection.cs:95:33:95:37 | access to local variable query | This query depends on $@. | SqlInjection.cs:94:67:94:80 | access to property Params : NameValueCollection | this ASP.NET query string |
 | SqlInjection.cs:96:33:96:37 | access to local variable query | SqlInjection.cs:94:67:94:80 | access to property Params : NameValueCollection | SqlInjection.cs:96:33:96:37 | access to local variable query | This query depends on $@. | SqlInjection.cs:94:67:94:80 | access to property Params : NameValueCollection | this ASP.NET query string |
+| SqlInjectionVariants.cs:26:48:26:52 | access to local variable query | SqlInjectionVariants.cs:18:29:18:43 | access to property Cookies : HttpCookieCollection | SqlInjectionVariants.cs:26:48:26:52 | access to local variable query | This query depends on $@. | SqlInjectionVariants.cs:18:29:18:43 | access to property Cookies : HttpCookieCollection | this ASP.NET query string |
+| SqlInjectionVariants.cs:47:48:47:52 | access to local variable query | SqlInjectionVariants.cs:44:40:44:45 | userId : String | SqlInjectionVariants.cs:47:48:47:52 | access to local variable query | This query depends on $@. | SqlInjectionVariants.cs:44:40:44:45 | userId : String | this ASP.NET web service input |
+| SqlInjectionVariants.cs:57:35:57:106 | ... + ... | SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer | SqlInjectionVariants.cs:57:35:57:106 | ... + ... | This query depends on $@. | SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer | this ASP.NET web service input |
+| SqlInjectionVariants.cs:57:35:57:106 | ... + ... | SqlInjectionVariants.cs:71:37:71:50 | access to property Params : NameValueCollection | SqlInjectionVariants.cs:57:35:57:106 | ... + ... | This query depends on $@. | SqlInjectionVariants.cs:71:37:71:50 | access to property Params : NameValueCollection | this ASP.NET query string |
+| SqlInjectionVariants.cs:59:35:59:153 | ... + ... | SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer | SqlInjectionVariants.cs:59:35:59:153 | ... + ... | This query depends on $@. | SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer | this ASP.NET web service input |
+| SqlInjectionVariants.cs:59:35:59:153 | ... + ... | SqlInjectionVariants.cs:72:38:72:51 | access to property Params : NameValueCollection | SqlInjectionVariants.cs:59:35:59:153 | ... + ... | This query depends on $@. | SqlInjectionVariants.cs:72:38:72:51 | access to property Params : NameValueCollection | this ASP.NET query string |
+| SqlInjectionVariants.cs:133:43:133:45 | access to local variable sql | SqlInjectionVariants.cs:257:37:257:51 | access to property Cookies : HttpCookieCollection | SqlInjectionVariants.cs:133:43:133:45 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:257:37:257:51 | access to property Cookies : HttpCookieCollection | this ASP.NET query string |
+| SqlInjectionVariants.cs:142:44:142:46 | access to local variable sql | SqlInjectionVariants.cs:257:37:257:51 | access to property Cookies : HttpCookieCollection | SqlInjectionVariants.cs:142:44:142:46 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:257:37:257:51 | access to property Cookies : HttpCookieCollection | this ASP.NET query string |
+| SqlInjectionVariants.cs:149:44:149:46 | access to local variable sql | SqlInjectionVariants.cs:277:35:277:42 | access to field txtEmail : TextBox | SqlInjectionVariants.cs:149:44:149:46 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:277:35:277:42 | access to field txtEmail : TextBox | this ASP.NET user input |
+| SqlInjectionVariants.cs:149:44:149:46 | access to local variable sql | SqlInjectionVariants.cs:277:50:277:59 | access to field txtComment : TextBox | SqlInjectionVariants.cs:149:44:149:46 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:277:50:277:59 | access to field txtComment : TextBox | this ASP.NET user input |
+| SqlInjectionVariants.cs:157:43:157:45 | access to local variable sql | SqlInjectionVariants.cs:288:45:288:52 | access to field txtEmail : TextBox | SqlInjectionVariants.cs:157:43:157:45 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:288:45:288:52 | access to field txtEmail : TextBox | this ASP.NET user input |
+| SqlInjectionVariants.cs:166:43:166:45 | access to local variable sql | SqlInjectionVariants.cs:272:34:272:40 | access to property Request : HttpRequest | SqlInjectionVariants.cs:166:43:166:45 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:272:34:272:40 | access to property Request : HttpRequest | this ASP.NET query string |
+| SqlInjectionVariants.cs:175:43:175:45 | access to local variable sql | SqlInjectionVariants.cs:298:28:298:42 | access to property Request : HttpRequest | SqlInjectionVariants.cs:175:43:175:45 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:298:28:298:42 | access to property Request : HttpRequest | this ASP.NET query string |
+| SqlInjectionVariants.cs:184:72:184:134 | ... + ... | SqlInjectionVariants.cs:257:37:257:51 | access to property Cookies : HttpCookieCollection | SqlInjectionVariants.cs:184:72:184:134 | ... + ... | This query depends on $@. | SqlInjectionVariants.cs:257:37:257:51 | access to property Cookies : HttpCookieCollection | this ASP.NET query string |
+| SqlInjectionVariants.cs:195:44:195:46 | access to local variable sql | SqlInjectionVariants.cs:257:37:257:51 | access to property Cookies : HttpCookieCollection | SqlInjectionVariants.cs:195:44:195:46 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:257:37:257:51 | access to property Cookies : HttpCookieCollection | this ASP.NET query string |
+| SqlInjectionVariants.cs:204:45:204:47 | access to local variable sql | SqlInjectionVariants.cs:257:37:257:51 | access to property Cookies : HttpCookieCollection | SqlInjectionVariants.cs:204:45:204:47 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:257:37:257:51 | access to property Cookies : HttpCookieCollection | this ASP.NET query string |
+| SqlInjectionVariants.cs:211:45:211:47 | access to local variable sql | SqlInjectionVariants.cs:277:35:277:42 | access to field txtEmail : TextBox | SqlInjectionVariants.cs:211:45:211:47 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:277:35:277:42 | access to field txtEmail : TextBox | this ASP.NET user input |
+| SqlInjectionVariants.cs:211:45:211:47 | access to local variable sql | SqlInjectionVariants.cs:277:50:277:59 | access to field txtComment : TextBox | SqlInjectionVariants.cs:211:45:211:47 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:277:50:277:59 | access to field txtComment : TextBox | this ASP.NET user input |
+| SqlInjectionVariants.cs:219:44:219:46 | access to local variable sql | SqlInjectionVariants.cs:288:45:288:52 | access to field txtEmail : TextBox | SqlInjectionVariants.cs:219:44:219:46 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:288:45:288:52 | access to field txtEmail : TextBox | this ASP.NET user input |
+| SqlInjectionVariants.cs:228:44:228:46 | access to local variable sql | SqlInjectionVariants.cs:272:34:272:40 | access to property Request : HttpRequest | SqlInjectionVariants.cs:228:44:228:46 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:272:34:272:40 | access to property Request : HttpRequest | this ASP.NET query string |
+| SqlInjectionVariants.cs:237:44:237:46 | access to local variable sql | SqlInjectionVariants.cs:298:28:298:42 | access to property Request : HttpRequest | SqlInjectionVariants.cs:237:44:237:46 | access to local variable sql | This query depends on $@. | SqlInjectionVariants.cs:298:28:298:42 | access to property Request : HttpRequest | this ASP.NET query string |
 edges
 | SqlInjection.cs:15:20:15:24 | access to local variable uname : String | SqlInjection.cs:17:26:17:30 | access to local variable uname : String | provenance |  |
 | SqlInjection.cs:15:28:15:41 | access to property Params : NameValueCollection | SqlInjection.cs:15:20:15:24 | access to local variable uname : String | provenance |  |
-| SqlInjection.cs:15:28:15:41 | access to property Params : NameValueCollection | SqlInjection.cs:15:28:15:48 | access to indexer : String | provenance | MaD:12750 |
+| SqlInjection.cs:15:28:15:41 | access to property Params : NameValueCollection | SqlInjection.cs:15:28:15:48 | access to indexer : String | provenance | MaD:12752 |
 | SqlInjection.cs:15:28:15:48 | access to indexer : String | SqlInjection.cs:15:20:15:24 | access to local variable uname : String | provenance |  |
 | SqlInjection.cs:16:20:16:25 | access to local variable passwd : String | SqlInjection.cs:17:33:17:38 | access to local variable passwd : String | provenance |  |
 | SqlInjection.cs:16:29:16:42 | access to property Params : NameValueCollection | SqlInjection.cs:16:20:16:25 | access to local variable passwd : String | provenance |  |
-| SqlInjection.cs:16:29:16:42 | access to property Params : NameValueCollection | SqlInjection.cs:16:29:16:51 | access to indexer : String | provenance | MaD:12750 |
+| SqlInjection.cs:16:29:16:42 | access to property Params : NameValueCollection | SqlInjection.cs:16:29:16:51 | access to indexer : String | provenance | MaD:12752 |
 | SqlInjection.cs:16:29:16:51 | access to indexer : String | SqlInjection.cs:16:20:16:25 | access to local variable passwd : String | provenance |  |
 | SqlInjection.cs:17:26:17:30 | access to local variable uname : String | SqlInjection.cs:20:42:20:49 | userName : String | provenance |  |
 | SqlInjection.cs:17:33:17:38 | access to local variable passwd : String | SqlInjection.cs:20:59:20:66 | password : String | provenance |  |
@@ -24,27 +45,109 @@ edges
 | SqlInjection.cs:23:20:23:24 | access to local variable query : String | SqlInjection.cs:24:48:24:52 | access to local variable query | provenance | Sink:MaD:0 |
 | SqlInjection.cs:32:20:32:24 | access to local variable query : String | SqlInjection.cs:33:34:33:38 | access to local variable query | provenance | Sink:MaD:1 |
 | SqlInjection.cs:32:71:32:82 | access to property Form : NameValueCollection | SqlInjection.cs:32:20:32:24 | access to local variable query : String | provenance |  |
-| SqlInjection.cs:32:71:32:82 | access to property Form : NameValueCollection | SqlInjection.cs:32:71:32:90 | access to indexer : String | provenance | MaD:12750 |
+| SqlInjection.cs:32:71:32:82 | access to property Form : NameValueCollection | SqlInjection.cs:32:71:32:90 | access to indexer : String | provenance | MaD:12752 |
 | SqlInjection.cs:32:71:32:90 | access to indexer : String | SqlInjection.cs:32:20:32:24 | access to local variable query : String | provenance |  |
-| SqlInjection.cs:39:77:39:83 | access to property Request : HttpRequest | SqlInjection.cs:39:40:39:97 | ... + ... | provenance | Sink:MaD:987 |
+| SqlInjection.cs:39:77:39:83 | access to property Request : HttpRequest | SqlInjection.cs:39:40:39:97 | ... + ... | provenance | Sink:MaD:989 |
 | SqlInjection.cs:59:49:59:53 | email : String | SqlInjection.cs:61:20:61:22 | access to local variable sql : String | provenance |  |
 | SqlInjection.cs:59:63:59:70 | password : String | SqlInjection.cs:61:20:61:22 | access to local variable sql : String | provenance |  |
 | SqlInjection.cs:61:20:61:22 | access to local variable sql : String | SqlInjection.cs:64:43:64:45 | access to local variable sql | provenance | Sink:MaD:4 |
 | SqlInjection.cs:79:20:79:24 | access to local variable email : String | SqlInjection.cs:81:37:81:41 | access to local variable email : String | provenance |  |
-| SqlInjection.cs:79:28:79:38 | access to field txtUserName : TextBox | SqlInjection.cs:79:28:79:43 | access to property Text : String | provenance | MaD:2258 |
+| SqlInjection.cs:79:28:79:38 | access to field txtUserName : TextBox | SqlInjection.cs:79:28:79:43 | access to property Text : String | provenance | MaD:2260 |
 | SqlInjection.cs:79:28:79:43 | access to property Text : String | SqlInjection.cs:79:20:79:24 | access to local variable email : String | provenance |  |
 | SqlInjection.cs:80:20:80:22 | access to local variable pwd : String | SqlInjection.cs:81:44:81:46 | access to local variable pwd : String | provenance |  |
-| SqlInjection.cs:80:26:80:36 | access to field txtPassword : TextBox | SqlInjection.cs:80:26:80:41 | access to property Text : String | provenance | MaD:2258 |
+| SqlInjection.cs:80:26:80:36 | access to field txtPassword : TextBox | SqlInjection.cs:80:26:80:41 | access to property Text : String | provenance | MaD:2260 |
 | SqlInjection.cs:80:26:80:41 | access to property Text : String | SqlInjection.cs:80:20:80:22 | access to local variable pwd : String | provenance |  |
 | SqlInjection.cs:81:37:81:41 | access to local variable email : String | SqlInjection.cs:59:49:59:53 | email : String | provenance |  |
 | SqlInjection.cs:81:44:81:46 | access to local variable pwd : String | SqlInjection.cs:59:63:59:70 | password : String | provenance |  |
-| SqlInjection.cs:86:66:86:76 | access to field txtUserName : TextBox | SqlInjection.cs:86:66:86:81 | access to property Text : String | provenance | MaD:2258 |
+| SqlInjection.cs:86:66:86:76 | access to field txtUserName : TextBox | SqlInjection.cs:86:66:86:81 | access to property Text : String | provenance | MaD:2260 |
 | SqlInjection.cs:86:66:86:81 | access to property Text : String | SqlInjection.cs:86:34:86:81 | ... + ... | provenance | Sink:MaD:5 |
 | SqlInjection.cs:94:20:94:24 | access to local variable query : String | SqlInjection.cs:95:33:95:37 | access to local variable query | provenance | Sink:MaD:2 |
 | SqlInjection.cs:94:20:94:24 | access to local variable query : String | SqlInjection.cs:96:33:96:37 | access to local variable query | provenance | Sink:MaD:3 |
 | SqlInjection.cs:94:67:94:80 | access to property Params : NameValueCollection | SqlInjection.cs:94:20:94:24 | access to local variable query : String | provenance |  |
-| SqlInjection.cs:94:67:94:80 | access to property Params : NameValueCollection | SqlInjection.cs:94:67:94:85 | access to indexer : String | provenance | MaD:12750 |
+| SqlInjection.cs:94:67:94:80 | access to property Params : NameValueCollection | SqlInjection.cs:94:67:94:85 | access to indexer : String | provenance | MaD:12752 |
 | SqlInjection.cs:94:67:94:85 | access to indexer : String | SqlInjection.cs:94:20:94:24 | access to local variable query : String | provenance |  |
+| SqlInjectionVariants.cs:18:20:18:25 | access to local variable userId : String | SqlInjectionVariants.cs:19:25:19:30 | access to local variable userId : String | provenance |  |
+| SqlInjectionVariants.cs:18:29:18:43 | access to property Cookies : HttpCookieCollection | SqlInjectionVariants.cs:18:29:18:53 | access to indexer : HttpCookie | provenance |  |
+| SqlInjectionVariants.cs:18:29:18:53 | access to indexer : HttpCookie | SqlInjectionVariants.cs:18:29:18:59 | access to property Value : String | provenance | MaD:2265 |
+| SqlInjectionVariants.cs:18:29:18:59 | access to property Value : String | SqlInjectionVariants.cs:18:20:18:25 | access to local variable userId : String | provenance |  |
+| SqlInjectionVariants.cs:19:25:19:30 | access to local variable userId : String | SqlInjectionVariants.cs:22:46:22:51 | userId : String | provenance |  |
+| SqlInjectionVariants.cs:22:46:22:51 | userId : String | SqlInjectionVariants.cs:25:20:25:24 | access to local variable query : String | provenance |  |
+| SqlInjectionVariants.cs:25:20:25:24 | access to local variable query : String | SqlInjectionVariants.cs:26:48:26:52 | access to local variable query | provenance | Sink:MaD:0 |
+| SqlInjectionVariants.cs:44:40:44:45 | userId : String | SqlInjectionVariants.cs:46:20:46:24 | access to local variable query : String | provenance |  |
+| SqlInjectionVariants.cs:46:20:46:24 | access to local variable query : String | SqlInjectionVariants.cs:47:48:47:52 | access to local variable query | provenance | Sink:MaD:0 |
+| SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer | SqlInjectionVariants.cs:57:35:57:106 | ... + ... | provenance |  |
+| SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer | SqlInjectionVariants.cs:59:35:59:153 | ... + ... | provenance |  |
+| SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer [field creditAccount] : String | SqlInjectionVariants.cs:59:93:59:100 | access to parameter transfer : MoneyTransfer [field creditAccount] : String | provenance |  |
+| SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer [field debitAccount] : String | SqlInjectionVariants.cs:57:86:57:93 | access to parameter transfer : MoneyTransfer [field debitAccount] : String | provenance |  |
+| SqlInjectionVariants.cs:57:86:57:93 | access to parameter transfer : MoneyTransfer [field debitAccount] : String | SqlInjectionVariants.cs:57:86:57:106 | access to field debitAccount : String | provenance |  |
+| SqlInjectionVariants.cs:57:86:57:106 | access to field debitAccount : String | SqlInjectionVariants.cs:57:35:57:106 | ... + ... | provenance |  |
+| SqlInjectionVariants.cs:59:93:59:100 | access to parameter transfer : MoneyTransfer [field creditAccount] : String | SqlInjectionVariants.cs:59:93:59:114 | access to field creditAccount : String | provenance |  |
+| SqlInjectionVariants.cs:59:93:59:114 | access to field creditAccount : String | SqlInjectionVariants.cs:59:35:59:153 | ... + ... | provenance |  |
+| SqlInjectionVariants.cs:71:13:71:20 | [post] access to local variable transfer : MoneyTransfer [field debitAccount] : String | SqlInjectionVariants.cs:72:13:72:20 | access to local variable transfer : MoneyTransfer [field debitAccount] : String | provenance |  |
+| SqlInjectionVariants.cs:71:37:71:50 | access to property Params : NameValueCollection | SqlInjectionVariants.cs:71:37:71:66 | access to indexer : String | provenance |  |
+| SqlInjectionVariants.cs:71:37:71:50 | access to property Params : NameValueCollection | SqlInjectionVariants.cs:71:37:71:66 | access to indexer : String | provenance | MaD:12752 |
+| SqlInjectionVariants.cs:71:37:71:66 | access to indexer : String | SqlInjectionVariants.cs:71:13:71:20 | [post] access to local variable transfer : MoneyTransfer [field debitAccount] : String | provenance |  |
+| SqlInjectionVariants.cs:72:13:72:20 | [post] access to local variable transfer : MoneyTransfer [field creditAccount] : String | SqlInjectionVariants.cs:73:47:73:54 | access to local variable transfer : MoneyTransfer [field creditAccount] : String | provenance |  |
+| SqlInjectionVariants.cs:72:13:72:20 | access to local variable transfer : MoneyTransfer [field debitAccount] : String | SqlInjectionVariants.cs:73:47:73:54 | access to local variable transfer : MoneyTransfer [field debitAccount] : String | provenance |  |
+| SqlInjectionVariants.cs:72:38:72:51 | access to property Params : NameValueCollection | SqlInjectionVariants.cs:72:38:72:68 | access to indexer : String | provenance |  |
+| SqlInjectionVariants.cs:72:38:72:51 | access to property Params : NameValueCollection | SqlInjectionVariants.cs:72:38:72:68 | access to indexer : String | provenance | MaD:12752 |
+| SqlInjectionVariants.cs:72:38:72:68 | access to indexer : String | SqlInjectionVariants.cs:72:13:72:20 | [post] access to local variable transfer : MoneyTransfer [field creditAccount] : String | provenance |  |
+| SqlInjectionVariants.cs:73:47:73:54 | access to local variable transfer : MoneyTransfer [field creditAccount] : String | SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer [field creditAccount] : String | provenance |  |
+| SqlInjectionVariants.cs:73:47:73:54 | access to local variable transfer : MoneyTransfer [field debitAccount] : String | SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer [field debitAccount] : String | provenance |  |
+| SqlInjectionVariants.cs:130:50:130:63 | customerNumber : String | SqlInjectionVariants.cs:132:20:132:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:132:20:132:22 | access to local variable sql : String | SqlInjectionVariants.cs:133:43:133:45 | access to local variable sql | provenance | Sink:MaD:4 |
+| SqlInjectionVariants.cs:139:47:139:60 | customerNumber : String | SqlInjectionVariants.cs:141:20:141:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:141:20:141:22 | access to local variable sql : String | SqlInjectionVariants.cs:142:44:142:46 | access to local variable sql | provenance |  |
+| SqlInjectionVariants.cs:146:61:146:65 | email : String | SqlInjectionVariants.cs:148:20:148:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:146:75:146:81 | comment : String | SqlInjectionVariants.cs:148:20:148:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:148:20:148:22 | access to local variable sql : String | SqlInjectionVariants.cs:149:44:149:46 | access to local variable sql | provenance |  |
+| SqlInjectionVariants.cs:154:61:154:65 | email : String | SqlInjectionVariants.cs:156:20:156:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:156:20:156:22 | access to local variable sql : String | SqlInjectionVariants.cs:157:43:157:45 | access to local variable sql | provenance | Sink:MaD:4 |
+| SqlInjectionVariants.cs:163:49:163:59 | productCode : String | SqlInjectionVariants.cs:165:20:165:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:165:20:165:22 | access to local variable sql : String | SqlInjectionVariants.cs:166:43:166:45 | access to local variable sql | provenance | Sink:MaD:4 |
+| SqlInjectionVariants.cs:172:49:172:53 | email : String | SqlInjectionVariants.cs:174:20:174:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:174:20:174:22 | access to local variable sql : String | SqlInjectionVariants.cs:175:43:175:45 | access to local variable sql | provenance | Sink:MaD:4 |
+| SqlInjectionVariants.cs:181:55:181:57 | num : String | SqlInjectionVariants.cs:184:72:184:134 | ... + ... | provenance | Sink:MaD:315 |
+| SqlInjectionVariants.cs:192:50:192:63 | customerNumber : String | SqlInjectionVariants.cs:194:20:194:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:194:20:194:22 | access to local variable sql : String | SqlInjectionVariants.cs:195:44:195:46 | access to local variable sql | provenance | Sink:MaD:6 |
+| SqlInjectionVariants.cs:201:47:201:60 | customerNumber : String | SqlInjectionVariants.cs:203:20:203:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:203:20:203:22 | access to local variable sql : String | SqlInjectionVariants.cs:204:45:204:47 | access to local variable sql | provenance |  |
+| SqlInjectionVariants.cs:208:61:208:65 | email : String | SqlInjectionVariants.cs:210:20:210:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:208:75:208:81 | comment : String | SqlInjectionVariants.cs:210:20:210:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:210:20:210:22 | access to local variable sql : String | SqlInjectionVariants.cs:211:45:211:47 | access to local variable sql | provenance |  |
+| SqlInjectionVariants.cs:216:61:216:65 | email : String | SqlInjectionVariants.cs:218:20:218:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:218:20:218:22 | access to local variable sql : String | SqlInjectionVariants.cs:219:44:219:46 | access to local variable sql | provenance | Sink:MaD:7 |
+| SqlInjectionVariants.cs:225:49:225:59 | productCode : String | SqlInjectionVariants.cs:227:20:227:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:227:20:227:22 | access to local variable sql : String | SqlInjectionVariants.cs:228:44:228:46 | access to local variable sql | provenance | Sink:MaD:6 |
+| SqlInjectionVariants.cs:234:49:234:53 | email : String | SqlInjectionVariants.cs:236:20:236:22 | access to local variable sql : String | provenance |  |
+| SqlInjectionVariants.cs:236:20:236:22 | access to local variable sql : String | SqlInjectionVariants.cs:237:44:237:46 | access to local variable sql | provenance | Sink:MaD:6 |
+| SqlInjectionVariants.cs:257:20:257:33 | access to local variable customerNumber : String | SqlInjectionVariants.cs:258:35:258:48 | access to local variable customerNumber : String | provenance |  |
+| SqlInjectionVariants.cs:257:20:257:33 | access to local variable customerNumber : String | SqlInjectionVariants.cs:259:33:259:46 | access to local variable customerNumber : String | provenance |  |
+| SqlInjectionVariants.cs:257:20:257:33 | access to local variable customerNumber : String | SqlInjectionVariants.cs:260:41:260:54 | access to local variable customerNumber : String | provenance |  |
+| SqlInjectionVariants.cs:257:37:257:51 | access to property Cookies : HttpCookieCollection | SqlInjectionVariants.cs:257:37:257:69 | access to indexer : HttpCookie | provenance |  |
+| SqlInjectionVariants.cs:257:37:257:69 | access to indexer : HttpCookie | SqlInjectionVariants.cs:257:37:257:75 | access to property Value : String | provenance | MaD:2265 |
+| SqlInjectionVariants.cs:257:37:257:75 | access to property Value : String | SqlInjectionVariants.cs:257:20:257:33 | access to local variable customerNumber : String | provenance |  |
+| SqlInjectionVariants.cs:258:35:258:48 | access to local variable customerNumber : String | SqlInjectionVariants.cs:130:50:130:63 | customerNumber : String | provenance |  |
+| SqlInjectionVariants.cs:258:35:258:48 | access to local variable customerNumber : String | SqlInjectionVariants.cs:192:50:192:63 | customerNumber : String | provenance |  |
+| SqlInjectionVariants.cs:259:33:259:46 | access to local variable customerNumber : String | SqlInjectionVariants.cs:139:47:139:60 | customerNumber : String | provenance |  |
+| SqlInjectionVariants.cs:259:33:259:46 | access to local variable customerNumber : String | SqlInjectionVariants.cs:201:47:201:60 | customerNumber : String | provenance |  |
+| SqlInjectionVariants.cs:260:41:260:54 | access to local variable customerNumber : String | SqlInjectionVariants.cs:181:55:181:57 | num : String | provenance |  |
+| SqlInjectionVariants.cs:272:34:272:40 | access to property Request : HttpRequest | SqlInjectionVariants.cs:272:34:272:57 | access to indexer : String | provenance |  |
+| SqlInjectionVariants.cs:272:34:272:57 | access to indexer : String | SqlInjectionVariants.cs:163:49:163:59 | productCode : String | provenance |  |
+| SqlInjectionVariants.cs:272:34:272:57 | access to indexer : String | SqlInjectionVariants.cs:225:49:225:59 | productCode : String | provenance |  |
+| SqlInjectionVariants.cs:277:35:277:42 | access to field txtEmail : TextBox | SqlInjectionVariants.cs:277:35:277:47 | access to property Text : String | provenance | MaD:2260 |
+| SqlInjectionVariants.cs:277:35:277:47 | access to property Text : String | SqlInjectionVariants.cs:146:61:146:65 | email : String | provenance |  |
+| SqlInjectionVariants.cs:277:35:277:47 | access to property Text : String | SqlInjectionVariants.cs:208:61:208:65 | email : String | provenance |  |
+| SqlInjectionVariants.cs:277:50:277:59 | access to field txtComment : TextBox | SqlInjectionVariants.cs:277:50:277:64 | access to property Text : String | provenance | MaD:2260 |
+| SqlInjectionVariants.cs:277:50:277:64 | access to property Text : String | SqlInjectionVariants.cs:146:75:146:81 | comment : String | provenance |  |
+| SqlInjectionVariants.cs:277:50:277:64 | access to property Text : String | SqlInjectionVariants.cs:208:75:208:81 | comment : String | provenance |  |
+| SqlInjectionVariants.cs:288:45:288:52 | access to field txtEmail : TextBox | SqlInjectionVariants.cs:288:45:288:57 | access to property Text : String | provenance | MaD:2260 |
+| SqlInjectionVariants.cs:288:45:288:57 | access to property Text : String | SqlInjectionVariants.cs:154:61:154:65 | email : String | provenance |  |
+| SqlInjectionVariants.cs:288:45:288:57 | access to property Text : String | SqlInjectionVariants.cs:216:61:216:65 | email : String | provenance |  |
+| SqlInjectionVariants.cs:298:20:298:24 | access to local variable query : String | SqlInjectionVariants.cs:299:34:299:38 | access to local variable query : String | provenance |  |
+| SqlInjectionVariants.cs:298:28:298:42 | access to property Request : HttpRequest | SqlInjectionVariants.cs:298:20:298:24 | access to local variable query : String | provenance |  |
+| SqlInjectionVariants.cs:299:34:299:38 | access to local variable query : String | SqlInjectionVariants.cs:172:49:172:53 | email : String | provenance |  |
+| SqlInjectionVariants.cs:299:34:299:38 | access to local variable query : String | SqlInjectionVariants.cs:234:49:234:53 | email : String | provenance |  |
 nodes
 | SqlInjection.cs:15:20:15:24 | access to local variable uname : String | semmle.label | access to local variable uname : String |
 | SqlInjection.cs:15:28:15:41 | access to property Params : NameValueCollection | semmle.label | access to property Params : NameValueCollection |
@@ -84,4 +187,91 @@ nodes
 | SqlInjection.cs:94:67:94:85 | access to indexer : String | semmle.label | access to indexer : String |
 | SqlInjection.cs:95:33:95:37 | access to local variable query | semmle.label | access to local variable query |
 | SqlInjection.cs:96:33:96:37 | access to local variable query | semmle.label | access to local variable query |
+| SqlInjectionVariants.cs:18:20:18:25 | access to local variable userId : String | semmle.label | access to local variable userId : String |
+| SqlInjectionVariants.cs:18:29:18:43 | access to property Cookies : HttpCookieCollection | semmle.label | access to property Cookies : HttpCookieCollection |
+| SqlInjectionVariants.cs:18:29:18:53 | access to indexer : HttpCookie | semmle.label | access to indexer : HttpCookie |
+| SqlInjectionVariants.cs:18:29:18:59 | access to property Value : String | semmle.label | access to property Value : String |
+| SqlInjectionVariants.cs:19:25:19:30 | access to local variable userId : String | semmle.label | access to local variable userId : String |
+| SqlInjectionVariants.cs:22:46:22:51 | userId : String | semmle.label | userId : String |
+| SqlInjectionVariants.cs:25:20:25:24 | access to local variable query : String | semmle.label | access to local variable query : String |
+| SqlInjectionVariants.cs:26:48:26:52 | access to local variable query | semmle.label | access to local variable query |
+| SqlInjectionVariants.cs:44:40:44:45 | userId : String | semmle.label | userId : String |
+| SqlInjectionVariants.cs:46:20:46:24 | access to local variable query : String | semmle.label | access to local variable query : String |
+| SqlInjectionVariants.cs:47:48:47:52 | access to local variable query | semmle.label | access to local variable query |
+| SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer | semmle.label | transfer : MoneyTransfer |
+| SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer [field creditAccount] : String | semmle.label | transfer : MoneyTransfer [field creditAccount] : String |
+| SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer [field debitAccount] : String | semmle.label | transfer : MoneyTransfer [field debitAccount] : String |
+| SqlInjectionVariants.cs:57:35:57:106 | ... + ... | semmle.label | ... + ... |
+| SqlInjectionVariants.cs:57:86:57:93 | access to parameter transfer : MoneyTransfer [field debitAccount] : String | semmle.label | access to parameter transfer : MoneyTransfer [field debitAccount] : String |
+| SqlInjectionVariants.cs:57:86:57:106 | access to field debitAccount : String | semmle.label | access to field debitAccount : String |
+| SqlInjectionVariants.cs:59:35:59:153 | ... + ... | semmle.label | ... + ... |
+| SqlInjectionVariants.cs:59:93:59:100 | access to parameter transfer : MoneyTransfer [field creditAccount] : String | semmle.label | access to parameter transfer : MoneyTransfer [field creditAccount] : String |
+| SqlInjectionVariants.cs:59:93:59:114 | access to field creditAccount : String | semmle.label | access to field creditAccount : String |
+| SqlInjectionVariants.cs:71:13:71:20 | [post] access to local variable transfer : MoneyTransfer [field debitAccount] : String | semmle.label | [post] access to local variable transfer : MoneyTransfer [field debitAccount] : String |
+| SqlInjectionVariants.cs:71:37:71:50 | access to property Params : NameValueCollection | semmle.label | access to property Params : NameValueCollection |
+| SqlInjectionVariants.cs:71:37:71:66 | access to indexer : String | semmle.label | access to indexer : String |
+| SqlInjectionVariants.cs:72:13:72:20 | [post] access to local variable transfer : MoneyTransfer [field creditAccount] : String | semmle.label | [post] access to local variable transfer : MoneyTransfer [field creditAccount] : String |
+| SqlInjectionVariants.cs:72:13:72:20 | access to local variable transfer : MoneyTransfer [field debitAccount] : String | semmle.label | access to local variable transfer : MoneyTransfer [field debitAccount] : String |
+| SqlInjectionVariants.cs:72:38:72:51 | access to property Params : NameValueCollection | semmle.label | access to property Params : NameValueCollection |
+| SqlInjectionVariants.cs:72:38:72:68 | access to indexer : String | semmle.label | access to indexer : String |
+| SqlInjectionVariants.cs:73:47:73:54 | access to local variable transfer : MoneyTransfer [field creditAccount] : String | semmle.label | access to local variable transfer : MoneyTransfer [field creditAccount] : String |
+| SqlInjectionVariants.cs:73:47:73:54 | access to local variable transfer : MoneyTransfer [field debitAccount] : String | semmle.label | access to local variable transfer : MoneyTransfer [field debitAccount] : String |
+| SqlInjectionVariants.cs:130:50:130:63 | customerNumber : String | semmle.label | customerNumber : String |
+| SqlInjectionVariants.cs:132:20:132:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| SqlInjectionVariants.cs:133:43:133:45 | access to local variable sql | semmle.label | access to local variable sql |
+| SqlInjectionVariants.cs:139:47:139:60 | customerNumber : String | semmle.label | customerNumber : String |
+| SqlInjectionVariants.cs:141:20:141:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| SqlInjectionVariants.cs:142:44:142:46 | access to local variable sql | semmle.label | access to local variable sql |
+| SqlInjectionVariants.cs:146:61:146:65 | email : String | semmle.label | email : String |
+| SqlInjectionVariants.cs:146:75:146:81 | comment : String | semmle.label | comment : String |
+| SqlInjectionVariants.cs:148:20:148:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| SqlInjectionVariants.cs:149:44:149:46 | access to local variable sql | semmle.label | access to local variable sql |
+| SqlInjectionVariants.cs:154:61:154:65 | email : String | semmle.label | email : String |
+| SqlInjectionVariants.cs:156:20:156:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| SqlInjectionVariants.cs:157:43:157:45 | access to local variable sql | semmle.label | access to local variable sql |
+| SqlInjectionVariants.cs:163:49:163:59 | productCode : String | semmle.label | productCode : String |
+| SqlInjectionVariants.cs:165:20:165:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| SqlInjectionVariants.cs:166:43:166:45 | access to local variable sql | semmle.label | access to local variable sql |
+| SqlInjectionVariants.cs:172:49:172:53 | email : String | semmle.label | email : String |
+| SqlInjectionVariants.cs:174:20:174:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| SqlInjectionVariants.cs:175:43:175:45 | access to local variable sql | semmle.label | access to local variable sql |
+| SqlInjectionVariants.cs:181:55:181:57 | num : String | semmle.label | num : String |
+| SqlInjectionVariants.cs:184:72:184:134 | ... + ... | semmle.label | ... + ... |
+| SqlInjectionVariants.cs:192:50:192:63 | customerNumber : String | semmle.label | customerNumber : String |
+| SqlInjectionVariants.cs:194:20:194:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| SqlInjectionVariants.cs:195:44:195:46 | access to local variable sql | semmle.label | access to local variable sql |
+| SqlInjectionVariants.cs:201:47:201:60 | customerNumber : String | semmle.label | customerNumber : String |
+| SqlInjectionVariants.cs:203:20:203:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| SqlInjectionVariants.cs:204:45:204:47 | access to local variable sql | semmle.label | access to local variable sql |
+| SqlInjectionVariants.cs:208:61:208:65 | email : String | semmle.label | email : String |
+| SqlInjectionVariants.cs:208:75:208:81 | comment : String | semmle.label | comment : String |
+| SqlInjectionVariants.cs:210:20:210:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| SqlInjectionVariants.cs:211:45:211:47 | access to local variable sql | semmle.label | access to local variable sql |
+| SqlInjectionVariants.cs:216:61:216:65 | email : String | semmle.label | email : String |
+| SqlInjectionVariants.cs:218:20:218:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| SqlInjectionVariants.cs:219:44:219:46 | access to local variable sql | semmle.label | access to local variable sql |
+| SqlInjectionVariants.cs:225:49:225:59 | productCode : String | semmle.label | productCode : String |
+| SqlInjectionVariants.cs:227:20:227:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| SqlInjectionVariants.cs:228:44:228:46 | access to local variable sql | semmle.label | access to local variable sql |
+| SqlInjectionVariants.cs:234:49:234:53 | email : String | semmle.label | email : String |
+| SqlInjectionVariants.cs:236:20:236:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| SqlInjectionVariants.cs:237:44:237:46 | access to local variable sql | semmle.label | access to local variable sql |
+| SqlInjectionVariants.cs:257:20:257:33 | access to local variable customerNumber : String | semmle.label | access to local variable customerNumber : String |
+| SqlInjectionVariants.cs:257:37:257:51 | access to property Cookies : HttpCookieCollection | semmle.label | access to property Cookies : HttpCookieCollection |
+| SqlInjectionVariants.cs:257:37:257:69 | access to indexer : HttpCookie | semmle.label | access to indexer : HttpCookie |
+| SqlInjectionVariants.cs:257:37:257:75 | access to property Value : String | semmle.label | access to property Value : String |
+| SqlInjectionVariants.cs:258:35:258:48 | access to local variable customerNumber : String | semmle.label | access to local variable customerNumber : String |
+| SqlInjectionVariants.cs:259:33:259:46 | access to local variable customerNumber : String | semmle.label | access to local variable customerNumber : String |
+| SqlInjectionVariants.cs:260:41:260:54 | access to local variable customerNumber : String | semmle.label | access to local variable customerNumber : String |
+| SqlInjectionVariants.cs:272:34:272:40 | access to property Request : HttpRequest | semmle.label | access to property Request : HttpRequest |
+| SqlInjectionVariants.cs:272:34:272:57 | access to indexer : String | semmle.label | access to indexer : String |
+| SqlInjectionVariants.cs:277:35:277:42 | access to field txtEmail : TextBox | semmle.label | access to field txtEmail : TextBox |
+| SqlInjectionVariants.cs:277:35:277:47 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjectionVariants.cs:277:50:277:59 | access to field txtComment : TextBox | semmle.label | access to field txtComment : TextBox |
+| SqlInjectionVariants.cs:277:50:277:64 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjectionVariants.cs:288:45:288:52 | access to field txtEmail : TextBox | semmle.label | access to field txtEmail : TextBox |
+| SqlInjectionVariants.cs:288:45:288:57 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjectionVariants.cs:298:20:298:24 | access to local variable query : String | semmle.label | access to local variable query : String |
+| SqlInjectionVariants.cs:298:28:298:42 | access to property Request : HttpRequest | semmle.label | access to property Request : HttpRequest |
+| SqlInjectionVariants.cs:299:34:299:38 | access to local variable query : String | semmle.label | access to local variable query : String |
 subpaths
