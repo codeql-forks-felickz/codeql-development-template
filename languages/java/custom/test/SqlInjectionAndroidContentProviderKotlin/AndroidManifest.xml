@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.notes">
+    <application>
+        <provider
+            android:name="com.example.notes.NotesProvider"
+            android:authorities="com.example.notes.notes"
+            android:exported="true" />
+        <provider
+            android:name="com.example.notes.PrivateNotesProvider"
+            android:authorities="com.example.notes.private"
+            android:exported="false" />
+    </application>
+</manifest>

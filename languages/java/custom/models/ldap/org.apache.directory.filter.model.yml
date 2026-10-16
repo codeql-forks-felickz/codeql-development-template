@@ -1,0 +1,65 @@
+# LDAP filter parsing in Apache Directory libraries.
+# `FilterParser.parse` turns an LDAP filter string into the `ExprNode` that is later passed to
+# `CoreSession.search` / `LdapConnection.search`, so the filter string is the injection point.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      # ApacheDS 1.5.x embedded server (shared-ldap 0.9.x)
+      - [
+          "org.apache.directory.shared.ldap.filter",
+          "FilterParser",
+          False,
+          "parse",
+          "(String)",
+          "",
+          "Argument[0]",
+          "ldap-injection",
+          "manual"
+        ]
+      # Apache Directory LDAP API 1.x/2.x
+      - [
+          "org.apache.directory.api.ldap.model.filter",
+          "FilterParser",
+          False,
+          "parse",
+          "(String)",
+          "",
+          "Argument[0]",
+          "ldap-injection",
+          "manual"
+        ]
+      - [
+          "org.apache.directory.api.ldap.model.filter",
+          "FilterParser",
+          False,
+          "parse",
+          "(String,boolean)",
+          "",
+          "Argument[0]",
+          "ldap-injection",
+          "manual"
+        ]
+      - [
+          "org.apache.directory.api.ldap.model.filter",
+          "FilterParser",
+          False,
+          "parse",
+          "(SchemaManager,String)",
+          "",
+          "Argument[1]",
+          "ldap-injection",
+          "manual"
+        ]
+      - [
+          "org.apache.directory.api.ldap.model.filter",
+          "FilterParser",
+          False,
+          "parse",
+          "(SchemaManager,String,boolean)",
+          "",
+          "Argument[1]",
+          "ldap-injection",
+          "manual"
+        ]

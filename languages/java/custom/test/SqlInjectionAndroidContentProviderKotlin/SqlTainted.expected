@@ -1,0 +1,28 @@
+#select
+| com/example/notes/NotesProvider.kt:34:16:34:27 | queryBuilder | com/example/notes/NotesProvider.kt:25:24:25:31 | uri : Uri | com/example/notes/NotesProvider.kt:34:16:34:27 | queryBuilder | This query depends on a $@. | com/example/notes/NotesProvider.kt:25:24:25:31 | uri | user-provided value |
+| com/example/notes/NotesProvider.kt:34:39:34:48 | projection | com/example/notes/NotesProvider.kt:25:34:25:59 | projection : String[] | com/example/notes/NotesProvider.kt:34:39:34:48 | projection | This query depends on a $@. | com/example/notes/NotesProvider.kt:25:34:25:59 | projection | user-provided value |
+| com/example/notes/NotesProvider.kt:34:51:34:59 | selection | com/example/notes/NotesProvider.kt:25:62:25:79 | selection : String | com/example/notes/NotesProvider.kt:34:51:34:59 | selection | This query depends on a $@. | com/example/notes/NotesProvider.kt:25:62:25:79 | selection | user-provided value |
+| com/example/notes/NotesProvider.kt:34:89:34:97 | sortOrder | com/example/notes/NotesProvider.kt:26:55:26:72 | sortOrder : String | com/example/notes/NotesProvider.kt:34:89:34:97 | sortOrder | This query depends on a $@. | com/example/notes/NotesProvider.kt:26:55:26:72 | sortOrder | user-provided value |
+edges
+| com/example/notes/NotesProvider.kt:25:24:25:31 | uri : Uri | com/example/notes/NotesProvider.kt:30:78:30:80 | uri : Uri | provenance | Src:MaD:208  |
+| com/example/notes/NotesProvider.kt:25:34:25:59 | projection : String[] | com/example/notes/NotesProvider.kt:34:39:34:48 | projection | provenance | Src:MaD:208 Sink:MaD:451 |
+| com/example/notes/NotesProvider.kt:25:62:25:79 | selection : String | com/example/notes/NotesProvider.kt:34:51:34:59 | selection | provenance | Src:MaD:208 Sink:MaD:452 |
+| com/example/notes/NotesProvider.kt:26:55:26:72 | sortOrder : String | com/example/notes/NotesProvider.kt:34:89:34:97 | sortOrder | provenance | Src:MaD:208 Sink:MaD:453 |
+| com/example/notes/NotesProvider.kt:30:25:30:36 | queryBuilder [post update] : SQLiteQueryBuilder | com/example/notes/NotesProvider.kt:34:16:34:27 | queryBuilder | provenance | Sink:MaD:450 |
+| com/example/notes/NotesProvider.kt:30:50:30:96 | ... + ... : String | com/example/notes/NotesProvider.kt:30:25:30:36 | queryBuilder [post update] : SQLiteQueryBuilder | provenance | MaD:465 |
+| com/example/notes/NotesProvider.kt:30:78:30:80 | uri : Uri | com/example/notes/NotesProvider.kt:30:78:30:96 | getLastPathSegment(...) : String | provenance | MaD:508 |
+| com/example/notes/NotesProvider.kt:30:78:30:96 | getLastPathSegment(...) : String | com/example/notes/NotesProvider.kt:30:50:30:96 | ... + ... : String | provenance |  |
+nodes
+| com/example/notes/NotesProvider.kt:25:24:25:31 | uri : Uri | semmle.label | uri : Uri |
+| com/example/notes/NotesProvider.kt:25:34:25:59 | projection : String[] | semmle.label | projection : String[] |
+| com/example/notes/NotesProvider.kt:25:62:25:79 | selection : String | semmle.label | selection : String |
+| com/example/notes/NotesProvider.kt:26:55:26:72 | sortOrder : String | semmle.label | sortOrder : String |
+| com/example/notes/NotesProvider.kt:30:25:30:36 | queryBuilder [post update] : SQLiteQueryBuilder | semmle.label | queryBuilder [post update] : SQLiteQueryBuilder |
+| com/example/notes/NotesProvider.kt:30:50:30:96 | ... + ... : String | semmle.label | ... + ... : String |
+| com/example/notes/NotesProvider.kt:30:78:30:80 | uri : Uri | semmle.label | uri : Uri |
+| com/example/notes/NotesProvider.kt:30:78:30:96 | getLastPathSegment(...) : String | semmle.label | getLastPathSegment(...) : String |
+| com/example/notes/NotesProvider.kt:34:16:34:27 | queryBuilder | semmle.label | queryBuilder |
+| com/example/notes/NotesProvider.kt:34:39:34:48 | projection | semmle.label | projection |
+| com/example/notes/NotesProvider.kt:34:51:34:59 | selection | semmle.label | selection |
+| com/example/notes/NotesProvider.kt:34:89:34:97 | sortOrder | semmle.label | sortOrder |
+subpaths
