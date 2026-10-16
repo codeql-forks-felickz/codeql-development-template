@@ -1,0 +1,45 @@
+#select
+| test.go:70:30:70:36 | payload | test.go:97:10:97:14 | selection of URL | test.go:70:30:70:36 | payload | This path depends on a $@. | test.go:97:10:97:14 | selection of URL | user-provided value |
+| test.go:70:30:70:36 | payload | test.go:100:9:100:28 | call to FormValue | test.go:70:30:70:36 | payload | This path depends on a $@. | test.go:100:9:100:28 | call to FormValue | user-provided value |
+| test.go:75:20:75:26 | payload | test.go:97:10:97:14 | selection of URL | test.go:75:20:75:26 | payload | This path depends on a $@. | test.go:97:10:97:14 | selection of URL | user-provided value |
+| test.go:75:20:75:26 | payload | test.go:100:9:100:28 | call to FormValue | test.go:75:20:75:26 | payload | This path depends on a $@. | test.go:100:9:100:28 | call to FormValue | user-provided value |
+| test.go:84:26:84:32 | payload | test.go:97:10:97:14 | selection of URL | test.go:84:26:84:32 | payload | This path depends on a $@. | test.go:97:10:97:14 | selection of URL | user-provided value |
+| test.go:84:26:84:32 | payload | test.go:100:9:100:28 | call to FormValue | test.go:84:26:84:32 | payload | This path depends on a $@. | test.go:100:9:100:28 | call to FormValue | user-provided value |
+| test.go:88:22:88:28 | payload | test.go:97:10:97:14 | selection of URL | test.go:88:22:88:28 | payload | This path depends on a $@. | test.go:97:10:97:14 | selection of URL | user-provided value |
+| test.go:88:22:88:28 | payload | test.go:100:9:100:28 | call to FormValue | test.go:88:22:88:28 | payload | This path depends on a $@. | test.go:100:9:100:28 | call to FormValue | user-provided value |
+edges
+| test.go:45:29:45:35 | SSA def(payload) | test.go:49:45:49:51 | payload | provenance |  |
+| test.go:49:45:49:51 | payload | test.go:69:32:69:38 | SSA def(payload) | provenance | Config |
+| test.go:49:45:49:51 | payload | test.go:74:28:74:34 | SSA def(payload) | provenance | Config |
+| test.go:49:45:49:51 | payload | test.go:83:33:83:39 | SSA def(payload) | provenance | Config |
+| test.go:49:45:49:51 | payload | test.go:87:30:87:36 | SSA def(payload) | provenance | Config |
+| test.go:69:32:69:38 | SSA def(payload) | test.go:70:30:70:36 | payload | provenance | Sink:MaD:2101 |
+| test.go:74:28:74:34 | SSA def(payload) | test.go:75:20:75:26 | payload | provenance | Sink:MaD:2090 |
+| test.go:83:33:83:39 | SSA def(payload) | test.go:84:26:84:32 | payload | provenance | Sink:MaD:2104 |
+| test.go:87:30:87:36 | SSA def(payload) | test.go:88:22:88:28 | payload | provenance | Sink:MaD:2083 |
+| test.go:97:10:97:14 | selection of URL | test.go:97:10:97:22 | call to Query | provenance | Src:MaD:2006 MaD:2068 |
+| test.go:97:10:97:22 | call to Query | test.go:97:10:97:35 | call to Get | provenance | MaD:2076 |
+| test.go:97:10:97:35 | call to Get | test.go:98:10:98:10 | v | provenance |  |
+| test.go:98:10:98:10 | v | test.go:115:10:115:24 | call to GetUserInput | provenance |  |
+| test.go:100:9:100:28 | call to FormValue | test.go:115:10:115:24 | call to GetUserInput | provenance | Src:MaD:1994  |
+| test.go:115:10:115:24 | call to GetUserInput | test.go:116:48:116:49 | in | provenance |  |
+| test.go:116:48:116:49 | in | test.go:45:29:45:35 | SSA def(payload) | provenance | Config |
+nodes
+| test.go:45:29:45:35 | SSA def(payload) | semmle.label | SSA def(payload) |
+| test.go:49:45:49:51 | payload | semmle.label | payload |
+| test.go:69:32:69:38 | SSA def(payload) | semmle.label | SSA def(payload) |
+| test.go:70:30:70:36 | payload | semmle.label | payload |
+| test.go:74:28:74:34 | SSA def(payload) | semmle.label | SSA def(payload) |
+| test.go:75:20:75:26 | payload | semmle.label | payload |
+| test.go:83:33:83:39 | SSA def(payload) | semmle.label | SSA def(payload) |
+| test.go:84:26:84:32 | payload | semmle.label | payload |
+| test.go:87:30:87:36 | SSA def(payload) | semmle.label | SSA def(payload) |
+| test.go:88:22:88:28 | payload | semmle.label | payload |
+| test.go:97:10:97:14 | selection of URL | semmle.label | selection of URL |
+| test.go:97:10:97:22 | call to Query | semmle.label | call to Query |
+| test.go:97:10:97:35 | call to Get | semmle.label | call to Get |
+| test.go:98:10:98:10 | v | semmle.label | v |
+| test.go:100:9:100:28 | call to FormValue | semmle.label | call to FormValue |
+| test.go:115:10:115:24 | call to GetUserInput | semmle.label | call to GetUserInput |
+| test.go:116:48:116:49 | in | semmle.label | in |
+subpaths

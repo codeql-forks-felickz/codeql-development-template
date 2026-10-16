@@ -1,0 +1,2 @@
+query: PathInjectionFunctionValue/PathInjectionFunctionValue.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
