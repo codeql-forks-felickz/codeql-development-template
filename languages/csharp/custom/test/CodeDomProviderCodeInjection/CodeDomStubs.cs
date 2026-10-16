@@ -21,6 +21,7 @@ namespace System.CodeDom.Compiler
         public virtual CompilerResults CompileAssemblyFromSource(CompilerParameters options, params string[] sources) => null;
         public virtual CompilerResults CompileAssemblyFromFile(CompilerParameters options, params string[] fileNames) => null;
         public abstract ICodeCompiler CreateCompiler();
+        public static CodeDomProvider CreateProvider(string language) => null;
     }
 }
 
