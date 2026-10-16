@@ -1,0 +1,4 @@
+| serializers.py:10:19:10:96 | Tuple | Serializer UserProfileSerializer exposes sensitive field(s) 'dob', 'reset_token', 'ssn' through the API. |
+| serializers.py:17:18:17:26 | StringLiteral | Serializer UserProfileAllSerializer exposes sensitive field(s) 'dob', 'reset_token', 'ssn' through the API. |
+| serializers.py:23:18:23:47 | List | Serializer UserSerializer exposes sensitive field(s) 'password' through the API. |
+| serializers.py:33:18:33:41 | List | Serializer DerivedUserSerializer exposes sensitive field(s) 'password' through the API. |
