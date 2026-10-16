@@ -1,0 +1,2 @@
+query: RequestHandlerInfiniteLoop/RequestHandlerInfiniteLoop.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
