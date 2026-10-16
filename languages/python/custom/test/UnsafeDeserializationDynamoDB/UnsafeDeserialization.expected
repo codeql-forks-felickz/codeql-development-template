@@ -1,0 +1,61 @@
+#select
+| admin_update_orders.py:14:30:14:57 | ControlFlowNode for Attribute() | admin_update_orders.py:13:16:13:56 | ControlFlowNode for Attribute() | admin_update_orders.py:14:30:14:57 | ControlFlowNode for Attribute() | Unsafe deserialization depends on a $@. | admin_update_orders.py:13:16:13:56 | ControlFlowNode for Attribute() | user-provided value |
+| admin_update_orders.py:19:31:19:45 | ControlFlowNode for Subscript | admin_update_orders.py:18:16:18:107 | ControlFlowNode for Attribute() | admin_update_orders.py:19:31:19:45 | ControlFlowNode for Subscript | Unsafe deserialization depends on a $@. | admin_update_orders.py:18:16:18:107 | ControlFlowNode for Attribute() | user-provided value |
+| admin_update_orders.py:25:27:25:41 | ControlFlowNode for Subscript | admin_update_orders.py:23:16:23:27 | ControlFlowNode for Attribute() | admin_update_orders.py:25:27:25:41 | ControlFlowNode for Subscript | Unsafe deserialization depends on a $@. | admin_update_orders.py:23:16:23:27 | ControlFlowNode for Attribute() | user-provided value |
+| admin_update_orders.py:30:30:30:74 | ControlFlowNode for Subscript | admin_update_orders.py:29:16:29:98 | ControlFlowNode for Attribute() | admin_update_orders.py:30:30:30:74 | ControlFlowNode for Subscript | Unsafe deserialization depends on a $@. | admin_update_orders.py:29:16:29:98 | ControlFlowNode for Attribute() | user-provided value |
+| admin_update_orders.py:35:30:35:61 | ControlFlowNode for Subscript | admin_update_orders.py:34:16:34:84 | ControlFlowNode for Attribute() | admin_update_orders.py:35:30:35:61 | ControlFlowNode for Subscript | Unsafe deserialization depends on a $@. | admin_update_orders.py:34:16:34:84 | ControlFlowNode for Attribute() | user-provided value |
+| admin_update_orders.py:40:30:40:65 | ControlFlowNode for Subscript | admin_update_orders.py:39:16:39:121 | ControlFlowNode for Attribute() | admin_update_orders.py:40:30:40:65 | ControlFlowNode for Subscript | Unsafe deserialization depends on a $@. | admin_update_orders.py:39:16:39:121 | ControlFlowNode for Attribute() | user-provided value |
+| admin_update_orders.py:47:30:47:56 | ControlFlowNode for Subscript | admin_update_orders.py:46:16:46:57 | ControlFlowNode for Attribute() | admin_update_orders.py:47:30:47:56 | ControlFlowNode for Subscript | Unsafe deserialization depends on a $@. | admin_update_orders.py:46:16:46:57 | ControlFlowNode for Attribute() | user-provided value |
+| admin_update_orders.py:53:30:53:65 | ControlFlowNode for Subscript | admin_update_orders.py:52:16:52:54 | ControlFlowNode for Attribute() | admin_update_orders.py:53:30:53:65 | ControlFlowNode for Subscript | Unsafe deserialization depends on a $@. | admin_update_orders.py:52:16:52:54 | ControlFlowNode for Attribute() | user-provided value |
+edges
+| admin_update_orders.py:13:5:13:12 | ControlFlowNode for response | admin_update_orders.py:14:30:14:57 | ControlFlowNode for Attribute() | provenance |  |
+| admin_update_orders.py:13:5:13:12 | ControlFlowNode for response | admin_update_orders.py:14:30:14:57 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| admin_update_orders.py:13:16:13:56 | ControlFlowNode for Attribute() | admin_update_orders.py:13:5:13:12 | ControlFlowNode for response | provenance | Src:MaD:6  |
+| admin_update_orders.py:18:5:18:12 | ControlFlowNode for response | admin_update_orders.py:19:60:19:76 | ControlFlowNode for Subscript | provenance |  |
+| admin_update_orders.py:18:16:18:107 | ControlFlowNode for Attribute() | admin_update_orders.py:18:5:18:12 | ControlFlowNode for response | provenance | Src:MaD:6  |
+| admin_update_orders.py:19:12:19:77 | ControlFlowNode for .0 | admin_update_orders.py:19:52:19:55 | ControlFlowNode for item | provenance |  |
+| admin_update_orders.py:19:52:19:55 | ControlFlowNode for item | admin_update_orders.py:19:31:19:45 | ControlFlowNode for Subscript | provenance |  |
+| admin_update_orders.py:19:60:19:76 | ControlFlowNode for Subscript | admin_update_orders.py:19:12:19:77 | ControlFlowNode for .0 | provenance |  |
+| admin_update_orders.py:23:5:23:12 | ControlFlowNode for response | admin_update_orders.py:24:9:24:12 | ControlFlowNode for item | provenance |  |
+| admin_update_orders.py:23:16:23:27 | ControlFlowNode for Attribute() | admin_update_orders.py:23:5:23:12 | ControlFlowNode for response | provenance | Src:MaD:6  |
+| admin_update_orders.py:24:9:24:12 | ControlFlowNode for item | admin_update_orders.py:25:27:25:41 | ControlFlowNode for Subscript | provenance |  |
+| admin_update_orders.py:29:5:29:12 | ControlFlowNode for response | admin_update_orders.py:30:30:30:74 | ControlFlowNode for Subscript | provenance |  |
+| admin_update_orders.py:29:16:29:98 | ControlFlowNode for Attribute() | admin_update_orders.py:29:5:29:12 | ControlFlowNode for response | provenance | Src:MaD:3  |
+| admin_update_orders.py:34:5:34:12 | ControlFlowNode for response | admin_update_orders.py:35:30:35:61 | ControlFlowNode for Subscript | provenance |  |
+| admin_update_orders.py:34:16:34:84 | ControlFlowNode for Attribute() | admin_update_orders.py:34:5:34:12 | ControlFlowNode for response | provenance | Src:MaD:0  |
+| admin_update_orders.py:39:5:39:12 | ControlFlowNode for response | admin_update_orders.py:40:30:40:65 | ControlFlowNode for Subscript | provenance |  |
+| admin_update_orders.py:39:16:39:121 | ControlFlowNode for Attribute() | admin_update_orders.py:39:5:39:12 | ControlFlowNode for response | provenance | Src:MaD:0  |
+| admin_update_orders.py:46:5:46:12 | ControlFlowNode for response | admin_update_orders.py:47:30:47:56 | ControlFlowNode for Subscript | provenance |  |
+| admin_update_orders.py:46:16:46:57 | ControlFlowNode for Attribute() | admin_update_orders.py:46:5:46:12 | ControlFlowNode for response | provenance | Src:MaD:7  |
+| admin_update_orders.py:52:5:52:12 | ControlFlowNode for response | admin_update_orders.py:53:30:53:65 | ControlFlowNode for Subscript | provenance |  |
+| admin_update_orders.py:52:16:52:54 | ControlFlowNode for Attribute() | admin_update_orders.py:52:5:52:12 | ControlFlowNode for response | provenance | Src:MaD:2  |
+nodes
+| admin_update_orders.py:13:5:13:12 | ControlFlowNode for response | semmle.label | ControlFlowNode for response |
+| admin_update_orders.py:13:16:13:56 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| admin_update_orders.py:14:30:14:57 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| admin_update_orders.py:18:5:18:12 | ControlFlowNode for response | semmle.label | ControlFlowNode for response |
+| admin_update_orders.py:18:16:18:107 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| admin_update_orders.py:19:12:19:77 | ControlFlowNode for .0 | semmle.label | ControlFlowNode for .0 |
+| admin_update_orders.py:19:31:19:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| admin_update_orders.py:19:52:19:55 | ControlFlowNode for item | semmle.label | ControlFlowNode for item |
+| admin_update_orders.py:19:60:19:76 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| admin_update_orders.py:23:5:23:12 | ControlFlowNode for response | semmle.label | ControlFlowNode for response |
+| admin_update_orders.py:23:16:23:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| admin_update_orders.py:24:9:24:12 | ControlFlowNode for item | semmle.label | ControlFlowNode for item |
+| admin_update_orders.py:25:27:25:41 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| admin_update_orders.py:29:5:29:12 | ControlFlowNode for response | semmle.label | ControlFlowNode for response |
+| admin_update_orders.py:29:16:29:98 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| admin_update_orders.py:30:30:30:74 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| admin_update_orders.py:34:5:34:12 | ControlFlowNode for response | semmle.label | ControlFlowNode for response |
+| admin_update_orders.py:34:16:34:84 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| admin_update_orders.py:35:30:35:61 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| admin_update_orders.py:39:5:39:12 | ControlFlowNode for response | semmle.label | ControlFlowNode for response |
+| admin_update_orders.py:39:16:39:121 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| admin_update_orders.py:40:30:40:65 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| admin_update_orders.py:46:5:46:12 | ControlFlowNode for response | semmle.label | ControlFlowNode for response |
+| admin_update_orders.py:46:16:46:57 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| admin_update_orders.py:47:30:47:56 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| admin_update_orders.py:52:5:52:12 | ControlFlowNode for response | semmle.label | ControlFlowNode for response |
+| admin_update_orders.py:52:16:52:54 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| admin_update_orders.py:53:30:53:65 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+subpaths
