@@ -1,0 +1,65 @@
+#select
+| flask_webgoat/__init__.py:10:37:10:41 | ControlFlowNode for query | flask_webgoat/auth.py:1:39:1:45 | ControlFlowNode for ImportMember | flask_webgoat/__init__.py:10:37:10:41 | ControlFlowNode for query | This SQL query depends on a $@. | flask_webgoat/auth.py:1:39:1:45 | ControlFlowNode for ImportMember | user-provided value |
+| http_server_app.py:44:37:44:82 | ControlFlowNode for BinaryExpr | http_server_app.py:39:16:39:19 | ControlFlowNode for self | http_server_app.py:44:37:44:82 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | http_server_app.py:39:16:39:19 | ControlFlowNode for self | user-provided value |
+edges
+| flask_webgoat/__init__.py:8:14:8:18 | ControlFlowNode for query | flask_webgoat/__init__.py:10:37:10:41 | ControlFlowNode for query | provenance |  |
+| flask_webgoat/auth.py:1:39:1:45 | ControlFlowNode for ImportMember | flask_webgoat/auth.py:1:39:1:45 | ControlFlowNode for request | provenance |  |
+| flask_webgoat/auth.py:1:39:1:45 | ControlFlowNode for request | flask_webgoat/auth.py:12:16:12:22 | ControlFlowNode for request | provenance |  |
+| flask_webgoat/auth.py:1:39:1:45 | ControlFlowNode for request | flask_webgoat/auth.py:13:16:13:22 | ControlFlowNode for request | provenance |  |
+| flask_webgoat/auth.py:12:5:12:12 | ControlFlowNode for username | flask_webgoat/auth.py:16:12:16:19 | ControlFlowNode for username | provenance |  |
+| flask_webgoat/auth.py:12:16:12:22 | ControlFlowNode for request | flask_webgoat/auth.py:12:16:12:27 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| flask_webgoat/auth.py:12:16:12:22 | ControlFlowNode for request | flask_webgoat/auth.py:13:16:13:27 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| flask_webgoat/auth.py:12:16:12:27 | ControlFlowNode for Attribute | flask_webgoat/auth.py:12:16:12:43 | ControlFlowNode for Attribute() | provenance | dict.get |
+| flask_webgoat/auth.py:12:16:12:43 | ControlFlowNode for Attribute() | flask_webgoat/auth.py:12:5:12:12 | ControlFlowNode for username | provenance |  |
+| flask_webgoat/auth.py:13:5:13:12 | ControlFlowNode for password | flask_webgoat/auth.py:16:22:16:29 | ControlFlowNode for password | provenance |  |
+| flask_webgoat/auth.py:13:16:13:22 | ControlFlowNode for request | flask_webgoat/auth.py:13:16:13:27 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| flask_webgoat/auth.py:13:16:13:27 | ControlFlowNode for Attribute | flask_webgoat/auth.py:13:16:13:43 | ControlFlowNode for Attribute() | provenance | dict.get |
+| flask_webgoat/auth.py:13:16:13:43 | ControlFlowNode for Attribute() | flask_webgoat/auth.py:13:5:13:12 | ControlFlowNode for password | provenance |  |
+| flask_webgoat/auth.py:14:5:14:9 | ControlFlowNode for query | flask_webgoat/auth.py:18:29:18:33 | ControlFlowNode for query | provenance |  |
+| flask_webgoat/auth.py:15:9:16:30 | ControlFlowNode for BinaryExpr | flask_webgoat/auth.py:14:5:14:9 | ControlFlowNode for query | provenance |  |
+| flask_webgoat/auth.py:16:12:16:19 | ControlFlowNode for username | flask_webgoat/auth.py:16:12:16:29 | ControlFlowNode for Tuple [Tuple element at index 0] | provenance |  |
+| flask_webgoat/auth.py:16:12:16:29 | ControlFlowNode for Tuple [Tuple element at index 0] | flask_webgoat/auth.py:15:9:16:30 | ControlFlowNode for BinaryExpr | provenance |  |
+| flask_webgoat/auth.py:16:12:16:29 | ControlFlowNode for Tuple [Tuple element at index 1] | flask_webgoat/auth.py:15:9:16:30 | ControlFlowNode for BinaryExpr | provenance |  |
+| flask_webgoat/auth.py:16:22:16:29 | ControlFlowNode for password | flask_webgoat/auth.py:16:12:16:29 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| flask_webgoat/auth.py:18:29:18:33 | ControlFlowNode for query | flask_webgoat/__init__.py:8:14:8:18 | ControlFlowNode for query | provenance |  |
+| http_server_app.py:39:16:39:19 | ControlFlowNode for self | http_server_app.py:43:23:43:48 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | provenance | AdditionalTaintStep |
+| http_server_app.py:39:16:39:19 | ControlFlowNode for self | http_server_app.py:43:27:43:31 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| http_server_app.py:43:9:43:14 | ControlFlowNode for params [Any dictionary element] | http_server_app.py:44:71:44:76 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server_app.py:43:18:43:49 | ControlFlowNode for dict() [Any dictionary element] | http_server_app.py:43:9:43:14 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server_app.py:43:23:43:48 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | http_server_app.py:43:18:43:49 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| http_server_app.py:43:24:43:31 | ControlFlowNode for Tuple [Tuple element at index 1] | http_server_app.py:43:24:43:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | provenance |  |
+| http_server_app.py:43:27:43:31 | ControlFlowNode for query | http_server_app.py:43:24:43:31 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| http_server_app.py:44:71:44:76 | ControlFlowNode for params [Any dictionary element] | http_server_app.py:44:71:44:82 | ControlFlowNode for Subscript | provenance |  |
+| http_server_app.py:44:71:44:82 | ControlFlowNode for Subscript | http_server_app.py:44:37:44:82 | ControlFlowNode for BinaryExpr | provenance |  |
+nodes
+| flask_webgoat/__init__.py:8:14:8:18 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| flask_webgoat/__init__.py:10:37:10:41 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| flask_webgoat/auth.py:1:39:1:45 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| flask_webgoat/auth.py:1:39:1:45 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_webgoat/auth.py:12:5:12:12 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| flask_webgoat/auth.py:12:16:12:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_webgoat/auth.py:12:16:12:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_webgoat/auth.py:12:16:12:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| flask_webgoat/auth.py:13:5:13:12 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| flask_webgoat/auth.py:13:16:13:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_webgoat/auth.py:13:16:13:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_webgoat/auth.py:13:16:13:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| flask_webgoat/auth.py:14:5:14:9 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| flask_webgoat/auth.py:15:9:16:30 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| flask_webgoat/auth.py:16:12:16:19 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| flask_webgoat/auth.py:16:12:16:29 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| flask_webgoat/auth.py:16:12:16:29 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| flask_webgoat/auth.py:16:22:16:29 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| flask_webgoat/auth.py:18:29:18:33 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| http_server_app.py:39:16:39:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| http_server_app.py:43:9:43:14 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server_app.py:43:18:43:49 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| http_server_app.py:43:23:43:48 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| http_server_app.py:43:24:43:31 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| http_server_app.py:43:24:43:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for Yield [List element, Tuple element at index 1] |
+| http_server_app.py:43:27:43:31 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| http_server_app.py:44:37:44:82 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| http_server_app.py:44:71:44:76 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server_app.py:44:71:44:82 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+subpaths
+| http_server_app.py:39:16:39:19 | ControlFlowNode for self | http_server_app.py:43:27:43:31 | ControlFlowNode for query | http_server_app.py:43:24:43:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | http_server_app.py:43:23:43:48 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
