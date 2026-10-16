@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+<%
+if cookies[:font]
+%>
+    body { font-size:<%= raw cookies[:font] %> !important;} <%# $ Alert[rb/cookie-stored-xss] %>
+<%
+end
+%>
+    body { color:<%= raw cookies[:color] %>;} <%# $ Alert[rb/cookie-stored-xss] %>
+  </style>
+  <style>
+    <%# Escaped output of the same cookie: safe. %>
+    body { font-size:<%= cookies[:font] %> !important;}
+    <%# Cookie only written with a constant value: not reported. %>
+    body { background:<%= raw cookies[:theme] %>;}
+    <%# Cookie never written by the application: not reported. %>
+    body { margin:<%= raw cookies[:unknown] %>;}
+    <%# Sanitized before being emitted raw: safe. %>
+    body { font-family:<%= raw sanitize(cookies[:font]) %>;}
+    <%# Direct reflected XSS is left to rb/reflected-xss: not reported here. %>
+    body { line-height:<%= raw params[:font] %>;}
+  </style>
+</head>
+<body>
+  <%= yield %>
+</body>
+</html>

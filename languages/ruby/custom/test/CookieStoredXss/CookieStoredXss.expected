@@ -1,0 +1,18 @@
+#select
+| app/views/layouts/application.html.erb:8:30:8:43 | ...[...] | app/controllers/dashboard_controller.rb:7:24:7:29 | call to params | app/views/layouts/application.html.erb:8:30:8:43 | ...[...] | Cross-site scripting vulnerability due to a $@ that is stored in a cookie. | app/controllers/dashboard_controller.rb:7:24:7:29 | call to params | user-provided value |
+| app/views/layouts/application.html.erb:12:26:12:40 | ...[...] | app/controllers/dashboard_controller.rb:11:42:11:47 | call to params | app/views/layouts/application.html.erb:12:26:12:40 | ...[...] | Cross-site scripting vulnerability due to a $@ that is stored in a cookie. | app/controllers/dashboard_controller.rb:11:42:11:47 | call to params | user-provided value |
+edges
+| app/controllers/dashboard_controller.rb:7:24:7:29 | call to params | app/controllers/dashboard_controller.rb:7:24:7:36 | ...[...] | provenance |  |
+| app/controllers/dashboard_controller.rb:7:24:7:36 | ...[...] | app/views/layouts/application.html.erb:8:30:8:43 | ...[...] | provenance | Config |
+| app/controllers/dashboard_controller.rb:11:33:11:74 | call to [] : Hash [element :value] | app/views/layouts/application.html.erb:12:26:12:40 | ...[...] | provenance | Config |
+| app/controllers/dashboard_controller.rb:11:42:11:47 | call to params | app/controllers/dashboard_controller.rb:11:42:11:55 | ...[...] | provenance |  |
+| app/controllers/dashboard_controller.rb:11:42:11:55 | ...[...] | app/controllers/dashboard_controller.rb:11:33:11:74 | call to [] : Hash [element :value] | provenance |  |
+nodes
+| app/controllers/dashboard_controller.rb:7:24:7:29 | call to params | semmle.label | call to params |
+| app/controllers/dashboard_controller.rb:7:24:7:36 | ...[...] | semmle.label | ...[...] |
+| app/controllers/dashboard_controller.rb:11:33:11:74 | call to [] : Hash [element :value] | semmle.label | call to [] : Hash [element :value] |
+| app/controllers/dashboard_controller.rb:11:42:11:47 | call to params | semmle.label | call to params |
+| app/controllers/dashboard_controller.rb:11:42:11:55 | ...[...] | semmle.label | ...[...] |
+| app/views/layouts/application.html.erb:8:30:8:43 | ...[...] | semmle.label | ...[...] |
+| app/views/layouts/application.html.erb:12:26:12:40 | ...[...] | semmle.label | ...[...] |
+subpaths
