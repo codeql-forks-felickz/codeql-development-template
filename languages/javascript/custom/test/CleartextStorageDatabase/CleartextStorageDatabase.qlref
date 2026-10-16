@@ -1,0 +1,2 @@
+query: CleartextStorageDatabase/CleartextStorageDatabase.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
