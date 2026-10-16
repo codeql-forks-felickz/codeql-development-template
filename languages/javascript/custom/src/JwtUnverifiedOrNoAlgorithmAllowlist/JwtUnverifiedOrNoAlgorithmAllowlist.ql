@@ -16,9 +16,9 @@
 import javascript
 
 /**
- * Holds if `call` decodes the JWT `token` without verifying its signature.
+ * Holds if `call` is a library call that decodes the JWT `token` without verifying its signature.
  */
-predicate unverifiedJwtDecode(DataFlow::CallNode call, DataFlow::Node token) {
+predicate libraryJwtDecode(DataFlow::CallNode call, DataFlow::Node token) {
   token = call.getArgument(0) and
   (
     call = DataFlow::moduleMember(["jsonwebtoken", "jws"], "decode").getACall()
@@ -64,6 +64,38 @@ predicate isBase64Decode(DataFlow::CallNode call) {
 }
 
 /**
+ * Holds if `call` decodes the JWT `token` without verifying its signature, either directly through
+ * a library, or through a wrapper function such as
+ * `const decode = (token) => jws.decode(token)?.payload`.
+ */
+predicate unverifiedJwtDecode(DataFlow::CallNode call, DataFlow::Node token) {
+  libraryJwtDecode(call, token)
+  or
+  exists(
+    DataFlow::FunctionNode wrapper, int i, DataFlow::CallNode inner, DataFlow::Node innerToken
+  |
+    wrapper.getFunction() = call.getACallee() and
+    unverifiedJwtDecode(inner, innerToken) and
+    inner.getContainer() = wrapper.getFunction() and
+    wrapper.getParameter(i).flowsTo(innerToken) and
+    token = call.getArgument(i)
+  )
+}
+
+/**
+ * Holds if `call` decodes a parameter of its enclosing function that is itself called as a decode
+ * wrapper. Such calls are reported at the wrapper call sites instead.
+ */
+predicate isInsideDecodeWrapper(DataFlow::CallNode call) {
+  exists(DataFlow::Node token, DataFlow::FunctionNode wrapper, int i |
+    unverifiedJwtDecode(call, token) and
+    call.getContainer() = wrapper.getFunction() and
+    wrapper.getParameter(i).flowsTo(token) and
+    exists(DataFlow::CallNode outer | wrapper.getFunction() = outer.getACallee())
+  )
+}
+
+/**
  * Holds if `node` is passed to something that (heuristically) verifies a JWT.
  */
 predicate isVerificationArgument(DataFlow::Node node) {
@@ -75,21 +107,47 @@ predicate isVerificationArgument(DataFlow::Node node) {
   )
 }
 
+/**
+ * Holds if `a` and `b` (heuristically) refer to the same token value: they have the same local
+ * source, or both are computed by calling the same function on the same value
+ * (e.g. `verify(jwtFrom(req)) && decode(jwtFrom(req))`).
+ */
+predicate sameTokenValue(DataFlow::Node a, DataFlow::Node b) {
+  a.getALocalSource() = b.getALocalSource()
+  or
+  exists(DataFlow::CallNode ca, DataFlow::CallNode cb |
+    ca = a.getALocalSource() and
+    cb = b.getALocalSource() and
+    ca != cb and
+    ca.getCalleeName() = cb.getCalleeName() and
+    ca.getArgument(0).getALocalSource() = cb.getArgument(0).getALocalSource()
+  )
+}
+
+/**
+ * Holds if the `token` decoded by `call` is also verified in the same function.
+ */
+predicate isVerifiedLocally(DataFlow::CallNode call, DataFlow::Node token) {
+  exists(DataFlow::Node verified |
+    isVerificationArgument(verified) and
+    verified.getContainer() = call.getContainer() and
+    sameTokenValue(verified, token)
+  )
+}
+
 module UnverifiedDecodeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  predicate isSink(DataFlow::Node sink) { unverifiedJwtDecode(_, sink) }
+  predicate isSink(DataFlow::Node sink) {
+    exists(DataFlow::CallNode call |
+      unverifiedJwtDecode(call, sink) and
+      not isInsideDecodeWrapper(call) and
+      not isVerifiedLocally(call, sink)
+    )
+  }
 }
 
 module UnverifiedDecodeFlow = TaintTracking::Global<UnverifiedDecodeConfig>;
-
-module VerifiedDecodeConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { UnverifiedDecodeFlow::flow(source, _) }
-
-  predicate isSink(DataFlow::Node sink) { isVerificationArgument(sink) }
-}
-
-module VerifiedDecodeFlow = TaintTracking::Global<VerifiedDecodeConfig>;
 
 /**
  * Holds if `key` is heuristically an asymmetric public key or certificate.
@@ -159,7 +217,6 @@ where
   exists(DataFlow::CallNode call, DataFlow::Node source, DataFlow::Node token |
     unverifiedJwtDecode(call, token) and
     UnverifiedDecodeFlow::flow(source, token) and
-    not VerifiedDecodeFlow::flowFrom(source) and
     alertNode = call and
     message = "JWT is decoded without signature verification; the token comes from a $@." and
     ref = source and
