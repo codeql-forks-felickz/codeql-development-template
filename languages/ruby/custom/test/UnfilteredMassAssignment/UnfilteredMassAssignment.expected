@@ -1,0 +1,42 @@
+#select
+| app/controllers/accounts_controller.rb:4:20:4:47 | call to parse | app/controllers/accounts_controller.rb:4:31:4:46 | call to raw_post | app/controllers/accounts_controller.rb:4:20:4:47 | call to parse | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | app/controllers/accounts_controller.rb:4:31:4:46 | call to raw_post | this user-controlled input |
+| app/controllers/api.rb:3:20:3:25 | call to params | app/controllers/api.rb:3:20:3:25 | call to params | app/controllers/api.rb:3:20:3:25 | call to params | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | app/controllers/api.rb:3:20:3:25 | call to params | this user-controlled input |
+| controller/users_controller.rb:8:20:8:25 | params | controller/users_controller.rb:4:27:4:33 | call to request | controller/users_controller.rb:8:20:8:25 | params | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | controller/users_controller.rb:4:27:4:33 | call to request | this user-controlled input |
+| controller/users_controller.rb:14:15:14:19 | attrs | controller/users_controller.rb:13:22:13:28 | call to request | controller/users_controller.rb:14:15:14:19 | attrs | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | controller/users_controller.rb:13:22:13:28 | call to request | this user-controlled input |
+| controller/users_controller.rb:19:15:19:20 | call to params | controller/users_controller.rb:19:15:19:20 | call to params | controller/users_controller.rb:19:15:19:20 | call to params | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | controller/users_controller.rb:19:15:19:20 | call to params | this user-controlled input |
+| controller/users_controller.rb:23:24:23:29 | call to params | controller/users_controller.rb:23:24:23:29 | call to params | controller/users_controller.rb:23:24:23:29 | call to params | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | controller/users_controller.rb:23:24:23:29 | call to params | this user-controlled input |
+edges
+| app/controllers/accounts_controller.rb:4:31:4:46 | call to raw_post | app/controllers/accounts_controller.rb:4:20:4:47 | call to parse | provenance | Config |
+| controller/users_controller.rb:4:3:4:8 | params | controller/users_controller.rb:5:3:5:8 | params | provenance |  |
+| controller/users_controller.rb:4:12:4:44 | call to load | controller/users_controller.rb:4:3:4:8 | params | provenance |  |
+| controller/users_controller.rb:4:27:4:33 | call to request | controller/users_controller.rb:4:27:4:38 | call to body | provenance | Config |
+| controller/users_controller.rb:4:27:4:38 | call to body | controller/users_controller.rb:4:27:4:43 | call to read | provenance | Config |
+| controller/users_controller.rb:4:27:4:43 | call to read | controller/users_controller.rb:4:12:4:44 | call to load | provenance | Config |
+| controller/users_controller.rb:5:3:5:8 | [post] params : [collection] | controller/users_controller.rb:8:20:8:25 | params | provenance |  |
+| controller/users_controller.rb:5:3:5:8 | params | controller/users_controller.rb:5:3:5:8 | [post] params : [collection] | provenance |  |
+| controller/users_controller.rb:13:3:13:7 | attrs | controller/users_controller.rb:14:15:14:19 | attrs | provenance |  |
+| controller/users_controller.rb:13:11:13:39 | call to parse | controller/users_controller.rb:13:3:13:7 | attrs | provenance |  |
+| controller/users_controller.rb:13:22:13:28 | call to request | controller/users_controller.rb:13:22:13:33 | call to body | provenance | Config |
+| controller/users_controller.rb:13:22:13:33 | call to body | controller/users_controller.rb:13:22:13:38 | call to read | provenance | Config |
+| controller/users_controller.rb:13:22:13:38 | call to read | controller/users_controller.rb:13:11:13:39 | call to parse | provenance | Config |
+nodes
+| app/controllers/accounts_controller.rb:4:20:4:47 | call to parse | semmle.label | call to parse |
+| app/controllers/accounts_controller.rb:4:31:4:46 | call to raw_post | semmle.label | call to raw_post |
+| app/controllers/api.rb:3:20:3:25 | call to params | semmle.label | call to params |
+| controller/users_controller.rb:4:3:4:8 | params | semmle.label | params |
+| controller/users_controller.rb:4:12:4:44 | call to load | semmle.label | call to load |
+| controller/users_controller.rb:4:27:4:33 | call to request | semmle.label | call to request |
+| controller/users_controller.rb:4:27:4:38 | call to body | semmle.label | call to body |
+| controller/users_controller.rb:4:27:4:43 | call to read | semmle.label | call to read |
+| controller/users_controller.rb:5:3:5:8 | [post] params : [collection] | semmle.label | [post] params : [collection] |
+| controller/users_controller.rb:5:3:5:8 | params | semmle.label | params |
+| controller/users_controller.rb:8:20:8:25 | params | semmle.label | params |
+| controller/users_controller.rb:13:3:13:7 | attrs | semmle.label | attrs |
+| controller/users_controller.rb:13:11:13:39 | call to parse | semmle.label | call to parse |
+| controller/users_controller.rb:13:22:13:28 | call to request | semmle.label | call to request |
+| controller/users_controller.rb:13:22:13:33 | call to body | semmle.label | call to body |
+| controller/users_controller.rb:13:22:13:38 | call to read | semmle.label | call to read |
+| controller/users_controller.rb:14:15:14:19 | attrs | semmle.label | attrs |
+| controller/users_controller.rb:19:15:19:20 | call to params | semmle.label | call to params |
+| controller/users_controller.rb:23:24:23:29 | call to params | semmle.label | call to params |
+subpaths
