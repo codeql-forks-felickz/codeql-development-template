@@ -1,0 +1,47 @@
+#select
+| com/example/upload/ProfileController.java:40:25:40:38 | new File(...) | com/example/upload/ProfileController.java:37:13:37:38 | getOriginalFilename(...) : String | com/example/upload/ProfileController.java:40:25:40:38 | new File(...) | Uploaded file is stored in a web-accessible directory under a name and extension derived from $@, which is not validated against an allowlist. | com/example/upload/ProfileController.java:37:13:37:38 | getOriginalFilename(...) | the client-supplied file name |
+| com/example/upload/ProfileController.java:78:16:78:69 | ... + ... | com/example/upload/ProfileController.java:78:43:78:69 | getSubmittedFileName(...) : String | com/example/upload/ProfileController.java:78:16:78:69 | ... + ... | Uploaded file is stored in a web-accessible directory under a name and extension derived from $@, which is not validated against an allowlist. | com/example/upload/ProfileController.java:78:43:78:69 | getSubmittedFileName(...) | the client-supplied file name |
+| com/example/upload/StaticUploadController.java:44:9:44:30 | resolve(...) | com/example/upload/StaticUploadController.java:52:24:52:49 | getOriginalFilename(...) : String | com/example/upload/StaticUploadController.java:44:9:44:30 | resolve(...) | Uploaded file is stored in a web-accessible directory under a name and extension derived from $@, which is not validated against an allowlist. | com/example/upload/StaticUploadController.java:52:24:52:49 | getOriginalFilename(...) | the client-supplied file name |
+| com/example/upload/StaticUploadController.java:44:9:44:30 | resolve(...) | com/example/upload/StaticUploadController.java:58:48:58:73 | getOriginalFilename(...) : String | com/example/upload/StaticUploadController.java:44:9:44:30 | resolve(...) | Uploaded file is stored in a web-accessible directory under a name and extension derived from $@, which is not validated against an allowlist. | com/example/upload/StaticUploadController.java:58:48:58:73 | getOriginalFilename(...) | the client-supplied file name |
+| com/example/upload/StaticUploadController.java:44:9:44:30 | resolve(...) | com/example/upload/StaticUploadController.java:65:23:65:48 | getOriginalFilename(...) : String | com/example/upload/StaticUploadController.java:44:9:44:30 | resolve(...) | Uploaded file is stored in a web-accessible directory under a name and extension derived from $@, which is not validated against an allowlist. | com/example/upload/StaticUploadController.java:65:23:65:48 | getOriginalFilename(...) | the client-supplied file name |
+| com/example/upload/StaticUploadController.java:44:9:44:30 | resolve(...) | com/example/upload/StaticUploadController.java:75:23:75:48 | getOriginalFilename(...) : String | com/example/upload/StaticUploadController.java:44:9:44:30 | resolve(...) | Uploaded file is stored in a web-accessible directory under a name and extension derived from $@, which is not validated against an allowlist. | com/example/upload/StaticUploadController.java:75:23:75:48 | getOriginalFilename(...) | the client-supplied file name |
+| com/example/upload/StaticUploadController.java:86:17:86:20 | dest | com/example/upload/StaticUploadController.java:85:54:85:79 | getOriginalFilename(...) : String | com/example/upload/StaticUploadController.java:86:17:86:20 | dest | Uploaded file is stored in a web-accessible directory under a name and extension derived from $@, which is not validated against an allowlist. | com/example/upload/StaticUploadController.java:85:54:85:79 | getOriginalFilename(...) | the client-supplied file name |
+edges
+| com/example/upload/ProfileController.java:37:13:37:38 | getOriginalFilename(...) : String | com/example/upload/ProfileController.java:37:13:38:71 | substring(...) : String | provenance | Src:MaD:53773 MaD:46677 |
+| com/example/upload/ProfileController.java:37:13:38:71 | substring(...) : String | com/example/upload/ProfileController.java:40:34:40:37 | path : String | provenance |  |
+| com/example/upload/ProfileController.java:40:34:40:37 | path : String | com/example/upload/ProfileController.java:40:25:40:38 | new File(...) | provenance | MaD:46512 |
+| com/example/upload/ProfileController.java:78:43:78:69 | getSubmittedFileName(...) : String | com/example/upload/ProfileController.java:78:16:78:69 | ... + ... | provenance | Src:MaD:48685  |
+| com/example/upload/StaticUploadController.java:41:42:41:56 | fileName : String | com/example/upload/StaticUploadController.java:44:22:44:29 | fileName : String | provenance |  |
+| com/example/upload/StaticUploadController.java:44:22:44:29 | fileName : String | com/example/upload/StaticUploadController.java:44:9:44:30 | resolve(...) | provenance | MaD:46997 Sink:MaD:46938 |
+| com/example/upload/StaticUploadController.java:52:24:52:49 | getOriginalFilename(...) : String | com/example/upload/StaticUploadController.java:41:42:41:56 | fileName : String | provenance | Src:MaD:53773  |
+| com/example/upload/StaticUploadController.java:58:48:58:73 | getOriginalFilename(...) : String | com/example/upload/StaticUploadController.java:59:24:59:31 | fileName : String | provenance | Src:MaD:53773  |
+| com/example/upload/StaticUploadController.java:59:24:59:31 | fileName : String | com/example/upload/StaticUploadController.java:41:42:41:56 | fileName : String | provenance |  |
+| com/example/upload/StaticUploadController.java:65:23:65:48 | getOriginalFilename(...) : String | com/example/upload/StaticUploadController.java:69:24:69:31 | fileName : String | provenance | Src:MaD:53773  |
+| com/example/upload/StaticUploadController.java:69:24:69:31 | fileName : String | com/example/upload/StaticUploadController.java:41:42:41:56 | fileName : String | provenance |  |
+| com/example/upload/StaticUploadController.java:75:23:75:48 | getOriginalFilename(...) : String | com/example/upload/StaticUploadController.java:79:24:79:31 | fileName : String | provenance | Src:MaD:53773  |
+| com/example/upload/StaticUploadController.java:79:24:79:31 | fileName : String | com/example/upload/StaticUploadController.java:41:42:41:56 | fileName : String | provenance |  |
+| com/example/upload/StaticUploadController.java:85:17:85:80 | get(...) : Path | com/example/upload/StaticUploadController.java:86:17:86:20 | dest | provenance | Sink:MaD:46966 |
+| com/example/upload/StaticUploadController.java:85:17:85:80 | new ..[] { .. } : String[] [[]] : String | com/example/upload/StaticUploadController.java:85:17:85:80 | get(...) : Path | provenance | MaD:47006 |
+| com/example/upload/StaticUploadController.java:85:54:85:79 | getOriginalFilename(...) : String | com/example/upload/StaticUploadController.java:85:17:85:80 | new ..[] { .. } : String[] [[]] : String | provenance | Src:MaD:53773  |
+nodes
+| com/example/upload/ProfileController.java:37:13:37:38 | getOriginalFilename(...) : String | semmle.label | getOriginalFilename(...) : String |
+| com/example/upload/ProfileController.java:37:13:38:71 | substring(...) : String | semmle.label | substring(...) : String |
+| com/example/upload/ProfileController.java:40:25:40:38 | new File(...) | semmle.label | new File(...) |
+| com/example/upload/ProfileController.java:40:34:40:37 | path : String | semmle.label | path : String |
+| com/example/upload/ProfileController.java:78:16:78:69 | ... + ... | semmle.label | ... + ... |
+| com/example/upload/ProfileController.java:78:43:78:69 | getSubmittedFileName(...) : String | semmle.label | getSubmittedFileName(...) : String |
+| com/example/upload/StaticUploadController.java:41:42:41:56 | fileName : String | semmle.label | fileName : String |
+| com/example/upload/StaticUploadController.java:44:9:44:30 | resolve(...) | semmle.label | resolve(...) |
+| com/example/upload/StaticUploadController.java:44:22:44:29 | fileName : String | semmle.label | fileName : String |
+| com/example/upload/StaticUploadController.java:52:24:52:49 | getOriginalFilename(...) : String | semmle.label | getOriginalFilename(...) : String |
+| com/example/upload/StaticUploadController.java:58:48:58:73 | getOriginalFilename(...) : String | semmle.label | getOriginalFilename(...) : String |
+| com/example/upload/StaticUploadController.java:59:24:59:31 | fileName : String | semmle.label | fileName : String |
+| com/example/upload/StaticUploadController.java:65:23:65:48 | getOriginalFilename(...) : String | semmle.label | getOriginalFilename(...) : String |
+| com/example/upload/StaticUploadController.java:69:24:69:31 | fileName : String | semmle.label | fileName : String |
+| com/example/upload/StaticUploadController.java:75:23:75:48 | getOriginalFilename(...) : String | semmle.label | getOriginalFilename(...) : String |
+| com/example/upload/StaticUploadController.java:79:24:79:31 | fileName : String | semmle.label | fileName : String |
+| com/example/upload/StaticUploadController.java:85:17:85:80 | get(...) : Path | semmle.label | get(...) : Path |
+| com/example/upload/StaticUploadController.java:85:17:85:80 | new ..[] { .. } : String[] [[]] : String | semmle.label | new ..[] { .. } : String[] [[]] : String |
+| com/example/upload/StaticUploadController.java:85:54:85:79 | getOriginalFilename(...) : String | semmle.label | getOriginalFilename(...) : String |
+| com/example/upload/StaticUploadController.java:86:17:86:20 | dest | semmle.label | dest |
+subpaths
