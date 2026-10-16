@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  OrderManagerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/order/
+      Handler: order-manager.handler
+      Runtime: nodejs18.x
+      Events:
+        OrderApi:
+          Type: Api
+          Properties:
+            Path: /order
+            Method: post
