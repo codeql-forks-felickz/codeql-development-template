@@ -1,0 +1,20 @@
+#select
+| TaskHolder.java:19:33:19:42 | taskAction | TaskHolder.java:19:33:19:42 | taskAction | TaskHolder.java:19:33:19:42 | taskAction | This command line depends on $@ restored during deserialization, so deserializing untrusted data can run arbitrary commands. | TaskHolder.java:19:33:19:42 | taskAction | object state |
+| TaskHolder.java:28:24:28:27 | "sh" | TaskHolder.java:27:18:27:29 | readUTF(...) : String | TaskHolder.java:28:5:28:39 | new ..[] { .. } | This command line depends on $@ restored during deserialization, so deserializing untrusted data can run arbitrary commands. | TaskHolder.java:27:18:27:29 | readUTF(...) | object state |
+| TaskHolder.java:42:31:42:31 | c | TaskHolder.java:37:9:37:20 | this.command : String | TaskHolder.java:42:31:42:31 | c | This command line depends on $@ restored during deserialization, so deserializing untrusted data can run arbitrary commands. | TaskHolder.java:37:9:37:20 | this.command | object state |
+| TaskHolder.java:54:31:54:37 | command | TaskHolder.java:54:31:54:37 | command | TaskHolder.java:54:31:54:37 | command | This command line depends on $@ restored during deserialization, so deserializing untrusted data can run arbitrary commands. | TaskHolder.java:54:31:54:37 | command | object state |
+edges
+| TaskHolder.java:27:18:27:29 | readUTF(...) : String | TaskHolder.java:28:36:28:38 | cmd : String | provenance |  |
+| TaskHolder.java:28:36:28:38 | cmd : String | TaskHolder.java:28:5:28:39 | new ..[] { .. } | provenance | Sink:MaD:46598 |
+| TaskHolder.java:37:9:37:20 | this.command : String | TaskHolder.java:41:27:41:34 | c : String | provenance |  |
+| TaskHolder.java:41:27:41:34 | c : String | TaskHolder.java:42:31:42:31 | c | provenance | Sink:MaD:46601 |
+nodes
+| TaskHolder.java:19:33:19:42 | taskAction | semmle.label | taskAction |
+| TaskHolder.java:27:18:27:29 | readUTF(...) : String | semmle.label | readUTF(...) : String |
+| TaskHolder.java:28:5:28:39 | new ..[] { .. } | semmle.label | new ..[] { .. } |
+| TaskHolder.java:28:36:28:38 | cmd : String | semmle.label | cmd : String |
+| TaskHolder.java:37:9:37:20 | this.command : String | semmle.label | this.command : String |
+| TaskHolder.java:41:27:41:34 | c : String | semmle.label | c : String |
+| TaskHolder.java:42:31:42:31 | c | semmle.label | c |
+| TaskHolder.java:54:31:54:37 | command | semmle.label | command |
+subpaths

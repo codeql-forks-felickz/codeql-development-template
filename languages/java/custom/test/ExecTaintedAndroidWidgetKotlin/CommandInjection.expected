@@ -1,0 +1,12 @@
+#select
+| com/example/agoat/KotlinPingActivity.kt:15:39:15:41 | cmd | com/example/agoat/KotlinPingActivity.kt:14:33:14:39 | getText(...) : Editable | com/example/agoat/KotlinPingActivity.kt:15:39:15:41 | cmd | This command line depends on a $@. | com/example/agoat/KotlinPingActivity.kt:14:33:14:39 | getText(...) | user-provided value |
+edges
+| com/example/agoat/KotlinPingActivity.kt:14:33:14:39 | getText(...) : Editable | com/example/agoat/KotlinPingActivity.kt:14:36:14:39 | <implicit cast> : Editable | provenance | Src:MaD:725  |
+| com/example/agoat/KotlinPingActivity.kt:14:36:14:39 | <implicit cast> : Editable | com/example/agoat/KotlinPingActivity.kt:14:36:14:50 | toString(...) : String | provenance | MaD:12 |
+| com/example/agoat/KotlinPingActivity.kt:14:36:14:50 | toString(...) : String | com/example/agoat/KotlinPingActivity.kt:15:39:15:41 | cmd | provenance | Sink:MaD:46601 |
+nodes
+| com/example/agoat/KotlinPingActivity.kt:14:33:14:39 | getText(...) : Editable | semmle.label | getText(...) : Editable |
+| com/example/agoat/KotlinPingActivity.kt:14:36:14:39 | <implicit cast> : Editable | semmle.label | <implicit cast> : Editable |
+| com/example/agoat/KotlinPingActivity.kt:14:36:14:50 | toString(...) : String | semmle.label | toString(...) : String |
+| com/example/agoat/KotlinPingActivity.kt:15:39:15:41 | cmd | semmle.label | cmd |
+subpaths

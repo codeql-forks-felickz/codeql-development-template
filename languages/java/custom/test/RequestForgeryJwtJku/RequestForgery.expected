@@ -11,7 +11,7 @@ edges
 | JkuEndpoint.java:32:17:32:45 | getHeaderClaim(...) : Claim | JkuEndpoint.java:33:59:33:61 | jku : Claim | provenance |  |
 | JkuEndpoint.java:33:59:33:61 | jku : Claim | JkuEndpoint.java:33:59:33:72 | asString(...) : String | provenance | MaD:11 |
 | JkuEndpoint.java:33:59:33:72 | asString(...) : String | JkuEndpoint.java:33:51:33:73 | new URL(...) | provenance | Config Sink:MaD:0 |
-| JkuEndpoint.java:33:59:33:72 | asString(...) : String | JkuEndpoint.java:33:51:33:73 | new URL(...) | provenance | MaD:46917 Sink:MaD:0 |
+| JkuEndpoint.java:33:59:33:72 | asString(...) : String | JkuEndpoint.java:33:51:33:73 | new URL(...) | provenance | MaD:46918 Sink:MaD:0 |
 | JkuEndpoint.java:39:29:39:63 | token : String | JkuEndpoint.java:40:37:40:41 | token : String | provenance |  |
 | JkuEndpoint.java:40:26:40:42 | decode(...) : DecodedJWT | JkuEndpoint.java:41:23:41:29 | decoded : DecodedJWT | provenance |  |
 | JkuEndpoint.java:40:37:40:41 | token : String | JkuEndpoint.java:40:26:40:42 | decode(...) : DecodedJWT | provenance | MaD:4 |
@@ -19,7 +19,7 @@ edges
 | JkuEndpoint.java:41:23:41:29 | decoded : DecodedJWT | JkuEndpoint.java:41:23:41:51 | getHeaderClaim(...) : Claim | provenance | MaD:6 |
 | JkuEndpoint.java:41:23:41:51 | getHeaderClaim(...) : Claim | JkuEndpoint.java:41:23:41:62 | asString(...) : String | provenance | MaD:11 |
 | JkuEndpoint.java:41:23:41:62 | asString(...) : String | JkuEndpoint.java:41:15:41:63 | new URL(...) : URL | provenance | Config |
-| JkuEndpoint.java:41:23:41:62 | asString(...) : String | JkuEndpoint.java:41:15:41:63 | new URL(...) : URL | provenance | MaD:46917 |
+| JkuEndpoint.java:41:23:41:62 | asString(...) : String | JkuEndpoint.java:41:15:41:63 | new URL(...) : URL | provenance | MaD:46918 |
 | JkuEndpoint.java:47:24:47:58 | token : String | JkuEndpoint.java:48:37:48:41 | token : String | provenance |  |
 | JkuEndpoint.java:48:26:48:42 | decode(...) : DecodedJWT | JkuEndpoint.java:49:35:49:41 | decoded : DecodedJWT | provenance |  |
 | JkuEndpoint.java:48:37:48:41 | token : String | JkuEndpoint.java:48:26:48:42 | decode(...) : DecodedJWT | provenance | MaD:4 |
@@ -31,7 +31,7 @@ edges
 | JkuEndpoint.java:64:18:64:46 | getHeaderClaim(...) : Claim | JkuEndpoint.java:64:18:64:57 | asString(...) : String | provenance | MaD:11 |
 | JkuEndpoint.java:64:18:64:57 | asString(...) : String | JkuEndpoint.java:68:39:68:41 | jku : String | provenance |  |
 | JkuEndpoint.java:68:39:68:41 | jku : String | JkuEndpoint.java:68:31:68:42 | new URL(...) | provenance | Config Sink:MaD:2 |
-| JkuEndpoint.java:68:39:68:41 | jku : String | JkuEndpoint.java:68:31:68:42 | new URL(...) | provenance | MaD:46917 Sink:MaD:2 |
+| JkuEndpoint.java:68:39:68:41 | jku : String | JkuEndpoint.java:68:31:68:42 | new URL(...) | provenance | MaD:46918 Sink:MaD:2 |
 nodes
 | JkuEndpoint.java:30:25:30:59 | token : String | semmle.label | token : String |
 | JkuEndpoint.java:31:26:31:42 | decode(...) : DecodedJWT | semmle.label | decode(...) : DecodedJWT |
