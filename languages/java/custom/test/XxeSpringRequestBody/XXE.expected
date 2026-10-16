@@ -1,0 +1,19 @@
+#select
+| com/example/xxe/CommentsCache.java:20:38:20:58 | new StringReader(...) | com/example/xxe/ContentTypeAssignment.java:16:7:16:36 | commentStr : String | com/example/xxe/CommentsCache.java:20:38:20:58 | new StringReader(...) | XML parsing depends on a $@ without guarding against external entity expansion. | com/example/xxe/ContentTypeAssignment.java:16:7:16:36 | commentStr | user-provided value |
+| com/example/xxe/CommentsCache.java:20:38:20:58 | new StringReader(...) | com/example/xxe/SimpleXXE.java:14:34:14:63 | commentStr : String | com/example/xxe/CommentsCache.java:20:38:20:58 | new StringReader(...) | XML parsing depends on a $@ without guarding against external entity expansion. | com/example/xxe/SimpleXXE.java:14:34:14:63 | commentStr | user-provided value |
+edges
+| com/example/xxe/CommentsCache.java:13:38:13:47 | xml : String | com/example/xxe/CommentsCache.java:20:55:20:57 | xml : String | provenance |  |
+| com/example/xxe/CommentsCache.java:20:55:20:57 | xml : String | com/example/xxe/CommentsCache.java:20:38:20:58 | new StringReader(...) | provenance | MaD:46546 |
+| com/example/xxe/ContentTypeAssignment.java:16:7:16:36 | commentStr : String | com/example/xxe/ContentTypeAssignment.java:20:32:20:41 | commentStr : String | provenance |  |
+| com/example/xxe/ContentTypeAssignment.java:20:32:20:41 | commentStr : String | com/example/xxe/CommentsCache.java:13:38:13:47 | xml : String | provenance |  |
+| com/example/xxe/SimpleXXE.java:14:34:14:63 | commentStr : String | com/example/xxe/SimpleXXE.java:15:30:15:39 | commentStr : String | provenance |  |
+| com/example/xxe/SimpleXXE.java:15:30:15:39 | commentStr : String | com/example/xxe/CommentsCache.java:13:38:13:47 | xml : String | provenance |  |
+nodes
+| com/example/xxe/CommentsCache.java:13:38:13:47 | xml : String | semmle.label | xml : String |
+| com/example/xxe/CommentsCache.java:20:38:20:58 | new StringReader(...) | semmle.label | new StringReader(...) |
+| com/example/xxe/CommentsCache.java:20:55:20:57 | xml : String | semmle.label | xml : String |
+| com/example/xxe/ContentTypeAssignment.java:16:7:16:36 | commentStr : String | semmle.label | commentStr : String |
+| com/example/xxe/ContentTypeAssignment.java:20:32:20:41 | commentStr : String | semmle.label | commentStr : String |
+| com/example/xxe/SimpleXXE.java:14:34:14:63 | commentStr : String | semmle.label | commentStr : String |
+| com/example/xxe/SimpleXXE.java:15:30:15:39 | commentStr : String | semmle.label | commentStr : String |
+subpaths

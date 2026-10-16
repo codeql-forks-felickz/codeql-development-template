@@ -1,0 +1,6 @@
+package org.springframework.web.bind.annotation;
+import java.lang.annotation.*;
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@RequestMapping
+public @interface PostMapping { String[] value() default {}; String[] path() default {}; }
