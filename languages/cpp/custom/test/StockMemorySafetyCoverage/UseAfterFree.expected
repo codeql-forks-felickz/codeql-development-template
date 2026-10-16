@@ -1,0 +1,8 @@
+edges
+| test.c:81:10:81:14 | pointer to free output argument | test.c:86:9:86:13 | buff1 | provenance |  |
+nodes
+| test.c:81:10:81:14 | pointer to free output argument | semmle.label | pointer to free output argument |
+| test.c:86:9:86:13 | buff1 | semmle.label | buff1 |
+subpaths
+#select
+| test.c:86:9:86:13 | buff1 | test.c:81:10:81:14 | pointer to free output argument | test.c:86:9:86:13 | buff1 | Memory may have been previously freed by $@. | test.c:81:5:81:8 | call to free | call to free |

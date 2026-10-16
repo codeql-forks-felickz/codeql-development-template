@@ -1,0 +1,26 @@
+#select
+| test.c:31:30:31:35 | call to malloc | test.c:27:13:27:23 | fgets output argument | test.c:31:37:31:40 | data | This allocation size multiplies a value from $@ that is not checked against an upper bound, so $@ may overflow. | test.c:27:13:27:23 | fgets output argument | string read by fgets | test.c:31:37:31:54 | ... * ... | ... * ... |
+| test.c:43:28:43:33 | call to malloc | test.c:15:23:15:33 | recv output argument | test.c:43:35:43:38 | data | This allocation size multiplies a value from $@ that is not checked against an upper bound, so $@ may overflow. | test.c:15:23:15:33 | recv output argument | buffer read by recv | test.c:43:35:43:52 | ... * ... | ... * ... |
+edges
+| test.c:12:5:12:14 | *readSocket | test.c:41:14:41:23 | call to readSocket | provenance |  |
+| test.c:15:23:15:33 | recv output argument | test.c:17:5:17:25 | ... = ... | provenance |  |
+| test.c:17:5:17:25 | ... = ... | test.c:18:5:18:28 | ... = ... | provenance | TaintFunction |
+| test.c:18:5:18:28 | ... = ... | test.c:20:10:20:13 | data | provenance |  |
+| test.c:20:10:20:13 | data | test.c:12:5:12:14 | *readSocket | provenance |  |
+| test.c:27:13:27:23 | fgets output argument | test.c:28:5:28:28 | ... = ... | provenance | TaintFunction |
+| test.c:28:5:28:28 | ... = ... | test.c:31:37:31:40 | data | provenance |  |
+| test.c:41:14:41:23 | call to readSocket | test.c:41:14:41:23 | call to readSocket | provenance |  |
+| test.c:41:14:41:23 | call to readSocket | test.c:43:35:43:38 | data | provenance |  |
+nodes
+| test.c:12:5:12:14 | *readSocket | semmle.label | *readSocket |
+| test.c:15:23:15:33 | recv output argument | semmle.label | recv output argument |
+| test.c:17:5:17:25 | ... = ... | semmle.label | ... = ... |
+| test.c:18:5:18:28 | ... = ... | semmle.label | ... = ... |
+| test.c:20:10:20:13 | data | semmle.label | data |
+| test.c:27:13:27:23 | fgets output argument | semmle.label | fgets output argument |
+| test.c:28:5:28:28 | ... = ... | semmle.label | ... = ... |
+| test.c:31:37:31:40 | data | semmle.label | data |
+| test.c:41:14:41:23 | call to readSocket | semmle.label | call to readSocket |
+| test.c:41:14:41:23 | call to readSocket | semmle.label | call to readSocket |
+| test.c:43:35:43:38 | data | semmle.label | data |
+subpaths

@@ -1,0 +1,16 @@
+#select
+| test.c:22:3:22:6 | call to free | test.c:16:25:16:30 | ... ++ | test.c:22:8:22:11 | data | This frees a pointer that may have been advanced from the start of the buffer $@. | test.c:12:24:12:29 | call to malloc | allocated here |
+| test.c:28:3:28:6 | call to free | test.c:27:3:27:8 | ... += ... | test.c:28:8:28:8 | p | This frees a pointer that may have been advanced from the start of the buffer $@. | test.c:26:21:26:26 | call to malloc | allocated here |
+edges
+| test.c:16:25:16:30 | ... ++ | test.c:16:25:16:30 | ... ++ | provenance |  |
+| test.c:16:25:16:30 | ... ++ | test.c:22:8:22:11 | data | provenance |  |
+| test.c:27:3:27:8 | ... += ... | test.c:27:3:27:8 | ... += ... | provenance |  |
+| test.c:27:3:27:8 | ... += ... | test.c:28:8:28:8 | p | provenance |  |
+nodes
+| test.c:16:25:16:30 | ... ++ | semmle.label | ... ++ |
+| test.c:16:25:16:30 | ... ++ | semmle.label | ... ++ |
+| test.c:22:8:22:11 | data | semmle.label | data |
+| test.c:27:3:27:8 | ... += ... | semmle.label | ... += ... |
+| test.c:27:3:27:8 | ... += ... | semmle.label | ... += ... |
+| test.c:28:8:28:8 | p | semmle.label | p |
+subpaths

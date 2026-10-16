@@ -1,0 +1,4 @@
+| test.c:22:20:22:23 | path | This buffer has 130 elements, but PathAppendA may write up to 260 elements to it. |
+| test.c:28:15:28:18 | path | This buffer has 100 elements, but PathAppendW may write up to 260 elements to it. |
+| test.c:33:16:33:18 | out | This buffer has 64 elements, but PathCombineA may write up to 260 elements to it. |
+| test.c:38:15:38:22 | resolved | This buffer has 256 elements, but realpath may write up to 4096 elements to it. |
