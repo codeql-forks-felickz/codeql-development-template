@@ -1,0 +1,1 @@
+semmle-extractor-options: /r:System.Runtime.dll /r:System.Private.Uri.dll /r:System.Net.Http.dll /r:System.Net.Primitives.dll /r:System.Net.Requests.dll /r:System.Net.WebClient.dll /r:System.ComponentModel.Primitives.dll

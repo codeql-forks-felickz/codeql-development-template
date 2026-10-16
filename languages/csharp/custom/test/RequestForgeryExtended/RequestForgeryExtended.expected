@@ -1,0 +1,52 @@
+#select
+| RequestForgery.cs:19:66:19:68 | access to local variable url | RequestForgery.cs:18:23:18:47 | access to property Query : IQueryCollection | RequestForgery.cs:19:66:19:68 | access to local variable url | The URL of this request depends on a $@. | RequestForgery.cs:18:23:18:47 | access to property Query | user-provided value |
+| RequestForgery.cs:26:48:26:59 | object creation of type Uri | RequestForgery.cs:24:52:24:54 | url : String | RequestForgery.cs:26:48:26:59 | object creation of type Uri | The URL of this request depends on a $@. | RequestForgery.cs:24:52:24:54 | url | user-provided value |
+| RequestForgery.cs:32:66:32:68 | access to parameter url | RequestForgery.cs:30:69:30:71 | url : String | RequestForgery.cs:32:66:32:68 | access to parameter url | The URL of this request depends on a $@. | RequestForgery.cs:30:69:30:71 | url | user-provided value |
+| RequestForgery.cs:40:48:40:63 | ... + ... | RequestForgery.cs:37:53:37:56 | host : String | RequestForgery.cs:40:48:40:63 | ... + ... | The URL of this request depends on a $@. | RequestForgery.cs:37:53:37:56 | host | user-provided value |
+| RequestForgery.cs:46:38:46:40 | access to parameter url | RequestForgery.cs:44:52:44:54 | url : String | RequestForgery.cs:46:38:46:40 | access to parameter url | The URL of this request depends on a $@. | RequestForgery.cs:44:52:44:54 | url | user-provided value |
+| RequestForgery.cs:53:29:53:40 | object creation of type Uri | RequestForgery.cs:50:43:50:45 | url : String | RequestForgery.cs:53:29:53:40 | object creation of type Uri | The URL of this request depends on a $@. | RequestForgery.cs:50:43:50:45 | url | user-provided value |
+| RequestForgery.cs:98:52:98:54 | access to parameter url | RequestForgery.cs:94:62:94:64 | url : String | RequestForgery.cs:98:52:98:54 | access to parameter url | The URL of this request depends on a $@. | RequestForgery.cs:94:62:94:64 | url | user-provided value |
+| RequestForgery.cs:129:53:129:55 | access to parameter url | RequestForgery.cs:126:43:126:45 | url : String | RequestForgery.cs:129:53:129:55 | access to parameter url | The URL of this request depends on a $@. | RequestForgery.cs:126:43:126:45 | url | user-provided value |
+| RequestForgery.cs:136:40:136:51 | object creation of type Uri | RequestForgery.cs:133:49:133:51 | url : String | RequestForgery.cs:136:40:136:51 | object creation of type Uri | The URL of this request depends on a $@. | RequestForgery.cs:133:49:133:51 | url | user-provided value |
+edges
+| RequestForgery.cs:18:17:18:19 | access to local variable url : String | RequestForgery.cs:19:66:19:68 | access to local variable url | provenance |  |
+| RequestForgery.cs:18:23:18:47 | access to property Query : IQueryCollection | RequestForgery.cs:18:23:18:54 | access to indexer : StringValues | provenance |  |
+| RequestForgery.cs:18:23:18:54 | access to indexer : StringValues | RequestForgery.cs:18:23:18:65 | call to method ToString : String | provenance | MaD:253 |
+| RequestForgery.cs:18:23:18:65 | call to method ToString : String | RequestForgery.cs:18:17:18:19 | access to local variable url : String | provenance |  |
+| RequestForgery.cs:24:52:24:54 | url : String | RequestForgery.cs:26:56:26:58 | access to parameter url : String | provenance |  |
+| RequestForgery.cs:26:56:26:58 | access to parameter url : String | RequestForgery.cs:26:48:26:59 | object creation of type Uri | provenance | MaD:3229 |
+| RequestForgery.cs:30:69:30:71 | url : String | RequestForgery.cs:32:66:32:68 | access to parameter url | provenance |  |
+| RequestForgery.cs:37:53:37:56 | host : String | RequestForgery.cs:40:48:40:63 | ... + ... | provenance |  |
+| RequestForgery.cs:44:52:44:54 | url : String | RequestForgery.cs:46:38:46:40 | access to parameter url | provenance |  |
+| RequestForgery.cs:50:43:50:45 | url : String | RequestForgery.cs:53:37:53:39 | access to parameter url : String | provenance |  |
+| RequestForgery.cs:53:37:53:39 | access to parameter url : String | RequestForgery.cs:53:29:53:40 | object creation of type Uri | provenance | MaD:3229 |
+| RequestForgery.cs:94:62:94:64 | url : String | RequestForgery.cs:98:52:98:54 | access to parameter url | provenance |  |
+| RequestForgery.cs:126:43:126:45 | url : String | RequestForgery.cs:129:53:129:55 | access to parameter url | provenance |  |
+| RequestForgery.cs:133:49:133:51 | url : String | RequestForgery.cs:136:48:136:50 | access to parameter url : String | provenance |  |
+| RequestForgery.cs:136:48:136:50 | access to parameter url : String | RequestForgery.cs:136:40:136:51 | object creation of type Uri | provenance | MaD:3229 |
+nodes
+| RequestForgery.cs:18:17:18:19 | access to local variable url : String | semmle.label | access to local variable url : String |
+| RequestForgery.cs:18:23:18:47 | access to property Query : IQueryCollection | semmle.label | access to property Query : IQueryCollection |
+| RequestForgery.cs:18:23:18:54 | access to indexer : StringValues | semmle.label | access to indexer : StringValues |
+| RequestForgery.cs:18:23:18:65 | call to method ToString : String | semmle.label | call to method ToString : String |
+| RequestForgery.cs:19:66:19:68 | access to local variable url | semmle.label | access to local variable url |
+| RequestForgery.cs:24:52:24:54 | url : String | semmle.label | url : String |
+| RequestForgery.cs:26:48:26:59 | object creation of type Uri | semmle.label | object creation of type Uri |
+| RequestForgery.cs:26:56:26:58 | access to parameter url : String | semmle.label | access to parameter url : String |
+| RequestForgery.cs:30:69:30:71 | url : String | semmle.label | url : String |
+| RequestForgery.cs:32:66:32:68 | access to parameter url | semmle.label | access to parameter url |
+| RequestForgery.cs:37:53:37:56 | host : String | semmle.label | host : String |
+| RequestForgery.cs:40:48:40:63 | ... + ... | semmle.label | ... + ... |
+| RequestForgery.cs:44:52:44:54 | url : String | semmle.label | url : String |
+| RequestForgery.cs:46:38:46:40 | access to parameter url | semmle.label | access to parameter url |
+| RequestForgery.cs:50:43:50:45 | url : String | semmle.label | url : String |
+| RequestForgery.cs:53:29:53:40 | object creation of type Uri | semmle.label | object creation of type Uri |
+| RequestForgery.cs:53:37:53:39 | access to parameter url : String | semmle.label | access to parameter url : String |
+| RequestForgery.cs:94:62:94:64 | url : String | semmle.label | url : String |
+| RequestForgery.cs:98:52:98:54 | access to parameter url | semmle.label | access to parameter url |
+| RequestForgery.cs:126:43:126:45 | url : String | semmle.label | url : String |
+| RequestForgery.cs:129:53:129:55 | access to parameter url | semmle.label | access to parameter url |
+| RequestForgery.cs:133:49:133:51 | url : String | semmle.label | url : String |
+| RequestForgery.cs:136:40:136:51 | object creation of type Uri | semmle.label | object creation of type Uri |
+| RequestForgery.cs:136:48:136:50 | access to parameter url : String | semmle.label | access to parameter url : String |
+subpaths

@@ -1,0 +1,5 @@
+| AssemblyLoadRelativePath.cs:13:13:13:38 | call to method Load | Assembly 'test.dll' is loaded with Load from a relative file name and is resolved through a search path that may be attacker-controlled. |
+| AssemblyLoadRelativePath.cs:18:13:18:49 | call to method LoadFrom | Assembly 'plugins/test.dll' is loaded with LoadFrom from a relative file name and is resolved through a search path that may be attacker-controlled. |
+| AssemblyLoadRelativePath.cs:19:13:19:47 | call to method UnsafeLoadFrom | Assembly 'test.dll' is loaded with UnsafeLoadFrom from a relative file name and is resolved through a search path that may be attacker-controlled. |
+| AssemblyLoadRelativePath.cs:21:13:21:52 | call to method LoadWithPartialName | Assembly 'test.exe' is loaded with LoadWithPartialName from a relative file name and is resolved through a search path that may be attacker-controlled. |
+| AssemblyLoadRelativePath.cs:29:13:29:41 | call to method LoadFrom | Assembly 'plugin.dll' is loaded with LoadFrom from a relative file name and is resolved through a search path that may be attacker-controlled. |

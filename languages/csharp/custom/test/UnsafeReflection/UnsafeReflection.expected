@@ -1,0 +1,41 @@
+#select
+| UnsafeReflection.cs:19:60:19:63 | access to local variable data | UnsafeReflection.cs:17:24:17:38 | access to property QueryString : NameValueCollection | UnsafeReflection.cs:19:60:19:63 | access to local variable data | This type or assembly selector depends on a $@, allowing an attacker to instantiate or invoke unintended types. | UnsafeReflection.cs:17:24:17:38 | access to property QueryString | user-provided value |
+| UnsafeReflection.cs:42:45:42:45 | access to local variable t | UnsafeReflection.cs:39:45:39:52 | typeName : String | UnsafeReflection.cs:42:45:42:45 | access to local variable t | This type or assembly selector depends on a $@, allowing an attacker to instantiate or invoke unintended types. | UnsafeReflection.cs:39:45:39:52 | typeName | user-provided value |
+| UnsafeReflection.cs:48:67:48:74 | access to parameter typeName | UnsafeReflection.cs:46:49:46:56 | typeName : String | UnsafeReflection.cs:48:67:48:74 | access to parameter typeName | This type or assembly selector depends on a $@, allowing an attacker to instantiate or invoke unintended types. | UnsafeReflection.cs:46:49:46:56 | typeName | user-provided value |
+| UnsafeReflection.cs:54:49:54:60 | access to parameter assemblyFile | UnsafeReflection.cs:52:45:52:56 | assemblyFile : String | UnsafeReflection.cs:54:49:54:60 | access to parameter assemblyFile | This type or assembly selector depends on a $@, allowing an attacker to instantiate or invoke unintended types. | UnsafeReflection.cs:52:45:52:56 | assemblyFile | user-provided value |
+| UnsafeReflection.cs:61:20:61:20 | access to local variable t | UnsafeReflection.cs:58:37:58:44 | typeName : String | UnsafeReflection.cs:61:20:61:20 | access to local variable t | This type or assembly selector depends on a $@, allowing an attacker to instantiate or invoke unintended types. | UnsafeReflection.cs:58:37:58:44 | typeName | user-provided value |
+edges
+| UnsafeReflection.cs:17:17:17:20 | access to local variable data : String | UnsafeReflection.cs:19:60:19:63 | access to local variable data | provenance |  |
+| UnsafeReflection.cs:17:24:17:38 | access to property QueryString : NameValueCollection | UnsafeReflection.cs:17:17:17:20 | access to local variable data : String | provenance |  |
+| UnsafeReflection.cs:17:24:17:38 | access to property QueryString : NameValueCollection | UnsafeReflection.cs:17:24:17:44 | access to indexer : String | provenance | MaD:12744 |
+| UnsafeReflection.cs:17:24:17:44 | access to indexer : String | UnsafeReflection.cs:17:17:17:20 | access to local variable data : String | provenance |  |
+| UnsafeReflection.cs:39:45:39:52 | typeName : String | UnsafeReflection.cs:41:35:41:42 | access to parameter typeName : String | provenance |  |
+| UnsafeReflection.cs:41:18:41:18 | access to local variable t : Type | UnsafeReflection.cs:42:45:42:45 | access to local variable t | provenance |  |
+| UnsafeReflection.cs:41:22:41:43 | call to method GetType : Type | UnsafeReflection.cs:41:18:41:18 | access to local variable t : Type | provenance |  |
+| UnsafeReflection.cs:41:35:41:42 | access to parameter typeName : String | UnsafeReflection.cs:41:22:41:43 | call to method GetType : Type | provenance | Config |
+| UnsafeReflection.cs:46:49:46:56 | typeName : String | UnsafeReflection.cs:48:67:48:74 | access to parameter typeName | provenance |  |
+| UnsafeReflection.cs:52:45:52:56 | assemblyFile : String | UnsafeReflection.cs:54:49:54:60 | access to parameter assemblyFile | provenance |  |
+| UnsafeReflection.cs:58:37:58:44 | typeName : String | UnsafeReflection.cs:60:62:60:69 | access to parameter typeName : String | provenance |  |
+| UnsafeReflection.cs:60:18:60:18 | access to local variable t : Type | UnsafeReflection.cs:61:20:61:20 | access to local variable t | provenance |  |
+| UnsafeReflection.cs:60:22:60:70 | call to method GetType : Type | UnsafeReflection.cs:60:18:60:18 | access to local variable t : Type | provenance |  |
+| UnsafeReflection.cs:60:62:60:69 | access to parameter typeName : String | UnsafeReflection.cs:60:22:60:70 | call to method GetType : Type | provenance | Config |
+nodes
+| UnsafeReflection.cs:17:17:17:20 | access to local variable data : String | semmle.label | access to local variable data : String |
+| UnsafeReflection.cs:17:24:17:38 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| UnsafeReflection.cs:17:24:17:44 | access to indexer : String | semmle.label | access to indexer : String |
+| UnsafeReflection.cs:19:60:19:63 | access to local variable data | semmle.label | access to local variable data |
+| UnsafeReflection.cs:39:45:39:52 | typeName : String | semmle.label | typeName : String |
+| UnsafeReflection.cs:41:18:41:18 | access to local variable t : Type | semmle.label | access to local variable t : Type |
+| UnsafeReflection.cs:41:22:41:43 | call to method GetType : Type | semmle.label | call to method GetType : Type |
+| UnsafeReflection.cs:41:35:41:42 | access to parameter typeName : String | semmle.label | access to parameter typeName : String |
+| UnsafeReflection.cs:42:45:42:45 | access to local variable t | semmle.label | access to local variable t |
+| UnsafeReflection.cs:46:49:46:56 | typeName : String | semmle.label | typeName : String |
+| UnsafeReflection.cs:48:67:48:74 | access to parameter typeName | semmle.label | access to parameter typeName |
+| UnsafeReflection.cs:52:45:52:56 | assemblyFile : String | semmle.label | assemblyFile : String |
+| UnsafeReflection.cs:54:49:54:60 | access to parameter assemblyFile | semmle.label | access to parameter assemblyFile |
+| UnsafeReflection.cs:58:37:58:44 | typeName : String | semmle.label | typeName : String |
+| UnsafeReflection.cs:60:18:60:18 | access to local variable t : Type | semmle.label | access to local variable t : Type |
+| UnsafeReflection.cs:60:22:60:70 | call to method GetType : Type | semmle.label | call to method GetType : Type |
+| UnsafeReflection.cs:60:62:60:69 | access to parameter typeName : String | semmle.label | access to parameter typeName : String |
+| UnsafeReflection.cs:61:20:61:20 | access to local variable t | semmle.label | access to local variable t |
+subpaths
