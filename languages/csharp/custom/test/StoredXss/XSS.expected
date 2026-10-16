@@ -1,0 +1,71 @@
+#select
+| CorpusVariants.cs:48:34:48:89 | ... + ... | CorpusVariants.cs:45:36:45:49 | access to property Params : NameValueCollection | CorpusVariants.cs:48:34:48:89 | ... + ... | $@ flows to here and is written to HTML or JavaScript. | CorpusVariants.cs:45:36:45:49 | access to property Params : NameValueCollection | User-provided value |
+| CorpusVariants.cs:48:34:48:89 | ... + ... | CorpusVariants.cs:46:37:46:50 | access to property Params : NameValueCollection | CorpusVariants.cs:48:34:48:89 | ... + ... | $@ flows to here and is written to HTML or JavaScript. | CorpusVariants.cs:46:37:46:50 | access to property Params : NameValueCollection | User-provided value |
+| CorpusVariants.cs:77:31:77:37 | access to field Message | CorpusVariants.cs:64:40:64:58 | access to property QueryString : NameValueCollection | CorpusVariants.cs:77:31:77:37 | access to field Message | $@ flows to here and is written to HTML or JavaScript. | CorpusVariants.cs:64:40:64:58 | access to property QueryString : NameValueCollection | User-provided value |
+| Test.cs:179:32:179:49 | ... + ... | Test.cs:178:24:178:42 | access to property QueryString : NameValueCollection | Test.cs:179:32:179:49 | ... + ... | $@ flows to here and is written to HTML or JavaScript. | Test.cs:178:24:178:42 | access to property QueryString : NameValueCollection | User-provided value |
+edges
+| CorpusVariants.cs:30:56:30:62 | details : TransferRequest [field CreditAccount] : String | CorpusVariants.cs:33:84:33:90 | access to parameter details : TransferRequest [field CreditAccount] : String | provenance |  |
+| CorpusVariants.cs:30:56:30:62 | details : TransferRequest [field DebitAccount] : String | CorpusVariants.cs:33:52:33:58 | access to parameter details : TransferRequest [field DebitAccount] : String | provenance |  |
+| CorpusVariants.cs:33:13:33:18 | [post] access to local variable result : TransferResult [field Message] : String | CorpusVariants.cs:34:20:34:25 | access to local variable result : TransferResult [field Message] : String | provenance |  |
+| CorpusVariants.cs:33:13:33:18 | [post] access to local variable result : TransferResult [field Message] : String | CorpusVariants.cs:34:20:34:25 | access to local variable result : TransferResult [field Message] : String | provenance |  |
+| CorpusVariants.cs:33:30:33:104 | ... + ... : String | CorpusVariants.cs:33:13:33:18 | [post] access to local variable result : TransferResult [field Message] : String | provenance |  |
+| CorpusVariants.cs:33:30:33:104 | ... + ... : String | CorpusVariants.cs:33:13:33:18 | [post] access to local variable result : TransferResult [field Message] : String | provenance |  |
+| CorpusVariants.cs:33:52:33:58 | access to parameter details : TransferRequest [field DebitAccount] : String | CorpusVariants.cs:33:52:33:71 | access to field DebitAccount : String | provenance |  |
+| CorpusVariants.cs:33:52:33:71 | access to field DebitAccount : String | CorpusVariants.cs:33:30:33:104 | ... + ... : String | provenance |  |
+| CorpusVariants.cs:33:84:33:90 | access to parameter details : TransferRequest [field CreditAccount] : String | CorpusVariants.cs:33:84:33:104 | access to field CreditAccount : String | provenance |  |
+| CorpusVariants.cs:33:84:33:104 | access to field CreditAccount : String | CorpusVariants.cs:33:30:33:104 | ... + ... : String | provenance |  |
+| CorpusVariants.cs:45:13:45:19 | [post] access to local variable details : TransferRequest [field DebitAccount] : String | CorpusVariants.cs:46:13:46:19 | access to local variable details : TransferRequest [field DebitAccount] : String | provenance |  |
+| CorpusVariants.cs:45:36:45:49 | access to property Params : NameValueCollection | CorpusVariants.cs:45:36:45:65 | access to indexer : String | provenance |  |
+| CorpusVariants.cs:45:36:45:65 | access to indexer : String | CorpusVariants.cs:45:13:45:19 | [post] access to local variable details : TransferRequest [field DebitAccount] : String | provenance |  |
+| CorpusVariants.cs:46:13:46:19 | [post] access to local variable details : TransferRequest [field CreditAccount] : String | CorpusVariants.cs:47:64:47:70 | access to local variable details : TransferRequest [field CreditAccount] : String | provenance |  |
+| CorpusVariants.cs:46:13:46:19 | access to local variable details : TransferRequest [field DebitAccount] : String | CorpusVariants.cs:47:64:47:70 | access to local variable details : TransferRequest [field DebitAccount] : String | provenance |  |
+| CorpusVariants.cs:46:37:46:50 | access to property Params : NameValueCollection | CorpusVariants.cs:46:37:46:67 | access to indexer : String | provenance |  |
+| CorpusVariants.cs:46:37:46:67 | access to indexer : String | CorpusVariants.cs:46:13:46:19 | [post] access to local variable details : TransferRequest [field CreditAccount] : String | provenance |  |
+| CorpusVariants.cs:47:28:47:33 | access to local variable result : TransferResult [field Message] : String | CorpusVariants.cs:48:64:48:69 | access to local variable result : TransferResult [field Message] : String | provenance |  |
+| CorpusVariants.cs:47:37:47:71 | call to method Transfer : TransferResult [field Message] : String | CorpusVariants.cs:47:28:47:33 | access to local variable result : TransferResult [field Message] : String | provenance |  |
+| CorpusVariants.cs:47:64:47:70 | access to local variable details : TransferRequest [field CreditAccount] : String | CorpusVariants.cs:30:56:30:62 | details : TransferRequest [field CreditAccount] : String | provenance |  |
+| CorpusVariants.cs:47:64:47:70 | access to local variable details : TransferRequest [field CreditAccount] : String | CorpusVariants.cs:47:37:47:71 | call to method Transfer : TransferResult [field Message] : String | provenance |  |
+| CorpusVariants.cs:47:64:47:70 | access to local variable details : TransferRequest [field DebitAccount] : String | CorpusVariants.cs:30:56:30:62 | details : TransferRequest [field DebitAccount] : String | provenance |  |
+| CorpusVariants.cs:47:64:47:70 | access to local variable details : TransferRequest [field DebitAccount] : String | CorpusVariants.cs:47:37:47:71 | call to method Transfer : TransferResult [field Message] : String | provenance |  |
+| CorpusVariants.cs:48:64:48:69 | access to local variable result : TransferResult [field Message] : String | CorpusVariants.cs:48:64:48:77 | access to field Message : String | provenance |  |
+| CorpusVariants.cs:48:64:48:77 | access to field Message : String | CorpusVariants.cs:48:34:48:89 | ... + ... | provenance |  |
+| CorpusVariants.cs:64:40:64:58 | access to property QueryString : NameValueCollection | CorpusVariants.cs:64:40:64:69 | access to indexer : String | provenance |  |
+| CorpusVariants.cs:64:40:64:69 | access to indexer : String | CorpusVariants.cs:77:31:77:37 | access to field Message | provenance |  |
+| Test.cs:178:20:178:20 | access to local variable q : String | Test.cs:179:32:179:49 | ... + ... | provenance | Sink:MaD:5 |
+| Test.cs:178:24:178:42 | access to property QueryString : NameValueCollection | Test.cs:178:20:178:20 | access to local variable q : String | provenance |  |
+nodes
+| CorpusVariants.cs:30:56:30:62 | details : TransferRequest [field CreditAccount] : String | semmle.label | details : TransferRequest [field CreditAccount] : String |
+| CorpusVariants.cs:30:56:30:62 | details : TransferRequest [field DebitAccount] : String | semmle.label | details : TransferRequest [field DebitAccount] : String |
+| CorpusVariants.cs:33:13:33:18 | [post] access to local variable result : TransferResult [field Message] : String | semmle.label | [post] access to local variable result : TransferResult [field Message] : String |
+| CorpusVariants.cs:33:13:33:18 | [post] access to local variable result : TransferResult [field Message] : String | semmle.label | [post] access to local variable result : TransferResult [field Message] : String |
+| CorpusVariants.cs:33:30:33:104 | ... + ... : String | semmle.label | ... + ... : String |
+| CorpusVariants.cs:33:30:33:104 | ... + ... : String | semmle.label | ... + ... : String |
+| CorpusVariants.cs:33:52:33:58 | access to parameter details : TransferRequest [field DebitAccount] : String | semmle.label | access to parameter details : TransferRequest [field DebitAccount] : String |
+| CorpusVariants.cs:33:52:33:71 | access to field DebitAccount : String | semmle.label | access to field DebitAccount : String |
+| CorpusVariants.cs:33:84:33:90 | access to parameter details : TransferRequest [field CreditAccount] : String | semmle.label | access to parameter details : TransferRequest [field CreditAccount] : String |
+| CorpusVariants.cs:33:84:33:104 | access to field CreditAccount : String | semmle.label | access to field CreditAccount : String |
+| CorpusVariants.cs:34:20:34:25 | access to local variable result : TransferResult [field Message] : String | semmle.label | access to local variable result : TransferResult [field Message] : String |
+| CorpusVariants.cs:34:20:34:25 | access to local variable result : TransferResult [field Message] : String | semmle.label | access to local variable result : TransferResult [field Message] : String |
+| CorpusVariants.cs:45:13:45:19 | [post] access to local variable details : TransferRequest [field DebitAccount] : String | semmle.label | [post] access to local variable details : TransferRequest [field DebitAccount] : String |
+| CorpusVariants.cs:45:36:45:49 | access to property Params : NameValueCollection | semmle.label | access to property Params : NameValueCollection |
+| CorpusVariants.cs:45:36:45:65 | access to indexer : String | semmle.label | access to indexer : String |
+| CorpusVariants.cs:46:13:46:19 | [post] access to local variable details : TransferRequest [field CreditAccount] : String | semmle.label | [post] access to local variable details : TransferRequest [field CreditAccount] : String |
+| CorpusVariants.cs:46:13:46:19 | access to local variable details : TransferRequest [field DebitAccount] : String | semmle.label | access to local variable details : TransferRequest [field DebitAccount] : String |
+| CorpusVariants.cs:46:37:46:50 | access to property Params : NameValueCollection | semmle.label | access to property Params : NameValueCollection |
+| CorpusVariants.cs:46:37:46:67 | access to indexer : String | semmle.label | access to indexer : String |
+| CorpusVariants.cs:47:28:47:33 | access to local variable result : TransferResult [field Message] : String | semmle.label | access to local variable result : TransferResult [field Message] : String |
+| CorpusVariants.cs:47:37:47:71 | call to method Transfer : TransferResult [field Message] : String | semmle.label | call to method Transfer : TransferResult [field Message] : String |
+| CorpusVariants.cs:47:64:47:70 | access to local variable details : TransferRequest [field CreditAccount] : String | semmle.label | access to local variable details : TransferRequest [field CreditAccount] : String |
+| CorpusVariants.cs:47:64:47:70 | access to local variable details : TransferRequest [field DebitAccount] : String | semmle.label | access to local variable details : TransferRequest [field DebitAccount] : String |
+| CorpusVariants.cs:48:34:48:89 | ... + ... | semmle.label | ... + ... |
+| CorpusVariants.cs:48:64:48:69 | access to local variable result : TransferResult [field Message] : String | semmle.label | access to local variable result : TransferResult [field Message] : String |
+| CorpusVariants.cs:48:64:48:77 | access to field Message : String | semmle.label | access to field Message : String |
+| CorpusVariants.cs:64:40:64:58 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| CorpusVariants.cs:64:40:64:69 | access to indexer : String | semmle.label | access to indexer : String |
+| CorpusVariants.cs:77:31:77:37 | access to field Message | semmle.label | access to field Message |
+| Test.cs:178:20:178:20 | access to local variable q : String | semmle.label | access to local variable q : String |
+| Test.cs:178:24:178:42 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Test.cs:179:32:179:49 | ... + ... | semmle.label | ... + ... |
+subpaths
+| CorpusVariants.cs:47:64:47:70 | access to local variable details : TransferRequest [field CreditAccount] : String | CorpusVariants.cs:30:56:30:62 | details : TransferRequest [field CreditAccount] : String | CorpusVariants.cs:34:20:34:25 | access to local variable result : TransferResult [field Message] : String | CorpusVariants.cs:47:37:47:71 | call to method Transfer : TransferResult [field Message] : String |
+| CorpusVariants.cs:47:64:47:70 | access to local variable details : TransferRequest [field DebitAccount] : String | CorpusVariants.cs:30:56:30:62 | details : TransferRequest [field DebitAccount] : String | CorpusVariants.cs:34:20:34:25 | access to local variable result : TransferResult [field Message] : String | CorpusVariants.cs:47:37:47:71 | call to method Transfer : TransferResult [field Message] : String |

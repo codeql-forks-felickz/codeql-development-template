@@ -1,0 +1,18 @@
+extensions:
+  # `Literal.Text` is rendered without HTML encoding unless `Mode` is set to
+  # `LiteralMode.Encode`, so it is an HTML injection sink (like `Label.Text`).
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - [
+          "System.Web.UI.WebControls",
+          "Literal",
+          True,
+          "set_Text",
+          "(System.String)",
+          "",
+          "Argument[0]",
+          "html-injection",
+          "manual"
+        ]

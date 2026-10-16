@@ -1,0 +1,18 @@
+#select
+| Test.cs:23:52:23:57 | access to local variable result | Test.cs:20:48:20:52 | query : String | Test.cs:23:52:23:57 | access to local variable result | This HTML response body depends on a $@ and is not HTML encoded. | Test.cs:20:48:20:52 | query | user-provided value |
+| Test.cs:31:25:31:46 | ... + ... | Test.cs:27:56:27:60 | query : String | Test.cs:31:25:31:46 | ... + ... | This HTML response body depends on a $@ and is not HTML encoded. | Test.cs:27:56:27:60 | query | user-provided value |
+| Test.cs:38:28:38:49 | ... + ... | Test.cs:36:50:36:54 | query : String | Test.cs:38:28:38:49 | ... + ... | This HTML response body depends on a $@ and is not HTML encoded. | Test.cs:36:50:36:54 | query | user-provided value |
+edges
+| Test.cs:20:48:20:52 | query : String | Test.cs:22:20:22:25 | access to local variable result : String | provenance |  |
+| Test.cs:22:20:22:25 | access to local variable result : String | Test.cs:23:52:23:57 | access to local variable result | provenance |  |
+| Test.cs:27:56:27:60 | query : String | Test.cs:31:25:31:46 | ... + ... | provenance |  |
+| Test.cs:36:50:36:54 | query : String | Test.cs:38:28:38:49 | ... + ... | provenance |  |
+nodes
+| Test.cs:20:48:20:52 | query : String | semmle.label | query : String |
+| Test.cs:22:20:22:25 | access to local variable result : String | semmle.label | access to local variable result : String |
+| Test.cs:23:52:23:57 | access to local variable result | semmle.label | access to local variable result |
+| Test.cs:27:56:27:60 | query : String | semmle.label | query : String |
+| Test.cs:31:25:31:46 | ... + ... | semmle.label | ... + ... |
+| Test.cs:36:50:36:54 | query : String | semmle.label | query : String |
+| Test.cs:38:28:38:49 | ... + ... | semmle.label | ... + ... |
+subpaths

@@ -1,0 +1,10 @@
+#select
+| HeaderInjection.cs:16:50:16:55 | access to local variable header | HeaderInjection.cs:13:29:13:47 | access to property QueryString : NameValueCollection | HeaderInjection.cs:16:50:16:55 | access to local variable header | This HTTP response header value depends on a $@. ASP.NET header checking is disabled for this application, so CR/LF characters are not encoded. | HeaderInjection.cs:13:29:13:47 | access to property QueryString | user-provided value |
+edges
+| HeaderInjection.cs:13:20:13:25 | access to local variable header : String | HeaderInjection.cs:16:50:16:55 | access to local variable header | provenance |  |
+| HeaderInjection.cs:13:29:13:47 | access to property QueryString : NameValueCollection | HeaderInjection.cs:13:20:13:25 | access to local variable header : String | provenance |  |
+nodes
+| HeaderInjection.cs:13:20:13:25 | access to local variable header : String | semmle.label | access to local variable header : String |
+| HeaderInjection.cs:13:29:13:47 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| HeaderInjection.cs:16:50:16:55 | access to local variable header | semmle.label | access to local variable header |
+subpaths
