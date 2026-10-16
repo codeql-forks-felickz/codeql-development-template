@@ -62,6 +62,27 @@ predicate isSensitiveSource(DataFlow::Node source, string sourceDesc) {
   not isLocallyHashed(source)
 }
 
+/**
+ * A non-empty string literal stored in a field whose name suggests a password or
+ * private data, such as `{ username: "admin", password: "admin" }`. Values that look
+ * like password hashes or hex digests are excluded.
+ */
+class HardcodedSensitiveValue extends DataFlow::ValueNode {
+  override StringLiteral astNode;
+
+  HardcodedSensitiveValue() {
+    exists(string v | v = astNode.getValue() |
+      v != "" and
+      not v.regexpMatch("\\$(2[abxy]?|argon2(i|d|id)?|pbkdf2[^$]*|scrypt|[156])\\$.*") and
+      not v.regexpMatch("[0-9a-fA-F]{32,}")
+    ) and
+    exists(DataFlow::PropWrite pw |
+      pw.getRhs().getALocalSource() = this and
+      isSensitiveFieldName(pw.getPropertyName())
+    )
+  }
+}
+
 /** Gets a reference to a MongoDB collection, tracked by `t`. */
 private DataFlow::SourceNode mongoCollection(DataFlow::TypeTracker t) {
   t.start() and
@@ -100,41 +121,37 @@ private predicate mongoCollectionDocument(DataFlow::Node doc) {
   )
 }
 
-/** A call to `mongoose.model(name, schema)` or `connection.model(name, schema)`. */
-class MongooseModelDefinition extends API::InvokeNode {
-  MongooseModelDefinition() {
-    this =
-      ModelOutput::getATypeNode(["mongoose", "mongoose.Connection"])
-          .getMember("model")
-          .getAnInvocation() and
-    this.getNumArgument() >= 2
-  }
+/**
+ * A model definition of an object-document or object-relational mapper, whose
+ * attribute definitions may declare sensitive paths.
+ */
+abstract class OrmModelDefinition extends DataFlow::Node {
+  /** Gets a reference to the model defined here. */
+  abstract DataFlow::SourceNode getAModelRef();
 
-  /** Gets the API node for the model defined by this call. */
-  API::Node getModel() { result = [this.getReturn(), this.getInstance()] }
+  /** Gets the object literal defining the attributes of the model, if it can be resolved. */
+  abstract DataFlow::ObjectLiteralNode getAttributes();
 
-  /** Gets the schema object passed to this call. */
-  DataFlow::SourceNode getSchema() { result = this.getArgument(1).getALocalSource() }
+  /** Holds if the model has a hook or plugin that may transform documents before they are written. */
+  abstract predicate hasWriteHook();
 
-  /** Gets the object literal defining the paths of the schema, if it can be resolved. */
-  DataFlow::ObjectLiteralNode getSchemaDefinition() {
-    result = this.getSchema().(DataFlow::NewNode).getArgument(0).getALocalSource()
-  }
+  /** Gets a document (or array of documents) written through a reference to this model. */
+  abstract DataFlow::Node getADocument();
 
   /**
-   * Holds if the schema cannot be resolved, or may transform documents before they
-   * are written, for example by hashing passwords in a `pre('save')` hook or plugin.
+   * Holds if the attributes cannot be resolved, or the model may transform documents
+   * before they are written, for example by hashing passwords in a hook.
    */
   predicate mayTransformOnWrite() {
-    not exists(this.getSchemaDefinition())
+    not exists(this.getAttributes())
     or
-    exists(this.getSchema().getAMethodCall(["pre", "plugin"]))
+    this.hasWriteHook()
   }
 
-  /** Holds if the schema path `name` has a custom setter, which may hash the value. */
+  /** Holds if the attribute `name` has a custom setter, which may hash the value. */
   predicate hasSetter(string name) {
     exists(
-      this.getSchemaDefinition()
+      this.getAttributes()
           .getAPropertyWrite(name)
           .getRhs()
           .getALocalSource()
@@ -143,36 +160,156 @@ class MongooseModelDefinition extends API::InvokeNode {
     )
   }
 
-  /** Holds if the schema path `name` is sensitive and stored as provided. */
+  /** Holds if the attribute `name` is sensitive and stored as provided. */
   predicate hasClearTextSensitivePath(string name) {
-    exists(this.getSchemaDefinition().getAPropertyWrite(name)) and
+    exists(this.getAttributes().getAPropertyWrite(name)) and
     isSensitiveFieldName(name) and
     not this.hasSetter(name) and
     not this.mayTransformOnWrite()
   }
 }
 
-/** Holds if `doc` is a document written through the Mongoose model defined by `def`. */
-private predicate mongooseModelDocument(DataFlow::Node doc, MongooseModelDefinition def) {
-  exists(API::Node model | model = def.getModel() |
-    doc = model.getAnInstantiation().getArgument(0)
-    or
-    doc = model.getMember(["create", "insertMany"]).getACall().getArgument(0)
-    or
-    doc =
-      model
-          .getMember([
-              "update", "updateOne", "updateMany", "replaceOne", "findOneAndUpdate",
-              "findByIdAndUpdate", "findOneAndReplace"
-            ])
-          .getACall()
-          .getArgument(1)
+/** Gets a call to `mongoose.model` or `connection.model`. */
+private API::InvokeNode mongooseModelCall() {
+  result =
+    ModelOutput::getATypeNode(["mongoose", "mongoose.Connection"])
+        .getMember("model")
+        .getAnInvocation()
+}
+
+/** Gets a reference to the Mongoose model looked up by `mongoose.model(name)`, tracked by `t`. */
+private DataFlow::SourceNode mongooseModelLookup(string name, DataFlow::TypeTracker t) {
+  t.start() and
+  exists(API::InvokeNode call | call = mongooseModelCall() and result = call |
+    call.getNumArgument() = 1 and
+    name = call.getArgument(0).getStringValue()
   )
+  or
+  exists(DataFlow::TypeTracker t2 | result = mongooseModelLookup(name, t2).track(t2, t))
+}
+
+/** A call to `mongoose.model(name, schema)` or `connection.model(name, schema)`. */
+class MongooseModelDefinition extends OrmModelDefinition instanceof API::InvokeNode {
+  MongooseModelDefinition() {
+    this = mongooseModelCall() and
+    super.getNumArgument() >= 2
+  }
+
+  override DataFlow::SourceNode getAModelRef() {
+    result = [super.getReturn(), super.getInstance()].getAValueReachableFromSource()
+    or
+    // A later lookup of the same model by name, such as `mongoose.model('User')`.
+    result =
+      mongooseModelLookup(super.getArgument(0).getStringValue(), DataFlow::TypeTracker::end())
+  }
+
+  /** Gets the schema object passed to this call. */
+  DataFlow::SourceNode getSchema() { result = super.getArgument(1).getALocalSource() }
+
+  override DataFlow::ObjectLiteralNode getAttributes() {
+    result = this.getSchema().(DataFlow::NewNode).getArgument(0).getALocalSource()
+  }
+
+  override predicate hasWriteHook() { exists(this.getSchema().getAMethodCall(["pre", "plugin"])) }
+
+  override DataFlow::Node getADocument() {
+    exists(DataFlow::SourceNode model | model = this.getAModelRef() |
+      result = model.getAnInstantiation().getArgument(0)
+      or
+      result = model.getAMethodCall(["create", "insertMany"]).getArgument(0)
+      or
+      result =
+        model
+            .getAMethodCall([
+                "update", "updateOne", "updateMany", "replaceOne", "findOneAndUpdate",
+                "findByIdAndUpdate", "findOneAndReplace"
+              ])
+            .getArgument(1)
+    )
+  }
+}
+
+/** Gets a Sequelize hook method that runs before rows are written. */
+private string sequelizeWriteHook() {
+  result =
+    [
+      "addHook", "hook", "beforeCreate", "beforeBulkCreate", "beforeSave", "beforeUpdate",
+      "beforeBulkUpdate", "beforeUpsert", "beforeValidate"
+    ]
+}
+
+/**
+ * A Sequelize model, defined either by a class extending `Model` that is initialized
+ * with `Model.init(attributes, options)`, or by `sequelize.define(name, attributes, options)`.
+ */
+abstract class SequelizeModelDefinition extends OrmModelDefinition {
+  /** Gets the options object passed when defining the model. */
+  abstract DataFlow::SourceNode getOptions();
+
+  override predicate hasWriteHook() {
+    exists(this.getOptions().getAPropertyWrite("hooks"))
+    or
+    exists(this.getAModelRef().getAMethodCall(sequelizeWriteHook()))
+  }
+
+  override DataFlow::Node getADocument() {
+    exists(DataFlow::SourceNode model | model = this.getAModelRef() |
+      result = model.getAnInstantiation().getArgument(0)
+      or
+      result =
+        model.getAMethodCall(["create", "build", "bulkCreate", "upsert", "update"]).getArgument(0)
+    )
+  }
+}
+
+/** A class extending Sequelize's `Model`, initialized with `Model.init(attributes, options)`. */
+class SequelizeClassModelDefinition extends SequelizeModelDefinition instanceof DataFlow::ClassNode {
+  SequelizeClassModelDefinition() {
+    super.getASuperClassNode() =
+      ModelOutput::getATypeNode("sequelize.Model").getAValueReachableFromSource()
+  }
+
+  /** Gets a call to `init` on this model. */
+  private DataFlow::MethodCallNode getAnInitCall() {
+    result = super.getAClassReference().getAMethodCall("init")
+  }
+
+  override DataFlow::SourceNode getAModelRef() { result = super.getAClassReference() }
+
+  override DataFlow::ObjectLiteralNode getAttributes() {
+    result = this.getAnInitCall().getArgument(0).getALocalSource()
+  }
+
+  override DataFlow::SourceNode getOptions() {
+    result = this.getAnInitCall().getArgument(1).getALocalSource()
+  }
+}
+
+/** A call to `sequelize.define(name, attributes, options)`. */
+class SequelizeDefineModelDefinition extends SequelizeModelDefinition instanceof API::CallNode {
+  SequelizeDefineModelDefinition() {
+    this = ModelOutput::getATypeNode("sequelize.Sequelize").getMember("define").getACall()
+  }
+
+  override DataFlow::SourceNode getAModelRef() {
+    result = super.getReturn().getAValueReachableFromSource()
+  }
+
+  override DataFlow::ObjectLiteralNode getAttributes() {
+    result = super.getArgument(1).getALocalSource()
+  }
+
+  override DataFlow::SourceNode getOptions() { result = super.getArgument(2).getALocalSource() }
+}
+
+/** Holds if `doc` is a document written through the model defined by `def`. */
+private predicate ormModelDocument(DataFlow::Node doc, OrmModelDefinition def) {
+  doc = def.getADocument()
 }
 
 /** Holds if `doc` is a document that is persisted to a database. */
 private predicate persistedDocument(DataFlow::Node doc) {
-  mongoCollectionDocument(doc) or mongooseModelDocument(doc, _)
+  mongoCollectionDocument(doc) or ormModelDocument(doc, _)
 }
 
 /**
@@ -205,7 +342,7 @@ class DocumentFieldSink extends DatabaseStorageSink {
     exists(DataFlow::Node doc |
       this = documentObject(doc).getAPropertyWrite(field).getRhs() and
       not field.charAt(0) = "$" and
-      not exists(MongooseModelDefinition def | mongooseModelDocument(doc, def) |
+      not exists(OrmModelDefinition def | ormModelDocument(doc, def) |
         def.mayTransformOnWrite() or def.hasSetter(field)
       )
     )
@@ -215,14 +352,14 @@ class DocumentFieldSink extends DatabaseStorageSink {
 }
 
 /**
- * A whole document, such as `req.body`, written through a Mongoose model whose schema
- * declares a sensitive path that is not hashed or encrypted before it is saved.
+ * A whole document, such as `req.body`, written through a Mongoose or Sequelize model
+ * that declares a sensitive attribute that is not hashed or encrypted before it is saved.
  */
-class MongooseWholeDocumentSink extends DatabaseStorageSink {
-  MongooseModelDefinition def;
+class OrmWholeDocumentSink extends DatabaseStorageSink {
+  OrmModelDefinition def;
 
-  MongooseWholeDocumentSink() {
-    mongooseModelDocument(this, def) and
+  OrmWholeDocumentSink() {
+    ormModelDocument(this, def) and
     not this.getALocalSource() instanceof DataFlow::ObjectLiteralNode and
     def.hasClearTextSensitivePath(_)
   }
@@ -232,13 +369,25 @@ class MongooseWholeDocumentSink extends DatabaseStorageSink {
 
 module ClearTextDatabaseStorageConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    isSensitiveSource(source, _) or source instanceof RemoteFlowSource
+    isSensitiveSource(source, _) or
+    source instanceof RemoteFlowSource or
+    source instanceof HardcodedSensitiveValue
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof DatabaseStorageSink }
 
   predicate isBarrier(DataFlow::Node node) {
     node instanceof CleartextStorage::Sanitizer or node instanceof HashOrEncryptCall
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // Type conversions such as `Number(card.cardNum)` keep the stored value in clear text.
+    exists(DataFlow::CallNode call |
+      call =
+        DataFlow::globalVarRef(["Number", "String", "BigInt", "parseInt", "parseFloat"]).getACall() and
+      pred = call.getArgument(0) and
+      succ = call
+    )
   }
 }
 
@@ -255,9 +404,14 @@ where
     isSensitiveSource(source.getNode(), sourceDesc) and
     message = "This stores sensitive data returned by $@ in a database as clear text."
     or
-    // A remote value is only reported when it is stored in a sensitive field, and only
-    // if no sensitive source already explains the same alert.
-    sourceDesc = source.getNode().(RemoteFlowSource).getSourceType() and
+    // A remote or hard-coded value is only reported when it is stored in a sensitive
+    // field, and only if no sensitive source already explains the same alert.
+    (
+      sourceDesc = source.getNode().(RemoteFlowSource).getSourceType()
+      or
+      source.getNode() instanceof HardcodedSensitiveValue and
+      sourceDesc = "a hard-coded value"
+    ) and
     exists(sink.getNode().(DatabaseStorageSink).getASensitiveField()) and
     message =
       "This stores $@ in the sensitive database field " +

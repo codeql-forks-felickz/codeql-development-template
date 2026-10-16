@@ -2,14 +2,16 @@
 
 Passwords and private data, such as Social Security numbers, should not be stored in a database as clear text. Anyone who can read the database can then read the data, including through a backup, a log, a replica or a separate injection flaw. A password should be stored only as the output of a slow, salted password hashing function. Private data that must be recovered later should be encrypted.
 
-This query complements `js/clear-text-storage-of-sensitive-data`, which covers cookies, Web Storage and AngularJS storage but not databases. It reports password or private data that is written to MongoDB without a hashing or encryption step in between. It covers two kinds of writes:
+This query complements `js/clear-text-storage-of-sensitive-data`, which covers cookies, Web Storage and AngularJS storage but not databases. It reports password or private data that is written to MongoDB, or to a database through a Sequelize model, without a hashing or encryption step in between. It covers two kinds of writes:
 
-- a value written to a field of a document passed to a MongoDB collection write, such as `insert`, `insertOne`, `updateOne` or `findAndModify`, or to a Mongoose model, such as `new Model(doc)`, `Model.create` or `Model.findByIdAndUpdate`;
-- a whole remote object, such as `req.body`, passed to a Mongoose model whose schema declares a password or private path.
+- a value written to a field of a document passed to a MongoDB collection write, such as `insert`, `insertOne`, `updateOne` or `findAndModify`, to a Mongoose model, such as `new Model(doc)`, `Model.create` or `Model.findByIdAndUpdate`, or to a Sequelize model, such as `Model.create`, `Model.build`, `Model.bulkCreate`, `Model.upsert` or `Model.update`;
+- a whole remote object, such as `req.body`, passed to a Mongoose or Sequelize model whose schema declares a password or private attribute.
 
-A value is reported when it comes from an expression whose name suggests a password or private data. A remote user-controlled value is also reported when it is stored in a field whose name suggests a password or private data, for example `{ password: req.body.pass }`.
+Mongoose models are recognized both where they are defined with `mongoose.model(name, schema)` and where they are later looked up by name with `mongoose.model(name)`. Sequelize models are recognized when they are defined with `class M extends Model` and `M.init(...)`, or with `sequelize.define(...)`.
 
-Writes through a Mongoose model are not reported when the schema may transform documents before they are saved. This includes a schema with a `pre` hook or a `plugin`, a sensitive path with a `set` function, or a schema that cannot be resolved.
+A value is reported when it comes from an expression whose name suggests a password or private data. A remote user-controlled value, or a hard-coded string literal, is also reported when it is stored in a field whose name suggests a password or private data, for example `{ password: req.body.pass }` or a seeded `{ username: "admin", password: "admin" }`. Literals that look like password hashes, and empty strings, are not reported.
+
+Writes through a model are not reported when the model may transform documents before they are saved. This includes a Mongoose schema with a `pre` hook or a `plugin`, a Sequelize model with write hooks, a sensitive attribute with a `set` function, or a schema that cannot be resolved.
 
 ## Recommendation
 
