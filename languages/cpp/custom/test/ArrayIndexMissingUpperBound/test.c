@@ -7,6 +7,9 @@ void exit(int);
 int atoi(const char *);
 int printf(const char *, ...);
 ssize_t recv(int, void *, size_t, int);
+typedef struct FILE FILE;
+extern FILE *stdin;
+char *fgets(char *, int, FILE *);
 
 int readIndex(int s) {
   char inputBuffer[14];
@@ -93,4 +96,34 @@ void unchecked(int s) {
   int buffer[10] = {0};
   int data = readIndex(s);
   buffer[data] = 1; // not reported: no bounds check at all (cpp/unclear-array-index-validation)
+}
+
+/* Juliet CWE121 ..._CWE129_fgets_01 */
+void bad_stack_fgets() {
+  int data = -1;
+  char inputBuffer[14] = "";
+  if (fgets(inputBuffer, 14, stdin) != NULL)
+    data = atoi(inputBuffer);
+  {
+    int buffer[10] = {0};
+    if (data >= 0) {
+      buffer[data] = 1; // BAD: CWE-121 (local source)
+    }
+  }
+}
+
+/* Juliet CWE122 ..._c_CWE129_fgets_01 */
+void bad_heap_fgets() {
+  int data = -1;
+  char inputBuffer[14] = "";
+  if (fgets(inputBuffer, 14, stdin) != NULL)
+    data = atoi(inputBuffer);
+  {
+    int *buffer = (int *)malloc(10 * sizeof(int));
+    if (buffer == NULL) exit(-1);
+    if (data >= 0) {
+      buffer[data] = 1; // BAD: CWE-122 (local source)
+    }
+    free(buffer);
+  }
 }

@@ -1,34 +1,46 @@
 edges
-| test.c:11:5:11:13 | *readIndex | test.c:25:14:25:22 | call to readIndex | provenance |  |
-| test.c:11:5:11:13 | *readIndex | test.c:34:14:34:22 | call to readIndex | provenance |  |
-| test.c:11:5:11:13 | *readIndex | test.c:45:14:45:22 | call to readIndex | provenance |  |
-| test.c:14:23:14:33 | recv output argument | test.c:16:5:16:25 | ... = ... | provenance |  |
-| test.c:16:5:16:25 | ... = ... | test.c:17:5:17:28 | ... = ... | provenance | TaintFunction |
-| test.c:17:5:17:28 | ... = ... | test.c:19:10:19:13 | data | provenance |  |
-| test.c:19:10:19:13 | data | test.c:11:5:11:13 | *readIndex | provenance |  |
-| test.c:25:14:25:22 | call to readIndex | test.c:25:14:25:22 | call to readIndex | provenance |  |
-| test.c:25:14:25:22 | call to readIndex | test.c:27:12:27:15 | data | provenance |  |
-| test.c:34:14:34:22 | call to readIndex | test.c:34:14:34:22 | call to readIndex | provenance |  |
-| test.c:34:14:34:22 | call to readIndex | test.c:38:12:38:15 | data | provenance |  |
-| test.c:45:14:45:22 | call to readIndex | test.c:45:14:45:22 | call to readIndex | provenance |  |
-| test.c:45:14:45:22 | call to readIndex | test.c:48:25:48:28 | data | provenance |  |
+| test.c:14:5:14:13 | *readIndex | test.c:28:14:28:22 | call to readIndex | provenance |  |
+| test.c:14:5:14:13 | *readIndex | test.c:37:14:37:22 | call to readIndex | provenance |  |
+| test.c:14:5:14:13 | *readIndex | test.c:48:14:48:22 | call to readIndex | provenance |  |
+| test.c:17:23:17:33 | recv output argument | test.c:19:5:19:25 | ... = ... | provenance |  |
+| test.c:19:5:19:25 | ... = ... | test.c:20:5:20:28 | ... = ... | provenance | TaintFunction |
+| test.c:20:5:20:28 | ... = ... | test.c:22:10:22:13 | data | provenance |  |
+| test.c:22:10:22:13 | data | test.c:14:5:14:13 | *readIndex | provenance |  |
+| test.c:28:14:28:22 | call to readIndex | test.c:28:14:28:22 | call to readIndex | provenance |  |
+| test.c:28:14:28:22 | call to readIndex | test.c:30:12:30:15 | data | provenance |  |
+| test.c:37:14:37:22 | call to readIndex | test.c:37:14:37:22 | call to readIndex | provenance |  |
+| test.c:37:14:37:22 | call to readIndex | test.c:41:12:41:15 | data | provenance |  |
+| test.c:48:14:48:22 | call to readIndex | test.c:48:14:48:22 | call to readIndex | provenance |  |
+| test.c:48:14:48:22 | call to readIndex | test.c:51:25:51:28 | data | provenance |  |
+| test.c:105:13:105:23 | fgets output argument | test.c:106:5:106:28 | ... = ... | provenance | TaintFunction |
+| test.c:106:5:106:28 | ... = ... | test.c:110:14:110:17 | data | provenance |  |
+| test.c:119:13:119:23 | fgets output argument | test.c:120:5:120:28 | ... = ... | provenance | TaintFunction |
+| test.c:120:5:120:28 | ... = ... | test.c:125:14:125:17 | data | provenance |  |
 nodes
-| test.c:11:5:11:13 | *readIndex | semmle.label | *readIndex |
-| test.c:14:23:14:33 | recv output argument | semmle.label | recv output argument |
-| test.c:16:5:16:25 | ... = ... | semmle.label | ... = ... |
-| test.c:17:5:17:28 | ... = ... | semmle.label | ... = ... |
-| test.c:19:10:19:13 | data | semmle.label | data |
-| test.c:25:14:25:22 | call to readIndex | semmle.label | call to readIndex |
-| test.c:25:14:25:22 | call to readIndex | semmle.label | call to readIndex |
-| test.c:27:12:27:15 | data | semmle.label | data |
-| test.c:34:14:34:22 | call to readIndex | semmle.label | call to readIndex |
-| test.c:34:14:34:22 | call to readIndex | semmle.label | call to readIndex |
-| test.c:38:12:38:15 | data | semmle.label | data |
-| test.c:45:14:45:22 | call to readIndex | semmle.label | call to readIndex |
-| test.c:45:14:45:22 | call to readIndex | semmle.label | call to readIndex |
-| test.c:48:25:48:28 | data | semmle.label | data |
+| test.c:14:5:14:13 | *readIndex | semmle.label | *readIndex |
+| test.c:17:23:17:33 | recv output argument | semmle.label | recv output argument |
+| test.c:19:5:19:25 | ... = ... | semmle.label | ... = ... |
+| test.c:20:5:20:28 | ... = ... | semmle.label | ... = ... |
+| test.c:22:10:22:13 | data | semmle.label | data |
+| test.c:28:14:28:22 | call to readIndex | semmle.label | call to readIndex |
+| test.c:28:14:28:22 | call to readIndex | semmle.label | call to readIndex |
+| test.c:30:12:30:15 | data | semmle.label | data |
+| test.c:37:14:37:22 | call to readIndex | semmle.label | call to readIndex |
+| test.c:37:14:37:22 | call to readIndex | semmle.label | call to readIndex |
+| test.c:41:12:41:15 | data | semmle.label | data |
+| test.c:48:14:48:22 | call to readIndex | semmle.label | call to readIndex |
+| test.c:48:14:48:22 | call to readIndex | semmle.label | call to readIndex |
+| test.c:51:25:51:28 | data | semmle.label | data |
+| test.c:105:13:105:23 | fgets output argument | semmle.label | fgets output argument |
+| test.c:106:5:106:28 | ... = ... | semmle.label | ... = ... |
+| test.c:110:14:110:17 | data | semmle.label | data |
+| test.c:119:13:119:23 | fgets output argument | semmle.label | fgets output argument |
+| test.c:120:5:120:28 | ... = ... | semmle.label | ... = ... |
+| test.c:125:14:125:17 | data | semmle.label | data |
 subpaths
 #select
-| test.c:27:5:27:16 | access to array | test.c:14:23:14:33 | recv output argument | test.c:27:12:27:15 | data | Array index $@ depends on $@ and is only checked against a lower bound, not the array size. | test.c:25:7:25:10 | data | data | test.c:14:23:14:33 | recv output argument | buffer read by recv |
-| test.c:38:5:38:16 | access to array | test.c:14:23:14:33 | recv output argument | test.c:38:12:38:15 | data | Array index $@ depends on $@ and is only checked against a lower bound, not the array size. | test.c:34:7:34:10 | data | data | test.c:14:23:14:33 | recv output argument | buffer read by recv |
-| test.c:48:18:48:29 | access to array | test.c:14:23:14:33 | recv output argument | test.c:48:25:48:28 | data | Array index $@ depends on $@ and is only checked against a lower bound, not the array size. | test.c:45:7:45:10 | data | data | test.c:14:23:14:33 | recv output argument | buffer read by recv |
+| test.c:30:5:30:16 | access to array | test.c:17:23:17:33 | recv output argument | test.c:30:12:30:15 | data | Array index $@ depends on $@ and is only checked against a lower bound, not the array size. | test.c:28:7:28:10 | data | data | test.c:17:23:17:33 | recv output argument | buffer read by recv |
+| test.c:41:5:41:16 | access to array | test.c:17:23:17:33 | recv output argument | test.c:41:12:41:15 | data | Array index $@ depends on $@ and is only checked against a lower bound, not the array size. | test.c:37:7:37:10 | data | data | test.c:17:23:17:33 | recv output argument | buffer read by recv |
+| test.c:51:18:51:29 | access to array | test.c:17:23:17:33 | recv output argument | test.c:51:25:51:28 | data | Array index $@ depends on $@ and is only checked against a lower bound, not the array size. | test.c:48:7:48:10 | data | data | test.c:17:23:17:33 | recv output argument | buffer read by recv |
+| test.c:110:7:110:18 | access to array | test.c:105:13:105:23 | fgets output argument | test.c:110:14:110:17 | data | Array index $@ depends on $@ and is only checked against a lower bound, not the array size. | test.c:103:7:103:10 | data | data | test.c:105:13:105:23 | fgets output argument | string read by fgets |
+| test.c:125:7:125:18 | access to array | test.c:119:13:119:23 | fgets output argument | test.c:125:14:125:17 | data | Array index $@ depends on $@ and is only checked against a lower bound, not the array size. | test.c:117:7:117:10 | data | data | test.c:119:13:119:23 | fgets output argument | string read by fgets |

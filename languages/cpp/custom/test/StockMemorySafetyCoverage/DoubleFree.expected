@@ -1,8 +1,12 @@
 edges
-| test.c:36:8:36:11 | pointer to free output argument | test.c:37:8:37:11 | data | provenance |  |
+| test.c:40:8:40:11 | pointer to free output argument | test.c:41:8:41:11 | data | provenance |  |
+| test.c:81:10:81:14 | pointer to free output argument | test.c:83:12:83:16 | buff1 | provenance |  |
 nodes
-| test.c:36:8:36:11 | pointer to free output argument | semmle.label | pointer to free output argument |
-| test.c:37:8:37:11 | data | semmle.label | data |
+| test.c:40:8:40:11 | pointer to free output argument | semmle.label | pointer to free output argument |
+| test.c:41:8:41:11 | data | semmle.label | data |
+| test.c:81:10:81:14 | pointer to free output argument | semmle.label | pointer to free output argument |
+| test.c:83:12:83:16 | buff1 | semmle.label | buff1 |
 subpaths
 #select
-| test.c:37:8:37:11 | data | test.c:36:8:36:11 | pointer to free output argument | test.c:37:8:37:11 | data | Memory pointed to by $@ may already have been freed by $@. | test.c:37:8:37:11 | data | data | test.c:36:3:36:6 | call to free | call to free |
+| test.c:41:8:41:11 | data | test.c:40:8:40:11 | pointer to free output argument | test.c:41:8:41:11 | data | Memory pointed to by $@ may already have been freed by $@. | test.c:41:8:41:11 | data | data | test.c:40:3:40:6 | call to free | call to free |
+| test.c:83:12:83:16 | buff1 | test.c:81:10:81:14 | pointer to free output argument | test.c:83:12:83:16 | buff1 | Memory pointed to by $@ may already have been freed by $@. | test.c:83:12:83:16 | buff1 | buff1 | test.c:81:5:81:8 | call to free | call to free |
