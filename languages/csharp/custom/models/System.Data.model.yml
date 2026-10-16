@@ -1,0 +1,12 @@
+extensions:
+  # Values read from a `DataRow` were (almost always) loaded from a database, for
+  # example through `DbDataAdapter.Fill(DataSet)`.
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - ["System.Data", "DataRow", False, "get_Item", "(System.String)", "", "ReturnValue", "database", "manual"]
+      - ["System.Data", "DataRow", False, "get_Item", "(System.Int32)", "", "ReturnValue", "database", "manual"]
+      - ["System.Data", "DataRow", False, "get_Item", "(System.Data.DataColumn)", "", "ReturnValue", "database", "manual"]
+      - ["System.Data", "DataRow", False, "get_ItemArray", "()", "", "ReturnValue", "database", "manual"]
+      - ["System.Data", "DataRowExtensions", False, "Field<T>", "", "", "ReturnValue", "database", "manual"]

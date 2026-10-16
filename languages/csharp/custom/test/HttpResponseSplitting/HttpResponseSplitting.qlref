@@ -1,0 +1,2 @@
+query: HttpResponseSplitting/HttpResponseSplitting.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
