@@ -1,0 +1,20 @@
+#select
+| GuardsController.cs:34:37:34:40 | access to parameter name | GuardsController.cs:32:38:32:41 | name : String | GuardsController.cs:34:37:34:40 | access to parameter name | This path depends on a $@. | GuardsController.cs:32:38:32:41 | name | user-provided value |
+| UploadController.cs:17:47:17:54 | access to local variable filePath | UploadController.cs:14:40:14:43 | file : IFormFile | UploadController.cs:17:47:17:54 | access to local variable filePath | This path depends on a $@. | UploadController.cs:14:40:14:43 | file | user-provided value |
+edges
+| GuardsController.cs:32:38:32:41 | name : String | GuardsController.cs:34:37:34:40 | access to parameter name | provenance |  |
+| UploadController.cs:14:40:14:43 | file : IFormFile | UploadController.cs:16:56:16:59 | access to parameter file : IFormFile | provenance |  |
+| UploadController.cs:16:20:16:27 | access to local variable filePath : String | UploadController.cs:17:47:17:54 | access to local variable filePath | provenance |  |
+| UploadController.cs:16:31:16:69 | call to method Combine : String | UploadController.cs:16:20:16:27 | access to local variable filePath : String | provenance |  |
+| UploadController.cs:16:56:16:59 | access to parameter file : IFormFile | UploadController.cs:16:56:16:68 | access to property FileName : String | provenance | MaD:0 |
+| UploadController.cs:16:56:16:68 | access to property FileName : String | UploadController.cs:16:31:16:69 | call to method Combine : String | provenance | MaD:1178 |
+nodes
+| GuardsController.cs:32:38:32:41 | name : String | semmle.label | name : String |
+| GuardsController.cs:34:37:34:40 | access to parameter name | semmle.label | access to parameter name |
+| UploadController.cs:14:40:14:43 | file : IFormFile | semmle.label | file : IFormFile |
+| UploadController.cs:16:20:16:27 | access to local variable filePath : String | semmle.label | access to local variable filePath : String |
+| UploadController.cs:16:31:16:69 | call to method Combine : String | semmle.label | call to method Combine : String |
+| UploadController.cs:16:56:16:59 | access to parameter file : IFormFile | semmle.label | access to parameter file : IFormFile |
+| UploadController.cs:16:56:16:68 | access to property FileName : String | semmle.label | access to property FileName : String |
+| UploadController.cs:17:47:17:54 | access to local variable filePath | semmle.label | access to local variable filePath |
+subpaths

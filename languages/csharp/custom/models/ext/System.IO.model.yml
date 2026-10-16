@@ -1,0 +1,22 @@
+extensions:
+  # Opening a `StreamReader` on a path reads the file at that path.
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Boolean)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.IO.FileStreamOptions)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Text.Encoding)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Text.Encoding,System.Boolean)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Text.Encoding,System.Boolean,System.Int32)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.IO", "StreamReader", False, "StreamReader", "(System.String,System.Text.Encoding,System.Boolean,System.IO.FileStreamOptions)", "", "Argument[0]", "path-injection", "manual"]
+  # `new FileInfo(path)` stores the (normalized) path, which is later read back through
+  # `FullName`, `Name`, `Extension` and `ToString()`. This manual model overrides the
+  # generated neutral model, which loses the flow through `Path.GetFullPath`.
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.IO", "FileInfo", False, "FileInfo", "(System.String)", "", "Argument[0]", "Argument[this].Field[System.IO.FileSystemInfo.FullPath]", "taint", "manual"]
+      - ["System.IO", "FileInfo", False, "FileInfo", "(System.String)", "", "Argument[0]", "Argument[this].Field[System.IO.FileSystemInfo.OriginalPath]", "value", "manual"]

@@ -1,0 +1,8 @@
+extensions:
+  # Reading a character of a tainted string yields tainted data, so that paths rebuilt
+  # character by character (e.g. `copy += path[i]`) keep their taint.
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System", "String", False, "get_Chars", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
