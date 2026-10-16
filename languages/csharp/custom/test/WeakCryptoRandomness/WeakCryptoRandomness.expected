@@ -1,5 +1,3 @@
-WARNING: predicate 'getLValue' has been deprecated and may be removed in future (WeakCryptoRandomness.ql:129,17-26)
-WARNING: predicate 'getRValue' has been deprecated and may be removed in future (WeakCryptoRandomness.ql:132,16-25)
 #select
 | WeakCryptoRandomness.cs:46:35:46:150 | ... + ... | WeakCryptoRandomness.cs:46:35:46:46 | access to property Now : DateTime | WeakCryptoRandomness.cs:46:35:46:150 | ... + ... | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:46:35:46:46 | access to property Now | the system clock |
 | WeakCryptoRandomness.cs:46:35:46:150 | ... + ... | WeakCryptoRandomness.cs:46:66:46:77 | access to property Now : DateTime | WeakCryptoRandomness.cs:46:35:46:150 | ... + ... | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:46:66:46:77 | access to property Now | the system clock |

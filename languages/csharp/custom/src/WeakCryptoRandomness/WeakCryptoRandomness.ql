@@ -126,10 +126,10 @@ class SensitiveTokenSink extends DataFlow::ExprNode {
       or
       // Value of a sensitive cookie: `cookie.Value = value`
       exists(AssignExpr ae, PropertyAccess pa |
-        pa = ae.getLValue() and
+        pa = ae.getLeftOperand() and
         pa.getTarget().hasName("Value") and
         isSensitiveCookie(pa.getQualifier()) and
-        e = ae.getRValue()
+        e = ae.getRightOperand()
       )
       or
       // ASP.NET Core: `Response.Cookies.Append("SessionId", value)`

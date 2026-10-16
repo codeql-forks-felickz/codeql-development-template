@@ -49,6 +49,18 @@ namespace ReverseDnsSecurityDecisionTests
             }
         }
 
+        public bool AliasTrusted(IPAddress client)
+        {
+            foreach (string alias in Dns.GetHostEntry(client).Aliases) // $ Source
+            {
+                if (alias == "trusted.example.com") // $ Alert
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         // ---- Safe counterparts: should not be reported ----
 
         public void OnlyLogsHostName()
