@@ -1,0 +1,1 @@
+semmle-extractor-options: /r:System.Net.Primitives.dll /r:System.Runtime.InteropServices.dll /r:System.Security.Cryptography.dll /r:Microsoft.Win32.Registry.dll /r:System.Text.Encoding.Extensions.dll /r:System.Runtime.Extensions.dll
