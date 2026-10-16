@@ -1,0 +1,2 @@
+query: SqlInjection/SqlInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
