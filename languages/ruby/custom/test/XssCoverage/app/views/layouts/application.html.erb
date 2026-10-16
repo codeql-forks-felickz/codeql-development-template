@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+<%
+if cookies[:font]
+%>
+    body { font-size:<%= raw cookies[:font] %> !important;}
+<%
+end
+%>
+  </style>
+  <style>
+    body { font-size:<%= cookies[:font] %> !important;}
+  </style>
+</head>
+<body>
+  <%= yield %>
+</body>
+</html>
