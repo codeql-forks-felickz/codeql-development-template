@@ -1,4 +1,4 @@
-// Package jwt is a minimal stub of github.com/dgrijalva/jwt-go for testing.
+// Package jwt is a minimal stub of github.com/dgrijalva/jwt-go/v4 for testing.
 package jwt
 
 type Claims interface {

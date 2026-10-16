@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	jwtv3 "github.com/dgrijalva/jwt-go"
+	jwtv3 "github.com/dgrijalva/jwt-go/v4"
 	jwt "github.com/golang-jwt/jwt/v5"
 	"github.com/sirupsen/logrus"
 )
