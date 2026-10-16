@@ -1,0 +1,35 @@
+#select
+| test.c:32:14:32:17 | data | test.c:27:13:27:23 | fgets output argument | test.c:32:14:32:17 | data | This array index depends on $@ and is only checked against an upper bound, so $@ may be negative. | test.c:27:13:27:23 | fgets output argument | string read by fgets | test.c:25:7:25:10 | data | data |
+| test.c:42:12:42:15 | data | test.c:15:23:15:33 | recv output argument | test.c:42:12:42:15 | data | This array index depends on $@ and is only checked against an upper bound, so $@ may be negative. | test.c:15:23:15:33 | recv output argument | buffer read by recv | test.c:39:7:39:10 | data | data |
+| test.c:58:28:58:31 | data | test.c:50:13:50:23 | fgets output argument | test.c:58:28:58:31 | data | This size argument to memcpy depends on $@ and is only checked against an upper bound, so $@ may be negative. | test.c:50:13:50:23 | fgets output argument | string read by fgets | test.c:48:9:48:12 | data | data |
+| test.c:59:12:59:15 | data | test.c:50:13:50:23 | fgets output argument | test.c:59:12:59:15 | data | This array index depends on $@ and is only checked against an upper bound, so $@ may be negative. | test.c:50:13:50:23 | fgets output argument | string read by fgets | test.c:48:9:48:12 | data | data |
+edges
+| test.c:12:5:12:19 | *readIndexSocket | test.c:39:14:39:28 | call to readIndexSocket | provenance |  |
+| test.c:15:23:15:33 | recv output argument | test.c:17:5:17:25 | ... = ... | provenance |  |
+| test.c:17:5:17:25 | ... = ... | test.c:18:5:18:28 | ... = ... | provenance | TaintFunction |
+| test.c:18:5:18:28 | ... = ... | test.c:20:10:20:13 | data | provenance |  |
+| test.c:20:10:20:13 | data | test.c:12:5:12:19 | *readIndexSocket | provenance |  |
+| test.c:27:13:27:23 | fgets output argument | test.c:28:5:28:28 | ... = ... | provenance | TaintFunction |
+| test.c:28:5:28:28 | ... = ... | test.c:32:14:32:17 | data | provenance |  |
+| test.c:39:14:39:28 | call to readIndexSocket | test.c:39:14:39:28 | call to readIndexSocket | provenance |  |
+| test.c:39:14:39:28 | call to readIndexSocket | test.c:42:12:42:15 | data | provenance |  |
+| test.c:50:13:50:23 | fgets output argument | test.c:51:5:51:35 | ... = ... | provenance | TaintFunction |
+| test.c:51:5:51:35 | ... = ... | test.c:58:28:58:31 | data | provenance |  |
+| test.c:51:5:51:35 | ... = ... | test.c:59:12:59:15 | data | provenance |  |
+nodes
+| test.c:12:5:12:19 | *readIndexSocket | semmle.label | *readIndexSocket |
+| test.c:15:23:15:33 | recv output argument | semmle.label | recv output argument |
+| test.c:17:5:17:25 | ... = ... | semmle.label | ... = ... |
+| test.c:18:5:18:28 | ... = ... | semmle.label | ... = ... |
+| test.c:20:10:20:13 | data | semmle.label | data |
+| test.c:27:13:27:23 | fgets output argument | semmle.label | fgets output argument |
+| test.c:28:5:28:28 | ... = ... | semmle.label | ... = ... |
+| test.c:32:14:32:17 | data | semmle.label | data |
+| test.c:39:14:39:28 | call to readIndexSocket | semmle.label | call to readIndexSocket |
+| test.c:39:14:39:28 | call to readIndexSocket | semmle.label | call to readIndexSocket |
+| test.c:42:12:42:15 | data | semmle.label | data |
+| test.c:50:13:50:23 | fgets output argument | semmle.label | fgets output argument |
+| test.c:51:5:51:35 | ... = ... | semmle.label | ... = ... |
+| test.c:58:28:58:31 | data | semmle.label | data |
+| test.c:59:12:59:15 | data | semmle.label | data |
+subpaths
