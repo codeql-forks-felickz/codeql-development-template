@@ -1,0 +1,128 @@
+#select
+| django.nV/taskManager/views.py:10:13:11:32 | ControlFlowNode for BinaryExpr | django.nV/taskManager/views.py:5:12:5:18 | ControlFlowNode for request | django.nV/taskManager/views.py:10:13:11:32 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | django.nV/taskManager/views.py:5:12:5:18 | ControlFlowNode for request | user-provided value |
+| django.nV/taskManager/views.py:10:13:11:32 | ControlFlowNode for BinaryExpr | django.nV/taskManager/views.py:5:21:5:30 | ControlFlowNode for project_id | django.nV/taskManager/views.py:10:13:11:32 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | django.nV/taskManager/views.py:5:21:5:30 | ControlFlowNode for project_id | user-provided value |
+| http_server_app.py:24:32:24:88 | ControlFlowNode for BinaryExpr | http_server_app.py:13:16:13:19 | ControlFlowNode for self | http_server_app.py:24:32:24:88 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | http_server_app.py:13:16:13:19 | ControlFlowNode for self | user-provided value |
+| http_server_app.py:26:32:26:95 | ControlFlowNode for BinaryExpr | http_server_app.py:13:16:13:19 | ControlFlowNode for self | http_server_app.py:26:32:26:95 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | http_server_app.py:13:16:13:19 | ControlFlowNode for self | user-provided value |
+| http_server_app.py:31:28:31:172 | ControlFlowNode for BinaryExpr | http_server_app.py:13:16:13:19 | ControlFlowNode for self | http_server_app.py:31:28:31:172 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | http_server_app.py:13:16:13:19 | ControlFlowNode for self | user-provided value |
+| http_server_app.py:50:41:50:48 | ControlFlowNode for Subscript | http_server_app.py:46:19:46:22 | ControlFlowNode for self | http_server_app.py:50:41:50:48 | ControlFlowNode for Subscript | This SQL query depends on a $@. | http_server_app.py:46:19:46:22 | ControlFlowNode for self | user-provided value |
+| http_server_app.py:56:37:56:90 | ControlFlowNode for BinaryExpr | http_server_app.py:52:18:52:21 | ControlFlowNode for self | http_server_app.py:56:37:56:90 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | http_server_app.py:52:18:52:21 | ControlFlowNode for self | user-provided value |
+edges
+| django.nV/taskManager/views.py:5:12:5:18 | ControlFlowNode for request | django.nV/taskManager/views.py:7:16:7:27 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| django.nV/taskManager/views.py:5:21:5:30 | ControlFlowNode for project_id | django.nV/taskManager/views.py:11:22:11:31 | ControlFlowNode for project_id | provenance |  |
+| django.nV/taskManager/views.py:7:9:7:12 | ControlFlowNode for name | django.nV/taskManager/views.py:11:16:11:19 | ControlFlowNode for name | provenance |  |
+| django.nV/taskManager/views.py:7:16:7:27 | ControlFlowNode for Attribute | django.nV/taskManager/views.py:7:16:7:46 | ControlFlowNode for Attribute() | provenance | Config |
+| django.nV/taskManager/views.py:7:16:7:27 | ControlFlowNode for Attribute | django.nV/taskManager/views.py:7:16:7:46 | ControlFlowNode for Attribute() | provenance | dict.get |
+| django.nV/taskManager/views.py:7:16:7:27 | ControlFlowNode for Attribute | django.nV/taskManager/views.py:7:16:7:46 | ControlFlowNode for Attribute() | provenance | dict.get(name) |
+| django.nV/taskManager/views.py:7:16:7:46 | ControlFlowNode for Attribute() | django.nV/taskManager/views.py:7:9:7:12 | ControlFlowNode for name | provenance |  |
+| django.nV/taskManager/views.py:11:16:11:19 | ControlFlowNode for name | django.nV/taskManager/views.py:11:16:11:31 | ControlFlowNode for Tuple [Tuple element at index 0] | provenance |  |
+| django.nV/taskManager/views.py:11:16:11:31 | ControlFlowNode for Tuple [Tuple element at index 0] | django.nV/taskManager/views.py:10:13:11:32 | ControlFlowNode for BinaryExpr | provenance |  |
+| django.nV/taskManager/views.py:11:16:11:31 | ControlFlowNode for Tuple [Tuple element at index 1] | django.nV/taskManager/views.py:10:13:11:32 | ControlFlowNode for BinaryExpr | provenance |  |
+| django.nV/taskManager/views.py:11:22:11:31 | ControlFlowNode for project_id | django.nV/taskManager/views.py:11:16:11:31 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| http_server_app.py:13:16:13:19 | ControlFlowNode for self | http_server_app.py:16:9:16:19 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| http_server_app.py:13:16:13:19 | ControlFlowNode for self | http_server_app.py:16:9:16:19 | IterableElement | provenance | AdditionalTaintStep |
+| http_server_app.py:13:16:13:19 | ControlFlowNode for self | http_server_app.py:16:15:16:19 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| http_server_app.py:16:9:16:19 | ControlFlowNode for Tuple | http_server_app.py:16:15:16:19 | ControlFlowNode for query | provenance |  |
+| http_server_app.py:16:9:16:19 | ControlFlowNode for Tuple [Tuple element at index 1] | http_server_app.py:16:15:16:19 | ControlFlowNode for query | provenance |  |
+| http_server_app.py:16:9:16:19 | IterableElement | http_server_app.py:16:9:16:19 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| http_server_app.py:16:15:16:19 | ControlFlowNode for query | http_server_app.py:18:145:18:149 | ControlFlowNode for query | provenance | Config |
+| http_server_app.py:17:9:17:14 | ControlFlowNode for params [Any dictionary element] | http_server_app.py:24:77:24:82 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server_app.py:17:9:17:14 | ControlFlowNode for params [Any dictionary element] | http_server_app.py:26:77:26:82 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server_app.py:17:9:17:14 | ControlFlowNode for params [Any dictionary element] | http_server_app.py:31:90:31:95 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server_app.py:17:18:20:9 | ControlFlowNode for dict() [Any dictionary element] | http_server_app.py:17:9:17:14 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server_app.py:18:13:19:91 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | http_server_app.py:17:18:20:9 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| http_server_app.py:18:14:18:152 | ControlFlowNode for Tuple [Tuple element at index 1] | http_server_app.py:18:14:18:152 | ControlFlowNode for Yield [List element, Tuple element at index 1] | provenance |  |
+| http_server_app.py:18:14:18:152 | ControlFlowNode for Yield [List element, Tuple element at index 1] | http_server_app.py:18:13:19:91 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | provenance |  |
+| http_server_app.py:18:40:18:152 | ControlFlowNode for Attribute() | http_server_app.py:18:14:18:152 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| http_server_app.py:18:61:18:151 | ControlFlowNode for Attribute() | http_server_app.py:18:40:18:152 | ControlFlowNode for Attribute() | provenance | MaD:120 |
+| http_server_app.py:18:70:18:150 | ControlFlowNode for Attribute() | http_server_app.py:18:61:18:151 | ControlFlowNode for Attribute() | provenance | str.join |
+| http_server_app.py:18:70:18:150 | ControlFlowNode for Attribute() [List element] | http_server_app.py:18:61:18:151 | ControlFlowNode for Attribute() | provenance | str.join |
+| http_server_app.py:18:145:18:149 | ControlFlowNode for query | http_server_app.py:18:70:18:150 | ControlFlowNode for Attribute() | provenance | re.findall |
+| http_server_app.py:18:145:18:149 | ControlFlowNode for query | http_server_app.py:18:70:18:150 | ControlFlowNode for Attribute() [List element] | provenance | re.findall |
+| http_server_app.py:24:77:24:82 | ControlFlowNode for params [Any dictionary element] | http_server_app.py:24:77:24:88 | ControlFlowNode for Subscript | provenance |  |
+| http_server_app.py:24:77:24:88 | ControlFlowNode for Subscript | http_server_app.py:24:32:24:88 | ControlFlowNode for BinaryExpr | provenance |  |
+| http_server_app.py:26:77:26:82 | ControlFlowNode for params [Any dictionary element] | http_server_app.py:26:77:26:93 | ControlFlowNode for Subscript | provenance |  |
+| http_server_app.py:26:77:26:93 | ControlFlowNode for Subscript | http_server_app.py:26:77:26:94 | ControlFlowNode for Tuple [Tuple element at index 0] | provenance |  |
+| http_server_app.py:26:77:26:94 | ControlFlowNode for Tuple [Tuple element at index 0] | http_server_app.py:26:32:26:95 | ControlFlowNode for BinaryExpr | provenance |  |
+| http_server_app.py:31:69:31:116 | ControlFlowNode for Attribute() | http_server_app.py:31:28:31:172 | ControlFlowNode for BinaryExpr | provenance |  |
+| http_server_app.py:31:90:31:95 | ControlFlowNode for params [Any dictionary element] | http_server_app.py:31:90:31:115 | ControlFlowNode for Attribute() | provenance | Config |
+| http_server_app.py:31:90:31:95 | ControlFlowNode for params [Any dictionary element] | http_server_app.py:31:141:31:146 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server_app.py:31:90:31:115 | ControlFlowNode for Attribute() | http_server_app.py:31:69:31:116 | ControlFlowNode for Attribute() | provenance | re.sub |
+| http_server_app.py:31:141:31:146 | ControlFlowNode for params [Any dictionary element] | http_server_app.py:31:141:31:166 | ControlFlowNode for Attribute() | provenance | Config |
+| http_server_app.py:31:141:31:166 | ControlFlowNode for Attribute() | http_server_app.py:31:28:31:172 | ControlFlowNode for BinaryExpr | provenance |  |
+| http_server_app.py:46:19:46:22 | ControlFlowNode for self | http_server_app.py:48:13:48:16 | ControlFlowNode for part | provenance | AdditionalTaintStep |
+| http_server_app.py:48:13:48:16 | ControlFlowNode for part | http_server_app.py:49:53:49:56 | ControlFlowNode for part | provenance | Config |
+| http_server_app.py:49:13:49:17 | ControlFlowNode for stmts [List element] | http_server_app.py:50:41:50:45 | ControlFlowNode for stmts [List element] | provenance |  |
+| http_server_app.py:49:21:49:81 | ControlFlowNode for ListComp [List element] | http_server_app.py:49:13:49:17 | ControlFlowNode for stmts [List element] | provenance |  |
+| http_server_app.py:49:22:49:62 | ControlFlowNode for BinaryExpr | http_server_app.py:49:22:49:62 | ControlFlowNode for Yield [List element] | provenance |  |
+| http_server_app.py:49:22:49:62 | ControlFlowNode for Yield [List element] | http_server_app.py:49:21:49:81 | ControlFlowNode for ListComp [List element] | provenance |  |
+| http_server_app.py:49:53:49:56 | ControlFlowNode for part | http_server_app.py:49:22:49:62 | ControlFlowNode for BinaryExpr | provenance |  |
+| http_server_app.py:50:41:50:45 | ControlFlowNode for stmts [List element] | http_server_app.py:50:41:50:48 | ControlFlowNode for Subscript | provenance |  |
+| http_server_app.py:52:18:52:21 | ControlFlowNode for self | http_server_app.py:55:23:55:48 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | provenance | AdditionalTaintStep |
+| http_server_app.py:52:18:52:21 | ControlFlowNode for self | http_server_app.py:55:27:55:31 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| http_server_app.py:55:9:55:14 | ControlFlowNode for params [Any dictionary element] | http_server_app.py:56:71:56:76 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server_app.py:55:18:55:49 | ControlFlowNode for dict() [Any dictionary element] | http_server_app.py:55:9:55:14 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server_app.py:55:23:55:48 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | http_server_app.py:55:18:55:49 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| http_server_app.py:55:24:55:31 | ControlFlowNode for Tuple [Tuple element at index 1] | http_server_app.py:55:24:55:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | provenance |  |
+| http_server_app.py:55:27:55:31 | ControlFlowNode for query | http_server_app.py:55:24:55:31 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| http_server_app.py:56:71:56:76 | ControlFlowNode for params [Any dictionary element] | http_server_app.py:56:71:56:90 | ControlFlowNode for Attribute() | provenance | Config |
+| http_server_app.py:56:71:56:90 | ControlFlowNode for Attribute() | http_server_app.py:56:37:56:90 | ControlFlowNode for BinaryExpr | provenance |  |
+nodes
+| django.nV/taskManager/views.py:5:12:5:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| django.nV/taskManager/views.py:5:21:5:30 | ControlFlowNode for project_id | semmle.label | ControlFlowNode for project_id |
+| django.nV/taskManager/views.py:7:9:7:12 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| django.nV/taskManager/views.py:7:16:7:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| django.nV/taskManager/views.py:7:16:7:46 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| django.nV/taskManager/views.py:10:13:11:32 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| django.nV/taskManager/views.py:11:16:11:19 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| django.nV/taskManager/views.py:11:16:11:31 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| django.nV/taskManager/views.py:11:16:11:31 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| django.nV/taskManager/views.py:11:22:11:31 | ControlFlowNode for project_id | semmle.label | ControlFlowNode for project_id |
+| http_server_app.py:13:16:13:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| http_server_app.py:16:9:16:19 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| http_server_app.py:16:9:16:19 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| http_server_app.py:16:9:16:19 | IterableElement | semmle.label | IterableElement |
+| http_server_app.py:16:15:16:19 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| http_server_app.py:17:9:17:14 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server_app.py:17:18:20:9 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| http_server_app.py:18:13:19:91 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| http_server_app.py:18:14:18:152 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| http_server_app.py:18:14:18:152 | ControlFlowNode for Yield [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for Yield [List element, Tuple element at index 1] |
+| http_server_app.py:18:40:18:152 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server_app.py:18:61:18:151 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server_app.py:18:70:18:150 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server_app.py:18:70:18:150 | ControlFlowNode for Attribute() [List element] | semmle.label | ControlFlowNode for Attribute() [List element] |
+| http_server_app.py:18:145:18:149 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| http_server_app.py:24:32:24:88 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| http_server_app.py:24:77:24:82 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server_app.py:24:77:24:88 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| http_server_app.py:26:32:26:95 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| http_server_app.py:26:77:26:82 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server_app.py:26:77:26:93 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| http_server_app.py:26:77:26:94 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| http_server_app.py:31:28:31:172 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| http_server_app.py:31:69:31:116 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server_app.py:31:90:31:95 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server_app.py:31:90:31:115 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server_app.py:31:141:31:146 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server_app.py:31:141:31:166 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server_app.py:46:19:46:22 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| http_server_app.py:48:13:48:16 | ControlFlowNode for part | semmle.label | ControlFlowNode for part |
+| http_server_app.py:49:13:49:17 | ControlFlowNode for stmts [List element] | semmle.label | ControlFlowNode for stmts [List element] |
+| http_server_app.py:49:21:49:81 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| http_server_app.py:49:22:49:62 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| http_server_app.py:49:22:49:62 | ControlFlowNode for Yield [List element] | semmle.label | ControlFlowNode for Yield [List element] |
+| http_server_app.py:49:53:49:56 | ControlFlowNode for part | semmle.label | ControlFlowNode for part |
+| http_server_app.py:50:41:50:45 | ControlFlowNode for stmts [List element] | semmle.label | ControlFlowNode for stmts [List element] |
+| http_server_app.py:50:41:50:48 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| http_server_app.py:52:18:52:21 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| http_server_app.py:55:9:55:14 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server_app.py:55:18:55:49 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| http_server_app.py:55:23:55:48 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| http_server_app.py:55:24:55:31 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| http_server_app.py:55:24:55:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for Yield [List element, Tuple element at index 1] |
+| http_server_app.py:55:27:55:31 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| http_server_app.py:56:37:56:90 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| http_server_app.py:56:71:56:76 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server_app.py:56:71:56:90 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+subpaths
+| http_server_app.py:52:18:52:21 | ControlFlowNode for self | http_server_app.py:55:27:55:31 | ControlFlowNode for query | http_server_app.py:55:24:55:31 | ControlFlowNode for Yield [List element, Tuple element at index 1] | http_server_app.py:55:23:55:48 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
