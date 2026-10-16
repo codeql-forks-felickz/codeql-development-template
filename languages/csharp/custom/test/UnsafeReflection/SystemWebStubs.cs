@@ -6,6 +6,8 @@ namespace System.Web
     public class HttpRequest
     {
         public NameValueCollection QueryString => null;
+
+        public NameValueCollection Params => null;
     }
 
     public class HttpResponse { }

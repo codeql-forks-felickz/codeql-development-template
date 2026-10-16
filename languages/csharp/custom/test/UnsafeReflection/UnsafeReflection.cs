@@ -20,6 +20,14 @@ namespace UnsafeReflectionTests
             object obj = container.Unwrap();
         }
 
+        // Juliet CWE-470 `Web_Params_Get_Web` variant: the type name comes from `Params.Get`.
+        public void BadParamsGet(HttpRequest req)
+        {
+            string data = req.Params.Get("name"); // $ Source
+            var container = Activator.CreateInstance(null, data); // $ Alert
+            object obj = container.Unwrap();
+        }
+
         // GOOD: hardcoded type name.
         public void GoodG2B(HttpRequest req)
         {
