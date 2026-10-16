@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/angular.min.js"></script>
+    <title>Login</title>
+  </head>
+  <body ng-app="">
+    <h2 id="message"></h2>
+    <p id="greeting"></p>
+    <p id="safe"></p>
+    <script>
+      var params = {};
+      window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (str, key, value) { // $ Source[js/angularjs-client-side-template-injection]
+        params[key] = decodeURIComponent(value);
+      });
+      if (params['user']) {
+        // jQuery .text() HTML-encodes, but AngularJS still compiles double-curly expressions in the text node.
+        $('#message').text("Failed authentication attempt for " + params['user'] + "!"); // $ Alert[js/angularjs-client-side-template-injection]
+      }
+
+      var name = new URLSearchParams(window.location.search).get('name'); // $ Source[js/angularjs-client-side-template-injection]
+      document.getElementById('greeting').textContent = 'Hello ' + name; // $ Alert[js/angularjs-client-side-template-injection]
+      document.getElementById('greeting').appendChild(document.createTextNode(name)); // $ Alert[js/angularjs-client-side-template-injection]
+
+      // Safe: curly braces are stripped before the text reaches the AngularJS-compiled DOM.
+      var hash = window.location.hash.substring(1);
+      $('#safe').text(hash.replace(/[{}]/g, ''));
+
+      // Safe: constant text.
+      $('#safe').text('Welcome');
+    </script>
+    <script src="app.js"></script>
+  </body>
+</html>

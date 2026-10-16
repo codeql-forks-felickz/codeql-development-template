@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="../js/jquery.min.js"></script>
+    <title>No AngularJS</title>
+  </head>
+  <body>
+    <h2 id="message"></h2>
+    <script>
+      // Safe: no AngularJS application on this page, so double-curly expressions are never evaluated.
+      var user = new URLSearchParams(window.location.search).get('user');
+      $('#message').text("Failed authentication attempt for " + user + "!");
+    </script>
+    <script src="other.js"></script>
+  </body>
+</html>
