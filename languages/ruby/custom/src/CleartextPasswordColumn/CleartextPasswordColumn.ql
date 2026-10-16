@@ -90,14 +90,73 @@ predicate modelProtectsColumn(ActiveRecordModelClass m, string column) {
   )
 }
 
-from MethodCall decl, string table, string column
-where
+/**
+ * Holds if `decl` declares the clear-text password column `column` of `table`.
+ */
+predicate plaintextPasswordColumn(MethodCall decl, string table, string column) {
   stringColumnDeclaration(decl, table, column) and
   isPasswordColumnName(column) and
   not exists(ActiveRecordModelClass m |
     conventionalTableName(m) = table and
     modelProtectsColumn(m, column)
   )
-select decl,
-  "Column '" + column + "' of table '" + table +
-    "' stores passwords in clear text; store a salted password hash instead."
+}
+
+/** Gets the literal text of `lit`, ignoring interpolated components. */
+string literalText(StringlikeLiteral lit) {
+  result =
+    concat(int i, StringTextComponent c |
+      c = lit.getComponent(i)
+    |
+      c.getConstantValue().getString() order by i
+    )
+}
+
+/**
+ * Holds if the Active Record query `call` on the model `m` filters records by
+ * comparing a value directly against the clear-text password column `column`
+ * of `table`, for example
+ * `User.find_by(password: pw)` or `User.where("password = '#{pw}'")`.
+ */
+predicate comparesAgainstPlaintextColumn(
+  MethodCall call, ActiveRecordModelClass m, string table, string column
+) {
+  call.getMethodName() =
+    [
+      "where", "rewhere", "find_by", "find_by!", "exists?", "find_or_create_by",
+      "find_or_initialize_by"
+    ] and
+  call.getReceiver().(ConstantReadAccess).getName() = m.getName() and
+  table = conventionalTableName(m) and
+  plaintextPasswordColumn(_, table, column) and
+  (
+    exists(call.getKeywordArgument(column))
+    or
+    call.getAnArgument()
+        .(HashLiteral)
+        .getAKeyValuePair()
+        .getKey()
+        .getConstantValue()
+        .getStringlikeValue() = column
+    or
+    literalText(call.getArgument(0))
+        .regexpMatch("(?is)(.*[^\\w])?" + column + "[`\"']?\\s*(=|like\\b|in\\b).*")
+  )
+}
+
+from AstNode alert, string message
+where
+  exists(string table, string column |
+    plaintextPasswordColumn(alert, table, column) and
+    message =
+      "Column '" + column + "' of table '" + table +
+        "' stores passwords in clear text; store a salted password hash instead."
+  )
+  or
+  exists(ActiveRecordModelClass m, string table, string column |
+    comparesAgainstPlaintextColumn(alert, m, table, column) and
+    message =
+      "Authentication compares directly against the clear-text password column '" + column +
+        "' of table '" + table + "'; verify a salted password hash instead."
+  )
+select alert, message
