@@ -17,7 +17,7 @@ import csharp
 import semmle.code.csharp.dataflow.TaintTracking
 
 /**
- * Holds if the (lower-cased) identifier `name` looks like it holds a security token
+ * Holds if the identifier `name` (compared case-insensitively) looks like it holds a security token
  * such as a session identifier, a captcha, or a one-time code.
  */
 bindingset[name]
