@@ -1,15 +1,52 @@
 #select
+| org/example/jaxrs/AccountApi.java:37:52:37:56 | query | org/example/jaxrs/AccountApi.java:19:49:19:63 | bodyJSON : String | org/example/jaxrs/AccountApi.java:37:52:37:56 | query | This query depends on a $@. | org/example/jaxrs/AccountApi.java:19:49:19:63 | bodyJSON | user-provided value |
 | org/example/jsp/SqlInjectionJspScriptlets.java:26:38:26:42 | query | org/example/jsp/SqlInjectionJspScriptlets.java:21:19:21:50 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:26:38:26:42 | query | This query depends on a $@. | org/example/jsp/SqlInjectionJspScriptlets.java:21:19:21:50 | getParameter(...) | user-provided value |
 | org/example/jsp/SqlInjectionJspScriptlets.java:35:40:35:87 | ... + ... | org/example/jsp/SqlInjectionJspScriptlets.java:32:21:32:50 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:35:40:35:87 | ... + ... | This query depends on a $@. | org/example/jsp/SqlInjectionJspScriptlets.java:32:21:32:50 | getParameter(...) | user-provided value |
 | org/example/jsp/SqlInjectionJspScriptlets.java:49:25:49:29 | query | org/example/jsp/SqlInjectionJspScriptlets.java:44:33:44:65 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:49:25:49:29 | query | This query depends on a $@. | org/example/jsp/SqlInjectionJspScriptlets.java:44:33:44:65 | getParameter(...) | user-provided value |
 | org/example/jsp/SqlInjectionJspScriptlets.java:56:23:56:23 | q | org/example/jsp/SqlInjectionJspScriptlets.java:55:55:55:79 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:56:23:56:23 | q | This query depends on a $@. | org/example/jsp/SqlInjectionJspScriptlets.java:55:55:55:79 | getParameter(...) | user-provided value |
+| org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | org/example/spring/SqlInjectionSpringControllers.java:23:9:23:33 | name : String | org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | This query depends on a $@. | org/example/spring/SqlInjectionSpringControllers.java:23:9:23:33 | name | user-provided value |
+| org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | org/example/spring/SqlInjectionSpringControllers.java:24:9:24:37 | auth_tan : String | org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | This query depends on a $@. | org/example/spring/SqlInjectionSpringControllers.java:24:9:24:37 | auth_tan | user-provided value |
+| org/example/spring/SqlInjectionSpringControllers.java:58:65:58:75 | blabbersSql | org/example/spring/SqlInjectionSpringControllers.java:48:9:48:67 | sort : String | org/example/spring/SqlInjectionSpringControllers.java:58:65:58:75 | blabbersSql | This query depends on a $@. | org/example/spring/SqlInjectionSpringControllers.java:48:9:48:67 | sort | user-provided value |
 edges
-| org/example/jsp/SqlInjectionJspScriptlets.java:21:19:21:50 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:26:38:26:42 | query | provenance | Src:MaD:48669 Sink:MaD:47151 |
-| org/example/jsp/SqlInjectionJspScriptlets.java:32:21:32:50 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:35:40:35:87 | ... + ... | provenance | Src:MaD:48669 Sink:MaD:47151 |
-| org/example/jsp/SqlInjectionJspScriptlets.java:44:24:44:65 | (...)... : String | org/example/jsp/SqlInjectionJspScriptlets.java:49:25:49:29 | query | provenance | Sink:MaD:47151 |
-| org/example/jsp/SqlInjectionJspScriptlets.java:44:33:44:65 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:44:24:44:65 | (...)... : String | provenance | Src:MaD:48669  |
-| org/example/jsp/SqlInjectionJspScriptlets.java:55:55:55:79 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:56:23:56:23 | q | provenance | Src:MaD:48669 Sink:MaD:47151 |
+| org/example/jaxrs/AccountApi.java:19:49:19:63 | bodyJSON : String | org/example/jaxrs/AccountApi.java:21:40:21:47 | bodyJSON : String | provenance |  |
+| org/example/jaxrs/AccountApi.java:21:25:21:48 | new JSONObject(...) : JSONObject | org/example/jaxrs/AccountApi.java:22:35:22:40 | myJson : JSONObject | provenance |  |
+| org/example/jaxrs/AccountApi.java:21:25:21:48 | new JSONObject(...) : JSONObject | org/example/jaxrs/AccountApi.java:23:24:23:29 | myJson : JSONObject | provenance |  |
+| org/example/jaxrs/AccountApi.java:21:40:21:47 | bodyJSON : String | org/example/jaxrs/AccountApi.java:21:25:21:48 | new JSONObject(...) : JSONObject | provenance | MaD:0 |
+| org/example/jaxrs/AccountApi.java:22:26:22:57 | (...)... : String | org/example/jaxrs/AccountApi.java:24:35:24:45 | startString : String | provenance |  |
+| org/example/jaxrs/AccountApi.java:22:35:22:40 | myJson : JSONObject | org/example/jaxrs/AccountApi.java:22:35:22:57 | get(...) : Object | provenance | MaD:12 |
+| org/example/jaxrs/AccountApi.java:22:35:22:57 | get(...) : Object | org/example/jaxrs/AccountApi.java:22:26:22:57 | (...)... : String | provenance |  |
+| org/example/jaxrs/AccountApi.java:23:24:23:29 | myJson : JSONObject | org/example/jaxrs/AccountApi.java:23:24:23:50 | getString(...) : String | provenance | MaD:13 |
+| org/example/jaxrs/AccountApi.java:23:24:23:50 | getString(...) : String | org/example/jaxrs/AccountApi.java:24:48:24:56 | endString : String | provenance |  |
+| org/example/jaxrs/AccountApi.java:24:35:24:45 | startString : String | org/example/jaxrs/AccountApi.java:30:35:30:50 | startDate : String | provenance |  |
+| org/example/jaxrs/AccountApi.java:24:48:24:56 | endString : String | org/example/jaxrs/AccountApi.java:30:53:30:66 | endDate : String | provenance |  |
+| org/example/jaxrs/AccountApi.java:30:35:30:50 | startDate : String | org/example/jaxrs/AccountApi.java:37:52:37:56 | query | provenance | Sink:MaD:47182 |
+| org/example/jaxrs/AccountApi.java:30:53:30:66 | endDate : String | org/example/jaxrs/AccountApi.java:37:52:37:56 | query | provenance | Sink:MaD:47182 |
+| org/example/jsp/SqlInjectionJspScriptlets.java:21:19:21:50 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:26:38:26:42 | query | provenance | Src:MaD:48700 Sink:MaD:47182 |
+| org/example/jsp/SqlInjectionJspScriptlets.java:32:21:32:50 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:35:40:35:87 | ... + ... | provenance | Src:MaD:48700 Sink:MaD:47182 |
+| org/example/jsp/SqlInjectionJspScriptlets.java:44:24:44:65 | (...)... : String | org/example/jsp/SqlInjectionJspScriptlets.java:49:25:49:29 | query | provenance | Sink:MaD:47182 |
+| org/example/jsp/SqlInjectionJspScriptlets.java:44:33:44:65 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:44:24:44:65 | (...)... : String | provenance | Src:MaD:48700  |
+| org/example/jsp/SqlInjectionJspScriptlets.java:55:55:55:79 | getParameter(...) : String | org/example/jsp/SqlInjectionJspScriptlets.java:56:23:56:23 | q | provenance | Src:MaD:48700 Sink:MaD:47182 |
+| org/example/spring/SqlInjectionSpringControllers.java:23:9:23:33 | name : String | org/example/spring/SqlInjectionSpringControllers.java:26:21:26:24 | name : String | provenance |  |
+| org/example/spring/SqlInjectionSpringControllers.java:24:9:24:37 | auth_tan : String | org/example/spring/SqlInjectionSpringControllers.java:26:27:26:34 | auth_tan : String | provenance |  |
+| org/example/spring/SqlInjectionSpringControllers.java:26:21:26:24 | name : String | org/example/spring/SqlInjectionSpringControllers.java:29:29:29:39 | name : String | provenance |  |
+| org/example/spring/SqlInjectionSpringControllers.java:26:27:26:34 | auth_tan : String | org/example/spring/SqlInjectionSpringControllers.java:29:42:29:56 | auth_tan : String | provenance |  |
+| org/example/spring/SqlInjectionSpringControllers.java:29:29:29:39 | name : String | org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | provenance | Sink:MaD:47182 |
+| org/example/spring/SqlInjectionSpringControllers.java:29:42:29:56 | auth_tan : String | org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | provenance | Sink:MaD:47182 |
+| org/example/spring/SqlInjectionSpringControllers.java:48:9:48:67 | sort : String | org/example/spring/SqlInjectionSpringControllers.java:58:65:58:75 | blabbersSql | provenance | Sink:MaD:47171 |
 nodes
+| org/example/jaxrs/AccountApi.java:19:49:19:63 | bodyJSON : String | semmle.label | bodyJSON : String |
+| org/example/jaxrs/AccountApi.java:21:25:21:48 | new JSONObject(...) : JSONObject | semmle.label | new JSONObject(...) : JSONObject |
+| org/example/jaxrs/AccountApi.java:21:40:21:47 | bodyJSON : String | semmle.label | bodyJSON : String |
+| org/example/jaxrs/AccountApi.java:22:26:22:57 | (...)... : String | semmle.label | (...)... : String |
+| org/example/jaxrs/AccountApi.java:22:35:22:40 | myJson : JSONObject | semmle.label | myJson : JSONObject |
+| org/example/jaxrs/AccountApi.java:22:35:22:57 | get(...) : Object | semmle.label | get(...) : Object |
+| org/example/jaxrs/AccountApi.java:23:24:23:29 | myJson : JSONObject | semmle.label | myJson : JSONObject |
+| org/example/jaxrs/AccountApi.java:23:24:23:50 | getString(...) : String | semmle.label | getString(...) : String |
+| org/example/jaxrs/AccountApi.java:24:35:24:45 | startString : String | semmle.label | startString : String |
+| org/example/jaxrs/AccountApi.java:24:48:24:56 | endString : String | semmle.label | endString : String |
+| org/example/jaxrs/AccountApi.java:30:35:30:50 | startDate : String | semmle.label | startDate : String |
+| org/example/jaxrs/AccountApi.java:30:53:30:66 | endDate : String | semmle.label | endDate : String |
+| org/example/jaxrs/AccountApi.java:37:52:37:56 | query | semmle.label | query |
 | org/example/jsp/SqlInjectionJspScriptlets.java:21:19:21:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | org/example/jsp/SqlInjectionJspScriptlets.java:26:38:26:42 | query | semmle.label | query |
 | org/example/jsp/SqlInjectionJspScriptlets.java:32:21:32:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
@@ -19,4 +56,13 @@ nodes
 | org/example/jsp/SqlInjectionJspScriptlets.java:49:25:49:29 | query | semmle.label | query |
 | org/example/jsp/SqlInjectionJspScriptlets.java:55:55:55:79 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | org/example/jsp/SqlInjectionJspScriptlets.java:56:23:56:23 | q | semmle.label | q |
+| org/example/spring/SqlInjectionSpringControllers.java:23:9:23:33 | name : String | semmle.label | name : String |
+| org/example/spring/SqlInjectionSpringControllers.java:24:9:24:37 | auth_tan : String | semmle.label | auth_tan : String |
+| org/example/spring/SqlInjectionSpringControllers.java:26:21:26:24 | name : String | semmle.label | name : String |
+| org/example/spring/SqlInjectionSpringControllers.java:26:27:26:34 | auth_tan : String | semmle.label | auth_tan : String |
+| org/example/spring/SqlInjectionSpringControllers.java:29:29:29:39 | name : String | semmle.label | name : String |
+| org/example/spring/SqlInjectionSpringControllers.java:29:42:29:56 | auth_tan : String | semmle.label | auth_tan : String |
+| org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | semmle.label | query |
+| org/example/spring/SqlInjectionSpringControllers.java:48:9:48:67 | sort : String | semmle.label | sort : String |
+| org/example/spring/SqlInjectionSpringControllers.java:58:65:58:75 | blabbersSql | semmle.label | blabbersSql |
 subpaths
