@@ -1,0 +1,6 @@
+| test/InfiniteLoopServlet.java:18:5:18:16 | while (...) | This loop has no reachable exit, so the request handled by $@ never completes. | test/InfiniteLoopServlet.java:16:18:16:22 | doGet | InfiniteLoopServlet.doGet |
+| test/InfiniteLoopServlet.java:31:5:31:12 | for (...;...;...) | This loop has no reachable exit, so the request handled by $@ never completes. | test/InfiniteLoopServlet.java:26:18:26:23 | doPost | InfiniteLoopServlet.doPost |
+| test/InfiniteLoopServlet.java:42:5:48:22 | do ... while (...) | This loop has no reachable exit, so the request handled by $@ never completes. | test/InfiniteLoopServlet.java:41:15:41:21 | service | InfiniteLoopServlet.service |
+| test/InfiniteLoopServlet.java:54:5:54:18 | while (...) | This loop has no reachable exit, so the request handled by $@ never completes. | test/InfiniteLoopServlet.java:26:18:26:23 | doPost | InfiniteLoopServlet.doPost |
+| test/SpringAndJaxRs.java:13:5:13:16 | while (...) | This loop has no reachable exit, so the request handled by $@ never completes. | test/SpringAndJaxRs.java:12:17:12:20 | spin | SpringInfiniteLoopController.spin |
+| test/SpringAndJaxRs.java:32:5:32:16 | while (...) | This loop has no reachable exit, so the request handled by $@ never completes. | test/SpringAndJaxRs.java:31:17:31:20 | spin | JaxRsInfiniteLoopResource.spin |
