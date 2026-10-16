@@ -1,0 +1,2 @@
+query: Security/CWE/CWE-312/CleartextStorageAndroidDatabase.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

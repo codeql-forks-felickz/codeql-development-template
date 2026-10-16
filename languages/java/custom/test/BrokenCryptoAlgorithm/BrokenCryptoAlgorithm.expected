@@ -1,0 +1,9 @@
+#select
+| LmHash.java:7:22:7:60 | getInstance(...) | LmHash.java:7:41:7:59 | "DES/ECB/NoPadding" | LmHash.java:7:41:7:59 | "DES/ECB/NoPadding" | Cryptographic algorithm $@ is insecure. ECB mode, as in AES/ECB/NoPadding for example, is vulnerable to replay and other attacks. Consider using GCM instead. | LmHash.java:7:41:7:59 | "DES/ECB/NoPadding" | DES/ECB/NoPadding |
+| LmHash.java:7:22:7:60 | getInstance(...) | LmHash.java:7:41:7:59 | "DES/ECB/NoPadding" | LmHash.java:7:41:7:59 | "DES/ECB/NoPadding" | Cryptographic algorithm $@ is insecure. It has a short key length of 56 bits, making it vulnerable to brute-force attacks. Consider using AES instead. | LmHash.java:7:41:7:59 | "DES/ECB/NoPadding" | DES/ECB/NoPadding |
+| LmHash.java:8:39:8:68 | new SecretKeySpec(...) | LmHash.java:8:63:8:67 | "DES" | LmHash.java:8:63:8:67 | "DES" | Cryptographic algorithm $@ is insecure. It has a short key length of 56 bits, making it vulnerable to brute-force attacks. Consider using AES instead. | LmHash.java:8:63:8:67 | "DES" | DES |
+edges
+nodes
+| LmHash.java:7:41:7:59 | "DES/ECB/NoPadding" | semmle.label | "DES/ECB/NoPadding" |
+| LmHash.java:8:63:8:67 | "DES" | semmle.label | "DES" |
+subpaths
