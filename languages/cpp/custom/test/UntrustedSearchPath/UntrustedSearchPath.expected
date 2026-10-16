@@ -1,0 +1,51 @@
+#select
+| test.c:29:12:29:15 | *data | test.c:28:18:28:31 | *ls -la | test.c:29:12:29:15 | *data | This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path. | test.c:28:18:28:31 | *ls -la | ls |
+| test.c:48:14:48:17 | *data | test.c:47:18:47:32 | *cmd.exe /c dir | test.c:48:14:48:17 | *data | This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path. | test.c:47:18:47:32 | *cmd.exe /c dir | cmd.exe |
+| test.c:68:28:68:31 | *data | test.c:66:18:66:31 | *ls -la | test.c:68:28:68:31 | *data | This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path. | test.c:66:18:66:31 | *ls -la | ls |
+| test.c:95:30:95:33 | *data | test.c:93:18:93:32 | *cmd.exe /c dir | test.c:95:30:95:33 | *data | This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path. | test.c:93:18:93:32 | *cmd.exe /c dir | cmd.exe |
+| test.c:117:12:117:15 | *data | test.c:123:24:123:37 | *ls -la | test.c:117:12:117:15 | *data | This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path. | test.c:123:24:123:37 | *ls -la | ls |
+| test.c:142:12:142:31 | *structFirst | test.c:149:24:149:37 | *ls -la | test.c:142:12:142:31 | *structFirst | This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path. | test.c:149:24:149:37 | *ls -la | ls |
+| test.c:157:12:157:19 | *whoami | test.c:157:12:157:19 | *whoami | test.c:157:12:157:19 | *whoami | This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path. | test.c:157:12:157:19 | *whoami | whoami |
+| test.c:158:12:158:34 | *  ping -c 1 localhost | test.c:158:12:158:34 | *  ping -c 1 localhost | test.c:158:12:158:34 | *  ping -c 1 localhost | This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path. | test.c:158:12:158:34 | *  ping -c 1 localhost | ping |
+| test.c:159:12:159:15 | *ls | test.c:159:12:159:15 | *ls | test.c:159:12:159:15 | *ls | This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path. | test.c:159:12:159:15 | *ls | ls |
+edges
+| test.c:28:18:28:31 | *ls -la | test.c:29:12:29:15 | *data | provenance | DataFlowFunction |
+| test.c:47:18:47:32 | *cmd.exe /c dir | test.c:48:14:48:17 | *data | provenance | DataFlowFunction |
+| test.c:66:18:66:31 | *ls -la | test.c:68:28:68:31 | *data | provenance | DataFlowFunction |
+| test.c:93:18:93:32 | *cmd.exe /c dir | test.c:95:30:95:33 | *data | provenance | DataFlowFunction |
+| test.c:115:27:115:30 | *data | test.c:117:12:117:15 | *data | provenance |  |
+| test.c:123:24:123:37 | *ls -la | test.c:124:13:124:22 | *dataBuffer | provenance | DataFlowFunction |
+| test.c:124:13:124:22 | *dataBuffer | test.c:115:27:115:30 | *data | provenance |  |
+| test.c:140:35:140:42 | myStruct [*structFirst] | test.c:142:12:142:19 | *myStruct [*structFirst] | provenance |  |
+| test.c:142:12:142:19 | *myStruct [*structFirst] | test.c:142:12:142:31 | *structFirst | provenance |  |
+| test.c:142:12:142:19 | *myStruct [*structFirst] | test.c:142:21:142:31 | *structFirst | provenance |  |
+| test.c:142:21:142:31 | *structFirst | test.c:142:12:142:31 | *structFirst | provenance |  |
+| test.c:149:24:149:37 | *ls -la | test.c:150:5:150:37 | *... = ... | provenance | DataFlowFunction |
+| test.c:150:5:150:12 | *myStruct [post update] [*structFirst] | test.c:151:16:151:23 | myStruct [*structFirst] | provenance |  |
+| test.c:150:5:150:37 | *... = ... | test.c:150:5:150:12 | *myStruct [post update] [*structFirst] | provenance |  |
+| test.c:151:16:151:23 | myStruct [*structFirst] | test.c:140:35:140:42 | myStruct [*structFirst] | provenance |  |
+nodes
+| test.c:28:18:28:31 | *ls -la | semmle.label | *ls -la |
+| test.c:29:12:29:15 | *data | semmle.label | *data |
+| test.c:47:18:47:32 | *cmd.exe /c dir | semmle.label | *cmd.exe /c dir |
+| test.c:48:14:48:17 | *data | semmle.label | *data |
+| test.c:66:18:66:31 | *ls -la | semmle.label | *ls -la |
+| test.c:68:28:68:31 | *data | semmle.label | *data |
+| test.c:93:18:93:32 | *cmd.exe /c dir | semmle.label | *cmd.exe /c dir |
+| test.c:95:30:95:33 | *data | semmle.label | *data |
+| test.c:115:27:115:30 | *data | semmle.label | *data |
+| test.c:117:12:117:15 | *data | semmle.label | *data |
+| test.c:123:24:123:37 | *ls -la | semmle.label | *ls -la |
+| test.c:124:13:124:22 | *dataBuffer | semmle.label | *dataBuffer |
+| test.c:140:35:140:42 | myStruct [*structFirst] | semmle.label | myStruct [*structFirst] |
+| test.c:142:12:142:19 | *myStruct [*structFirst] | semmle.label | *myStruct [*structFirst] |
+| test.c:142:12:142:31 | *structFirst | semmle.label | *structFirst |
+| test.c:142:21:142:31 | *structFirst | semmle.label | *structFirst |
+| test.c:149:24:149:37 | *ls -la | semmle.label | *ls -la |
+| test.c:150:5:150:12 | *myStruct [post update] [*structFirst] | semmle.label | *myStruct [post update] [*structFirst] |
+| test.c:150:5:150:37 | *... = ... | semmle.label | *... = ... |
+| test.c:151:16:151:23 | myStruct [*structFirst] | semmle.label | myStruct [*structFirst] |
+| test.c:157:12:157:19 | *whoami | semmle.label | *whoami |
+| test.c:158:12:158:34 | *  ping -c 1 localhost | semmle.label | *  ping -c 1 localhost |
+| test.c:159:12:159:15 | *ls | semmle.label | *ls |
+subpaths
