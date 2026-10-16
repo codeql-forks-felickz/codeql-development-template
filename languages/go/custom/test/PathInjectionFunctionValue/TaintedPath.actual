@@ -1,0 +1,11 @@
+#select
+edges
+nodes
+subpaths
+testFailures
+| test.go:69:39:69:48 | comment | Missing result: Alert |
+| test.go:74:29:74:38 | comment | Missing result: Alert |
+| test.go:83:54:83:63 | comment | Missing result: Alert |
+| test.go:87:31:87:40 | comment | Missing result: Alert |
+| test.go:96:48:96:58 | comment | Missing result: Source |
+| test.go:99:30:99:40 | comment | Missing result: Source |
