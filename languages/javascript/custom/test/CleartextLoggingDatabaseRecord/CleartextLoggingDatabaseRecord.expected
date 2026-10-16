@@ -1,0 +1,40 @@
+#select
+| mongoose-db.js:13:15:13:19 | users | mongoose-db.js:12:66:12:70 | users | mongoose-db.js:13:15:13:19 | users | This logs $@, which includes the sensitive field 'password', as clear text. | mongoose-db.js:12:66:12:70 | users | a database record |
+| mongoose-db.js:28:15:28:18 | user | mongoose-db.js:27:16:27:44 | await U ... mail }) | mongoose-db.js:28:15:28:18 | user | This logs $@, which includes the sensitive field 'password', as clear text. | mongoose-db.js:27:16:27:44 | await U ... mail }) | a database record |
+| mongoose-db.js:29:15:29:44 | "passwo ... assword | mongoose-db.js:27:16:27:44 | await U ... mail }) | mongoose-db.js:29:15:29:44 | "passwo ... assword | This logs $@, which includes the sensitive field 'password', as clear text. | mongoose-db.js:27:16:27:44 | await U ... mail }) | a database record |
+| mongoose-db.js:30:15:30:45 | JSON.st ... ject()) | mongoose-db.js:27:16:27:44 | await U ... mail }) | mongoose-db.js:30:15:30:45 | JSON.st ... ject()) | This logs $@, which includes the sensitive field 'password', as clear text. | mongoose-db.js:27:16:27:44 | await U ... mail }) | a database record |
+| mongoose-db.js:32:48:32:48 | u | mongoose-db.js:32:30:32:30 | u | mongoose-db.js:32:48:32:48 | u | This logs $@, which includes the sensitive field 'password', as clear text. | mongoose-db.js:32:30:32:30 | u | a database record |
+| mongoose-db.js:33:51:33:51 | u | mongoose-db.js:33:33:33:33 | u | mongoose-db.js:33:51:33:51 | u | This logs $@, which includes the sensitive field 'password', as clear text. | mongoose-db.js:33:33:33:33 | u | a database record |
+| sequelize-db.js:12:26:12:31 | logins | sequelize-db.js:11:18:11:38 | await L ... ndAll() | sequelize-db.js:12:26:12:31 | logins | This logs $@, which includes the sensitive field 'password', as clear text. | sequelize-db.js:11:18:11:38 | await L ... ndAll() | a database record |
+edges
+| mongoose-db.js:12:66:12:70 | users | mongoose-db.js:13:15:13:19 | users | provenance |  |
+| mongoose-db.js:27:9:27:12 | user | mongoose-db.js:28:15:28:18 | user | provenance |  |
+| mongoose-db.js:27:9:27:12 | user | mongoose-db.js:29:32:29:35 | user | provenance |  |
+| mongoose-db.js:27:9:27:12 | user | mongoose-db.js:30:30:30:33 | user | provenance |  |
+| mongoose-db.js:27:16:27:44 | await U ... mail }) | mongoose-db.js:27:9:27:12 | user | provenance |  |
+| mongoose-db.js:29:32:29:35 | user | mongoose-db.js:29:15:29:44 | "passwo ... assword | provenance |  |
+| mongoose-db.js:30:30:30:33 | user | mongoose-db.js:30:30:30:44 | user.toObject() | provenance | Config |
+| mongoose-db.js:30:30:30:44 | user.toObject() | mongoose-db.js:30:15:30:45 | JSON.st ... ject()) | provenance |  |
+| mongoose-db.js:32:30:32:30 | u | mongoose-db.js:32:48:32:48 | u | provenance |  |
+| mongoose-db.js:33:33:33:33 | u | mongoose-db.js:33:51:33:51 | u | provenance |  |
+| sequelize-db.js:11:9:11:14 | logins | sequelize-db.js:12:26:12:31 | logins | provenance |  |
+| sequelize-db.js:11:18:11:38 | await L ... ndAll() | sequelize-db.js:11:9:11:14 | logins | provenance |  |
+nodes
+| mongoose-db.js:12:66:12:70 | users | semmle.label | users |
+| mongoose-db.js:13:15:13:19 | users | semmle.label | users |
+| mongoose-db.js:27:9:27:12 | user | semmle.label | user |
+| mongoose-db.js:27:16:27:44 | await U ... mail }) | semmle.label | await U ... mail }) |
+| mongoose-db.js:28:15:28:18 | user | semmle.label | user |
+| mongoose-db.js:29:15:29:44 | "passwo ... assword | semmle.label | "passwo ... assword |
+| mongoose-db.js:29:32:29:35 | user | semmle.label | user |
+| mongoose-db.js:30:15:30:45 | JSON.st ... ject()) | semmle.label | JSON.st ... ject()) |
+| mongoose-db.js:30:30:30:33 | user | semmle.label | user |
+| mongoose-db.js:30:30:30:44 | user.toObject() | semmle.label | user.toObject() |
+| mongoose-db.js:32:30:32:30 | u | semmle.label | u |
+| mongoose-db.js:32:48:32:48 | u | semmle.label | u |
+| mongoose-db.js:33:33:33:33 | u | semmle.label | u |
+| mongoose-db.js:33:51:33:51 | u | semmle.label | u |
+| sequelize-db.js:11:9:11:14 | logins | semmle.label | logins |
+| sequelize-db.js:11:18:11:38 | await L ... ndAll() | semmle.label | await L ... ndAll() |
+| sequelize-db.js:12:26:12:31 | logins | semmle.label | logins |
+subpaths
