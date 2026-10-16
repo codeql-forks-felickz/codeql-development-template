@@ -5,7 +5,7 @@ const AdmZip = require('adm-zip');
 const app = express();
 app.use(fileUpload());
 
-// GOOD: adm-zip >= 0.4.11 sanitizes entry names in `extractAllTo`.
+// GOOD: adm-zip >= 0.4.11 sanitizes entry names in `extractAllTo` (fixture uses ^0.6.1).
 app.post('/import', function (req, res) {
   const zip = new AdmZip(req.files.importFile.data);
   zip.extractAllTo('/tmp/extracted_files', true);
