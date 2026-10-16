@@ -1,0 +1,25 @@
+#select
+| server.py:16:36:16:50 | ControlFlowNode for Attribute() | server.py:10:16:10:19 | ControlFlowNode for self | server.py:16:36:16:50 | ControlFlowNode for Attribute() | XML parsing depends on a $@ without guarding against external entity expansion. | server.py:10:16:10:19 | ControlFlowNode for self | user-provided value |
+| server.py:19:41:19:83 | ControlFlowNode for Attribute() | server.py:10:16:10:19 | ControlFlowNode for self | server.py:19:41:19:83 | ControlFlowNode for Attribute() | XML parsing depends on a $@ without guarding against external entity expansion. | server.py:10:16:10:19 | ControlFlowNode for self | user-provided value |
+edges
+| server.py:10:16:10:19 | ControlFlowNode for self | server.py:11:9:11:13 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| server.py:11:9:11:13 | ControlFlowNode for query | server.py:12:71:12:75 | ControlFlowNode for query | provenance |  |
+| server.py:11:9:11:13 | ControlFlowNode for query | server.py:19:78:19:82 | ControlFlowNode for query | provenance |  |
+| server.py:12:9:12:11 | ControlFlowNode for raw | server.py:16:36:16:50 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| server.py:12:15:12:86 | ControlFlowNode for Attribute() | server.py:12:9:12:11 | ControlFlowNode for raw | provenance |  |
+| server.py:12:45:12:76 | ControlFlowNode for Attribute() [Attribute string] | server.py:12:45:12:85 | ControlFlowNode for Attribute() | provenance | re.Match.group |
+| server.py:12:45:12:85 | ControlFlowNode for Attribute() | server.py:12:15:12:86 | ControlFlowNode for Attribute() | provenance | MaD:0 |
+| server.py:12:71:12:75 | ControlFlowNode for query | server.py:12:45:12:76 | ControlFlowNode for Attribute() [Attribute string] | provenance | re.Match |
+| server.py:19:78:19:82 | ControlFlowNode for query | server.py:19:41:19:83 | ControlFlowNode for Attribute() | provenance | MaD:0 |
+nodes
+| server.py:10:16:10:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| server.py:11:9:11:13 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| server.py:12:9:12:11 | ControlFlowNode for raw | semmle.label | ControlFlowNode for raw |
+| server.py:12:15:12:86 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| server.py:12:45:12:76 | ControlFlowNode for Attribute() [Attribute string] | semmle.label | ControlFlowNode for Attribute() [Attribute string] |
+| server.py:12:45:12:85 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| server.py:12:71:12:75 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| server.py:16:36:16:50 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| server.py:19:41:19:83 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| server.py:19:78:19:82 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+subpaths
