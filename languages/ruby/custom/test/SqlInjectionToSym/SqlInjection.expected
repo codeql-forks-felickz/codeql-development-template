@@ -1,0 +1,70 @@
+#select
+| analytics_controller.rb:17:22:17:40 | call to to_sym | analytics_controller.rb:17:22:17:27 | call to params | analytics_controller.rb:17:22:17:40 | call to to_sym | This SQL query depends on a $@. | analytics_controller.rb:17:22:17:27 | call to params | user-provided value |
+| analytics_controller.rb:21:22:21:49 | "#{...}, id" | analytics_controller.rb:21:25:21:30 | call to params | analytics_controller.rb:21:22:21:49 | "#{...}, id" | This SQL query depends on a $@. | analytics_controller.rb:21:25:21:30 | call to params | user-provided value |
+| analytics_controller.rb:26:22:26:35 | call to join | analytics_controller.rb:25:12:25:17 | call to params | analytics_controller.rb:26:22:26:35 | call to join | This SQL query depends on a $@. | analytics_controller.rb:25:12:25:17 | call to params | user-provided value |
+| analytics_controller.rb:52:49:52:56 | "#{...}" | analytics_controller.rb:47:5:47:10 | call to params | analytics_controller.rb:52:49:52:56 | "#{...}" | This SQL query depends on a $@. | analytics_controller.rb:47:5:47:10 | call to params | user-provided value |
+edges
+| analytics_controller.rb:8:7:8:12 | fields | analytics_controller.rb:10:52:10:57 | fields | provenance |  |
+| analytics_controller.rb:8:16:8:28 | call to custom_fields : [collection] [element] | analytics_controller.rb:8:16:8:38 | call to join | provenance |  |
+| analytics_controller.rb:8:16:8:38 | call to join | analytics_controller.rb:8:7:8:12 | fields | provenance |  |
+| analytics_controller.rb:10:52:10:57 | fields | analytics_controller.rb:52:29:52:31 | col | provenance |  |
+| analytics_controller.rb:17:22:17:27 | call to params | analytics_controller.rb:17:22:17:33 | ...[...] | provenance |  |
+| analytics_controller.rb:17:22:17:33 | ...[...] | analytics_controller.rb:17:22:17:40 | call to to_sym | provenance | MaD:1 |
+| analytics_controller.rb:21:25:21:30 | call to params | analytics_controller.rb:21:25:21:36 | ...[...] | provenance |  |
+| analytics_controller.rb:21:25:21:36 | ...[...] | analytics_controller.rb:21:25:21:43 | call to intern | provenance | MaD:0 |
+| analytics_controller.rb:21:25:21:43 | call to intern | analytics_controller.rb:21:22:21:49 | "#{...}, id" | provenance | AdditionalTaintStep |
+| analytics_controller.rb:25:5:25:8 | cols : [collection] [element] | analytics_controller.rb:26:22:26:25 | cols : [collection] [element] | provenance |  |
+| analytics_controller.rb:25:12:25:17 | call to params | analytics_controller.rb:25:12:25:25 | ...[...] | provenance |  |
+| analytics_controller.rb:25:12:25:25 | ...[...] | analytics_controller.rb:25:12:25:30 | call to keys : [collection] [element] | provenance |  |
+| analytics_controller.rb:25:12:25:30 | call to keys : [collection] [element] | analytics_controller.rb:25:12:25:60 | call to map : [collection] [element] | provenance | MaD:1 |
+| analytics_controller.rb:25:12:25:30 | call to keys : [collection] [element] | analytics_controller.rb:25:39:25:39 | k | provenance |  |
+| analytics_controller.rb:25:12:25:60 | call to map : [collection] [element] | analytics_controller.rb:25:5:25:8 | cols : [collection] [element] | provenance |  |
+| analytics_controller.rb:25:39:25:39 | k | analytics_controller.rb:25:42:25:42 | k | provenance |  |
+| analytics_controller.rb:25:42:25:42 | k | analytics_controller.rb:25:42:25:51 | call to downcase | provenance |  |
+| analytics_controller.rb:25:42:25:51 | call to downcase | analytics_controller.rb:25:42:25:58 | call to to_sym | provenance | MaD:1 |
+| analytics_controller.rb:26:22:26:25 | cols : [collection] [element] | analytics_controller.rb:26:22:26:35 | call to join | provenance |  |
+| analytics_controller.rb:47:5:47:10 | call to params | analytics_controller.rb:47:5:47:26 | call to require | provenance |  |
+| analytics_controller.rb:47:5:47:26 | call to require | analytics_controller.rb:47:5:47:31 | call to keys : [collection] [element] | provenance |  |
+| analytics_controller.rb:47:5:47:31 | call to keys : [collection] [element] | analytics_controller.rb:47:5:47:61 | call to map : [collection] [element] | provenance | MaD:1 |
+| analytics_controller.rb:47:5:47:31 | call to keys : [collection] [element] | analytics_controller.rb:47:40:47:40 | i | provenance |  |
+| analytics_controller.rb:47:5:47:61 | call to map : [collection] [element] | analytics_controller.rb:8:16:8:28 | call to custom_fields : [collection] [element] | provenance |  |
+| analytics_controller.rb:47:40:47:40 | i | analytics_controller.rb:47:43:47:43 | i | provenance |  |
+| analytics_controller.rb:47:43:47:43 | i | analytics_controller.rb:47:43:47:52 | call to downcase | provenance |  |
+| analytics_controller.rb:47:43:47:52 | call to downcase | analytics_controller.rb:47:43:47:59 | call to to_sym | provenance | MaD:1 |
+| analytics_controller.rb:52:29:52:31 | col | analytics_controller.rb:52:49:52:56 | "#{...}" | provenance | AdditionalTaintStep |
+nodes
+| analytics_controller.rb:8:7:8:12 | fields | semmle.label | fields |
+| analytics_controller.rb:8:16:8:28 | call to custom_fields : [collection] [element] | semmle.label | call to custom_fields : [collection] [element] |
+| analytics_controller.rb:8:16:8:38 | call to join | semmle.label | call to join |
+| analytics_controller.rb:10:52:10:57 | fields | semmle.label | fields |
+| analytics_controller.rb:17:22:17:27 | call to params | semmle.label | call to params |
+| analytics_controller.rb:17:22:17:33 | ...[...] | semmle.label | ...[...] |
+| analytics_controller.rb:17:22:17:40 | call to to_sym | semmle.label | call to to_sym |
+| analytics_controller.rb:21:22:21:49 | "#{...}, id" | semmle.label | "#{...}, id" |
+| analytics_controller.rb:21:25:21:30 | call to params | semmle.label | call to params |
+| analytics_controller.rb:21:25:21:36 | ...[...] | semmle.label | ...[...] |
+| analytics_controller.rb:21:25:21:43 | call to intern | semmle.label | call to intern |
+| analytics_controller.rb:25:5:25:8 | cols : [collection] [element] | semmle.label | cols : [collection] [element] |
+| analytics_controller.rb:25:12:25:17 | call to params | semmle.label | call to params |
+| analytics_controller.rb:25:12:25:25 | ...[...] | semmle.label | ...[...] |
+| analytics_controller.rb:25:12:25:30 | call to keys : [collection] [element] | semmle.label | call to keys : [collection] [element] |
+| analytics_controller.rb:25:12:25:60 | call to map : [collection] [element] | semmle.label | call to map : [collection] [element] |
+| analytics_controller.rb:25:39:25:39 | k | semmle.label | k |
+| analytics_controller.rb:25:42:25:42 | k | semmle.label | k |
+| analytics_controller.rb:25:42:25:51 | call to downcase | semmle.label | call to downcase |
+| analytics_controller.rb:25:42:25:58 | call to to_sym | semmle.label | call to to_sym |
+| analytics_controller.rb:26:22:26:25 | cols : [collection] [element] | semmle.label | cols : [collection] [element] |
+| analytics_controller.rb:26:22:26:35 | call to join | semmle.label | call to join |
+| analytics_controller.rb:47:5:47:10 | call to params | semmle.label | call to params |
+| analytics_controller.rb:47:5:47:26 | call to require | semmle.label | call to require |
+| analytics_controller.rb:47:5:47:31 | call to keys : [collection] [element] | semmle.label | call to keys : [collection] [element] |
+| analytics_controller.rb:47:5:47:61 | call to map : [collection] [element] | semmle.label | call to map : [collection] [element] |
+| analytics_controller.rb:47:40:47:40 | i | semmle.label | i |
+| analytics_controller.rb:47:43:47:43 | i | semmle.label | i |
+| analytics_controller.rb:47:43:47:52 | call to downcase | semmle.label | call to downcase |
+| analytics_controller.rb:47:43:47:59 | call to to_sym | semmle.label | call to to_sym |
+| analytics_controller.rb:52:29:52:31 | col | semmle.label | col |
+| analytics_controller.rb:52:49:52:56 | "#{...}" | semmle.label | "#{...}" |
+subpaths
+| analytics_controller.rb:25:12:25:30 | call to keys : [collection] [element] | analytics_controller.rb:25:39:25:39 | k | analytics_controller.rb:25:42:25:58 | call to to_sym | analytics_controller.rb:25:12:25:60 | call to map : [collection] [element] |
+| analytics_controller.rb:47:5:47:31 | call to keys : [collection] [element] | analytics_controller.rb:47:40:47:40 | i | analytics_controller.rb:47:43:47:59 | call to to_sym | analytics_controller.rb:47:5:47:61 | call to map : [collection] [element] |

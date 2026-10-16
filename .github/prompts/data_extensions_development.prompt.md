@@ -187,7 +187,7 @@ Data extensions support three primary workflows. An agent should follow the appr
 3. **Create the YAML file** — use the naming convention `<library>-<module>.model.yml` and the appropriate column format for the language
 4. **Place the file** — choose one of two paths depending on scope:
    - **Single repository:** Place the `.model.yml` directly in `.github/codeql/extensions/<pack-name>/` — no `qlpack.yml` is needed; Code Scanning picks up extensions from this directory automatically
-   - **Model pack (reusable across repos):** Place the file under a pack directory (e.g., `languages/<language>/custom/src/`) with a `qlpack.yml` that declares `extensionTargets` and `dataExtensions`
+   - **Model pack (reusable across repos):** Place the file under a separate model pack directory (e.g., `languages/<language>/custom/models/`) with a `qlpack.yml` that sets `library: true` and declares `extensionTargets` and `dataExtensions` (no `dependencies`; query packs such as `custom/src` cannot set `extensionTargets`). Add the model pack as a dependency of the `custom/test` pack so `codeql test run` picks it up
 5. **Test locally** — run a targeted query against a sample database to confirm new findings appear (see "Model Pack / Data Extension Options" below for `--additional-packs` usage):
    ```bash
    codeql query run \
