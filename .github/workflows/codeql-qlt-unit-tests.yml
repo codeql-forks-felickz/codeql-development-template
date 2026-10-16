@@ -54,7 +54,8 @@ jobs:
               # The `ql` language (i.e. ql for ql) is always a special case.
               # The `actions` language is currently not supported by `qlt` but is supported by `codeql`.
               # TODO: Implement support for `actions` language in `qlt`
-              if [[ "$lang" == "ql" || "$lang" == "actions" ]]; then
+              # The `swift` extractor only runs on macOS, so Swift tests cannot be extracted on this Linux runner.
+              if [[ "$lang" == "ql" || "$lang" == "actions" || "$lang" == "swift" ]]; then
                 echo "⚠️  qlt unit testing is not currently supported for language: $lang"
                 continue
               fi
