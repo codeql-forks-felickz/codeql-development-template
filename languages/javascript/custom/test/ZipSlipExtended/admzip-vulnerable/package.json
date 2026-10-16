@@ -1,0 +1,9 @@
+{
+  "name": "admzip-vulnerable-test",
+  "type": "commonjs",
+  "dependencies": {
+    "adm-zip": "0.4.7",
+    "express": "^4.17.1",
+    "express-fileupload": "0.0.5"
+  }
+}

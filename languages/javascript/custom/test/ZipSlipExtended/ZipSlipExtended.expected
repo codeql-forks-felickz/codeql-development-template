@@ -1,0 +1,39 @@
+WARNING: reference to 'ZipSlipExtensions' references a local library, not the named module (ZipSlipExtended.ql:19,8-25)
+#select
+| admzip-vulnerable/app.js:11:15:11:37 | AdmZip( ... e.data) | admzip-vulnerable/app.js:11:15:11:37 | AdmZip( ... e.data) | admzip-vulnerable/app.js:12:3:12:5 | zip | Unsanitized archive entry, which may contain '..', is used in a $@. | admzip-vulnerable/app.js:12:3:12:5 | zip | file system operation |
+| admzip-vulnerable/app.js:18:15:18:48 | new Adm ... e.data) | admzip-vulnerable/app.js:18:15:18:48 | new Adm ... e.data) | admzip-vulnerable/app.js:19:3:19:5 | zip | Unsanitized archive entry, which may contain '..', is used in a $@. | admzip-vulnerable/app.js:19:3:19:5 | zip | file system operation |
+| admzip-vulnerable/app.js:25:3:25:18 | new AdmZip(file) | admzip-vulnerable/app.js:25:3:25:18 | new AdmZip(file) | admzip-vulnerable/app.js:25:3:25:18 | new AdmZip(file) | Unsanitized archive entry, which may contain '..', is used in a $@. | admzip-vulnerable/app.js:25:3:25:18 | new AdmZip(file) | file system operation |
+| unzipper-open/app.js:10:22:10:31 | entry.path | unzipper-open/app.js:10:22:10:31 | entry.path | unzipper-open/app.js:13:59:13:90 | 'upload ... ileName | Unsanitized archive entry, which may contain '..', is used in a $@. | unzipper-open/app.js:13:59:13:90 | 'upload ... ileName | file system operation |
+| unzipper-open/app.js:22:62:22:71 | entry.path | unzipper-open/app.js:22:62:22:71 | entry.path | unzipper-open/app.js:22:46:22:72 | path.jo ... y.path) | Unsanitized archive entry, which may contain '..', is used in a $@. | unzipper-open/app.js:22:46:22:72 | path.jo ... y.path) | file system operation |
+| unzipper-open/fileUpload.ts:10:22:10:31 | entry.path | unzipper-open/fileUpload.ts:10:22:10:31 | entry.path | unzipper-open/fileUpload.ts:13:59:13:90 | 'upload ... ileName | Unsanitized archive entry, which may contain '..', is used in a $@. | unzipper-open/fileUpload.ts:13:59:13:90 | 'upload ... ileName | file system operation |
+edges
+| admzip-vulnerable/app.js:11:9:11:11 | zip | admzip-vulnerable/app.js:12:3:12:5 | zip | provenance |  |
+| admzip-vulnerable/app.js:11:15:11:37 | AdmZip( ... e.data) | admzip-vulnerable/app.js:11:9:11:11 | zip | provenance |  |
+| admzip-vulnerable/app.js:18:9:18:11 | zip | admzip-vulnerable/app.js:19:3:19:5 | zip | provenance |  |
+| admzip-vulnerable/app.js:18:15:18:48 | new Adm ... e.data) | admzip-vulnerable/app.js:18:9:18:11 | zip | provenance |  |
+| unzipper-open/app.js:10:11:10:18 | fileName | unzipper-open/app.js:13:83:13:90 | fileName | provenance |  |
+| unzipper-open/app.js:10:22:10:31 | entry.path | unzipper-open/app.js:10:11:10:18 | fileName | provenance |  |
+| unzipper-open/app.js:13:83:13:90 | fileName | unzipper-open/app.js:13:59:13:90 | 'upload ... ileName | provenance | Config |
+| unzipper-open/app.js:22:62:22:71 | entry.path | unzipper-open/app.js:22:46:22:72 | path.jo ... y.path) | provenance | Config |
+| unzipper-open/fileUpload.ts:10:11:10:18 | fileName | unzipper-open/fileUpload.ts:13:83:13:90 | fileName | provenance |  |
+| unzipper-open/fileUpload.ts:10:22:10:31 | entry.path | unzipper-open/fileUpload.ts:10:11:10:18 | fileName | provenance |  |
+| unzipper-open/fileUpload.ts:13:83:13:90 | fileName | unzipper-open/fileUpload.ts:13:59:13:90 | 'upload ... ileName | provenance | Config |
+nodes
+| admzip-vulnerable/app.js:11:9:11:11 | zip | semmle.label | zip |
+| admzip-vulnerable/app.js:11:15:11:37 | AdmZip( ... e.data) | semmle.label | AdmZip( ... e.data) |
+| admzip-vulnerable/app.js:12:3:12:5 | zip | semmle.label | zip |
+| admzip-vulnerable/app.js:18:9:18:11 | zip | semmle.label | zip |
+| admzip-vulnerable/app.js:18:15:18:48 | new Adm ... e.data) | semmle.label | new Adm ... e.data) |
+| admzip-vulnerable/app.js:19:3:19:5 | zip | semmle.label | zip |
+| admzip-vulnerable/app.js:25:3:25:18 | new AdmZip(file) | semmle.label | new AdmZip(file) |
+| unzipper-open/app.js:10:11:10:18 | fileName | semmle.label | fileName |
+| unzipper-open/app.js:10:22:10:31 | entry.path | semmle.label | entry.path |
+| unzipper-open/app.js:13:59:13:90 | 'upload ... ileName | semmle.label | 'upload ... ileName |
+| unzipper-open/app.js:13:83:13:90 | fileName | semmle.label | fileName |
+| unzipper-open/app.js:22:46:22:72 | path.jo ... y.path) | semmle.label | path.jo ... y.path) |
+| unzipper-open/app.js:22:62:22:71 | entry.path | semmle.label | entry.path |
+| unzipper-open/fileUpload.ts:10:11:10:18 | fileName | semmle.label | fileName |
+| unzipper-open/fileUpload.ts:10:22:10:31 | entry.path | semmle.label | entry.path |
+| unzipper-open/fileUpload.ts:13:59:13:90 | 'upload ... ileName | semmle.label | 'upload ... ileName |
+| unzipper-open/fileUpload.ts:13:83:13:90 | fileName | semmle.label | fileName |
+subpaths
