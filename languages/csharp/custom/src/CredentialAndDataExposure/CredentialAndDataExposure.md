@@ -21,6 +21,7 @@ transmitted, rendered, logged or stored. This query reports several patterns tha
 | CWE-532 | A password, a connection string containing a password, or an object whose `ToString()` includes a password property, written to a log (`ILogger`, `Trace`, log4net, NLog, Serilog). |
 | CWE-798 | A hard-coded string or byte array used as the key of a `SymmetricSecurityKey` that signs tokens. |
 | CWE-312 | A payment-card number persisted unencrypted in an Entity Framework entity or an XML file. |
+| CWE-319 | A password sent over a raw `TcpClient`/`NetworkStream` (directly or through a `StreamWriter`/`BinaryWriter`) or `Socket.Send` without TLS (`SslStream`). |
 
 ## Recommendation
 

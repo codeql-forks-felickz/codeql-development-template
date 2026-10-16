@@ -13,6 +13,7 @@
  *       external/cwe/cwe-257
  *       external/cwe/cwe-312
  *       external/cwe/cwe-315
+ *       external/cwe/cwe-319
  *       external/cwe/cwe-523
  *       external/cwe/cwe-532
  *       external/cwe/cwe-798

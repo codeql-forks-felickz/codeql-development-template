@@ -797,6 +797,69 @@ private module CardNumberStorageConfig implements DataFlow::ConfigSig {
 private module CardNumberStorageFlow = TaintTracking::Global<CardNumberStorageConfig>;
 
 /* ------------------------------------------------------------------------- */
+/* CWE-319: credential sent over an unencrypted socket                        */
+/* ------------------------------------------------------------------------- */
+/** Holds if `e` is a raw (non-TLS) network stream, such as `TcpClient.GetStream()`. */
+private predicate rawNetworkStream(Expr e) {
+  e.(MethodCall).getTarget().hasName("GetStream") and
+  e.(MethodCall)
+      .getTarget()
+      .getDeclaringType()
+      .hasFullyQualifiedName("System.Net.Sockets", "TcpClient")
+  or
+  e.(ObjectCreation).getType().hasFullyQualifiedName("System.Net.Sockets", "NetworkStream")
+}
+
+/** Holds if `e` is a writer or stream that sends its data over a raw network stream. */
+private predicate rawNetworkWriter(Expr e) {
+  exists(Expr stream | rawNetworkStream(stream) |
+    DataFlow::localExprFlow(stream, e)
+    or
+    exists(ObjectCreation oc |
+      oc.getType().hasFullyQualifiedName("System.IO", ["StreamWriter", "BinaryWriter"]) and
+      DataFlow::localExprFlow(stream, oc.getArgument(0)) and
+      DataFlow::localExprFlow(oc, e)
+    )
+  )
+}
+
+/** Holds if `e` is data sent in cleartext over a raw socket or network stream. */
+private predicate cleartextNetworkSend(Expr e) {
+  exists(MethodCall mc |
+    rawNetworkWriter(mc.getQualifier()) and
+    mc.getTarget().getName().matches("Write%") and
+    e = mc.getArgument(0)
+  )
+  or
+  exists(MethodCall mc |
+    mc.getTarget().getDeclaringType().hasFullyQualifiedName("System.Net.Sockets", "Socket") and
+    mc.getTarget().getName().matches("Send%") and
+    e = mc.getArgument(0)
+  )
+}
+
+private module CleartextNetworkTransmissionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source.asExpr() instanceof CredentialExpr
+    or
+    // e.g. `securePwd.ToString()`
+    exists(MethodCall mc |
+      mc = source.asExpr() and
+      mc.getType() instanceof StringType and
+      not isProtectingCallable(mc.getTarget()) and
+      isCredentialName(mc.getQualifier().(AssignableRead).getTarget().getName())
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) { cleartextNetworkSend(sink.asExpr()) }
+
+  predicate isBarrier(DataFlow::Node node) { isProtectionBarrier(node) }
+}
+
+private module CleartextNetworkTransmissionFlow =
+  TaintTracking::Global<CleartextNetworkTransmissionConfig>;
+
+/* ------------------------------------------------------------------------- */
 /* Combined result                                                            */
 /* ------------------------------------------------------------------------- */
 /**
@@ -920,6 +983,15 @@ predicate credentialAndDataExposure(
     message = "This log entry includes $@, which contains a password." and
     related = source.asExpr() and
     relatedText = "this value"
+  )
+  or
+  // CWE-319
+  exists(DataFlow::Node source, DataFlow::Node sink |
+    CleartextNetworkTransmissionFlow::flow(source, sink) and
+    alert = sink.asExpr() and
+    message = "The password from $@ is sent over a network connection that is not encrypted." and
+    related = source.asExpr() and
+    relatedText = "this expression"
   )
   or
   // CWE-312
