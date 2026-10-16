@@ -1,0 +1,2 @@
+query: JwtNoneAlgorithmUsed/JwtNoneAlgorithmUsed.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

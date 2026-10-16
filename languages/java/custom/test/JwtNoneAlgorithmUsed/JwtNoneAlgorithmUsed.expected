@@ -1,0 +1,3 @@
+| TokenService.java:10:84:10:96 | algorithmNone | This JWT is signed with the $@, so its signature is never checked. | TokenService.java:9:35:9:50 | none(...) | 'none' algorithm |
+| TokenService.java:15:28:15:43 | none(...) | This JWT is verified with the $@, so its signature is never checked. | TokenService.java:15:28:15:43 | none(...) | 'none' algorithm |
+| TokenService.java:20:66:20:73 | NONE_ALG | This JWT is signed with the $@, so its signature is never checked. | TokenService.java:5:47:5:62 | none(...) | 'none' algorithm |
