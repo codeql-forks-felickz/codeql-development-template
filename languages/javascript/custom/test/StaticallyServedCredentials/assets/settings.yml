@@ -1,0 +1,4 @@
+smtp:
+  host: smtp.example.com
+  username: mailer
+  password: hunter2
