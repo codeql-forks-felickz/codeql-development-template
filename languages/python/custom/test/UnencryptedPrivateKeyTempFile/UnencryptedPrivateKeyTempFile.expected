@@ -1,0 +1,17 @@
+#select
+| ca_create.py:18:15:18:25 | ControlFlowNode for pem_private | ca_create.py:11:15:15:1 | ControlFlowNode for Attribute() | ca_create.py:18:15:18:25 | ControlFlowNode for pem_private | This writes an $@ to a predictable path in a shared temporary directory. | ca_create.py:11:15:15:1 | ControlFlowNode for Attribute() | unencrypted private key |
+| ca_create.py:21:13:21:23 | ControlFlowNode for pem_private | ca_create.py:11:15:15:1 | ControlFlowNode for Attribute() | ca_create.py:21:13:21:23 | ControlFlowNode for pem_private | This writes an $@ to a predictable path in a shared temporary directory. | ca_create.py:11:15:15:1 | ControlFlowNode for Attribute() | unencrypted private key |
+| ca_create.py:26:13:26:70 | ControlFlowNode for Attribute() | ca_create.py:26:13:26:61 | ControlFlowNode for Attribute() | ca_create.py:26:13:26:70 | ControlFlowNode for Attribute() | This writes an $@ to a predictable path in a shared temporary directory. | ca_create.py:26:13:26:61 | ControlFlowNode for Attribute() | unencrypted private key |
+edges
+| ca_create.py:11:1:11:11 | ControlFlowNode for pem_private | ca_create.py:18:15:18:25 | ControlFlowNode for pem_private | provenance |  |
+| ca_create.py:11:1:11:11 | ControlFlowNode for pem_private | ca_create.py:21:13:21:23 | ControlFlowNode for pem_private | provenance |  |
+| ca_create.py:11:15:15:1 | ControlFlowNode for Attribute() | ca_create.py:11:1:11:11 | ControlFlowNode for pem_private | provenance |  |
+| ca_create.py:26:13:26:61 | ControlFlowNode for Attribute() | ca_create.py:26:13:26:70 | ControlFlowNode for Attribute() | provenance |  |
+nodes
+| ca_create.py:11:1:11:11 | ControlFlowNode for pem_private | semmle.label | ControlFlowNode for pem_private |
+| ca_create.py:11:15:15:1 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| ca_create.py:18:15:18:25 | ControlFlowNode for pem_private | semmle.label | ControlFlowNode for pem_private |
+| ca_create.py:21:13:21:23 | ControlFlowNode for pem_private | semmle.label | ControlFlowNode for pem_private |
+| ca_create.py:26:13:26:61 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| ca_create.py:26:13:26:70 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+subpaths

@@ -1,0 +1,2 @@
+query: UnencryptedPrivateKeyTempFile/UnencryptedPrivateKeyTempFile.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
