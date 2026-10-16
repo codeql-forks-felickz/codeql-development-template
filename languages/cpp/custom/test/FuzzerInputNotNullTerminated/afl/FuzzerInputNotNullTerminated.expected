@@ -1,0 +1,13 @@
+edges
+| afl_shmem.c:11:30:11:52 | __afl_fuzz_ptr | afl_shmem.c:11:30:11:52 | __afl_fuzz_ptr | provenance |  |
+| afl_shmem.c:11:30:11:52 | __afl_fuzz_ptr | afl_shmem.c:12:24:12:40 | shmem_buf | provenance |  |
+| afl_shmem.c:11:30:11:52 | __afl_fuzz_ptr | afl_shmem.c:16:25:16:33 | shmem_buf | provenance |  |
+nodes
+| afl_shmem.c:11:30:11:52 | __afl_fuzz_ptr | semmle.label | __afl_fuzz_ptr |
+| afl_shmem.c:11:30:11:52 | __afl_fuzz_ptr | semmle.label | __afl_fuzz_ptr |
+| afl_shmem.c:12:24:12:40 | shmem_buf | semmle.label | shmem_buf |
+| afl_shmem.c:16:25:16:33 | shmem_buf | semmle.label | shmem_buf |
+subpaths
+#select
+| afl_shmem.c:12:24:12:40 | shmem_buf | afl_shmem.c:11:30:11:52 | __afl_fuzz_ptr | afl_shmem.c:12:24:12:40 | shmem_buf | $@ is read as a null-terminated string by $@, but it is not null-terminated. | afl_shmem.c:11:30:11:52 | __afl_fuzz_ptr | Fuzzer input buffer | afl_shmem.c:12:17:12:22 | call to strlen | call to strlen |
+| afl_shmem.c:16:25:16:33 | shmem_buf | afl_shmem.c:11:30:11:52 | __afl_fuzz_ptr | afl_shmem.c:16:25:16:33 | shmem_buf | $@ is read as a null-terminated string by $@, but it is not null-terminated. | afl_shmem.c:11:30:11:52 | __afl_fuzz_ptr | Fuzzer input buffer | afl_shmem.c:16:3:16:8 | call to printf | call to printf |

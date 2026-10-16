@@ -1,0 +1,8 @@
+edges
+| test.c:36:8:36:11 | pointer to free output argument | test.c:37:8:37:11 | data | provenance |  |
+nodes
+| test.c:36:8:36:11 | pointer to free output argument | semmle.label | pointer to free output argument |
+| test.c:37:8:37:11 | data | semmle.label | data |
+subpaths
+#select
+| test.c:37:8:37:11 | data | test.c:36:8:36:11 | pointer to free output argument | test.c:37:8:37:11 | data | Memory pointed to by $@ may already have been freed by $@. | test.c:37:8:37:11 | data | data | test.c:36:3:36:6 | call to free | call to free |

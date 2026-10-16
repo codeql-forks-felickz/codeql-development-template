@@ -1,0 +1,18 @@
+edges
+| harness.c:3:24:3:24 | s | harness.c:3:49:3:49 | s | provenance |  |
+| harness.c:5:43:5:46 | data | harness.c:13:10:13:27 | data | provenance |  |
+| harness.c:5:43:5:46 | data | harness.c:14:9:14:30 | ... + ... | provenance | Config |
+| harness.c:5:43:5:46 | data | harness.c:15:22:15:39 | data | provenance |  |
+| harness.c:14:9:14:30 | ... + ... | harness.c:3:24:3:24 | s | provenance |  |
+nodes
+| harness.c:3:24:3:24 | s | semmle.label | s |
+| harness.c:3:49:3:49 | s | semmle.label | s |
+| harness.c:5:43:5:46 | data | semmle.label | data |
+| harness.c:13:10:13:27 | data | semmle.label | data |
+| harness.c:14:9:14:30 | ... + ... | semmle.label | ... + ... |
+| harness.c:15:22:15:39 | data | semmle.label | data |
+subpaths
+#select
+| harness.c:3:49:3:49 | s | harness.c:5:43:5:46 | data | harness.c:3:49:3:49 | s | $@ is read as a null-terminated string by $@, but it is not null-terminated. | harness.c:5:43:5:46 | data | Fuzzer input buffer | harness.c:3:44:3:47 | call to atoi | call to atoi |
+| harness.c:13:10:13:27 | data | harness.c:5:43:5:46 | data | harness.c:13:10:13:27 | data | $@ is read as a null-terminated string by $@, but it is not null-terminated. | harness.c:5:43:5:46 | data | Fuzzer input buffer | harness.c:13:3:13:8 | call to printf | call to printf |
+| harness.c:15:22:15:39 | data | harness.c:5:43:5:46 | data | harness.c:15:22:15:39 | data | $@ is read as a null-terminated string by $@, but it is not null-terminated. | harness.c:5:43:5:46 | data | Fuzzer input buffer | harness.c:15:15:15:20 | call to strlen | call to strlen |

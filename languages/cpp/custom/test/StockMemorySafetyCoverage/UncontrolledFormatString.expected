@@ -1,0 +1,11 @@
+edges
+| test.c:16:23:16:46 | recv output argument | test.c:18:5:18:28 | ... = ... | provenance |  |
+| test.c:16:23:16:46 | recv output argument | test.c:19:10:19:13 | *data | provenance |  |
+| test.c:18:5:18:28 | ... = ... | test.c:19:10:19:13 | *data | provenance |  |
+nodes
+| test.c:16:23:16:46 | recv output argument | semmle.label | recv output argument |
+| test.c:18:5:18:28 | ... = ... | semmle.label | ... = ... |
+| test.c:19:10:19:13 | *data | semmle.label | *data |
+subpaths
+#select
+| test.c:19:10:19:13 | *data | test.c:16:23:16:46 | recv output argument | test.c:19:10:19:13 | *data | The value of this argument may come from $@ and is being used as a formatting argument to printf((unnamed parameter 0)). | test.c:16:23:16:46 | recv output argument | buffer read by recv |

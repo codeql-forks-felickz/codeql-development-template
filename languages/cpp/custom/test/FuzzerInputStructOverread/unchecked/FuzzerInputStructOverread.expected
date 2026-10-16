@@ -1,0 +1,1 @@
+| unchecked.c:5:15:5:19 | width | Field $@ of Image extends to byte 8 of the fuzzer input, but the input size is not checked. | ../image.h:10:7:10:11 | width | width |
