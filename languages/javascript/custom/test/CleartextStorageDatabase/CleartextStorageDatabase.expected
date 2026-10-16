@@ -1,0 +1,54 @@
+#select
+| api.js:14:23:14:26 | pass | api.js:23:33:23:40 | req.body | api.js:14:23:14:26 | pass | This stores $@ in the sensitive database field 'password' as clear text. | api.js:23:33:23:40 | req.body | Server request body |
+| data/profile-dao.js:18:24:18:26 | ssn | data/profile-dao.js:18:24:18:26 | ssn | data/profile-dao.js:18:24:18:26 | ssn | This stores sensitive data returned by $@ in a database as clear text. | data/profile-dao.js:18:24:18:26 | ssn | an access to ssn |
+| data/profile-dao.js:25:69:25:71 | ssn | data/profile-dao.js:25:69:25:71 | ssn | data/profile-dao.js:25:69:25:71 | ssn | This stores sensitive data returned by $@ in a database as clear text. | data/profile-dao.js:25:69:25:71 | ssn | an access to ssn |
+| data/user-dao.js:12:13:12:20 | password | data/user-dao.js:12:13:12:20 | password | data/user-dao.js:12:13:12:20 | password | This stores sensitive data returned by $@ in a database as clear text. | data/user-dao.js:12:13:12:20 | password | an access to password |
+| routes/accounts.js:12:33:12:40 | req.body | routes/accounts.js:12:33:12:40 | req.body | routes/accounts.js:12:33:12:40 | req.body | This stores $@ in the sensitive database field 'password' as clear text. | routes/accounts.js:12:33:12:40 | req.body | Server request body |
+| routes/accounts.js:18:26:18:42 | req.body.accounts | routes/accounts.js:18:26:18:33 | req.body | routes/accounts.js:18:26:18:42 | req.body.accounts | This stores $@ in the sensitive database field 'password' as clear text. | routes/accounts.js:18:26:18:33 | req.body | Server request body |
+| routes/accounts.js:24:61:24:77 | req.body.password | routes/accounts.js:24:61:24:77 | req.body.password | routes/accounts.js:24:61:24:77 | req.body.password | This stores sensitive data returned by $@ in a database as clear text. | routes/accounts.js:24:61:24:77 | req.body.password | an access to password |
+| routes/accounts.js:29:72:29:91 | req.body.newPassword | routes/accounts.js:29:72:29:91 | req.body.newPassword | routes/accounts.js:29:72:29:91 | req.body.newPassword | This stores sensitive data returned by $@ in a database as clear text. | routes/accounts.js:29:72:29:91 | req.body.newPassword | an access to newPassword |
+edges
+| api.js:10:23:10:26 | user | api.js:13:20:13:23 | user | provenance |  |
+| api.js:10:29:10:32 | pass | api.js:14:23:14:26 | pass | provenance |  |
+| api.js:15:19:15:26 | req.body | api.js:15:19:15:31 | req.body.name | provenance |  |
+| api.js:23:18:23:25 | req.body | api.js:23:18:23:30 | req.body.user | provenance |  |
+| api.js:23:18:23:30 | req.body.user | api.js:10:23:10:26 | user | provenance |  |
+| api.js:23:33:23:40 | req.body | api.js:23:33:23:45 | req.body.pass | provenance |  |
+| api.js:23:33:23:45 | req.body.pass | api.js:10:29:10:32 | pass | provenance |  |
+| api.js:30:62:30:69 | req.body | api.js:30:62:30:74 | req.body.user | provenance |  |
+| api.js:37:65:37:72 | req.body | api.js:37:65:37:78 | req.body.title | provenance |  |
+| api.js:37:94:37:101 | req.body | api.js:37:94:37:113 | req.body.description | provenance |  |
+| routes/accounts.js:18:26:18:33 | req.body | routes/accounts.js:18:26:18:42 | req.body.accounts | provenance |  |
+| routes/accounts.js:24:35:24:42 | req.body | routes/accounts.js:24:35:24:48 | req.body.email | provenance |  |
+| routes/accounts.js:24:61:24:68 | req.body | routes/accounts.js:24:61:24:77 | req.body.password | provenance |  |
+| routes/accounts.js:29:72:29:79 | req.body | routes/accounts.js:29:72:29:91 | req.body.newPassword | provenance |  |
+nodes
+| api.js:10:23:10:26 | user | semmle.label | user |
+| api.js:10:29:10:32 | pass | semmle.label | pass |
+| api.js:13:20:13:23 | user | semmle.label | user |
+| api.js:14:23:14:26 | pass | semmle.label | pass |
+| api.js:15:19:15:26 | req.body | semmle.label | req.body |
+| api.js:15:19:15:31 | req.body.name | semmle.label | req.body.name |
+| api.js:23:18:23:25 | req.body | semmle.label | req.body |
+| api.js:23:18:23:30 | req.body.user | semmle.label | req.body.user |
+| api.js:23:33:23:40 | req.body | semmle.label | req.body |
+| api.js:23:33:23:45 | req.body.pass | semmle.label | req.body.pass |
+| api.js:30:62:30:69 | req.body | semmle.label | req.body |
+| api.js:30:62:30:74 | req.body.user | semmle.label | req.body.user |
+| api.js:37:65:37:72 | req.body | semmle.label | req.body |
+| api.js:37:65:37:78 | req.body.title | semmle.label | req.body.title |
+| api.js:37:94:37:101 | req.body | semmle.label | req.body |
+| api.js:37:94:37:113 | req.body.description | semmle.label | req.body.description |
+| data/profile-dao.js:18:24:18:26 | ssn | semmle.label | ssn |
+| data/profile-dao.js:25:69:25:71 | ssn | semmle.label | ssn |
+| data/user-dao.js:12:13:12:20 | password | semmle.label | password |
+| routes/accounts.js:12:33:12:40 | req.body | semmle.label | req.body |
+| routes/accounts.js:18:26:18:33 | req.body | semmle.label | req.body |
+| routes/accounts.js:18:26:18:42 | req.body.accounts | semmle.label | req.body.accounts |
+| routes/accounts.js:24:35:24:42 | req.body | semmle.label | req.body |
+| routes/accounts.js:24:35:24:48 | req.body.email | semmle.label | req.body.email |
+| routes/accounts.js:24:61:24:68 | req.body | semmle.label | req.body |
+| routes/accounts.js:24:61:24:77 | req.body.password | semmle.label | req.body.password |
+| routes/accounts.js:29:72:29:79 | req.body | semmle.label | req.body |
+| routes/accounts.js:29:72:29:91 | req.body.newPassword | semmle.label | req.body.newPassword |
+subpaths
