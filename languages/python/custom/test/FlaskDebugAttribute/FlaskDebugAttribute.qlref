@@ -1,0 +1,2 @@
+query: FlaskDebugAttribute/FlaskDebugAttribute.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,1 @@
+| settings.py:4:5:9:57 | ControlFlowNode for Tuple | Potential CSRF vulnerability due to forgery protection being disabled or weakened. |
