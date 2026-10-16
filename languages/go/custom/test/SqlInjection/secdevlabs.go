@@ -4,10 +4,10 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
-// Reduced from the secDevLabs finding: an Echo v3 bound struct field is concatenated into a query.
+// Reduced from the secDevLabs finding: an Echo bound struct field (the original app uses Echo v3; the Context.Bind source model is shared across major versions) is concatenated into a query.
 type secDevLabsLoginAttempt struct {
 	User string `json:"username"`
 	Pass string `json:"password"`

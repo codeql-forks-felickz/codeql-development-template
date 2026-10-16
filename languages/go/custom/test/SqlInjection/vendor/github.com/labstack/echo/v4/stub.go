@@ -1,4 +1,4 @@
-// Package echo is a minimal stub of github.com/labstack/echo (v3) for testing.
+// Package echo is a minimal stub of github.com/labstack/echo/v4 for testing.
 package echo
 
 type Context interface {
