@@ -100,3 +100,12 @@ async fn main() {
     warp_map_diesel().await;
     warp_then_sqlx().await;
 }
+
+// GOOD: file content (local `file` threat model) only reaches SQLx as a bound parameter.
+async fn sqlx_file_bound(pool: &sqlx::SqlitePool) {
+    let db_key = fs::read_to_string("/var/tmp/tainted_file.txt").unwrap();
+    let _ = sqlx::query("SELECT * FROM someTable WHERE key = $1")
+        .bind(db_key.trim())
+        .fetch_one(pool)
+        .await;
+}
