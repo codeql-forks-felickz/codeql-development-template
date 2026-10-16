@@ -1,0 +1,5 @@
+| org/example/EncryptionUtils.java:26:24:26:75 | new PBEKeySpec(...) | Password-based key derivation uses only 1 iteration(s); use at least 1000 (current guidance for PBKDF2-HMAC-SHA256 is 600000). |
+| org/example/EncryptionUtils.java:38:16:38:66 | new PBEKeySpec(...) | Password-based key derivation uses only 10 iteration(s); use at least 1000 (current guidance for PBKDF2-HMAC-SHA256 is 600000). |
+| org/example/EncryptionUtils.java:43:16:43:57 | new PBEKeySpec(...) | Password-based key derivation uses only 999 iteration(s); use at least 1000 (current guidance for PBKDF2-HMAC-SHA256 is 600000). |
+| org/example/EncryptionUtils.java:51:16:51:62 | new PBEKeySpec(...) | Password-based key derivation uses only 100 iteration(s); use at least 1000 (current guidance for PBKDF2-HMAC-SHA256 is 600000). |
+| org/example/EncryptionUtils.java:55:16:55:44 | new PBEParameterSpec(...) | Password-based key derivation uses only 5 iteration(s); use at least 1000 (current guidance for PBKDF2-HMAC-SHA256 is 600000). |
