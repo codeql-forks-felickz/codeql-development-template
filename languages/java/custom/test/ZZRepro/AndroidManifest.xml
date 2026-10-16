@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.app">
+    <application android:label="test">
+        <activity android:name=".WebView2Activity">
+            <intent-filter>
+                <action android:name="com.example.action.WEBVIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ResultActivity" android:exported="true"/>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".JRedirect" android:exported="true" />
+        <provider android:name=".NotesProvider" android:authorities="com.example.notes" android:exported="true" />
+        <provider android:name=".AccountProvider" android:authorities="com.example.account" android:exported="true" android:writePermission="com.example.W" />
+    </application>
+</manifest>
