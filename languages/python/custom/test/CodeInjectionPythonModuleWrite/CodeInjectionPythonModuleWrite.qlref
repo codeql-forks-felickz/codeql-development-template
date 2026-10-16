@@ -1,0 +1,2 @@
+query: CodeInjectionPythonModuleWrite/CodeInjectionPythonModuleWrite.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

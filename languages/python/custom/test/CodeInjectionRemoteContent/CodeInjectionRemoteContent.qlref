@@ -1,0 +1,2 @@
+query: CodeInjectionRemoteContent/CodeInjectionRemoteContent.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
