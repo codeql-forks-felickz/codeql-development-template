@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="angular.js"></script>
+  <script src="angular-sanitize.js"></script>
+</head>
+<body ng-app="pixi" ng-controller="pixiController">
+  <form ng-submit="search(search_query)">
+    <input type="text" ng-model="search.query" id="search_query">
+  </form>
+  <!-- Error response of the search API (reflects the query) rendered as HTML. -->
+  <b ng-bind-html="search_response"></b>
+  <div ng-bind-html="profile_bio"></div>
+  <div data-ng-bind-html="legacy_html"></div>
+  <div ng-bind-html="location_message"></div>
+
+  <!-- Safe: text binding, sanitized value, constant value. -->
+  <span ng-bind="search_text"></span>
+  <div ng-bind-html="sanitized_response"></div>
+  <div ng-bind-html="static_html"></div>
+
+  <script>
+    var app = angular.module('pixi', ['ngSanitize']).
+    config(function($sceProvider) {
+      $sceProvider.enabled(false)
+    }).
+    controller('pixiController', function($scope, $http, $location, $sanitize) {
+      $scope.search = function(search_query) {
+        $http.get('/search/?query=' + $scope.search.query)
+          .then(function success(response) {
+            $scope.pictures = response.data;
+            $scope.search_text = response.data; // OK - rendered with ng-bind (text)
+          }, function error(response) {
+            $scope.search_response = response.data; // $ Alert[js/angular/sce-disabled-xss]
+            $scope.sanitized_response = $sanitize(response.data); // OK - sanitized
+          });
+      };
+
+      $http({ method: 'GET', url: '/api/user_info' }).then(function (resp) {
+        $scope.profile_bio = resp.data.bio; // $ Alert[js/angular/sce-disabled-xss]
+      });
+
+      $http.post('/api/legacy', {}).success(function (data) { // $ Source[js/angular/sce-disabled-xss]
+        $scope.legacy_html = data; // $ Alert[js/angular/sce-disabled-xss]
+      });
+
+      $scope.location_message = $location.search().msg; // $ Alert[js/angular/sce-disabled-xss]
+
+      $scope.static_html = '<b>Welcome to Pixi</b>'; // OK - constant
+    });
+  </script>
+</body>
+</html>
