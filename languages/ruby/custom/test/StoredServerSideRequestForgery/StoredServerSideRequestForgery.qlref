@@ -1,0 +1,2 @@
+query: StoredServerSideRequestForgery/StoredServerSideRequestForgery.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
