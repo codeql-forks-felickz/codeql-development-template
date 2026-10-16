@@ -1,0 +1,2 @@
+query: Jinja2WithoutEscapingExtended/Jinja2WithoutEscapingExtended.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
