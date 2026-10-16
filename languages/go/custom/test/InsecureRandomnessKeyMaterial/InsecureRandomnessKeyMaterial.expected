@@ -1,0 +1,26 @@
+#select
+| key.go:23:24:23:41 | ...+... | key.go:23:24:23:37 | call to Intn | key.go:23:24:23:41 | ...+... | This key material depends on a $@ generated with a cryptographically weak RNG. | key.go:23:24:23:37 | call to Intn | random number |
+| key.go:41:17:41:25 | type conversion | key.go:38:18:38:40 | call to Intn | key.go:41:17:41:25 | type conversion | This key material depends on a $@ generated with a cryptographically weak RNG. | key.go:38:18:38:40 | call to Intn | random number |
+| key.go:42:17:42:28 | call to Int63 | key.go:42:17:42:28 | call to Int63 | key.go:42:17:42:28 | call to Int63 | This key material depends on a $@ generated with a cryptographically weak RNG. | key.go:42:17:42:28 | call to Int63 | random number |
+| key.go:51:9:51:17 | type conversion | key.go:49:18:49:40 | call to Intn | key.go:51:9:51:17 | type conversion | This key material depends on a $@ generated with a cryptographically weak RNG. | key.go:49:18:49:40 | call to Intn | random number |
+| key.go:55:15:55:26 | call to Int63 | key.go:55:15:55:26 | call to Int63 | key.go:55:15:55:26 | call to Int63 | This key material depends on a $@ generated with a cryptographically weak RNG. | key.go:55:15:55:26 | call to Int63 | random number |
+| key.go:57:17:57:29 | call to Uint32 | key.go:57:17:57:29 | call to Uint32 | key.go:57:17:57:29 | call to Uint32 | This key material depends on a $@ generated with a cryptographically weak RNG. | key.go:57:17:57:29 | call to Uint32 | random number |
+edges
+| key.go:23:24:23:37 | call to Intn | key.go:23:24:23:41 | ...+... | provenance | Config |
+| key.go:38:10:38:41 | index expression | key.go:41:17:41:25 | type conversion | provenance |  |
+| key.go:38:18:38:40 | call to Intn | key.go:38:10:38:41 | index expression | provenance | Config |
+| key.go:49:10:49:41 | index expression | key.go:51:9:51:17 | type conversion | provenance |  |
+| key.go:49:18:49:40 | call to Intn | key.go:49:10:49:41 | index expression | provenance | Config |
+nodes
+| key.go:23:24:23:37 | call to Intn | semmle.label | call to Intn |
+| key.go:23:24:23:41 | ...+... | semmle.label | ...+... |
+| key.go:38:10:38:41 | index expression | semmle.label | index expression |
+| key.go:38:18:38:40 | call to Intn | semmle.label | call to Intn |
+| key.go:41:17:41:25 | type conversion | semmle.label | type conversion |
+| key.go:42:17:42:28 | call to Int63 | semmle.label | call to Int63 |
+| key.go:49:10:49:41 | index expression | semmle.label | index expression |
+| key.go:49:18:49:40 | call to Intn | semmle.label | call to Intn |
+| key.go:51:9:51:17 | type conversion | semmle.label | type conversion |
+| key.go:55:15:55:26 | call to Int63 | semmle.label | call to Int63 |
+| key.go:57:17:57:29 | call to Uint32 | semmle.label | call to Uint32 |
+subpaths
