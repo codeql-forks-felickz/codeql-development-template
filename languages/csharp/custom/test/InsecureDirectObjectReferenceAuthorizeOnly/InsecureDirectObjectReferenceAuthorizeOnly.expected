@@ -1,0 +1,3 @@
+| UsersController.cs:33:30:33:32 | Put | This action only requires an authenticated user and does not check that the current user owns, or is authorized to modify, the resource of the provided ID. |
+| UsersController.cs:48:30:48:35 | Delete | This action only requires an authenticated user and does not check that the current user owns, or is authorized to modify, the resource of the provided ID. |
+| UsersController.cs:60:30:60:39 | UpdateUser | This action only requires an authenticated user and does not check that the current user owns, or is authorized to modify, the resource of the provided ID. |

@@ -1,0 +1,2 @@
+| CommentsController.cs:45:30:45:33 | Edit | This method may be missing authorization checks for which users can access the resource of the provided ID. |
+| CommentsController.cs:58:30:58:44 | DeleteConfirmed | This method may be missing authorization checks for which users can access the resource of the provided ID. |

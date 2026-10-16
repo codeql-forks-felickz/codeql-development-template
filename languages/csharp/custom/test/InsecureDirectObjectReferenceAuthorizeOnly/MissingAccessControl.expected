@@ -1,0 +1,1 @@
+| UsersController.cs:149:30:149:41 | DeleteLegacy | This action is missing an authorization check. |

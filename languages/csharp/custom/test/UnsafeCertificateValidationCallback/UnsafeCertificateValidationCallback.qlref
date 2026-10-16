@@ -1,0 +1,2 @@
+query: UnsafeCertificateValidationCallback/UnsafeCertificateValidationCallback.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
