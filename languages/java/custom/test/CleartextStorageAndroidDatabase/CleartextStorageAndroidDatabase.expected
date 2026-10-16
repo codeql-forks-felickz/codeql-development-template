@@ -1,0 +1,1 @@
+| DatabaseHelper.kt:25:13:25:54 | insertOrThrow(...) | This stores data in a SQLite database $@ containing $@ which was $@. | DatabaseHelper.kt:18:22:18:36 | new ContentValues(...) | new ContentValues(...) | DatabaseHelper.kt:22:32:22:39 | password | sensitive data | DatabaseHelper.kt:22:32:22:39 | password | previously added |
