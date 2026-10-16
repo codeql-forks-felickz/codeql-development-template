@@ -1,4 +1,10 @@
 #select
+| CorpusVariants.cs:102:30:102:35 | access to local variable output | CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:102:30:102:35 | access to local variable output | This HTML or JavaScript write depends on a $@ that may contain stored user input. | CorpusVariants.cs:95:40:95:61 | access to indexer | stored value |
+| CorpusVariants.cs:103:32:103:39 | access to local variable comments | CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:103:32:103:39 | access to local variable comments | This HTML or JavaScript write depends on a $@ that may contain stored user input. | CorpusVariants.cs:98:61:98:79 | access to indexer | stored value |
+| CorpusVariants.cs:103:32:103:39 | access to local variable comments | CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:103:32:103:39 | access to local variable comments | This HTML or JavaScript write depends on a $@ that may contain stored user input. | CorpusVariants.cs:99:68:99:88 | access to indexer | stored value |
+| CorpusVariants.cs:153:33:153:45 | call to method ToString | CorpusVariants.cs:148:70:148:84 | access to property Title : String | CorpusVariants.cs:153:33:153:45 | call to method ToString | This HTML or JavaScript write depends on a $@ that may contain stored user input. | CorpusVariants.cs:148:70:148:84 | access to property Title | stored value |
+| CorpusVariants.cs:153:33:153:45 | call to method ToString | CorpusVariants.cs:149:73:149:90 | access to property Contents : String | CorpusVariants.cs:153:33:153:45 | call to method ToString | This HTML or JavaScript write depends on a $@ that may contain stored user input. | CorpusVariants.cs:149:73:149:90 | access to property Contents | stored value |
+| CorpusVariants.cs:153:33:153:45 | call to method ToString | CorpusVariants.cs:150:71:150:86 | access to property Author : String | CorpusVariants.cs:153:33:153:45 | call to method ToString | This HTML or JavaScript write depends on a $@ that may contain stored user input. | CorpusVariants.cs:150:71:150:86 | access to property Author | stored value |
 | Test.cs:64:26:64:34 | access to property Body | Test.cs:64:26:64:34 | access to property Body | Test.cs:64:26:64:34 | access to property Body | This HTML or JavaScript write depends on a $@ that may contain stored user input. | Test.cs:64:26:64:34 | access to property Body | stored value |
 | Test.cs:87:35:87:57 | call to method ToSummaryHtml | Test.cs:30:68:30:78 | access to property ProductName : String | Test.cs:87:35:87:57 | call to method ToSummaryHtml | This HTML or JavaScript write depends on a $@ that may contain stored user input. | Test.cs:30:68:30:78 | access to property ProductName | stored value |
 | Test.cs:88:39:88:60 | call to method ToDetailHtml | Test.cs:32:50:32:60 | access to property ProductName : String | Test.cs:88:39:88:60 | call to method ToDetailHtml | This HTML or JavaScript write depends on a $@ that may contain stored user input. | Test.cs:32:50:32:60 | access to property ProductName | stored value |
@@ -7,6 +13,131 @@
 | Test.cs:171:38:171:45 | access to local variable comments | Test.cs:121:52:121:74 | call to method ExecuteReader : DbDataReader | Test.cs:171:38:171:45 | access to local variable comments | This HTML or JavaScript write depends on a $@ that may contain stored user input. | Test.cs:121:52:121:74 | call to method ExecuteReader | stored value |
 | Test.cs:171:38:171:45 | access to local variable comments | Test.cs:165:35:165:56 | call to method GetCommentsReader : DbDataReader | Test.cs:171:38:171:45 | access to local variable comments | This HTML or JavaScript write depends on a $@ that may contain stored user input. | Test.cs:165:35:165:56 | call to method GetCommentsReader | stored value |
 edges
+| CorpusVariants.cs:95:17:95:22 | access to local variable output : String | CorpusVariants.cs:102:30:102:35 | access to local variable output | provenance |  |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:1220 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:2080 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:2983 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:18714 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:18927 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:18935 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:21795 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:21848 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:21867 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:32706 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:32712 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:32803 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:32824 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:45152 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:52743 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:53017 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:56420 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:56427 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:56537 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:56823 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:56923 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:56932 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:56940 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:56947 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:56953 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:56958 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:56962 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:56965 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:57010 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:57143 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:57144 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:57145 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:57146 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:57147 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:57148 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:57149 |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | CorpusVariants.cs:95:40:95:72 | call to method ToString : String | provenance | Src:MaD:0 MaD:57150 |
+| CorpusVariants.cs:95:40:95:72 | call to method ToString : String | CorpusVariants.cs:95:17:95:22 | access to local variable output : String | provenance |  |
+| CorpusVariants.cs:98:21:98:28 | access to local variable comments : String | CorpusVariants.cs:99:21:99:28 | access to local variable comments : String | provenance |  |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:1220 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:2080 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:2983 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:18714 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:18927 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:18935 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:21795 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:21848 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:21867 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:32706 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:32712 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:32803 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:32824 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:45152 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:52743 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:53017 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:56420 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:56427 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:56537 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:56823 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:56923 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:56932 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:56940 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:56947 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:56953 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:56958 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:56962 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:56965 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:57010 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:57143 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:57144 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:57145 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:57146 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:57147 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:57148 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:57149 |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | CorpusVariants.cs:98:61:98:79 | call to method ToString : String | provenance | Src:MaD:0 MaD:57150 |
+| CorpusVariants.cs:98:61:98:79 | call to method ToString : String | CorpusVariants.cs:98:21:98:28 | access to local variable comments : String | provenance |  |
+| CorpusVariants.cs:99:21:99:28 | access to local variable comments : String | CorpusVariants.cs:98:21:98:28 | access to local variable comments : String | provenance |  |
+| CorpusVariants.cs:99:21:99:28 | access to local variable comments : String | CorpusVariants.cs:103:32:103:39 | access to local variable comments | provenance |  |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:1220 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:2080 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:2983 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:18714 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:18927 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:18935 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:21795 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:21848 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:21867 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:32706 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:32712 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:32803 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:32824 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:45152 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:52743 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:53017 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:56420 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:56427 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:56537 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:56823 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:56923 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:56932 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:56940 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:56947 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:56953 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:56958 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:56962 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:56965 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:57010 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:57143 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:57144 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:57145 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:57146 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:57147 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:57148 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:57149 |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | CorpusVariants.cs:99:68:99:88 | call to method ToString : String | provenance | Src:MaD:0 MaD:57150 |
+| CorpusVariants.cs:99:68:99:88 | call to method ToString : String | CorpusVariants.cs:99:21:99:28 | access to local variable comments : String | provenance |  |
+| CorpusVariants.cs:148:13:148:14 | [post] access to local variable sb : StringBuilder | CorpusVariants.cs:153:33:153:34 | access to local variable sb : StringBuilder | provenance |  |
+| CorpusVariants.cs:148:70:148:84 | access to property Title : String | CorpusVariants.cs:148:13:148:14 | [post] access to local variable sb : StringBuilder | provenance | MaD:2028 |
+| CorpusVariants.cs:149:13:149:14 | [post] access to local variable sb : StringBuilder | CorpusVariants.cs:153:33:153:34 | access to local variable sb : StringBuilder | provenance |  |
+| CorpusVariants.cs:149:73:149:90 | access to property Contents : String | CorpusVariants.cs:149:13:149:14 | [post] access to local variable sb : StringBuilder | provenance | MaD:2028 |
+| CorpusVariants.cs:150:13:150:14 | [post] access to local variable sb : StringBuilder | CorpusVariants.cs:153:33:153:34 | access to local variable sb : StringBuilder | provenance |  |
+| CorpusVariants.cs:150:71:150:86 | access to property Author : String | CorpusVariants.cs:150:13:150:14 | [post] access to local variable sb : StringBuilder | provenance | MaD:2028 |
+| CorpusVariants.cs:153:33:153:34 | access to local variable sb : StringBuilder | CorpusVariants.cs:153:33:153:45 | call to method ToString | provenance | MaD:2080 |
 | Test.cs:30:42:30:86 | $"..." : String | Test.cs:87:35:87:57 | call to method ToSummaryHtml | provenance |  |
 | Test.cs:30:68:30:78 | access to property ProductName : String | Test.cs:30:42:30:86 | $"..." : String | provenance |  |
 | Test.cs:32:41:32:98 | ... + ... : String | Test.cs:88:39:88:60 | call to method ToDetailHtml | provenance |  |
@@ -135,6 +266,25 @@ edges
 | Test.cs:169:37:169:53 | access to indexer : Object | Test.cs:169:37:169:53 | call to method ToString : String | provenance | MaD:57150 |
 | Test.cs:169:37:169:53 | call to method ToString : String | Test.cs:169:17:169:24 | access to local variable comments : String | provenance |  |
 nodes
+| CorpusVariants.cs:95:17:95:22 | access to local variable output : String | semmle.label | access to local variable output : String |
+| CorpusVariants.cs:95:40:95:61 | access to indexer : Object | semmle.label | access to indexer : Object |
+| CorpusVariants.cs:95:40:95:72 | call to method ToString : String | semmle.label | call to method ToString : String |
+| CorpusVariants.cs:98:21:98:28 | access to local variable comments : String | semmle.label | access to local variable comments : String |
+| CorpusVariants.cs:98:61:98:79 | access to indexer : Object | semmle.label | access to indexer : Object |
+| CorpusVariants.cs:98:61:98:79 | call to method ToString : String | semmle.label | call to method ToString : String |
+| CorpusVariants.cs:99:21:99:28 | access to local variable comments : String | semmle.label | access to local variable comments : String |
+| CorpusVariants.cs:99:68:99:88 | access to indexer : Object | semmle.label | access to indexer : Object |
+| CorpusVariants.cs:99:68:99:88 | call to method ToString : String | semmle.label | call to method ToString : String |
+| CorpusVariants.cs:102:30:102:35 | access to local variable output | semmle.label | access to local variable output |
+| CorpusVariants.cs:103:32:103:39 | access to local variable comments | semmle.label | access to local variable comments |
+| CorpusVariants.cs:148:13:148:14 | [post] access to local variable sb : StringBuilder | semmle.label | [post] access to local variable sb : StringBuilder |
+| CorpusVariants.cs:148:70:148:84 | access to property Title : String | semmle.label | access to property Title : String |
+| CorpusVariants.cs:149:13:149:14 | [post] access to local variable sb : StringBuilder | semmle.label | [post] access to local variable sb : StringBuilder |
+| CorpusVariants.cs:149:73:149:90 | access to property Contents : String | semmle.label | access to property Contents : String |
+| CorpusVariants.cs:150:13:150:14 | [post] access to local variable sb : StringBuilder | semmle.label | [post] access to local variable sb : StringBuilder |
+| CorpusVariants.cs:150:71:150:86 | access to property Author : String | semmle.label | access to property Author : String |
+| CorpusVariants.cs:153:33:153:34 | access to local variable sb : StringBuilder | semmle.label | access to local variable sb : StringBuilder |
+| CorpusVariants.cs:153:33:153:45 | call to method ToString | semmle.label | call to method ToString |
 | Test.cs:30:42:30:86 | $"..." : String | semmle.label | $"..." : String |
 | Test.cs:30:68:30:78 | access to property ProductName : String | semmle.label | access to property ProductName : String |
 | Test.cs:32:41:32:98 | ... + ... : String | semmle.label | ... + ... : String |

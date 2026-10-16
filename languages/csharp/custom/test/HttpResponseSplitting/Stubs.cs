@@ -8,6 +8,7 @@ namespace System.Collections.Specialized
         public string this[string name] { get => null; set { } }
         public void Add(string name, string value) { }
         public void Set(string name, string value) { }
+        public string Get(string name) => this[name];
     }
 }
 
@@ -17,6 +18,7 @@ namespace System.Web
     {
         public NameValueCollection QueryString => null;
         public NameValueCollection Form => null;
+        public NameValueCollection Params => null;
         public string this[string key] => null;
     }
 
@@ -46,6 +48,7 @@ namespace System.Web
     {
         public static string HtmlEncode(string s) => null;
         public static string UrlEncode(string s) => null;
+        public static string UrlEncode(string s, System.Text.Encoding e) => null;
     }
 
     public interface IHttpHandler

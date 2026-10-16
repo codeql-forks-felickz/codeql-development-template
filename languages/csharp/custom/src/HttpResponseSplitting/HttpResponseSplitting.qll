@@ -6,6 +6,7 @@
 import csharp
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
+private import semmle.code.asp.WebConfig
 
 /**
  * A `System.Web` HTTP response type, `HttpResponse` or `HttpResponseBase`, or a subtype.
@@ -102,6 +103,39 @@ private class NewLineReplaceSanitizer extends HttpResponseSplittingSanitizer {
       old.regexpMatch("(?s).*[\\r\\n].*")
     )
   }
+}
+
+/**
+ * Holds if ASP.NET header checking (which encodes CR/LF characters in header values)
+ * is disabled, either in a configuration file (`<httpRuntime enableHeaderChecking="false" />`)
+ * or programmatically through `HttpRuntimeSection.EnableHeaderChecking`. This mirrors the
+ * logic of `cs/web/disabled-header-checking`.
+ */
+predicate headerCheckingDisabled() {
+  exists(HttpRuntimeXmlElement e |
+    e.getAttribute("enableHeaderChecking").getValue().toLowerCase() = "false"
+  )
+  or
+  exists(Assignment a, PropertyAccess pa |
+    a.getLeftOperand() = pa and
+    pa.getTarget().hasName("EnableHeaderChecking") and
+    pa.getTarget()
+        .getDeclaringType()
+        .hasFullyQualifiedName("System.Web.Configuration", "HttpRuntimeSection") and
+    a.getRightOperand().getValue() = "false"
+  )
+}
+
+/**
+ * Gets a note to append to alert messages describing whether ASP.NET header
+ * checking is known to be disabled.
+ */
+string headerCheckingNote() {
+  if headerCheckingDisabled()
+  then
+    result =
+      " ASP.NET header checking is disabled for this application, so CR/LF characters are not encoded."
+  else result = ""
 }
 
 /** A taint-tracking configuration for HTTP response splitting vulnerabilities. */

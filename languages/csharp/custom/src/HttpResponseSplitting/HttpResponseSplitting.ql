@@ -19,5 +19,6 @@ import HttpResponseSplittingFlow::PathGraph
 
 from HttpResponseSplittingFlow::PathNode source, HttpResponseSplittingFlow::PathNode sink
 where HttpResponseSplittingFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "This HTTP response header value depends on a $@.",
-  source.getNode(), "user-provided value"
+select sink.getNode(), source, sink,
+  "This HTTP response header value depends on a $@." + headerCheckingNote(), source.getNode(),
+  "user-provided value"

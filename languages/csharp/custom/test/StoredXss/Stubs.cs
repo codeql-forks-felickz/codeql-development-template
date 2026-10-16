@@ -15,6 +15,7 @@ namespace System.Web
     public class HttpRequest
     {
         public System.Collections.Specialized.NameValueCollection QueryString => null;
+        public System.Collections.Specialized.NameValueCollection Params => null;
     }
 
     public sealed class HttpUtility
@@ -74,6 +75,7 @@ namespace System.Data
 
     public class DataRow
     {
+        public DataRow[] GetChildRows(string relationName) => null;
         public object this[string columnName] { get => null; set { } }
         public object this[int columnIndex] { get => null; set { } }
         public object[] ItemArray { get => null; set { } }
@@ -97,6 +99,7 @@ namespace System.Data
     public class DataTableCollection
     {
         public DataTable this[int index] => null;
+        public DataTable this[string name] => null;
     }
 
     public class DataSet
@@ -137,6 +140,22 @@ namespace Microsoft.EntityFrameworkCore
     public abstract class DbSet<TEntity> : IEnumerable<TEntity> where TEntity : class
     {
         public virtual void Add(TEntity entity) { }
+        public IEnumerator<TEntity> GetEnumerator() => null;
+        IEnumerator IEnumerable.GetEnumerator() => null;
+    }
+}
+
+namespace System.Data.Entity
+{
+    public class DbContext : IDisposable
+    {
+        public int SaveChanges() => 0;
+        public void Dispose() { }
+    }
+
+    public abstract class DbSet<TEntity> : IEnumerable<TEntity> where TEntity : class
+    {
+        public virtual TEntity Add(TEntity entity) => entity;
         public IEnumerator<TEntity> GetEnumerator() => null;
         IEnumerator IEnumerable.GetEnumerator() => null;
     }

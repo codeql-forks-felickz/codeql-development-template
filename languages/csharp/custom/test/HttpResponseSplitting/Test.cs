@@ -55,6 +55,35 @@ namespace Test
         private static string StripNewLines(string s) => s.Replace("\n", string.Empty).Replace("\r", string.Empty);
     }
 
+    // Juliet CWE-113 `Params_Get_Web_addHeader` style: `Params.Get` into `AddHeader`.
+    public class ParamsGetAddHeader
+    {
+        public void Bad(HttpRequest req, HttpResponse resp)
+        {
+            string data = req.Params.Get("name"); // $ Source[cs/web/http-response-splitting]
+            if (data != null)
+            {
+                resp.AddHeader("Location", "/author.jsp?lang=" + data); // $ Alert[cs/web/http-response-splitting]
+            }
+        }
+
+        public void GoodG2B(HttpRequest req, HttpResponse resp)
+        {
+            string data = "foo";
+            resp.AddHeader("Location", "/author.jsp?lang=" + data);
+        }
+
+        public void GoodB2G(HttpRequest req, HttpResponse resp)
+        {
+            string data = req.Params.Get("name");
+            if (data != null)
+            {
+                data = HttpUtility.UrlEncode(data, System.Text.Encoding.UTF8);
+                resp.AddHeader("Location", "/author.jsp?lang=" + data);
+            }
+        }
+    }
+
     public class MvcStyle
     {
         public void Handle(HttpRequest request, HttpResponseBase response)

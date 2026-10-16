@@ -6,9 +6,11 @@
 | Test.cs:34:43:34:43 | access to local variable v | Test.cs:31:24:31:30 | access to property Request : HttpRequest | Test.cs:34:43:34:43 | access to local variable v | This HTTP response header value depends on a $@. | Test.cs:31:24:31:30 | access to property Request | user-provided value |
 | Test.cs:35:41:35:54 | ... + ... | Test.cs:31:24:31:30 | access to property Request : HttpRequest | Test.cs:35:41:35:54 | ... + ... | This HTTP response header value depends on a $@. | Test.cs:31:24:31:30 | access to property Request | user-provided value |
 | Test.cs:52:43:52:67 | call to method HtmlEncode | Test.cs:40:24:40:42 | access to property QueryString : NameValueCollection | Test.cs:52:43:52:67 | call to method HtmlEncode | This HTTP response header value depends on a $@. | Test.cs:40:24:40:42 | access to property QueryString | user-provided value |
-| Test.cs:63:43:63:43 | access to local variable v | Test.cs:62:24:62:42 | access to property QueryString : NameValueCollection | Test.cs:63:43:63:43 | access to local variable v | This HTTP response header value depends on a $@. | Test.cs:62:24:62:42 | access to property QueryString | user-provided value |
-| Test.cs:64:45:64:45 | access to local variable v | Test.cs:62:24:62:42 | access to property QueryString : NameValueCollection | Test.cs:64:45:64:45 | access to local variable v | This HTTP response header value depends on a $@. | Test.cs:62:24:62:42 | access to property QueryString | user-provided value |
+| Test.cs:66:44:66:69 | ... + ... | Test.cs:63:27:63:36 | access to property Params : NameValueCollection | Test.cs:66:44:66:69 | ... + ... | This HTTP response header value depends on a $@. | Test.cs:63:27:63:36 | access to property Params | user-provided value |
+| Test.cs:92:43:92:43 | access to local variable v | Test.cs:91:24:91:42 | access to property QueryString : NameValueCollection | Test.cs:92:43:92:43 | access to local variable v | This HTTP response header value depends on a $@. | Test.cs:91:24:91:42 | access to property QueryString | user-provided value |
+| Test.cs:93:45:93:45 | access to local variable v | Test.cs:91:24:91:42 | access to property QueryString : NameValueCollection | Test.cs:93:45:93:45 | access to local variable v | This HTTP response header value depends on a $@. | Test.cs:91:24:91:42 | access to property QueryString | user-provided value |
 edges
+| Stubs.cs:11:23:11:25 | this : NameValueCollection | Stubs.cs:11:43:11:52 | access to indexer : String | provenance |  |
 | Test.cs:12:20:12:23 | access to local variable data : String | Test.cs:13:48:13:74 | ... + ... | provenance |  |
 | Test.cs:12:27:12:49 | access to property QueryString : NameValueCollection | Test.cs:12:20:12:23 | access to local variable data : String | provenance |  |
 | Test.cs:22:20:22:25 | access to local variable header : String | Test.cs:25:50:25:55 | access to local variable header | provenance |  |
@@ -21,10 +23,16 @@ edges
 | Test.cs:40:20:40:20 | access to local variable v : String | Test.cs:52:66:52:66 | access to local variable v : String | provenance |  |
 | Test.cs:40:24:40:42 | access to property QueryString : NameValueCollection | Test.cs:40:20:40:20 | access to local variable v : String | provenance |  |
 | Test.cs:52:66:52:66 | access to local variable v : String | Test.cs:52:43:52:67 | call to method HtmlEncode | provenance | MaD:2270 |
-| Test.cs:62:20:62:20 | access to local variable v : String | Test.cs:63:43:63:43 | access to local variable v | provenance |  |
-| Test.cs:62:20:62:20 | access to local variable v : String | Test.cs:64:45:64:45 | access to local variable v | provenance |  |
-| Test.cs:62:24:62:42 | access to property QueryString : NameValueCollection | Test.cs:62:20:62:20 | access to local variable v : String | provenance |  |
+| Test.cs:63:20:63:23 | access to local variable data : String | Test.cs:66:44:66:69 | ... + ... | provenance |  |
+| Test.cs:63:27:63:36 | access to property Params : NameValueCollection | Stubs.cs:11:23:11:25 | this : NameValueCollection | provenance |  |
+| Test.cs:63:27:63:36 | access to property Params : NameValueCollection | Test.cs:63:27:63:48 | call to method Get : String | provenance |  |
+| Test.cs:63:27:63:48 | call to method Get : String | Test.cs:63:20:63:23 | access to local variable data : String | provenance |  |
+| Test.cs:91:20:91:20 | access to local variable v : String | Test.cs:92:43:92:43 | access to local variable v | provenance |  |
+| Test.cs:91:20:91:20 | access to local variable v : String | Test.cs:93:45:93:45 | access to local variable v | provenance |  |
+| Test.cs:91:24:91:42 | access to property QueryString : NameValueCollection | Test.cs:91:20:91:20 | access to local variable v : String | provenance |  |
 nodes
+| Stubs.cs:11:23:11:25 | this : NameValueCollection | semmle.label | this : NameValueCollection |
+| Stubs.cs:11:43:11:52 | access to indexer : String | semmle.label | access to indexer : String |
 | Test.cs:12:20:12:23 | access to local variable data : String | semmle.label | access to local variable data : String |
 | Test.cs:12:27:12:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | Test.cs:13:48:13:74 | ... + ... | semmle.label | ... + ... |
@@ -41,8 +49,13 @@ nodes
 | Test.cs:40:24:40:42 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | Test.cs:52:43:52:67 | call to method HtmlEncode | semmle.label | call to method HtmlEncode |
 | Test.cs:52:66:52:66 | access to local variable v : String | semmle.label | access to local variable v : String |
-| Test.cs:62:20:62:20 | access to local variable v : String | semmle.label | access to local variable v : String |
-| Test.cs:62:24:62:42 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| Test.cs:63:43:63:43 | access to local variable v | semmle.label | access to local variable v |
-| Test.cs:64:45:64:45 | access to local variable v | semmle.label | access to local variable v |
+| Test.cs:63:20:63:23 | access to local variable data : String | semmle.label | access to local variable data : String |
+| Test.cs:63:27:63:36 | access to property Params : NameValueCollection | semmle.label | access to property Params : NameValueCollection |
+| Test.cs:63:27:63:48 | call to method Get : String | semmle.label | call to method Get : String |
+| Test.cs:66:44:66:69 | ... + ... | semmle.label | ... + ... |
+| Test.cs:91:20:91:20 | access to local variable v : String | semmle.label | access to local variable v : String |
+| Test.cs:91:24:91:42 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Test.cs:92:43:92:43 | access to local variable v | semmle.label | access to local variable v |
+| Test.cs:93:45:93:45 | access to local variable v | semmle.label | access to local variable v |
 subpaths
+| Test.cs:63:27:63:36 | access to property Params : NameValueCollection | Stubs.cs:11:23:11:25 | this : NameValueCollection | Stubs.cs:11:43:11:52 | access to indexer : String | Test.cs:63:27:63:48 | call to method Get : String |
