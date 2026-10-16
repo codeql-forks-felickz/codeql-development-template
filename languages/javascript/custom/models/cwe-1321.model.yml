@@ -1,0 +1,39 @@
+# CWE-1321: Prototype pollution through TypeORM `save` (CVE-2020-8158).
+#
+# TypeORM < 0.2.25 deep-merges entity values with `OrmUtils.mergeDeep`, which
+# does not skip `__proto__` keys. `Repository.save` and `EntityManager.save`
+# reach it (verified at runtime; `insert`, `update`, `create`, `merge` and
+# `preload` do not). The `typeorm-deep-merge` sink kind is consumed by
+# `js/typeorm-prototype-pollution`, which only reports it when the enclosing
+# package depends on a vulnerable TypeORM version.
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["typeorm.Connection", "typeorm", "Member[getConnection].ReturnValue"]
+      - ["typeorm.Connection", "typeorm", "Member[createConnection].ReturnValue.Awaited"]
+      - ["typeorm.Connection", "typeorm.EntityManager", "Member[connection]"]
+      - ["typeorm.EntityManager", "typeorm", "Member[getManager].ReturnValue"]
+      - ["typeorm.EntityManager", "typeorm.Connection", "Member[manager]"]
+      - ["typeorm.EntityManager", "typeorm.Connection", "Member[transaction].Argument[N-1].Parameter[0]"]
+      - ["typeorm.EntityManager", "typeorm.EntityManager", "Member[transaction].Argument[N-1].Parameter[0]"]
+      - ["typeorm.EntityManager", "typeorm.Repository", "Member[manager]"]
+      - ["typeorm.Repository", "typeorm", "Member[getRepository,getTreeRepository,getMongoRepository].ReturnValue"]
+      - [
+          "typeorm.Repository",
+          "typeorm.Connection",
+          "Member[getRepository,getTreeRepository,getMongoRepository].ReturnValue"
+        ]
+      - [
+          "typeorm.Repository",
+          "typeorm.EntityManager",
+          "Member[getRepository,getTreeRepository,getMongoRepository].ReturnValue"
+        ]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["typeorm.Repository", "Member[save].Argument[0]", "typeorm-deep-merge"]
+      - ["typeorm.EntityManager", "Member[save].Argument[0,1]", "typeorm-deep-merge"]

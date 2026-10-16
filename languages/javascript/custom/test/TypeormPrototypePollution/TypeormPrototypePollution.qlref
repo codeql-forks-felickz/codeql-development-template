@@ -1,0 +1,2 @@
+query: TypeormPrototypePollution/TypeormPrototypePollution.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
