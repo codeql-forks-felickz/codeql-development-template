@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+	<p>
+		Websites that rely on cookie-based authentication may be vulnerable to cross-site
+		request forgery (CSRF). A state-changing request should include a secret token so
+		the request can't be forged by an attacker. Otherwise, unwanted requests can be
+		submitted on behalf of a user who visits a malicious website.
+	</p>
+	<p>
+		This query extends the standard <code>js/missing-token-validation</code> query. A
+		state-changing route is also considered to rely on cookies when it is guarded by an
+		earlier middleware that reads cookie or session state, such as a global session
+		authentication check (including middleware wrapped with <code>express-unless</code>).
+		Sessions stored by the <code>client-sessions</code> package are also recognized.
+	</p>
+</overview>
+
+<recommendation>
+	<p>
+		Use a middleware package such as <code>csurf</code> or <code>lusca.csrf</code> to protect
+		against CSRF attacks, and register it <em>before</em> the route handlers it should protect.
+		Express runs middleware in registration order, so CSRF middleware mounted after a route
+		never runs for that route.
+	</p>
+</recommendation>
+
+<example>
+	<p>
+		In the example below, every route is authenticated by a session check, but the CSRF
+		middleware is only registered after the <code>/transfer</code> route:
+	</p>
+
+	<sample src="examples/MissingCsrfMiddlewareBad.js"/>
+
+	<p>
+		An attacker can submit a cross-origin POST request to <code>/transfer</code> while the
+		victim is logged in. Registering the CSRF middleware before the routes fixes the problem:
+	</p>
+
+	<sample src="examples/MissingCsrfMiddlewareGood.js"/>
+</example>
+
+<references>
+	<li>OWASP: <a href="https://owasp.org/www-community/attacks/csrf">Cross Site Request Forgery (CSRF)</a></li>
+	<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/352.html">CWE-352</a></li>
+	<li>Express: <a href="https://expressjs.com/en/guide/using-middleware.html">Using middleware</a></li>
+</references>
+</qhelp>

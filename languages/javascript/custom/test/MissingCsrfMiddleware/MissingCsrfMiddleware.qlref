@@ -1,0 +1,2 @@
+query: MissingCsrfMiddleware/MissingCsrfMiddleware.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
