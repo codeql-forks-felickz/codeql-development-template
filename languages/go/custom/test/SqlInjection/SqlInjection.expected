@@ -1,0 +1,84 @@
+#select
+| evilapp.go:11:11:11:11 | q | evilapp.go:20:18:20:42 | call to PostFormValue | evilapp.go:11:11:11:11 | q | This query depends on a $@. | evilapp.go:20:18:20:42 | call to PostFormValue | user-provided value |
+| godvwa.go:11:23:11:75 | ...+... | godvwa.go:20:15:20:37 | call to FormValue | godvwa.go:11:23:11:75 | ...+... | This query depends on a $@. | godvwa.go:20:15:20:37 | call to FormValue | user-provided value |
+| govwa.go:22:16:22:28 | getProfileSql | govwa.go:15:2:15:28 | extract:0 ... := ... | govwa.go:22:16:22:28 | getProfileSql | This query depends on a $@. | govwa.go:15:2:15:28 | extract:0 ... := ... | user-provided value |
+| govwa.go:22:16:22:28 | getProfileSql | govwa.go:39:9:39:26 | call to FormValue | govwa.go:22:16:22:28 | getProfileSql | This query depends on a $@. | govwa.go:39:9:39:26 | call to FormValue | user-provided value |
+| secdevlabs.go:18:15:18:19 | query | secdevlabs.go:28:10:28:22 | &... [postupdate] | secdevlabs.go:18:15:18:19 | query | This query depends on a $@. | secdevlabs.go:28:10:28:22 | &... [postupdate] | user-provided value |
+| testbench.go:37:14:37:18 | query | testbench.go:56:10:56:14 | selection of URL | testbench.go:37:14:37:18 | query | This query depends on a $@. | testbench.go:56:10:56:14 | selection of URL | user-provided value |
+| testbench.go:94:11:94:31 | ...+... | testbench.go:101:13:101:32 | call to FormValue | testbench.go:94:11:94:31 | ...+... | This query depends on a $@. | testbench.go:101:13:101:32 | call to FormValue | user-provided value |
+edges
+| evilapp.go:9:34:9:39 | SSA def(search) | evilapp.go:11:11:11:11 | q | provenance | Sink:MaD:186 |
+| evilapp.go:20:18:20:42 | call to PostFormValue | evilapp.go:22:24:22:34 | searchQuery | provenance | Src:MaD:1996  |
+| evilapp.go:22:24:22:34 | searchQuery | evilapp.go:9:34:9:39 | SSA def(search) | provenance |  |
+| godvwa.go:10:57:10:64 | SSA def(category) | godvwa.go:11:23:11:75 | ...+... | provenance | Sink:MaD:187 |
+| godvwa.go:20:15:20:37 | call to FormValue | godvwa.go:21:38:21:45 | category | provenance | Src:MaD:1994  |
+| godvwa.go:21:38:21:45 | category | godvwa.go:10:57:10:64 | SSA def(category) | provenance |  |
+| govwa.go:15:2:15:28 | extract:0 ... := ... | govwa.go:16:9:16:20 | selection of Value | provenance | Src:MaD:1991  |
+| govwa.go:16:9:16:20 | selection of Value | govwa.go:32:9:32:32 | call to govwaGetCookie | provenance |  |
+| govwa.go:19:43:19:45 | SSA def(uid) | govwa.go:21:40:21:42 | uid | provenance |  |
+| govwa.go:20:19:21:43 | []type{args} [array] | govwa.go:20:19:21:43 | call to Sprintf | provenance | MaD:345 |
+| govwa.go:20:19:21:43 | call to Sprintf | govwa.go:22:16:22:28 | getProfileSql | provenance | Sink:MaD:186 |
+| govwa.go:21:40:21:42 | uid | govwa.go:20:19:21:43 | []type{args} [array] | provenance |  |
+| govwa.go:21:40:21:42 | uid | govwa.go:20:19:21:43 | call to Sprintf | provenance | FunctionModel |
+| govwa.go:32:9:32:32 | call to govwaGetCookie | govwa.go:34:23:34:25 | uid | provenance |  |
+| govwa.go:34:23:34:25 | uid | govwa.go:19:43:19:45 | SSA def(uid) | provenance |  |
+| govwa.go:39:9:39:26 | call to FormValue | govwa.go:41:23:41:25 | uid | provenance | Src:MaD:1994  |
+| govwa.go:41:23:41:25 | uid | govwa.go:19:43:19:45 | SSA def(uid) | provenance |  |
+| secdevlabs.go:16:49:16:52 | SSA def(user) | secdevlabs.go:17:22:17:74 | ...+... | provenance |  |
+| secdevlabs.go:17:11:17:75 | []type{args} [array] | secdevlabs.go:17:11:17:75 | call to Sprint | provenance | MaD:343 |
+| secdevlabs.go:17:11:17:75 | call to Sprint | secdevlabs.go:18:15:18:19 | query | provenance | Sink:MaD:186 |
+| secdevlabs.go:17:22:17:74 | ...+... | secdevlabs.go:17:11:17:75 | []type{args} [array] | provenance |  |
+| secdevlabs.go:17:22:17:74 | ...+... | secdevlabs.go:17:11:17:75 | call to Sprint | provenance | FunctionModel |
+| secdevlabs.go:28:10:28:22 | &... [postupdate] | secdevlabs.go:29:38:29:54 | selection of User | provenance | Src:MaD:1095  |
+| secdevlabs.go:29:38:29:54 | selection of User | secdevlabs.go:16:49:16:52 | SSA def(user) | provenance |  |
+| testbench.go:33:55:33:56 | SSA def(in) | testbench.go:36:47:36:48 | in | provenance |  |
+| testbench.go:36:12:36:57 | []type{args} [array] | testbench.go:36:12:36:57 | call to Sprintf | provenance | MaD:345 |
+| testbench.go:36:12:36:57 | call to Sprintf | testbench.go:37:14:37:18 | query | provenance | Sink:MaD:182 |
+| testbench.go:36:47:36:48 | in | testbench.go:36:12:36:57 | []type{args} [array] | provenance |  |
+| testbench.go:36:47:36:48 | in | testbench.go:36:12:36:57 | call to Sprintf | provenance | FunctionModel |
+| testbench.go:56:10:56:14 | selection of URL | testbench.go:56:10:56:22 | call to Query | provenance | Src:MaD:2006 MaD:2068 |
+| testbench.go:56:10:56:22 | call to Query | testbench.go:56:10:56:35 | call to Get | provenance | MaD:2076 |
+| testbench.go:56:10:56:35 | call to Get | testbench.go:57:24:57:25 | in | provenance |  |
+| testbench.go:57:24:57:25 | in | testbench.go:33:55:33:56 | SSA def(in) | provenance | AdditionalTaintStep |
+| testbench.go:93:36:93:37 | SSA def(in) | testbench.go:94:11:94:31 | ...+... | provenance | Sink:MaD:186 |
+| testbench.go:101:13:101:32 | call to FormValue | testbench.go:93:36:93:37 | SSA def(in) | provenance | Src:MaD:1994 AdditionalTaintStep |
+nodes
+| evilapp.go:9:34:9:39 | SSA def(search) | semmle.label | SSA def(search) |
+| evilapp.go:11:11:11:11 | q | semmle.label | q |
+| evilapp.go:20:18:20:42 | call to PostFormValue | semmle.label | call to PostFormValue |
+| evilapp.go:22:24:22:34 | searchQuery | semmle.label | searchQuery |
+| godvwa.go:10:57:10:64 | SSA def(category) | semmle.label | SSA def(category) |
+| godvwa.go:11:23:11:75 | ...+... | semmle.label | ...+... |
+| godvwa.go:20:15:20:37 | call to FormValue | semmle.label | call to FormValue |
+| godvwa.go:21:38:21:45 | category | semmle.label | category |
+| govwa.go:15:2:15:28 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
+| govwa.go:16:9:16:20 | selection of Value | semmle.label | selection of Value |
+| govwa.go:19:43:19:45 | SSA def(uid) | semmle.label | SSA def(uid) |
+| govwa.go:20:19:21:43 | []type{args} [array] | semmle.label | []type{args} [array] |
+| govwa.go:20:19:21:43 | call to Sprintf | semmle.label | call to Sprintf |
+| govwa.go:21:40:21:42 | uid | semmle.label | uid |
+| govwa.go:22:16:22:28 | getProfileSql | semmle.label | getProfileSql |
+| govwa.go:32:9:32:32 | call to govwaGetCookie | semmle.label | call to govwaGetCookie |
+| govwa.go:34:23:34:25 | uid | semmle.label | uid |
+| govwa.go:39:9:39:26 | call to FormValue | semmle.label | call to FormValue |
+| govwa.go:41:23:41:25 | uid | semmle.label | uid |
+| secdevlabs.go:16:49:16:52 | SSA def(user) | semmle.label | SSA def(user) |
+| secdevlabs.go:17:11:17:75 | []type{args} [array] | semmle.label | []type{args} [array] |
+| secdevlabs.go:17:11:17:75 | call to Sprint | semmle.label | call to Sprint |
+| secdevlabs.go:17:22:17:74 | ...+... | semmle.label | ...+... |
+| secdevlabs.go:18:15:18:19 | query | semmle.label | query |
+| secdevlabs.go:28:10:28:22 | &... [postupdate] | semmle.label | &... [postupdate] |
+| secdevlabs.go:29:38:29:54 | selection of User | semmle.label | selection of User |
+| testbench.go:33:55:33:56 | SSA def(in) | semmle.label | SSA def(in) |
+| testbench.go:36:12:36:57 | []type{args} [array] | semmle.label | []type{args} [array] |
+| testbench.go:36:12:36:57 | call to Sprintf | semmle.label | call to Sprintf |
+| testbench.go:36:47:36:48 | in | semmle.label | in |
+| testbench.go:37:14:37:18 | query | semmle.label | query |
+| testbench.go:56:10:56:14 | selection of URL | semmle.label | selection of URL |
+| testbench.go:56:10:56:22 | call to Query | semmle.label | call to Query |
+| testbench.go:56:10:56:35 | call to Get | semmle.label | call to Get |
+| testbench.go:57:24:57:25 | in | semmle.label | in |
+| testbench.go:93:36:93:37 | SSA def(in) | semmle.label | SSA def(in) |
+| testbench.go:94:11:94:31 | ...+... | semmle.label | ...+... |
+| testbench.go:101:13:101:32 | call to FormValue | semmle.label | call to FormValue |
+subpaths
