@@ -9,11 +9,15 @@ namespace System.Web
 
 namespace System.Web.Services
 {
-    public class WebMethodAttribute : System.Attribute { }
+    public class WebMethodAttribute : System.Attribute
+    {
+        public string Description { get; set; }
+    }
 
     public class WebServiceAttribute : System.Attribute
     {
         public string Namespace { get; set; }
+        public string Description { get; set; }
     }
 
     public class WebService
