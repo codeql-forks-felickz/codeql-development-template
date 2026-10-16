@@ -1,0 +1,17 @@
+#select
+| order_billing.py:14:11:14:27 | ControlFlowNode for Attribute() | order_billing.py:13:20:13:24 | ControlFlowNode for event | order_billing.py:14:11:14:27 | ControlFlowNode for Attribute() | This expression logs $@ as clear text. | order_billing.py:13:20:13:24 | ControlFlowNode for event | an AWS Lambda event containing sensitive data (private) |
+| order_billing.py:20:39:20:43 | ControlFlowNode for event | order_billing.py:19:20:19:24 | ControlFlowNode for event | order_billing.py:20:39:20:43 | ControlFlowNode for event | This expression logs $@ as clear text. | order_billing.py:19:20:19:24 | ControlFlowNode for event | an AWS Lambda event containing sensitive data (private) |
+| order_billing.py:26:11:26:26 | ControlFlowNode for Subscript | order_billing.py:25:17:25:21 | ControlFlowNode for event | order_billing.py:26:11:26:26 | ControlFlowNode for Subscript | This expression logs $@ as clear text. | order_billing.py:25:17:25:21 | ControlFlowNode for event | an AWS Lambda event containing sensitive data (private) |
+edges
+| order_billing.py:13:20:13:24 | ControlFlowNode for event | order_billing.py:14:11:14:27 | ControlFlowNode for Attribute() | provenance |  |
+| order_billing.py:13:20:13:24 | ControlFlowNode for event | order_billing.py:14:11:14:27 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| order_billing.py:19:20:19:24 | ControlFlowNode for event | order_billing.py:20:39:20:43 | ControlFlowNode for event | provenance |  |
+| order_billing.py:25:17:25:21 | ControlFlowNode for event | order_billing.py:26:11:26:26 | ControlFlowNode for Subscript | provenance |  |
+nodes
+| order_billing.py:13:20:13:24 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| order_billing.py:14:11:14:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| order_billing.py:19:20:19:24 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| order_billing.py:20:39:20:43 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| order_billing.py:25:17:25:21 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| order_billing.py:26:11:26:26 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+subpaths
