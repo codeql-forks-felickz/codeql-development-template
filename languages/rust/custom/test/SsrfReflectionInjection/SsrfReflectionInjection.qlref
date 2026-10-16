@@ -1,0 +1,2 @@
+query: SsrfReflectionInjection/SsrfReflectionInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
