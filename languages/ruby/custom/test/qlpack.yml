@@ -2,4 +2,5 @@ name: languages-ruby-custom-test
 version: 0.0.2
 dependencies:
   languages-ruby-custom-src: ${workspace}
+  codeql/ruby-queries: "*"
 extractor: ruby

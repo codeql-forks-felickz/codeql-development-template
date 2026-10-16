@@ -1,0 +1,10 @@
+#select
+| app/controllers/user_avatars_controller.rb:11:22:11:36 | call to avatar_url | app/controllers/user_avatars_controller.rb:11:22:11:36 | call to avatar_url | app/controllers/user_avatars_controller.rb:11:22:11:36 | call to avatar_url | The URL of this request depends on a $@. | app/controllers/user_avatars_controller.rb:11:22:11:36 | call to avatar_url | stored (potentially user-provided) value |
+| app/controllers/user_avatars_controller.rb:18:14:18:28 | call to avatar_url | app/controllers/user_avatars_controller.rb:18:14:18:28 | call to avatar_url | app/controllers/user_avatars_controller.rb:18:14:18:28 | call to avatar_url | The URL of this request depends on a $@. | app/controllers/user_avatars_controller.rb:18:14:18:28 | call to avatar_url | stored (potentially user-provided) value |
+| app/controllers/user_avatars_controller.rb:24:19:24:34 | call to avatar_host | app/controllers/user_avatars_controller.rb:24:19:24:34 | call to avatar_host | app/controllers/user_avatars_controller.rb:24:19:24:34 | call to avatar_host | The URL of this request depends on a $@. | app/controllers/user_avatars_controller.rb:24:19:24:34 | call to avatar_host | stored (potentially user-provided) value |
+edges
+nodes
+| app/controllers/user_avatars_controller.rb:11:22:11:36 | call to avatar_url | semmle.label | call to avatar_url |
+| app/controllers/user_avatars_controller.rb:18:14:18:28 | call to avatar_url | semmle.label | call to avatar_url |
+| app/controllers/user_avatars_controller.rb:24:19:24:34 | call to avatar_host | semmle.label | call to avatar_host |
+subpaths
