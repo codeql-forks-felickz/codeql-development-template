@@ -1,0 +1,3 @@
+| client_sessions.js:6:9:6:71 | session ... ret' }) | This cookie middleware is serving a $@ without CSRF protection. | client_sessions.js:8:21:11:1 | functio ... 204);\\n} | request handler |
+| session_guard_plain.js:6:9:6:22 | cookieParser() | This cookie middleware is serving a $@ without CSRF protection. | session_guard_plain.js:16:23:19:1 | functio ... 204);\\n} | request handler |
+| session_guard_unless.js:10:9:10:22 | cookieParser() | This cookie middleware is serving a $@ without CSRF protection. | session_guard_unless.js:23:26:26:1 | functio ... e });\\n} | request handler |
