@@ -5,4 +5,14 @@ extensions:
       pack: codeql/csharp-all
       extensible: sinkModel
     data:
-      - ["System.Web.UI.WebControls", "Literal", True, "set_Text", "(System.String)", "", "Argument[0]", "html-injection", "manual"]
+      - [
+          "System.Web.UI.WebControls",
+          "Literal",
+          True,
+          "set_Text",
+          "(System.String)",
+          "",
+          "Argument[0]",
+          "html-injection",
+          "manual"
+        ]
