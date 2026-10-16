@@ -1,0 +1,2 @@
+query: DjangoCsrfExemptStateChange/DjangoCsrfExemptStateChange.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
