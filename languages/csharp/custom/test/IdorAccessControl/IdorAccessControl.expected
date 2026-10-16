@@ -1,0 +1,155 @@
+#select
+| BankPages.cs:34:63:34:67 | access to local variable query | BankPages.cs:19:31:19:57 | access to indexer : HttpCookie | BankPages.cs:34:63:34:67 | access to local variable query | This record lookup depends on a $@ without checking that the current user may access the record. | BankPages.cs:19:31:19:57 | access to indexer | user-controlled identifier |
+| BankPages.cs:42:63:42:67 | access to local variable query | BankPages.cs:22:34:22:63 | access to indexer : String | BankPages.cs:42:63:42:67 | access to local variable query | This record lookup depends on a $@ without checking that the current user may access the record. | BankPages.cs:22:34:22:63 | access to indexer | user-controlled identifier |
+| BankPages.cs:87:55:87:68 | access to field debitAccount | BankPages.cs:100:35:100:69 | access to indexer : String | BankPages.cs:87:55:87:68 | access to field debitAccount | This record lookup depends on a $@ without checking that the current user may access the record. | BankPages.cs:100:35:100:69 | access to indexer | user-controlled identifier |
+| BankPages.cs:88:56:88:70 | access to field creditAccount | BankPages.cs:101:36:101:71 | access to indexer : String | BankPages.cs:88:56:88:70 | access to field creditAccount | This record lookup depends on a $@ without checking that the current user may access the record. | BankPages.cs:101:36:101:71 | access to indexer | user-controlled identifier |
+| InvoiceHandler.cs:27:33:27:34 | (...) ... | InvoiceHandler.cs:13:27:13:46 | call to method Get : String | InvoiceHandler.cs:27:33:27:34 | (...) ... | This record lookup depends on a $@ without checking that the current user may access the record. | InvoiceHandler.cs:13:27:13:46 | call to method Get | user-controlled identifier |
+| ShopOrders.cs:18:61:18:74 | (...) ... | ShopOrders.cs:43:76:43:108 | access to indexer : HttpCookie | ShopOrders.cs:18:61:18:74 | (...) ... | This record lookup depends on a $@ without checking that the current user may access the record. | ShopOrders.cs:43:76:43:108 | access to indexer | user-controlled identifier |
+| ShopOrders.cs:27:23:27:33 | (...) ... | ShopOrders.cs:49:34:49:55 | access to indexer : String | ShopOrders.cs:27:23:27:33 | (...) ... | This record lookup depends on a $@ without checking that the current user may access the record. | ShopOrders.cs:49:34:49:55 | access to indexer | user-controlled identifier |
+| UsersController.cs:40:43:40:44 | (...) ... | UsersController.cs:38:38:38:39 | id : Int32 | UsersController.cs:40:43:40:44 | (...) ... | This record lookup depends on a $@ without checking that the current user may access the record. | UsersController.cs:38:38:38:39 | id | user-controlled identifier |
+| UsersController.cs:47:76:47:77 | access to parameter id | UsersController.cs:45:38:45:39 | id : Int32 | UsersController.cs:47:76:47:77 | access to parameter id | This record lookup depends on a $@ without checking that the current user may access the record. | UsersController.cs:45:38:45:39 | id | user-controlled identifier |
+| UsersController.cs:62:69:62:70 | access to parameter id | UsersController.cs:60:41:60:42 | id : Int32 | UsersController.cs:62:69:62:70 | access to parameter id | This record lookup depends on a $@ without checking that the current user may access the record. | UsersController.cs:60:41:60:42 | id | user-controlled identifier |
+edges
+| BankPages.cs:19:20:19:27 | access to local variable thisUser : String | BankPages.cs:20:25:20:32 | access to local variable thisUser : String | provenance |  |
+| BankPages.cs:19:31:19:57 | access to indexer : HttpCookie | BankPages.cs:19:31:19:63 | access to property Value : String | provenance | MaD:2257 |
+| BankPages.cs:19:31:19:63 | access to property Value : String | BankPages.cs:19:20:19:27 | access to local variable thisUser : String | provenance |  |
+| BankPages.cs:20:25:20:32 | access to local variable thisUser : String | BankPages.cs:30:41:30:46 | userId : String | provenance |  |
+| BankPages.cs:22:20:22:30 | access to local variable userAccount : String | BankPages.cs:23:24:23:34 | access to local variable userAccount : String | provenance |  |
+| BankPages.cs:22:34:22:63 | access to indexer : String | BankPages.cs:22:20:22:30 | access to local variable userAccount : String | provenance |  |
+| BankPages.cs:23:24:23:34 | access to local variable userAccount : String | BankPages.cs:38:40:38:52 | accountNumber : String | provenance |  |
+| BankPages.cs:30:41:30:46 | userId : String | BankPages.cs:33:20:33:24 | access to local variable query : String | provenance |  |
+| BankPages.cs:33:20:33:24 | access to local variable query : String | BankPages.cs:34:63:34:67 | access to local variable query | provenance |  |
+| BankPages.cs:38:40:38:52 | accountNumber : String | BankPages.cs:41:20:41:24 | access to local variable query : String | provenance |  |
+| BankPages.cs:41:20:41:24 | access to local variable query : String | BankPages.cs:42:63:42:67 | access to local variable query | provenance |  |
+| BankPages.cs:61:20:61:30 | access to local variable userAccount : String | BankPages.cs:67:61:67:119 | ... + ... | provenance |  |
+| BankPages.cs:61:34:61:63 | access to indexer : String | BankPages.cs:61:20:61:30 | access to local variable userAccount : String | provenance |  |
+| BankPages.cs:83:53:83:53 | t : MoneyTransfer [field creditAccount] : String | BankPages.cs:88:56:88:56 | access to parameter t : MoneyTransfer [field creditAccount] : String | provenance |  |
+| BankPages.cs:83:53:83:53 | t : MoneyTransfer [field debitAccount] : String | BankPages.cs:87:55:87:55 | access to parameter t : MoneyTransfer [field debitAccount] : String | provenance |  |
+| BankPages.cs:87:55:87:55 | access to parameter t : MoneyTransfer [field debitAccount] : String | BankPages.cs:87:55:87:68 | access to field debitAccount | provenance |  |
+| BankPages.cs:88:56:88:56 | access to parameter t : MoneyTransfer [field creditAccount] : String | BankPages.cs:88:56:88:70 | access to field creditAccount | provenance |  |
+| BankPages.cs:100:20:100:31 | access to local variable debitAccount : String | BankPages.cs:105:42:105:53 | access to local variable debitAccount : String | provenance |  |
+| BankPages.cs:100:35:100:69 | access to indexer : String | BankPages.cs:100:20:100:31 | access to local variable debitAccount : String | provenance |  |
+| BankPages.cs:101:20:101:32 | access to local variable creditAccount : String | BankPages.cs:106:43:106:55 | access to local variable creditAccount : String | provenance |  |
+| BankPages.cs:101:36:101:71 | access to indexer : String | BankPages.cs:101:20:101:32 | access to local variable creditAccount : String | provenance |  |
+| BankPages.cs:105:13:105:25 | [post] access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | BankPages.cs:106:13:106:25 | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | provenance |  |
+| BankPages.cs:105:42:105:53 | access to local variable debitAccount : String | BankPages.cs:105:13:105:25 | [post] access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | provenance |  |
+| BankPages.cs:106:13:106:25 | [post] access to local variable myTransaction : MoneyTransfer [field creditAccount] : String | BankPages.cs:107:13:107:25 | access to local variable myTransaction : MoneyTransfer [field creditAccount] : String | provenance |  |
+| BankPages.cs:106:13:106:25 | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | BankPages.cs:107:13:107:25 | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | provenance |  |
+| BankPages.cs:106:43:106:55 | access to local variable creditAccount : String | BankPages.cs:106:13:106:25 | [post] access to local variable myTransaction : MoneyTransfer [field creditAccount] : String | provenance |  |
+| BankPages.cs:107:13:107:25 | access to local variable myTransaction : MoneyTransfer [field creditAccount] : String | BankPages.cs:108:44:108:56 | access to local variable myTransaction : MoneyTransfer [field creditAccount] : String | provenance |  |
+| BankPages.cs:107:13:107:25 | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | BankPages.cs:108:44:108:56 | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | provenance |  |
+| BankPages.cs:108:44:108:56 | access to local variable myTransaction : MoneyTransfer [field creditAccount] : String | BankPages.cs:83:53:83:53 | t : MoneyTransfer [field creditAccount] : String | provenance |  |
+| BankPages.cs:108:44:108:56 | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | BankPages.cs:83:53:83:53 | t : MoneyTransfer [field debitAccount] : String | provenance |  |
+| BankPages.cs:118:20:118:31 | access to local variable debitAccount : String | BankPages.cs:124:42:124:53 | access to local variable debitAccount : String | provenance |  |
+| BankPages.cs:118:35:118:69 | access to indexer : String | BankPages.cs:118:20:118:31 | access to local variable debitAccount : String | provenance |  |
+| BankPages.cs:124:13:124:25 | [post] access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | BankPages.cs:125:44:125:56 | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | provenance |  |
+| BankPages.cs:124:42:124:53 | access to local variable debitAccount : String | BankPages.cs:124:13:124:25 | [post] access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | provenance |  |
+| BankPages.cs:125:44:125:56 | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | BankPages.cs:83:53:83:53 | t : MoneyTransfer [field debitAccount] : String | provenance |  |
+| InvoiceHandler.cs:13:20:13:23 | access to local variable data : String | InvoiceHandler.cs:17:32:17:35 | access to local variable data : String | provenance |  |
+| InvoiceHandler.cs:13:27:13:46 | call to method Get : String | InvoiceHandler.cs:13:20:13:23 | access to local variable data : String | provenance |  |
+| InvoiceHandler.cs:17:17:17:18 | access to local variable id : Int32 | InvoiceHandler.cs:27:33:27:34 | (...) ... | provenance |  |
+| InvoiceHandler.cs:17:22:17:36 | call to method Parse : Int32 | InvoiceHandler.cs:17:17:17:18 | access to local variable id : Int32 | provenance |  |
+| InvoiceHandler.cs:17:32:17:35 | access to local variable data : String | InvoiceHandler.cs:17:22:17:36 | call to method Parse : Int32 | provenance | MaD:2808 |
+| ShopOrders.cs:15:38:15:51 | customerNumber : Int32 | ShopOrders.cs:18:61:18:74 | (...) ... | provenance |  |
+| ShopOrders.cs:23:44:23:54 | orderNumber : Int32 | ShopOrders.cs:27:23:27:33 | (...) ... | provenance |  |
+| ShopOrders.cs:43:76:43:108 | access to indexer : HttpCookie | ShopOrders.cs:43:76:43:114 | access to property Value : String | provenance | MaD:2257 |
+| ShopOrders.cs:43:76:43:114 | access to property Value : String | ShopOrders.cs:43:76:43:125 | call to method ToString : String | provenance | MaD:2977 |
+| ShopOrders.cs:43:76:43:125 | call to method ToString : String | ShopOrders.cs:43:132:43:133 | access to local variable id : Int32 | provenance | MaD:2818 |
+| ShopOrders.cs:43:132:43:133 | access to local variable id : Int32 | ShopOrders.cs:47:26:47:27 | access to local variable id : Int32 | provenance |  |
+| ShopOrders.cs:47:26:47:27 | access to local variable id : Int32 | ShopOrders.cs:15:38:15:51 | customerNumber : Int32 | provenance |  |
+| ShopOrders.cs:49:20:49:30 | access to local variable orderNumber : String | ShopOrders.cs:52:46:52:56 | access to local variable orderNumber : String | provenance |  |
+| ShopOrders.cs:49:34:49:55 | access to indexer : String | ShopOrders.cs:49:20:49:30 | access to local variable orderNumber : String | provenance |  |
+| ShopOrders.cs:52:36:52:57 | call to method Parse : Int32 | ShopOrders.cs:23:44:23:54 | orderNumber : Int32 | provenance |  |
+| ShopOrders.cs:52:46:52:56 | access to local variable orderNumber : String | ShopOrders.cs:52:36:52:57 | call to method Parse : Int32 | provenance | MaD:2808 |
+| ShopOrders.cs:68:20:68:30 | access to local variable orderNumber : String | ShopOrders.cs:71:46:71:56 | access to local variable orderNumber : String | provenance |  |
+| ShopOrders.cs:68:34:68:55 | access to indexer : String | ShopOrders.cs:68:20:68:30 | access to local variable orderNumber : String | provenance |  |
+| ShopOrders.cs:71:36:71:57 | call to method Parse : Int32 | ShopOrders.cs:23:44:23:54 | orderNumber : Int32 | provenance |  |
+| ShopOrders.cs:71:46:71:56 | access to local variable orderNumber : String | ShopOrders.cs:71:36:71:57 | call to method Parse : Int32 | provenance | MaD:2808 |
+| UsersController.cs:38:38:38:39 | id : Int32 | UsersController.cs:40:43:40:44 | (...) ... | provenance |  |
+| UsersController.cs:45:38:45:39 | id : Int32 | UsersController.cs:47:63:47:77 | (...) => ... : (...) => ... [captured id] : Int32 | provenance |  |
+| UsersController.cs:47:63:47:77 | (...) => ... : (...) => ... [captured id] : Int32 | UsersController.cs:47:76:47:77 | access to parameter id | provenance | MaD:1831 |
+| UsersController.cs:60:41:60:42 | id : Int32 | UsersController.cs:62:56:62:70 | (...) => ... : (...) => ... [captured id] : Int32 | provenance |  |
+| UsersController.cs:62:56:62:70 | (...) => ... : (...) => ... [captured id] : Int32 | UsersController.cs:62:69:62:70 | access to parameter id | provenance | MaD:1831 |
+| UsersController.cs:86:38:86:39 | id : Int32 | UsersController.cs:92:63:92:77 | (...) => ... : (...) => ... [captured id] : Int32 | provenance |  |
+| UsersController.cs:92:63:92:77 | (...) => ... : (...) => ... [captured id] : Int32 | UsersController.cs:92:76:92:77 | access to parameter id | provenance | MaD:1831 |
+| UsersController.cs:101:41:101:42 | id : Int32 | UsersController.cs:103:56:103:70 | (...) => ... : (...) => ... [captured id] : Int32 | provenance |  |
+| UsersController.cs:103:56:103:70 | (...) => ... : (...) => ... [captured id] : Int32 | UsersController.cs:103:69:103:70 | access to parameter id | provenance | MaD:1831 |
+nodes
+| BankPages.cs:19:20:19:27 | access to local variable thisUser : String | semmle.label | access to local variable thisUser : String |
+| BankPages.cs:19:31:19:57 | access to indexer : HttpCookie | semmle.label | access to indexer : HttpCookie |
+| BankPages.cs:19:31:19:63 | access to property Value : String | semmle.label | access to property Value : String |
+| BankPages.cs:20:25:20:32 | access to local variable thisUser : String | semmle.label | access to local variable thisUser : String |
+| BankPages.cs:22:20:22:30 | access to local variable userAccount : String | semmle.label | access to local variable userAccount : String |
+| BankPages.cs:22:34:22:63 | access to indexer : String | semmle.label | access to indexer : String |
+| BankPages.cs:23:24:23:34 | access to local variable userAccount : String | semmle.label | access to local variable userAccount : String |
+| BankPages.cs:30:41:30:46 | userId : String | semmle.label | userId : String |
+| BankPages.cs:33:20:33:24 | access to local variable query : String | semmle.label | access to local variable query : String |
+| BankPages.cs:34:63:34:67 | access to local variable query | semmle.label | access to local variable query |
+| BankPages.cs:38:40:38:52 | accountNumber : String | semmle.label | accountNumber : String |
+| BankPages.cs:41:20:41:24 | access to local variable query : String | semmle.label | access to local variable query : String |
+| BankPages.cs:42:63:42:67 | access to local variable query | semmle.label | access to local variable query |
+| BankPages.cs:61:20:61:30 | access to local variable userAccount : String | semmle.label | access to local variable userAccount : String |
+| BankPages.cs:61:34:61:63 | access to indexer : String | semmle.label | access to indexer : String |
+| BankPages.cs:67:61:67:119 | ... + ... | semmle.label | ... + ... |
+| BankPages.cs:83:53:83:53 | t : MoneyTransfer [field creditAccount] : String | semmle.label | t : MoneyTransfer [field creditAccount] : String |
+| BankPages.cs:83:53:83:53 | t : MoneyTransfer [field debitAccount] : String | semmle.label | t : MoneyTransfer [field debitAccount] : String |
+| BankPages.cs:87:55:87:55 | access to parameter t : MoneyTransfer [field debitAccount] : String | semmle.label | access to parameter t : MoneyTransfer [field debitAccount] : String |
+| BankPages.cs:87:55:87:68 | access to field debitAccount | semmle.label | access to field debitAccount |
+| BankPages.cs:88:56:88:56 | access to parameter t : MoneyTransfer [field creditAccount] : String | semmle.label | access to parameter t : MoneyTransfer [field creditAccount] : String |
+| BankPages.cs:88:56:88:70 | access to field creditAccount | semmle.label | access to field creditAccount |
+| BankPages.cs:100:20:100:31 | access to local variable debitAccount : String | semmle.label | access to local variable debitAccount : String |
+| BankPages.cs:100:35:100:69 | access to indexer : String | semmle.label | access to indexer : String |
+| BankPages.cs:101:20:101:32 | access to local variable creditAccount : String | semmle.label | access to local variable creditAccount : String |
+| BankPages.cs:101:36:101:71 | access to indexer : String | semmle.label | access to indexer : String |
+| BankPages.cs:105:13:105:25 | [post] access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | semmle.label | [post] access to local variable myTransaction : MoneyTransfer [field debitAccount] : String |
+| BankPages.cs:105:42:105:53 | access to local variable debitAccount : String | semmle.label | access to local variable debitAccount : String |
+| BankPages.cs:106:13:106:25 | [post] access to local variable myTransaction : MoneyTransfer [field creditAccount] : String | semmle.label | [post] access to local variable myTransaction : MoneyTransfer [field creditAccount] : String |
+| BankPages.cs:106:13:106:25 | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | semmle.label | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String |
+| BankPages.cs:106:43:106:55 | access to local variable creditAccount : String | semmle.label | access to local variable creditAccount : String |
+| BankPages.cs:107:13:107:25 | access to local variable myTransaction : MoneyTransfer [field creditAccount] : String | semmle.label | access to local variable myTransaction : MoneyTransfer [field creditAccount] : String |
+| BankPages.cs:107:13:107:25 | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | semmle.label | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String |
+| BankPages.cs:108:44:108:56 | access to local variable myTransaction : MoneyTransfer [field creditAccount] : String | semmle.label | access to local variable myTransaction : MoneyTransfer [field creditAccount] : String |
+| BankPages.cs:108:44:108:56 | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | semmle.label | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String |
+| BankPages.cs:118:20:118:31 | access to local variable debitAccount : String | semmle.label | access to local variable debitAccount : String |
+| BankPages.cs:118:35:118:69 | access to indexer : String | semmle.label | access to indexer : String |
+| BankPages.cs:124:13:124:25 | [post] access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | semmle.label | [post] access to local variable myTransaction : MoneyTransfer [field debitAccount] : String |
+| BankPages.cs:124:42:124:53 | access to local variable debitAccount : String | semmle.label | access to local variable debitAccount : String |
+| BankPages.cs:125:44:125:56 | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String | semmle.label | access to local variable myTransaction : MoneyTransfer [field debitAccount] : String |
+| InvoiceHandler.cs:13:20:13:23 | access to local variable data : String | semmle.label | access to local variable data : String |
+| InvoiceHandler.cs:13:27:13:46 | call to method Get : String | semmle.label | call to method Get : String |
+| InvoiceHandler.cs:17:17:17:18 | access to local variable id : Int32 | semmle.label | access to local variable id : Int32 |
+| InvoiceHandler.cs:17:22:17:36 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| InvoiceHandler.cs:17:32:17:35 | access to local variable data : String | semmle.label | access to local variable data : String |
+| InvoiceHandler.cs:27:33:27:34 | (...) ... | semmle.label | (...) ... |
+| ShopOrders.cs:15:38:15:51 | customerNumber : Int32 | semmle.label | customerNumber : Int32 |
+| ShopOrders.cs:18:61:18:74 | (...) ... | semmle.label | (...) ... |
+| ShopOrders.cs:23:44:23:54 | orderNumber : Int32 | semmle.label | orderNumber : Int32 |
+| ShopOrders.cs:27:23:27:33 | (...) ... | semmle.label | (...) ... |
+| ShopOrders.cs:43:76:43:108 | access to indexer : HttpCookie | semmle.label | access to indexer : HttpCookie |
+| ShopOrders.cs:43:76:43:114 | access to property Value : String | semmle.label | access to property Value : String |
+| ShopOrders.cs:43:76:43:125 | call to method ToString : String | semmle.label | call to method ToString : String |
+| ShopOrders.cs:43:132:43:133 | access to local variable id : Int32 | semmle.label | access to local variable id : Int32 |
+| ShopOrders.cs:47:26:47:27 | access to local variable id : Int32 | semmle.label | access to local variable id : Int32 |
+| ShopOrders.cs:49:20:49:30 | access to local variable orderNumber : String | semmle.label | access to local variable orderNumber : String |
+| ShopOrders.cs:49:34:49:55 | access to indexer : String | semmle.label | access to indexer : String |
+| ShopOrders.cs:52:36:52:57 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| ShopOrders.cs:52:46:52:56 | access to local variable orderNumber : String | semmle.label | access to local variable orderNumber : String |
+| ShopOrders.cs:68:20:68:30 | access to local variable orderNumber : String | semmle.label | access to local variable orderNumber : String |
+| ShopOrders.cs:68:34:68:55 | access to indexer : String | semmle.label | access to indexer : String |
+| ShopOrders.cs:71:36:71:57 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| ShopOrders.cs:71:46:71:56 | access to local variable orderNumber : String | semmle.label | access to local variable orderNumber : String |
+| UsersController.cs:38:38:38:39 | id : Int32 | semmle.label | id : Int32 |
+| UsersController.cs:40:43:40:44 | (...) ... | semmle.label | (...) ... |
+| UsersController.cs:45:38:45:39 | id : Int32 | semmle.label | id : Int32 |
+| UsersController.cs:47:63:47:77 | (...) => ... : (...) => ... [captured id] : Int32 | semmle.label | (...) => ... : (...) => ... [captured id] : Int32 |
+| UsersController.cs:47:76:47:77 | access to parameter id | semmle.label | access to parameter id |
+| UsersController.cs:60:41:60:42 | id : Int32 | semmle.label | id : Int32 |
+| UsersController.cs:62:56:62:70 | (...) => ... : (...) => ... [captured id] : Int32 | semmle.label | (...) => ... : (...) => ... [captured id] : Int32 |
+| UsersController.cs:62:69:62:70 | access to parameter id | semmle.label | access to parameter id |
+| UsersController.cs:86:38:86:39 | id : Int32 | semmle.label | id : Int32 |
+| UsersController.cs:92:63:92:77 | (...) => ... : (...) => ... [captured id] : Int32 | semmle.label | (...) => ... : (...) => ... [captured id] : Int32 |
+| UsersController.cs:92:76:92:77 | access to parameter id | semmle.label | access to parameter id |
+| UsersController.cs:101:41:101:42 | id : Int32 | semmle.label | id : Int32 |
+| UsersController.cs:103:56:103:70 | (...) => ... : (...) => ... [captured id] : Int32 | semmle.label | (...) => ... : (...) => ... [captured id] : Int32 |
+| UsersController.cs:103:69:103:70 | access to parameter id | semmle.label | access to parameter id |
+subpaths
