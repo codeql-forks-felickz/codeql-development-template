@@ -11,3 +11,7 @@ Use it with stock queries via `--model-packs=languages-java-custom-models`
 | `ldap/org.apache.directory.filter.model.yml` | `ldap-injection` | Treats the filter string passed to Apache Directory `FilterParser.parse` (ApacheDS 1.5.x `shared-ldap` and Apache Directory LDAP API) as a `java/ldap-injection` (CWE-90) sink. |
 
 Tests: `languages/java/custom/test/SqlLdapInjectionCoverage`.
+
+## Coverage notes (no model needed)
+
+- **Kotlin Android `ContentProvider.query` SQL injection** (`SQLiteQueryBuilder.appendWhere(... + uri.lastPathSegment)` and forwarded `projection`/`selection`/`sortOrder`): stock `java/sql-injection` already reports this for exported providers. Kotlin is not extracted with `build-mode: none`, so Kotlin-only apps need a `manual` or `autobuild` build to be analyzed. Regression test: `languages/java/custom/test/SqlInjectionAndroidContentProviderKotlin`.
