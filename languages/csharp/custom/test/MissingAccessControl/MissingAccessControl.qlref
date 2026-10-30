@@ -1,0 +1,2 @@
+query: MissingAccessControl/MissingAccessControl.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
