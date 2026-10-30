@@ -1,0 +1,2 @@
+query: TaintedWriteWhatWhere/TaintedWriteWhatWhere.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
