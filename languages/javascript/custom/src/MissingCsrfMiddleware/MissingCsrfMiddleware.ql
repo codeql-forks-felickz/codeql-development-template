@@ -172,7 +172,7 @@ private DataFlow::SourceNode nodeLeadingToCsrfWriteOrCheck(DataFlow::TypeBackTra
 }
 
 /**
- * Gets a route handler that sets an CSRF related cookie.
+ * Gets a route handler that sets a CSRF related cookie.
  */
 private Routing::RouteHandler getAHandlerSettingCsrfCookie() {
   exists(Http::CookieDefinition setCookie |
