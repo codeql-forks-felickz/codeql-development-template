@@ -1,0 +1,2 @@
+query: WeakCryptoRandomness/WeakCryptoRandomness.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
