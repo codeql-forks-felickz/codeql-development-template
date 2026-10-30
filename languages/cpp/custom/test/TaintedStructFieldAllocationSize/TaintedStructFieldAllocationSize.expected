@@ -1,0 +1,63 @@
+#select
+| test.c:43:27:43:32 | call to malloc | test.c:41:16:41:19 | fread output argument | test.c:43:34:43:38 | size1 | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:41:16:41:19 | fread output argument | user input (string read by fread) |
+| test.c:47:27:47:32 | call to malloc | test.c:41:16:41:19 | fread output argument | test.c:47:34:47:38 | size2 | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:41:16:41:19 | fread output argument | user input (string read by fread) |
+| test.c:56:23:56:28 | call to malloc | test.c:55:9:55:9 | fread output argument | test.c:56:30:56:49 | ... - ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:55:9:55:9 | fread output argument | user input (string read by fread) |
+| test.c:64:23:64:28 | call to malloc | test.c:63:14:63:17 | recv output argument | test.c:64:30:64:61 | ... * ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:63:14:63:17 | recv output argument | user input (buffer read by recv) |
+edges
+| test.c:41:16:41:19 | fread output argument | test.c:42:17:42:19 | *img | provenance |  |
+| test.c:42:17:42:19 | *img | test.c:42:17:42:38 | ... + ... | provenance | Config |
+| test.c:42:17:42:19 | *img | test.c:42:29:42:31 | *img | provenance |  |
+| test.c:42:17:42:38 | ... + ... | test.c:43:34:43:38 | size1 | provenance |  |
+| test.c:42:29:42:31 | *img | test.c:42:17:42:38 | ... + ... | provenance | Config |
+| test.c:42:29:42:31 | *img | test.c:46:17:46:19 | *img | provenance |  |
+| test.c:46:17:46:19 | *img | test.c:46:17:46:44 | ... + ... | provenance | Config |
+| test.c:46:17:46:19 | *img | test.c:46:29:46:31 | *img | provenance |  |
+| test.c:46:17:46:44 | ... + ... | test.c:47:34:47:38 | size2 | provenance |  |
+| test.c:46:29:46:31 | *img | test.c:46:17:46:44 | ... + ... | provenance | Config |
+| test.c:46:29:46:31 | *img | test.c:48:19:48:21 | *img | provenance |  |
+| test.c:48:19:48:21 | *img | test.c:42:17:42:19 | *img | provenance |  |
+| test.c:55:9:55:9 | fread output argument | test.c:56:30:56:30 | *p | provenance |  |
+| test.c:56:30:56:30 | *p | test.c:56:30:56:49 | ... - ... | provenance | Config |
+| test.c:56:30:56:30 | *p | test.c:56:41:56:41 | *p | provenance |  |
+| test.c:56:41:56:41 | *p | test.c:56:30:56:49 | ... - ... | provenance | Config |
+| test.c:63:14:63:17 | recv output argument | test.c:64:30:64:32 | *pkt | provenance |  |
+| test.c:64:30:64:32 | *pkt | test.c:64:34:64:37 | *dims | provenance | Config |
+| test.c:64:30:64:32 | *pkt | test.c:64:47:64:49 | *pkt | provenance |  |
+| test.c:64:34:64:37 | *dims | test.c:64:30:64:61 | ... * ... | provenance | Config |
+| test.c:64:47:64:49 | *pkt | test.c:64:51:64:54 | *dims | provenance | Config |
+| test.c:64:51:64:54 | *dims | test.c:64:30:64:61 | ... * ... | provenance | Config |
+| test.c:112:3:112:5 | *cfg [post update] [a] | test.c:113:3:113:5 | *cfg [a] | provenance |  |
+| test.c:112:3:112:31 | ... = ... | test.c:112:3:112:5 | *cfg [post update] [a] | provenance |  |
+| test.c:112:16:112:30 | *call to getenv | test.c:112:3:112:31 | ... = ... | provenance | TaintFunction |
+| test.c:113:3:113:5 | *cfg [a] | test.c:114:31:114:33 | *cfg [a] | provenance |  |
+| test.c:114:31:114:33 | *cfg [a] | test.c:115:31:115:33 | *cfg [a] | provenance |  |
+| test.c:115:31:115:33 | *cfg [a] | test.c:115:31:115:39 | ... * ... | provenance |  |
+nodes
+| test.c:41:16:41:19 | fread output argument | semmle.label | fread output argument |
+| test.c:42:17:42:19 | *img | semmle.label | *img |
+| test.c:42:17:42:38 | ... + ... | semmle.label | ... + ... |
+| test.c:42:29:42:31 | *img | semmle.label | *img |
+| test.c:43:34:43:38 | size1 | semmle.label | size1 |
+| test.c:46:17:46:19 | *img | semmle.label | *img |
+| test.c:46:17:46:44 | ... + ... | semmle.label | ... + ... |
+| test.c:46:29:46:31 | *img | semmle.label | *img |
+| test.c:47:34:47:38 | size2 | semmle.label | size2 |
+| test.c:48:19:48:21 | *img | semmle.label | *img |
+| test.c:55:9:55:9 | fread output argument | semmle.label | fread output argument |
+| test.c:56:30:56:30 | *p | semmle.label | *p |
+| test.c:56:30:56:49 | ... - ... | semmle.label | ... - ... |
+| test.c:56:41:56:41 | *p | semmle.label | *p |
+| test.c:63:14:63:17 | recv output argument | semmle.label | recv output argument |
+| test.c:64:30:64:32 | *pkt | semmle.label | *pkt |
+| test.c:64:30:64:61 | ... * ... | semmle.label | ... * ... |
+| test.c:64:34:64:37 | *dims | semmle.label | *dims |
+| test.c:64:47:64:49 | *pkt | semmle.label | *pkt |
+| test.c:64:51:64:54 | *dims | semmle.label | *dims |
+| test.c:112:3:112:5 | *cfg [post update] [a] | semmle.label | *cfg [post update] [a] |
+| test.c:112:3:112:31 | ... = ... | semmle.label | ... = ... |
+| test.c:112:16:112:30 | *call to getenv | semmle.label | *call to getenv |
+| test.c:113:3:113:5 | *cfg [a] | semmle.label | *cfg [a] |
+| test.c:114:31:114:33 | *cfg [a] | semmle.label | *cfg [a] |
+| test.c:115:31:115:33 | *cfg [a] | semmle.label | *cfg [a] |
+| test.c:115:31:115:39 | ... * ... | semmle.label | ... * ... |
+subpaths
