@@ -58,16 +58,75 @@ predicate guardedBy(AstNode n, Expr e) {
   )
 }
 
+/** Holds if `e` is a privilege check that succeeds when `cond` is true. */
+predicate isAuthorizationTest(Expr e, Expr cond) {
+  e = cond.getUnderlyingValue()
+  or
+  exists(LogAndExpr conjunction |
+    cond.getUnderlyingValue() = conjunction and
+    isAuthorizationTest(e, conjunction.getAnOperand())
+  )
+  or
+  exists(LogNotExpr neg |
+    cond.getUnderlyingValue() = neg and
+    isNegatedAuthorizationTest(e, neg.getOperand())
+  )
+  or
+  exists(EqualityTest eq |
+    cond.getUnderlyingValue() = eq and
+    e = eq.getAnOperand() and
+    eq.getPolarity() = true
+  )
+}
+
+/** Holds if `e` is true when the condition `cond` is false. */
+predicate isNegatedAuthorizationTest(Expr e, Expr cond) {
+  exists(LogNotExpr neg |
+    cond.getUnderlyingValue() = neg and
+    isAuthorizationTest(e, neg.getOperand())
+  )
+  or
+  exists(EqualityTest eq |
+    cond.getUnderlyingValue() = eq and
+    e = eq.getAnOperand() and
+    eq.getPolarity() = false
+  )
+}
+
 /** Holds if `n` is only reached after checking that the current user already holds a privilege. */
 predicate guardedByAuthorizationCheck(AstNode n) {
-  exists(Expr e | guardedBy(n, e) |
-    exists(DataFlow::PropRead pr |
-      pr.asExpr() = e and
-      isPrivilegeName(pr.getPropertyName()) and
-      not isUserPrivilegeFlag(pr)
+  exists(IfStmt i, Expr e |
+    (
+      n.getParent*() = i.getThen() and isAuthorizationTest(e, i.getCondition())
+      or
+      n.getParent*() = i.getElse() and isNegatedAuthorizationTest(e, i.getCondition())
+    ) and
+    (
+      exists(DataFlow::PropRead pr |
+        pr.asExpr() = e and
+        isPrivilegeName(pr.getPropertyName()) and
+        not isUserPrivilegeFlag(pr)
+      )
+      or
+      isPrivilegeName(e.(InvokeExpr).getCalleeName())
     )
-    or
-    isPrivilegeName(e.(InvokeExpr).getCalleeName())
+  )
+  or
+  exists(ConditionalExpr c, Expr e |
+    (
+      n.getParent*() = c.getConsequent() and isAuthorizationTest(e, c.getCondition())
+      or
+      n.getParent*() = c.getAlternate() and isNegatedAuthorizationTest(e, c.getCondition())
+    ) and
+    (
+      exists(DataFlow::PropRead pr |
+        pr.asExpr() = e and
+        isPrivilegeName(pr.getPropertyName()) and
+        not isUserPrivilegeFlag(pr)
+      )
+      or
+      isPrivilegeName(e.(InvokeExpr).getCalleeName())
+    )
   )
 }
 
@@ -83,12 +142,42 @@ predicate isPersistenceCall(DataFlow::InvokeNode call) {
 
 /** Holds if the object `obj` is written to a data store, possibly nested inside another object. */
 predicate isPersisted(DataFlow::SourceNode obj) {
-  exists(DataFlow::InvokeNode call | isPersistenceCall(call) | obj.flowsTo(call.getAnArgument()))
+  exists(DataFlow::InvokeNode call, DataFlow::Node arg |
+    isPersistenceCall(call) and
+    isPersistedArgument(call, arg) and
+    obj.flowsTo(arg)
+  )
   or
   exists(obj.getAMethodCall(["save", "update", "upsert"]))
   or
   exists(DataFlow::SourceNode outer | isPersisted(outer) |
     obj.flowsTo(outer.getAPropertyWrite().getRhs())
+  )
+}
+
+/** Holds if `arg` contains values written by the persistence call `call`. */
+predicate isPersistedArgument(DataFlow::InvokeNode call, DataFlow::Node arg) {
+  call instanceof DataFlow::NewNode and arg = call.getAnArgument()
+  or
+  exists(DataFlow::MethodCallNode method |
+    method = call and
+    (
+      method.getMethodName() = "findAndModify" and arg = method.getArgument(2)
+      or
+      method.getMethodName() in [
+        "updateOne", "updateMany", "findOneAndUpdate", "findByIdAndUpdate", "replaceOne",
+        "findOneAndReplace"
+      ] and
+      arg = method.getArgument(1)
+      or
+      method.getMethodName() = "update" and arg = method.getArgument(0)
+      or
+      not method.getMethodName() in [
+        "update", "updateOne", "updateMany", "findOneAndUpdate", "findByIdAndUpdate",
+        "findAndModify", "replaceOne", "findOneAndReplace"
+      ] and
+      arg = method.getAnArgument()
+    )
   )
 }
 
@@ -104,7 +193,13 @@ Expr getAValueOrigin(DataFlow::PropWrite w) {
   (
     result = w.getRhs().asExpr()
     or
-    result = w.getRhs().asExpr().(VarAccess).getVariable().getAnAssignedExpr()
+    result = w.getRhs().getALocalSource().asExpr()
+    or
+    exists(VarAccess access |
+      w.getRhs().asExpr() = access and
+      access.getVariable().isCaptured() and
+      result = access.getVariable().getAnAssignedExpr()
+    )
   )
 }
 
@@ -191,13 +286,15 @@ module PrivilegeValueConfig implements DataFlow::ConfigSig {
 module PrivilegeValueFlow = TaintTracking::Global<PrivilegeValueConfig>;
 
 /** Holds if the value stored by `w` is chosen based on the user-controlled `flag`. */
-predicate controlledByUserFlag(DataFlow::PropWrite w, DataFlow::Node flag) {
+predicate controlledByUserFlag(DataFlow::PropWrite w, DataFlow::Node flag, Expr origin) {
   isPersistedPrivilegeWrite(w) and
+  origin = getAValueOrigin(w) and
   (
-    PrivilegeValueFlow::flow(flag, w.getRhs())
+    PrivilegeValueFlow::flow(flag, w.getRhs()) and
+    PrivilegeValueFlow::flow(flag, DataFlow::valueNode(origin))
     or
     exists(Expr e |
-      guardedBy(getAValueOrigin(w), e) and
+      guardedBy(origin, e) and
       isUserPrivilegeFlag(flag) and
       flag.(DataFlow::SourceNode).flowsToExpr(e)
     )
@@ -269,9 +366,9 @@ class GeneratedRestResource extends API::CallNode {
 
 from DataFlow::Node alert, string msg, DataFlow::Node ref, string refText
 where
-  exists(DataFlow::PropWrite w |
-    controlledByUserFlag(w, ref) and
-    not guardedByAuthorizationCheck(getAValueOrigin(w)) and
+  exists(DataFlow::PropWrite w, Expr origin |
+    controlledByUserFlag(w, ref, origin) and
+    not guardedByAuthorizationCheck(origin) and
     alert = w.getRhs() and
     msg = "Privilege field '" + w.getPropertyName() + "' of a stored record is set based on $@." and
     refText = "user-provided value"

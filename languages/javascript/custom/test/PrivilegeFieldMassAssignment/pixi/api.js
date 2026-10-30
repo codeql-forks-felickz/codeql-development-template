@@ -140,6 +140,67 @@ app.put('/api/admin/edit_info', function (req, res) {
   });
 });
 
+// A negated privilege check does not authorize the then-branch.
+app.post('/api/not_admin', function (req, res) {
+  if (!req.user.is_admin) {
+    mongo.connect('mongodb://pixidb:27017/Pixidb', function (err, db) {
+      db.collection('users').insertOne({ role: req.body.role }); // $ Alert
+    });
+  }
+});
+
+// The else-branch of a positive privilege check is not authorized.
+app.post('/api/admin_else', function (req, res) {
+  if (req.user.is_admin) {
+    res.send('not changing the role');
+  } else {
+    mongo.connect('mongodb://pixidb:27017/Pixidb', function (err, db) {
+      db.collection('users').insertOne({ role: req.body.role }); // $ Alert
+    });
+  }
+});
+
+// A disjunction does not prove that either privilege check succeeded.
+app.post('/api/admin_or_staff', function (req, res) {
+  if (req.user.is_admin || req.user.is_staff) {
+    mongo.connect('mongodb://pixidb:27017/Pixidb', function (err, db) {
+      db.collection('users').insertOne({ role: req.body.role }); // $ Alert
+    });
+  }
+});
+
+// The else-branch of a negated privilege check is authorized.
+app.post('/api/not_admin_else', function (req, res) {
+  if (!req.user.is_admin) {
+    res.send('not changing the role');
+  } else {
+    mongo.connect('mongodb://pixidb:27017/Pixidb', function (err, db) {
+      db.collection('users').insertOne({ role: req.body.role });
+    });
+  }
+});
+
+// An unrelated guarded assignment must not suppress the unchecked value.
+app.post('/api/admin_conditional_value', function (req, res) {
+  var role = req.body.role;
+  if (req.user.is_admin) {
+    role = 'admin';
+  }
+  mongo.connect('mongodb://pixidb:27017/Pixidb', function (err, db) {
+    db.collection('users').insertOne({ role: role }); // $ Alert
+  });
+});
+
+// An earlier conditional definition does not reach the persisted value.
+app.post('/api/unconditional_overwrite', function (req, res) {
+  var admin = false;
+  if (req.body.is_admin) {
+    admin = true;
+  }
+  admin = false;
+  db.collection('users').insertOne({ is_admin: admin });
+});
+
 // User input used only to filter a query, not to write a record.
 app.get('/api/users_by_role', function (req, res) {
   mongo.connect('mongodb://pixidb:27017/Pixidb', function (err, db) {
@@ -147,6 +208,31 @@ app.get('/api/users_by_role', function (req, res) {
       res.json(users);
     });
   });
+});
+
+// Update filters are not persisted, but the update document is.
+app.put('/api/update_one', function (req, res) {
+  var users = mongo.connect('mongodb://pixidb:27017/Pixidb');
+  users.updateOne({ role: req.query.role }, { $set: { name: req.body.name } });
+  users.updateOne({ role: req.query.role }, { $set: { role: req.body.role } }); // $ Alert
+});
+
+app.put('/api/find_one_and_update', function (req, res) {
+  var users = mongo.connect('mongodb://pixidb:27017/Pixidb');
+  users.findOneAndUpdate({ role: req.query.role }, { $set: { name: req.body.name } });
+  users.findOneAndUpdate({ role: req.query.role }, { $set: { role: req.body.role } }); // $ Alert
+});
+
+app.put('/api/find_and_modify', function (req, res) {
+  var users = mongo.connect('mongodb://pixidb:27017/Pixidb');
+  users.findAndModify({ role: req.query.role }, [], { $set: { name: req.body.name } });
+  users.findAndModify({ role: req.query.role }, [], { $set: { role: req.body.role } }); // $ Alert
+});
+
+app.put('/api/sequelize_update', function (req, res) {
+  var User = require('./models/user');
+  User.update({ name: req.body.name }, { where: { role: req.query.role } });
+  User.update({ role: req.body.role }, { where: { role: req.query.role } }); // $ Alert
 });
 
 // Echoing the value back in a response does not change any privileges.
