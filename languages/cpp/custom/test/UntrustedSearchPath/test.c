@@ -164,6 +164,19 @@ void direct_literals()
     execlp("/usr/bin/id", "id", NULL);
 }
 
+void shell_builtins_and_direct_execution()
+{
+    system("exit 0");
+    popen("cd /", "r");
+    _wsystem(L"dir");
+    execlp("exit", "exit", NULL); // $ Alert
+}
+
+void executable_path_with_spaces()
+{
+    execlp("build dir/tool", "tool", NULL);
+}
+
 /* Non-constant commands are out of scope (covered by command-injection queries) */
 void non_constant()
 {

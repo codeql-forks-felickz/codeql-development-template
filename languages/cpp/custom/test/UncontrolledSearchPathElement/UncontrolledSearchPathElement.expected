@@ -6,7 +6,8 @@
 | test.c:110:20:110:22 | *buf | test.c:109:16:109:18 | recv output argument | test.c:110:20:110:22 | *buf | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:109:16:109:18 | recv output argument | buffer read by recv |
 | test.c:111:34:111:36 | *buf | test.c:109:16:109:18 | recv output argument | test.c:111:34:111:36 | *buf | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:109:16:109:18 | recv output argument | buffer read by recv |
 | test.c:112:37:112:39 | *buf | test.c:109:16:109:18 | recv output argument | test.c:112:37:112:39 | *buf | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:109:16:109:18 | recv output argument | buffer read by recv |
-| test.c:138:12:138:14 | *buf | test.c:137:16:137:18 | recv output argument | test.c:138:12:138:14 | *buf | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:137:16:137:18 | recv output argument | buffer read by recv |
+| test.c:148:12:148:14 | *buf | test.c:147:16:147:18 | recv output argument | test.c:148:12:148:14 | *buf | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:147:16:147:18 | recv output argument | buffer read by recv |
+| test.c:154:12:154:53 | *... ? ... : ... | test.c:154:30:154:35 | *call to getenv | test.c:154:12:154:53 | *... ? ... : ... | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:154:30:154:35 | *call to getenv | an environment variable |
 edges
 | test.c:33:49:33:72 | recv output argument | test.c:36:9:36:56 | ... = ... | provenance |  |
 | test.c:36:9:36:56 | ... = ... | test.c:38:12:38:15 | *data | provenance |  |
@@ -18,7 +19,8 @@ edges
 | test.c:109:16:109:18 | recv output argument | test.c:110:20:110:22 | *buf | provenance |  |
 | test.c:109:16:109:18 | recv output argument | test.c:111:34:111:36 | *buf | provenance |  |
 | test.c:109:16:109:18 | recv output argument | test.c:112:37:112:39 | *buf | provenance |  |
-| test.c:137:16:137:18 | recv output argument | test.c:138:12:138:14 | *buf | provenance |  |
+| test.c:147:16:147:18 | recv output argument | test.c:148:12:148:14 | *buf | provenance |  |
+| test.c:154:30:154:35 | *call to getenv | test.c:154:12:154:53 | *... ? ... : ... | provenance |  |
 nodes
 | test.c:33:49:33:72 | recv output argument | semmle.label | recv output argument |
 | test.c:36:9:36:56 | ... = ... | semmle.label | ... = ... |
@@ -35,6 +37,8 @@ nodes
 | test.c:110:20:110:22 | *buf | semmle.label | *buf |
 | test.c:111:34:111:36 | *buf | semmle.label | *buf |
 | test.c:112:37:112:39 | *buf | semmle.label | *buf |
-| test.c:137:16:137:18 | recv output argument | semmle.label | recv output argument |
-| test.c:138:12:138:14 | *buf | semmle.label | *buf |
+| test.c:147:16:147:18 | recv output argument | semmle.label | recv output argument |
+| test.c:148:12:148:14 | *buf | semmle.label | *buf |
+| test.c:154:12:154:53 | *... ? ... : ... | semmle.label | *... ? ... : ... |
+| test.c:154:30:154:35 | *call to getenv | semmle.label | *call to getenv |
 subpaths

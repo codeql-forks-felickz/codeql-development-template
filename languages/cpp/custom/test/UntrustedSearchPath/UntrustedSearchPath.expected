@@ -8,6 +8,7 @@
 | test.c:157:12:157:19 | *whoami | test.c:157:12:157:19 | *whoami | test.c:157:12:157:19 | *whoami | This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path. | test.c:157:12:157:19 | *whoami | whoami |
 | test.c:158:12:158:34 | *  ping -c 1 localhost | test.c:158:12:158:34 | *  ping -c 1 localhost | test.c:158:12:158:34 | *  ping -c 1 localhost | This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path. | test.c:158:12:158:34 | *  ping -c 1 localhost | ping |
 | test.c:159:12:159:15 | *ls | test.c:159:12:159:15 | *ls | test.c:159:12:159:15 | *ls | This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path. | test.c:159:12:159:15 | *ls | ls |
+| test.c:172:12:172:17 | *exit | test.c:172:12:172:17 | *exit | test.c:172:12:172:17 | *exit | This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path. | test.c:172:12:172:17 | *exit | exit |
 edges
 | test.c:28:18:28:31 | *ls -la | test.c:29:12:29:15 | *data | provenance | DataFlowFunction |
 | test.c:47:18:47:32 | *cmd.exe /c dir | test.c:48:14:48:17 | *data | provenance | DataFlowFunction |
@@ -48,4 +49,5 @@ nodes
 | test.c:157:12:157:19 | *whoami | semmle.label | *whoami |
 | test.c:158:12:158:34 | *  ping -c 1 localhost | semmle.label | *  ping -c 1 localhost |
 | test.c:159:12:159:15 | *ls | semmle.label | *ls |
+| test.c:172:12:172:17 | *exit | semmle.label | *exit |
 subpaths

@@ -19,68 +19,136 @@ import cpp
 import semmle.code.cpp.dataflow.new.DataFlow
 import UntrustedSearchPathFlow::PathGraph
 
-/**
- * Gets the program name of the command string `cmd`, that is, the first
- * whitespace-delimited token after any leading whitespace.
- */
+/** Gets the first whitespace-delimited program name in shell command `cmd`. */
 bindingset[cmd]
 string getProgramName(string cmd) { result = cmd.regexpCapture("\\s*([^\\s]+).*", 1) }
 
 /**
- * A string literal whose program name is resolved through the search path
- * because it contains no directory component (for example `"ls -la"` or
- * `"cmd.exe /c dir"`).
+ * A shell command literal whose first token is resolved through the search path.
  */
-class UnqualifiedCommandLiteral extends StringLiteral {
-  UnqualifiedCommandLiteral() {
+class UnqualifiedShellCommandLiteral extends StringLiteral {
+  UnqualifiedShellCommandLiteral() {
     exists(string prog | prog = getProgramName(this.getValue()) |
       prog.regexpMatch("[A-Za-z0-9_][A-Za-z0-9_.+-]*")
     )
   }
 }
 
+/** A direct executable literal with no directory component or arguments. */
+class UnqualifiedExecutableLiteral extends StringLiteral {
+  UnqualifiedExecutableLiteral() {
+    this.getValue().regexpMatch("[A-Za-z0-9_][A-Za-z0-9_.+-]*")
+  }
+}
+
 /**
- * A call to a function that runs a command and resolves its program name using
- * the search path: either through a command interpreter (`system`, `popen`, ...)
- * or through a `PATH`-searching `exec` variant.
+ * A call to a function that runs a command through a shell.
  */
-class SearchPathCommandCall extends FunctionCall {
-  SearchPathCommandCall() {
+class ShellCommandCall extends FunctionCall {
+  ShellCommandCall() {
+    this.getTarget().hasGlobalOrStdName(["system", "_wsystem", "popen", "_popen", "_wpopen"])
+  }
+}
+
+/** A call to a PATH-searching exec or spawn variant. */
+class DirectExecutableCall extends FunctionCall {
+  DirectExecutableCall() {
     this.getTarget()
         .hasGlobalOrStdName([
-            "system", "_wsystem", "popen", "_popen", "_wpopen", "execlp", "execvp", "execvpe",
-            "_execlp", "_execlpe", "_execvp", "_execvpe", "_wexeclp", "_wexeclpe", "_wexecvp",
-            "_wexecvpe", "_spawnlp", "_spawnlpe", "_spawnvp", "_spawnvpe", "_wspawnlp",
-            "_wspawnlpe", "_wspawnvp", "_wspawnvpe"
+            "execlp", "execvp", "execvpe", "_execlp", "_execlpe", "_execvp", "_execvpe",
+            "_wexeclp", "_wexeclpe", "_wexecvp", "_wexecvpe", "_spawnlp", "_spawnlpe",
+            "_spawnvp", "_spawnvpe", "_wspawnlp", "_wspawnlpe", "_wspawnvp", "_wspawnvpe"
           ])
   }
 
-  /** Gets the argument holding the command or program name. */
-  Expr getCommandArgument() {
+  /** Gets the argument holding the executable name. */
+  Expr getExecutableArgument() {
     if this.getTarget().getName().matches("%spawn%")
     then result = this.getArgument(1)
     else result = this.getArgument(0)
   }
 }
 
-module UntrustedSearchPathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source.asIndirectExpr() instanceof UnqualifiedCommandLiteral
+bindingset[program]
+predicate isShellBuiltin(string program, ShellCommandCall call) {
+  (
+    call.getTarget().hasGlobalOrStdName(["system", "popen"]) and
+    program = ["cd", "exit", "export", "set", "unset", "echo", "test", "true", "false", "read",
+      "umask", "wait", "exec", "eval"]
+  )
+  or
+  (
+    call.getTarget().hasGlobalOrStdName(["_wsystem", "_popen", "_wpopen"]) and
+    program.toLowerCase() =
+      ["cd", "dir", "echo", "cls", "pause", "copy", "del", "type", "set", "start", "ver", "exit",
+        "mkdir"]
+  )
+}
+
+newtype TUntrustedSearchPathState =
+  TShellCommandState(StringLiteral literal) or
+  TDirectExecutableState(StringLiteral literal)
+
+class UntrustedSearchPathState extends TUntrustedSearchPathState {
+  string toString() {
+    this = TShellCommandState(_) and result = "shell command"
+    or
+    this = TDirectExecutableState(_) and result = "direct executable"
+  }
+}
+
+module UntrustedSearchPathConfig implements DataFlow::StateConfigSig {
+  class FlowState = UntrustedSearchPathState;
+
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    exists(UnqualifiedShellCommandLiteral literal |
+      source.asIndirectExpr() = literal and
+      state = TShellCommandState(literal)
+    )
+    or
+    exists(UnqualifiedExecutableLiteral literal |
+      source.asIndirectExpr() = literal and
+      state = TDirectExecutableState(literal)
+    )
   }
 
-  predicate isSink(DataFlow::Node sink) {
-    sink.asIndirectExpr() = any(SearchPathCommandCall call).getCommandArgument()
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    (
+      exists(ShellCommandCall call, StringLiteral literal, string program |
+        sink.asIndirectExpr() = call.getArgument(0) and
+        state = TShellCommandState(literal) and
+        program = getProgramName(literal.getValue()) and
+        not isShellBuiltin(program, call)
+      )
+    )
+    or
+    (
+      exists(StringLiteral literal | state = TDirectExecutableState(literal)) and
+      sink.asIndirectExpr() = any(DirectExecutableCall call).getExecutableArgument()
+    )
   }
 
-  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+  predicate isBarrierIn(DataFlow::Node node, FlowState state) { isSource(node, state) }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-module UntrustedSearchPathFlow = DataFlow::Global<UntrustedSearchPathConfig>;
+module UntrustedSearchPathFlow = DataFlow::GlobalWithState<UntrustedSearchPathConfig>;
+
+string getReportedProgram(UntrustedSearchPathState state) {
+  exists(StringLiteral literal |
+    state = TShellCommandState(literal) and
+    result = getProgramName(literal.getValue())
+  )
+  or
+  exists(StringLiteral literal |
+    state = TDirectExecutableState(literal) and
+    result = literal.getValue()
+  )
+}
 
 from UntrustedSearchPathFlow::PathNode source, UntrustedSearchPathFlow::PathNode sink
 where UntrustedSearchPathFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "This command runs $@ without a fully qualified path, so it is resolved using the untrusted search path.",
-  source.getNode(), getProgramName(source.getNode().asIndirectExpr().getValue())
+  source.getNode(), getReportedProgram(source.getState())

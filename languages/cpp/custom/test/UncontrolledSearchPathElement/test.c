@@ -110,6 +110,7 @@ void name_value_bad(int sock)
     setenv("PATH", buf, 1); // $ Alert
     _putenv_s("LD_LIBRARY_PATH", buf); // $ Alert
     SetEnvironmentVariableA("Path", buf); // $ Alert
+    setenv("path", buf, 1);
 }
 
 void name_value_not_search_path(int sock)
@@ -130,10 +131,25 @@ void putenv_other_variable(int sock)
     putenv(data);
 }
 
+void putenv_lowercase_variable(int sock)
+{
+    char *data;
+    char dataBuffer[250] = "path=";
+    data = dataBuffer;
+    recv(sock, data + 5, 200, 0);
+    putenv(data);
+}
+
 /* Attacker controls the whole "NAME=value" string, so may set PATH */
 void putenv_whole_string(int sock)
 {
     char buf[256];
     recv(sock, buf, sizeof(buf) - 1, 0); // $ Source
     putenv(buf); // $ Alert
+}
+
+/* An untrusted whole assignment can replace a constant non-search-path branch. */
+void putenv_mixed_assignment(int flag)
+{
+    putenv(flag ? "LANG=C" : getenv("ENV_ASSIGNMENT")); // $ Alert
 }

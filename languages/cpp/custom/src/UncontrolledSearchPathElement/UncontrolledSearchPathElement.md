@@ -30,6 +30,10 @@ strcat(data, "/bin");
 putenv(data); // GOOD: constant search path
 ```
 
+## Known limitations
+
+The query recognizes tainted writes after a known non-search-path name when the write uses a constant pointer offset. A dynamic offset may prevent this distinction and produce a false positive.
+
 ## References
 
 - MITRE: [CWE-427: Uncontrolled Search Path Element](https://cwe.mitre.org/data/definitions/427.html).
