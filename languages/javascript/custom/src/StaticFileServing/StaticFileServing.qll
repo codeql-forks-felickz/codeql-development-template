@@ -16,6 +16,31 @@ DataFlow::CallNode staticServeCall() {
 }
 
 /**
+ * Gets a call to [`serve-index`](https://npmjs.com/package/serve-index), which creates a
+ * middleware that serves a directory listing of the folder given as its first argument.
+ */
+DataFlow::CallNode directoryListingCall() {
+  result = DataFlow::moduleImport("serve-index").getACall()
+}
+
+/**
+ * Gets a call to `res.sendFile` or `res.download` on an HTTP response object, including
+ * responses whose type is only known from a TypeScript annotation (for example handlers
+ * returned from factory functions).
+ */
+DataFlow::MethodCallNode fileResponseCall() {
+  result.getMethodName() = ["sendFile", "sendfile", "download"] and
+  (
+    result.getReceiver() instanceof Http::ResponseNode
+    or
+    exists(Parameter p |
+      result.getReceiver().getALocalSource() = DataFlow::parameterNode(p) and
+      p.getTypeAnnotation().hasUnderlyingType("express", "Response")
+    )
+  )
+}
+
+/**
  * Gets a call `app.set("views", folder)` that configures the Express views folder.
  */
 DataFlow::MethodCallNode viewsSetting() {
@@ -32,10 +57,20 @@ DataFlow::MethodCallNode sendFileCall() {
 }
 
 /**
+ * Gets a call to `path.join` or `path.resolve` (also imported as `node:path`).
+ */
+DataFlow::CallNode pathJoinCall() {
+  result = DataFlow::moduleMember(["path", "node:path"], ["join", "resolve"]).getACall()
+}
+
+/**
  * Holds if `node` is a reference to `__dirname`.
  */
 predicate isDirname(DataFlow::Node node) {
   exists(ModuleScope ms | node.asExpr() = ms.getVariable("__dirname").getAnAccess())
+  or
+  // ES modules and TypeScript files compiled to CommonJS
+  node.asExpr().(GlobalVarAccess).getName() = "__dirname"
 }
 
 /**
@@ -50,6 +85,10 @@ private predicate isRelevantPathNode(DataFlow::Node node) {
   or
   node = sendFileCall().getOptionArgument(1, "root")
   or
+  node = directoryListingCall().getArgument(0)
+  or
+  node = fileResponseCall().getOptionArgument(1, "root")
+  or
   exists(DataFlow::Node succ | isRelevantPathNode(succ) | node = succ.getAPredecessor())
 }
 
@@ -58,17 +97,45 @@ private predicate isRelevantPathNode(DataFlow::Node node) {
  * constant strings.
  */
 private string joinedArguments(DataFlow::CallNode call, int start) {
+  result = joinedArguments(call, start, call.getNumArgument() - 1)
+}
+
+/**
+ * Gets the `/`-joined string values of the arguments `start..end` of `call`, if all of them are
+ * constant strings.
+ */
+private string joinedArguments(DataFlow::CallNode call, int start, int end) {
   start in [0, 1] and
-  start < call.getNumArgument() and
-  forall(int i | i in [start .. call.getNumArgument() - 1] |
-    exists(call.getArgument(i).getStringValue())
-  ) and
+  end in [start .. call.getNumArgument() - 1] and
+  forall(int i | i in [start .. end] | exists(call.getArgument(i).getStringValue())) and
   result =
     concat(int i, string s |
-      i in [start .. call.getNumArgument() - 1] and s = call.getArgument(i).getStringValue()
+      i in [start .. end] and s = call.getArgument(i).getStringValue()
     |
       s, "/" order by i
     )
+}
+
+/**
+ * Holds if `join` is a call `path.join(..., file)` or `path.resolve(..., file)` whose last
+ * argument is not a constant, and whose other arguments evaluate to the folder `path`
+ * (see `pathValue`).
+ */
+private predicate folderPrefixValue(DataFlow::CallNode join, string path, boolean fromDirname) {
+  join = pathJoinCall() and
+  join.getNumArgument() >= 2 and
+  not exists(join.getLastArgument().getStringValue()) and
+  (
+    isDirname(join.getArgument(0)) and
+    join.getNumArgument() >= 3 and
+    path = joinedArguments(join, 1, join.getNumArgument() - 2) and
+    fromDirname = true
+    or
+    not isDirname(join.getArgument(0)) and
+    path = joinedArguments(join, 0, join.getNumArgument() - 2) and
+    not path.matches("/%") and
+    fromDirname = false
+  )
 }
 
 /**
@@ -96,7 +163,7 @@ private predicate pathValue(DataFlow::Node node, string path, boolean fromDirnam
     // `path.join(__dirname, "public")`, `path.resolve("public")`
     exists(DataFlow::CallNode join |
       join = node and
-      join = DataFlow::moduleMember("path", ["join", "resolve"]).getACall()
+      join = pathJoinCall()
     |
       isDirname(join.getArgument(0)) and
       path = joinedArguments(join, 1) and
@@ -149,20 +216,67 @@ Folder getAWorkingFolder(File f) {
 }
 
 /**
+ * Holds if `node` evaluates to the path `path`, written `rel` after normalization. If
+ * `fromDirname` is true, `rel` is relative to the folder of the enclosing file, otherwise it is
+ * relative to the working directory of the process. Paths containing `..` are excluded.
+ */
+private predicate relativePath(DataFlow::Node node, string rel, boolean fromDirname) {
+  exists(string path | pathValue(node, path, fromDirname) |
+    rel = normalize(path) and
+    not rel.regexpMatch("(.*/)?\\.\\.(/.*)?")
+  )
+}
+
+/**
  * Gets a path, relative to the source root, that `node` may evaluate to. Absolute paths and
  * paths containing `..` are not resolved.
  */
 string resolvedPath(DataFlow::Node node) {
-  exists(string path, boolean fromDirname, Folder base, string rel |
-    pathValue(node, path, fromDirname) and
-    rel = normalize(path) and
-    not rel.regexpMatch("(.*/)?\\.\\.(/.*)?") and
+  exists(boolean fromDirname, Folder base, string rel |
+    relativePath(node, rel, fromDirname) and
     (
       fromDirname = true and base = node.getFile().getParentContainer()
       or
       fromDirname = false and base = getAWorkingFolder(node.getFile())
     ) and
     result = joinPath(base.getRelativePath(), rel)
+  )
+}
+
+/**
+ * Holds if `exposer` makes the contents of the folder written as `rel` available over HTTP,
+ * where `kind` describes how:
+ *
+ * - `"static"`: a static-file middleware serving every file in the folder,
+ * - `"listing"`: a `serve-index` middleware listing the files in the folder,
+ * - `"download"`: a `res.sendFile` or `res.download` call that sends a non-constant file name
+ *   from inside the folder.
+ *
+ * `rel` is normalized, and relative to the folder of `exposer` if `fromDirname` is true,
+ * otherwise to the working directory of the process.
+ */
+predicate exposesFolder(DataFlow::Node exposer, string kind, string rel, boolean fromDirname) {
+  exposer = staticServeCall() and
+  kind = "static" and
+  relativePath(exposer.(DataFlow::CallNode).getArgument(0), rel, fromDirname)
+  or
+  exposer = directoryListingCall() and
+  kind = "listing" and
+  relativePath(exposer.(DataFlow::CallNode).getArgument(0), rel, fromDirname)
+  or
+  exists(DataFlow::MethodCallNode call | call = fileResponseCall() and exposer = call |
+    kind = "download" and
+    (
+      not exists(call.getOptionArgument(1, "root")) and
+      exists(string path |
+        folderPrefixValue(call.getArgument(0).getALocalSource(), path, fromDirname) and
+        rel = normalize(path) and
+        not rel.regexpMatch("(.*/)?\\.\\.(/.*)?")
+      )
+      or
+      not exists(call.getArgument(0).getStringValue()) and
+      relativePath(call.getOptionArgument(1, "root"), rel, fromDirname)
+    )
   )
 }
 

@@ -36,6 +36,7 @@ app.use(express.static("public")); // BAD: the credential can be downloaded
 ## Related queries
 
 - `js/protected-file-statically-served` reports authentication-protected views or files that are also statically served (see `ProtectedFileStaticallyServed`).
+- `js/sensitive-folder-exposed` reports serving, listing or downloading from a folder whose name indicates keys or secrets (works when the files themselves are not extracted).
 
 ## References
 
