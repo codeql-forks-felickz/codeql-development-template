@@ -46,22 +46,39 @@ predicate isComparisonOperand(Expr comparison, Expr e) {
 
 /** Holds if the value of `comparison` is used to make a decision. */
 predicate isDecision(Expr comparison) {
-  exists(Expr cond | comparison = cond.getAChildExpr*() |
-    cond = any(IfStmt s | not onlyRecordsHostName(s)).getCondition()
-    or
-    cond = any(ConditionalExpr c).getCondition()
-    or
-    cond = any(LoopStmt l).getCondition()
-    or
-    cond = any(ReturnStmt r).getExpr()
-    or
-    cond = any(Callable c).getExpressionBody()
+  exists(Expr cond |
+    DataFlow::localExprFlow(comparison, cond) and
+    (
+      exists(IfStmt s | cond = s.getCondition() and not onlyRecordsHostName(s))
+      or
+      cond = any(ConditionalExpr c).getCondition()
+      or
+      cond = any(LoopStmt l).getCondition()
+      or
+      cond = any(ReturnStmt r).getExpr()
+      or
+      cond = any(Callable c).getExpressionBody()
+    )
   )
 }
 
 /** Holds if `call` writes information to a log or output, rather than taking an action. */
 predicate isLoggingCall(MethodCall call) {
-  call.getTarget().getName().regexpMatch("(?i).*(log|trace|debug|info|warn|write|print|audit).*")
+  exists(Method m | m = call.getTarget() |
+    m.hasName("Log")
+    or
+    m.getDeclaringType().getABaseType*().hasFullyQualifiedName(
+      "Microsoft.Extensions.Logging",
+      "ILogger"
+    ) and
+    m.getName().regexpMatch("(?i)log.*")
+    or
+    m.getDeclaringType().hasFullyQualifiedName(
+      ["System", "System.Diagnostics"],
+      ["Console", "Debug", "Trace"]
+    ) and
+    m.getName().regexpMatch("(?i)write.*")
+  )
 }
 
 /**
@@ -83,7 +100,19 @@ class DecisionSink extends DataFlow::ExprNode {
   DecisionSink() {
     exists(Expr comparison |
       isComparisonOperand(comparison, this.getExpr()) and
-      isDecision(comparison)
+      isDecision(comparison) and
+      (
+        exists(PropertyAccess pa |
+          pa.getTarget().hasName(["HostName", "Aliases"]) and
+          DataFlow::localExprFlow(pa, this.getExpr())
+        )
+        or
+        exists(ForEachStmt loop, PropertyAccess aliases |
+          aliases.getTarget().hasName("Aliases") and
+          loop.getIterableExpr().getAChildExpr*() = aliases and
+          this.getExpr().(LocalVariableAccess).getTarget() = loop.getVariable()
+        )
+      )
     )
   }
 }

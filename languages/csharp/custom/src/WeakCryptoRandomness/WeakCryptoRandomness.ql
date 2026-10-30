@@ -28,8 +28,33 @@ predicate isSensitiveTokenName(string name) {
     or
     n.regexpMatch("otp.*|.*otp")
   ) and
-  not name.toLowerCase()
-      .regexpMatch(".*(hash|encrypt|crypt|invalid|expir|time|date|created|issued|stamp|count|length|size|name|type|url|uri|path|header|timeout|duration|cancel|attempt|retry|index).*")
+  not hasExcludedTokenSegment(name)
+}
+
+/** Holds if `name` contains a complete excluded metadata segment. */
+bindingset[name]
+predicate hasExcludedTokenSegment(string name) {
+  name.toLowerCase().regexpMatch(
+    ".*(^|_)(hash|encrypt|crypt|invalid|expir|expiry|expiration|time|date|created|issued|stamp|" +
+      "count|length|size|name|type|url|uri|path|header|timeout|duration|cancel|attempt|retry|index)(_|$).*"
+  )
+  or
+  name.regexpMatch(
+    "^(hash|encrypt|crypt|invalid|expir|expiry|expiration|time|date|created|issued|stamp|count|length|" +
+      "size|name|type|url|uri|path|header|timeout|duration|cancel|attempt|retry|index)($|[A-Z]).*"
+  )
+  or
+  name.regexpMatch(
+    "^(Hash|Encrypt|Crypt|Invalid|Expir|Expiry|Expiration|Time|Date|Created|Issued|Stamp|Count|Length|" +
+      "Size|Name|Type|Url|Uri|Path|Header|Timeout|Duration|Cancel|Attempt|Retry|Index)($|[A-Z]).*"
+  )
+  or
+  name.regexpMatch(
+    ".*[a-z0-9](Hash|Encrypt|Crypt|Invalid|Expir|Expiry|Expiration|Time|Date|Created|Issued|Stamp|Count|" +
+      "Length|Size|Name|Type|Url|Uri|Path|Header|Timeout|Duration|Cancel|Attempt|Retry|Index)([A-Z]|$).*"
+  )
+  or
+  name.regexpMatch("^(URI|URL)($|[A-Z]).*|.*[a-z0-9](URI|URL)([A-Z]|$).*")
 }
 
 /** A predictable value: the output of `System.Random` or a reading of the system clock. */

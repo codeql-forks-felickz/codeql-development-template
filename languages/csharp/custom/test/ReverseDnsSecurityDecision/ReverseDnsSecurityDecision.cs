@@ -11,6 +11,8 @@ namespace ReverseDnsSecurityDecisionTests
 
         private static void Log(string message) => Console.WriteLine(message);
 
+        private static void Login(string message) { }
+
         private static void GrantAccess() { }
 
         // Reduced from a test case that grants access based on the reverse DNS name of the client.
@@ -59,6 +61,83 @@ namespace ReverseDnsSecurityDecisionTests
                 }
             }
             return false;
+        }
+
+        public void AliasOnlyLogs(IPAddress client)
+        {
+            foreach (string alias in Dns.GetHostEntry(client).Aliases)
+            {
+                Log(alias);
+            }
+        }
+
+        public void BooleanLocal(IPAddress client)
+        {
+            var entry = Dns.GetHostEntry(client); // $ Source
+            bool trusted = entry.HostName == "trusted.example.com"; // $ Alert
+            if (trusted)
+            {
+                GrantAccess();
+            }
+        }
+
+        public bool BooleanLocalReturn(IPAddress client)
+        {
+            var entry = Dns.GetHostEntry(client); // $ Source
+            bool trusted = entry.HostName == "trusted.example.com"; // $ Alert
+            return trusted;
+        }
+
+        public bool BooleanLocalTernary(IPAddress client)
+        {
+            var entry = Dns.GetHostEntry(client); // $ Source
+            bool trusted = entry.HostName == "trusted.example.com"; // $ Alert
+            return trusted ? true : false;
+        }
+
+        public void BooleanLocalLoop(IPAddress client)
+        {
+            var entry = Dns.GetHostEntry(client); // $ Source
+            bool trusted = entry.HostName == "trusted.example.com"; // $ Alert
+            while (trusted)
+            {
+                GrantAccess();
+                break;
+            }
+        }
+
+        public void BooleanLocalOnlyRecords(IPAddress client)
+        {
+            var entry = Dns.GetHostEntry(client);
+            bool trusted = entry.HostName == "trusted.example.com";
+            if (trusted)
+            {
+                Log(entry.HostName);
+            }
+        }
+
+        public void BooleanLocalOnlyLogs(IPAddress client)
+        {
+            bool trusted = Dns.GetHostEntry(client).HostName == "trusted.example.com";
+            Log(trusted.ToString());
+        }
+
+        public void LookupObjectOnly(IPAddress client)
+        {
+            var entry = Dns.GetHostEntry(client);
+            if (entry != null)
+            {
+                Log("Lookup succeeded");
+            }
+        }
+
+        public void LoginDecision(IPAddress client)
+        {
+            var entry = Dns.GetHostEntry(client); // $ Source
+            if (entry.HostName == "trusted.example.com") // $ Alert
+            {
+                Login(entry.HostName);
+            }
         }
 
         // ---- Safe counterparts: should not be reported ----

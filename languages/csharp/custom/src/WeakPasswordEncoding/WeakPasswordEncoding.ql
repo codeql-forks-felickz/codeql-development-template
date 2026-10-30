@@ -57,7 +57,8 @@ module FileReaderFlow = TaintTracking::Global<FileReaderConfig>;
 /** Holds if `name` looks like it holds a password. */
 bindingset[name]
 predicate isPasswordName(string name) {
-  name.toLowerCase().regexpMatch(".*(password|passwd|passphrase).*|pwd")
+  name.toLowerCase().regexpMatch(".*(password|passwd|passphrase).*|pwd") and
+  not name.toLowerCase().regexpMatch(".*(encrypt|cipher|hash).*")
 }
 
 /** A read of persisted data: a file, the Windows registry, or a hard-coded string. */
@@ -108,6 +109,8 @@ module StoredToBase64Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof StoredValue }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(Base64Decode d).getArgument(0) }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof DecryptionBarrier }
 }
 
 module StoredToBase64Flow = TaintTracking::Global<StoredToBase64Config>;
@@ -127,9 +130,12 @@ class StoredBase64Decode extends DataFlow::ExprNode {
 class PasswordSink extends DataFlow::ExprNode {
   PasswordSink() {
     exists(Expr e | e = this.getExpr() |
-      exists(Parameter p | isPasswordName(p.getName()) and e = p.getAnAssignedArgument())
+      not isDecryptionArgument(e) and
+      (
+        exists(Parameter p | isPasswordName(p.getName()) and e = p.getAnAssignedArgument())
       or
-      exists(Property p | isPasswordName(p.getName()) and e = p.getAnAssignedValue())
+        exists(Property p | isPasswordName(p.getName()) and e = p.getAnAssignedValue())
+      )
     )
   }
 }
@@ -143,6 +149,13 @@ class DecryptionBarrier extends DataFlow::ExprNode {
       c.getTarget().getName().regexpMatch("(?i).*(decrypt|unprotect|decipher).*")
     )
   }
+}
+
+/** Holds if `e` is passed as ciphertext to a recognized decryption call. */
+predicate isDecryptionArgument(Expr e) {
+  exists(DecryptionBarrier decryptor |
+    decryptor.getExpr().(Call).getAnArgument() = e
+  )
 }
 
 module WeakPasswordEncodingConfig implements DataFlow::ConfigSig {

@@ -10,6 +10,7 @@ namespace WeakPasswordEncodingTests
     public class DbSettings
     {
         public string Password { get; set; }
+        public string EncryptedPassword { get; set; }
     }
 
     public class Credentials
@@ -78,6 +79,21 @@ namespace WeakPasswordEncodingTests
             return new NetworkCredential("user", decPass, "");
         }
 
+        public NetworkCredential DecryptThenDecode()
+        {
+            string encoded = DecryptString(File.ReadAllText("encrypted_base64.txt"));
+            string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
+            return new NetworkCredential("user", decoded, "");
+        }
+
+        public void DecryptorCiphertext(DbSettings settings)
+        {
+            byte[] encryptedPassword = Convert.FromBase64String(File.ReadAllText("encrypted_password.txt"));
+            DecryptBytes(encryptedPassword);
+            DecryptNamedBytes(encryptedPassword);
+            settings.EncryptedPassword = Encoding.UTF8.GetString(encryptedPassword);
+        }
+
         public NetworkCredential FromDpapiWrapper()
         {
             byte[] blob = Convert.FromBase64String(File.ReadAllText("dpapi.bin"));
@@ -88,6 +104,12 @@ namespace WeakPasswordEncodingTests
         {
             return Encoding.UTF8.GetString(ProtectedDataStub.Unprotect(blob));
         }
+
+        private static string DecryptString(string encryptedPassword) => encryptedPassword;
+
+        private static byte[] DecryptBytes(byte[] password) => password;
+
+        private static byte[] DecryptNamedBytes(byte[] encryptedPassword) => encryptedPassword;
 
         public bool BasicAuth(string authorizationHeader)
         {

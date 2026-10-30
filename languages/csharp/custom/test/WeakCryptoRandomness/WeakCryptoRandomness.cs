@@ -30,6 +30,9 @@ namespace WeakCryptoRandomnessTests
     {
         public string ApprovalCode { get; set; }
         public string ResetToken { get; set; }
+        public string SecurityToken { get; set; }
+        public string SecurityCode { get; set; }
+        public string TokenUri { get; set; }
         public DateTime TokenExpiry { get; set; }
     }
 
@@ -129,6 +132,12 @@ namespace WeakCryptoRandomnessTests
             ticket.ResetToken = useSecure ? Convert.ToHexString(RandomNumberGenerator.GetBytes(16)) : predictableFallback; // $ Alert
         }
 
+        public void SecurityNames(Ticket ticket)
+        {
+            ticket.SecurityToken = rnd.Next().ToString(); // $ Alert
+            ticket.SecurityCode = rnd.Next().ToString(); // $ Alert
+        }
+
         public HttpCookie LastVisitCookie()
         {
             // Not a security-sensitive cookie.
@@ -139,6 +148,7 @@ namespace WeakCryptoRandomnessTests
         {
             // Expiry metadata is not a secret value.
             ticket.TokenExpiry = DateTime.UtcNow.AddMinutes(30);
+            ticket.TokenUri = rnd.Next().ToString();
             int retryDelay = rnd.Next(100, 500);
         }
     }
