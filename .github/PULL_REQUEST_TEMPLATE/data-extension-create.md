@@ -68,7 +68,7 @@ extensions:
 ## 📋 Checklist
 
 - [ ] Extension YAML is valid and properly formatted
-- [ ] Extension placed in correct location (`languages/[language]/custom/src/`)
+- [ ] Extension placed in correct location (`languages/[language]/custom/models/`)
 - [ ] `qlpack.yml` includes `dataExtensions` configuration
 - [ ] Access paths verified via API graph queries
 - [ ] No false positives in test cases

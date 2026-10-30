@@ -1,0 +1,14 @@
+# Additional models for the `asyncpg` PyPI package (https://magicstack.github.io/asyncpg/).
+#
+# The upstream `codeql/python-all` model (semmle/python/frameworks/Asyncpg.model.yml)
+# already defines the `asyncpg.~Connection` SQL sinks and recognizes `asyncpg.Connection`
+# annotations. These rows add the remaining ways to refer to a connection or pool
+# by type annotation.
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data:
+      - ["asyncpg.Connection", "asyncpg.connection.Connection", ""]
+      - ["asyncpg.ConnectionPool", "asyncpg.Pool", ""]
+      - ["asyncpg.ConnectionPool", "asyncpg.pool.Pool", ""]
