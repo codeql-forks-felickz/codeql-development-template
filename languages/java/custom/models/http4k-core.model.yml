@@ -50,8 +50,8 @@ extensions:
       - ["org.http4k.core", "Response", True, "body", "(String)", "", "Argument[0]", "html-injection", "manual"]
       # Response header values. http4k only strips CR/LF from header values from
       # version 6.49.0.0, so `response-splitting` applies to earlier versions.
-      # `url-redirection` covers `Response(Status.FOUND).header("Location", value)`;
-      # the header name cannot be constrained by a data extension.
+      # URL redirection is modeled in the custom query because the header name
+      # cannot be constrained by a data extension.
       - [
           "org.http4k.core",
           "Response",
@@ -67,33 +67,11 @@ extensions:
           "org.http4k.core",
           "Response",
           True,
-          "header",
-          "(String,String)",
-          "",
-          "Argument[1]",
-          "url-redirection",
-          "manual"
-        ]
-      - [
-          "org.http4k.core",
-          "Response",
-          True,
           "replaceHeader",
           "(String,String)",
           "",
           "Argument[1]",
           "response-splitting",
-          "manual"
-        ]
-      - [
-          "org.http4k.core",
-          "Response",
-          True,
-          "replaceHeader",
-          "(String,String)",
-          "",
-          "Argument[1]",
-          "url-redirection",
           "manual"
         ]
 
@@ -149,6 +127,14 @@ extensions:
       - ["org.http4k.core", "Uri", False, "getScheme", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.http4k.core", "Uri", False, "getUserInfo", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.http4k.core", "Uri", False, "toString", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "scheme", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "userInfo", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "host", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "port", "(Integer)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "path", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "query", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "fragment", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", False, "authority", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - [
           "org.http4k.core",
           "UriKt",

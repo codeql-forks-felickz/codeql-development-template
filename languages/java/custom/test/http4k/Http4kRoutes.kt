@@ -154,8 +154,8 @@ fun redirectSafeConstant(request: Request): Response {
 }
 
 fun headerInjectionBodyStream(request: Request): Response {
-    val value = request.body.stream.readBytes().decodeToString() // $ Source[java/unvalidated-url-redirection] Source[java/http-response-splitting]
-    return Response(Status.OK).header("X-Custom", value) // $ Alert[java/unvalidated-url-redirection] Alert[java/http-response-splitting]
+    val value = request.body.stream.readBytes().decodeToString() // $ Source[java/http-response-splitting]
+    return Response(Status.OK).header("X-Custom", value) // $ Alert[java/http-response-splitting]
 }
 
 fun headerSafeConstant(request: Request): Response {
@@ -178,4 +178,19 @@ fun pathInjectionUriPath(request: Request): Response {
 fun pathSafeConstant(request: Request): Response {
     val name = "index.html"
     return Response(Status.OK).body(File("/data/$name").readText())
+}
+
+fun redirectUriPathUpdate(request: Request): Response {
+    val target = request.uri.path("/fixed").query("target=fixed").query // $ Source[java/unvalidated-url-redirection] Source[java/http-response-splitting]
+    return Response(Status.FOUND).header("Location", target) // $ Alert[java/unvalidated-url-redirection] Alert[java/http-response-splitting]
+}
+
+fun redirectConstantUriPathUpdate(request: Request): Response {
+    val target = org.http4k.core.Uri.of("/fixed").path("/fixed").query("target=fixed").query
+    return Response(Status.FOUND).header("Location", target)
+}
+
+fun replaceHeaderInjectionNonLocation(request: Request): Response {
+    val value = request.query("value") ?: "" // $ Source[java/http-response-splitting]
+    return Response(Status.OK).replaceHeader("X-Custom", value) // $ Alert[java/http-response-splitting]
 }
