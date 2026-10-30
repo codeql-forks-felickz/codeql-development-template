@@ -3,8 +3,8 @@
  * @description JavaScript rendered inside WebViews can access protected resources
  *              whose locations are controlled by untrusted user input. This variant
  *              of `java/android/unsafe-android-webview-fetch` additionally tracks taint
- *              through Kotlin `toString()` calls on `CharSequence` (for example
- *              `EditText.text.toString()`) and `Uri` receivers.
+ *              through Kotlin `toString()` calls on `CharSequence` receivers (for
+ *              example `EditText.text.toString()`).
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 6.1

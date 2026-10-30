@@ -31,17 +31,18 @@ private predicate isWriteSqlParameter(string sql, int position) {
   exists(string normalized |
     normalized = sql.toLowerCase() and
     (
-      exists(int valuesStart |
+      exists(int valuesStart, int valuesEnd |
         normalized.regexpMatch("^\\s*(insert|replace)\\b.*\\bvalues\\b.*") and
         valuesStart = normalized.indexOf("values") and
+        valuesEnd = getWriteClauseEnd(normalized, valuesStart) and
         not normalized.substring(0, valuesStart).regexpMatch("(?s).*\\?.*") and
-        hasAtLeastSqlParameters(normalized.substring(valuesStart, normalized.length()), position)
+        hasAtLeastSqlParameters(normalized.substring(valuesStart, valuesEnd), position)
       )
       or
       exists(int setStart, int valuesEnd |
         normalized.regexpMatch("^\\s*update\\b.*\\bset\\b.*") and
         setStart = normalized.indexOf("set") and
-        valuesEnd = getUpdateSetEnd(normalized, setStart) and
+        valuesEnd = getWriteClauseEnd(normalized, setStart) and
         not normalized.substring(0, setStart).regexpMatch("(?s).*\\?.*") and
         hasAtLeastSqlParameters(normalized.substring(setStart, valuesEnd), position)
       )
@@ -56,9 +57,9 @@ private predicate hasAtLeastSqlParameters(string sql, int minCount) {
   sql.regexpMatch("(?s)(?:[^?]*\\?){" + minCount.toString() + ",}.*")
 }
 
-/** Gets the end of the UPDATE SET clause, before WHERE when present. */
+/** Gets the end of a write clause, before WHERE when present. */
 bindingset[sql, setStart]
-private int getUpdateSetEnd(string sql, int setStart) {
+private int getWriteClauseEnd(string sql, int setStart) {
   exists(int whereStart |
     whereStart = sql.indexOf("where") and
     whereStart > setStart and

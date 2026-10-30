@@ -2,7 +2,7 @@
 
 Writing a user's password to a database without hashing it means that anyone who can read the database, for example through SQL injection, a backup, debug output or privileged access, immediately obtains reusable credentials.
 
-This query tracks password-like values (variables, getters and lookups such as `request.getParameter("password")`) into JDBC `INSERT`, `UPDATE` or `REPLACE` values, either concatenated into the SQL passed to `Statement.execute*`/`addBatch`, or bound with `PreparedStatement.set*`. Values that pass through a call whose name suggests hashing or encryption, or through a Spring `PasswordEncoder.encode`, are not reported.
+This query tracks password-like values (variables, getters and lookups such as `request.getParameter("password")`) into JDBC `INSERT`, `UPDATE` or `REPLACE` values, either concatenated into the SQL passed to `Statement.execute*`/`addBatch`, or bound with `PreparedStatement.set*`. Values that pass through a call whose name suggests hashing or encryption, but not decryption, or through a Spring `PasswordEncoder.encode`, are not reported.
 
 ## Known limitations
 

@@ -4,10 +4,10 @@
  *
  * The Kotlin extractor resolves `x.toString()` to `kotlin.Any.toString()`, which is
  * extracted as `java.lang.Object.toString()` with the receiver wrapped in an implicit
- * cast to `Any`. As a result, the type-specific models for `CharSequence.toString()`
- * (which covers `android.text.Editable`) and `android.net.Uri.toString()`, as well as
- * the `android.text.Editable` taint step in `semmle.code.java.frameworks.android.Widget`,
- * do not apply to Kotlin code and taint is lost.
+ * cast to `Any`. As a result, the type-specific model for `CharSequence.toString()`
+ * (which covers `android.text.Editable`) and the `android.text.Editable` taint step in
+ * `semmle.code.java.frameworks.android.Widget` do not apply to Kotlin code and taint is
+ * lost.
  */
 
 import java
@@ -20,8 +20,6 @@ private import semmle.code.java.dataflow.DataFlow
 private class TaintPreservingToStringType extends RefType {
   TaintPreservingToStringType() {
     this.getASourceSupertype*().hasQualifiedName("java.lang", "CharSequence")
-    or
-    this.getASourceSupertype*().hasQualifiedName("android.net", "Uri")
   }
 }
 

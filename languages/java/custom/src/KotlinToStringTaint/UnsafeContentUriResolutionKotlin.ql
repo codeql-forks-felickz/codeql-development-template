@@ -3,8 +3,8 @@
  * @description Resolving externally-provided content URIs without validation can allow
  *              an attacker to access unexpected resources. This variant of
  *              `java/android/unsafe-content-uri-resolution` additionally tracks taint
- *              through Kotlin `toString()` calls on `Uri` and `CharSequence` receivers,
- *              for example `Uri.fromFile(File(uri.toString()))`.
+ *              through Kotlin `toString()` calls on `CharSequence` receivers, for
+ *              example `EditText.text.toString()`.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5

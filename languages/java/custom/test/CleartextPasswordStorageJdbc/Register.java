@@ -49,6 +49,14 @@ public class Register extends HttpServlet {
         ps.executeUpdate();
     }
 
+    public void insertConflictPredicateOnly(Connection con, String password) throws SQLException {
+        PreparedStatement ps = con.prepareStatement(
+                "INSERT INTO users(password) VALUES (?) ON CONFLICT(password) DO UPDATE SET last_login = 1 WHERE password = ?");
+        ps.setString(1, "safe");
+        ps.setString(2, password);
+        ps.executeUpdate();
+    }
+
     public void concatenatedPredicateOnly(Statement stmt, String password) throws SQLException {
         stmt.executeUpdate("UPDATE users SET last_login = 1 WHERE password = '" + password + "'");
     }
@@ -62,6 +70,12 @@ public class Register extends HttpServlet {
         String cleartext = password; // $ Source
         PreparedStatement ps = con.prepareStatement("INSERT INTO users(password) VALUES (?)");
         ps.setString(1, decryptPassword(cleartext)); // $ Alert
+        ps.executeUpdate();
+    }
+
+    public void insertInlineDecryptedPassword(Connection con) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("INSERT INTO users(password) VALUES (?)");
+        ps.setString(1, decryptPassword(getPassword())); // $ Alert
         ps.executeUpdate();
     }
 
