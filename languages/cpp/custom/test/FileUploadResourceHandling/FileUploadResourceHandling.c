@@ -88,6 +88,22 @@ void cwe247_good(int listenSocket) {
   }
 }
 
+void cwe247_good_getnameinfo_numeric_host(int acceptSocket) {
+  struct sockaddr_in peer;
+  socklen_t peerLen = sizeof(peer);
+  char host[256];
+  if (getpeername(acceptSocket, (struct sockaddr *)&peer, &peerLen) != 0) {
+    return;
+  }
+  if (getnameinfo((struct sockaddr *)&peer, peerLen, host, sizeof(host), NULL, 0,
+                  NI_NUMERICHOST | NI_NAMEREQD) != 0) {
+    return;
+  }
+  if (strcmp(host, "192.168.30.123") == 0) {
+    printLine("Access granted.");
+  }
+}
+
 void cwe247_good_logging_only(int listenSocket) {
   struct sockaddr_in service;
   socklen_t serviceLen = sizeof(service);
@@ -210,6 +226,36 @@ void cwe428_bad_unsized(void) {
   PROCESS_INFORMATION pi;
   char commandLine[] = "C:\\Program Files\\GoodApp arg1 arg2";
   CreateProcessA(NULL, commandLine, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi); // $ Alert
+}
+
+void cwe428_bad_path_spaces_with_exe(void) {
+  STARTUPINFOA si;
+  PROCESS_INFORMATION pi;
+  char commandLine[] = "C:\\Program Files\\GoodApp.exe arg1 arg2";
+  CreateProcessA(NULL, commandLine, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi); // $ Alert
+}
+
+void cwe428_good_exe_with_arguments(void) {
+  STARTUPINFOA si;
+  PROCESS_INFORMATION pi;
+  char commandLine[] = "C:\\Tools\\GoodApp.exe arg1 arg2";
+  CreateProcessA(NULL, commandLine, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+}
+
+void cwe428_bad_appended_arguments(void) {
+  STARTUPINFOA si;
+  PROCESS_INFORMATION pi;
+  char commandLine[] = "C:\\Program Files\\GoodApp.exe";
+  strcat(commandLine, " arg1 arg2");
+  CreateProcessA(NULL, commandLine, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi); // $ Alert
+}
+
+void cwe428_good_overwritten_with_quoted_path(void) {
+  STARTUPINFOA si;
+  PROCESS_INFORMATION pi;
+  char commandLine[] = "C:\\Program Files\\GoodApp.exe arg1 arg2";
+  strcpy(commandLine, "\"C:\\Program Files\\GoodApp.exe\" arg1 arg2");
+  CreateProcessA(NULL, commandLine, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
 }
 
 void cwe428_pointer_covered_by_standard_query(void) {

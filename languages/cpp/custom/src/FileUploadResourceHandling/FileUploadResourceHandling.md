@@ -67,6 +67,11 @@ Some related patterns are already reported by standard queries, so this query do
 - Untrusted data passed to `LoadLibrary`/`LoadLibraryA`/`LoadLibraryW`: `cpp/uncontrolled-process-operation` (CWE-114, `security-extended` suite).
 - Unquoted command lines as literals or `char *`: `cpp/unsafe-create-process-call` (CWE-428, `security-extended` suite).
 
+## Known limitations
+
+- The unquoted command-line check uses `.exe` to distinguish an executable path from argument separators. Extensionless executables followed by arguments are ambiguous and may be reported when the executable path itself has no spaces.
+- Command-buffer overwrite tracking recognizes `strcpy`; other operations that replace the initialized buffer are not modeled.
+
 ## References
 
 - CWE-15: [External Control of System or Configuration Setting](https://cwe.mitre.org/data/definitions/15.html).

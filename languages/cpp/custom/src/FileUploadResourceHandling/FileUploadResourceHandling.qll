@@ -111,8 +111,21 @@ class ReverseDnsLookupCall extends FunctionCall {
     )
     or
     this.getTarget().hasGlobalName(["getnameinfo", "GetNameInfoA", "GetNameInfoW"]) and
+    not hasNumericHostFlag(this.getArgument(6)) and
     result.asDefiningArgument() = this.getArgument(2)
   }
+}
+
+/** Holds if `flags` includes `NI_NUMERICHOST`. */
+private predicate hasNumericHostFlag(Expr flags) {
+  exists(Expr flag |
+    flag = flags.getAChild*() and
+    (
+      flag.(VariableAccess).getTarget().hasName("NI_NUMERICHOST")
+      or
+      flag.findRootCause().(Macro).getName() = "NI_NUMERICHOST"
+    )
+  )
 }
 
 /** A call to a function that compares two strings or memory regions. */
@@ -200,7 +213,22 @@ private predicate isCreateProcessFunction(string name, int appNameArg, int cmdLi
 bindingset[s]
 private predicate isUnquotedPathWithSpaces(string s) {
   not s.regexpMatch("\"([^\"])*\"[\\s\\S]*") and
-  s.regexpMatch("[\\s\\S]*\\s[\\s\\S]*")
+  s.regexpMatch("[\\s\\S]*\\s[\\s\\S]*") and
+  not s.regexpMatch("(?i)^[^\\s\"]+\\.exe\\s+[\\s\\S]*")
+}
+
+private predicate isOverwrittenByStrcpyBefore(FunctionCall call, LocalVariable buffer) {
+  exists(FunctionCall write |
+    write.getTarget().hasGlobalOrStdName("strcpy") and
+    write.getArgument(0).(VariableAccess).getTarget() = buffer and
+    write.getEnclosingFunction() = call.getEnclosingFunction() and
+    (
+      write.getLocation().getStartLine() < call.getLocation().getStartLine()
+      or
+      write.getLocation().getStartLine() = call.getLocation().getStartLine() and
+      write.getLocation().getStartColumn() < call.getLocation().getStartColumn()
+    )
+  )
 }
 
 /**
@@ -214,7 +242,8 @@ predicate unquotedCommandLineBuffer(FunctionCall call, LocalVariable buffer, str
     call.getArgument(cmdLineArg).(VariableAccess).getTarget() = buffer and
     buffer.getUnspecifiedType() instanceof ArrayType and
     cmdLine = buffer.getInitializer().getExpr().(StringLiteral).getValue() and
-    isUnquotedPathWithSpaces(cmdLine)
+    isUnquotedPathWithSpaces(cmdLine) and
+    not isOverwrittenByStrcpyBefore(call, buffer)
   )
 }
 

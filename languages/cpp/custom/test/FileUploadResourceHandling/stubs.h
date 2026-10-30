@@ -15,6 +15,7 @@ size_t strlen(const char *s);
 int strcmp(const char *s1, const char *s2);
 int strncmp(const char *s1, const char *s2, size_t n);
 char *strcpy(char *dest, const char *src);
+char *strcat(char *dest, const char *src);
 
 /* BSD sockets */
 typedef unsigned int socklen_t;
@@ -39,6 +40,8 @@ struct hostent {
   char **h_addr_list;
 };
 #define AF_INET 2
+#define NI_NUMERICHOST 1
+#define NI_NAMEREQD 4
 int recv(int s, char *buf, int len, int flags);
 int accept(int s, struct sockaddr *addr, socklen_t *addrlen);
 int getpeername(int s, struct sockaddr *addr, socklen_t *addrlen);
