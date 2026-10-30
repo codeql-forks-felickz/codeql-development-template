@@ -42,6 +42,20 @@ predicate isValueChild(Expr parent, Expr child) {
     child = comma.getRightOperand()
   )
   or
+  exists(Call call, int i |
+    parent = call and
+    child = call.getArgument(i) and
+    not exists(Function target, Parameter parameter |
+      target = call.getTarget() and
+      target.hasDefinition() and
+      parameter = target.getParameter(i) and
+      not exists(VariableAccess access |
+        access.getTarget() = parameter and
+        access.getEnclosingFunction() = target
+      )
+    )
+  )
+  or
   exists(ConditionalExpr conditional |
     parent = conditional and
     (child = conditional.getThen() or child = conditional.getElse())

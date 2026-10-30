@@ -132,6 +132,10 @@ static size_t return_fixed_size(size_t metric) {
     return 64;
 }
 
+static size_t return_argument(size_t metric) {
+    return metric;
+}
+
 /* Multiplications in discarded expressions or unrelated call arguments do not determine the size. */
 void good_unrelated_multiplications(int sock) {
     size_t count = (size_t)readCount(sock);
@@ -139,4 +143,11 @@ void good_unrelated_multiplications(int sock) {
     char *callSize = (char *)malloc(return_fixed_size(count * 16));
     free(commaSize);
     free(callSize);
+}
+
+/* A call argument can contribute to the allocation size through the return value. */
+void bad_call_argument_multiplier(int sock) {
+    size_t count = (size_t)readCount(sock);
+    char *p = (char *)malloc(return_argument(count * 16)); // $ Alert
+    free(p);
 }

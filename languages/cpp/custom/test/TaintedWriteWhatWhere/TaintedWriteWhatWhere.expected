@@ -5,10 +5,11 @@
 | test.c:64:5:64:37 | ... = ... | test.c:63:14:63:14 | read output argument | test.c:64:13:64:16 | next | This write goes through a pointer that is overwritten with $@, allowing an attacker to write to an arbitrary address. | test.c:63:14:63:14 | read output argument | untrusted data (buffer read by read) |
 | test.c:70:5:70:19 | ... = ... | test.c:69:11:69:12 | fread output argument | test.c:70:7:70:10 | name | This write goes through a pointer that is overwritten with $@, allowing an attacker to write to an arbitrary address. | test.c:69:11:69:12 | fread output argument | untrusted data (string read by fread) |
 | test.c:76:5:76:19 | ... = ... | test.c:75:16:75:25 | recv output argument | test.c:76:7:76:10 | name | This write goes through a pointer that is overwritten with $@, allowing an attacker to write to an arbitrary address. | test.c:75:16:75:25 | recv output argument | untrusted data (buffer read by recv) |
-| test.c:82:5:82:15 | ... = ... | test.c:81:16:81:22 | recv output argument | test.c:82:5:82:11 | * ... | This write goes through a pointer that is overwritten with $@, allowing an attacker to write to an arbitrary address. | test.c:81:16:81:22 | recv output argument | untrusted data (buffer read by recv) |
-| test.c:88:5:88:21 | ... = ... | test.c:98:16:98:28 | recv output argument | test.c:88:5:88:8 | prev | This write goes through a pointer that is overwritten with $@, allowing an attacker to write to an arbitrary address. | test.c:98:16:98:28 | recv output argument | untrusted data (buffer read by recv) |
-| test.c:89:5:89:21 | ... = ... | test.c:98:16:98:28 | recv output argument | test.c:89:5:89:8 | next | This write goes through a pointer that is overwritten with $@, allowing an attacker to write to an arbitrary address. | test.c:98:16:98:28 | recv output argument | untrusted data (buffer read by recv) |
-| test.c:168:5:168:32 | ... = ... | test.c:164:16:164:28 | recv output argument | test.c:168:15:168:18 | next | This write goes through a pointer that is overwritten with $@, allowing an attacker to write to an arbitrary address. | test.c:164:16:164:28 | recv output argument | untrusted data (buffer read by recv) |
+| test.c:82:5:82:19 | ... = ... | test.c:81:16:81:25 | recv output argument | test.c:82:7:82:10 | name | This write goes through a pointer that is overwritten with $@, allowing an attacker to write to an arbitrary address. | test.c:81:16:81:25 | recv output argument | untrusted data (buffer read by recv) |
+| test.c:88:5:88:15 | ... = ... | test.c:87:16:87:22 | recv output argument | test.c:88:5:88:11 | * ... | This write goes through a pointer that is overwritten with $@, allowing an attacker to write to an arbitrary address. | test.c:87:16:87:22 | recv output argument | untrusted data (buffer read by recv) |
+| test.c:94:5:94:21 | ... = ... | test.c:104:16:104:28 | recv output argument | test.c:94:5:94:8 | prev | This write goes through a pointer that is overwritten with $@, allowing an attacker to write to an arbitrary address. | test.c:104:16:104:28 | recv output argument | untrusted data (buffer read by recv) |
+| test.c:95:5:95:21 | ... = ... | test.c:104:16:104:28 | recv output argument | test.c:95:5:95:8 | next | This write goes through a pointer that is overwritten with $@, allowing an attacker to write to an arbitrary address. | test.c:104:16:104:28 | recv output argument | untrusted data (buffer read by recv) |
+| test.c:174:5:174:32 | ... = ... | test.c:170:16:170:28 | recv output argument | test.c:174:15:174:18 | next | This write goes through a pointer that is overwritten with $@, allowing an attacker to write to an arbitrary address. | test.c:170:16:170:28 | recv output argument | untrusted data (buffer read by recv) |
 edges
 | inherited.cpp:19:16:19:28 | recv output argument | inherited.cpp:20:5:20:8 | *data | provenance |  |
 | inherited.cpp:20:5:20:8 | *data | inherited.cpp:20:10:20:13 | next | provenance | Config |
@@ -30,24 +31,26 @@ edges
 | test.c:70:5:70:5 | *r | test.c:70:7:70:10 | name | provenance | Config |
 | test.c:75:16:75:25 | recv output argument | test.c:76:5:76:5 | *r | provenance |  |
 | test.c:76:5:76:5 | *r | test.c:76:7:76:10 | name | provenance | Config |
-| test.c:81:16:81:22 | recv output argument | test.c:82:5:82:11 | * ... | provenance |  |
-| test.c:85:35:85:38 | *data | test.c:86:24:86:27 | *data | provenance |  |
-| test.c:86:24:86:27 | *data | test.c:86:30:86:33 | *list | provenance | Config |
-| test.c:86:24:86:27 | *data | test.c:87:24:87:27 | *data | provenance |  |
-| test.c:86:30:86:33 | *list | test.c:86:35:86:38 | prev | provenance | Config |
-| test.c:86:35:86:38 | prev | test.c:86:35:86:38 | prev | provenance |  |
-| test.c:86:35:86:38 | prev | test.c:88:5:88:8 | prev | provenance |  |
-| test.c:87:24:87:27 | *data | test.c:87:30:87:33 | *list | provenance | Config |
-| test.c:87:30:87:33 | *list | test.c:87:35:87:38 | next | provenance | Config |
-| test.c:87:35:87:38 | next | test.c:87:35:87:38 | next | provenance |  |
-| test.c:87:35:87:38 | next | test.c:89:5:89:8 | next | provenance |  |
-| test.c:98:16:98:28 | recv output argument | test.c:99:16:99:20 | *& ... | provenance |  |
-| test.c:99:16:99:20 | *& ... | test.c:85:35:85:38 | *data | provenance |  |
-| test.c:164:16:164:28 | recv output argument | test.c:166:9:166:12 | *data | provenance |  |
-| test.c:164:16:164:28 | recv output argument | test.c:168:5:168:8 | *data | provenance |  |
-| test.c:166:9:166:12 | *data | test.c:168:5:168:8 | *data | provenance |  |
-| test.c:168:5:168:8 | *data | test.c:168:10:168:13 | *list | provenance | Config |
-| test.c:168:10:168:13 | *list | test.c:168:15:168:18 | next | provenance | Config |
+| test.c:81:16:81:25 | recv output argument | test.c:82:5:82:5 | *r | provenance |  |
+| test.c:82:5:82:5 | *r | test.c:82:7:82:10 | name | provenance | Config |
+| test.c:87:16:87:22 | recv output argument | test.c:88:5:88:11 | * ... | provenance |  |
+| test.c:91:35:91:38 | *data | test.c:92:24:92:27 | *data | provenance |  |
+| test.c:92:24:92:27 | *data | test.c:92:30:92:33 | *list | provenance | Config |
+| test.c:92:24:92:27 | *data | test.c:93:24:93:27 | *data | provenance |  |
+| test.c:92:30:92:33 | *list | test.c:92:35:92:38 | prev | provenance | Config |
+| test.c:92:35:92:38 | prev | test.c:92:35:92:38 | prev | provenance |  |
+| test.c:92:35:92:38 | prev | test.c:94:5:94:8 | prev | provenance |  |
+| test.c:93:24:93:27 | *data | test.c:93:30:93:33 | *list | provenance | Config |
+| test.c:93:30:93:33 | *list | test.c:93:35:93:38 | next | provenance | Config |
+| test.c:93:35:93:38 | next | test.c:93:35:93:38 | next | provenance |  |
+| test.c:93:35:93:38 | next | test.c:95:5:95:8 | next | provenance |  |
+| test.c:104:16:104:28 | recv output argument | test.c:105:16:105:20 | *& ... | provenance |  |
+| test.c:105:16:105:20 | *& ... | test.c:91:35:91:38 | *data | provenance |  |
+| test.c:170:16:170:28 | recv output argument | test.c:172:9:172:12 | *data | provenance |  |
+| test.c:170:16:170:28 | recv output argument | test.c:174:5:174:8 | *data | provenance |  |
+| test.c:172:9:172:12 | *data | test.c:174:5:174:8 | *data | provenance |  |
+| test.c:174:5:174:8 | *data | test.c:174:10:174:13 | *list | provenance | Config |
+| test.c:174:10:174:13 | *list | test.c:174:15:174:18 | next | provenance | Config |
 nodes
 | inherited.cpp:19:16:19:28 | recv output argument | semmle.label | recv output argument |
 | inherited.cpp:20:5:20:8 | *data | semmle.label | *data |
@@ -74,24 +77,27 @@ nodes
 | test.c:75:16:75:25 | recv output argument | semmle.label | recv output argument |
 | test.c:76:5:76:5 | *r | semmle.label | *r |
 | test.c:76:7:76:10 | name | semmle.label | name |
-| test.c:81:16:81:22 | recv output argument | semmle.label | recv output argument |
-| test.c:82:5:82:11 | * ... | semmle.label | * ... |
-| test.c:85:35:85:38 | *data | semmle.label | *data |
-| test.c:86:24:86:27 | *data | semmle.label | *data |
-| test.c:86:30:86:33 | *list | semmle.label | *list |
-| test.c:86:35:86:38 | prev | semmle.label | prev |
-| test.c:86:35:86:38 | prev | semmle.label | prev |
-| test.c:87:24:87:27 | *data | semmle.label | *data |
-| test.c:87:30:87:33 | *list | semmle.label | *list |
-| test.c:87:35:87:38 | next | semmle.label | next |
-| test.c:87:35:87:38 | next | semmle.label | next |
-| test.c:88:5:88:8 | prev | semmle.label | prev |
-| test.c:89:5:89:8 | next | semmle.label | next |
-| test.c:98:16:98:28 | recv output argument | semmle.label | recv output argument |
-| test.c:99:16:99:20 | *& ... | semmle.label | *& ... |
-| test.c:164:16:164:28 | recv output argument | semmle.label | recv output argument |
-| test.c:166:9:166:12 | *data | semmle.label | *data |
-| test.c:168:5:168:8 | *data | semmle.label | *data |
-| test.c:168:10:168:13 | *list | semmle.label | *list |
-| test.c:168:15:168:18 | next | semmle.label | next |
+| test.c:81:16:81:25 | recv output argument | semmle.label | recv output argument |
+| test.c:82:5:82:5 | *r | semmle.label | *r |
+| test.c:82:7:82:10 | name | semmle.label | name |
+| test.c:87:16:87:22 | recv output argument | semmle.label | recv output argument |
+| test.c:88:5:88:11 | * ... | semmle.label | * ... |
+| test.c:91:35:91:38 | *data | semmle.label | *data |
+| test.c:92:24:92:27 | *data | semmle.label | *data |
+| test.c:92:30:92:33 | *list | semmle.label | *list |
+| test.c:92:35:92:38 | prev | semmle.label | prev |
+| test.c:92:35:92:38 | prev | semmle.label | prev |
+| test.c:93:24:93:27 | *data | semmle.label | *data |
+| test.c:93:30:93:33 | *list | semmle.label | *list |
+| test.c:93:35:93:38 | next | semmle.label | next |
+| test.c:93:35:93:38 | next | semmle.label | next |
+| test.c:94:5:94:8 | prev | semmle.label | prev |
+| test.c:95:5:95:8 | next | semmle.label | next |
+| test.c:104:16:104:28 | recv output argument | semmle.label | recv output argument |
+| test.c:105:16:105:20 | *& ... | semmle.label | *& ... |
+| test.c:170:16:170:28 | recv output argument | semmle.label | recv output argument |
+| test.c:172:9:172:12 | *data | semmle.label | *data |
+| test.c:174:5:174:8 | *data | semmle.label | *data |
+| test.c:174:10:174:13 | *list | semmle.label | *list |
+| test.c:174:15:174:18 | next | semmle.label | next |
 subpaths

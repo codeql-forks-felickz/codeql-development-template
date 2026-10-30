@@ -76,6 +76,12 @@ void bad_recv_full_record(int sock) {
     r.name[0] = 'x'; // $ Alert
 }
 
+void bad_recv_unknown_length(int sock, size_t length) {
+    record r;
+    recv(sock, (char *)&r, length, 0); // $ Source
+    r.name[0] = 'x'; // $ Alert
+}
+
 void bad_recv_pointer_variable(int sock) {
     int *target;
     recv(sock, &target, sizeof(target), 0); // $ Source

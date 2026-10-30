@@ -193,9 +193,8 @@ Expr getInputByteCount(Call call, int bufferIndex) {
 }
 
 /**
- * Holds if `field` starts within the possible input byte range for `access`.
- * If the input call or its byte count is not modeled, propagation remains
- * conservative.
+ * Holds if `field` overlaps the possible input byte range for `access`.
+ * Non-constant or unmodeled byte counts remain conservative.
  */
 predicate fieldMayBeOverwritten(
   Field field, Class objectType, FieldAccess access
@@ -213,7 +212,15 @@ predicate fieldMayBeOverwritten(
     (
       exists(int maxByteCount |
         maxByteCount = byteCount.getFullyConverted().getValue().toInt() and
-        fieldOffset < maxByteCount
+        (
+          exists(int fieldSize |
+            fieldSize = field.getType().getSize() and
+            fieldOffset < maxByteCount and
+            0 < fieldOffset + fieldSize
+          )
+          or
+          not exists(int fieldSize | fieldSize = field.getType().getSize())
+        )
       )
       or
       not exists(int maxByteCount |
