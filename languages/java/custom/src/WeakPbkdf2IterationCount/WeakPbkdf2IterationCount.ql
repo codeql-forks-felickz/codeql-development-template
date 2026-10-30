@@ -51,4 +51,4 @@ where
   iterations = source.asExpr().(CompileTimeConstantExpr).getIntValue()
 select spec,
   "Password-based key derivation uses only " + iterations + " iteration(s); use at least " +
-    minIterations() + " (current guidance for PBKDF2-HMAC-SHA256 is 600000)."
+    minIterations() + " (NIST SP 800-132 minimum); follow current OWASP guidance for the PRF in use."
