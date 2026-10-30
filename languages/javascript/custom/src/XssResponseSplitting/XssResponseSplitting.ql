@@ -99,39 +99,48 @@ private class SanitizerBypassSink extends DataFlow::Node {
 }
 
 /**
- * Holds if `pred -> succ` is a step through Angular or RxJS constructs that
- * are not modeled by the standard library.
+ * Holds if `pred -> succ` is a step from a value returned by a method of a
+ * service class, to a call of that method on an instance obtained through
+ * `inject(Service)`.
  */
-private predicate angularResponseStep(DataFlow::Node pred, DataFlow::Node succ) {
-  // A value returned from a method of a service class, to a call of that
-  // method on an instance obtained through `inject(Service)`.
+private predicate injectedServiceReturnStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(DataFlow::ClassNode cls, string name |
     pred = cls.getInstanceMethod(name).getAReturn() and
     succ = injectedClassInstance(cls).getAMethodCall(name)
   )
-  or
-  // Observables combined with `forkJoin`, `combineLatest` or `zip`.
-  exists(DataFlow::CallNode call |
-    call = DataFlow::moduleMember("rxjs", ["forkJoin", "combineLatest", "zip"]).getACall() and
-    succ = call
-  |
-    pred = call.getAnArgument()
-    or
-    pred = call.getAnArgument().getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
-  )
-  or
-  // `observable.subscribe({ next: (value) => ... })`
-  exists(DataFlow::MethodCallNode call |
-    call.getMethodName() = "subscribe" and
-    pred = call.getReceiver() and
-    succ =
-      call.getArgument(0)
-          .getALocalSource()
-          .(DataFlow::ObjectLiteralNode)
-          .getAPropertySource("next")
-          .(DataFlow::FunctionNode)
-          .getParameter(0)
-  )
+}
+
+/**
+ * A value-preserving step through RxJS constructs that are not modeled by the
+ * standard library. Preserving the value (rather than adding a taint step)
+ * keeps track of which element of a combined observable holds which input.
+ */
+private class RxJsCombineFlowStep extends DataFlow::AdditionalFlowStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    // `forkJoin([a$, b$])`, `combineLatest({ a: a$ })` or `zip(a$, b$)`
+    exists(DataFlow::CallNode call |
+      call = DataFlow::moduleMember("rxjs", ["forkJoin", "combineLatest", "zip"]).getACall() and
+      pred = call.getAnArgument() and
+      succ = call
+    )
+  }
+
+  override predicate jumpStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // `obs$.subscribe((value) => ...)` or `obs$.subscribe({ next: (value) => ... })`
+    exists(DataFlow::MethodCallNode call, DataFlow::FunctionNode callback |
+      call.getMethodName() = "subscribe" and
+      pred = call.getReceiver() and
+      succ = callback.getParameter(0)
+    |
+      callback = call.getCallback(0)
+      or
+      callback =
+        call.getArgument(0)
+            .getALocalSource()
+            .(DataFlow::ObjectLiteralNode)
+            .getAPropertySource("next")
+    )
+  }
 }
 
 module XssResponseSplittingConfig implements DataFlow::ConfigSig {
@@ -142,7 +151,7 @@ module XssResponseSplittingConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof DomBasedXss::Sanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    angularResponseStep(pred, succ)
+    injectedServiceReturnStep(pred, succ)
   }
 }
 

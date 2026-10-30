@@ -1,4 +1,5 @@
 import { Component, type OnInit, inject } from '@angular/core'
+import { forkJoin, of } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
 import { DomSanitizer, type SafeHtml } from '@angular/platform-browser'
 import DOMPurify from 'dompurify'
@@ -34,5 +35,15 @@ export class SafeProductComponent implements OnInit {
       this.plainDescription = product.description
     })
     this.banner = this.sanitizer.bypassSecurityTrustHtml('<b>Welcome</b>')
+    // Only the second element comes from the HTTP response.
+    forkJoin([of('<b>Sale</b>'), this.productService.search('')]).subscribe({
+      next: ([html, products]) => {
+        this.banner = this.sanitizer.bypassSecurityTrustHtml(html)
+      }
+    })
+    forkJoin([of('<b>Sale</b>'), this.productService.search('')]).subscribe(([html, products]) => {
+      this.banner = this.sanitizer.bypassSecurityTrustHtml(html)
+      this.purified = this.sanitizer.bypassSecurityTrustHtml(products[0].description) // $ Alert
+    })
   }
 }

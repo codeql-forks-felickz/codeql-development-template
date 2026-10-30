@@ -1,12 +1,12 @@
 #select
 | app/product-details/product-details.component.ts:17:65:17:83 | product.description | app/Services/product.service.ts:15:12:15:46 | this.ht ... ${id}`) | app/product-details/product-details.component.ts:17:65:17:83 | product.description | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/product.service.ts:15:12:15:46 | this.ht ... ${id}`) | HTTP response data |
 | app/product-details/product-details.component.ts:18:60:18:72 | product.style | app/Services/product.service.ts:15:12:15:46 | this.ht ... ${id}`) | app/product-details/product-details.component.ts:18:60:18:72 | product.style | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/product.service.ts:15:12:15:46 | this.ht ... ${id}`) | HTTP response data |
-| app/search-result/search-result.component.ts:27:76:27:95 | quantity.description | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | app/search-result/search-result.component.ts:27:76:27:95 | quantity.description | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | HTTP response data |
+| app/safe/safe-product.component.ts:46:62:46:84 | product ... ription | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | app/safe/safe-product.component.ts:46:62:46:84 | product ... ription | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | HTTP response data |
 | app/search-result/search-result.component.ts:27:76:27:95 | quantity.description | app/Services/quantity.service.ts:10:12:10:43 | this.ht ... itys/') | app/search-result/search-result.component.ts:27:76:27:95 | quantity.description | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/quantity.service.ts:10:12:10:43 | this.ht ... itys/') | HTTP response data |
 | app/search-result/search-result.component.ts:36:73:36:96 | tableDa ... ription | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | app/search-result/search-result.component.ts:36:73:36:96 | tableDa ... ription | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | HTTP response data |
-| app/search-result/search-result.component.ts:36:73:36:96 | tableDa ... ription | app/Services/quantity.service.ts:10:12:10:43 | this.ht ... itys/') | app/search-result/search-result.component.ts:36:73:36:96 | tableDa ... ription | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/quantity.service.ts:10:12:10:43 | this.ht ... itys/') | HTTP response data |
 edges
 | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | app/Services/product.service.ts:11:75:11:82 | response | provenance |  |
+| app/Services/product.service.ts:11:12:11:143 | this.ht ... err })) | app/safe/safe-product.component.ts:44:34:44:63 | this.pr ... rch('') | provenance | Config |
 | app/Services/product.service.ts:11:12:11:143 | this.ht ... err })) | app/search-result/search-result.component.ts:20:22:20:51 | this.pr ... rch('') | provenance | Config |
 | app/Services/product.service.ts:11:75:11:82 | response | app/Services/product.service.ts:11:93:11:100 | response | provenance |  |
 | app/Services/product.service.ts:11:93:11:100 | response | app/Services/product.service.ts:11:93:11:105 | response.data | provenance |  |
@@ -26,20 +26,28 @@ edges
 | app/product-details/product-details.component.ts:16:43:16:49 | product | app/product-details/product-details.component.ts:18:60:18:66 | product | provenance |  |
 | app/product-details/product-details.component.ts:17:65:17:71 | product | app/product-details/product-details.component.ts:17:65:17:83 | product.description | provenance |  |
 | app/product-details/product-details.component.ts:18:60:18:66 | product | app/product-details/product-details.component.ts:18:60:18:72 | product.style | provenance |  |
+| app/safe/safe-product.component.ts:44:5:44:65 | forkJoi ... h('')]) [1] | app/safe/safe-product.component.ts:44:78:44:93 | [html, products] [1] | provenance |  |
+| app/safe/safe-product.component.ts:44:14:44:64 | [of('<b ... ch('')] [1] | app/safe/safe-product.component.ts:44:5:44:65 | forkJoi ... h('')]) [1] | provenance |  |
+| app/safe/safe-product.component.ts:44:34:44:63 | this.pr ... rch('') | app/safe/safe-product.component.ts:44:14:44:64 | [of('<b ... ch('')] [1] | provenance |  |
+| app/safe/safe-product.component.ts:44:78:44:93 | [html, products] [1] | app/safe/safe-product.component.ts:44:85:44:92 | products | provenance |  |
+| app/safe/safe-product.component.ts:44:85:44:92 | products | app/safe/safe-product.component.ts:44:85:44:92 | products | provenance |  |
+| app/safe/safe-product.component.ts:44:85:44:92 | products | app/safe/safe-product.component.ts:46:62:46:69 | products | provenance |  |
+| app/safe/safe-product.component.ts:46:62:46:69 | products | app/safe/safe-product.component.ts:46:62:46:84 | product ... ription | provenance |  |
 | app/search-result/search-result.component.ts:20:11:20:18 | products | app/search-result/search-result.component.ts:22:27:22:34 | products | provenance |  |
 | app/search-result/search-result.component.ts:20:22:20:51 | this.pr ... rch('') | app/search-result/search-result.component.ts:20:11:20:18 | products | provenance |  |
 | app/search-result/search-result.component.ts:21:11:21:20 | quantities | app/search-result/search-result.component.ts:22:15:22:24 | quantities | provenance |  |
 | app/search-result/search-result.component.ts:21:24:21:52 | this.qu ... etAll() | app/search-result/search-result.component.ts:21:11:21:20 | quantities | provenance |  |
-| app/search-result/search-result.component.ts:22:5:22:36 | forkJoi ... ducts]) | app/search-result/search-result.component.ts:23:14:23:35 | [quanti ... oducts] | provenance | Config |
-| app/search-result/search-result.component.ts:22:14:22:35 | [quanti ... oducts] [0] | app/search-result/search-result.component.ts:22:5:22:36 | forkJoi ... ducts]) | provenance | Config |
-| app/search-result/search-result.component.ts:22:14:22:35 | [quanti ... oducts] [1] | app/search-result/search-result.component.ts:22:5:22:36 | forkJoi ... ducts]) | provenance | Config |
-| app/search-result/search-result.component.ts:22:15:22:24 | quantities | app/search-result/search-result.component.ts:22:5:22:36 | forkJoi ... ducts]) | provenance | Config |
+| app/search-result/search-result.component.ts:22:5:22:36 | forkJoi ... ducts]) [0] | app/search-result/search-result.component.ts:23:14:23:35 | [quanti ... oducts] [0] | provenance |  |
+| app/search-result/search-result.component.ts:22:5:22:36 | forkJoi ... ducts]) [1] | app/search-result/search-result.component.ts:23:14:23:35 | [quanti ... oducts] [1] | provenance |  |
+| app/search-result/search-result.component.ts:22:14:22:35 | [quanti ... oducts] [0] | app/search-result/search-result.component.ts:22:5:22:36 | forkJoi ... ducts]) [0] | provenance |  |
+| app/search-result/search-result.component.ts:22:14:22:35 | [quanti ... oducts] [1] | app/search-result/search-result.component.ts:22:5:22:36 | forkJoi ... ducts]) [1] | provenance |  |
 | app/search-result/search-result.component.ts:22:15:22:24 | quantities | app/search-result/search-result.component.ts:22:14:22:35 | [quanti ... oducts] [0] | provenance |  |
-| app/search-result/search-result.component.ts:22:27:22:34 | products | app/search-result/search-result.component.ts:22:5:22:36 | forkJoi ... ducts]) | provenance | Config |
 | app/search-result/search-result.component.ts:22:27:22:34 | products | app/search-result/search-result.component.ts:22:14:22:35 | [quanti ... oducts] [1] | provenance |  |
-| app/search-result/search-result.component.ts:23:14:23:35 | [quanti ... oducts] | app/search-result/search-result.component.ts:23:15:23:24 | quantities | provenance |  |
-| app/search-result/search-result.component.ts:23:14:23:35 | [quanti ... oducts] | app/search-result/search-result.component.ts:23:27:23:34 | products | provenance |  |
+| app/search-result/search-result.component.ts:23:14:23:35 | [quanti ... oducts] [0] | app/search-result/search-result.component.ts:23:15:23:24 | quantities | provenance |  |
+| app/search-result/search-result.component.ts:23:14:23:35 | [quanti ... oducts] [1] | app/search-result/search-result.component.ts:23:27:23:34 | products | provenance |  |
+| app/search-result/search-result.component.ts:23:15:23:24 | quantities | app/search-result/search-result.component.ts:23:15:23:24 | quantities | provenance |  |
 | app/search-result/search-result.component.ts:23:15:23:24 | quantities | app/search-result/search-result.component.ts:26:32:26:41 | quantities | provenance |  |
+| app/search-result/search-result.component.ts:23:27:23:34 | products | app/search-result/search-result.component.ts:23:27:23:34 | products | provenance |  |
 | app/search-result/search-result.component.ts:23:27:23:34 | products | app/search-result/search-result.component.ts:25:38:25:45 | products | provenance |  |
 | app/search-result/search-result.component.ts:25:38:25:45 | products | app/search-result/search-result.component.ts:34:28:34:36 | tableData | provenance |  |
 | app/search-result/search-result.component.ts:26:20:26:27 | quantity | app/search-result/search-result.component.ts:27:76:27:83 | quantity | provenance |  |
@@ -69,17 +77,29 @@ nodes
 | app/product-details/product-details.component.ts:17:65:17:83 | product.description | semmle.label | product.description |
 | app/product-details/product-details.component.ts:18:60:18:66 | product | semmle.label | product |
 | app/product-details/product-details.component.ts:18:60:18:72 | product.style | semmle.label | product.style |
+| app/safe/safe-product.component.ts:44:5:44:65 | forkJoi ... h('')]) [1] | semmle.label | forkJoi ... h('')]) [1] |
+| app/safe/safe-product.component.ts:44:14:44:64 | [of('<b ... ch('')] [1] | semmle.label | [of('<b ... ch('')] [1] |
+| app/safe/safe-product.component.ts:44:34:44:63 | this.pr ... rch('') | semmle.label | this.pr ... rch('') |
+| app/safe/safe-product.component.ts:44:78:44:93 | [html, products] [1] | semmle.label | [html, products] [1] |
+| app/safe/safe-product.component.ts:44:85:44:92 | products | semmle.label | products |
+| app/safe/safe-product.component.ts:44:85:44:92 | products | semmle.label | products |
+| app/safe/safe-product.component.ts:46:62:46:69 | products | semmle.label | products |
+| app/safe/safe-product.component.ts:46:62:46:84 | product ... ription | semmle.label | product ... ription |
 | app/search-result/search-result.component.ts:20:11:20:18 | products | semmle.label | products |
 | app/search-result/search-result.component.ts:20:22:20:51 | this.pr ... rch('') | semmle.label | this.pr ... rch('') |
 | app/search-result/search-result.component.ts:21:11:21:20 | quantities | semmle.label | quantities |
 | app/search-result/search-result.component.ts:21:24:21:52 | this.qu ... etAll() | semmle.label | this.qu ... etAll() |
-| app/search-result/search-result.component.ts:22:5:22:36 | forkJoi ... ducts]) | semmle.label | forkJoi ... ducts]) |
+| app/search-result/search-result.component.ts:22:5:22:36 | forkJoi ... ducts]) [0] | semmle.label | forkJoi ... ducts]) [0] |
+| app/search-result/search-result.component.ts:22:5:22:36 | forkJoi ... ducts]) [1] | semmle.label | forkJoi ... ducts]) [1] |
 | app/search-result/search-result.component.ts:22:14:22:35 | [quanti ... oducts] [0] | semmle.label | [quanti ... oducts] [0] |
 | app/search-result/search-result.component.ts:22:14:22:35 | [quanti ... oducts] [1] | semmle.label | [quanti ... oducts] [1] |
 | app/search-result/search-result.component.ts:22:15:22:24 | quantities | semmle.label | quantities |
 | app/search-result/search-result.component.ts:22:27:22:34 | products | semmle.label | products |
-| app/search-result/search-result.component.ts:23:14:23:35 | [quanti ... oducts] | semmle.label | [quanti ... oducts] |
+| app/search-result/search-result.component.ts:23:14:23:35 | [quanti ... oducts] [0] | semmle.label | [quanti ... oducts] [0] |
+| app/search-result/search-result.component.ts:23:14:23:35 | [quanti ... oducts] [1] | semmle.label | [quanti ... oducts] [1] |
 | app/search-result/search-result.component.ts:23:15:23:24 | quantities | semmle.label | quantities |
+| app/search-result/search-result.component.ts:23:15:23:24 | quantities | semmle.label | quantities |
+| app/search-result/search-result.component.ts:23:27:23:34 | products | semmle.label | products |
 | app/search-result/search-result.component.ts:23:27:23:34 | products | semmle.label | products |
 | app/search-result/search-result.component.ts:25:38:25:45 | products | semmle.label | products |
 | app/search-result/search-result.component.ts:26:20:26:27 | quantity | semmle.label | quantity |
