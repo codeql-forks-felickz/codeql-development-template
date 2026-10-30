@@ -4,7 +4,7 @@
 
 Block cipher modes such as CBC, CTR and GCM require an initialization vector (IV) that is unpredictable (CBC) or never reused with the same key (CTR, GCM). When an `OpenSSL::Cipher` is used for encryption with a hard-coded IV, encryption becomes deterministic: identical plaintexts produce identical ciphertexts, and in stream-like modes such as CTR and GCM, reusing an IV can expose the plaintext or allow forgery.
 
-This query flags hard-coded string values, including values assigned to constants that may be defined in another file, that flow to the `iv=` setter of an `OpenSSL::Cipher` instance that is not put into decryption mode.
+This query flags hard-coded string values, including values assigned to constants that may be defined in another file, that flow to an `OpenSSL::Cipher` instance's `iv=` setter when an `encrypt` call on that same cipher can reach the assignment without an intervening `decrypt` call. Ciphers with no explicit mode-setting call are not reported, because OpenSSL ciphers default to decryption mode. Values combined with fresh `SecureRandom`, `OpenSSL::Random.random_bytes`, or cipher `random_iv` output are not treated as hard-coded IVs.
 
 ## Recommendation
 
@@ -43,3 +43,7 @@ end
 - Ruby documentation: [OpenSSL::Cipher](https://docs.ruby-lang.org/en/master/OpenSSL/Cipher.html).
 - Common Weakness Enumeration: [CWE-329](https://cwe.mitre.org/data/definitions/329.html).
 - Common Weakness Enumeration: [CWE-1204](https://cwe.mitre.org/data/definitions/1204.html).
+
+## Known limitations
+
+Mode classification follows control flow within a single callable. If encryption mode is set in a helper method and the IV is assigned in a different method, the query may not establish that the encryption call precedes the assignment.

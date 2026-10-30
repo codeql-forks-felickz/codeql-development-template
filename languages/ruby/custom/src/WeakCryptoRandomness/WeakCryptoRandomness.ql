@@ -16,6 +16,7 @@
 
 import codeql.ruby.AST
 import codeql.ruby.ApiGraphs
+import codeql.ruby.CFG
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 
@@ -27,14 +28,58 @@ API::Node cipherClass() {
 }
 
 /**
- * A call to `OpenSSL::Cipher.new` (or similar) whose instance is not put into
- * decryption mode. OpenSSL ciphers encrypt by default.
+ * A call to `OpenSSL::Cipher.new` (or similar). OpenSSL defaults to decryption
+ * mode, so encryption requires an explicit `encrypt` call.
  */
-class EncryptingCipherInstantiation extends DataFlow::CallNode {
-  EncryptingCipherInstantiation() {
-    this = cipherClass().getAnInstantiation() and
-    not exists(this.getAMethodCall("decrypt"))
+class CipherInstantiation extends DataFlow::CallNode {
+  CipherInstantiation() { this = cipherClass().getAnInstantiation() }
+}
+
+private DataFlow::Node cipherReceiverNode(MethodCall call) {
+  result.asExpr().getExpr() = call.getReceiver()
+}
+
+module CipherInstanceConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof CipherInstantiation }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall call |
+      call.getMethodName() in ["iv=", "encrypt", "decrypt", "random_iv"] and
+      sink = cipherReceiverNode(call)
+    )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+module CipherInstanceFlow = DataFlow::Global<CipherInstanceConfig>;
+
+private predicate cipherCall(CipherInstantiation cipher, MethodCall call, string name) {
+  call.getMethodName() = name and
+  CipherInstanceFlow::flow(cipher, cipherReceiverNode(call))
+}
+
+private predicate canReachWithoutDecrypt(
+  CipherInstantiation cipher, CfgNode startNode, CfgNode endNode
+) {
+  startNode = endNode
+  or
+  exists(CfgNode next |
+    next = startNode.getASuccessor() and
+    not exists(MethodCall decryptCall |
+      cipherCall(cipher, decryptCall, "decrypt") and
+      decryptCall.getControlFlowNode() = next
+    ) and
+    canReachWithoutDecrypt(cipher, next, endNode)
+  )
+}
+
+private predicate hasEncryptingModeAtIv(CipherInstantiation cipher, MethodCall ivCall) {
+  cipherCall(cipher, ivCall, "iv=") and
+  exists(MethodCall encryptCall |
+    cipherCall(cipher, encryptCall, "encrypt") and
+    canReachWithoutDecrypt(cipher, encryptCall.getControlFlowNode(), ivCall.getControlFlowNode())
+  )
 }
 
 /** A string literal with a constant value, used as a hard-coded IV candidate. */
@@ -50,16 +95,46 @@ class StaticIvSource extends DataFlow::Node {
 /** The value assigned to the `iv` of an encrypting cipher, as in `cipher.iv = value`. */
 class CipherIvSink extends DataFlow::Node {
   CipherIvSink() {
-    exists(EncryptingCipherInstantiation cipher |
-      this = cipher.getAMethodCall("iv=").getArgument(0)
+    exists(CipherInstantiation cipher, MethodCall ivCall |
+      hasEncryptingModeAtIv(cipher, ivCall) and
+      this.asExpr().getExpr() = ivCall.getArgument(0)
     )
   }
+}
+
+private predicate isFreshRandomCall(MethodCall call) {
+  exists(DataFlow::CallNode apiCall |
+    apiCall = API::getTopLevelMember("SecureRandom").getAMethodCall(_) and
+    call = apiCall.asExpr().getExpr()
+  )
+  or
+  exists(DataFlow::CallNode apiCall |
+    apiCall = API::getTopLevelMember("OpenSSL").getMember("Random").getAMethodCall("random_bytes") and
+    call = apiCall.asExpr().getExpr()
+  )
+  or
+  cipherCall(_, call, "random_iv")
 }
 
 module StaticIvConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof StaticIvSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CipherIvSink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    exists(MethodCall concatenation, MethodCall randomCall |
+      node.asExpr().getExpr() = concatenation and
+      concatenation.getMethodName() = "+" and
+      isFreshRandomCall(randomCall) and
+      randomCall.getParent+() = concatenation
+    )
+    or
+    exists(StringLiteral interpolation, MethodCall randomCall |
+      node.asExpr().getExpr() = interpolation and
+      isFreshRandomCall(randomCall) and
+      randomCall.getParent+() = interpolation
+    )
+  }
 
   /**
    * Holds if `pred` is the value assigned to a constant and `succ` is a read of
