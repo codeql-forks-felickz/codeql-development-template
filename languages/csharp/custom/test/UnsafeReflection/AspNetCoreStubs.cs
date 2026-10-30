@@ -15,6 +15,7 @@ namespace Microsoft.AspNetCore.Http
     public interface IQueryCollection
     {
         Microsoft.Extensions.Primitives.StringValues this[string key] { get; }
+        bool ContainsKey(string key);
     }
 
     public abstract class HttpRequest

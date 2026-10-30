@@ -121,9 +121,18 @@ private class HostFixingConcatenationBarrier extends RequestForgeryBarrier {
     or
     exists(FormatCall fc |
       this.asExpr() = fc and
-      isHostFixingPrefix(fc.getFormatExpr().getValue())
+      isHostFixingPrefix(fc.getFormatExpr().getValue().regexpCapture("^([^{}]*)(?:\\{.*)?$", 1))
     )
   }
+}
+
+/** Holds if `e` is locally tainted by an active threat-model source. */
+private predicate isLocallyThreatModelTainted(Expr e) {
+  exists(ActiveThreatModelSource source |
+    TaintTracking::localExprTaint(source.asExpr(), e)
+    or
+    TaintTracking::localExprTaint(source.asParameter().getAnAccess(), e)
+  )
 }
 
 /** Holds if `g` checks `e` against a trusted base with `Uri.IsBaseOf`. */
@@ -131,6 +140,7 @@ private predicate isBaseOfGuard(Guard g, Expr e, GuardValue v) {
   exists(MethodCall mc | mc = g |
     mc.getTarget().hasFullyQualifiedName("System", "Uri", "IsBaseOf") and
     e = [mc.getArgument(0), mc.getQualifier()] and
+    not isLocallyThreatModelTainted(mc.getQualifier()) and
     v.asBooleanValue() = true
   )
 }
@@ -150,6 +160,7 @@ private predicate allowListGuard(Guard g, Expr e, GuardValue v) {
   exists(MethodCall mc | mc = g |
     mc.getTarget().hasName("Contains") and
     not mc.getQualifier().getType() instanceof StringType and
+    not isLocallyThreatModelTainted(mc.getQualifier()) and
     e = mc.getArgument(0) and
     v.asBooleanValue() = true
   )
@@ -160,6 +171,15 @@ private predicate hostComparisonGuard(Guard g, Expr e, GuardValue v) {
   exists(EqualityOperation cmp, PropertyAccess pa | cmp = g |
     pa = cmp.getAnOperand() and
     pa.getProperty().hasFullyQualifiedName("System", "Uri", ["Host", "Authority"]) and
+    exists(Expr other |
+      other = cmp.getAnOperand() and
+      other != pa and
+      (
+        exists(string value | value = other.getValue())
+        or
+        not isLocallyThreatModelTainted(other)
+      )
+    ) and
     e = pa.getQualifier() and
     if cmp instanceof EQExpr then v.asBooleanValue() = true else v.asBooleanValue() = false
   )

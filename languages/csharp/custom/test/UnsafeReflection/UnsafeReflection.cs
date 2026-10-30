@@ -67,6 +67,8 @@ namespace UnsafeReflectionTests
     public class PluginController : ControllerBase
     {
         private static readonly HashSet<string> AllowedTypes = new HashSet<string> { "Plugins.Safe" };
+        private static readonly Dictionary<string, bool> AllowedTypeMap =
+            new Dictionary<string, bool> { { "Plugins.Safe", true } };
 
         [HttpPost("type")]
         public object CreateFromType(string typeName) // $ Source
@@ -99,6 +101,38 @@ namespace UnsafeReflectionTests
         public object CreateAllowListed(string typeName)
         {
             if (AllowedTypes.Contains(typeName))
+            {
+                return Activator.CreateInstance(Type.GetType(typeName));
+            }
+            return null;
+        }
+
+        [HttpPost("tainted-allowlist")]
+        public object CreateFromTaintedAllowList(string typeName) // $ Source
+        {
+            var allowedTypes = new List<string>();
+            allowedTypes.Add(typeName);
+            if (allowedTypes.Contains(typeName))
+            {
+                return Activator.CreateInstance(Type.GetType(typeName)); // $ Alert
+            }
+            return null;
+        }
+
+        [HttpPost("tainted-allowlist-key")]
+        public object CreateFromTaintedAllowListKey(string typeName) // $ Source
+        {
+            if (HttpContext.Request.Query.ContainsKey(typeName))
+            {
+                return Activator.CreateInstance(Type.GetType(typeName)); // $ Alert
+            }
+            return null;
+        }
+
+        [HttpPost("allowlisted-key")]
+        public object CreateFromAllowListedKey(string typeName)
+        {
+            if (AllowedTypeMap.ContainsKey(typeName))
             {
                 return Activator.CreateInstance(Type.GetType(typeName));
             }

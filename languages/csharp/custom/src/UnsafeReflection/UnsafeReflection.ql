@@ -111,11 +111,21 @@ private predicate linkedListNodeValueStep(DataFlow::Node pred, DataFlow::Node su
   )
 }
 
+/** Holds if `e` is locally tainted by an active threat-model source. */
+private predicate isLocallyThreatModelTainted(Expr e) {
+  exists(ActiveThreatModelSource source |
+    TaintTracking::localExprTaint(source.asExpr(), e)
+    or
+    TaintTracking::localExprTaint(source.asParameter().getAnAccess(), e)
+  )
+}
+
 /** Holds if `g` checks that `e` is contained in an allowlist, for example `allowed.Contains(e)`. */
 private predicate allowListGuard(Guard g, Expr e, GuardValue v) {
   exists(MethodCall mc | mc = g |
     mc.getTarget().hasName(["Contains", "ContainsKey"]) and
     not mc.getQualifier().getType() instanceof StringType and
+    not isLocallyThreatModelTainted(mc.getQualifier()) and
     e = mc.getArgument(0) and
     v.asBooleanValue() = true
   )

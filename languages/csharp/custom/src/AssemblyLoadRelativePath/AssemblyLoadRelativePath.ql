@@ -1,8 +1,8 @@
 /**
- * @name Assembly loaded from a relative file name
- * @description Loading an assembly from a constant relative file name resolves it through the
- *              current directory or assembly probing paths, which an attacker who controls those
- *              locations can use to plant a malicious assembly.
+ * @name File-like assembly identity or relative assembly path
+ * @description Passing a file-like name to an identity-based assembly loader may indicate a
+ *              mistaken assumption about which assembly is loaded, while relative path-based
+ *              loading resolves through the current directory.
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.3
@@ -19,9 +19,29 @@ import csharp
 bindingset[path]
 predicate isAbsolutePath(string path) { path.regexpMatch("(?s)([A-Za-z]:[\\\\/]|[\\\\/]).*") }
 
-/** Holds if `name` looks like an assembly file name rather than an assembly identity. */
+/** Holds if `name` looks like a file name, despite being interpreted as an assembly identity. */
 bindingset[name]
 predicate isAssemblyFileName(string name) { name.regexpMatch("(?is).*\\.(dll|exe)") }
+
+/** Gets an alert message that distinguishes identity-based and path-based loaders. */
+bindingset[name, value]
+private predicate getAlertMessage(string name, string value, string message) {
+  name = "Load" and
+  message =
+    "Assembly '" + value + "' is passed to " + name +
+      " as an assembly identity, not a file path. The runtime probes for an assembly such as '" +
+      value + ".dll' through its search paths."
+  or
+  name = "LoadWithPartialName" and
+  message =
+    "Assembly '" + value + "' is passed to " + name +
+      " as an assembly identity, not a file path. It may resolve to an assembly found through the assembly search paths."
+  or
+  name = ["LoadFrom", "UnsafeLoadFrom"] and
+  message =
+    "Assembly '" + value + "' is loaded with " + name +
+      " from a relative path resolved against the current directory, which may be attacker-controlled."
+}
 
 /** Gets a constant string value that reaches `e`, either directly or through local data flow. */
 string getAConstantValue(Expr e) {
@@ -33,7 +53,7 @@ string getAConstantValue(Expr e) {
   )
 }
 
-from MethodCall mc, Method m, string name, string value
+from MethodCall mc, Method m, string name, string value, string message
 where
   m = mc.getTarget() and
   m.getDeclaringType().getABaseType*().hasFullyQualifiedName("System.Reflection", "Assembly") and
@@ -42,13 +62,11 @@ where
   value = getAConstantValue(mc.getArgument(0)) and
   not isAbsolutePath(value) and
   (
-    // `Load` and `LoadWithPartialName` expect an assembly identity; a file name means the
-    // assembly is located by probing the application search path.
+    // `Load` and `LoadWithPartialName` accept an assembly identity, not a file path.
     name = ["Load", "LoadWithPartialName"] and isAssemblyFileName(value)
     or
     // `LoadFrom` and `UnsafeLoadFrom` resolve relative paths against the current directory.
     name = ["LoadFrom", "UnsafeLoadFrom"]
-  )
-select mc,
-  "Assembly '" + value + "' is loaded with " + name +
-    " from a relative file name and is resolved through a search path that may be attacker-controlled."
+  ) and
+  getAlertMessage(name, value, message)
+select mc, message

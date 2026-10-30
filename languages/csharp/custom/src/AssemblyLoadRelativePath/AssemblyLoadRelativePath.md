@@ -1,8 +1,10 @@
-# Assembly loaded from a relative file name
+# File-like assembly identity or relative assembly path
 
-Calling `Assembly.Load` or `Assembly.LoadWithPartialName` with a file name such as `"test.dll"`, or `Assembly.LoadFrom` / `Assembly.UnsafeLoadFrom` with a relative path, makes the runtime resolve the assembly through the current working directory or the assembly probing paths. An attacker who can write to one of those locations can plant a matching assembly whose code then runs with the privileges of the application.
+`Assembly.Load` and `Assembly.LoadWithPartialName` interpret their string argument as an assembly identity, not as a file path. For example, `Assembly.Load("x.dll")` does not load the file `x.dll`; it requests the identity `x.dll` and probes for an assembly such as `x.dll.dll`. A file-like identity is therefore reported as probable misuse, rather than as a path-based load of the named file.
 
-Unlike `cs/assembly-path-injection`, which reports assembly paths that depend on user input, this query reports constant relative names. It is an audit query for untrusted search path issues (CWE-426).
+`Assembly.LoadFrom` and `Assembly.UnsafeLoadFrom` accept paths. Relative paths are resolved against the current directory, so an attacker who can write to that location may plant a malicious assembly whose code then runs with the privileges of the application.
+
+Unlike `cs/assembly-path-injection`, which reports assembly paths that depend on user input, this query reports file-like names passed to identity-based loaders as probable misuse and relative paths passed to path-based loaders. It is an audit query for untrusted search path issues (CWE-426).
 
 ## Recommendation
 
@@ -12,7 +14,7 @@ Load assemblies by full path built from a trusted root (for example `Path.Combin
 
 ```csharp
 string libraryName = "test.dll";
-Assembly.Load(libraryName); // BAD: resolved through the probing path
+Assembly.Load(libraryName); // BAD: requests the assembly identity "test.dll", not the file test.dll
 ```
 
 ```csharp

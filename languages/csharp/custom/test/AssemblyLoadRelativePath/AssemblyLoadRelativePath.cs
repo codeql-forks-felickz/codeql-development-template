@@ -10,7 +10,7 @@ namespace AssemblyLoadRelativePathTests
         public void Bad()
         {
             string libraryName = "test.dll";
-            Assembly.Load(libraryName); // $ Alert
+            Assembly.Load(libraryName); // $ Alert: probable misuse, this is an identity and probes for test.dll.dll
         }
 
         public void BadInline()
@@ -60,7 +60,7 @@ namespace AssemblyLoadRelativePathTests
             Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "test.dll"));
         }
 
-        // GOOD: loading by assembly identity rather than by file name.
+        // GOOD: a normal assembly identity does not look like a file name.
         public void Good4()
         {
             Assembly.Load("System.Text.Json");

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -78,6 +79,30 @@ namespace RequestForgeryTests
             return null;
         }
 
+        private const string TrustedImportHost = "imports.example.com";
+
+        [HttpGet("hostcheck-constant")]
+        public async Task<string> ImportHostCheckedAgainstConstant(string url)
+        {
+            var target = new Uri(url);
+            if (target.Host == TrustedImportHost)
+            {
+                return await client.GetStringAsync(target);
+            }
+            return null;
+        }
+
+        [HttpGet("hostcheck-user-value")]
+        public async Task<string> ImportHostCheckedAgainstUserValue(string url, string requestedHost) // $ Source
+        {
+            var target = new Uri(url);
+            if (target.Host == requestedHost)
+            {
+                return await client.GetStringAsync(target); // $ Alert
+            }
+            return null;
+        }
+
         // GOOD: the URL must start with a trusted scheme and host.
         [HttpGet("prefixcheck")]
         public async Task<string> ImportPrefixChecked(string url)
@@ -107,6 +132,41 @@ namespace RequestForgeryTests
             var a = await client.GetStringAsync("https://api.example.com/users?id=" + id);
             var b = await client.GetStringAsync($"https://api.example.com/users/{id}");
             return a + b;
+        }
+
+        [HttpGet("format-path")]
+        public async Task<string> ImportFormattedFixedHost(string id)
+        {
+            return await client.GetStringAsync(string.Format("https://api.example.com/users/{0}", id));
+        }
+
+        [HttpGet("format-authority")]
+        public async Task<string> ImportFormattedUserHost(string host) // $ Source
+        {
+            return await client.GetStringAsync(string.Format("https://{0}/v1", host)); // $ Alert
+        }
+
+        [HttpGet("self-base")]
+        public async Task<string> ImportSelfBase(string url) // $ Source
+        {
+            var target = new Uri(url);
+            if (target.IsBaseOf(target))
+            {
+                return await client.GetStringAsync(target); // $ Alert
+            }
+            return null;
+        }
+
+        [HttpGet("tainted-allowlist")]
+        public async Task<string> ImportTaintedAllowList(string url) // $ Source
+        {
+            var allowedUrls = new List<string>();
+            allowedUrls.Add(url);
+            if (allowedUrls.Contains(url))
+            {
+                return await client.GetStringAsync(url); // $ Alert
+            }
+            return null;
         }
 
         // GOOD: constant URL.
