@@ -1,3 +1,5 @@
 | actions.py:12:1:12:21 | Function grep_processes | This route handler $@ but does not perform any authentication check. | actions.py:14:11:18:5 | ControlFlowNode for Attribute() | executes a system command |
 | actions.py:24:1:24:25 | Function deserialized_descr | This route handler $@ but does not perform any authentication check. | actions.py:27:20:27:37 | ControlFlowNode for Attribute() | deserializes data unsafely |
 | app.py:11:1:11:13 | Function reboot | This route handler $@ but does not perform any authentication check. | app.py:12:5:12:23 | ControlFlowNode for Attribute() | executes a system command |
+| logging_hook.py:17:1:17:19 | Function logging_only | This route handler $@ but does not perform any authentication check. | logging_hook.py:18:5:18:23 | ControlFlowNode for Attribute() | executes a system command |
+| two_apps.py:30:1:30:16 | Function other_app | This route handler $@ but does not perform any authentication check. | two_apps.py:31:5:31:23 | ControlFlowNode for Attribute() | executes a system command |

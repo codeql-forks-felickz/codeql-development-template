@@ -6,7 +6,8 @@ This query reports Flask route handlers that contain a system command execution,
 
 - it has a decorator whose name looks authentication related (for example `login_required`, `auth_required`, `requires_permission`),
 - its body references a name that looks authentication or session related (for example `session`, `current_user`, `is_authenticated`, `token`), or
-- its module registers a `before_request` hook, or an application-wide `before_app_request` hook exists.
+- its module registers a `before_request` hook whose resolved callback checks authentication, or an unresolved callback;
+- an authenticated `before_app_request` hook is registered with the same app as the route, or its app association cannot be resolved.
 
 ## Recommendation
 
