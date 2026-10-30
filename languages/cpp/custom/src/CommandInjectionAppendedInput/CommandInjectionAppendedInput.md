@@ -4,6 +4,8 @@ Code that builds an OS command by reading user input (for example from a socket,
 
 The standard `cpp/command-line-injection` query only reports user input that reaches a command through an explicit concatenation function (`strcat`, `sprintf` with `%s`, or `std::string` `operator+`). This query covers the equivalent *in-place* append, where input is written to `buf + strlen(buf)` or `&buf[strlen(buf)]` by a function such as `recv`, `read` or `fgets`. This has the same effect as `strcat(buf, input)`.
 
+Input that is appended with an explicit call such as `strcat(buf, getenv(...))` or `strncat(buf + strlen(buf), input, n)` is not reported by this query, because `cpp/command-line-injection` already reports it.
+
 ## Recommendation
 
 Do not build shell commands from untrusted input. Prefer an API that runs a program with an explicit argument vector (for example `execve`) so that no shell interprets the input. If a shell command is unavoidable, strictly validate the input against an allow-list of expected values before using it.

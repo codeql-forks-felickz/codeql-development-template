@@ -8,6 +8,10 @@ size_t strlen(const char *s);
 size_t wcslen(const wchar_t *s);
 int execlp(const char *file, const char *arg, ...);
 char *strcat(char *dest, const char *src);
+char *strncat(char *dest, const char *src, size_t n);
+char *getenv(const char *name);
+FILE *fopen(const char *path, const char *mode);
+int execl(const char *path, const char *arg, ...);
 char *strchr(const char *s, int c);
 ssize_t recv(int sockfd, void *buf, size_t len, int flags);
 ssize_t read(int fd, void *buf, size_t count);
@@ -63,6 +67,32 @@ void bad_fgets_appended(void) {
   size_t dataLen = strlen(data);
   fgets(data + dataLen, (int)(100 - dataLen), stdin); // $ Source
   system(data); // $ Alert
+}
+
+// Juliet `char_file_system` bad path: a line read from a file is appended in place.
+void bad_file_fgets_appended(void) {
+  char data_buf[100] = FULL_COMMAND;
+  char *data = data_buf;
+  size_t dataLen = strlen(data);
+  FILE *pFile = fopen("/tmp/file.txt", "r");
+  if (pFile != 0) {
+    fgets(data + dataLen, (int)(100 - dataLen), pFile); // $ Source
+  }
+  system(data); // $ Alert
+}
+
+// Juliet `char_environment_execl` bad path: `getenv` is appended with `strncat`. This is
+// an explicit concatenation that the stock `cpp/command-line-injection` query already
+// reports, so it is deliberately not reported again here.
+void env_strncat_covered_by_stock_query(void) {
+  char data_buf[100] = FULL_COMMAND;
+  char *data = data_buf;
+  size_t dataLen = strlen(data);
+  char *environment = getenv("ADD");
+  if (environment != 0) {
+    strncat(data + dataLen, environment, 100 - dataLen - 1);
+  }
+  execl("/bin/sh", "/bin/sh", "-c", data, (char *)0);
 }
 
 // Interprocedural flow, as in the Juliet 41/51/61 flow variants. `execute` is a
