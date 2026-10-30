@@ -1,0 +1,2 @@
+query: CommandInjectionAppendedInput/CommandInjectionAppendedInput.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
