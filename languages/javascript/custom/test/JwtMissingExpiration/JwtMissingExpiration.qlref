@@ -1,0 +1,2 @@
+query: JwtMissingExpiration/JwtMissingExpiration.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

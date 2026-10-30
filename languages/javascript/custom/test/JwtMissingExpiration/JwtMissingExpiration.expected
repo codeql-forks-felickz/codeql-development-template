@@ -1,0 +1,12 @@
+| jose.mjs:5:16:5:96 | new Sig ... gn(key) | This JWT is signed with jose SignJWT without an expiration, because its $@ has no 'exp' claim. | jose.mjs:5:28:5:34 | { sub } | payload |
+| jose.mjs:9:16:9:101 | new jos ... gn(key) | This JWT is signed with jose SignJWT without an expiration, because its $@ has no 'exp' claim. | jose.mjs:9:33:9:53 | { sub,  ... user" } | payload |
+| jose.mjs:16:10:16:26 | builder.sign(key) | This JWT is signed with jose SignJWT without an expiration, because its $@ has no 'exp' claim. | jose.mjs:13:31:13:37 | { sub } | payload |
+| jsonwebtoken.js:9:10:9:43 | jwt.sig ... SECRET) | This JWT is signed with jsonwebtoken sign without an expiration, because its $@ has no 'exp' claim. | jsonwebtoken.js:9:19:9:34 | { sub: user.id } | payload |
+| jsonwebtoken.js:13:10:13:84 | jwt.sig ... 256" }) | This JWT is signed with jsonwebtoken sign without an expiration, because its $@ has no 'exp' claim. | jsonwebtoken.js:13:19:13:51 | { sub:  ... .role } | payload |
+| jsonwebtoken.js:17:3:19:4 | jwt.sig ... );\\n  }) | This JWT is signed with jsonwebtoken sign without an expiration, because its $@ has no 'exp' claim. | jsonwebtoken.js:17:12:17:27 | { sub: user.id } | payload |
+| jsonwebtoken.js:24:10:24:49 | jwt.sig ... , opts) | This JWT is signed with jsonwebtoken sign without an expiration, because its $@ has no 'exp' claim. | jsonwebtoken.js:24:19:24:34 | { sub: user.id } | payload |
+| jsonwebtoken.js:28:10:28:39 | sign({  ... SECRET) | This JWT is signed with jsonwebtoken sign without an expiration, because its $@ has no 'exp' claim. | jsonwebtoken.js:28:15:28:30 | { sub: user.id } | payload |
+| jsonwebtoken.js:32:10:32:62 | jwt.sig ... PTIONS) | This JWT is signed with jsonwebtoken sign without an expiration, because its $@ has no 'exp' claim. | jsonwebtoken.js:32:19:32:34 | { sub: user.id } | payload |
+| jwt_simple.js:13:10:13:48 | jwt.enc ... RS256") | This JWT is signed with jwt-simple encode without an expiration, because its $@ has no 'exp' claim. | jwt_simple.js:7:18:11:3 | {\\n    u ... es,\\n  } | payload |
+| jwt_simple.js:17:10:17:57 | jwt.enc ... RS256") | This JWT is signed with jwt-simple encode without an expiration, because its $@ has no 'exp' claim. | jwt_simple.js:17:21:17:37 | { sub: username } | payload |
+| jwt_simple.js:22:10:22:46 | jwt.enc ... HS256") | This JWT is signed with jwt-simple encode without an expiration, because its $@ has no 'exp' claim. | jwt_simple.js:26:23:26:39 | { sub: username } | payload |
