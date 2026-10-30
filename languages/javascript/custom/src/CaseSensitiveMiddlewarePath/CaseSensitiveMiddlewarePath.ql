@@ -137,11 +137,21 @@ predicate isMatchingCandidate(
 import RegexpMatching::RegexpMatching<isMatchingCandidate/4> as Matcher
 
 /**
- * Holds if `s` exits the route handler `handler` after invoking its continuation (`next`),
- * as in `return next();` or `{ next(); return; }`.
+ * Holds if `s` exits the route handler after invoking its zero-argument continuation (`next`),
+ * or invokes that continuation directly.
  */
+predicate isZeroArgumentNextCall(Expr expr, DataFlow::FunctionNode handler) {
+  exists(DataFlow::CallNode next |
+    next = handler.getParameter(2).getACall() and
+    next.getNumArgument() = 0 and
+    expr.stripParens() = next.asExpr()
+  )
+}
+
 predicate returnsAfterContinuation(Stmt s, DataFlow::FunctionNode handler) {
-  s.(ReturnStmt).getExpr().stripParens() = handler.getParameter(2).getACall().asExpr()
+  isZeroArgumentNextCall(s.(ReturnStmt).getExpr(), handler)
+  or
+  isZeroArgumentNextCall(s.(ExprStmt).getExpr(), handler)
   or
   exists(BlockStmt block | block = s |
     returnsAfterContinuation(block.getStmt(block.getNumStmt() - 1), handler)
@@ -149,8 +159,7 @@ predicate returnsAfterContinuation(Stmt s, DataFlow::FunctionNode handler) {
   or
   exists(BlockStmt block | block = s |
     block.getStmt(block.getNumStmt() - 1) instanceof ReturnStmt and
-    block.getAStmt().(ExprStmt).getExpr().stripParens() =
-      handler.getParameter(2).getACall().asExpr()
+    isZeroArgumentNextCall(block.getAStmt().(ExprStmt).getExpr(), handler)
   )
 }
 
@@ -247,6 +256,63 @@ private string getALiteralSequencePrefix(RegExpSequence seq, int n) {
   result.length() < 100
 }
 
+/** Holds if `term` can expand to a literal string of `length` characters. */
+private predicate literalExpansionLength(RegExpTerm term, int length) {
+  exists(RegExpConstant constant |
+    term = constant and
+    length = constant.getValue().length()
+  )
+  or
+  exists(RegExpGroup group, RegExpTerm child |
+    term = group and
+    child = group.getAChild() and
+    literalExpansionLength(child, length)
+  )
+  or
+  exists(RegExpAlt alt, RegExpTerm child |
+    term = alt and
+    child = alt.getAChild() and
+    literalExpansionLength(child, length)
+  )
+  or
+  exists(RegExpSequence seq |
+    term = seq and
+    literalSequenceExpansionLength(seq, seq.getNumChild(), length)
+  )
+}
+
+/** Holds if the first `n` sequence children can expand to `length` characters. */
+private predicate literalSequenceExpansionLength(RegExpSequence seq, int n, int length) {
+  n = 0 and length = 0
+  or
+  exists(int prefixLength, int childLength |
+    n > 0 and
+    literalSequenceExpansionLength(seq, n - 1, prefixLength) and
+    literalExpansionLength(seq.getChild(n - 1), childLength) and
+    length = prefixLength + childLength
+  )
+}
+
+/** Holds if every alternative in `term` consists only of literal strings. */
+private predicate isFullyExpandableLiteral(RegExpTerm term) {
+  exists(RegExpConstant constant | term = constant)
+  or
+  exists(RegExpGroup group |
+    term = group and
+    isFullyExpandableLiteral(group.getAChild())
+  )
+  or
+  exists(RegExpAlt alt |
+    term = alt and
+    forall(RegExpTerm child | child = alt.getAChild() | isFullyExpandableLiteral(child))
+  )
+  or
+  exists(RegExpSequence seq |
+    term = seq and
+    forall(RegExpTerm child | child = seq.getAChild() | isFullyExpandableLiteral(child))
+  )
+}
+
 /**
  * Holds if `root` has the form `^(?!X)` optionally followed by `.*`, where `lookahead` is the
  * negative lookahead `(?!X)`. Such a regular expression matches exactly the strings that do not
@@ -255,7 +321,9 @@ private string getALiteralSequencePrefix(RegExpSequence seq, int n) {
 predicate isNegatedPrefixRegExp(RegExpTerm root, RegExpNegativeLookahead lookahead) {
   root.(RegExpSequence).getChild(0) instanceof RegExpCaret and
   root.(RegExpSequence).getChild(1) = lookahead and
-  exists(getALiteralString(lookahead.getOperand())) and
+  isFullyExpandableLiteral(lookahead.getOperand()) and
+  exists(int length | literalExpansionLength(lookahead.getOperand(), length) and length < 100) and
+  not exists(int length | literalExpansionLength(lookahead.getOperand(), length) and length >= 100) and
   forall(int i, RegExpTerm rest | rest = root.(RegExpSequence).getChild(i) and i > 1 |
     rest.(RegExpStar).getChild(0) instanceof RegExpDot
   )
@@ -322,9 +390,28 @@ predicate isCaseSensitiveExclusionBypass(
       min(string ex |
         ex = getAnEndpointExample(endpoint) and
         isProcessedByExclusionMiddleware(regexp, skipOnMatch, ex) and
+        not isExcludedByUnlessPathArray(use, ex) and
         not isProcessedByExclusionMiddleware(regexp, skipOnMatch, toOtherCase(ex))
       ) and
     byPassEndPoint = toOtherCase(endpointExample)
+  )
+}
+
+/** Holds if an entry in the same `unless` path array excludes `str`. */
+private predicate isExcludedByUnlessPathArray(DataFlow::Node use, string str) {
+  exists(DataFlow::MethodCallNode unless, DataFlow::Node path, DataFlow::Node entry |
+    unless.getMethodName() = "unless" and
+    path = unless.getOptionArgument(0, "path") and
+    path.(DataFlow::ArrayCreationNode).getAnElement() = use and
+    path.(DataFlow::ArrayCreationNode).getAnElement() = entry and
+    (
+      entry.mayHaveStringValue(str)
+      or
+      exists(DataFlow::RegExpCreationNode siblingRegexp |
+        siblingRegexp.getAReference().flowsTo(entry) and
+        exclusionRegExpMatches(siblingRegexp, str)
+      )
+    )
   )
 }
 

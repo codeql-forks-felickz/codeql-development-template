@@ -51,3 +51,30 @@ app4.get('/admin/users', function (req, res) {
 app4.get('/public/info', function (req, res) {
   res.send('info');
 });
+
+const app5 = express();
+
+// The character-class alternative keeps the recased path from matching the exclusion.
+app5.use(adminCheck.unless({ path: /^(?!\/admin|\/[A-Z]).*/ }));
+
+app5.get('/admin/users', function (req, res) {
+  res.send('admin users');
+});
+
+const app6 = express();
+
+// The string entry already excludes the endpoint path.
+app6.use(adminCheck.unless({ path: ['/admin/users', /^(?!\/admin).*/] }));
+
+app6.get('/admin/users', function (req, res) {
+  res.send('admin users');
+});
+
+const app7 = express();
+
+// The sibling regexp already excludes the endpoint path.
+app7.use(adminCheck.unless({ path: [/^\/admin\/users$/, /^(?!\/admin).*/] }));
+
+app7.get('/admin/users', function (req, res) {
+  res.send('admin users');
+});

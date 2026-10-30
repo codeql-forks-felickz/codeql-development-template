@@ -66,9 +66,9 @@ app4.get('/admin/settings', (req, res) => {
 
 const app5 = express();
 
-// The exclusion only calls `next()` without returning, so `adminCheck` still runs.
+// Express dispatches downstream handlers immediately, so this late `adminCheck` cannot protect the route.
 app5.use((req, res, next) => {
-  if (!/^\/admin/.test(req.path)) next();
+  if (!/^\/admin/.test(req.path)) next(); // $ Alert
   adminCheck(req, res, next);
 });
 
@@ -88,5 +88,32 @@ app6.use((req, res, next) => {
 });
 
 app6.get('/admin/settings', (req, res) => {
+  res.send('settings');
+});
+
+const app7 = express();
+
+// Error propagation does not dispatch the request to the protected endpoint.
+app7.use((req, res, next) => {
+  if (!/^\/admin/.test(req.path)) return next(new Error('forbidden'));
+  adminCheck(req, res, next);
+});
+
+app7.get('/admin/settings', (req, res) => {
+  res.send('settings');
+});
+
+const app8 = express();
+
+// A block that propagates an error also does not bypass the authorization check.
+app8.use((req, res, next) => {
+  if (!/^\/admin/.test(req.path)) {
+    next(new Error('forbidden'));
+    return;
+  }
+  adminCheck(req, res, next);
+});
+
+app8.get('/admin/settings', (req, res) => {
   res.send('settings');
 });

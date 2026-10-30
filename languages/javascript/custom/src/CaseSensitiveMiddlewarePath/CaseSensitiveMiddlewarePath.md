@@ -75,6 +75,8 @@ app.get('/admin/users/:id', (req, res) => {
 ```
 Adding the `i` flag to the exclusion regular expression (`/^(?!\/admin).*/i`) fixes the issue. Note that excluding only specific public paths (such as `/^\/public\//`) is not reported, because a differently cased path is then still processed by the middleware.
 
+## Known limitations
+Negative lookaheads are evaluated precisely only when every alternative can be expanded into literal strings shorter than 100 characters. Other lookaheads fall back to the regular-expression matcher, which does not model lookahead transitions and may therefore produce no alert.
 
 ## References
 * MDN [Regular Expression Flags](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#advanced_searching_with_flags).
