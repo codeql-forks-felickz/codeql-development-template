@@ -1,0 +1,2 @@
+query: ZipSlipExtended/ZipSlipExtended.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

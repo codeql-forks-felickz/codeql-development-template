@@ -1,0 +1,7 @@
+{
+  "name": "unzipper-open-test",
+  "type": "commonjs",
+  "dependencies": {
+    "unzipper": "^0.12.3"
+  }
+}
