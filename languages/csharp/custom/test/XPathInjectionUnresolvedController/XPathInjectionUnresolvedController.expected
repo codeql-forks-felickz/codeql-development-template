@@ -1,0 +1,16 @@
+#select
+| BookstoreController.cs:24:17:24:78 | ... + ... | BookstoreController.cs:15:37:15:42 | author : String | BookstoreController.cs:24:17:24:78 | ... + ... | This XPath expression depends on a $@. | BookstoreController.cs:15:37:15:42 | author | user-provided value |
+| BookstoreController.cs:32:49:32:79 | ... + ... | BookstoreController.cs:28:36:28:40 | title : String | BookstoreController.cs:32:49:32:79 | ... + ... | This XPath expression depends on a $@. | BookstoreController.cs:28:36:28:40 | title | user-provided value |
+| BookstoreController.cs:74:29:74:67 | ... + ... | BookstoreController.cs:71:36:71:43 | reviewer : String | BookstoreController.cs:74:29:74:67 | ... + ... | This XPath expression depends on a $@. | BookstoreController.cs:71:36:71:43 | reviewer | user-provided value |
+edges
+| BookstoreController.cs:15:37:15:42 | author : String | BookstoreController.cs:24:17:24:78 | ... + ... | provenance |  |
+| BookstoreController.cs:28:36:28:40 | title : String | BookstoreController.cs:32:49:32:79 | ... + ... | provenance |  |
+| BookstoreController.cs:71:36:71:43 | reviewer : String | BookstoreController.cs:74:29:74:67 | ... + ... | provenance |  |
+nodes
+| BookstoreController.cs:15:37:15:42 | author : String | semmle.label | author : String |
+| BookstoreController.cs:24:17:24:78 | ... + ... | semmle.label | ... + ... |
+| BookstoreController.cs:28:36:28:40 | title : String | semmle.label | title : String |
+| BookstoreController.cs:32:49:32:79 | ... + ... | semmle.label | ... + ... |
+| BookstoreController.cs:71:36:71:43 | reviewer : String | semmle.label | reviewer : String |
+| BookstoreController.cs:74:29:74:67 | ... + ... | semmle.label | ... + ... |
+subpaths
