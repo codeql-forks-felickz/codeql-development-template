@@ -74,19 +74,53 @@ predicate checksAuth(Function f) {
 }
 
 /**
- * Holds if requests are authenticated globally before reaching any request
- * handler, for example by Django's `LoginRequiredMiddleware`, a Flask
- * `before_request` hook, or an aiohttp middleware that checks authentication.
+ * Holds if `handler` is covered by an installed authentication guard.
  */
-predicate hasGlobalAuthGuard() {
-  exists(StringLiteral s | s.getText().regexpMatch("(?i).*login_?required_?middleware.*"))
+predicate isCoveredByGlobalAuthGuard(Http::Server::RequestHandler handler) {
+  handler.getFramework() = "Django" and
+  exists(AssignStmt middlewareSetting, Name settingName, List middlewareList, StringLiteral middleware |
+    settingName = middlewareSetting.getATarget() and
+    settingName.getId() = "MIDDLEWARE" and
+    middlewareList = middlewareSetting.getValue() and
+    middleware = middlewareList.getAnElt() and
+    middleware.getText().regexpMatch("(?i).*login_?required_?middleware.*")
+  )
   or
-  exists(Function g |
-    checksAuth(g) and
-    exists(Expr d | d = g.getADecorator().getASubExpression*() |
-      d.(Name).getId() = ["middleware", "before_request", "before_app_request"] or
-      d.(Attribute).getName() = ["middleware", "before_request", "before_app_request"]
-    )
+  exists(Function guard, Attribute guardRegistration, Attribute routeRegistration |
+    handler.getFramework() = "Flask" and
+    checksAuth(guard) and
+    guardRegistration = guard.getADecorator().getASubExpression*() and
+    guardRegistration.getName() in ["before_request", "before_app_request"] and
+    routeRegistration = handler.getADecorator().getASubExpression*() and
+    routeRegistration.getName() = "route" and
+    guardRegistration.getObject().toString() = routeRegistration.getObject().toString() and
+    guard.getScope().getEnclosingModule() = handler.getScope().getEnclosingModule()
+  )
+  or
+  exists(
+    Function guard, AssignStmt appSetting, Name appName, Call appCreation, List middlewareList,
+    Name middlewareReference, Keyword middlewareArgument, Call routeRegistration, Attribute routeRouter,
+    Name routeApp, Name routeHandler
+  |
+    handler.getFramework() = "aiohttp.web" and
+    checksAuth(guard) and
+    appCreation = appSetting.getValue() and
+    appCreation.getFunc().(Name).getId() = "Application" and
+    appName = appSetting.getATarget() and
+    appCreation.getAKeyword() = middlewareArgument and
+    middlewareArgument.getArg() = "middlewares" and
+    middlewareList = middlewareArgument.getValue() and
+    middlewareReference = middlewareList.getAnElt() and
+    middlewareReference.getId() = guard.getName() and
+    routeRegistration.getFunc().(Attribute).getName() = "add_route" and
+    routeRouter = routeRegistration.getFunc().(Attribute).getObject() and
+    routeRouter.getName() = "router" and
+    routeApp = routeRouter.getObject() and
+    routeApp.getId() = appName.getId() and
+    routeHandler = routeRegistration.getArg(2) and
+    routeHandler.getId() = handler.getName() and
+    guard.getScope().getEnclosingModule() = handler.getScope().getEnclosingModule() and
+    appSetting.getScope() = routeRegistration.getScope()
   )
 }
 
@@ -100,7 +134,7 @@ predicate isStateChangingCall(Call call) {
     func.getName() =
       [
         "save", "delete", "create", "bulk_create", "bulk_update", "get_or_create",
-        "update_or_create", "set_password"
+        "update_or_create"
       ]
     or
     func.getName() = "update" and
@@ -117,6 +151,9 @@ predicate isPublicAccountFlow(Function handler) {
   handler
       .getName()
       .regexpMatch("(?i).*(login|logout|sign_?in|sign_?up|register|password|reset|activate|verify|confirm).*")
+  or
+  handler.getScope().(Class).getName()
+      .regexpMatch("(?i).*(login|logout|sign_?in|sign_?up|register|password|reset|activate|verify|confirm).*")
 }
 
 from Http::Server::RequestHandler handler, Call write
@@ -129,7 +166,7 @@ where
     ) and
   not checksAuth(handler) and
   not isPublicAccountFlow(handler) and
-  not hasGlobalAuthGuard()
+  not isCoveredByGlobalAuthGuard(handler)
 select handler,
   "This request handler performs a state-changing operation ($@) without any authentication or authorization check.",
   write, write.getFunc().(Attribute).getName() + "(...)"

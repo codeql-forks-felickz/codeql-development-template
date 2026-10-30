@@ -53,12 +53,33 @@ def profile_by_id(request, user_id):  # $ Alert[py/missing-authorization-request
     return render(request, "profile.html", {"user": user})
 
 
+def prepare_user(request, user_id):
+    user = User.objects.get(pk=user_id)
+    user.set_password(request.POST.get("password"))
+    return render(request, "profile.html", {"user": user})
+
+
 class TaskCompleteView(View):
     def post(self, request, task_id):  # $ Alert[py/missing-authorization-request-handler]
         task = Task.objects.get(pk=task_id)
         task.completed = True
         task.save()
         return redirect("/tasks/" + task_id)
+
+
+class RegisterView(View):
+    def post(self, request):
+        user = User(username=request.POST["username"])
+        user.set_password(request.POST["password"])
+        user.save()
+        return redirect("/login")
+
+
+class PlainView(View):
+    def post(self, request):  # $ Alert[py/missing-authorization-request-handler]
+        task = Task.objects.get(pk=request.POST["task_id"])
+        task.save()
+        return redirect("/")
 
 
 # ---- Safe: authentication / authorization is enforced ----

@@ -2,14 +2,14 @@
 
 Web request handlers that create, modify, or delete persistent data must verify that the requester is authenticated and is allowed to perform the operation on the referenced object. A handler that skips this check lets any client, including anonymous users, perform the operation. When the handler also trusts an object identifier taken from the URL, any user can change or delete objects that belong to someone else (insecure direct object reference).
 
-This query reports Django, Flask, aiohttp, and other request handlers recognized by the CodeQL Python library that persist changes (for example `obj.save()`, `obj.delete()`, `Model.objects.create(...)`, `Model.create(conn, ...)`, `queryset.filter(...).update(...)`, or `user.set_password(...)`) without any evidence of an authentication or authorization check.
+This query reports Django, Flask, aiohttp, and other request handlers recognized by the CodeQL Python library that persist changes (for example `obj.save()`, `obj.delete()`, `Model.objects.create(...)`, `Model.create(conn, ...)`, or `queryset.filter(...).update(...)`) without any evidence of an authentication or authorization check.
 
 The following are treated as authentication or authorization checks:
 
 - a decorator on the handler or its class whose name refers to authentication or authorization, such as `@login_required`, `@permission_required`, `@user_passes_test`, `@authorize()`, or `@method_decorator(login_required, name="dispatch")`;
 - a base class (direct or inherited) or class-level attribute that refers to authentication or authorization, such as `LoginRequiredMixin` or `PermissionRequiredMixin`;
 - a reference, in the handler or in a function it calls, to a name such as `is_authenticated`, `has_perm`, `is_staff`, `is_superuser`, `owner`, or `get_auth_user`;
-- a global guard: Django's `LoginRequiredMiddleware`, or a `before_request` hook or `middleware` function that performs such a check.
+- a global guard installed for that application: Django's `LoginRequiredMiddleware` listed in `MIDDLEWARE`, a Flask `before_request` hook on the same app or blueprint, or an aiohttp middleware passed to that application's `Application(middlewares=[...])`.
 
 Handlers for account flows that are intentionally public (login, logout, sign-up, registration, password reset, account activation, and confirmation) are not reported.
 
@@ -62,7 +62,7 @@ async def students(request):
 
 ## Limitations
 
-The query uses name-based heuristics. It may miss handlers whose authorization helpers have unrelated names, and it may report handlers that are protected by a mechanism it does not recognize, such as a custom URL-routing wrapper or a reverse proxy.
+The query uses name-based heuristics. It may miss handlers whose authorization helpers have unrelated names, and it may report handlers that are protected by a mechanism it does not recognize, such as a custom URL-routing wrapper or a reverse proxy. Global guard matching is limited to registrations that are directly visible in the same module. In particular, it does not infer that a Flask app-level hook covers routes registered through a blueprint, or that aiohttp middleware and route setup in separate modules refer to the same application.
 
 ## References
 
