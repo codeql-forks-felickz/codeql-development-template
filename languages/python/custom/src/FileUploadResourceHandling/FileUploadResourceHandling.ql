@@ -34,9 +34,12 @@ predicate requestWithoutTimeout(Http::Client::Request req) {
     // `Session.request(method, url, params, data, headers, cookies, files, auth, timeout, ...)`
     not exists(call.getArg(8))
   ) and
-  // A hard-coded URL is not attacker-influenced.
-  not exists(DataFlow::Node url | url = req.getAUrlPart() |
-    url.getALocalSource().asExpr() instanceof StringLiteral
+  // Exempt only URLs whose local origins are all literals.
+  exists(DataFlow::Node url | url = req.getAUrlPart() |
+    exists(DataFlow::Node source |
+      source = url.getALocalSource() and
+      not (source.asExpr() instanceof StringLiteral)
+    )
   )
 }
 
@@ -67,13 +70,40 @@ predicate derivesChildPath(DataFlow::Node pathObj) {
  * `f"/tmp/{name}"` or `Path("/tmp").glob(pattern)`.
  */
 predicate combinedWithName(StringLiteral lit) {
-  exists(BinaryExpr b | b.getLeft() = lit and b.getOp() instanceof Add)
+  exists(BinaryExpr b |
+    b.getOp() instanceof Add and
+    not b.getLeft() instanceof BinaryExpr and
+    (
+      b.getLeft() = lit or
+      DataFlow::exprNode(lit).(DataFlow::LocalSourceNode).flowsTo(DataFlow::exprNode(b.getLeft()))
+    ) and
+    (
+      lit.getText().regexpMatch(".*/") or
+      exists(StringLiteral right |
+        right = b.getRight() and right.getText().regexpMatch("/.*")
+      ) or
+      // A non-literal component may begin with `/`.
+      not b.getRight() instanceof StringLiteral
+    )
+  )
   or
-  exists(Fstring f | f.getValue(0) = lit and exists(f.getValue(1)))
+  exists(Fstring f |
+    f.getValue(0) = lit and
+    exists(f.getValue(1)) and
+    (
+      lit.getText().regexpMatch(".*/") or
+      exists(StringLiteral next |
+        next = f.getValue(1) and next.getText().regexpMatch("/.*")
+      )
+    )
+  )
   or
   exists(API::CallNode join |
     join = API::moduleImport(["os", "posixpath"]).getMember("path").getMember("join").getACall() and
-    join.getArg(0).asExpr() = lit and
+    (
+      join.getArg(0).asExpr() = lit or
+      DataFlow::exprNode(lit).(DataFlow::LocalSourceNode).flowsTo(join.getArg(0))
+    ) and
     exists(join.getArg(1))
   )
   or
@@ -82,7 +112,10 @@ predicate combinedWithName(StringLiteral lit) {
       API::moduleImport("pathlib")
           .getMember(["Path", "PosixPath", "PurePath", "PurePosixPath"])
           .getACall() and
-    path.getArg(0).asExpr() = lit
+    (
+      path.getArg(0).asExpr() = lit or
+      DataFlow::exprNode(lit).(DataFlow::LocalSourceNode).flowsTo(path.getArg(0))
+    )
   |
     exists(path.getArg(1)) or derivesChildPath(path)
   )

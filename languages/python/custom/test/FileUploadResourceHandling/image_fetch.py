@@ -47,3 +47,18 @@ def forwarded_kwargs(url, **kwargs):
 # Safe: constant URL is not attacker-influenced.
 def fetch_constant():
     return requests.get("https://example.com/health").status_code
+
+
+def fetch_mixed_origins(user_url, use_user_url):
+    url = "https://example.com/health"
+    if use_user_url:
+        url = user_url
+    return requests.get(url).status_code  # $ Alert[py/file-upload-resource-handling]
+
+
+# Safe: every possible URL origin is a string literal.
+def fetch_literal_origins(use_alternate):
+    url = "https://example.com/health"
+    if use_alternate:
+        url = "https://example.org/health"
+    return requests.get(url).status_code

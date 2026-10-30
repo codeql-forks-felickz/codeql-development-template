@@ -10,6 +10,10 @@ This query reports two resource-handling weaknesses that stock CodeQL Python que
 - Always pass `timeout=` to `requests` calls. Cap the response size, for example by streaming with `stream=True` and reading at most N bytes with `iter_content`.
 - Use `tempfile.mkstemp`, `tempfile.NamedTemporaryFile` or `tempfile.TemporaryDirectory` to get files that are unpredictable and readable only by their owner. Keep long-lived data such as API keys in an application-owned store, never in `/tmp`.
 
+## Known limitations
+
+For `+` concatenation, a separator is required when the next component is a literal. When it is non-literal, the query conservatively assumes it may begin with `/`, so a path like `"/tmp" + name` can be reported even if `name` does not start with a separator. Path-joining APIs such as `os.path.join` and `Path(dir, name)` insert the separator themselves.
+
 ## Example
 
 ```python

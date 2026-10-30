@@ -35,6 +35,44 @@ def save_upload_join(filename, data):
     os.write(fd, data)
 
 
+def save_upload_alias(filename, data):
+    base = "/tmp/"
+    with open(base + filename, "wb") as f:  # $ Alert[py/file-upload-resource-handling]
+        f.write(data)
+
+
+def save_upload_alias_join(filename, data):
+    base = "/tmp"
+    fd = os.open(os.path.join(base, filename), os.O_WRONLY | os.O_CREAT)  # $ Alert[py/file-upload-resource-handling]
+    os.write(fd, data)
+
+
+def save_upload_alias_path(filename, data):
+    base = "/tmp"
+    Path(base, filename).touch()  # $ Alert[py/file-upload-resource-handling]
+
+
+def save_upload_with_separator(filename, data):
+    with open("/tmp" + "/" + filename, "wb") as f:  # $ Alert[py/file-upload-resource-handling]
+        f.write(data)
+
+
+def save_upload_dynamic_component(filename, data):
+    path = "/tmp" + filename
+    with open(path, "wb") as f:  # $ Alert[py/file-upload-resource-handling]
+        f.write(data)
+
+
+def not_tmp_uploads(filename, data):
+    with open("/tmp" + "_uploads/" + filename, "wb") as f:
+        f.write(data)
+
+
+def not_tmp_fstring(suffix, data):
+    path = f"/tmp{suffix}"
+    Path(path).write_bytes(data)
+
+
 # Safe: tempfile creates an unpredictable, owner-only file.
 def save_upload_safe(data):
     fd, path = tempfile.mkstemp(prefix="upload_")
@@ -51,6 +89,13 @@ def save_upload_tempdir_safe(filename, data):
 # Safe: application-owned directory, not a shared world-writable one.
 def save_upload_app_dir(filename, data):
     with open("/srv/app/uploads/" + filename, "wb") as f:
+        f.write(data)
+
+
+# Safe: the alias still names an application-owned directory.
+def save_upload_app_dir_alias(filename, data):
+    base = "/srv/app/uploads/"
+    with open(base + filename, "wb") as f:
         f.write(data)
 
 
