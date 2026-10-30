@@ -1,0 +1,2 @@
+query: ExplicitInsecureXmlParserConfig/ExplicitInsecureXmlParserConfig.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
