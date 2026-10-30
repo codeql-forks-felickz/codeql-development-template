@@ -1,0 +1,44 @@
+#select
+| calculator.rb:8:12:8:45 | ... + ... | calculator.rb:5:17:5:20 | ARGV | calculator.rb:8:12:8:45 | ... + ... | This code execution depends on a $@. | calculator.rb:5:17:5:20 | ARGV | command-line argument |
+| calculator.rb:8:12:8:45 | ... + ... | calculator.rb:6:17:6:20 | ARGV | calculator.rb:8:12:8:45 | ... + ... | This code execution depends on a $@. | calculator.rb:6:17:6:20 | ARGV | command-line argument |
+| calculator.rb:11:6:11:15 | call to first | calculator.rb:11:6:11:9 | ARGV | calculator.rb:11:6:11:15 | call to first | This code execution depends on a $@. | calculator.rb:11:6:11:9 | ARGV | command-line argument |
+| calculator.rb:15:15:15:18 | expr | calculator.rb:14:8:14:17 | call to gets | calculator.rb:15:15:15:18 | expr | This code execution depends on a $@. | calculator.rb:14:8:14:17 | call to gets | value from stdin |
+| calculator.rb:18:19:18:22 | line | calculator.rb:17:8:17:18 | call to read | calculator.rb:18:19:18:22 | line | This code execution depends on a $@. | calculator.rb:17:8:17:18 | call to read | value from stdin |
+| calculator.rb:21:6:21:10 | input | calculator.rb:20:9:20:12 | call to gets | calculator.rb:21:6:21:10 | input | This code execution depends on a $@. | calculator.rb:20:9:20:12 | call to gets | value from stdin |
+edges
+| calculator.rb:5:1:5:12 | first_number | calculator.rb:8:12:8:45 | ... + ... | provenance |  |
+| calculator.rb:5:17:5:20 | ARGV | calculator.rb:5:17:5:23 | ...[...] | provenance |  |
+| calculator.rb:5:17:5:23 | ...[...] | calculator.rb:5:1:5:12 | first_number | provenance |  |
+| calculator.rb:6:1:6:13 | second_number | calculator.rb:8:12:8:45 | ... + ... | provenance |  |
+| calculator.rb:6:1:6:13 | second_number | calculator.rb:8:33:8:45 | second_number | provenance |  |
+| calculator.rb:6:17:6:20 | ARGV | calculator.rb:6:17:6:23 | ...[...] | provenance |  |
+| calculator.rb:6:17:6:23 | ...[...] | calculator.rb:6:1:6:13 | second_number | provenance |  |
+| calculator.rb:8:33:8:45 | second_number | calculator.rb:8:12:8:45 | ... + ... | provenance |  |
+| calculator.rb:11:6:11:9 | ARGV | calculator.rb:11:6:11:15 | call to first | provenance |  |
+| calculator.rb:14:1:14:4 | expr | calculator.rb:15:15:15:18 | expr | provenance |  |
+| calculator.rb:14:8:14:17 | call to gets | calculator.rb:14:1:14:4 | expr | provenance |  |
+| calculator.rb:17:1:17:4 | line | calculator.rb:18:19:18:22 | line | provenance |  |
+| calculator.rb:17:8:17:18 | call to read | calculator.rb:17:1:17:4 | line | provenance |  |
+| calculator.rb:20:1:20:5 | input | calculator.rb:21:6:21:10 | input | provenance |  |
+| calculator.rb:20:9:20:12 | call to gets | calculator.rb:20:1:20:5 | input | provenance |  |
+nodes
+| calculator.rb:5:1:5:12 | first_number | semmle.label | first_number |
+| calculator.rb:5:17:5:20 | ARGV | semmle.label | ARGV |
+| calculator.rb:5:17:5:23 | ...[...] | semmle.label | ...[...] |
+| calculator.rb:6:1:6:13 | second_number | semmle.label | second_number |
+| calculator.rb:6:17:6:20 | ARGV | semmle.label | ARGV |
+| calculator.rb:6:17:6:23 | ...[...] | semmle.label | ...[...] |
+| calculator.rb:8:12:8:45 | ... + ... | semmle.label | ... + ... |
+| calculator.rb:8:33:8:45 | second_number | semmle.label | second_number |
+| calculator.rb:11:6:11:9 | ARGV | semmle.label | ARGV |
+| calculator.rb:11:6:11:15 | call to first | semmle.label | call to first |
+| calculator.rb:14:1:14:4 | expr | semmle.label | expr |
+| calculator.rb:14:8:14:17 | call to gets | semmle.label | call to gets |
+| calculator.rb:15:15:15:18 | expr | semmle.label | expr |
+| calculator.rb:17:1:17:4 | line | semmle.label | line |
+| calculator.rb:17:8:17:18 | call to read | semmle.label | call to read |
+| calculator.rb:18:19:18:22 | line | semmle.label | line |
+| calculator.rb:20:1:20:5 | input | semmle.label | input |
+| calculator.rb:20:9:20:12 | call to gets | semmle.label | call to gets |
+| calculator.rb:21:6:21:10 | input | semmle.label | input |
+subpaths
