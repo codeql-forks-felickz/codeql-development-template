@@ -1,0 +1,14 @@
+#select
+| test.go:136:2:136:17 | call to Get | test.go:140:14:140:18 | selection of URL | test.go:136:11:136:16 | target | The $@ of this request depends on a $@. | test.go:136:11:136:16 | target | URL | test.go:140:14:140:18 | selection of URL | user-provided value |
+edges
+| test.go:135:18:135:23 | SSA def(target) | test.go:136:11:136:16 | target | provenance |  |
+| test.go:140:14:140:18 | selection of URL | test.go:140:14:140:26 | call to Query | provenance | Src:MaD:2006 MaD:2068 |
+| test.go:140:14:140:26 | call to Query | test.go:140:14:140:40 | call to Get | provenance | MaD:2076 |
+| test.go:140:14:140:40 | call to Get | test.go:135:18:135:23 | SSA def(target) | provenance |  |
+nodes
+| test.go:135:18:135:23 | SSA def(target) | semmle.label | SSA def(target) |
+| test.go:136:11:136:16 | target | semmle.label | target |
+| test.go:140:14:140:18 | selection of URL | semmle.label | selection of URL |
+| test.go:140:14:140:26 | call to Query | semmle.label | call to Query |
+| test.go:140:14:140:40 | call to Get | semmle.label | call to Get |
+subpaths

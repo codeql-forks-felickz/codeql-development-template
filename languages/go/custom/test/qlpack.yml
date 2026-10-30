@@ -2,4 +2,5 @@ name: languages-go-custom-test
 version: 0.0.2
 dependencies:
   languages-go-custom-src: ${workspace}
+  codeql/go-queries: "*"
 extractor: go
