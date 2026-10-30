@@ -1,0 +1,8 @@
+| juice/server.ts:24:20:24:124 | finale. ... lude }) | Generated REST endpoints let clients set the privilege field 'role' of $@. | juice/models/user.ts:3:1:7:1 | class U ... tring\\n} | this model |
+| juice/server.ts:30:1:30:70 | finale. ... ts'] }) | Generated REST endpoints let clients set the privilege field 'isAdmin' of $@. | juice/models/account.ts:5:3:8:4 | sequeli ...  }\\n  }) | this model |
+| juice/server.ts:34:70:34:82 | req.body.role | Privilege field 'role' of a stored record is set based on $@. | juice/server.ts:34:70:34:77 | req.body | user-provided value |
+| pixi/api.js:26:23:26:27 | admin | Privilege field 'is_admin' of a stored record is set based on $@. | pixi/api.js:16:13:16:29 | req.body.is_admin | user-provided value |
+| pixi/api.js:45:52:45:55 | true | Privilege field 'is_admin' of a stored record is set based on $@. | pixi/api.js:45:7:45:23 | req.body.is_admin | user-provided value |
+| pixi/api.js:56:69:56:81 | req.body.role | Privilege field 'role' of a stored record is set based on $@. | pixi/api.js:56:69:56:76 | req.body | user-provided value |
+| pixi/api.js:64:72:64:76 | admin | Privilege field 'isAdmin' of a stored record is set based on $@. | pixi/api.js:62:15:62:30 | req.body.isAdmin | user-provided value |
+| pixi/api.js:72:15:72:27 | req.body.role | Privilege field 'role' of a stored record is set based on $@. | pixi/api.js:72:15:72:22 | req.body | user-provided value |
