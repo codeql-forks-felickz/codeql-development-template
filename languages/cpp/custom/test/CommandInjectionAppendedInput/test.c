@@ -7,6 +7,7 @@ extern FILE *stdin;
 size_t strlen(const char *s);
 size_t wcslen(const wchar_t *s);
 int execlp(const char *file, const char *arg, ...);
+int _wexeclp(const wchar_t *file, const wchar_t *arg, ...);
 char *strcat(char *dest, const char *src);
 char *strncat(char *dest, const char *src, size_t n);
 char *getenv(const char *name);
@@ -130,7 +131,7 @@ static wchar_t *wide_source(int sock, wchar_t *data) {
 void bad_wide_execlp_sh_c(int sock) {
   wchar_t dataBuffer[100] = L"ls ";
   wchar_t *data = wide_source(sock, dataBuffer);
-  execlp("sh", "sh", "-c", (char *)data, (char *)0); // $ Alert
+  _wexeclp(L"sh", L"sh", L"-c", data, (wchar_t *)0); // $ Alert
 }
 
 // GOOD: Juliet goodG2B path, a fixed string is appended.
