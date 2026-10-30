@@ -16,6 +16,10 @@ It also reports postback event handlers (for example `btnPlaceOrder_Click(object
 
 Perform state changes only in postback event handlers or `if (IsPostBack)` blocks, and set `ViewStateUserKey` to a per-user value (for example the session ID) in `Page_Init` or `OnInit`, ideally in a shared base page or master page. Alternatively, validate an anti-forgery token with `System.Web.Helpers.AntiForgery.Validate()`. Never perform state changes on `GET` requests.
 
+## Known limitations
+
+When page markup is unavailable, the query conservatively assumes that any source master page that sets `ViewStateUserKey` protects the page. With markup, a master is resolved only when its code-behind file has the master-page path plus `.cs`; if that association cannot be resolved, the query does not report the page.
+
 ## Example
 
 The following page transfers money whenever the request contains the expected parameters, including on a cross-site `GET` request:

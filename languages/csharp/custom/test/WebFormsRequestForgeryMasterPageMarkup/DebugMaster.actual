@@ -1,0 +1,6 @@
+| linked | Checkout | Site.master.cs |
+| linked | UnprotectedCheckout | Unprotected.master.cs |
+| sets | Checkout | true |
+| sets | NoMasterCheckout | false |
+| sets | UnknownMasterCheckout | false |
+| sets | UnprotectedCheckout | false |

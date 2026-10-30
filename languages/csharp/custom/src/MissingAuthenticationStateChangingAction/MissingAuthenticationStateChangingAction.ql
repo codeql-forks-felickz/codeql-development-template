@@ -18,6 +18,8 @@
 
 import csharp
 import semmle.code.csharp.frameworks.microsoft.AspNetCore
+import semmle.code.csharp.frameworks.system.web.Http as SystemWebHttp
+import semmle.code.csharp.frameworks.system.web.Mvc as SystemWebMvc
 import AccessControl.AccessControlCoverage
 private import semmle.code.csharp.security.auth.MissingFunctionLevelAccessControlQuery as MissingAccessControl
 
@@ -43,9 +45,27 @@ predicate allowAnonymousOverridesAuthorize(ActionMethod m) {
   hasIdParameter(m)
 }
 
+private class ClassicMvcActionMethod extends ActionMethod {
+  ClassicMvcActionMethod() {
+    this = any(SystemWebMvc::Controller c).getAnActionMethod()
+  }
+}
+
+private class ClassicWebApiActionMethod extends ActionMethod {
+  ClassicWebApiActionMethod() {
+    this = any(SystemWebHttp::ApiController c).getAnActionMethod()
+  }
+}
+
 from ActionMethod m, string msg
 where
-  m = any(MicrosoftAspNetCoreMvcController c).getAnActionMethod() and
+  (
+    m = any(MicrosoftAspNetCoreMvcController c).getAnActionMethod()
+    or
+    m instanceof ClassicMvcActionMethod
+    or
+    m instanceof ClassicWebApiActionMethod
+  ) and
   (hasMutatingHttpVerb(m) or isStateChanging(m)) and
   not isAuthenticationFlow(m) and
   not checksCurrentUser(m) and
@@ -53,7 +73,10 @@ where
   (
     hasNoAuthorization(m) and
     // Already reported by `cs/web/missing-function-level-access-control`.
-    not MissingAccessControl::missingAuth(m) and
+    not (
+      m = any(MicrosoftAspNetCoreMvcController c).getAnActionMethod() and
+      MissingAccessControl::missingAuth(m)
+    ) and
     msg = "This state-changing action can be invoked without authentication."
     or
     allowAnonymousOverridesAuthorize(m) and

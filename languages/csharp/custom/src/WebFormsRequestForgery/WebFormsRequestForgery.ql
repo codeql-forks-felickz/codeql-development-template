@@ -15,6 +15,7 @@
  */
 
 import csharp
+import semmle.code.asp.AspNet
 import semmle.code.csharp.frameworks.system.Web
 import semmle.code.csharp.frameworks.system.web.UI
 import semmle.code.csharp.dataflow.TaintTracking
@@ -49,26 +50,69 @@ class StateChangingCall extends Call {
   }
 }
 
-/** Holds if `page` calls `System.Web.Helpers.AntiForgery.Validate`. */
-predicate validatesAntiForgeryToken(WebFormsPage page) {
-  exists(MethodCall mc |
+/** Holds if `m` is an unconditional page lifecycle method. */
+private predicate isPageLifecycleMethod(Method m, WebFormsPage page) {
+  m.getDeclaringType() = page.getABaseType*() and
+  m.getName() in ["Page_Load", "Page_Init", "OnInit", "OnLoad"]
+}
+
+/** Holds if `page` markup associates it with `masterType`. */
+private predicate isAssociatedMasterPage(WebFormsPage page, ValueOrRefType masterType) {
+  exists(PageDirective pageDirective |
+    pageDirective.getInheritedType() = page and
+    masterType.getFile().getRelativePath() =
+      pageDirective.getAttributeByName("MasterPageFile").getBody().regexpReplaceAll("^~/", "") +
+        ".cs"
+  )
+}
+
+/** Holds if `page` validates an anti-forgery token in `handler` or an unconditional lifecycle method. */
+predicate validatesAntiForgeryToken(WebFormsPage page, PostBackEventHandler handler) {
+  exists(MethodCall mc, Callable c |
     mc.getTarget().hasFullyQualifiedName("System.Web.Helpers.AntiForgery", "Validate") and
-    mc.getEnclosingCallable().getDeclaringType() = page.getABaseType*()
+    c = mc.getEnclosingCallable() and
+    (
+      handler.calls*(c)
+      or
+      isPageLifecycleMethod(c.(Method), page)
+    )
+  )
+}
+
+/** Holds if extracted markup for `page` names a master page that cannot be resolved. */
+private predicate hasUnknownMasterPageAssociation(WebFormsPage page) {
+  exists(PageDirective pageDirective |
+    pageDirective.getInheritedType() = page and
+    pageDirective.getAttributeByName("MasterPageFile").getBody() != "" and
+    not exists(ValueOrRefType masterType |
+      masterType.getABaseType*().hasFullyQualifiedName("System.Web.UI", "MasterPage") and
+      isAssociatedMasterPage(page, masterType)
+    )
   )
 }
 
 /**
  * Holds if `page`, a base class, or a master page binds the view state to the user with
- * `ViewStateUserKey`. Master pages are not linked to their content pages in the database, so
- * an assignment in any master page is assumed to apply to all pages.
+ * `ViewStateUserKey`. If page markup is unavailable, an assignment in any master page is assumed
+ * to apply to all pages.
  */
 predicate setsViewStateUserKey(WebFormsPage page) {
+  exists(AssignableDefinition def |
+    def.getTarget().hasName("ViewStateUserKey") and
+    def.getEnclosingCallable().getDeclaringType() = page.getABaseType*()
+  )
+  or
+  exists(AssignableDefinition def, ValueOrRefType masterType |
+    def.getTarget().hasName("ViewStateUserKey") and
+    masterType = def.getEnclosingCallable().getDeclaringType() and
+    isAssociatedMasterPage(page, masterType) and
+    masterType.getABaseType*().hasFullyQualifiedName("System.Web.UI", "MasterPage")
+  )
+  or
+  not exists(PageDirective pageDirective | pageDirective.getInheritedType() = page) and
   exists(AssignableDefinition def, ValueOrRefType t |
     def.getTarget().hasName("ViewStateUserKey") and
-    t = def.getEnclosingCallable().getDeclaringType()
-  |
-    t = page.getABaseType*()
-    or
+    t = def.getEnclosingCallable().getDeclaringType() and
     t.getABaseType+().hasFullyQualifiedName("System.Web.UI", "MasterPage")
   )
 }
@@ -130,7 +174,18 @@ predicate unprotectedStateChange(WebFormsPage page, StateChangingCall call, Data
     sink.asExpr() = call.getAnArgument() and
     source.asExpr().getEnclosingCallable().getDeclaringType() = page
   ) and
-  not validatesAntiForgeryToken(page) and
+  not exists(PostBackEventHandler h |
+    h.getDeclaringType() = page and
+    h.getAStateChangingCall() = call and
+    validatesAntiForgeryToken(page, h)
+  ) and
+  not (
+    exists(MethodCall validation |
+      validation.getTarget().hasFullyQualifiedName("System.Web.Helpers.AntiForgery", "Validate") and
+      isPageLifecycleMethod(validation.getEnclosingCallable().(Method), page)
+    )
+  ) and
+  not hasUnknownMasterPageAssociation(page) and
   not (setsViewStateUserKey(page) and isGuardedByPostBack(call))
 }
 
@@ -152,8 +207,9 @@ where
   exists(PostBackEventHandler h, WebFormsPage page |
     alert = h and
     page = h.getDeclaringType() and
-    not validatesAntiForgeryToken(page) and
+    not validatesAntiForgeryToken(page, h) and
     not setsViewStateUserKey(page) and
+    not hasUnknownMasterPageAssociation(page) and
     related =
       min(StateChangingCall c, Location l |
         c = h.getAStateChangingCall() and l = c.getLocation()

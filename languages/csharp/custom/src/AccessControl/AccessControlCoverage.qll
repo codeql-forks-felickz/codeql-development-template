@@ -70,6 +70,11 @@ predicate isStateChanging(ActionMethod m) {
   splitWords(m.getName())
       .regexpMatch("(.*_)?(update|delete|remove|edit|modify|change|set|save|cancel)(_.*)?")
   or
+  m.getAnAttribute().getType().hasFullyQualifiedName(
+    ["Microsoft.AspNetCore.Mvc", "System.Web.Mvc", "System.Web.Http"],
+    ["HttpPutAttribute", "HttpPatchAttribute", "HttpDeleteAttribute"]
+  )
+  or
   m.getOverridee*()
       .getAnAttribute()
       .getType()
@@ -208,6 +213,11 @@ predicate isAuthorizationAttribute(Attribute a) {
  * state (`POST`, `PUT`, `PATCH` or `DELETE`).
  */
 predicate hasMutatingHttpVerb(ActionMethod m) {
+  m.getAnAttribute().getType().hasFullyQualifiedName(
+    ["Microsoft.AspNetCore.Mvc", "System.Web.Mvc", "System.Web.Http"],
+    ["HttpPostAttribute", "HttpPutAttribute", "HttpPatchAttribute", "HttpDeleteAttribute"]
+  )
+  or
   m.getOverridee*()
       .getAnAttribute()
       .getType()
@@ -233,7 +243,27 @@ predicate hasGlobalAuthorizationPolicy() {
   exists(ObjectCreation oc | oc.fromSource() |
     oc.getObjectType().hasName("AuthorizeFilter")
     or
-    isAuthorizeAttributeType(oc.getObjectType())
+    isAuthorizeAttributeType(oc.getObjectType()) and
+    not oc.getObjectType().hasFullyQualifiedName(
+      ["System.Web.Mvc", "System.Web.Http"], "AuthorizeAttribute"
+    )
+  )
+  or
+  exists(MethodCall mc, ObjectCreation oc |
+    mc.getTarget().hasName("Add") and
+    mc.getAnArgument() = oc and
+    oc.getObjectType().hasFullyQualifiedName(
+      ["System.Web.Mvc", "System.Web.Http"], "AuthorizeAttribute"
+    ) and
+    (
+      mc.getTarget().getDeclaringType().hasFullyQualifiedName(
+        "System.Web.Mvc", "GlobalFilterCollection"
+      )
+      or
+      mc.getTarget().getDeclaringType().hasFullyQualifiedName(
+        "System.Web.Http.Filters", "HttpFilterCollection"
+      )
+    )
   )
   or
   exists(MethodCall mc | mc.fromSource() | mc.getTarget().hasName("RequireAuthorization"))

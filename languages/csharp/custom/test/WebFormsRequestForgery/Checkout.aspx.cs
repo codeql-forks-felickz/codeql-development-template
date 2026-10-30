@@ -93,8 +93,46 @@ namespace Shop.Checkout
 
         protected void btnPlaceOrder_Click(object sender, EventArgs e)
         {
-            AntiForgery.Validate();
+            ValidateRequest();
             _orderRepository.CreateOrder(new Order());
         }
+
+        private void ValidateRequest() => AntiForgery.Validate();
+
+        protected void btnUpdateOrder_Click(object sender, EventArgs e) // $ Alert[cs/web/webforms-request-forgery]
+        {
+            _orderRepository.CreateOrder(new Order());
+        }
+    }
+
+    public class LifecycleValidatedCheckout : Page
+    {
+        private readonly OrderRepository _orderRepository = new OrderRepository();
+
+        protected void Page_Init(object sender, EventArgs e)
+        {
+            AntiForgery.Validate();
+        }
+
+        protected void btnPlaceOrder_Click(object sender, EventArgs e)
+        {
+            _orderRepository.CreateOrder(new Order());
+        }
+    }
+
+    public class TaintedMixedCheckout : Page
+    {
+        protected void btnValidated_Click(object sender, EventArgs e)
+        {
+            AntiForgery.Validate();
+            UpdateOrder(Request.Params["validated"]);
+        }
+
+        protected void btnUnvalidated_Click(object sender, EventArgs e) // $ Alert[cs/web/webforms-request-forgery]
+        {
+            UpdateOrder(Request.Params["unvalidated"]); // $ Alert[cs/web/webforms-request-forgery]
+        }
+
+        private void UpdateOrder(string value) { }
     }
 }

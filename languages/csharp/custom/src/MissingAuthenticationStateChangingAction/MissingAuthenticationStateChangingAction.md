@@ -2,7 +2,7 @@
 
 ## Overview
 
-ASP.NET Core and ASP.NET MVC actions are reachable by anonymous clients unless an authorization requirement applies to them. Requirements can come from an `[Authorize]` attribute on the action or controller, from a global `AuthorizeFilter` or fallback policy, or from a check of the current user in the action. An action that changes server state without any of these lets any remote client create, modify or delete data, or run privileged operations such as writing files or executing commands.
+ASP.NET Core, classic ASP.NET MVC and classic Web API actions are reachable by anonymous clients unless an authorization requirement applies to them. Requirements can come from an `[Authorize]` attribute on the action or controller, from a registered global authorization filter or fallback policy, or from a check of the current user in the action. An action that changes server state without any of these lets any remote client create, modify or delete data, or run privileged operations such as writing files or executing commands.
 
 `[AllowAnonymous]` overrides `[Authorize]`, so marking an action that acts on an existing resource with `[AllowAnonymous]` removes the protection of its controller.
 
@@ -11,11 +11,13 @@ This query reports actions that handle `POST`, `PUT`, `PATCH` or `DELETE` reques
 - no authorization attribute, `Web.config` `<deny>` rule or global authorization policy applies, and the action does not check the current user, or
 - `[AllowAnonymous]` on the action overrides an authorization attribute of its controller, and the action modifies a resource selected by ID.
 
-Authentication flows such as `Login` or `Register` are not reported. Actions already reported by `cs/web/missing-function-level-access-control` are also skipped.
+Authentication flows such as `Login` or `Register` are not reported. ASP.NET Core actions already reported by `cs/web/missing-function-level-access-control` are also skipped.
+
+The query recognizes public actions on ASP.NET Core MVC, classic ASP.NET MVC and classic Web API controllers. Classic MVC authorization checks implemented only in a base controller's `OnActionExecuting` override are not modeled and may produce false positives.
 
 ## Recommendation
 
-Require authentication for state-changing actions, for example with `[Authorize]` on the controller or a global fallback policy, and opt out only the actions that must be anonymous. Do not use `[AllowAnonymous]` on actions that modify existing resources.
+Require authentication for state-changing actions, for example with `[Authorize]` on the controller, a registered global authorization filter or a global fallback policy, and opt out only the actions that must be anonymous. Do not use `[AllowAnonymous]` on actions that modify existing resources.
 
 ## Example
 
