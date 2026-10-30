@@ -54,6 +54,8 @@ public String processProfile(@RequestParam("username") String username,
 
 - Validation performed indirectly (for example inside a `Supplier<Boolean>` lambda evaluated by a shared helper) is not recognized and may be reported.
 - The web-accessible directory and the client-supplied file name are tracked independently, so a shared helper that is called with both a web-accessible and a non web-accessible directory may be reported for callers that use the latter.
+- Servlet-private `WEB-INF` and `META-INF` paths are excluded unless published through a Spring MVC resource-handler field; inline mappings of these paths are not correlated with upload destinations.
+- Upload content passed through a helper shared by upload and non-upload writes is tracked without separating the callers, so content flows may be conflated.
 - Directories published as web content through configuration other than Spring MVC resource handlers (for example a reverse proxy or `spring.web.resources.static-locations`) are not recognized.
 - Path traversal through the client-supplied name is outside the scope of this query (see `java/path-injection`).
 

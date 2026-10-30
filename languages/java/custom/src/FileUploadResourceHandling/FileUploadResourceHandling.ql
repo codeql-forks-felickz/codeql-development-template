@@ -44,6 +44,25 @@ class UploadedContentCall extends MethodCall {
   }
 }
 
+/** Tracks upload content through helper calls to file writes. */
+module UploadedContentConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof UploadedContentCall }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall mc, int content |
+      mc.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+      (
+        mc.getMethod().hasName("copy") and content = 0
+        or
+        mc.getMethod().hasName("write") and content = 1
+      ) and
+      sink.asExpr() = mc.getArgument(content)
+    )
+  }
+}
+
+module UploadedContentFlow = TaintTracking::Global<UploadedContentConfig>;
+
 /**
  * Gets the expression that determines the destination of a write that stores the
  * content of an uploaded file.
@@ -64,7 +83,7 @@ Expr uploadDestination() {
       or
       mc.getMethod().hasName("write") and content = 1 and dest = 0
     ) and
-    DataFlow::localExprFlow(any(UploadedContentCall c), mc.getArgument(content)) and
+    UploadedContentFlow::flowTo(DataFlow::exprNode(mc.getArgument(content))) and
     result = mc.getArgument(dest)
   )
 }
@@ -119,6 +138,12 @@ private predicate isWebRootField(Field f) {
   )
 }
 
+/** Holds if a servlet path is private unless separately published as a resource. */
+bindingset[path]
+private predicate isServletPrivatePath(string path) {
+  path.regexpMatch("/(WEB-INF|META-INF)(/.*)?")
+}
+
 /** An expression that evaluates to a location inside a web-accessible directory. */
 class WebRootExpr extends Expr {
   WebRootExpr() {
@@ -128,7 +153,11 @@ class WebRootExpr extends Expr {
           .getDeclaringType()
           .getASourceSupertype*()
           .hasQualifiedName(["javax.servlet", "jakarta.servlet"], "ServletContext") and
-      mc.getMethod().hasName("getRealPath")
+      mc.getMethod().hasName("getRealPath") and
+      not exists(string path |
+        path = mc.getArgument(0).(CompileTimeConstantExpr).getStringValue() and
+        isServletPrivatePath(path)
+      )
     )
     or
     // `ClassLoader.getResource("static")`, `Class.getResource("/public/...")`
@@ -144,7 +173,10 @@ class WebRootExpr extends Expr {
     // A literal path such as `"src/main/resources/static/uploads"`.
     this.(StringLiteral)
         .getValue()
-        .regexpMatch("(?i)(.*/)?src/main/(webapp|resources/(static|public))(/.*)?")
+        .regexpMatch("(?i)(.*/)?src/main/(webapp|resources/(static|public))(/.*)?") and
+    not this.(StringLiteral)
+        .getValue()
+        .regexpMatch("(.*/)?src/main/webapp/(WEB-INF|META-INF)(/.*)?")
   }
 }
 
@@ -155,40 +187,119 @@ class WebRootExpr extends Expr {
  */
 private predicate allowlistGuard(Guard g, Expr e, boolean branch) {
   branch = true and
-  exists(MethodCall mc | mc = g |
-    // `name.endsWith(".png")`, `ext.equals(".png")`, `name.matches(regex)`
-    mc.getMethod().getDeclaringType() instanceof TypeString and
-    mc.getMethod().hasName(["endsWith", "equals", "equalsIgnoreCase", "matches"]) and
-    e = mc.getQualifier()
-    or
-    // `".png".equalsIgnoreCase(ext)`
-    mc.getMethod().getDeclaringType() instanceof TypeString and
-    mc.getMethod().hasName(["equals", "equalsIgnoreCase"]) and
-    e = mc.getArgument(0)
-    or
-    // `ALLOWED_EXTENSIONS.contains(ext)`
-    mc.getMethod()
-        .getDeclaringType()
-        .getSourceDeclaration()
-        .getASourceSupertype*()
-        .hasQualifiedName("java.util", "Collection") and
-    mc.getMethod().hasName("contains") and
-    e = mc.getArgument(0)
-    or
-    // `PATTERN.matcher(name).matches()`
-    mc.getMethod().getDeclaringType().hasQualifiedName("java.util.regex", "Matcher") and
-    mc.getMethod().hasName("matches") and
-    exists(MethodCall matcher |
-      matcher = mc.getQualifier() and
-      matcher.getMethod().getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
-      matcher.getMethod().hasName("matcher") and
-      e = matcher.getArgument(0)
-    )
-    or
-    // `Pattern.matches(regex, name)`
-    mc.getMethod().getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
-    mc.getMethod().hasName("matches") and
-    e = mc.getArgument(1)
+  exists(MethodCall mc, Expr checked |
+    mc = g and
+    isAllowlistCheck(mc, checked) and
+    e = checked
+  )
+}
+
+private predicate isAllowlistCheck(MethodCall mc, Expr checked) {
+  // `name.endsWith(".png")`, `ext.equals(".png")`
+  mc.getMethod().getDeclaringType() instanceof TypeString and
+  mc.getMethod().hasName(["endsWith", "equals", "equalsIgnoreCase"]) and
+  checked = mc.getQualifier()
+  or
+  // `".png".equalsIgnoreCase(ext)`
+  mc.getMethod().getDeclaringType() instanceof TypeString and
+  mc.getMethod().hasName(["equals", "equalsIgnoreCase"]) and
+  checked = mc.getArgument(0)
+  or
+  // `ALLOWED_EXTENSIONS.contains(ext)`
+  mc.getMethod()
+      .getDeclaringType()
+      .getSourceDeclaration()
+      .getASourceSupertype*()
+      .hasQualifiedName("java.util", "Collection") and
+  mc.getMethod().hasName("contains") and
+  checked = mc.getArgument(0)
+  or
+  isExtensionRegexCheck(mc, checked)
+}
+
+private predicate isExtensionRegexCheck(MethodCall mc, Expr checked) {
+  // `name.matches("^.+\\.(png|jpeg)$")`
+  mc.getMethod().getDeclaringType() instanceof TypeString and
+  mc.getMethod().hasName("matches") and
+  checked = mc.getQualifier() and
+  isEndAnchoredExtensionRegex(mc.getArgument(0))
+  or
+  // `PATTERN.matcher(name).matches()`
+  mc.getMethod().getDeclaringType().hasQualifiedName("java.util.regex", "Matcher") and
+  mc.getMethod().hasName("matches") and
+  exists(MethodCall matcher, MethodCall compile |
+    matcher = mc.getQualifier() and
+    matcher.getMethod().getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
+    matcher.getMethod().hasName("matcher") and
+    checked = matcher.getArgument(0) and
+    (
+      DataFlow::localExprFlow(compile, matcher)
+      or
+      exists(Field pattern |
+        matcher.getQualifier().(FieldRead).getField() = pattern and
+        pattern.getAnAssignedValue() = compile
+      )
+    ) and
+    compile.getMethod().getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
+    compile.getMethod().hasName("compile") and
+    isEndAnchoredExtensionRegex(compile.getArgument(0))
+  )
+  or
+  // `Pattern.matches(regex, name)`
+  mc.getMethod().getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
+  mc.getMethod().hasName("matches") and
+  checked = mc.getArgument(1) and
+  isEndAnchoredExtensionRegex(mc.getArgument(0))
+}
+
+private predicate isEndAnchoredExtensionRegex(Expr regexExpr) {
+  exists(string regex |
+    regex = regexExpr.(CompileTimeConstantExpr).getStringValue() and
+    regex.regexpMatch(".*\\\\\\.[^()]*\\([^()]*\\|[^()]*\\)\\$$")
+  )
+}
+
+private predicate isTerminalExtensionOf(Expr extension, Expr fileName) {
+  exists(MethodCall substring, MethodCall lastIndex |
+    (
+      extension = substring
+      or
+      DataFlow::localExprFlow(substring, extension)
+      or
+      exists(Variable variable |
+        extension.(VarAccess).getVariable() = variable and
+        variable.getAnAssignedValue() = substring
+      )
+    ) and
+    substring.getMethod().hasName("substring") and
+    fileName = substring.getQualifier() and
+    lastIndex = substring.getArgument(0) and
+    lastIndex.getMethod().hasName("lastIndexOf") and
+    lastIndex.getQualifier() instanceof VarAccess and
+    lastIndex.getQualifier().(VarAccess).getVariable() = fileName.(VarAccess).getVariable() and
+    lastIndex.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "."
+  )
+}
+
+private predicate isValidatedTerminalFilename(DataFlow::Node node) {
+  exists(MethodCall check, Expr extension, Expr fileName |
+    isAllowlistCheck(check, extension) and
+    isTerminalExtensionOf(extension, fileName) and
+    fileName instanceof VarAccess and
+    not exists(AssignExpr assignment |
+      assignment.getDest() = fileName.(VarAccess).getVariable().getAnAccess()
+    ) and
+    (
+      node.asExpr() instanceof VarAccess and
+      node.asExpr().(VarAccess).getVariable() = fileName.(VarAccess).getVariable()
+      or
+      exists(AddExpr add, VarAccess access |
+        node.asExpr() = add and
+        access = [add.getLeftOperand(), add.getRightOperand()] and
+        access.getVariable() = fileName.(VarAccess).getVariable()
+      )
+    ) and
+    check.(Guard).controls(node.asExpr().getBasicBlock(), true)
   )
 }
 
@@ -217,9 +328,18 @@ module UploadFileNameConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { WebRootFlow::flowTo(sink) }
 
   predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType or
+    node.getType() instanceof PrimitiveType
+    or
+    node.getType() instanceof BoxedType
+    or
     node = DataFlow::BarrierGuard<allowlistGuard/3>::getABarrierNode()
+    or
+    isValidatedTerminalFilename(node)
+    or
+    exists(AddExpr add |
+      node.asExpr() = add and
+      isApprovedExtensionSuffix(add.getRightOperand())
+    )
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
@@ -230,6 +350,13 @@ module UploadFileNameConfig implements DataFlow::ConfigSig {
       n2.asExpr() = cc
     )
   }
+}
+
+private predicate isApprovedExtensionSuffix(Expr suffix) {
+  exists(string value |
+    value = suffix.(CompileTimeConstantExpr).getStringValue() and
+    value.regexpMatch("(?i)\\.(png|jpg|jpeg|gif)$")
+  )
 }
 
 /** Taint flow of client-supplied upload file names to upload destinations in a web-accessible directory. */

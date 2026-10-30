@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import javax.servlet.http.Part;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,6 +45,10 @@ public class StaticUploadController {
         root.resolve(fileName), // $ Alert
         StandardCopyOption.REPLACE_EXISTING);
     return "/upload/" + fileName;
+  }
+
+  private static void writeBytes(byte[] bytes, Path destination) throws IOException {
+    Files.write(destination, bytes); // $ Alert
   }
 
   // BAD: client-supplied name (and extension) is used as-is.
@@ -95,6 +100,61 @@ public class StaticUploadController {
       return "Input is invalid";
     }
     return store(root, RANDOM.nextInt() + "_" + originalFileName, file);
+  }
+
+  // BAD: this only restricts the characters in the name, not its extension.
+  @RequestMapping(value = "/characterOnlyRegex", method = RequestMethod.POST)
+  public String characterOnlyRegex(@RequestParam("file") MultipartFile file) throws IOException {
+    String fileName = file.getOriginalFilename(); // $ Source
+    if (!fileName.matches("[A-Za-z0-9._-]+")) {
+      return "Input is invalid";
+    }
+    return store(root, fileName, file);
+  }
+
+  // GOOD: the constant regex requires an approved extension at the end of the name.
+  @RequestMapping(value = "/stringMatchesAllowlist", method = RequestMethod.POST)
+  public String stringMatchesAllowlist(@RequestParam("file") MultipartFile file) throws IOException {
+    String fileName = file.getOriginalFilename();
+    if (!fileName.matches("^.+\\.(png|jpeg)$")) {
+      return "Input is invalid";
+    }
+    return store(root, fileName, file);
+  }
+
+  // GOOD: Pattern.matches applies the same end-anchored extension allowlist.
+  @RequestMapping(value = "/patternMatchesAllowlist", method = RequestMethod.POST)
+  public String patternMatchesAllowlist(@RequestParam("file") MultipartFile file) throws IOException {
+    String fileName = file.getOriginalFilename();
+    if (!Pattern.matches("^.+\\.(png|jpeg)$", fileName)) {
+      return "Input is invalid";
+    }
+    return store(root, fileName, file);
+  }
+
+  // BAD: upload content reaches Files.write through a helper call.
+  public void uploadThroughHelper(MultipartFile file) throws IOException {
+    String fileName = file.getOriginalFilename(); // $ Source
+    Path destination =
+        Paths.get("src/main/resources/static/uploads").resolve(fileName);
+    writeBytes(file.getBytes(), destination);
+  }
+
+  // GOOD: a filename by itself does not make an arbitrary byte array an upload.
+  public void writeNonUploadBytes(Part part) throws IOException {
+    Path destination =
+        Paths.get("src/main/resources/static/uploads").resolve(part.getSubmittedFileName());
+    Files.write(destination, new byte[0]);
+  }
+
+  // GOOD: the fixed final extension prevents the client from choosing an active extension.
+  public void uploadWithSafeSuffix(Part part) throws IOException {
+    part.write(root.resolve(part.getSubmittedFileName() + ".png").toString());
+  }
+
+  // BAD: a fixed dangerous extension still permits active content.
+  public void uploadWithDangerousSuffix(Part part) throws IOException {
+    part.write(root.resolve(part.getSubmittedFileName() + ".jsp").toString()); // $ Alert
   }
 
   // BAD: written to the source web directory, which is packaged as web content.

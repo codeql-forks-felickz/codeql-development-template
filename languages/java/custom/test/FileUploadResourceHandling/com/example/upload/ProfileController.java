@@ -86,4 +86,39 @@ public class ProfileController {
       part.write(uploads + File.separator + name);
     }
   }
+
+  // GOOD: the checked terminal extension belongs to the unchanged submitted filename.
+  public void servletPartUploadCheckedOriginalName(Part part) throws IOException {
+    String uploads = context.getRealPath("/uploads");
+    String name = part.getSubmittedFileName();
+    String extension = name.substring(name.lastIndexOf("."));
+    if (!ALLOWED_EXTENSIONS.contains(extension)) {
+      return;
+    }
+    part.write(uploads + File.separator + name);
+  }
+
+  // BAD: rejecting allowlisted extensions leaves other extensions writable.
+  public void servletPartUploadRejectsAllowlist(Part part) throws IOException {
+    String uploads = context.getRealPath("/uploads");
+    String name = part.getSubmittedFileName(); // $ Source
+    String extension = name.substring(name.lastIndexOf("."));
+    if (ALLOWED_EXTENSIONS.contains(extension)) {
+      return;
+    }
+    part.write(uploads + File.separator + name); // $ Alert
+  }
+
+  // GOOD: servlet-private directories are not directly web-accessible.
+  public void servletPartUploadToPrivateDirectory(Part part) throws IOException {
+    part.write(
+        context.getRealPath("/WEB-INF/uploads")
+            + File.separator
+            + part.getSubmittedFileName());
+  }
+
+  // GOOD: the source web directory excludes protected servlet locations.
+  public void servletPartUploadToPrivateWebappDirectory(Part part) throws IOException {
+    part.write("src/main/webapp/META-INF/uploads/" + part.getSubmittedFileName());
+  }
 }

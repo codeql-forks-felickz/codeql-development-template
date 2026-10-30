@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import javax.servlet.http.Part;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,9 @@ public class FileServerController {
 
   @Value("${archive.location}")
   private String archiveLocation;
+
+  @Value("${private.location:/WEB-INF/uploads}")
+  private String privateLocation;
 
   // BAD: the destination directory is served under `/files/**`.
   @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
@@ -47,5 +51,10 @@ public class FileServerController {
       Files.copy(is, destinationDir.toPath().resolve(multipartFile.getOriginalFilename()));
     }
     return "archived";
+  }
+
+  // BAD: this servlet-private location is explicitly published by Spring MVC.
+  public void uploadToPublishedPrivateDirectory(Part part) throws IOException {
+    part.write(privateLocation + "/" + part.getSubmittedFileName()); // $ Alert
   }
 }
