@@ -8,6 +8,8 @@ Request data (query string, form fields, headers, action parameters, or the clie
 - **Allocation sizes (CWE-789).** Using a request-controlled number as an array length or collection capacity (`ArrayList`, `List<T>`, `StringBuilder`, and so on) lets an attacker exhaust memory.
 - **Uploads under the web root (CWE-434).** Saving an uploaded file under the web root (`Server.MapPath(...)`, `IWebHostEnvironment.WebRootPath`) using the client-supplied file name, without checking the extension, lets an attacker upload and then request an executable file such as an `.aspx` web shell.
 
+In addition to the standard library models, taint is propagated through `LinkedList<T>.First`/`Last`, `LinkedListNode<T>.Value`, and a `BinaryFormatter.Serialize`/`Deserialize` round trip, so values handed between methods in these containers are still tracked.
+
 ## Recommendation
 
 - Build connection strings with `SqlConnectionStringBuilder` (or the provider-specific builder) from fixed configuration, and never let the request select the account or catalog.

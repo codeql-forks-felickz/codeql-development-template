@@ -246,6 +246,37 @@ predicate upperBoundCheck(Guard g, Expr e, GuardValue v) {
   )
 }
 
+/**
+ * Holds if taint flows from `pred` to `succ` through a step that the standard library
+ * models do not cover: reading `First`/`Last` of a `LinkedList<T>` or `Value` of a
+ * `LinkedListNode<T>`, and round-tripping a value through `BinaryFormatter`.
+ */
+predicate additionalResourceTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(PropertyAccess pa |
+    pa.getTarget().hasName(["First", "Last", "Value"]) and
+    pa.getTarget()
+        .getUnboundDeclaration()
+        .getDeclaringType()
+        .hasFullyQualifiedName("System.Collections.Generic", ["LinkedList`1", "LinkedListNode`1"]) and
+    pred.asExpr() = pa.getQualifier() and
+    succ.asExpr() = pa
+  )
+  or
+  exists(MethodCall mc |
+    mc.getTarget()
+        .getDeclaringType()
+        .hasFullyQualifiedName("System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter")
+  |
+    mc.getTarget().hasName("Serialize") and
+    pred.asExpr() = mc.getArgument(1) and
+    succ.asExpr() = mc.getArgument(0)
+    or
+    mc.getTarget().hasName("Deserialize") and
+    pred.asExpr() = mc.getArgument(0) and
+    succ.asExpr() = mc
+  )
+}
+
 module FileUploadResourceHandlingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof ActiveThreatModelSource or
@@ -253,6 +284,10 @@ module FileUploadResourceHandlingConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ResourceHandlingSink }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    additionalResourceTaintStep(pred, succ)
+  }
 
   predicate isBarrier(DataFlow::Node node) {
     node = DataFlow::BarrierGuard<upperBoundCheck/3>::getABarrierNode()
