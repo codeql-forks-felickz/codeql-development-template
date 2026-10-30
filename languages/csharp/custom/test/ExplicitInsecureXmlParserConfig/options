@@ -1,0 +1,1 @@
+semmle-extractor-options: /r:System.Xml.ReaderWriter.dll /r:System.Private.Xml.dll /r:System.Runtime.Extensions.dll
