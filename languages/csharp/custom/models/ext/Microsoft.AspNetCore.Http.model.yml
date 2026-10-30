@@ -1,0 +1,16 @@
+extensions:
+  # The multipart file name and form field name of an uploaded file are supplied by the
+  # client, so they are tainted whenever the `IFormFile` itself is tainted (for example when
+  # it is an ASP.NET Core action method parameter).
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.AspNetCore.Http", "IFormFile", True, "get_FileName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.Http", "IFormFile", True, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      # `Request.Form` is a remote source; the uploaded files reached through it
+      # (`Request.Form.Files[0]`, `Files["name"]`, `GetFile`, `GetFiles`) are client-controlled too.
+      - ["Microsoft.AspNetCore.Http", "IFormCollection", True, "get_Files", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.Http", "IFormFileCollection", True, "get_Item", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.Http", "IFormFileCollection", True, "GetFile", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.Http", "IFormFileCollection", True, "GetFiles", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]

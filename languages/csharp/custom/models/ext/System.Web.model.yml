@@ -1,0 +1,26 @@
+extensions:
+  # `Page.MapPath` and `HttpServerUtility.MapPath` only reject paths that leave the
+  # application root, so traversal segments can still reach other files inside the
+  # application (for example `../../Web.config`). Propagate taint through them.
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Web.UI", "Page", False, "MapPath", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["System.Web", "HttpServerUtility", False, "MapPath", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+  # `TransmitFile` and `WriteFile` read the file at the given physical path and send it to
+  # the client.
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - ["System.Web", "HttpResponse", False, "TransmitFile", "(System.String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.Web", "HttpResponse", False, "TransmitFile", "(System.String,System.Int64,System.Int64)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.Web", "HttpResponse", False, "WriteFile", "(System.String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.Web", "HttpResponse", False, "WriteFile", "(System.String,System.Boolean)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.Web", "HttpResponse", False, "WriteFile", "(System.String,System.Int64,System.Int64)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.Web", "HttpResponseBase", True, "TransmitFile", "(System.String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.Web", "HttpResponseBase", True, "TransmitFile", "(System.String,System.Int64,System.Int64)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.Web", "HttpResponseBase", True, "WriteFile", "(System.String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.Web", "HttpResponseBase", True, "WriteFile", "(System.String,System.Boolean)", "", "Argument[0]", "path-injection", "manual"]
+      - ["System.Web", "HttpResponseBase", True, "WriteFile", "(System.String,System.Int64,System.Int64)", "", "Argument[0]", "path-injection", "manual"]
