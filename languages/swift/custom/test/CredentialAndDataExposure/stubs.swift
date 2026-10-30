@@ -162,3 +162,7 @@ class Session {
 }
 
 let AF = Session.default
+
+extension String: CVarArg {
+  public var _cVarArgEncoding: [Int] { return [] }
+}

@@ -356,10 +356,19 @@ private string stripUiSuffix(string name) {
 }
 
 /**
+ * Gets a regular expression for abbreviated payment and identity data names
+ * that the standard heuristics do not match, such as `ccNo`, `cvv` or `pin`.
+ */
+private string abbreviatedSensitiveNameRegexp() {
+  result = "(?i)((cc|card).?(no|num(ber)?)|cv[vc]2?|pin(.?(code|no|num(ber)?))?|ssn)"
+}
+
+/**
  * A reference to a user interface input (such as a `UITextField` outlet) whose
  * name, without its widget suffix, indicates sensitive data, for example
- * `ssnField` or `passcodeTF`. The standard heuristics do not match such names
- * when the sensitive part is not delimited, as in `ssnField`.
+ * `ssnField`, `ccNoTextField`, `cvvTextField`, `pinTextField` or `passcodeTF`.
+ * The standard heuristics do not match such names when the sensitive part is
+ * not delimited or is abbreviated.
  */
 class SensitiveUiInputExpr extends Expr {
   SensitiveUiInputExpr() {
@@ -368,7 +377,10 @@ class SensitiveUiInputExpr extends Expr {
       stripped = stripUiSuffix(v.getName()) and
       stripped != v.getName() and
       stripped != "" and
-      stripped.regexpMatch(any(SensitiveDataType t).getRegexp()) and
+      (
+        stripped.regexpMatch(any(SensitiveDataType t).getRegexp()) or
+        stripped.regexpMatch(abbreviatedSensitiveNameRegexp())
+      ) and
       not stripped.regexpMatch(HeuristicNames::notSensitiveRegexp())
     ) and
     not this instanceof SensitiveExpr
