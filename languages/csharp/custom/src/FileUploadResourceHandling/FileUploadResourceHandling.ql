@@ -144,14 +144,66 @@ predicate isExtensionCheck(Expr cond) {
  */
 predicate isGuardedByExtensionCheck(Expr e) {
   exists(IfStmt ifs |
-    isExtensionCheck(ifs.getCondition()) and
+    isExtensionCheckForUpload(ifs.getCondition(), e) and
     ifs.getAChildStmt+() = e.getEnclosingStmt()
   )
   or
   exists(Guard g |
-    isExtensionCheck(g) and
+    isExtensionCheckForUpload(g, e) and
     g.getEnclosingCallable() = e.getEnclosingCallable() and
     g.controlsBasicBlock(e.getControlFlowNode().getBasicBlock(), _)
+  )
+}
+
+/** Holds if `cond` checks the same uploaded file whose name contributes to `path`. */
+predicate isExtensionCheckForUpload(Expr cond, Expr path) {
+  isExtensionCheck(cond) and
+  exists(UploadedFileNameSource checkedName, UploadedFileNameSource savedName |
+    TaintTracking::localExprTaint(checkedName.getExpr(), cond.getAChildExpr*()) and
+    TaintTracking::localExprTaint(savedName.getExpr(), path.getAChildExpr*()) and
+    TaintTracking::localExprTaint(checkedName.getExpr().(PropertyAccess).getQualifier(),
+      savedName.getExpr().(PropertyAccess).getQualifier())
+  )
+}
+
+/** Holds if `e` is not controlled by one of this query's request sources. */
+predicate isRequestControlled(Expr e) {
+  exists(ActiveThreatModelSource source | TaintTracking::localExprTaint(source.asExpr(), e))
+  or
+  exists(UploadedFileNameSource source | TaintTracking::localExprTaint(source.getExpr(), e))
+}
+
+/** Holds if `e` is a safe upper bound for a request-controlled size. */
+predicate isTrustedUpperBound(Expr e) {
+  exists(e.getValue())
+  or
+  isSizeOfExistingData(e)
+  or
+  exists(FieldAccess fa |
+    fa = e and
+    (
+      fa.getTarget().isConst()
+      or
+      fa.getTarget().isStatic() and fa.getTarget().isReadOnly()
+    )
+  )
+}
+
+/** Holds if `mc` is used as part of a path for saving an uploaded file. */
+predicate isUsedInUploadSavePath(MethodCall mc) {
+  exists(Expr path |
+    path = getAnUploadSavePath() and
+    path.getEnclosingCallable() = mc.getEnclosingCallable() and
+    TaintTracking::localExprTaint(mc, path)
+  )
+}
+
+/** Holds if `mc` has a constant extension appended to its result. */
+predicate hasConstantExtensionAppended(MethodCall mc) {
+  exists(AddExpr add, StringLiteral extension |
+    add.getAnOperand() = mc and
+    extension = add.getAnOperand() and
+    extension.getValue().regexpMatch("(?i).*\\.[a-z0-9]+$")
   )
 }
 
@@ -263,6 +315,28 @@ predicate additionalResourceTaintStep(DataFlow::Node pred, DataFlow::Node succ) 
   )
   or
   exists(MethodCall mc |
+    mc.getTarget().hasFullyQualifiedName("System", "Math", "Min") and
+    (pred.asExpr() = mc.getArgument(0) or pred.asExpr() = mc.getArgument(1)) and
+    succ.asExpr() = mc
+  )
+  or
+  exists(MethodCall mc |
+    mc.getTarget().hasFullyQualifiedName("System", "Math", "Clamp") and
+    (
+      pred.asExpr() = mc.getArgument(0) or
+      pred.asExpr() = mc.getArgument(1) or
+      pred.asExpr() = mc.getArgument(2)
+    ) and
+    succ.asExpr() = mc
+  )
+  or
+  exists(MethodCall mc |
+    mc.getTarget().hasFullyQualifiedName("System.IO", "Path", "ChangeExtension") and
+    pred.asExpr() = mc.getArgument(1) and
+    succ.asExpr() = mc
+  )
+  or
+  exists(MethodCall mc |
     mc.getTarget()
         .getDeclaringType()
         .hasFullyQualifiedName("System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter")
@@ -293,11 +367,24 @@ module FileUploadResourceHandlingConfig implements DataFlow::ConfigSig {
     node = DataFlow::BarrierGuard<upperBoundCheck/3>::getABarrierNode()
     or
     exists(MethodCall mc | mc = node.asExpr() |
-      mc.getTarget().hasFullyQualifiedName("System", "Math", ["Min", "Clamp"])
+      mc.getTarget().hasFullyQualifiedName("System", "Math", "Min") and
+      (
+        isTrustedUpperBound(mc.getArgument(0)) or
+        isTrustedUpperBound(mc.getArgument(1))
+      )
       or
-      mc.getTarget()
-          .hasFullyQualifiedName("System.IO", "Path",
-            ["ChangeExtension", "GetFileNameWithoutExtension", "GetRandomFileName"])
+      mc.getTarget().hasFullyQualifiedName("System", "Math", "Clamp") and
+      isTrustedUpperBound(mc.getArgument(2))
+      or
+      mc.getTarget().hasFullyQualifiedName("System.IO", "Path", "ChangeExtension") and
+      isUsedInUploadSavePath(mc) and
+      not isRequestControlled(mc.getArgument(1))
+      or
+      mc.getTarget().hasFullyQualifiedName("System.IO", "Path", "GetFileNameWithoutExtension") and
+      isUsedInUploadSavePath(mc) and
+      hasConstantExtensionAppended(mc)
+      or
+      mc.getTarget().hasFullyQualifiedName("System.IO", "Path", "GetRandomFileName")
     )
   }
 

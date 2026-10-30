@@ -51,6 +51,14 @@ namespace WebApp
             FileUpload1.SaveAs(Server.MapPath("~/uploads/") + filename);
         }
 
+        protected void btnUploadRequestExtension_Click(System.Web.HttpRequest req)
+        {
+            string extension = req.QueryString["extension"]; // $ Source
+            string filename = Path.ChangeExtension(
+                Path.GetFileName(FileUpload1.FileName), extension); // $ Source
+            FileUpload1.SaveAs(Server.MapPath("~/uploads/") + filename); // $ Alert
+        }
+
         protected void btnUploadOutsideWebRoot_Click(object sender, EventArgs e)
         {
             string filename = Path.GetFileName(FileUpload1.FileName);
@@ -92,6 +100,38 @@ namespace WebApp
         public void UploadRandomName(IFormFile file)
         {
             var path = Path.Combine(env.WebRootPath, "uploads", Path.GetRandomFileName());
+            using (var stream = File.Create(path))
+            {
+                file.CopyTo(stream);
+            }
+        }
+
+        public void UploadDifferentFileGuard(IFormFile file, IFormFile checkedFile)
+        {
+            var ext = Path.GetExtension(checkedFile.FileName);
+            if (ext != ".png")
+                return;
+            var path = Path.Combine(env.WebRootPath, "uploads", file.FileName); // $ Source
+            using (var stream = File.Create(path)) // $ Alert
+            {
+                file.CopyTo(stream);
+            }
+        }
+
+        public void UploadFileNameWithoutExtension(IFormFile file)
+        {
+            var filename = Path.GetFileNameWithoutExtension(file.FileName); // $ Source
+            var path = Path.Combine(env.WebRootPath, "uploads", filename);
+            using (var stream = File.Create(path)) // $ Alert
+            {
+                file.CopyTo(stream);
+            }
+        }
+
+        public void UploadFileNameWithConstantExtension(IFormFile file)
+        {
+            var filename = Path.GetFileNameWithoutExtension(file.FileName) + ".txt";
+            var path = Path.Combine(env.WebRootPath, "uploads", filename);
             using (var stream = File.Create(path))
             {
                 file.CopyTo(stream);

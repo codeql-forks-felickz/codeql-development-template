@@ -44,6 +44,16 @@ namespace Testcases
             }
         }
 
+        public void BadFileNameWithoutExtension(HttpRequest req, HttpResponse resp)
+        {
+            string data = req.QueryString["name"]; // $ Source
+            using (SqlConnection dbConnection = new SqlConnection(
+                "data source=repro;User ID=" + Path.GetFileNameWithoutExtension(data) + ".txt")) // $ Alert
+            {
+                dbConnection.Open();
+            }
+        }
+
         public void GoodBuilder(HttpRequest req, HttpResponse resp)
         {
             string data = req.QueryString["name"];
@@ -147,6 +157,8 @@ namespace Testcases
     // CWE-789: Memory allocation with excessive size value.
     public class CWE789_QueryString_Web
     {
+        private static readonly int MaxBufferSize = 20;
+
         public void Bad(HttpRequest req, HttpResponse resp)
         {
             int data = int.Parse(req.QueryString["id"]); // $ Source
@@ -170,6 +182,36 @@ namespace Testcases
                 ArrayList intArrayList = new ArrayList(data);
                 intArrayList.Add(1);
             }
+        }
+
+        public void BadMinRequestBound(HttpRequest req, HttpResponse resp)
+        {
+            int count = Math.Min(
+                int.Parse(req.QueryString["id"]), // $ Source
+                int.Parse(req.QueryString["max"])); // $ Source
+            var array = new byte[count]; // $ Alert
+        }
+
+        public void BadClampRequestBound(HttpRequest req, HttpResponse resp)
+        {
+            int count = Math.Clamp(
+                int.Parse(req.QueryString["id"]), // $ Source
+                0,
+                int.Parse(req.QueryString["max"])); // $ Source
+            var array = new byte[count]; // $ Alert
+        }
+
+        public void GoodMinExistingCount(HttpRequest req, HttpResponse resp)
+        {
+            var items = new List<int>();
+            int count = Math.Min(int.Parse(req.QueryString["id"]), items.Count);
+            var array = new byte[count];
+        }
+
+        public void GoodMinReadOnlyLimit(HttpRequest req, HttpResponse resp)
+        {
+            int count = Math.Min(int.Parse(req.QueryString["id"]), MaxBufferSize);
+            var array = new byte[count];
         }
 
         public void GoodConstant()

@@ -1,6 +1,6 @@
-WARNING: predicate 'getLValue' has been deprecated and may be removed in future (FileUploadResourceHandling.ql:172,16-25)
-WARNING: predicate 'getRValue' has been deprecated and may be removed in future (FileUploadResourceHandling.ql:175,28-37)
-WARNING: unused method 'getKind' (FileUploadResourceHandling.ql:219,10-17)
+WARNING: predicate 'getLValue' has been deprecated and may be removed in future (FileUploadResourceHandling.ql:224,16-25)
+WARNING: predicate 'getRValue' has been deprecated and may be removed in future (FileUploadResourceHandling.ql:227,28-37)
+WARNING: unused method 'getKind' (FileUploadResourceHandling.ql:271,10-17)
 #select
 | JulietFlowVariants.cs:25:33:25:37 | access to parameter count | JulietFlowVariants.cs:18:35:18:49 | access to property QueryString : NameValueCollection | JulietFlowVariants.cs:25:33:25:37 | access to parameter count | This $@ is used as an unbounded loop limit. | JulietFlowVariants.cs:18:35:18:49 | access to property QueryString | user-provided value |
 | JulietFlowVariants.cs:60:33:60:37 | access to local variable count | JulietFlowVariants.cs:51:35:51:49 | access to property QueryString : NameValueCollection | JulietFlowVariants.cs:60:33:60:37 | access to local variable count | This $@ is used as an unbounded loop limit. | JulietFlowVariants.cs:51:35:51:49 | access to property QueryString | user-provided value |
@@ -8,17 +8,26 @@ WARNING: unused method 'getKind' (FileUploadResourceHandling.ql:219,10-17)
 | JulietQueryStringWeb.cs:17:67:17:135 | ... + ... | JulietQueryStringWeb.cs:16:27:16:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:17:67:17:135 | ... + ... | This $@ is used as a database connection setting. | JulietQueryStringWeb.cs:16:27:16:41 | access to property QueryString | user-provided value |
 | JulietQueryStringWeb.cs:27:45:27:79 | ... + ... | JulietQueryStringWeb.cs:25:27:25:36 | access to property Params : NameValueCollection | JulietQueryStringWeb.cs:27:45:27:79 | ... + ... | This $@ is used as a database connection setting. | JulietQueryStringWeb.cs:25:27:25:36 | access to property Params | user-provided value |
 | JulietQueryStringWeb.cs:35:41:35:44 | access to local variable data | JulietQueryStringWeb.cs:33:27:33:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:35:41:35:44 | access to local variable data | This $@ is used as a database connection setting. | JulietQueryStringWeb.cs:33:27:33:41 | access to property QueryString | user-provided value |
-| JulietQueryStringWeb.cs:68:37:68:41 | access to local variable count | JulietQueryStringWeb.cs:65:35:65:49 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:68:37:68:41 | access to local variable count | This $@ is used as an unbounded loop limit. | JulietQueryStringWeb.cs:65:35:65:49 | access to property QueryString | user-provided value |
-| JulietQueryStringWeb.cs:79:20:79:24 | access to local variable count | JulietQueryStringWeb.cs:77:35:77:49 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:79:20:79:24 | access to local variable count | This $@ is used as an unbounded loop limit. | JulietQueryStringWeb.cs:77:35:77:49 | access to property QueryString | user-provided value |
-| JulietQueryStringWeb.cs:125:56:125:59 | access to local variable data | JulietQueryStringWeb.cs:124:27:124:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:125:56:125:59 | access to local variable data | This $@ is used as a search-path environment variable. | JulietQueryStringWeb.cs:124:27:124:41 | access to property QueryString | user-provided value |
-| JulietQueryStringWeb.cs:131:56:131:59 | access to local variable data | JulietQueryStringWeb.cs:130:27:130:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:131:56:131:59 | access to local variable data | This $@ is used as a search-path environment variable. | JulietQueryStringWeb.cs:130:27:130:41 | access to property QueryString | user-provided value |
-| JulietQueryStringWeb.cs:153:52:153:55 | access to local variable data | JulietQueryStringWeb.cs:152:34:152:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:153:52:153:55 | access to local variable data | This $@ is used as an unbounded allocation size. | JulietQueryStringWeb.cs:152:34:152:48 | access to property QueryString | user-provided value |
-| JulietQueryStringWeb.cs:160:38:160:41 | access to local variable data | JulietQueryStringWeb.cs:159:34:159:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:160:38:160:41 | access to local variable data | This $@ is used as an unbounded allocation size. | JulietQueryStringWeb.cs:159:34:159:48 | access to property QueryString | user-provided value |
-| JulietQueryStringWeb.cs:161:40:161:43 | access to local variable data | JulietQueryStringWeb.cs:159:34:159:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:161:40:161:43 | access to local variable data | This $@ is used as an unbounded allocation size. | JulietQueryStringWeb.cs:159:34:159:48 | access to property QueryString | user-provided value |
-| JulietQueryStringWeb.cs:162:34:162:37 | access to local variable data | JulietQueryStringWeb.cs:159:34:159:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:162:34:162:37 | access to local variable data | This $@ is used as an unbounded allocation size. | JulietQueryStringWeb.cs:159:34:159:48 | access to property QueryString | user-provided value |
+| JulietQueryStringWeb.cs:51:17:51:94 | ... + ... | JulietQueryStringWeb.cs:49:27:49:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:51:17:51:94 | ... + ... | This $@ is used as a database connection setting. | JulietQueryStringWeb.cs:49:27:49:41 | access to property QueryString | user-provided value |
+| JulietQueryStringWeb.cs:78:37:78:41 | access to local variable count | JulietQueryStringWeb.cs:75:35:75:49 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:78:37:78:41 | access to local variable count | This $@ is used as an unbounded loop limit. | JulietQueryStringWeb.cs:75:35:75:49 | access to property QueryString | user-provided value |
+| JulietQueryStringWeb.cs:89:20:89:24 | access to local variable count | JulietQueryStringWeb.cs:87:35:87:49 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:89:20:89:24 | access to local variable count | This $@ is used as an unbounded loop limit. | JulietQueryStringWeb.cs:87:35:87:49 | access to property QueryString | user-provided value |
+| JulietQueryStringWeb.cs:135:56:135:59 | access to local variable data | JulietQueryStringWeb.cs:134:27:134:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:135:56:135:59 | access to local variable data | This $@ is used as a search-path environment variable. | JulietQueryStringWeb.cs:134:27:134:41 | access to property QueryString | user-provided value |
+| JulietQueryStringWeb.cs:141:56:141:59 | access to local variable data | JulietQueryStringWeb.cs:140:27:140:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:141:56:141:59 | access to local variable data | This $@ is used as a search-path environment variable. | JulietQueryStringWeb.cs:140:27:140:41 | access to property QueryString | user-provided value |
+| JulietQueryStringWeb.cs:165:52:165:55 | access to local variable data | JulietQueryStringWeb.cs:164:34:164:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:165:52:165:55 | access to local variable data | This $@ is used as an unbounded allocation size. | JulietQueryStringWeb.cs:164:34:164:48 | access to property QueryString | user-provided value |
+| JulietQueryStringWeb.cs:172:38:172:41 | access to local variable data | JulietQueryStringWeb.cs:171:34:171:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:172:38:172:41 | access to local variable data | This $@ is used as an unbounded allocation size. | JulietQueryStringWeb.cs:171:34:171:48 | access to property QueryString | user-provided value |
+| JulietQueryStringWeb.cs:173:40:173:43 | access to local variable data | JulietQueryStringWeb.cs:171:34:171:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:173:40:173:43 | access to local variable data | This $@ is used as an unbounded allocation size. | JulietQueryStringWeb.cs:171:34:171:48 | access to property QueryString | user-provided value |
+| JulietQueryStringWeb.cs:174:34:174:37 | access to local variable data | JulietQueryStringWeb.cs:171:34:171:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:174:34:174:37 | access to local variable data | This $@ is used as an unbounded allocation size. | JulietQueryStringWeb.cs:171:34:171:48 | access to property QueryString | user-provided value |
+| JulietQueryStringWeb.cs:192:34:192:38 | access to local variable count | JulietQueryStringWeb.cs:190:27:190:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:192:34:192:38 | access to local variable count | This $@ is used as an unbounded allocation size. | JulietQueryStringWeb.cs:190:27:190:41 | access to property QueryString | user-provided value |
+| JulietQueryStringWeb.cs:192:34:192:38 | access to local variable count | JulietQueryStringWeb.cs:191:27:191:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:192:34:192:38 | access to local variable count | This $@ is used as an unbounded allocation size. | JulietQueryStringWeb.cs:191:27:191:41 | access to property QueryString | user-provided value |
+| JulietQueryStringWeb.cs:201:34:201:38 | access to local variable count | JulietQueryStringWeb.cs:198:27:198:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:201:34:201:38 | access to local variable count | This $@ is used as an unbounded allocation size. | JulietQueryStringWeb.cs:198:27:198:41 | access to property QueryString | user-provided value |
+| JulietQueryStringWeb.cs:201:34:201:38 | access to local variable count | JulietQueryStringWeb.cs:200:27:200:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:201:34:201:38 | access to local variable count | This $@ is used as an unbounded allocation size. | JulietQueryStringWeb.cs:200:27:200:41 | access to property QueryString | user-provided value |
 | UploadHandlers.cs:22:36:22:87 | ... + ... | UploadHandlers.cs:21:52:21:71 | access to property FileName : String | UploadHandlers.cs:22:36:22:87 | ... + ... | This $@ is used as the name of an uploaded file saved under the web root without an extension check. | UploadHandlers.cs:21:52:21:71 | access to property FileName | user-provided value |
 | UploadHandlers.cs:29:43:29:93 | call to method Combine | UploadHandlers.cs:28:31:28:61 | access to property FileName : String | UploadHandlers.cs:29:43:29:93 | call to method Combine | This $@ is used as the name of an uploaded file saved under the web root without an extension check. | UploadHandlers.cs:28:31:28:61 | access to property FileName | user-provided value |
-| UploadHandlers.cs:72:48:72:51 | access to local variable path | UploadHandlers.cs:71:65:71:77 | access to property FileName : String | UploadHandlers.cs:72:48:72:51 | access to local variable path | This $@ is used as the name of an uploaded file saved under the web root without an extension check. | UploadHandlers.cs:71:65:71:77 | access to property FileName | user-provided value |
+| UploadHandlers.cs:59:32:59:70 | ... + ... | UploadHandlers.cs:56:32:56:46 | access to property QueryString : NameValueCollection | UploadHandlers.cs:59:32:59:70 | ... + ... | This $@ is used as the name of an uploaded file saved under the web root without an extension check. | UploadHandlers.cs:56:32:56:46 | access to property QueryString | user-provided value |
+| UploadHandlers.cs:59:32:59:70 | ... + ... | UploadHandlers.cs:58:34:58:53 | access to property FileName : String | UploadHandlers.cs:59:32:59:70 | ... + ... | This $@ is used as the name of an uploaded file saved under the web root without an extension check. | UploadHandlers.cs:58:34:58:53 | access to property FileName | user-provided value |
+| UploadHandlers.cs:80:48:80:51 | access to local variable path | UploadHandlers.cs:79:65:79:77 | access to property FileName : String | UploadHandlers.cs:80:48:80:51 | access to local variable path | This $@ is used as the name of an uploaded file saved under the web root without an extension check. | UploadHandlers.cs:79:65:79:77 | access to property FileName | user-provided value |
+| UploadHandlers.cs:115:45:115:48 | access to local variable path | UploadHandlers.cs:114:65:114:77 | access to property FileName : String | UploadHandlers.cs:115:45:115:48 | access to local variable path | This $@ is used as the name of an uploaded file saved under the web root without an extension check. | UploadHandlers.cs:114:65:114:77 | access to property FileName | user-provided value |
+| UploadHandlers.cs:125:45:125:48 | access to local variable path | UploadHandlers.cs:123:61:123:73 | access to property FileName : String | UploadHandlers.cs:125:45:125:48 | access to local variable path | This $@ is used as the name of an uploaded file saved under the web root without an extension check. | UploadHandlers.cs:123:61:123:73 | access to property FileName | user-provided value |
 edges
 | JulietFlowVariants.cs:18:17:18:21 | access to local variable count : Int32 | JulietFlowVariants.cs:20:21:20:25 | access to local variable count : Int32 | provenance |  |
 | JulietFlowVariants.cs:18:25:18:56 | call to method Parse : Int32 | JulietFlowVariants.cs:18:17:18:21 | access to local variable count : Int32 | provenance |  |
@@ -70,45 +79,89 @@ edges
 | JulietQueryStringWeb.cs:33:27:33:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:33:20:33:23 | access to local variable data : String | provenance |  |
 | JulietQueryStringWeb.cs:33:27:33:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:33:27:33:47 | access to indexer : String | provenance | MaD:12744 |
 | JulietQueryStringWeb.cs:33:27:33:47 | access to indexer : String | JulietQueryStringWeb.cs:33:20:33:23 | access to local variable data : String | provenance |  |
-| JulietQueryStringWeb.cs:65:17:65:21 | access to local variable count : Int32 | JulietQueryStringWeb.cs:68:37:68:41 | access to local variable count | provenance |  |
-| JulietQueryStringWeb.cs:65:25:65:56 | call to method Parse : Int32 | JulietQueryStringWeb.cs:65:17:65:21 | access to local variable count : Int32 | provenance |  |
-| JulietQueryStringWeb.cs:65:35:65:49 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:65:35:65:55 | access to indexer : String | provenance |  |
-| JulietQueryStringWeb.cs:65:35:65:49 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:65:35:65:55 | access to indexer : String | provenance | MaD:12744 |
-| JulietQueryStringWeb.cs:65:35:65:55 | access to indexer : String | JulietQueryStringWeb.cs:65:25:65:56 | call to method Parse : Int32 | provenance | MaD:2808 |
-| JulietQueryStringWeb.cs:77:17:77:21 | access to local variable count : Int32 | JulietQueryStringWeb.cs:79:20:79:24 | access to local variable count | provenance |  |
-| JulietQueryStringWeb.cs:77:25:77:56 | call to method Parse : Int32 | JulietQueryStringWeb.cs:77:17:77:21 | access to local variable count : Int32 | provenance |  |
-| JulietQueryStringWeb.cs:77:35:77:49 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:77:35:77:55 | access to indexer : String | provenance |  |
-| JulietQueryStringWeb.cs:77:35:77:49 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:77:35:77:55 | access to indexer : String | provenance | MaD:12744 |
-| JulietQueryStringWeb.cs:77:35:77:55 | access to indexer : String | JulietQueryStringWeb.cs:77:25:77:56 | call to method Parse : Int32 | provenance | MaD:2808 |
-| JulietQueryStringWeb.cs:124:20:124:23 | access to local variable data : String | JulietQueryStringWeb.cs:125:56:125:59 | access to local variable data | provenance |  |
-| JulietQueryStringWeb.cs:124:27:124:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:124:20:124:23 | access to local variable data : String | provenance |  |
-| JulietQueryStringWeb.cs:124:27:124:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:124:27:124:49 | access to indexer : String | provenance | MaD:12744 |
-| JulietQueryStringWeb.cs:124:27:124:49 | access to indexer : String | JulietQueryStringWeb.cs:124:20:124:23 | access to local variable data : String | provenance |  |
-| JulietQueryStringWeb.cs:130:20:130:23 | access to local variable data : String | JulietQueryStringWeb.cs:131:56:131:59 | access to local variable data | provenance |  |
-| JulietQueryStringWeb.cs:130:27:130:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:130:20:130:23 | access to local variable data : String | provenance |  |
-| JulietQueryStringWeb.cs:130:27:130:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:130:27:130:47 | access to indexer : String | provenance | MaD:12744 |
-| JulietQueryStringWeb.cs:130:27:130:47 | access to indexer : String | JulietQueryStringWeb.cs:130:20:130:23 | access to local variable data : String | provenance |  |
-| JulietQueryStringWeb.cs:152:17:152:20 | access to local variable data : Int32 | JulietQueryStringWeb.cs:153:52:153:55 | access to local variable data | provenance |  |
-| JulietQueryStringWeb.cs:152:24:152:55 | call to method Parse : Int32 | JulietQueryStringWeb.cs:152:17:152:20 | access to local variable data : Int32 | provenance |  |
-| JulietQueryStringWeb.cs:152:34:152:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:152:34:152:54 | access to indexer : String | provenance |  |
-| JulietQueryStringWeb.cs:152:34:152:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:152:34:152:54 | access to indexer : String | provenance | MaD:12744 |
-| JulietQueryStringWeb.cs:152:34:152:54 | access to indexer : String | JulietQueryStringWeb.cs:152:24:152:55 | call to method Parse : Int32 | provenance | MaD:2808 |
-| JulietQueryStringWeb.cs:159:17:159:20 | access to local variable data : Int32 | JulietQueryStringWeb.cs:160:38:160:41 | access to local variable data | provenance |  |
-| JulietQueryStringWeb.cs:159:17:159:20 | access to local variable data : Int32 | JulietQueryStringWeb.cs:161:40:161:43 | access to local variable data | provenance |  |
-| JulietQueryStringWeb.cs:159:17:159:20 | access to local variable data : Int32 | JulietQueryStringWeb.cs:162:34:162:37 | access to local variable data | provenance |  |
-| JulietQueryStringWeb.cs:159:24:159:55 | call to method Parse : Int32 | JulietQueryStringWeb.cs:159:17:159:20 | access to local variable data : Int32 | provenance |  |
-| JulietQueryStringWeb.cs:159:34:159:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:159:34:159:54 | access to indexer : String | provenance |  |
-| JulietQueryStringWeb.cs:159:34:159:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:159:34:159:54 | access to indexer : String | provenance | MaD:12744 |
-| JulietQueryStringWeb.cs:159:34:159:54 | access to indexer : String | JulietQueryStringWeb.cs:159:24:159:55 | call to method Parse : Int32 | provenance | MaD:2808 |
+| JulietQueryStringWeb.cs:49:20:49:23 | access to local variable data : String | JulietQueryStringWeb.cs:51:81:51:84 | access to local variable data : String | provenance |  |
+| JulietQueryStringWeb.cs:49:27:49:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:49:20:49:23 | access to local variable data : String | provenance |  |
+| JulietQueryStringWeb.cs:49:27:49:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:49:27:49:49 | access to indexer : String | provenance | MaD:12744 |
+| JulietQueryStringWeb.cs:49:27:49:49 | access to indexer : String | JulietQueryStringWeb.cs:49:20:49:23 | access to local variable data : String | provenance |  |
+| JulietQueryStringWeb.cs:51:48:51:85 | call to method GetFileNameWithoutExtension : String | JulietQueryStringWeb.cs:51:17:51:94 | ... + ... | provenance |  |
+| JulietQueryStringWeb.cs:51:81:51:84 | access to local variable data : String | JulietQueryStringWeb.cs:51:48:51:85 | call to method GetFileNameWithoutExtension : String | provenance | MaD:1171 |
+| JulietQueryStringWeb.cs:75:17:75:21 | access to local variable count : Int32 | JulietQueryStringWeb.cs:78:37:78:41 | access to local variable count | provenance |  |
+| JulietQueryStringWeb.cs:75:25:75:56 | call to method Parse : Int32 | JulietQueryStringWeb.cs:75:17:75:21 | access to local variable count : Int32 | provenance |  |
+| JulietQueryStringWeb.cs:75:35:75:49 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:75:35:75:55 | access to indexer : String | provenance |  |
+| JulietQueryStringWeb.cs:75:35:75:49 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:75:35:75:55 | access to indexer : String | provenance | MaD:12744 |
+| JulietQueryStringWeb.cs:75:35:75:55 | access to indexer : String | JulietQueryStringWeb.cs:75:25:75:56 | call to method Parse : Int32 | provenance | MaD:2808 |
+| JulietQueryStringWeb.cs:87:17:87:21 | access to local variable count : Int32 | JulietQueryStringWeb.cs:89:20:89:24 | access to local variable count | provenance |  |
+| JulietQueryStringWeb.cs:87:25:87:56 | call to method Parse : Int32 | JulietQueryStringWeb.cs:87:17:87:21 | access to local variable count : Int32 | provenance |  |
+| JulietQueryStringWeb.cs:87:35:87:49 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:87:35:87:55 | access to indexer : String | provenance |  |
+| JulietQueryStringWeb.cs:87:35:87:49 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:87:35:87:55 | access to indexer : String | provenance | MaD:12744 |
+| JulietQueryStringWeb.cs:87:35:87:55 | access to indexer : String | JulietQueryStringWeb.cs:87:25:87:56 | call to method Parse : Int32 | provenance | MaD:2808 |
+| JulietQueryStringWeb.cs:134:20:134:23 | access to local variable data : String | JulietQueryStringWeb.cs:135:56:135:59 | access to local variable data | provenance |  |
+| JulietQueryStringWeb.cs:134:27:134:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:134:20:134:23 | access to local variable data : String | provenance |  |
+| JulietQueryStringWeb.cs:134:27:134:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:134:27:134:49 | access to indexer : String | provenance | MaD:12744 |
+| JulietQueryStringWeb.cs:134:27:134:49 | access to indexer : String | JulietQueryStringWeb.cs:134:20:134:23 | access to local variable data : String | provenance |  |
+| JulietQueryStringWeb.cs:140:20:140:23 | access to local variable data : String | JulietQueryStringWeb.cs:141:56:141:59 | access to local variable data | provenance |  |
+| JulietQueryStringWeb.cs:140:27:140:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:140:20:140:23 | access to local variable data : String | provenance |  |
+| JulietQueryStringWeb.cs:140:27:140:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:140:27:140:47 | access to indexer : String | provenance | MaD:12744 |
+| JulietQueryStringWeb.cs:140:27:140:47 | access to indexer : String | JulietQueryStringWeb.cs:140:20:140:23 | access to local variable data : String | provenance |  |
+| JulietQueryStringWeb.cs:164:17:164:20 | access to local variable data : Int32 | JulietQueryStringWeb.cs:165:52:165:55 | access to local variable data | provenance |  |
+| JulietQueryStringWeb.cs:164:24:164:55 | call to method Parse : Int32 | JulietQueryStringWeb.cs:164:17:164:20 | access to local variable data : Int32 | provenance |  |
+| JulietQueryStringWeb.cs:164:34:164:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:164:34:164:54 | access to indexer : String | provenance |  |
+| JulietQueryStringWeb.cs:164:34:164:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:164:34:164:54 | access to indexer : String | provenance | MaD:12744 |
+| JulietQueryStringWeb.cs:164:34:164:54 | access to indexer : String | JulietQueryStringWeb.cs:164:24:164:55 | call to method Parse : Int32 | provenance | MaD:2808 |
+| JulietQueryStringWeb.cs:171:17:171:20 | access to local variable data : Int32 | JulietQueryStringWeb.cs:172:38:172:41 | access to local variable data | provenance |  |
+| JulietQueryStringWeb.cs:171:17:171:20 | access to local variable data : Int32 | JulietQueryStringWeb.cs:173:40:173:43 | access to local variable data | provenance |  |
+| JulietQueryStringWeb.cs:171:17:171:20 | access to local variable data : Int32 | JulietQueryStringWeb.cs:174:34:174:37 | access to local variable data | provenance |  |
+| JulietQueryStringWeb.cs:171:24:171:55 | call to method Parse : Int32 | JulietQueryStringWeb.cs:171:17:171:20 | access to local variable data : Int32 | provenance |  |
+| JulietQueryStringWeb.cs:171:34:171:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:171:34:171:54 | access to indexer : String | provenance |  |
+| JulietQueryStringWeb.cs:171:34:171:48 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:171:34:171:54 | access to indexer : String | provenance | MaD:12744 |
+| JulietQueryStringWeb.cs:171:34:171:54 | access to indexer : String | JulietQueryStringWeb.cs:171:24:171:55 | call to method Parse : Int32 | provenance | MaD:2808 |
+| JulietQueryStringWeb.cs:189:17:189:21 | access to local variable count : Int32 | JulietQueryStringWeb.cs:192:34:192:38 | access to local variable count | provenance |  |
+| JulietQueryStringWeb.cs:189:25:191:50 | call to method Min : Int32 | JulietQueryStringWeb.cs:189:17:189:21 | access to local variable count : Int32 | provenance |  |
+| JulietQueryStringWeb.cs:190:17:190:48 | call to method Parse : Int32 | JulietQueryStringWeb.cs:189:25:191:50 | call to method Min : Int32 | provenance | Config |
+| JulietQueryStringWeb.cs:190:27:190:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:190:27:190:47 | access to indexer : String | provenance |  |
+| JulietQueryStringWeb.cs:190:27:190:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:190:27:190:47 | access to indexer : String | provenance | MaD:12744 |
+| JulietQueryStringWeb.cs:190:27:190:47 | access to indexer : String | JulietQueryStringWeb.cs:190:17:190:48 | call to method Parse : Int32 | provenance | MaD:2808 |
+| JulietQueryStringWeb.cs:191:17:191:49 | call to method Parse : Int32 | JulietQueryStringWeb.cs:189:25:191:50 | call to method Min : Int32 | provenance | Config |
+| JulietQueryStringWeb.cs:191:27:191:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:191:27:191:48 | access to indexer : String | provenance |  |
+| JulietQueryStringWeb.cs:191:27:191:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:191:27:191:48 | access to indexer : String | provenance | MaD:12744 |
+| JulietQueryStringWeb.cs:191:27:191:48 | access to indexer : String | JulietQueryStringWeb.cs:191:17:191:49 | call to method Parse : Int32 | provenance | MaD:2808 |
+| JulietQueryStringWeb.cs:197:17:197:21 | access to local variable count : Int32 | JulietQueryStringWeb.cs:201:34:201:38 | access to local variable count | provenance |  |
+| JulietQueryStringWeb.cs:197:25:200:50 | call to method Clamp : Int32 | JulietQueryStringWeb.cs:197:17:197:21 | access to local variable count : Int32 | provenance |  |
+| JulietQueryStringWeb.cs:198:17:198:48 | call to method Parse : Int32 | JulietQueryStringWeb.cs:197:25:200:50 | call to method Clamp : Int32 | provenance | Config |
+| JulietQueryStringWeb.cs:198:27:198:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:198:27:198:47 | access to indexer : String | provenance |  |
+| JulietQueryStringWeb.cs:198:27:198:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:198:27:198:47 | access to indexer : String | provenance | MaD:12744 |
+| JulietQueryStringWeb.cs:198:27:198:47 | access to indexer : String | JulietQueryStringWeb.cs:198:17:198:48 | call to method Parse : Int32 | provenance | MaD:2808 |
+| JulietQueryStringWeb.cs:200:17:200:49 | call to method Parse : Int32 | JulietQueryStringWeb.cs:197:25:200:50 | call to method Clamp : Int32 | provenance | Config |
+| JulietQueryStringWeb.cs:200:27:200:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:200:27:200:48 | access to indexer : String | provenance |  |
+| JulietQueryStringWeb.cs:200:27:200:41 | access to property QueryString : NameValueCollection | JulietQueryStringWeb.cs:200:27:200:48 | access to indexer : String | provenance | MaD:12744 |
+| JulietQueryStringWeb.cs:200:27:200:48 | access to indexer : String | JulietQueryStringWeb.cs:200:17:200:49 | call to method Parse : Int32 | provenance | MaD:2808 |
 | UploadHandlers.cs:21:24:21:31 | access to local variable filename : String | UploadHandlers.cs:22:36:22:87 | ... + ... | provenance |  |
 | UploadHandlers.cs:21:35:21:72 | call to method GetFileName : String | UploadHandlers.cs:21:24:21:31 | access to local variable filename : String | provenance |  |
 | UploadHandlers.cs:21:52:21:71 | access to property FileName : String | UploadHandlers.cs:21:35:21:72 | call to method GetFileName : String | provenance | MaD:1169 |
 | UploadHandlers.cs:28:20:28:27 | access to local variable filename : String | UploadHandlers.cs:29:85:29:92 | access to local variable filename : String | provenance |  |
 | UploadHandlers.cs:28:31:28:61 | access to property FileName : String | UploadHandlers.cs:28:20:28:27 | access to local variable filename : String | provenance |  |
 | UploadHandlers.cs:29:85:29:92 | access to local variable filename : String | UploadHandlers.cs:29:43:29:93 | call to method Combine | provenance | MaD:1154 |
-| UploadHandlers.cs:71:17:71:20 | access to local variable path : String | UploadHandlers.cs:72:48:72:51 | access to local variable path | provenance |  |
-| UploadHandlers.cs:71:24:71:78 | call to method Combine : String | UploadHandlers.cs:71:17:71:20 | access to local variable path : String | provenance |  |
-| UploadHandlers.cs:71:65:71:77 | access to property FileName : String | UploadHandlers.cs:71:24:71:78 | call to method Combine : String | provenance | MaD:1157 |
+| UploadHandlers.cs:56:20:56:28 | access to local variable extension : String | UploadHandlers.cs:58:57:58:65 | access to local variable extension : String | provenance |  |
+| UploadHandlers.cs:56:32:56:46 | access to property QueryString : NameValueCollection | UploadHandlers.cs:56:20:56:28 | access to local variable extension : String | provenance |  |
+| UploadHandlers.cs:56:32:56:46 | access to property QueryString : NameValueCollection | UploadHandlers.cs:56:32:56:59 | access to indexer : String | provenance | MaD:12744 |
+| UploadHandlers.cs:56:32:56:59 | access to indexer : String | UploadHandlers.cs:56:20:56:28 | access to local variable extension : String | provenance |  |
+| UploadHandlers.cs:57:20:57:27 | access to local variable filename : String | UploadHandlers.cs:59:32:59:70 | ... + ... | provenance |  |
+| UploadHandlers.cs:57:31:58:66 | call to method ChangeExtension : String | UploadHandlers.cs:57:20:57:27 | access to local variable filename : String | provenance |  |
+| UploadHandlers.cs:58:17:58:54 | call to method GetFileName : String | UploadHandlers.cs:57:31:58:66 | call to method ChangeExtension : String | provenance | MaD:23158 |
+| UploadHandlers.cs:58:34:58:53 | access to property FileName : String | UploadHandlers.cs:58:17:58:54 | call to method GetFileName : String | provenance | MaD:1169 |
+| UploadHandlers.cs:58:57:58:65 | access to local variable extension : String | UploadHandlers.cs:57:31:58:66 | call to method ChangeExtension : String | provenance | Config |
+| UploadHandlers.cs:79:17:79:20 | access to local variable path : String | UploadHandlers.cs:80:48:80:51 | access to local variable path | provenance |  |
+| UploadHandlers.cs:79:24:79:78 | call to method Combine : String | UploadHandlers.cs:79:17:79:20 | access to local variable path : String | provenance |  |
+| UploadHandlers.cs:79:65:79:77 | access to property FileName : String | UploadHandlers.cs:79:24:79:78 | call to method Combine : String | provenance | MaD:1157 |
+| UploadHandlers.cs:114:17:114:20 | access to local variable path : String | UploadHandlers.cs:115:45:115:48 | access to local variable path | provenance |  |
+| UploadHandlers.cs:114:24:114:78 | call to method Combine : String | UploadHandlers.cs:114:17:114:20 | access to local variable path : String | provenance |  |
+| UploadHandlers.cs:114:65:114:77 | access to property FileName : String | UploadHandlers.cs:114:24:114:78 | call to method Combine : String | provenance | MaD:1157 |
+| UploadHandlers.cs:123:17:123:24 | access to local variable filename : String | UploadHandlers.cs:124:65:124:72 | access to local variable filename : String | provenance |  |
+| UploadHandlers.cs:123:28:123:74 | call to method GetFileNameWithoutExtension : String | UploadHandlers.cs:123:17:123:24 | access to local variable filename : String | provenance |  |
+| UploadHandlers.cs:123:61:123:73 | access to property FileName : String | UploadHandlers.cs:123:28:123:74 | call to method GetFileNameWithoutExtension : String | provenance | MaD:1171 |
+| UploadHandlers.cs:124:17:124:20 | access to local variable path : String | UploadHandlers.cs:125:45:125:48 | access to local variable path | provenance |  |
+| UploadHandlers.cs:124:24:124:73 | call to method Combine : String | UploadHandlers.cs:124:17:124:20 | access to local variable path : String | provenance |  |
+| UploadHandlers.cs:124:65:124:72 | access to local variable filename : String | UploadHandlers.cs:124:24:124:73 | call to method Combine : String | provenance | MaD:1157 |
 nodes
 | JulietFlowVariants.cs:18:17:18:21 | access to local variable count : Int32 | semmle.label | access to local variable count : Int32 |
 | JulietFlowVariants.cs:18:25:18:56 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
@@ -160,36 +213,60 @@ nodes
 | JulietQueryStringWeb.cs:33:27:33:41 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | JulietQueryStringWeb.cs:33:27:33:47 | access to indexer : String | semmle.label | access to indexer : String |
 | JulietQueryStringWeb.cs:35:41:35:44 | access to local variable data | semmle.label | access to local variable data |
-| JulietQueryStringWeb.cs:65:17:65:21 | access to local variable count : Int32 | semmle.label | access to local variable count : Int32 |
-| JulietQueryStringWeb.cs:65:25:65:56 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
-| JulietQueryStringWeb.cs:65:35:65:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| JulietQueryStringWeb.cs:65:35:65:55 | access to indexer : String | semmle.label | access to indexer : String |
-| JulietQueryStringWeb.cs:68:37:68:41 | access to local variable count | semmle.label | access to local variable count |
-| JulietQueryStringWeb.cs:77:17:77:21 | access to local variable count : Int32 | semmle.label | access to local variable count : Int32 |
-| JulietQueryStringWeb.cs:77:25:77:56 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
-| JulietQueryStringWeb.cs:77:35:77:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| JulietQueryStringWeb.cs:77:35:77:55 | access to indexer : String | semmle.label | access to indexer : String |
-| JulietQueryStringWeb.cs:79:20:79:24 | access to local variable count | semmle.label | access to local variable count |
-| JulietQueryStringWeb.cs:124:20:124:23 | access to local variable data : String | semmle.label | access to local variable data : String |
-| JulietQueryStringWeb.cs:124:27:124:41 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| JulietQueryStringWeb.cs:124:27:124:49 | access to indexer : String | semmle.label | access to indexer : String |
-| JulietQueryStringWeb.cs:125:56:125:59 | access to local variable data | semmle.label | access to local variable data |
-| JulietQueryStringWeb.cs:130:20:130:23 | access to local variable data : String | semmle.label | access to local variable data : String |
-| JulietQueryStringWeb.cs:130:27:130:41 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| JulietQueryStringWeb.cs:130:27:130:47 | access to indexer : String | semmle.label | access to indexer : String |
-| JulietQueryStringWeb.cs:131:56:131:59 | access to local variable data | semmle.label | access to local variable data |
-| JulietQueryStringWeb.cs:152:17:152:20 | access to local variable data : Int32 | semmle.label | access to local variable data : Int32 |
-| JulietQueryStringWeb.cs:152:24:152:55 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
-| JulietQueryStringWeb.cs:152:34:152:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| JulietQueryStringWeb.cs:152:34:152:54 | access to indexer : String | semmle.label | access to indexer : String |
-| JulietQueryStringWeb.cs:153:52:153:55 | access to local variable data | semmle.label | access to local variable data |
-| JulietQueryStringWeb.cs:159:17:159:20 | access to local variable data : Int32 | semmle.label | access to local variable data : Int32 |
-| JulietQueryStringWeb.cs:159:24:159:55 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
-| JulietQueryStringWeb.cs:159:34:159:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| JulietQueryStringWeb.cs:159:34:159:54 | access to indexer : String | semmle.label | access to indexer : String |
-| JulietQueryStringWeb.cs:160:38:160:41 | access to local variable data | semmle.label | access to local variable data |
-| JulietQueryStringWeb.cs:161:40:161:43 | access to local variable data | semmle.label | access to local variable data |
-| JulietQueryStringWeb.cs:162:34:162:37 | access to local variable data | semmle.label | access to local variable data |
+| JulietQueryStringWeb.cs:49:20:49:23 | access to local variable data : String | semmle.label | access to local variable data : String |
+| JulietQueryStringWeb.cs:49:27:49:41 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| JulietQueryStringWeb.cs:49:27:49:49 | access to indexer : String | semmle.label | access to indexer : String |
+| JulietQueryStringWeb.cs:51:17:51:94 | ... + ... | semmle.label | ... + ... |
+| JulietQueryStringWeb.cs:51:48:51:85 | call to method GetFileNameWithoutExtension : String | semmle.label | call to method GetFileNameWithoutExtension : String |
+| JulietQueryStringWeb.cs:51:81:51:84 | access to local variable data : String | semmle.label | access to local variable data : String |
+| JulietQueryStringWeb.cs:75:17:75:21 | access to local variable count : Int32 | semmle.label | access to local variable count : Int32 |
+| JulietQueryStringWeb.cs:75:25:75:56 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| JulietQueryStringWeb.cs:75:35:75:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| JulietQueryStringWeb.cs:75:35:75:55 | access to indexer : String | semmle.label | access to indexer : String |
+| JulietQueryStringWeb.cs:78:37:78:41 | access to local variable count | semmle.label | access to local variable count |
+| JulietQueryStringWeb.cs:87:17:87:21 | access to local variable count : Int32 | semmle.label | access to local variable count : Int32 |
+| JulietQueryStringWeb.cs:87:25:87:56 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| JulietQueryStringWeb.cs:87:35:87:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| JulietQueryStringWeb.cs:87:35:87:55 | access to indexer : String | semmle.label | access to indexer : String |
+| JulietQueryStringWeb.cs:89:20:89:24 | access to local variable count | semmle.label | access to local variable count |
+| JulietQueryStringWeb.cs:134:20:134:23 | access to local variable data : String | semmle.label | access to local variable data : String |
+| JulietQueryStringWeb.cs:134:27:134:41 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| JulietQueryStringWeb.cs:134:27:134:49 | access to indexer : String | semmle.label | access to indexer : String |
+| JulietQueryStringWeb.cs:135:56:135:59 | access to local variable data | semmle.label | access to local variable data |
+| JulietQueryStringWeb.cs:140:20:140:23 | access to local variable data : String | semmle.label | access to local variable data : String |
+| JulietQueryStringWeb.cs:140:27:140:41 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| JulietQueryStringWeb.cs:140:27:140:47 | access to indexer : String | semmle.label | access to indexer : String |
+| JulietQueryStringWeb.cs:141:56:141:59 | access to local variable data | semmle.label | access to local variable data |
+| JulietQueryStringWeb.cs:164:17:164:20 | access to local variable data : Int32 | semmle.label | access to local variable data : Int32 |
+| JulietQueryStringWeb.cs:164:24:164:55 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| JulietQueryStringWeb.cs:164:34:164:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| JulietQueryStringWeb.cs:164:34:164:54 | access to indexer : String | semmle.label | access to indexer : String |
+| JulietQueryStringWeb.cs:165:52:165:55 | access to local variable data | semmle.label | access to local variable data |
+| JulietQueryStringWeb.cs:171:17:171:20 | access to local variable data : Int32 | semmle.label | access to local variable data : Int32 |
+| JulietQueryStringWeb.cs:171:24:171:55 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| JulietQueryStringWeb.cs:171:34:171:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| JulietQueryStringWeb.cs:171:34:171:54 | access to indexer : String | semmle.label | access to indexer : String |
+| JulietQueryStringWeb.cs:172:38:172:41 | access to local variable data | semmle.label | access to local variable data |
+| JulietQueryStringWeb.cs:173:40:173:43 | access to local variable data | semmle.label | access to local variable data |
+| JulietQueryStringWeb.cs:174:34:174:37 | access to local variable data | semmle.label | access to local variable data |
+| JulietQueryStringWeb.cs:189:17:189:21 | access to local variable count : Int32 | semmle.label | access to local variable count : Int32 |
+| JulietQueryStringWeb.cs:189:25:191:50 | call to method Min : Int32 | semmle.label | call to method Min : Int32 |
+| JulietQueryStringWeb.cs:190:17:190:48 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| JulietQueryStringWeb.cs:190:27:190:41 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| JulietQueryStringWeb.cs:190:27:190:47 | access to indexer : String | semmle.label | access to indexer : String |
+| JulietQueryStringWeb.cs:191:17:191:49 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| JulietQueryStringWeb.cs:191:27:191:41 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| JulietQueryStringWeb.cs:191:27:191:48 | access to indexer : String | semmle.label | access to indexer : String |
+| JulietQueryStringWeb.cs:192:34:192:38 | access to local variable count | semmle.label | access to local variable count |
+| JulietQueryStringWeb.cs:197:17:197:21 | access to local variable count : Int32 | semmle.label | access to local variable count : Int32 |
+| JulietQueryStringWeb.cs:197:25:200:50 | call to method Clamp : Int32 | semmle.label | call to method Clamp : Int32 |
+| JulietQueryStringWeb.cs:198:17:198:48 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| JulietQueryStringWeb.cs:198:27:198:41 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| JulietQueryStringWeb.cs:198:27:198:47 | access to indexer : String | semmle.label | access to indexer : String |
+| JulietQueryStringWeb.cs:200:17:200:49 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| JulietQueryStringWeb.cs:200:27:200:41 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| JulietQueryStringWeb.cs:200:27:200:48 | access to indexer : String | semmle.label | access to indexer : String |
+| JulietQueryStringWeb.cs:201:34:201:38 | access to local variable count | semmle.label | access to local variable count |
 | UploadHandlers.cs:21:24:21:31 | access to local variable filename : String | semmle.label | access to local variable filename : String |
 | UploadHandlers.cs:21:35:21:72 | call to method GetFileName : String | semmle.label | call to method GetFileName : String |
 | UploadHandlers.cs:21:52:21:71 | access to property FileName : String | semmle.label | access to property FileName : String |
@@ -198,8 +275,28 @@ nodes
 | UploadHandlers.cs:28:31:28:61 | access to property FileName : String | semmle.label | access to property FileName : String |
 | UploadHandlers.cs:29:43:29:93 | call to method Combine | semmle.label | call to method Combine |
 | UploadHandlers.cs:29:85:29:92 | access to local variable filename : String | semmle.label | access to local variable filename : String |
-| UploadHandlers.cs:71:17:71:20 | access to local variable path : String | semmle.label | access to local variable path : String |
-| UploadHandlers.cs:71:24:71:78 | call to method Combine : String | semmle.label | call to method Combine : String |
-| UploadHandlers.cs:71:65:71:77 | access to property FileName : String | semmle.label | access to property FileName : String |
-| UploadHandlers.cs:72:48:72:51 | access to local variable path | semmle.label | access to local variable path |
+| UploadHandlers.cs:56:20:56:28 | access to local variable extension : String | semmle.label | access to local variable extension : String |
+| UploadHandlers.cs:56:32:56:46 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| UploadHandlers.cs:56:32:56:59 | access to indexer : String | semmle.label | access to indexer : String |
+| UploadHandlers.cs:57:20:57:27 | access to local variable filename : String | semmle.label | access to local variable filename : String |
+| UploadHandlers.cs:57:31:58:66 | call to method ChangeExtension : String | semmle.label | call to method ChangeExtension : String |
+| UploadHandlers.cs:58:17:58:54 | call to method GetFileName : String | semmle.label | call to method GetFileName : String |
+| UploadHandlers.cs:58:34:58:53 | access to property FileName : String | semmle.label | access to property FileName : String |
+| UploadHandlers.cs:58:57:58:65 | access to local variable extension : String | semmle.label | access to local variable extension : String |
+| UploadHandlers.cs:59:32:59:70 | ... + ... | semmle.label | ... + ... |
+| UploadHandlers.cs:79:17:79:20 | access to local variable path : String | semmle.label | access to local variable path : String |
+| UploadHandlers.cs:79:24:79:78 | call to method Combine : String | semmle.label | call to method Combine : String |
+| UploadHandlers.cs:79:65:79:77 | access to property FileName : String | semmle.label | access to property FileName : String |
+| UploadHandlers.cs:80:48:80:51 | access to local variable path | semmle.label | access to local variable path |
+| UploadHandlers.cs:114:17:114:20 | access to local variable path : String | semmle.label | access to local variable path : String |
+| UploadHandlers.cs:114:24:114:78 | call to method Combine : String | semmle.label | call to method Combine : String |
+| UploadHandlers.cs:114:65:114:77 | access to property FileName : String | semmle.label | access to property FileName : String |
+| UploadHandlers.cs:115:45:115:48 | access to local variable path | semmle.label | access to local variable path |
+| UploadHandlers.cs:123:17:123:24 | access to local variable filename : String | semmle.label | access to local variable filename : String |
+| UploadHandlers.cs:123:28:123:74 | call to method GetFileNameWithoutExtension : String | semmle.label | call to method GetFileNameWithoutExtension : String |
+| UploadHandlers.cs:123:61:123:73 | access to property FileName : String | semmle.label | access to property FileName : String |
+| UploadHandlers.cs:124:17:124:20 | access to local variable path : String | semmle.label | access to local variable path : String |
+| UploadHandlers.cs:124:24:124:73 | call to method Combine : String | semmle.label | call to method Combine : String |
+| UploadHandlers.cs:124:65:124:72 | access to local variable filename : String | semmle.label | access to local variable filename : String |
+| UploadHandlers.cs:125:45:125:48 | access to local variable path | semmle.label | access to local variable path |
 subpaths
