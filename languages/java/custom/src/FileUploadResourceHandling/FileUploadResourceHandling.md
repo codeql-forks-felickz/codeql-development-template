@@ -4,7 +4,7 @@ Web applications that let users upload files must control what is stored and whe
 
 The query reports writes of uploaded file content (`MultipartFile.transferTo`, `Part.write`, `Files.copy`/`Files.write` with the upload's content) whose destination is both:
 
-- derived from a web-accessible directory, and
+- derived from a web-accessible directory (`ServletContext.getRealPath(...)`, a `static`/`public`/`resources` classpath location, a `src/main/webapp` path, or a field whose directory is published through Spring MVC's `ResourceHandlerRegistration.addResourceLocations(...)`, including other fields bound to the same `@Value("${...}")` property), and
 - derived from the client-supplied file name, without an intervening allowlist check (for example `name.endsWith(".png")`, `ALLOWED.contains(ext)` or `PATTERN.matcher(name).matches()`).
 
 Deny-list checks (for example rejecting only `.html`) and non end-anchored pattern checks using `Matcher.find()` are not considered validation, as they can be bypassed with other dangerous extensions or names such as `shell.png.jsp`.
@@ -54,6 +54,7 @@ public String processProfile(@RequestParam("username") String username,
 
 - Validation performed indirectly (for example inside a `Supplier<Boolean>` lambda evaluated by a shared helper) is not recognized and may be reported.
 - The web-accessible directory and the client-supplied file name are tracked independently, so a shared helper that is called with both a web-accessible and a non web-accessible directory may be reported for callers that use the latter.
+- Directories published as web content through configuration other than Spring MVC resource handlers (for example a reverse proxy or `spring.web.resources.static-locations`) are not recognized.
 - Path traversal through the client-supplied name is outside the scope of this query (see `java/path-injection`).
 
 ## References

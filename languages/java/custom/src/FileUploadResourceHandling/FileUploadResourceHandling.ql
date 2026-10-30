@@ -79,6 +79,46 @@ private predicate isWebRootPath(string s) {
   s.regexpMatch("(?i)/?(META-INF/)?(static|public|resources)(/.*)?")
 }
 
+/**
+ * Gets the configuration property key that field `f` is bound to through Spring's
+ * `@Value("${key}")` or `@Value("${key:default}")`.
+ */
+private string valuePropertyKey(Field f) {
+  exists(Annotation a |
+    a = f.getAnAnnotation() and
+    a.getType().hasQualifiedName("org.springframework.beans.factory.annotation", "Value") and
+    result = a.getStringValue("value").regexpCapture("\\$\\{([^:}]+)(:[^}]*)?\\}", 1)
+  )
+}
+
+/**
+ * Holds if the value of field `f` is published as static web content through Spring MVC's
+ * `ResourceHandlerRegistration.addResourceLocations(...)`.
+ */
+private predicate isPublishedResourceLocationField(Field f) {
+  exists(MethodCall mc |
+    mc.getMethod()
+        .getDeclaringType()
+        .hasQualifiedName("org.springframework.web.servlet.config.annotation",
+          "ResourceHandlerRegistration") and
+    mc.getMethod().hasName("addResourceLocations") and
+    TaintTracking::localExprTaint(f.getAnAccess(), mc.getAnArgument())
+  )
+}
+
+/**
+ * Holds if field `f` holds a directory that is published as static web content, either
+ * directly or because it is bound to the same `@Value` property as a published field.
+ */
+private predicate isWebRootField(Field f) {
+  isPublishedResourceLocationField(f)
+  or
+  exists(Field published |
+    isPublishedResourceLocationField(published) and
+    valuePropertyKey(f) = valuePropertyKey(published)
+  )
+}
+
 /** An expression that evaluates to a location inside a web-accessible directory. */
 class WebRootExpr extends Expr {
   WebRootExpr() {
@@ -97,6 +137,9 @@ class WebRootExpr extends Expr {
       mc.getMethod().hasName("getResource") and
       isWebRootPath(mc.getArgument(0).(CompileTimeConstantExpr).getStringValue())
     )
+    or
+    // A field holding a directory that Spring MVC serves as static resources.
+    isWebRootField(this.(FieldRead).getField())
     or
     // A literal path such as `"src/main/resources/static/uploads"`.
     this.(StringLiteral)

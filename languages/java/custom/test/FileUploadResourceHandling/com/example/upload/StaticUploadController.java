@@ -79,6 +79,24 @@ public class StaticUploadController {
     return store(root, fileName, file);
   }
 
+  // BAD: the allowlist checks the full name, but the stored name is truncated at a null byte, so
+  // `shell.jsp<NUL>.png` passes the check and is stored as `shell.jsp`.
+  @RequestMapping(value = "/level7", method = RequestMethod.POST)
+  public String level7(@RequestParam("file") MultipartFile file) throws IOException {
+    String originalFileName;
+    if (file.getOriginalFilename().contains("\u0000")) {
+      originalFileName =
+          file.getOriginalFilename() // $ Source
+              .substring(0, file.getOriginalFilename().indexOf("\u0000"));
+    } else {
+      originalFileName = file.getOriginalFilename(); // $ Source
+    }
+    if (!ENDS_WITH_PNG_OR_JPEG.matcher(file.getOriginalFilename()).matches()) {
+      return "Input is invalid";
+    }
+    return store(root, RANDOM.nextInt() + "_" + originalFileName, file);
+  }
+
   // BAD: written to the source web directory, which is packaged as web content.
   @RequestMapping(value = "/webapp", method = RequestMethod.POST)
   public String webappDirectory(@RequestParam("file") MultipartFile file) throws IOException {
