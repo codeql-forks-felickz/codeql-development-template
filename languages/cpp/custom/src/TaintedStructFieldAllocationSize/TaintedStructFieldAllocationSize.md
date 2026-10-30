@@ -38,7 +38,7 @@ void process_image(FILE *fp) {
   struct Image img;
   if (fread(&img, sizeof(img), 1, fp) != 1)
     return;
-  if (img.width > MAX_DIM || img.height > MAX_DIM || img.width < img.height)
+  if (img.width < 0 || img.height < 0 || img.width > MAX_DIM || img.height > MAX_DIM || img.width < img.height)
     return; // GOOD: fields are range checked
   char *buf = (char *)malloc(img.width - img.height + 100);
   /* ... */

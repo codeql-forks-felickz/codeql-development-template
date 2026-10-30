@@ -70,7 +70,7 @@ void process_image_checked(FILE *fp) {
   struct Image img;
   if (fread(&img, sizeof(img), 1, fp) != 1)
     return;
-  if (img.width > MAX_DIM || img.height > MAX_DIM || img.width < img.height)
+  if (img.width < 0 || img.height < 0 || img.width > MAX_DIM || img.height > MAX_DIM || img.width < img.height)
     return;
   char *buf = (char *)malloc(img.width - img.height + 100);
   free(buf);
@@ -181,4 +181,36 @@ void process_image_normalized(FILE *fp) {
   free(buf1);
   free(buf2);
   free(buf3);
+}
+
+// GOOD: checks on the same nested field paths suppress the report.
+void process_checked_nested_packet(int sock) {
+  struct Packet pkt;
+  recv(sock, &pkt, sizeof(pkt), 0);
+  if (pkt.dims.width > MAX_DIM || pkt.dims.height > MAX_DIM)
+    return;
+  char *buf = (char *)malloc(pkt.dims.width * pkt.dims.height);
+  free(buf);
+}
+
+// BAD: checking another instance does not validate the received packet.
+void process_other_checked_packet(int sock) {
+  struct Packet pkt, other;
+  recv(sock, &pkt, sizeof(pkt), 0); // $ Source
+  if (other.dims.width > MAX_DIM || other.dims.height > MAX_DIM)
+    return;
+  char *buf = (char *)malloc(pkt.dims.width * pkt.dims.height); // $ Alert
+  free(buf);
+}
+
+static void consume(int value) {}
+
+// GOOD: passing a scalar field to a call does not refill the whole object.
+void process_scalar_call_after_overwrite(FILE *fp) {
+  struct Image img;
+  fread(&img, sizeof(img), 1, fp);
+  img.width = 16;
+  consume(img.height);
+  char *buf = (char *)malloc(img.width * 2);
+  free(buf);
 }

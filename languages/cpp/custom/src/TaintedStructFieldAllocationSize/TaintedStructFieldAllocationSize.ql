@@ -182,9 +182,32 @@ predicate aggregateToFieldStep(DataFlow::Node n1, DataFlow::Node n2) {
 predicate fieldHasUpperBoundsCheck(FieldAccess fa) {
   exists(RelationalOperation oper, FieldAccess checked |
     oper.getAnOperand() = checked and
-    checked.getTarget() = fa.getTarget() and
+    sameFieldAccessPath(checked, fa) and
     checked.getEnclosingFunction() = fa.getEnclosingFunction() and
     not oper.getAnOperand().getValue() = "0"
+  )
+}
+
+/** Holds if `fa1` and `fa2` access the same field path from the same root. */
+predicate sameFieldAccessPath(FieldAccess fa1, FieldAccess fa2) {
+  fa1.getTarget() = fa2.getTarget() and
+  (
+    exists(FieldAccess qualifier1, FieldAccess qualifier2 |
+      qualifier1 = fa1.getQualifier() and
+      qualifier2 = fa2.getQualifier() and
+      sameFieldAccessPath(qualifier1, qualifier2)
+    )
+    or
+    exists(VariableAccess qualifier1, VariableAccess qualifier2 |
+      qualifier1 = fa1.getQualifier() and
+      qualifier2 = fa2.getQualifier() and
+      not qualifier1 instanceof FieldAccess and
+      not qualifier2 instanceof FieldAccess and
+      qualifier1.getTarget() = qualifier2.getTarget()
+    )
+    or
+    fa1.getQualifier() instanceof ThisExpr and
+    fa2.getQualifier() instanceof ThisExpr
   )
 }
 
@@ -214,7 +237,19 @@ predicate fieldOverwrite(Assignment asg, Field f, Variable v) {
  * `fread(&v, ...)` or `fread(v, ...)`, or a whole-object assignment such as `v = ...`.
  */
 predicate mayRefill(ControlFlowNode n, Variable v) {
-  n.(Call).getAnArgument().getAChild*().(VariableAccess).getTarget() = v
+  exists(Call call, int i, Expr argument |
+    call = n and
+    argument = call.getArgument(i) and
+    (
+      argument.getFullyConverted().getUnspecifiedType() instanceof PointerType
+      or
+      exists(ReferenceType referenceType |
+        referenceType = call.getTarget().getParameter(i).getType() and
+        not referenceType.getBaseType().isConst()
+      )
+    ) and
+    argument.getAChild*().(VariableAccess).getTarget() = v
+  )
   or
   n.(Assignment).getLValue().(VariableAccess).getTarget() = v
   or
