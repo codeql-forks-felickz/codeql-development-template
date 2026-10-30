@@ -44,6 +44,18 @@ public class ServletCookies {
     response.addHeader("Set-Cookie", "SESSION=" + sessionId + ";secure"); // GOOD
   }
 
+  public void goodRawHeaderSecureFragment(HttpServletResponse response, String sessionId) {
+    response.addHeader("Set-Cookie", "SESSION=" + sessionId + "; " + "Secure"); // GOOD
+  }
+
+  public void badRawHeaderSecureName(HttpServletResponse response, String sessionId) {
+    response.addHeader("Set-Cookie", "secure=" + sessionId + "; Path=/"); // BAD
+  }
+
+  public void badRawHeaderSecurePath(HttpServletResponse response, String sessionId) {
+    response.addHeader("Set-Cookie", "SESSION=" + sessionId + "; Path=/secure"); // BAD
+  }
+
   public void goodRawHeaderUnknown(HttpServletResponse response, String headerValue) {
     response.addHeader("Set-Cookie", headerValue); // GOOD: value not built here
   }

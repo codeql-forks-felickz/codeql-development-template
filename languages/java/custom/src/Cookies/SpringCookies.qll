@@ -245,7 +245,10 @@ private module RawCookieStringFlow = TaintTracking::Global<RawCookieStringConfig
 /** A taint-tracking configuration for string constants containing the `Secure` attribute. */
 private module RawSecureAttributeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.asExpr().(CompileTimeConstantExpr).getStringValue().regexpMatch("(?is).*\\bsecure\\b.*")
+    source.asExpr()
+        .(CompileTimeConstantExpr)
+        .getStringValue()
+        .regexpMatch("(?is).*(?:^|;)\\s*secure\\s*(?:;|$).*")
   }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SetCookieHeaderValue }

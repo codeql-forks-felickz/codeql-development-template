@@ -18,7 +18,7 @@ import semmle.code.configfiles.ConfigFiles
 /** A Spring Boot `application.properties` (or profile-specific `application-*.properties`) file. */
 class SpringBootApplicationPropertiesFile extends PropertiesFile {
   SpringBootApplicationPropertiesFile() {
-    this.getBaseName().regexpMatch("application(-[^.]+)?\\.properties")
+    this.getBaseName().regexpMatch("application(-.+)?\\.properties")
   }
 }
 
