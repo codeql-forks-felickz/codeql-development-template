@@ -1,6 +1,0 @@
-| Controllers.cs:17:21:17:26 | Create | Controllers.cs:16:10:16:17 | [HttpPost(...)] | HttpPostAttribute | System.Web.Mvc |
-| Controllers.cs:23:21:23:29 | Protected | Controllers.cs:22:21:22:28 | [HttpPost(...)] | HttpPostAttribute | System.Web.Mvc |
-| Controllers.cs:29:21:29:47 | HasUnregisteredFilterObject | Controllers.cs:28:10:28:17 | [HttpPost(...)] | HttpPostAttribute | System.Web.Mvc |
-| Controllers.cs:39:21:39:26 | Create | Controllers.cs:38:10:38:20 | [HttpPost(...)] | HttpPostAttribute | System.Web.Http |
-| Controllers.cs:45:21:45:29 | Protected | Controllers.cs:44:24:44:34 | [HttpPost(...)] | HttpPostAttribute | System.Web.Http |
-| Controllers.cs:54:21:54:26 | Delete | Controllers.cs:53:10:53:17 | [HttpPost(...)] | HttpPostAttribute | System.Web.Mvc |
