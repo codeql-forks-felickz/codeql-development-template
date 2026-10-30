@@ -73,7 +73,7 @@ void checked_fields(FILE *fp) {
 void bounded_by_remainder(FILE *fp) {
   struct Image img;
   fread(&img, sizeof(img), 1, fp);
-  char *buf = (char *)malloc((img.width + img.height) % 4096);
+  char *buf = (char *)malloc(((size_t)img.width + (size_t)img.height) % 4096);
   free(buf);
 }
 
