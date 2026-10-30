@@ -1,0 +1,1 @@
+semmle-extractor-options: /r:System.Collections.Specialized.dll /r:System.Data.Common.dll /r:System.ComponentModel.Primitives.dll
