@@ -20,8 +20,9 @@ define([
         },
 
         render: function () {
-            var t = _.template(this.template || AdminTemplate);
+            var t = _.template(this.template);
             this.$el.html(t({ users: this.collection.toJSON() })); // $ Source[js/underscore-template-xss]
+            this.$el.append(_.template(this.unrelatedTemplate)({ users: this.collection.toJSON() }));
             return this;
         }
     });

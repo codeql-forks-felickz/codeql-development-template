@@ -12,5 +12,12 @@ class DashboardController < ApplicationController
 
     # Cookie only ever set to a constant value: not attacker controlled.
     cookies[:theme] = "dark"
+
+    cookies.signed[:signature] = params[:signature] # $ Source[rb/cookie-stored-xss]
+    cookies.encrypted[:cipher] = params[:cipher] # $ Source[rb/cookie-stored-xss]
+    cookies[:mismatch] = params[:mismatch]
+
+    # Only the cookie value is serialized; cookie options are not.
+    cookies[:option] = { value: "16px", path: params[:path] }
   end
 end

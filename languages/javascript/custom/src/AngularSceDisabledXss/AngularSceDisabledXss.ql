@@ -36,6 +36,17 @@ DataFlow::CallNode angularHttpRequest() {
   )
 }
 
+/** Gets a promise that preserves the rejection from an AngularJS `$http` request. */
+DataFlow::CallNode angularHttpRequestPromise() {
+  result = angularHttpRequest()
+  or
+  exists(DataFlow::CallNode promise |
+    promise = angularHttpRequestPromise() and
+    result = promise.getAMethodCall("then") and
+    not exists(result.getArgument(1))
+  )
+}
+
 /**
  * The data of a response to an AngularJS `$http` request, for example
  * `response.data` in `$http.get(url).then(function (response) { ... })`.
@@ -53,7 +64,10 @@ class AngularHttpResponseData extends DataFlow::Node {
       )
       or
       this =
-        request.getAMethodCall("catch").getABoundCallbackParameter(0, 0).getAPropertyRead("data")
+        any(angularHttpRequestPromise())
+            .getAMethodCall("catch")
+            .getABoundCallbackParameter(0, 0)
+            .getAPropertyRead("data")
       or
       // Legacy `HttpPromise` callbacks (removed in AngularJS 1.6).
       this = request.getAMethodCall(["success", "error"]).getABoundCallbackParameter(0, 0)

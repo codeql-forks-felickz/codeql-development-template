@@ -22,6 +22,11 @@ end
     body { font-family:<%= raw sanitize(cookies[:font]) %>;}
     <%# Direct reflected XSS is left to rb/reflected-xss: not reported here. %>
     body { line-height:<%= raw params[:font] %>;}
+    body { font-weight:<%= raw cookies.signed[:signature] %>;} <%# $ Alert[rb/cookie-stored-xss] %>
+    body { border-width:<%= raw cookies.encrypted[:cipher] %>;} <%# $ Alert[rb/cookie-stored-xss] %>
+    <%# Incompatible cookie jars and tainted options do not contribute cookie values. %>
+    body { outline-width:<%= raw cookies.signed[:mismatch] %>;}
+    body { outline-style:<%= raw cookies[:option] %>;}
   </style>
 </head>
 <body>

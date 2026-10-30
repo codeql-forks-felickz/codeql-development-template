@@ -13,6 +13,8 @@
   <div ng-bind-html="profile_bio"></div>
   <div data-ng-bind-html="legacy_html"></div>
   <div ng-bind-html="location_message"></div>
+  <div ng-bind-html="chain_response"></div>
+  <div ng-bind-html="unrelated_response"></div>
 
   <!-- Safe: text binding, sanitized value, constant value. -->
   <span ng-bind="search_text"></span>
@@ -34,7 +36,21 @@
             $scope.search_response = response.data; // $ Alert[js/angular/sce-disabled-xss]
             $scope.sanitized_response = $sanitize(response.data); // OK - sanitized
           });
+
+        $http.get('/search-chain/').then(function success(response) {
+          return response.data;
+        }).catch(function error(response) {
+          $scope.chain_response = response.data; // $ Alert[js/angular/sce-disabled-xss]
+        });
       };
+
+      $http.get('/search-handled/').then(function () {
+        return 'safe';
+      }, function () {
+        return 'safe';
+      }).catch(function (response) {
+        $scope.unrelated_response = response.data; // A prior rejection handler handles the request error.
+      });
 
       $http({ method: 'GET', url: '/api/user_info' }).then(function (resp) {
         $scope.profile_bio = resp.data.bio; // $ Alert[js/angular/sce-disabled-xss]

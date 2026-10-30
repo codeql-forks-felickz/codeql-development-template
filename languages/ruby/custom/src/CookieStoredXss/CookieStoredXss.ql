@@ -30,13 +30,38 @@ DataFlow::LocalSourceNode cookieJar() {
   result = cookieJar().getAMethodCall(["permanent", "signed", "encrypted"])
 }
 
+/** Gets the serialization kind of a Rails cookie jar. */
+predicate cookieJarKind(DataFlow::LocalSourceNode jar, string kind) {
+  jar.asExpr().getExpr() instanceof Rails::CookiesCall and kind = "plain"
+  or
+  exists(DataFlow::LocalSourceNode base, string baseKind |
+    jar = base.getAMethodCall("permanent") and
+    cookieJarKind(base, baseKind) and
+    kind = baseKind
+  )
+  or
+  exists(DataFlow::LocalSourceNode base |
+    jar = base.getAMethodCall("signed") and
+    cookieJarKind(base, _) and
+    kind = "signed"
+  )
+  or
+  exists(DataFlow::LocalSourceNode base |
+    jar = base.getAMethodCall("encrypted") and
+    cookieJarKind(base, _) and
+    kind = "encrypted"
+  )
+}
+
 /** A write to a cookie with a constant name, such as `cookies[:font] = value`. */
 class CookieWrite extends DataFlow::CallNode {
   string name;
+  string jarKind;
 
   CookieWrite() {
     this = cookieJar().getAMethodCall("[]=") and
-    name = this.getArgument(0).getConstantValue().getStringlikeValue()
+    name = this.getArgument(0).getConstantValue().getStringlikeValue() and
+    cookieJarKind(this.getReceiver(), jarKind)
   }
 
   /** Gets the name of the written cookie. */
@@ -44,19 +69,27 @@ class CookieWrite extends DataFlow::CallNode {
 
   /** Gets the value written to the cookie. */
   DataFlow::Node getValue() { result = this.getArgument(1) }
+
+  /** Gets the serialization kind of the jar the cookie was written to. */
+  string getCookieJarKind() { result = jarKind }
 }
 
 /** A read of a cookie with a constant name, such as `cookies[:font]`. */
 class CookieRead extends DataFlow::CallNode {
   string name;
+  string jarKind;
 
   CookieRead() {
     this = cookieJar().getAMethodCall(["[]", "fetch"]) and
-    name = this.getArgument(0).getConstantValue().getStringlikeValue()
+    name = this.getArgument(0).getConstantValue().getStringlikeValue() and
+    cookieJarKind(this.getReceiver(), jarKind)
   }
 
   /** Gets the name of the read cookie. */
   string getCookieName() { result = name }
+
+  /** Gets the serialization kind of the jar the cookie was read from. */
+  string getCookieJarKind() { result = jarKind }
 }
 
 /**
@@ -91,6 +124,7 @@ module CookieStoredXssConfig implements DataFlow::StateConfigSig {
       node1 = write.getValue() and
       node2 = read and
       write.getCookieName() = read.getCookieName() and
+      write.getCookieJarKind() = read.getCookieJarKind() and
       state1 = false and
       state2 = true
     )
@@ -98,7 +132,10 @@ module CookieStoredXssConfig implements DataFlow::StateConfigSig {
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     // `cookies[:name] = { value: params[:x], expires: ... }`
-    node = any(CookieWrite write).getValue() and c.isAnyElement()
+    node = any(CookieWrite write).getValue() and
+    exists(DataFlow::Content::KnownElementContent value |
+      c.isSingleton(value) and value.getIndex().getStringlikeValue() = "value"
+    )
   }
 }
 

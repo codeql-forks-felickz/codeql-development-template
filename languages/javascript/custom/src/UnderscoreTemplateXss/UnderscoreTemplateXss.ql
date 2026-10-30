@@ -72,10 +72,20 @@ class UnderscoreTemplateCompilation extends DataFlow::CallNode {
    * as in `define(['text!templates/x.html'], function (Tpl) { _.template(Tpl) })`.
    */
   Expr getTemplateDependency() {
-    exists(AmdModuleDefinition amd, Parameter p |
+    exists(AmdModuleDefinition amd, Parameter p, DataFlow::Node templateSource |
       amd.dependencyParameter(result, p) and
       result.getStringValue().matches("text!%") and
-      DataFlow::parameterNode(p) = this.getArgument(0).getALocalSource()
+      DataFlow::parameterNode(p) = templateSource and
+      (
+        templateSource = this.getArgument(0).getALocalSource()
+        or
+        exists(DataFlow::ObjectLiteralNode view, string prop |
+          view = backboneViewDefinition() and
+          this.getArgument(0).getALocalSource() =
+            getAMethodOf(view).getReceiver().getAPropertyRead(prop) and
+          templateSource = view.getAPropertyWrite(prop).getRhs().getALocalSource()
+        )
+      )
     )
   }
 }
