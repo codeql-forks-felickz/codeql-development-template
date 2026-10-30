@@ -1,0 +1,2 @@
+query: MissingAuthorizationRequestHandler/MissingAuthorizationRequestHandler.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
