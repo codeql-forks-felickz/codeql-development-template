@@ -41,6 +41,24 @@ DataFlow::Node databaseResult(DatabaseAccess access) {
   )
 }
 
+/** Holds if `prop` is excluded by an explicit MongoDB projection. */
+predicate isExcludedByProjection(DatabaseAccess access, string prop) {
+  exists(
+    DataFlow::CallNode call, DataFlow::Node projectionValue, DataFlow::ObjectLiteralNode projection,
+    DataFlow::Node projectedValue
+  |
+    call = access and
+    (
+      projectionValue = call.getOptionArgument(_, "projection")
+      or
+      projectionValue = call.getArgument(1)
+    ) and
+    projection = projectionValue.getALocalSource() and
+    projection.hasPropertyWrite(prop, projectedValue) and
+    projectedValue.getIntValue() = 0
+  )
+}
+
 /**
  * A database record that is known to contain a credential, either because the
  * query that fetched it filters on a credential field, or because a credential
@@ -55,15 +73,32 @@ class CredentialRecord extends DataFlow::Node {
             .getALocalSource()
             .(DataFlow::ObjectLiteralNode)
             .hasPropertyWrite(prop, _) and
-        isCredentialName(prop)
+        isCredentialName(prop) and
+        not isExcludedByProjection(access, prop)
       )
       or
       exists(DataFlow::PropRead read |
         DataFlow::localFlowStep*(this, read.getBase()) and
-        isCredentialName(read.getPropertyName())
+        isCredentialName(read.getPropertyName()) and
+        not isExcludedByProjection(access, read.getPropertyName())
       )
     )
   }
+}
+
+/** Holds if `pattern` removes a credential-named property, including nested patterns. */
+predicate removesCredential(ObjectPattern pattern) {
+  exists(PropertyPattern property |
+    property = pattern.getAPropertyPattern() and
+    (
+      isCredentialName(property.getName())
+      or
+      exists(ObjectPattern nested |
+        nested = property.getValuePattern() and
+        removesCredential(nested)
+      )
+    )
+  )
 }
 
 module SensitiveDataInJwtPayloadConfig implements DataFlow::ConfigSig {
@@ -75,23 +110,49 @@ module SensitiveDataInJwtPayloadConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink = jwtPayload() }
 
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(
+      ObjectPattern pattern, VariableDeclarator decl, DataFlow::ObjectLiteralNode object, Expr init,
+      string prop
+    |
+      decl.getBindingPattern() = pattern and
+      init = decl.getInit() and
+      object = DataFlow::valueNode(init).getALocalSource() and
+      object.hasPropertyWrite(prop, pred) and
+      not exists(PropertyPattern removed |
+        removed = pattern.getAPropertyPattern() and removed.getName() = prop
+      ) and
+      succ = DataFlow::lvalueNode(pattern.getRest())
+    )
+  }
+
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet contents) {
     // Every property of a signed payload object ends up in the token.
     isSink(node) and contents = DataFlow::ContentSet::anyProperty()
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    // Reading a non-credential field (e.g. `user.email`) does not expose the credential.
-    exists(string prop | prop = node.(DataFlow::PropRead).getPropertyName() |
-      not isCredentialName(prop)
+    // Reading a non-credential leaf field (e.g. `user.email`) does not expose the credential.
+    exists(DataFlow::PropRead read, DatabaseAccess access |
+      read = node and
+      not isCredentialName(read.getPropertyName()) and
+      DataFlow::localFlowStep*(databaseResult(access), read.getBase()) and
+      not exists(DataFlow::PropRead nested |
+        DataFlow::localFlowStep*(read, nested.getBase()) and
+        isCredentialName(nested.getPropertyName())
+      )
     )
     or
     node instanceof ProtectCall
     or
-    // The rest of an object after a credential field has been destructured out, as in
-    // `const { password, ...profile } = user`.
-    exists(ObjectPattern pattern |
-      isCredentialName(pattern.getAPropertyPattern().getName()) and
+    // The rest of a database record after a credential-containing field is removed.
+    exists(ObjectPattern pattern, VariableDeclarator decl, DatabaseAccess access |
+      decl.getBindingPattern() = pattern and
+      exists(Expr init |
+        init = decl.getInit() and
+        DataFlow::localFlowStep*(databaseResult(access), DataFlow::valueNode(init))
+      ) and
+      removesCredential(pattern) and
       node = DataFlow::lvalueNode(pattern.getRest())
     )
   }

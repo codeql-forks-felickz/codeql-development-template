@@ -61,9 +61,57 @@ async function loginWithoutPassword(req, res) {
   res.json({ token: jwt.sign({ profile }, JWT_SECRET) });
 }
 
+// Safe: removing a nested credential-containing field also removes it from the rest object.
+async function loginWithoutNestedPassword(req, res) {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user || !(await bcrypt.compare(req.body.password, user.auth.password))) {
+    return res.sendStatus(401);
+  }
+  const {
+    auth: { password },
+    ...profile
+  } = user;
+  res.json({ token: jwt.sign({ profile }, JWT_SECRET) });
+}
+
+// A credential read remains sensitive when it is accessed through a benign wrapper property.
+function signWrappedPassword(req, res) {
+  const box = { value: req.body.password }; // $ Source
+  res.json({ token: jwt.sign({ claim: box.value }, JWT_SECRET) }); // $ Alert
+}
+
+// A credential record remains sensitive when it is accessed through a wrapper property.
+async function signWrappedRecord(req, res) {
+  const user = await User.findOne({ email: req.body.email }); // $ Source
+  if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+    return res.sendStatus(401);
+  }
+  const box = { value: user };
+  res.json({ token: jwt.sign({ claim: box.value }, JWT_SECRET) }); // $ Alert
+}
+
+// A retained credential field remains sensitive after another field is destructured out.
+function signRetainedPassword(req, res) {
+  const user = { password: req.body.password, backup: req.body.password }; // $ Source
+  const { password, ...profile } = user;
+  res.json({ token: jwt.sign(profile, JWT_SECRET) }); // $ Alert
+}
+
 // Safe: the password is only used as the signing key argument, not in the payload.
 function signWithPassword(req, res) {
   res.json({ token: jwt.sign({ email: req.body.email }, req.body.password) });
 }
 
-module.exports = { login, loginJwtSimple, loginJose, register, loginSafe, loginWithoutPassword, signWithPassword };
+module.exports = {
+  login,
+  loginJwtSimple,
+  loginJose,
+  register,
+  loginSafe,
+  loginWithoutPassword,
+  loginWithoutNestedPassword,
+  signWrappedPassword,
+  signWrappedRecord,
+  signRetainedPassword,
+  signWithPassword,
+};
