@@ -1,6 +1,6 @@
 Host names returned by a reverse DNS lookup of an IP address are controlled by whoever controls the DNS (PTR) records for that address. An attacker can make their own IP address resolve to a trusted host name, so a condition that compares a reverse DNS host name with an expected value must not decide whether a sensitive action (such as logging a user in) is performed.
 
-This query extends `cs/user-controlled-bypass` with reverse DNS sources it does not model: `Dns.GetHostEntry(IPAddress)` and `Dns.GetHostEntryAsync(IPAddress)` (as well as `Dns.GetHostByAddress`). It also follows comparisons of the host name against non-constant values, such as a configured host name.
+This query extends `cs/user-controlled-bypass` with reverse DNS sources it does not model: `Dns.GetHostEntry(IPAddress)` and `Dns.GetHostEntryAsync(IPAddress)`. It also models `Dns.GetHostByAddress`, which overlaps with the stock query for constant comparisons, and follows comparisons of the host name against non-constant values, such as a configured host name.
 
 ## Recommendation
 

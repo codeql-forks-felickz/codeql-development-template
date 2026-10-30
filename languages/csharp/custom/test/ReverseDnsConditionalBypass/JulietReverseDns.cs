@@ -6,7 +6,7 @@ public class JulietReverseDns
 {
     public void Bad()
     {
-        string secretHostname = "www.domain.nonexistanttld";
+        string secretHostname = "www.domain.nonexistenttld";
         IPAddress hostIPAddress = IPAddress.Parse("127.0.0.1");
         IPHostEntry hostInfo = Dns.GetHostEntry(hostIPAddress);
         // The guarded action only prints a message, which is not modeled as a sensitive
@@ -20,7 +20,7 @@ public class JulietReverseDns
     // Same source, but the guarded action is an authorization method.
     public void BadWithAuthorize(string user)
     {
-        string secretHostname = "www.domain.nonexistanttld";
+        string secretHostname = "www.domain.nonexistenttld";
         IPAddress hostIPAddress = IPAddress.Parse("127.0.0.1");
         IPHostEntry hostInfo = Dns.GetHostEntry(hostIPAddress); // $ Source=j1
         if (hostInfo.HostName.Equals(secretHostname)) // $ Alert=j1
@@ -31,7 +31,7 @@ public class JulietReverseDns
 
     public void Good()
     {
-        string secretHostname = "www.domain.nonexistanttld";
+        string secretHostname = "www.domain.nonexistenttld";
         IPAddress hostIPAddress = IPAddress.Parse("127.0.0.1");
         IPHostEntry hostInfo = Dns.GetHostEntry(hostIPAddress);
         if (hostInfo.HostName.Equals(secretHostname))

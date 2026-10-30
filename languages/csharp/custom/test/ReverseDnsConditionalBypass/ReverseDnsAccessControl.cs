@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 public class ReverseDnsAccessControl
 {
-    private const string TrustedHost = "www.domain.nonexistanttld";
+    private const string TrustedHost = "www.domain.nonexistenttld";
 
     // BAD: reverse DNS of the peer address (GetHostEntry(IPAddress)) decides whether to log in.
     public void GetHostEntryBad(IPAddress peer, string user, string password)
@@ -21,7 +21,7 @@ public class ReverseDnsAccessControl
     {
         IPAddress peer = IPAddress.Parse("127.0.0.1");
         IPHostEntry hostInfo = Dns.GetHostEntry(peer); // $ Source=r2
-        if (hostInfo.HostName.EndsWith(".nonexistanttld")) // $ Alert=r2
+        if (hostInfo.HostName.EndsWith(".nonexistenttld")) // $ Alert=r2
         {
             Login(user, password);
         }

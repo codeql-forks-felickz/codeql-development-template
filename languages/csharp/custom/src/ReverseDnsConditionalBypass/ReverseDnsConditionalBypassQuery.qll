@@ -4,7 +4,8 @@
  *
  * This reuses the sinks and sanitizers of `cs/user-controlled-bypass`, but adds reverse DNS
  * sources that are not modeled there (`Dns.GetHostEntry(IPAddress)` and
- * `Dns.GetHostEntryAsync(IPAddress)`).
+ * `Dns.GetHostEntryAsync(IPAddress)`). It also includes `Dns.GetHostByAddress`, whose constant
+ * comparison coverage overlaps with the stock query, to detect non-constant host-name comparisons.
  */
 
 import csharp
