@@ -4,12 +4,16 @@
 | main.go:58:49:58:62 | selection of RefreshToken | main.go:58:49:58:62 | selection of RefreshToken | main.go:58:49:58:62 | selection of RefreshToken | $@ flows to a logging call. | main.go:58:49:58:62 | selection of RefreshToken | An authentication token from an access to RefreshToken |
 | main.go:81:30:81:37 | fakeUser | main.go:80:2:80:33 | extract:0 ... := ... | main.go:81:30:81:37 | fakeUser | $@ flows to a logging call. | main.go:80:2:80:33 | extract:0 ... := ... | An authentication token from a call to CreateFakeToken |
 | main.go:85:12:85:17 | minted | main.go:50:2:50:27 | extract:0 return statement | main.go:85:12:85:17 | minted | $@ flows to a logging call. | main.go:50:2:50:27 | extract:0 return statement | An authentication token from a signed JWT |
+| sanitized.go:9:12:9:22 | accessToken | sanitized.go:8:33:8:43 | SSA def(accessToken) | sanitized.go:9:12:9:22 | accessToken | $@ flows to a logging call. | sanitized.go:8:33:8:43 | SSA def(accessToken) | An authentication token from an access to accessToken |
+| sanitized.go:26:12:26:22 | accessToken | sanitized.go:25:23:25:33 | SSA def(accessToken) | sanitized.go:26:12:26:22 | accessToken | $@ flows to a logging call. | sanitized.go:25:23:25:33 | SSA def(accessToken) | An authentication token from an access to accessToken |
 edges
 | main.go:42:2:42:35 | extract:0 ... := ... | main.go:43:28:43:33 | signed | provenance |  |
 | main.go:50:2:50:27 | extract:0 return statement | main.go:84:2:84:31 | extract:0 ... := ... | provenance |  |
 | main.go:53:24:53:34 | SSA def(accessToken) | main.go:54:40:54:50 | accessToken | provenance |  |
 | main.go:80:2:80:33 | extract:0 ... := ... | main.go:81:30:81:37 | fakeUser | provenance |  |
 | main.go:84:2:84:31 | extract:0 ... := ... | main.go:85:12:85:17 | minted | provenance |  |
+| sanitized.go:8:33:8:43 | SSA def(accessToken) | sanitized.go:9:12:9:22 | accessToken | provenance |  |
+| sanitized.go:25:23:25:33 | SSA def(accessToken) | sanitized.go:26:12:26:22 | accessToken | provenance |  |
 nodes
 | main.go:42:2:42:35 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
 | main.go:43:28:43:33 | signed | semmle.label | signed |
@@ -21,4 +25,8 @@ nodes
 | main.go:81:30:81:37 | fakeUser | semmle.label | fakeUser |
 | main.go:84:2:84:31 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
 | main.go:85:12:85:17 | minted | semmle.label | minted |
+| sanitized.go:8:33:8:43 | SSA def(accessToken) | semmle.label | SSA def(accessToken) |
+| sanitized.go:9:12:9:22 | accessToken | semmle.label | accessToken |
+| sanitized.go:25:23:25:33 | SSA def(accessToken) | semmle.label | SSA def(accessToken) |
+| sanitized.go:26:12:26:22 | accessToken | semmle.label | accessToken |
 subpaths

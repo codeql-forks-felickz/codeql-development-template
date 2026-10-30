@@ -17,6 +17,12 @@ headers and Kubernetes secrets as sensitive. This query additionally treats the 
 <code>github.com/dgrijalva/jwt-go</code>) and string values whose names indicate a credential token
 as sensitive.
 </p>
+<h2>Known limitations</h2>
+<p>
+Sanitized provenance is limited to local taint steps modeled by the Go library. In particular,
+<code>encoding/hex.EncodeToString</code> has no such summary, so assigning its result to a token-named
+variable can still produce an alert even when the encoded value is a hash.
+</p>
 </overview>
 
 <recommendation>

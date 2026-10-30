@@ -93,7 +93,14 @@ module CleartextTokenLogging {
       isTokenName(name) and
       isStringLike(this.getType()) and
       (
-        this.(DataFlow::SsaNode).getSourceVariable().getName() = name
+        this.(DataFlow::SsaNode).getSourceVariable().getName() = name and
+        not exists(DataFlow::Node sanitized | TaintTracking::localTaint(sanitized, this) |
+          sanitized instanceof CryptoBarrier
+          or
+          exists(DataFlow::CallNode c | sanitized = c.getResult(_) |
+            c.getCalleeName().regexpMatch("(?i).*(hash|digest|redact|mask).*")
+          )
+        )
         or
         this.(DataFlow::FieldReadNode).getFieldName() = name
       )
