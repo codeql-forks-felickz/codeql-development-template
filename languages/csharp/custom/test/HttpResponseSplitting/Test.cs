@@ -52,6 +52,29 @@ namespace Test
             Response.AddHeader("X-Value", HttpUtility.HtmlEncode(v)); // $ Alert[cs/web/http-response-splitting]
         }
 
+        protected void AliasedHeaders(HttpRequest request, HttpResponseBase response)
+        {
+            string v = request.QueryString["v"]; // $ Source[cs/web/http-response-splitting]
+            var headers = response.Headers;
+            headers.Add("X-Add", v); // $ Alert[cs/web/http-response-splitting]
+            headers.Set("X-Set", v); // $ Alert[cs/web/http-response-splitting]
+            headers["X-Indexer"] = v; // $ Alert[cs/web/http-response-splitting]
+
+            var unrelated = new System.Collections.Specialized.NameValueCollection();
+            unrelated.Add("X-Add", v);
+            unrelated.Set("X-Set", v);
+            unrelated["X-Indexer"] = v;
+        }
+
+        protected void IncompleteNewLineReplacement(HttpRequest request, HttpResponse response)
+        {
+            string v = request.QueryString["v"]; // $ Source[cs/web/http-response-splitting]
+            response.AddHeader("X-LfOnly", v.Replace("\n", "")); // $ Alert[cs/web/http-response-splitting]
+            response.AddHeader("X-CrLfPair", v.Replace("\r\n", "")); // $ Alert[cs/web/http-response-splitting]
+            response.AddHeader("X-ReintroducedLf", v.Replace("\r", "\n")); // $ Alert[cs/web/http-response-splitting]
+            response.AddHeader("X-ReintroducedCr", v.Replace("\n", "\r\n")); // $ Alert[cs/web/http-response-splitting]
+        }
+
         private static string StripNewLines(string s) => s.Replace("\n", string.Empty).Replace("\r", string.Empty);
     }
 

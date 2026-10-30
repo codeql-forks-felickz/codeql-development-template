@@ -49,14 +49,18 @@ private class ResponseHeadersAccess extends PropertyAccess {
 private class ResponseHeadersWriteSink extends HttpResponseSplittingSink {
   ResponseHeadersWriteSink() {
     exists(MethodCall mc |
-      mc.getQualifier() instanceof ResponseHeadersAccess and
+      exists(ResponseHeadersAccess headers |
+        DataFlow::localExprFlow(headers, mc.getQualifier())
+      ) and
       mc.getTarget().hasName(["Add", "Set"]) and
       this.getExpr() = mc.getArgument(1)
     )
     or
     exists(AssignExpr ae, IndexerAccess ia |
       ia = ae.getLValue() and
-      ia.getQualifier() instanceof ResponseHeadersAccess and
+      exists(ResponseHeadersAccess headers |
+        DataFlow::localExprFlow(headers, ia.getQualifier())
+      ) and
       this.getExpr() = ae.getRValue()
     )
   }
@@ -93,16 +97,43 @@ private class UrlEncodeSanitizer extends HttpResponseSplittingSanitizer {
  */
 private class NewLineReplaceSanitizer extends HttpResponseSplittingSanitizer {
   NewLineReplaceSanitizer() {
-    exists(MethodCall mc, string old |
+    exists(MethodCall mc, MethodCall previous, string old, string previousOld |
       mc = this.getExpr() and
       mc.getTarget().hasFullyQualifiedName("System", "String", "Replace") and
       (
         old = mc.getArgument(0).(StringLiteral).getValue() or
         old = mc.getArgument(0).(CharLiteral).getValue()
       ) and
-      old.regexpMatch("(?s).*[\\r\\n].*")
+      (old = "\r" or old = "\n") and
+      isNewlineFreeReplacement(mc.getArgument(1)) and
+      previous = mc.getQualifier() and
+      previous.getTarget().hasFullyQualifiedName("System", "String", "Replace") and
+      (
+        previousOld = previous.getArgument(0).(StringLiteral).getValue() or
+        previousOld = previous.getArgument(0).(CharLiteral).getValue()
+      ) and
+      (previousOld = "\r" or previousOld = "\n") and
+      old != previousOld and
+      isNewlineFreeReplacement(previous.getArgument(1))
     )
   }
+}
+
+private predicate isNewlineFreeReplacement(Expr replacement) {
+  exists(string value |
+    (
+      value = replacement.(StringLiteral).getValue() or
+      value = replacement.(CharLiteral).getValue()
+    ) and
+    not value.regexpMatch("(?s).*[\\r\\n].*")
+  )
+  or replacement.getValue() = ""
+  or
+  exists(FieldAccess fa |
+    fa = replacement and
+    fa.getTarget().hasName("Empty") and
+    fa.getTarget().getDeclaringType().hasFullyQualifiedName("System", "String")
+  )
 }
 
 /**

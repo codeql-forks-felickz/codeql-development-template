@@ -18,7 +18,15 @@ class ContentResultClass extends Class {
  * (for example `text/html` or `application/xhtml+xml`).
  */
 bindingset[e]
-predicate isHtmlContentType(Expr e) { e.getValue().toLowerCase().matches("%html%") }
+predicate isHtmlContentType(Expr e) {
+  exists(string value |
+    value = e.getValue().toLowerCase() and
+    (
+      value = "text/html" or value.matches("text/html;%") or
+      value = "application/xhtml+xml" or value.matches("application/xhtml+xml;%")
+    )
+  )
+}
 
 /** An assignment to the property `name` of a `ContentResult`. */
 private class ContentResultPropertyAssignment extends AssignExpr {
@@ -44,6 +52,14 @@ private class ContentResultPropertyAssignment extends AssignExpr {
     not this.getParent() instanceof ObjectInitializer and
     result = this.getLValue().(PropertyAccess).getQualifier().(VariableAccess).getTarget()
   }
+
+  /** Gets an expression identifying the value of the `ContentResult` object. */
+  Expr getTargetValue() {
+    result = this.getParent().(ObjectInitializer).getParent().(ObjectCreation)
+    or
+    not this.getParent() instanceof ObjectInitializer and
+    result = this.getLValue().(PropertyAccess).getQualifier()
+  }
 }
 
 /** A data flow sink for `ContentResult` XSS vulnerabilities. */
@@ -58,7 +74,11 @@ private class ContentPropertySink extends ContentResultXssSink {
     exists(ContentResultPropertyAssignment content, ContentResultPropertyAssignment contentType |
       content.getPropertyName() = "Content" and
       contentType.getPropertyName() = "ContentType" and
-      content.getTargetObject() = contentType.getTargetObject() and
+      (
+        content.getTargetObject() = contentType.getTargetObject() or
+        DataFlow::localExprFlow(content.getTargetValue(), contentType.getTargetValue()) or
+        DataFlow::localExprFlow(contentType.getTargetValue(), content.getTargetValue())
+      ) and
       isHtmlContentType(contentType.getRValue()) and
       this.getExpr() = content.getRValue()
     )

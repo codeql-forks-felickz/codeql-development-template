@@ -8,6 +8,10 @@ ASP.NET encodes CR/LF characters in header values by default, but applications t
 
 When the project's `Web.config` sets `enableHeaderChecking="false"`, or code sets `HttpRuntimeSection.EnableHeaderChecking` to `false`, the alert message says so, because ASP.NET's built-in CR/LF encoding is then switched off and the flow is directly exploitable.
 
+## Known limitations
+
+The query recognizes two adjacent `string.Replace` calls that remove `\r` and `\n` using literal search values and replacement values that contain neither character (including `string.Empty`). Other replacement expressions or transformations separated by other operations are not recognized as sanitizers and may be reported.
+
 ## Recommendation
 
 Do not place untrusted data in response headers. If you must, URL-encode it (for example with `HttpUtility.UrlEncode`) or remove all `\r` and `\n` characters first. Note that HTML encoding does **not** remove these characters. Keep `enableHeaderChecking` enabled.
