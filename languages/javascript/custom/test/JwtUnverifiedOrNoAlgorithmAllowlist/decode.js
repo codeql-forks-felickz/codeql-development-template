@@ -41,6 +41,24 @@ app.get("/verified2", (req, res) => {
   res.send(claims.username);
 });
 
+function decodeAfterVerification(token) {
+  jwt.verify(token, secret, { algorithms: ["HS256"] });
+  return jwt.decode(token);
+}
+
+app.get("/verified-wrapper", (req, res) => {
+  const claims = decodeAfterVerification(req.query.token); // $ MISSING: Alert
+  res.send(claims.username);
+});
+
+app.get("/verified-manual", (req, res) => {
+  const token = req.get("Authorization");
+  jwt.verify(token, secret, { algorithms: ["HS256"] });
+  const parts = token.split(".");
+  const payload = JSON.parse(Buffer.from(parts[1], "base64url").toString()); // $ MISSING: Alert
+  res.send(payload.sub);
+});
+
 // GOOD: decoding a token that is not attacker-controlled
 const ownToken = jwt.sign({ sub: "service" }, secret, { algorithm: "HS256" });
 console.log(jwt.decode(ownToken).sub);

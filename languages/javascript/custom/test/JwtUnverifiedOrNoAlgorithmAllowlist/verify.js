@@ -15,8 +15,8 @@ const hmacSecret = process.env.JWT_SECRET;
 // BAD: public key without an algorithm allowlist (RS/HS confusion)
 app.use(expressJwt({ secret: publicKey })); // $ Alert
 
-// BAD: v7+ API, public key without an algorithm allowlist
-app.use(expressjwt({ secret: rsaCert, credentialsRequired: true })); // $ Alert
+// GOOD: the named v7+ API requires an algorithm allowlist
+app.use(expressjwt({ secret: rsaCert, credentialsRequired: true })); // $ MISSING: Alert
 
 // GOOD: algorithm allowlist present
 app.use(expressJwt({ secret: publicKey, algorithms: ["RS256"] }));
@@ -26,14 +26,20 @@ app.use(expressjwt({ secret: rsaCert, algorithms: ["RS256"] }));
 app.use(expressJwt({ secret: hmacSecret }));
 
 app.get("/a", (req, res) => {
-  // BAD: public key and no options
-  const claims = jwt.verify(req.query.token, publicKey); // $ Alert
+  // Not reported: jsonwebtoken's version cannot be determined
+  const claims = jwt.verify(req.query.token, publicKey); // $ MISSING: Alert
   res.send(claims.sub);
 });
 
 app.get("/b", (req, res) => {
-  // BAD: options without `algorithms`
-  const claims = jwt.verify(req.query.token, publicKey, { issuer: "me" }); // $ Alert
+  // Not reported: jsonwebtoken's version cannot be determined
+  const claims = jwt.verify(req.query.token, publicKey, { issuer: "me" }); // $ MISSING: Alert
+  res.send(claims.sub);
+});
+
+app.get("/pem-key", (req, res) => {
+  // Not reported: modern jsonwebtoken versions reject asymmetric-key algorithm confusion
+  const claims = jwt.verify(req.query.token, rsaCert); // $ MISSING: Alert
   res.send(claims.sub);
 });
 

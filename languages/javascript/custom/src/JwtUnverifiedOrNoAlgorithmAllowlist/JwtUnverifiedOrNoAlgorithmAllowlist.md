@@ -3,7 +3,7 @@
 A JSON Web Token (JWT) only proves who sent a request after its signature has been checked. This query flags two common mistakes:
 
 1. **Unverified decoding (CWE-347).** The caller identity comes from a token that was decoded but never verified. Examples include `jsonwebtoken.decode`, `jwt-decode`, `jws.decode`, `jose.decodeJwt`, and manually base64(url)-decoding the payload segment (`token.split(".")[1]`). Calls to local wrapper functions around these APIs (for example `const decode = (t) => jws.decode(t)?.payload`) are reported at the wrapper call site. An attacker can then send a token with any claims they like. In addition to standard request sources, cookies and headers read through Next.js `cookies()`/`headers()` (`next/headers`) and `req.cookies.get(..)` in Next.js middleware and route handlers are treated as user-controlled.
-2. **No algorithm allowlist (CWE-327).** A token is verified with an asymmetric public key, but no `algorithms` allowlist is set. This applies to `express-jwt`, `koa-jwt`, `jsonwebtoken.verify`, the two-argument form of `jws.verify`, and `jwt-simple`'s `decode(token, key)` when no algorithm argument is passed. Without the allowlist, the library may accept the algorithm named in the token header. If an attacker switches the header to `HS256`, the public key (which is not secret) is used as the HMAC secret, so the attacker can forge valid tokens. This is known as RS/HS algorithm confusion.
+2. **No algorithm allowlist (CWE-327).** A token is verified with an asymmetric public key, but no `algorithms` allowlist is set. This applies to `express-jwt`, `koa-jwt`, the two-argument form of `jws.verify`, and `jwt-simple`'s `decode(token, key)` when no algorithm argument is passed. Without the allowlist, the library may accept the algorithm named in the token header. If an attacker switches the header to `HS256`, the public key (which is not secret) is used as the HMAC secret, so the attacker can forge valid tokens. This is known as RS/HS algorithm confusion.
 
 ## Recommendation
 
@@ -38,9 +38,10 @@ app.get('/profile', (req, res) => {
 })
 ```
 
-## Limitations
+## Known limitations
 
 - A decode is treated as verified if, in the same function, the same token value (same local source, or the same helper called on the same value, as in `verify(jwtFrom(req)) && decode(jwtFrom(req))`) is passed to a call whose name contains `verif`. The query does not check that verification happens before decoding, or that its result is used.
+- `jsonwebtoken.verify` is not checked for a missing algorithm allowlist because the query cannot determine the installed library version, and modern versions reject asymmetric-key algorithm confusion.
 - Public keys are recognized heuristically: by variable or property name (`public`, `pubkey`, `cert`), by PEM `PUBLIC KEY`/`CERTIFICATE` literals, or by `fs.readFileSync` of a `.pub`/`.crt`/`.cer`/`public`/`cert` path.
 - The query does not check whether an API Gateway authorizer is attached to the endpoint (for example in an AWS SAM template).
 

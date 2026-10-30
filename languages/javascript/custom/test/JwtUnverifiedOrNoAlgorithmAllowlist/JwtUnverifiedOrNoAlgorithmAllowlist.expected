@@ -14,7 +14,4 @@
 | unguard/user-auth-service/routes/auth.js:23:19:23:57 | jwt.dec ... Public) | JWT is verified with a $@ but without an algorithm allowlist, allowing algorithm confusion. | unguard/user-auth-service/routes/auth.js:23:40:23:56 | jwtUtil.JwtPublic | public key |
 | unguard/user-auth-service/routes/auth.js:38:21:38:69 | jwt.dec ... , true) | JWT is decoded without signature verification; the token comes from a $@. | unguard/user-auth-service/routes/auth.js:38:32:38:39 | req.body | user-provided value |
 | verify.js:16:9:16:41 | express ... cKey }) | JWT is verified with a $@ but without an algorithm allowlist, allowing algorithm confusion. | verify.js:16:30:16:38 | publicKey | public key |
-| verify.js:19:9:19:66 | express ... true }) | JWT is verified with a $@ but without an algorithm allowlist, allowing algorithm confusion. | verify.js:19:30:19:36 | rsaCert | public key |
-| verify.js:30:18:30:55 | jwt.ver ... licKey) | JWT is verified with a $@ but without an algorithm allowlist, allowing algorithm confusion. | verify.js:30:46:30:54 | publicKey | public key |
-| verify.js:36:18:36:73 | jwt.ver ... "me" }) | JWT is verified with a $@ but without an algorithm allowlist, allowing algorithm confusion. | verify.js:36:46:36:54 | publicKey | public key |
-| verify.js:48:7:48:44 | jws.ver ... licKey) | JWT is verified with a $@ but without an algorithm allowlist, allowing algorithm confusion. | verify.js:48:35:48:43 | publicKey | public key |
+| verify.js:54:7:54:44 | jws.ver ... licKey) | JWT is verified with a $@ but without an algorithm allowlist, allowing algorithm confusion. | verify.js:54:35:54:43 | publicKey | public key |

@@ -77,6 +77,7 @@ predicate unverifiedJwtDecode(DataFlow::CallNode call, DataFlow::Node token) {
     wrapper.getFunction() = call.getACallee() and
     unverifiedJwtDecode(inner, innerToken) and
     inner.getContainer() = wrapper.getFunction() and
+    not isVerifiedLocally(inner, innerToken) and
     wrapper.getParameter(i).flowsTo(innerToken) and
     token = call.getArgument(i)
   )
@@ -131,7 +132,19 @@ predicate isVerifiedLocally(DataFlow::CallNode call, DataFlow::Node token) {
   exists(DataFlow::Node verified |
     isVerificationArgument(verified) and
     verified.getContainer() = call.getContainer() and
-    sameTokenValue(verified, token)
+    (
+      sameTokenValue(verified, token)
+      or
+      exists(DataFlow::PropRead segment, DataFlow::MethodCallNode split |
+        isBase64Decode(call) and
+        segment = token.getALocalSource() and
+        segment.getPropertyName() = "1" and
+        split = segment.getBase().getALocalSource() and
+        split.getMethodName() = "split" and
+        split.getArgument(0).mayHaveStringValue(".") and
+        sameTokenValue(verified, split.getReceiver())
+      )
+    )
   )
 }
 
@@ -215,14 +228,10 @@ predicate verifiedWithoutAlgorithmAllowlist(DataFlow::CallNode call, DataFlow::N
   (
     (
       call = DataFlow::moduleImport(["express-jwt", "koa-jwt"]).getACall() or
-      call = DataFlow::moduleMember("express-jwt", ["expressjwt", "default"]).getACall()
+      call = DataFlow::moduleMember("express-jwt", "default").getACall()
     ) and
     key = call.getOptionArgument(0, "secret") and
     lacksAlgorithmsOption(call, 0)
-    or
-    call = DataFlow::moduleMember("jsonwebtoken", "verify").getACall() and
-    key = call.getArgument(1) and
-    lacksAlgorithmsOption(call, 2)
     or
     // `jws.verify(signature, key)` trusts the `alg` header of the token,
     // whereas `jws.verify(signature, algorithm, key)` pins the algorithm.
