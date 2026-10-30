@@ -3,7 +3,9 @@
  * @description Deserializing user-controlled data may allow attackers to execute arbitrary code.
  *              Extends `py/unsafe-deserialization` with additional taint propagation through
  *              `urllib.parse.unquote_to_bytes`, which is commonly used to decode raw request
- *              query parameters before passing them to `pickle.loads`.
+ *              query parameters before passing them to `pickle.loads`, and through the
+ *              Python 2 `StringIO.StringIO` / `cStringIO.StringIO` file wrappers, which are
+ *              commonly passed to `pickle.Unpickler`.
  * @kind path-problem
  * @id py/custom/unsafe-deserialization
  * @problem.severity error
@@ -30,6 +32,21 @@ private class UnquoteToBytesTaintStep extends TaintTracking::AdditionalTaintStep
     exists(API::CallNode call |
       call = API::moduleImport("urllib").getMember("parse").getMember("unquote_to_bytes").getACall() and
       nodeFrom = call.getParameter(0, "string").asSink() and
+      nodeTo = call
+    )
+  }
+}
+
+/**
+ * A taint step through the Python 2 `StringIO.StringIO` and `cStringIO.StringIO`
+ * constructors, which wrap their (string) argument in an in-memory file object.
+ * The Python 3 `io.StringIO` / `io.BytesIO` classes are already modeled upstream.
+ */
+private class Python2StringIOTaintStep extends TaintTracking::AdditionalTaintStep {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    exists(API::CallNode call |
+      call = API::moduleImport(["StringIO", "cStringIO"]).getMember("StringIO").getACall() and
+      nodeFrom = call.getParameter(0, "buf").asSink() and
       nodeTo = call
     )
   }
