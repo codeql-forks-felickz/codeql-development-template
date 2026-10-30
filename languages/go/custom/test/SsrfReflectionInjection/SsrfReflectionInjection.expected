@@ -1,0 +1,36 @@
+#select
+| cli.go:26:42:26:45 | text | cli.go:24:28:24:35 | selection of Stdin | cli.go:26:42:26:45 | text | This template text depends on a $@. | cli.go:24:28:24:35 | selection of Stdin | user-provided value |
+| cli.go:36:48:36:51 | text | cli.go:34:28:34:35 | selection of Stdin | cli.go:36:48:36:51 | text | This template text depends on a $@. | cli.go:34:28:34:35 | selection of Stdin | user-provided value |
+| server.go:11:39:11:41 | tpl | server.go:10:9:10:13 | selection of URL | server.go:11:39:11:41 | tpl | This template text depends on a $@. | server.go:10:9:10:13 | selection of URL | user-provided value |
+| server.go:21:17:21:19 | tpl | server.go:19:17:19:34 | call to FormValue | server.go:21:17:21:19 | tpl | This template text depends on a $@. | server.go:19:17:19:34 | call to FormValue | user-provided value |
+edges
+| cli.go:24:12:24:36 | call to NewReader | cli.go:25:13:25:18 | reader | provenance |  |
+| cli.go:24:28:24:35 | selection of Stdin | cli.go:24:12:24:36 | call to NewReader | provenance | Src:MaD:2120 MaD:12 |
+| cli.go:25:2:25:35 | extract:0 ... := ... | cli.go:26:42:26:45 | text | provenance |  |
+| cli.go:25:13:25:18 | reader | cli.go:25:2:25:35 | extract:0 ... := ... | provenance | MaD:23 |
+| cli.go:34:12:34:36 | call to NewReader | cli.go:35:13:35:18 | reader | provenance |  |
+| cli.go:34:28:34:35 | selection of Stdin | cli.go:34:12:34:36 | call to NewReader | provenance | Src:MaD:2120 MaD:12 |
+| cli.go:35:2:35:35 | extract:0 ... := ... | cli.go:36:48:36:51 | text | provenance |  |
+| cli.go:35:13:35:18 | reader | cli.go:35:2:35:35 | extract:0 ... := ... | provenance | MaD:23 |
+| server.go:10:9:10:13 | selection of URL | server.go:10:9:10:21 | call to Query | provenance | Src:MaD:2006 MaD:2068 |
+| server.go:10:9:10:21 | call to Query | server.go:10:9:10:32 | call to Get | provenance | MaD:2076 |
+| server.go:10:9:10:32 | call to Get | server.go:11:39:11:41 | tpl | provenance |  |
+| server.go:19:17:19:34 | call to FormValue | server.go:21:17:21:19 | tpl | provenance | Src:MaD:1994  |
+nodes
+| cli.go:24:12:24:36 | call to NewReader | semmle.label | call to NewReader |
+| cli.go:24:28:24:35 | selection of Stdin | semmle.label | selection of Stdin |
+| cli.go:25:2:25:35 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
+| cli.go:25:13:25:18 | reader | semmle.label | reader |
+| cli.go:26:42:26:45 | text | semmle.label | text |
+| cli.go:34:12:34:36 | call to NewReader | semmle.label | call to NewReader |
+| cli.go:34:28:34:35 | selection of Stdin | semmle.label | selection of Stdin |
+| cli.go:35:2:35:35 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
+| cli.go:35:13:35:18 | reader | semmle.label | reader |
+| cli.go:36:48:36:51 | text | semmle.label | text |
+| server.go:10:9:10:13 | selection of URL | semmle.label | selection of URL |
+| server.go:10:9:10:21 | call to Query | semmle.label | call to Query |
+| server.go:10:9:10:32 | call to Get | semmle.label | call to Get |
+| server.go:11:39:11:41 | tpl | semmle.label | tpl |
+| server.go:19:17:19:34 | call to FormValue | semmle.label | call to FormValue |
+| server.go:21:17:21:19 | tpl | semmle.label | tpl |
+subpaths
