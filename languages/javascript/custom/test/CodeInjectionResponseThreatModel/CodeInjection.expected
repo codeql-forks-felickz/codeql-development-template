@@ -1,0 +1,14 @@
+edges
+| autocomplete.js:9:54:9:56 | txt | autocomplete.js:9:80:9:82 | txt | provenance |  |
+| autocomplete.js:9:80:9:82 | txt | autocomplete.js:12:32:12:35 | text | provenance |  |
+| autocomplete.js:12:32:12:35 | text | autocomplete.js:14:33:14:36 | text | provenance |  |
+| autocomplete.js:14:33:14:36 | text | autocomplete.js:14:27:14:42 | '(' + text + ')' | provenance |  |
+nodes
+| autocomplete.js:9:54:9:56 | txt | semmle.label | txt |
+| autocomplete.js:9:80:9:82 | txt | semmle.label | txt |
+| autocomplete.js:12:32:12:35 | text | semmle.label | text |
+| autocomplete.js:14:27:14:42 | '(' + text + ')' | semmle.label | '(' + text + ')' |
+| autocomplete.js:14:33:14:36 | text | semmle.label | text |
+subpaths
+#select
+| autocomplete.js:14:27:14:42 | '(' + text + ')' | autocomplete.js:9:54:9:56 | txt | autocomplete.js:14:27:14:42 | '(' + text + ')' | This code execution depends on a $@. | autocomplete.js:9:54:9:56 | txt | user-provided value |
