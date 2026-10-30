@@ -32,6 +32,18 @@ private predicate capturedDefinitionWithoutValue(NameNode def, CapturedLocalVari
   not exists(def.(DefinitionNode).getValue())
 }
 
+private predicate capturedDefinitionIsOverwritten(NameNode def, CapturedLocalVariable v, NameNode use) {
+  exists(NameNode overwrite, Function closure, DataFlow::Node closureNode |
+    overwrite.defines(v) and
+    overwrite != def and
+    closure.getEnclosingScope() = v.getScope() and
+    use.getScope().getEnclosingScope*() = closure and
+    closureNode.asCfgNode().getNode() = closure.getDefinition() and
+    def.dominates(overwrite) and
+    overwrite.dominates(closureNode.asCfgNode())
+  )
+}
+
 /**
  * A taint step from a definition of a captured variable without a directly
  * assigned value (for example a tuple-unpacking target) to the reads of that
@@ -44,6 +56,7 @@ private class CapturedUnpackedVariableStep extends TaintTracking::AdditionalTain
       nodeFrom.asCfgNode() = def and
       use.uses(v) and
       use.getScope() != v.getScope() and
+      not capturedDefinitionIsOverwritten(def, v, use) and
       nodeTo.asCfgNode() = use
     )
   }

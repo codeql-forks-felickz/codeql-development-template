@@ -34,6 +34,14 @@ class ReqHandler(http.server.BaseHTTPRequestHandler):
         run = lambda: os.system("echo " + query)  # $ Alert
         run()
 
+    def do_PATCH(self):
+        # A captured unpacked value is overwritten before the lambda is created.
+        _, query = self.path.split("?", 1)
+        print(query)
+        query = "safe"
+        run = lambda: os.system("echo " + query)
+        run()
+
     def do_DELETE(self):
         # Constant values are not user controlled.
         _, query = ("/", "safe")
