@@ -70,6 +70,12 @@ void bad_fread_record(FILE *f) {
     r.name[0] = 'x'; // $ Alert
 }
 
+void bad_recv_full_record(int sock) {
+    record r;
+    recv(sock, (char *)&r, sizeof(r), 0); // $ Source
+    r.name[0] = 'x'; // $ Alert
+}
+
 void bad_recv_pointer_variable(int sock) {
     int *target;
     recv(sock, &target, sizeof(target), 0); // $ Source
@@ -135,6 +141,38 @@ void good_pointers_reset(int sock) {
     linkedListNext = data.list.next;
     linkedListPrev->next = linkedListNext;
     linkedListNext->prev = linkedListPrev;
+}
+
+/* Both branches replace the received pointer with trusted values. */
+void good_conditional_pointer_resets(int sock, int condition) {
+    badStruct data;
+    linkedList head1 = { &head1, &head1 };
+    linkedList head2 = { &head2, &head2 };
+    recv(sock, (char *)&data, sizeof(data), 0);
+    if (condition) {
+        data.list.next = &head1;
+    } else {
+        data.list.next = &head2;
+    }
+    data.list.next->prev = &head1;
+}
+
+/* A branch that leaves the received pointer intact remains vulnerable. */
+void bad_conditional_pointer_reset(int sock, int condition) {
+    badStruct data;
+    linkedList head = { &head, &head };
+    recv(sock, (char *)&data, sizeof(data), 0); // $ Source
+    if (condition) {
+        data.list.next = &head;
+    }
+    data.list.next->prev = &head; // $ Alert
+}
+
+/* The input only reaches id, not the untouched name pointer. */
+void good_recv_prefix_only(int sock) {
+    record r = { 0, 0 };
+    recv(sock, (char *)&r, sizeof(r.id), 0);
+    r.name[0] = 'x';
 }
 
 /* getdelim returns a pointer to a buffer it allocated; the pointer is not attacker-chosen. */

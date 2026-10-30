@@ -10,6 +10,7 @@ void *realloc(void *ptr, size_t size);
 void free(void *ptr);
 void exit(int status);
 void printIntLine(int);
+void record_metric(size_t);
 
 static int readCount(int sock) {
     char inputBuffer[32];
@@ -125,4 +126,17 @@ void good_no_multiplication(int sock) {
     int count = readCount(sock);
     char *p = (char *)malloc(count);
     free(p);
+}
+
+static size_t return_fixed_size(size_t metric) {
+    return 64;
+}
+
+/* Multiplications in discarded expressions or unrelated call arguments do not determine the size. */
+void good_unrelated_multiplications(int sock) {
+    size_t count = (size_t)readCount(sock);
+    char *commaSize = (char *)malloc((record_metric(count * 16), (size_t)64));
+    char *callSize = (char *)malloc(return_fixed_size(count * 16));
+    free(commaSize);
+    free(callSize);
 }

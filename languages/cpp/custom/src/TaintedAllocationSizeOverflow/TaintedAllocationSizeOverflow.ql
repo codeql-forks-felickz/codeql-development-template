@@ -34,11 +34,58 @@ Expr getAnAllocationSizeArgument(AllocationExpr alloc) {
 }
 
 /**
+ * Holds if `child` contributes to the value of `parent`.
+ */
+predicate isValueChild(Expr parent, Expr child) {
+  exists(CommaExpr comma |
+    parent = comma and
+    child = comma.getRightOperand()
+  )
+  or
+  exists(ConditionalExpr conditional |
+    parent = conditional and
+    (child = conditional.getThen() or child = conditional.getElse())
+  )
+  or
+  exists(Assignment assignment |
+    parent = assignment and
+    child = assignment.getRValue()
+  )
+  or
+  exists(UnaryOperation unary |
+    parent = unary and
+    child = unary.getOperand()
+  )
+  or
+  exists(BinaryOperation binary |
+    parent = binary and
+    (child = binary.getLeftOperand() or child = binary.getRightOperand())
+  )
+  or
+  exists(Conversion conversion |
+    parent = conversion and
+    child = conversion.getExpr()
+  )
+}
+
+/**
+ * Holds if `subExpr` contributes to the value of `sizeExpr`.
+ */
+predicate isValueSubexpression(Expr sizeExpr, Expr subExpr) {
+  sizeExpr = subExpr
+  or
+  exists(Expr child |
+    isValueChild(sizeExpr, child) and
+    isValueSubexpression(child, subExpr)
+  )
+}
+
+/**
  * Holds if `mul` is a multiplication in the size argument of the allocation
  * `alloc`, and range analysis cannot rule out that it wraps around.
  */
 predicate overflowingAllocationSize(AllocationExpr alloc, MulExpr mul) {
-  mul = getAnAllocationSizeArgument(alloc).getAChild*() and
+  isValueSubexpression(getAnAllocationSizeArgument(alloc), mul) and
   convertedExprMightOverflowPositively(mul)
 }
 

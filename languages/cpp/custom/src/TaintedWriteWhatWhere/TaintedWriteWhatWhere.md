@@ -8,6 +8,10 @@ A typical example is unlinking a node from a doubly linked list after its `next`
 
 Never read raw external bytes over an in-memory object that contains pointers. Read the data into a separate buffer of plain (non-pointer) fields, validate it, and copy the validated values into the program's own structures. Pointers must only ever be set by the program itself.
 
+## Known limitations
+
+The query uses declared byte counts for `recv`, `read`, `pread`, and `recvfrom`. For input sources without a modeled byte count, or when the byte count is not constant, it conservatively assumes that any pointer-bearing field may be overwritten. It does not infer the actual number of bytes returned by an input call. Field-range refinement is also conservative across function boundaries.
+
 ## Example
 
 In the following example, data received from a socket is written over `data`, which contains linked list pointers. The subsequent unlink writes through the corrupted pointers:

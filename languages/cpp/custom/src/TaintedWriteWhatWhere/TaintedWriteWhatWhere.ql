@@ -26,7 +26,7 @@ import TaintedWriteWhatWhere::PathGraph
 predicate containsPointer(Type t) {
   t.getUnspecifiedType() instanceof PointerType
   or
-  containsPointer(t.getUnspecifiedType().(Class).getAField().getType())
+  containsPointer(t.getUnspecifiedType().(Class).getABaseClass*().getAField().getType())
   or
   containsPointer(t.getUnspecifiedType().(ArrayType).getBaseType())
 }
@@ -53,9 +53,12 @@ predicate isRawBufferType(Type t) {
  * or the program-owned `msghdr` passed to `recvmsg`, are excluded.
  */
 class PointerOverwriteSource instanceof FlowSource {
+  Expr bufferArgument;
+
   PointerOverwriteSource() {
     exists(Call call, int i, Expr arg |
       arg = this.asDefiningArgument(1) and
+      bufferArgument = arg and
       arg = call.getArgument(i) and
       isRawBufferType(call.getTarget().getParameter(i).getType()) and
       containsPointer(arg.getUnspecifiedType().(DerivedType).getBaseType())
@@ -64,6 +67,9 @@ class PointerOverwriteSource instanceof FlowSource {
 
   /** Gets a string that describes the type of this flow source. */
   string getSourceType() { result = super.getSourceType() }
+
+  /** Gets the buffer argument that is overwritten by this source. */
+  Expr getBufferArgument() { result = bufferArgument }
 
   /** Gets a textual representation of this element. */
   string toString() { result = super.toString() }
@@ -98,14 +104,130 @@ predicate isWriteThroughPointer(Expr write, Expr ptr) {
 }
 
 /**
+ * Holds if `def` is a direct store to `fa` or a merge of such stores.
+ */
+predicate isStoreOrMergeOfField(Instruction def, FieldAccess fa) {
+  exists(StoreInstruction store, FieldAddressInstruction address |
+    def = store and
+    store.getDestinationAddress() = address and
+    address.getField() = fa.getTarget()
+  )
+  or
+  exists(PhiInstruction phi |
+    def = phi and
+    forall(PhiInputOperand input |
+      input = phi.getAnInputOperand()
+    |
+      isStoreOrMergeOfField(input.getDef(), fa)
+    )
+  )
+}
+
+/**
  * Holds if the field access `fa` reads a value that was last written by a
- * direct store to exactly that field, rather than by the bulk write of the
- * enclosing object (for example, a pointer that was reset after `recv`).
+ * store to exactly that field, rather than by the bulk write of the enclosing
+ * object (for example, a pointer that was reset after `recv`).
  */
 predicate isReadOfOverwrittenField(FieldAccess fa) {
   exists(LoadInstruction load |
     load.getUnconvertedResultExpression() = fa and
-    load.getSourceValueOperand().getDef() instanceof StoreInstruction
+    isStoreOrMergeOfField(load.getSourceValueOperand().getDef(), fa)
+  )
+}
+
+/**
+ * Gets the root object expression of a buffer argument after removing casts
+ * and address-of expressions.
+ */
+Expr getBufferObject(Expr arg) {
+  result = arg.(AddressOfExpr).getOperand()
+  or
+  exists(Conversion conversion |
+    conversion = arg and
+    result = getBufferObject(conversion.getExpr())
+  )
+  or
+  result = arg
+}
+
+/**
+ * Gets the root aggregate expression for a field qualifier.
+ */
+Expr getFieldRoot(Expr qualifier) {
+  result = qualifier
+  or
+  result = getFieldRoot(qualifier.(FieldAccess).getQualifier())
+}
+
+/**
+ * Holds if `left` and `right` identify the same object or field access.
+ */
+predicate sameObjectExpression(Expr left, Expr right) {
+  left = right
+  or
+  exists(VariableAccess leftAccess, VariableAccess rightAccess |
+    left = leftAccess and
+    right = rightAccess and
+    leftAccess.getTarget() = rightAccess.getTarget()
+  )
+  or
+  exists(FieldAccess leftField, FieldAccess rightField |
+    left = leftField and
+    right = rightField and
+    leftField.getTarget() = rightField.getTarget() and
+    sameObjectExpression(leftField.getQualifier(), rightField.getQualifier())
+  )
+}
+
+/**
+ * Gets a byte-count expression for a supported raw-byte input call.
+ */
+Expr getInputByteCount(Call call, int bufferIndex) {
+  call.getTarget().hasGlobalName(["recv", "read", "pread"]) and
+  bufferIndex = 1 and
+  result = call.getArgument(2)
+  or
+  call.getTarget().hasGlobalName("recvfrom") and
+  bufferIndex = 4 and
+  result = call.getArgument(2)
+}
+
+/**
+ * Holds if `field` starts within the possible input byte range for `access`.
+ * If the input call or its byte count is not modeled, propagation remains
+ * conservative.
+ */
+predicate fieldMayBeOverwritten(
+  Field field, Class objectType, FieldAccess access
+) {
+  exists(Call call, int bufferIndex, Expr byteCount, int fieldOffset |
+    call.getEnclosingFunction() = access.getEnclosingFunction() and
+    byteCount = getInputByteCount(call, bufferIndex) and
+    sameObjectExpression(
+      getFieldRoot(access.getQualifier()), getBufferObject(call.getArgument(bufferIndex))
+    ) and
+    (
+      fieldOffset = field.getAByteOffsetIn(objectType) or
+      fieldOffset = field.getOffsetInClass(objectType)
+    ) and
+    (
+      exists(int maxByteCount |
+        maxByteCount = byteCount.getFullyConverted().getValue().toInt() and
+        fieldOffset < maxByteCount
+      )
+      or
+      not exists(int maxByteCount |
+        maxByteCount = byteCount.getFullyConverted().getValue().toInt()
+      )
+    )
+  )
+  or
+  not exists(Call call, int bufferIndex, Expr byteCount |
+    call.getEnclosingFunction() = access.getEnclosingFunction() and
+    byteCount = getInputByteCount(call, bufferIndex) and
+    sameObjectExpression(
+      getFieldRoot(access.getQualifier()), getBufferObject(call.getArgument(bufferIndex))
+    )
   )
 }
 
@@ -115,9 +237,17 @@ predicate isReadOfOverwrittenField(FieldAccess fa) {
  * not subsequently overwritten.
  */
 predicate fieldReadFromTaintedObject(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(FieldAccess fa |
+  exists(FieldAccess fa, PointerOverwriteSource source, Expr arg, Class objectType |
+    arg = source.getBufferArgument() and
+    (
+      sameObjectExpression(getFieldRoot(fa.getQualifier()), getBufferObject(arg))
+      or arg.getEnclosingFunction() != fa.getEnclosingFunction()
+    ) and
+    objectType =
+      arg.getUnspecifiedType().(DerivedType).getBaseType().getUnspecifiedType().(Class) and
     n1.asIndirectExpr() = fa.getQualifier() and
     (n2.asExpr() = fa or n2.asIndirectExpr() = fa) and
+    fieldMayBeOverwritten(fa.getTarget(), objectType, fa) and
     not isReadOfOverwrittenField(fa)
   )
 }
