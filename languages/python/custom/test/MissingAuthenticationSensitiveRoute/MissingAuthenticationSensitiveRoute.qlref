@@ -1,0 +1,2 @@
+query: MissingAuthenticationSensitiveRoute/MissingAuthenticationSensitiveRoute.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
