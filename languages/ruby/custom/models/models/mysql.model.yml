@@ -1,0 +1,24 @@
+extensions:
+  # Legacy `mysql` gem and its pure-Ruby successor `ruby-mysql`, which both
+  # expose a top-level `Mysql` class. `codeql/ruby-all` only models `Mysql2`.
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: sinkModel
+    data:
+      - ["Mysql", "Method[prepare,query,real_query].Argument[0]", "sql-injection"]
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: barrierModel
+    data:
+      - ["Mysql", "Method[escape_string,quote].ReturnValue", "sql-injection"]
+      - ["Mysql!", "Method[escape_string,quote].ReturnValue", "sql-injection"]
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: typeModel
+    data:
+      # Mysql.connect / Mysql.real_connect / Mysql.init : Mysql
+      - ["Mysql", "Mysql!", "Method[connect,init,real_connect].ReturnValue"]
+      # Mysql#real_connect (after Mysql.init) : Mysql
+      - ["Mysql", "Mysql", "Method[real_connect].ReturnValue"]
