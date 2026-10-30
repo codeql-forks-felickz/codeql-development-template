@@ -4,7 +4,7 @@ const express = require('express');
 
 const app = express();
 
-app.post('/store/:id', function (req, res) {
+app.post('/store/:data', function (req, res) {
   const unsafeConfig = { schema: jsyaml.DEFAULT_FULL_SCHEMA };
   // BAD: the full schema allows `!!js/function` and other unsafe types
   const data = jsyaml.safeLoad(req.params.data, unsafeConfig);
