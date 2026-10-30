@@ -62,7 +62,7 @@ Expr sessionCookieValue() {
     (
       jar.getMethodName() = "cookies"
       or
-      jar.getMethodName() = ["signed", "encrypted", "permanent"] and
+      jar.getMethodName() = "permanent" and
       jar.getReceiver().(MethodCall).getMethodName() = "cookies"
     ) and
     isSessionCookieName(cookieName(er.getArgument(0))) and
@@ -109,7 +109,7 @@ predicate isCounterValue(Expr e) {
 predicate isSecureRandom(DataFlow::Node n) {
   n = API::getTopLevelMember("SecureRandom").getAMethodCall(_)
   or
-  n = API::getTopLevelMember("OpenSSL").getMember("Random").getAMethodCall(_)
+  n = API::getTopLevelMember("OpenSSL").getMember("Random").getAMethodCall("random_bytes")
   or
   n = API::getTopLevelMember("Random").getAMethodCall("urandom")
 }
@@ -125,7 +125,7 @@ predicate isSecureRandomMergeInput(DataFlow::Node input) {
     component != randomComponent and
     input.asExpr().getExpr() = component.getStmt(0) and
     random.asExpr().getExpr() = randomComponent.getStmt(0) and
-    isSecureRandom(random)
+    isSecureRandomNode(random)
   )
   or
   exists(AddExpr add, Expr inputOperand, Expr randomOperand, DataFlow::Node random |
@@ -141,7 +141,7 @@ predicate isSecureRandomMergeInput(DataFlow::Node input) {
     ) and
     inputOperand != randomOperand and
     random.asExpr().getExpr() = randomOperand and
-    isSecureRandom(random)
+    isSecureRandomNode(random)
   )
   or
   exists(LShiftExpr shift, Expr inputOperand, Expr randomOperand, DataFlow::Node random |
@@ -150,7 +150,7 @@ predicate isSecureRandomMergeInput(DataFlow::Node input) {
     randomOperand = shift.getAnOperand() and
     inputOperand != randomOperand and
     random.asExpr().getExpr() = randomOperand and
-    isSecureRandom(random)
+    isSecureRandomNode(random)
   )
   or
   exists(
@@ -164,7 +164,7 @@ predicate isSecureRandomMergeInput(DataFlow::Node input) {
     randomOperand = array.getAnElement() and
     inputOperand != randomOperand and
     random.asExpr().getExpr() = randomOperand and
-    isSecureRandom(random)
+    isSecureRandomNode(random)
   )
 }
 
@@ -203,6 +203,28 @@ predicate methodReturnStep(DataFlow::Node pred, DataFlow::Node succ) {
     or
     pred = any(DataFlow::MethodNode mn | mn.asCallableAstNode() = m).getAReturnNode() and
     unresolvedSelfCall(call, m)
+  )
+}
+
+private module SecureRandomToSessionCookieConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isSecureRandom(source) }
+
+  predicate isSink(DataFlow::Node sink) { exists(Expr e | sink.asExpr().getExpr() = e) }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    methodReturnStep(pred, succ)
+  }
+}
+
+private module SecureRandomToSessionCookieFlow =
+  TaintTracking::Global<SecureRandomToSessionCookieConfig>;
+
+predicate isSecureRandomNode(DataFlow::Node node) {
+  isSecureRandom(node)
+  or
+  exists(DataFlow::Node source |
+    isSecureRandom(source) and
+    SecureRandomToSessionCookieFlow::flow(source, node)
   )
 }
 

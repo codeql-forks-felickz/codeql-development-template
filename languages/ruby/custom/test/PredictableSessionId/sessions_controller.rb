@@ -8,9 +8,9 @@ class SessionsController < ActionController::Base
     # BAD: sequential session token written to a cookie.
     cookies[:session_token] = "sess_#{id}" # $ Alert
     # BAD: local counter incremented with `+ 1`.
-    n = @@next_id + 1 # $ Source
+    n = @@next_id + 1
     @@next_id = n
-    cookies.signed[:auth_token] = "tok-#{n}" # $ Alert
+    cookies.signed[:auth_token] = "tok-#{n}"
   end
 
   def create_safe
