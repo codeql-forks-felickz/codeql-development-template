@@ -1,0 +1,35 @@
+extensions:
+  # `db-mysql` (node-db) MySQL bindings: https://www.npmjs.com/package/db-mysql
+  #
+  #   new mysql.Database({...}).connect(function (error) {
+  #     this.query(sql).execute(callback);           // `this` is the Database
+  #     this.query().execute(sql, values, callback); // raw SQL passed to execute
+  #   });
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["db-mysql.Database", "db-mysql", "Member[Database].Instance"]
+      - ["db-mysql.Database", "db-mysql.Database", "Member[connect].Argument[N-1].Parameter[this]"]
+      - ["db-mysql.Query", "db-mysql", "Member[Query].Instance"]
+      - ["db-mysql.Query", "db-mysql.Database", "Member[query].ReturnValue"]
+      - [
+          "db-mysql.Query",
+          "db-mysql.Query",
+          "Member[add,and,delete,from,insert,join,limit,or,order,select,set,update,where].ReturnValue"
+        ]
+
+  # The first argument of `Database.query` and `Query.execute` is a raw SQL string.
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["db-mysql.Database", "Member[query].Argument[0]", "sql-injection"]
+      - ["db-mysql.Query", "Member[execute].Argument[0]", "sql-injection"]
+
+  # `Database.escape` escapes a value for use inside a quoted SQL string literal.
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: barrierModel
+    data:
+      - ["db-mysql.Database", "Member[escape].ReturnValue", "sql-injection"]

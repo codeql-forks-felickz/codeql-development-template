@@ -1,0 +1,21 @@
+nodes
+| server.js:8:7:8:10 | name | semmle.label | name |
+| server.js:8:14:8:27 | req.query.name | semmle.label | req.query.name |
+| server.js:11:12:11:64 | 'SELECT ...  + name | semmle.label | 'SELECT ...  + name |
+| server.js:11:61:11:64 | name | semmle.label | name |
+| server.js:14:22:14:81 | "SELECT ... e + "'" | semmle.label | "SELECT ... e + "'" |
+| server.js:14:72:14:75 | name | semmle.label | name |
+| server.js:30:18:30:88 | "INSERT ...  + "')" | semmle.label | "INSERT ...  + "')" |
+| server.js:30:69:30:76 | req.body | semmle.label | req.body |
+edges
+| server.js:8:7:8:10 | name | server.js:11:61:11:64 | name | provenance |  |
+| server.js:8:7:8:10 | name | server.js:14:72:14:75 | name | provenance |  |
+| server.js:8:14:8:27 | req.query.name | server.js:8:7:8:10 | name | provenance |  |
+| server.js:11:61:11:64 | name | server.js:11:12:11:64 | 'SELECT ...  + name | provenance |  |
+| server.js:14:72:14:75 | name | server.js:14:22:14:81 | "SELECT ... e + "'" | provenance |  |
+| server.js:30:69:30:76 | req.body | server.js:30:18:30:88 | "INSERT ...  + "')" | provenance |  |
+subpaths
+#select
+| server.js:11:12:11:64 | 'SELECT ...  + name | server.js:8:14:8:27 | req.query.name | server.js:11:12:11:64 | 'SELECT ...  + name | This query string depends on a $@. | server.js:8:14:8:27 | req.query.name | user-provided value |
+| server.js:14:22:14:81 | "SELECT ... e + "'" | server.js:8:14:8:27 | req.query.name | server.js:14:22:14:81 | "SELECT ... e + "'" | This query string depends on a $@. | server.js:8:14:8:27 | req.query.name | user-provided value |
+| server.js:30:18:30:88 | "INSERT ...  + "')" | server.js:30:69:30:76 | req.body | server.js:30:18:30:88 | "INSERT ...  + "')" | This query string depends on a $@. | server.js:30:69:30:76 | req.body | user-provided value |
