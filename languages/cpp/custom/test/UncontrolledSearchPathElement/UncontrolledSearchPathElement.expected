@@ -1,0 +1,44 @@
+#select
+| test.c:38:12:38:15 | *data | test.c:33:49:33:72 | recv output argument | test.c:38:12:38:15 | *data | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:33:49:33:72 | recv output argument | buffer read by recv |
+| test.c:64:14:64:17 | *data | test.c:59:49:59:72 | recv output argument | test.c:64:14:64:17 | *data | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:59:49:59:72 | recv output argument | buffer read by recv |
+| test.c:88:13:88:16 | *data | test.c:84:29:84:34 | *call to getenv | test.c:88:13:88:16 | *data | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:84:29:84:34 | *call to getenv | an environment variable |
+| test.c:102:12:102:15 | *data | test.c:100:19:100:32 | fgets output argument | test.c:102:12:102:15 | *data | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:100:19:100:32 | fgets output argument | string read by fgets |
+| test.c:110:20:110:22 | *buf | test.c:109:16:109:18 | recv output argument | test.c:110:20:110:22 | *buf | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:109:16:109:18 | recv output argument | buffer read by recv |
+| test.c:111:34:111:36 | *buf | test.c:109:16:109:18 | recv output argument | test.c:111:34:111:36 | *buf | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:109:16:109:18 | recv output argument | buffer read by recv |
+| test.c:112:37:112:39 | *buf | test.c:109:16:109:18 | recv output argument | test.c:112:37:112:39 | *buf | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:109:16:109:18 | recv output argument | buffer read by recv |
+| test.c:148:12:148:14 | *buf | test.c:147:16:147:18 | recv output argument | test.c:148:12:148:14 | *buf | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:147:16:147:18 | recv output argument | buffer read by recv |
+| test.c:154:12:154:53 | *... ? ... : ... | test.c:154:30:154:35 | *call to getenv | test.c:154:12:154:53 | *... ? ... : ... | This search path environment variable is set from $@, so an attacker can control where programs or libraries are loaded from. | test.c:154:30:154:35 | *call to getenv | an environment variable |
+edges
+| test.c:33:49:33:72 | recv output argument | test.c:36:9:36:56 | ... = ... | provenance |  |
+| test.c:36:9:36:56 | ... = ... | test.c:38:12:38:15 | *data | provenance |  |
+| test.c:59:49:59:72 | recv output argument | test.c:62:9:62:60 | ... = ... | provenance |  |
+| test.c:62:9:62:60 | ... = ... | test.c:64:14:64:17 | *data | provenance |  |
+| test.c:84:29:84:34 | *call to getenv | test.c:84:29:84:34 | *call to getenv | provenance |  |
+| test.c:84:29:84:34 | *call to getenv | test.c:88:13:88:16 | *data | provenance | TaintFunction |
+| test.c:100:19:100:32 | fgets output argument | test.c:102:12:102:15 | *data | provenance |  |
+| test.c:109:16:109:18 | recv output argument | test.c:110:20:110:22 | *buf | provenance |  |
+| test.c:109:16:109:18 | recv output argument | test.c:111:34:111:36 | *buf | provenance |  |
+| test.c:109:16:109:18 | recv output argument | test.c:112:37:112:39 | *buf | provenance |  |
+| test.c:147:16:147:18 | recv output argument | test.c:148:12:148:14 | *buf | provenance |  |
+| test.c:154:30:154:35 | *call to getenv | test.c:154:12:154:53 | *... ? ... : ... | provenance |  |
+nodes
+| test.c:33:49:33:72 | recv output argument | semmle.label | recv output argument |
+| test.c:36:9:36:56 | ... = ... | semmle.label | ... = ... |
+| test.c:38:12:38:15 | *data | semmle.label | *data |
+| test.c:59:49:59:72 | recv output argument | semmle.label | recv output argument |
+| test.c:62:9:62:60 | ... = ... | semmle.label | ... = ... |
+| test.c:64:14:64:17 | *data | semmle.label | *data |
+| test.c:84:29:84:34 | *call to getenv | semmle.label | *call to getenv |
+| test.c:84:29:84:34 | *call to getenv | semmle.label | *call to getenv |
+| test.c:88:13:88:16 | *data | semmle.label | *data |
+| test.c:100:19:100:32 | fgets output argument | semmle.label | fgets output argument |
+| test.c:102:12:102:15 | *data | semmle.label | *data |
+| test.c:109:16:109:18 | recv output argument | semmle.label | recv output argument |
+| test.c:110:20:110:22 | *buf | semmle.label | *buf |
+| test.c:111:34:111:36 | *buf | semmle.label | *buf |
+| test.c:112:37:112:39 | *buf | semmle.label | *buf |
+| test.c:147:16:147:18 | recv output argument | semmle.label | recv output argument |
+| test.c:148:12:148:14 | *buf | semmle.label | *buf |
+| test.c:154:12:154:53 | *... ? ... : ... | semmle.label | *... ? ... : ... |
+| test.c:154:30:154:35 | *call to getenv | semmle.label | *call to getenv |
+subpaths
