@@ -161,12 +161,16 @@ module WholeObjectSourceFlow = DataFlow::Global<WholeObjectSourceConfig>;
  *
  * The IR taint tracking library does not have this step: a source that taints the whole
  * object does not carry any field content, so field reads are never reached.
+ *
+ * The step does not apply to a field that has been assigned since the object was written. Taint
+ * from the assigned value, as in `s.f = ntohl(s.f)`, is still tracked through the field store.
  */
 predicate aggregateToFieldStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(FieldAccess fa |
     n1.asIndirectExpr(1) = rootQualifier(fa) and
     WholeObjectSourceFlow::flowTo(n1) and
-    n2.asExpr() = fa
+    n2.asExpr() = fa and
+    not fieldIsOverwritten(fa)
   )
 }
 
@@ -281,8 +285,6 @@ module TaintedStructFieldAllocationSizeConfig implements DataFlow::ConfigSig {
     isStockBarrier(node)
     or
     fieldHasUpperBoundsCheck(node.asExpr())
-    or
-    fieldIsOverwritten(node.asExpr())
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {

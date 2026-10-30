@@ -6,6 +6,9 @@
 | test.c:126:23:126:28 | call to malloc | test.c:125:9:125:12 | fread output argument | test.c:126:30:126:39 | call to area | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:125:9:125:12 | fread output argument | user input (string read by fread) |
 | test.c:136:23:136:28 | call to malloc | test.c:134:14:134:16 | recv output argument | test.c:136:30:136:51 | ... - ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:134:14:134:16 | recv output argument | user input (buffer read by recv) |
 | test.c:145:23:145:28 | call to malloc | test.c:144:9:144:12 | fread output argument | test.c:145:30:145:42 | ... * ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:144:9:144:12 | fread output argument | user input (string read by fread) |
+| test.c:176:24:176:29 | call to malloc | test.c:174:9:174:12 | fread output argument | test.c:176:31:176:43 | ... * ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:174:9:174:12 | fread output argument | user input (string read by fread) |
+| test.c:178:24:178:29 | call to malloc | test.c:174:9:174:12 | fread output argument | test.c:178:31:178:44 | ... * ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:174:9:174:12 | fread output argument | user input (string read by fread) |
+| test.c:180:24:180:29 | call to malloc | test.c:174:9:174:12 | fread output argument | test.c:180:31:180:43 | ... - ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:174:9:174:12 | fread output argument | user input (string read by fread) |
 edges
 | test.c:41:16:41:19 | fread output argument | test.c:42:17:42:19 | *img | provenance |  |
 | test.c:42:17:42:19 | *img | test.c:42:17:42:38 | ... + ... | provenance | Config |
@@ -46,6 +49,27 @@ edges
 | test.c:136:42:136:44 | *img | test.c:136:30:136:51 | ... - ... | provenance | Config |
 | test.c:144:9:144:12 | fread output argument | test.c:145:30:145:32 | *img | provenance |  |
 | test.c:145:30:145:32 | *img | test.c:145:30:145:42 | ... * ... | provenance | Config |
+| test.c:174:9:174:12 | fread output argument | test.c:175:15:175:17 | *img | provenance |  |
+| test.c:175:3:175:5 | *img | test.c:177:3:177:5 | *img | provenance |  |
+| test.c:175:3:175:5 | *img [post update] [width] | test.c:176:31:176:33 | *img [width] | provenance |  |
+| test.c:175:3:175:36 | ... = ... | test.c:175:3:175:5 | *img [post update] [width] | provenance |  |
+| test.c:175:15:175:17 | *img | test.c:175:3:175:36 | ... = ... | provenance | Config |
+| test.c:175:15:175:17 | *img | test.c:175:27:175:29 | *img | provenance |  |
+| test.c:175:27:175:29 | *img | test.c:175:3:175:5 | *img | provenance |  |
+| test.c:175:27:175:29 | *img | test.c:175:3:175:36 | ... = ... | provenance | Config |
+| test.c:176:31:176:33 | *img [width] | test.c:176:31:176:43 | ... * ... | provenance |  |
+| test.c:177:3:177:5 | *img | test.c:177:3:177:17 | ... += ... | provenance | Config |
+| test.c:177:3:177:5 | *img | test.c:179:15:179:17 | *img | provenance |  |
+| test.c:177:3:177:5 | *img [post update] [height] | test.c:178:31:178:33 | *img [height] | provenance |  |
+| test.c:177:3:177:5 | *img [post update] [height] | test.c:179:15:179:17 | *img [height] | provenance |  |
+| test.c:177:3:177:17 | ... += ... | test.c:177:3:177:5 | *img [post update] [height] | provenance |  |
+| test.c:178:31:178:33 | *img [height] | test.c:178:31:178:44 | ... * ... | provenance |  |
+| test.c:179:3:179:5 | *img [post update] [width] | test.c:180:31:180:33 | *img [width] | provenance |  |
+| test.c:179:3:179:24 | ... = ... | test.c:179:3:179:5 | *img [post update] [width] | provenance |  |
+| test.c:179:15:179:17 | *img | test.c:179:19:179:24 | height | provenance | Config |
+| test.c:179:15:179:17 | *img [height] | test.c:179:19:179:24 | height | provenance |  |
+| test.c:179:19:179:24 | height | test.c:179:3:179:24 | ... = ... | provenance |  |
+| test.c:180:31:180:33 | *img [width] | test.c:180:31:180:43 | ... - ... | provenance |  |
 nodes
 | test.c:41:16:41:19 | fread output argument | semmle.label | fread output argument |
 | test.c:42:17:42:19 | *img | semmle.label | *img |
@@ -86,5 +110,25 @@ nodes
 | test.c:144:9:144:12 | fread output argument | semmle.label | fread output argument |
 | test.c:145:30:145:32 | *img | semmle.label | *img |
 | test.c:145:30:145:42 | ... * ... | semmle.label | ... * ... |
+| test.c:174:9:174:12 | fread output argument | semmle.label | fread output argument |
+| test.c:175:3:175:5 | *img | semmle.label | *img |
+| test.c:175:3:175:5 | *img [post update] [width] | semmle.label | *img [post update] [width] |
+| test.c:175:3:175:36 | ... = ... | semmle.label | ... = ... |
+| test.c:175:15:175:17 | *img | semmle.label | *img |
+| test.c:175:27:175:29 | *img | semmle.label | *img |
+| test.c:176:31:176:33 | *img [width] | semmle.label | *img [width] |
+| test.c:176:31:176:43 | ... * ... | semmle.label | ... * ... |
+| test.c:177:3:177:5 | *img | semmle.label | *img |
+| test.c:177:3:177:5 | *img [post update] [height] | semmle.label | *img [post update] [height] |
+| test.c:177:3:177:17 | ... += ... | semmle.label | ... += ... |
+| test.c:178:31:178:33 | *img [height] | semmle.label | *img [height] |
+| test.c:178:31:178:44 | ... * ... | semmle.label | ... * ... |
+| test.c:179:3:179:5 | *img [post update] [width] | semmle.label | *img [post update] [width] |
+| test.c:179:3:179:24 | ... = ... | semmle.label | ... = ... |
+| test.c:179:15:179:17 | *img | semmle.label | *img |
+| test.c:179:15:179:17 | *img [height] | semmle.label | *img [height] |
+| test.c:179:19:179:24 | height | semmle.label | height |
+| test.c:180:31:180:33 | *img [width] | semmle.label | *img [width] |
+| test.c:180:31:180:43 | ... - ... | semmle.label | ... - ... |
 subpaths
 | test.c:126:35:126:38 | *& ... | test.c:121:31:121:31 | *p | test.c:121:12:121:15 | *area | test.c:126:30:126:39 | call to area |

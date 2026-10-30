@@ -167,3 +167,18 @@ void process_table_entry(void) {
   free(buf1);
   free(buf2);
 }
+
+// Field reassigned in place from attacker-controlled values.
+void process_image_normalized(FILE *fp) {
+  struct Image img;
+  fread(&img, sizeof(img), 1, fp); // $ Source
+  img.width = img.width * img.height;
+  char *buf1 = (char *)malloc(img.width * 4); // $ Alert
+  img.height += 1;
+  char *buf2 = (char *)malloc(img.height * 4); // $ Alert
+  img.width = img.height;
+  char *buf3 = (char *)malloc(img.width - 8); // $ Alert
+  free(buf1);
+  free(buf2);
+  free(buf3);
+}
