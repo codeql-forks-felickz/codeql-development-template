@@ -169,6 +169,38 @@ def patch_include(body: UpdateUserV2, user: User = Depends(get_current_user)):
     return user
 
 
+@router.patch("/include-none-model-dump")
+def patch_include_none_model_dump(body: UpdateUserV2, user: User = Depends(get_current_user)):
+    for k, v in body.model_dump(include=None).items():
+        setattr(user, k, v)  # $ Alert
+    return user
+
+
+@router.patch("/include-none-dict")
+def patch_include_none_dict(body: UpdateUserV2, user: User = Depends(get_current_user)):
+    for k, v in body.dict(include=None).items():
+        setattr(user, k, v)  # $ Alert
+    return user
+
+
+@router.patch("/denylist-continue")
+def patch_denylist_continue(body: UpdateUserV2, user: User = Depends(get_current_user)):
+    for k, v in body.model_dump().items():
+        if k in {"id"}:
+            continue
+        setattr(user, k, v)  # $ Alert
+    return user
+
+
+@router.patch("/unrelated-membership-check")
+def patch_unrelated_membership_check(body: UpdateUserV2, user: User = Depends(get_current_user)):
+    for k, v in body.model_dump().items():
+        if k in {"id"}:
+            print(k)
+        setattr(user, k, v)  # $ Alert
+    return user
+
+
 @router.patch("/explicit")
 def patch_explicit(body: UpdateUserV2, user: User = Depends(get_current_user)):
     user.first_name = body.first_name

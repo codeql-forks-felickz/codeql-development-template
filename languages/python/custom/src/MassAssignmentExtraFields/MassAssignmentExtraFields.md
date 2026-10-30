@@ -4,6 +4,10 @@ A Pydantic model configured with `extra="allow"` keeps every field the client se
 
 This query is a heuristic: it looks for a loop over the `.items()` of `model_dump()`, `dict()` or `vars()` of such a model instance whose key is passed to `setattr`.
 
+## Known limitations
+
+The query recognizes direct `if key in ALLOWED_FIELDS` guards and the `if key not in ALLOWED_FIELDS: continue` pattern. Other membership-check control-flow patterns are not recognized as allowlists.
+
 ## Recommendation
 
 Do not accept arbitrary extra fields on request models (use the default `extra="ignore"` or `extra="forbid"`). Copy only an explicit allowlist of fields, either by assigning them individually, by checking the key against an allowlist before calling `setattr`, or by passing `include=` to `model_dump()`.

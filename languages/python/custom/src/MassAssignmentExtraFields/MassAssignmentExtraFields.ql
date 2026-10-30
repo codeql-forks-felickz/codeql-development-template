@@ -112,7 +112,11 @@ DataFlow::Node dumpAllFields(API::Node model) {
     exists(DataFlow::MethodCallNode call | result = call |
       call.calls(obj, ["model_dump", "dict"]) and
       // An explicit `include` restricts the fields to an allowlist.
-      not exists(call.getArgByName("include"))
+      not exists(DataFlow::Node include |
+        include = call.getArgByName("include") and
+        not (include.asExpr() instanceof NameConstant and
+          include.asExpr().(NameConstant).getId() = "None")
+      )
     )
     or
     exists(DataFlow::CallCfgNode call | result = call |
@@ -123,15 +127,30 @@ DataFlow::Node dumpAllFields(API::Node model) {
 }
 
 /**
- * Holds if the loop `loop` compares the loop key variable `key` against a
- * collection, for example `if key in ALLOWED_FIELDS`, which acts as an allowlist.
+ * Holds if the membership check on the loop key `key` controls `setattrCall`
+ * so that only allowlisted keys reach the assignment.
  */
-predicate hasKeyMembershipCheck(For loop, Variable key) {
-  exists(Compare cmp, Cmpop op |
+predicate hasKeyMembershipCheck(For loop, Variable key, DataFlow::CallCfgNode setattrCall) {
+  exists(
+    Compare cmp, Cmpop op, If ifStmt, ControlFlowNode condition, ControlFlowNode assignment,
+    ConditionBlock conditionBlock
+  |
     loop.contains(cmp) and
+    loop.contains(ifStmt) and
+    ifStmt.getTest() = cmp and
     cmp.getLeft().(Name).getVariable() = key and
     cmp.getOp(0) = op and
-    (op instanceof In or op instanceof NotIn)
+    (op instanceof In or op instanceof NotIn) and
+    condition.getNode() = cmp and
+    assignment.getNode() = setattrCall.asExpr() and
+    conditionBlock = condition.getBasicBlock() and
+    (
+      op instanceof In and conditionBlock.controls(assignment.getBasicBlock(), true)
+      or
+      op instanceof NotIn and
+      exists(Continue continueStmt | continueStmt = ifStmt.getBody().getAnItem()) and
+      conditionBlock.controls(assignment.getBasicBlock(), false)
+    )
   )
 }
 
@@ -148,7 +167,7 @@ where
   setattrCall = API::builtin("setattr").getACall() and
   loop.contains(setattrCall.asExpr()) and
   setattrCall.getArg(1).asExpr().(Name).getVariable() = key and
-  not hasKeyMembershipCheck(loop, key)
+  not hasKeyMembershipCheck(loop, key, setattrCall)
 select setattrCall,
   "Every field of $@, which accepts arbitrary extra fields, is assigned to an object, allowing a client to set unintended attributes.",
   model.asSource(), model.asSource().asExpr().(ClassExpr).getName()
