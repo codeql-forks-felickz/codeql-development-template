@@ -30,6 +30,11 @@ type session struct {
 	Nonce        int64
 }
 
+type cacheEntry struct {
+	ID    int64
+	Value int64
+}
+
 const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 func newSession() *session {
@@ -38,8 +43,8 @@ func newSession() *session {
 		b[i] = letters[rand.Intn(len(letters))] // $ Source
 	}
 	return &session{
-		SessionToken: string(b),    // $ Alert
-		Nonce:        rand.Int63(), // $ Alert
+		string(b),    // $ Alert
+		rand.Int63(), // $ Alert
 	}
 }
 
@@ -58,6 +63,30 @@ func deriveSecret() {
 	_ = hmacSalt
 }
 
+func deriveValue() {
+	decryptionKey := rand.Int63() // $ Alert
+	cryptoKey := rand.Int63()     // $ Alert
+	_, _ = decryptionKey, cryptoKey
+}
+
+func generateEncryptionKey() int64 {
+	return rand.Int63() // $ Alert
+}
+
+func generateSessionToken() (v int64) {
+	v = rand.Int63() // $ Alert
+	return
+}
+
+func generateCacheEntry() (v int64) {
+	v = rand.Int63()
+	return
+}
+
+func newCacheEntry() cacheEntry {
+	return cacheEntry{rand.Int63(), rand.Int63()}
+}
+
 // Safe: crypto/rand is a cryptographically secure source.
 func (s *server) GetKeyV2() {
 	n, _ := cryptorand.Read(make([]byte, 1))
@@ -68,6 +97,12 @@ func generateSecureToken() string {
 	b := make([]byte, 16)
 	cryptorand.Read(b)
 	return string(b)
+}
+
+func generateSecureEncryptionKey() []byte {
+	encryptionKey := make([]byte, 32)
+	cryptorand.Read(encryptionKey)
+	return encryptionKey
 }
 
 // Safe: non-security uses of math/rand.

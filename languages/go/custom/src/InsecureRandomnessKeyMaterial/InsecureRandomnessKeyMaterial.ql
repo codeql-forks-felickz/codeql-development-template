@@ -21,7 +21,7 @@ import semmle.go.security.InsecureRandomness
  */
 string keyMaterialName() {
   result =
-    "(?i).*((crypt|cipher|secret|private|signing|sign|hmac|aes|session|message|msg|master|api|auth|access|shared|symmetric)_?keys?"
+    "(?i).*((crypt|crypto|encryption|decryption|cipher|secret|private|signing|sign|hmac|aes|session|message|msg|master|api|auth|access|shared|symmetric)_?keys?"
       + "|secret|nonce|salt" +
       "|(auth|access|session|csrf|xsrf|reset|refresh|api|bearer|verification|verify|secure|random)_?tokens?).*"
 }
@@ -64,6 +64,22 @@ class KeyMaterialSink extends DataFlow::Node {
       kv.getParent() instanceof StructLit and
       this.asExpr() = kv.getValue() and
       kv.getKey().(Ident).getName().regexpMatch(keyMaterialName())
+    )
+    or
+    // `T{v, ...}` where the corresponding field is key material.
+    exists(StructLit literal, int i, string fieldName, Type fieldType, boolean embedded |
+      this.asExpr() = literal.getValue(i) and
+      not literal.getElement(i) instanceof KeyValueExpr and
+      literal.getStructType().hasOwnField(i, fieldName, fieldType, embedded) and
+      fieldName.regexpMatch(keyMaterialName())
+    )
+    or
+    // `func generateApiToken() (v int64) { v = ...; return }`
+    exists(Assignment a, int i, FuncDef f |
+      this.asExpr() = a.getRhs(i) and
+      a.getEnclosingFunction() = f and
+      f.getName().regexpMatch(keyMaterialName()) and
+      a.getLhs(i).(Name).getTarget() = f.getResultVar(_)
     )
     or
     // `func generateApiToken() string { ...; return v }`
