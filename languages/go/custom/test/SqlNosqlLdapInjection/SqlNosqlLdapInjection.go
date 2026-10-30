@@ -36,6 +36,17 @@ func paramsFieldAssignMapLiteral(cfg *mysql.Config) {
 	cfg.Params = map[string]string{"charset": "utf8mb4", "multiStatements": "True"} // $ Alert
 }
 
+func paramsAliasedLocal(cfg *mysql.Config) {
+	p := cfg.Params
+	p["multiStatements"] = "TRUE" // $ Alert
+}
+
+func paramsLocalMapAssigned(cfg *mysql.Config) {
+	m := make(map[string]string)
+	m["multiStatements"] = "true" // $ Alert
+	cfg.Params = m
+}
+
 func multiStatementsField() *mysql.Config {
 	cfg := mysql.NewConfig()
 	cfg.MultiStatements = true // $ Alert

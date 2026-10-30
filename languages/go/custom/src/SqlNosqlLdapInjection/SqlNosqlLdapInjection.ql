@@ -24,7 +24,10 @@ private predicate isTrueParamValue(string v) { v = ["1", "true", "TRUE", "True"]
 /** Holds if `base` is a map that is (or is stored in) the `Params` field of a `mysql.Config`. */
 private predicate isConfigParamsMap(DataFlow::Node base) {
   exists(Field params | params.hasQualifiedName(mysqlDriver(), "Config", "Params") |
-    base.(DataFlow::FieldReadNode).getField() = params
+    exists(DataFlow::FieldReadNode read |
+      read.getField() = params and
+      DataFlow::localFlow(read, base)
+    )
     or
     exists(Write w, DataFlow::Node rhs |
       w.writesFieldPreUpdate(_, params, rhs) and
