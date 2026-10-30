@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A JSON Web Token (JWT) has three base64url-encoded segments separated by dots: a header, the
+claims, and a signature. Some code extracts the claims by hand, by splitting the token on
+<code>"."</code>, base64-decoding the second segment and parsing it as JSON, without ever checking
+the third (signature) segment. Since anyone can encode arbitrary claims, an attacker can then
+impersonate any user, for example an administrator.
+</p>
+<p>
+This query flags such hand-written decoding when the signature segment of the split token is
+never read. It is a heuristic, so code that verifies the token elsewhere (for example in an API
+gateway authorizer) may be reported.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Decode tokens with a JWT library such as PyJWT, passing the expected key and an explicit list of
+allowed algorithms, so that the signature is verified before any claim is trusted. If the token is
+verified by another component, document that and make sure the handler cannot be reached without it.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, the acting user is taken from the claims segment of the
+<code>Authorization</code> header without verifying the signature:
+</p>
+<sample src="examples/bad.py" />
+<p>
+The fix is to decode the token with a library that verifies the signature:
+</p>
+<sample src="examples/good.py" />
+</example>
+
+<references>
+<li>CWE: <a href="https://cwe.mitre.org/data/definitions/347.html">CWE-347: Improper Verification of Cryptographic Signature</a>.</li>
+<li>IETF: <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-7.2">RFC 7519, Section 7.2: Validating a JWT</a>.</li>
+<li>PyJWT: <a href="https://pyjwt.readthedocs.io/en/stable/usage.html">Usage Examples</a>.</li>
+</references>
+</qhelp>

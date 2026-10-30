@@ -1,0 +1,2 @@
+query: JwtManualPayloadDecode/JwtManualPayloadDecode.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
