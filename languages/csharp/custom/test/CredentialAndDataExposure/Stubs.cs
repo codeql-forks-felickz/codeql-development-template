@@ -336,3 +336,49 @@ namespace NLog
         public static Logger GetLogger(string name) { return null; }
     }
 }
+
+namespace System.Data.Entity
+{
+    public class DbContext
+    {
+        public virtual int SaveChanges() { return 0; }
+    }
+
+    public abstract class DbSet<TEntity> where TEntity : class
+    {
+        public virtual TEntity Add(TEntity entity) { return entity; }
+    }
+}
+
+namespace Microsoft.AspNetCore.Identity
+{
+    public class IdentityUser { }
+}
+
+namespace Microsoft.AspNetCore.Identity.EntityFrameworkCore
+{
+    public class IdentityDbContext<TUser> : Microsoft.EntityFrameworkCore.DbContext where TUser : class { }
+}
+
+namespace MySql.Data.MySqlClient
+{
+    public sealed class MySqlCommand : System.Data.IDbCommand
+    {
+        public MySqlCommand(string cmdText, object connection) { }
+        public string CommandText { get; set; }
+        public int CommandTimeout { get; set; }
+        public System.Data.CommandType CommandType { get; set; }
+        public System.Data.IDbConnection Connection { get; set; }
+        public System.Data.IDataParameterCollection Parameters { get { return null; } }
+        public System.Data.IDbTransaction Transaction { get; set; }
+        public System.Data.UpdateRowSource UpdatedRowSource { get; set; }
+        public void Cancel() { }
+        public System.Data.IDbDataParameter CreateParameter() { return null; }
+        public int ExecuteNonQuery() { return 0; }
+        public System.Data.IDataReader ExecuteReader() { return null; }
+        public System.Data.IDataReader ExecuteReader(System.Data.CommandBehavior behavior) { return null; }
+        public object ExecuteScalar() { return null; }
+        public void Prepare() { }
+        public void Dispose() { }
+    }
+}
