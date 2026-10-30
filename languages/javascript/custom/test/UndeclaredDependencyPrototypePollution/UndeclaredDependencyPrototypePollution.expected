@@ -1,0 +1,33 @@
+#select
+| undeclared/lodash.js:11:31:11:57 | JSON.pa ... config) | undeclared/lodash.js:11:42:11:49 | req.body | undeclared/lodash.js:11:31:11:57 | JSON.pa ... config) | Prototype pollution may be caused by merging a $@ using $@, whose version is not declared in any package.json. | undeclared/lodash.js:11:42:11:49 | req.body | user-controlled value | undeclared/lodash.js:11:3:11:58 | lodash. ... onfig)) | lodash |
+| undeclared/lodash.js:16:20:16:48 | JSON.pa ... ttings) | undeclared/lodash.js:16:31:16:38 | req.body | undeclared/lodash.js:16:20:16:48 | JSON.pa ... ttings) | Prototype pollution may be caused by merging a $@ using $@, whose version is not declared in any package.json. | undeclared/lodash.js:16:31:16:38 | req.body | user-controlled value | undeclared/lodash.js:16:3:16:49 | lodash. ... tings)) | lodash |
+edges
+| declared-vulnerable/lodash.js:8:38:8:45 | req.body | declared-vulnerable/lodash.js:8:38:8:52 | req.body.config | provenance |  |
+| declared-vulnerable/lodash.js:8:38:8:45 | req.body | declared-vulnerable/lodash.js:8:38:8:52 | req.body.config | provenance |  |
+| declared-vulnerable/lodash.js:8:38:8:45 | req.body | declared-vulnerable/lodash.js:8:38:8:52 | req.body.config | provenance | Config |
+| declared-vulnerable/lodash.js:8:38:8:52 | req.body.config | declared-vulnerable/lodash.js:8:27:8:53 | JSON.pa ... config) | provenance |  |
+| declared-vulnerable/lodash.js:8:38:8:52 | req.body.config | declared-vulnerable/lodash.js:8:27:8:53 | JSON.pa ... config) | provenance | Config |
+| undeclared/lodash.js:11:42:11:49 | req.body | undeclared/lodash.js:11:42:11:56 | req.body.config | provenance |  |
+| undeclared/lodash.js:11:42:11:49 | req.body | undeclared/lodash.js:11:42:11:56 | req.body.config | provenance |  |
+| undeclared/lodash.js:11:42:11:49 | req.body | undeclared/lodash.js:11:42:11:56 | req.body.config | provenance | Config |
+| undeclared/lodash.js:11:42:11:56 | req.body.config | undeclared/lodash.js:11:31:11:57 | JSON.pa ... config) | provenance |  |
+| undeclared/lodash.js:11:42:11:56 | req.body.config | undeclared/lodash.js:11:31:11:57 | JSON.pa ... config) | provenance | Config |
+| undeclared/lodash.js:16:31:16:38 | req.body | undeclared/lodash.js:16:31:16:47 | req.body.settings | provenance |  |
+| undeclared/lodash.js:16:31:16:38 | req.body | undeclared/lodash.js:16:31:16:47 | req.body.settings | provenance |  |
+| undeclared/lodash.js:16:31:16:38 | req.body | undeclared/lodash.js:16:31:16:47 | req.body.settings | provenance | Config |
+| undeclared/lodash.js:16:31:16:47 | req.body.settings | undeclared/lodash.js:16:20:16:48 | JSON.pa ... ttings) | provenance |  |
+| undeclared/lodash.js:16:31:16:47 | req.body.settings | undeclared/lodash.js:16:20:16:48 | JSON.pa ... ttings) | provenance | Config |
+nodes
+| declared-vulnerable/lodash.js:8:27:8:53 | JSON.pa ... config) | semmle.label | JSON.pa ... config) |
+| declared-vulnerable/lodash.js:8:38:8:45 | req.body | semmle.label | req.body |
+| declared-vulnerable/lodash.js:8:38:8:52 | req.body.config | semmle.label | req.body.config |
+| declared-vulnerable/lodash.js:8:38:8:52 | req.body.config | semmle.label | req.body.config |
+| undeclared/lodash.js:11:31:11:57 | JSON.pa ... config) | semmle.label | JSON.pa ... config) |
+| undeclared/lodash.js:11:42:11:49 | req.body | semmle.label | req.body |
+| undeclared/lodash.js:11:42:11:56 | req.body.config | semmle.label | req.body.config |
+| undeclared/lodash.js:11:42:11:56 | req.body.config | semmle.label | req.body.config |
+| undeclared/lodash.js:16:20:16:48 | JSON.pa ... ttings) | semmle.label | JSON.pa ... ttings) |
+| undeclared/lodash.js:16:31:16:38 | req.body | semmle.label | req.body |
+| undeclared/lodash.js:16:31:16:47 | req.body.settings | semmle.label | req.body.settings |
+| undeclared/lodash.js:16:31:16:47 | req.body.settings | semmle.label | req.body.settings |
+subpaths
