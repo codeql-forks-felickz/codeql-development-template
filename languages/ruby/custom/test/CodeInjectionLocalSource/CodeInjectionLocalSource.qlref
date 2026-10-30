@@ -1,0 +1,2 @@
+query: CodeInjectionLocalSource/CodeInjectionLocalSource.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
