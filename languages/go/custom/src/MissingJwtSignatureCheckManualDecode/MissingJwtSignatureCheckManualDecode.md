@@ -4,7 +4,11 @@ A JSON Web Token (JWT) consists of three base64url-encoded segments separated by
 
 The stock `go/missing-jwt-signature-check` query only reports unverified parsing through JWT libraries, so it does not report hand-written decoding.
 
-This query reports user-controlled tokens that are split on `"."`, whose payload segment is base64-decoded with `encoding/base64` and then unmarshalled with `encoding/json`, when neither the function that splits the token nor the function that unmarshals the claims checks a signature. A function is treated as checking a signature if it calls into `crypto/hmac`, `crypto/subtle`, `crypto/ed25519`, `crypto/ecdsa`, `rsa.VerifyPKCS1v15` or `rsa.VerifyPSS`, calls a function whose name contains `verif` or `signature`, or reads the third (signature) segment of the split token.
+This query reports user-controlled tokens that are split on `"."`, whose payload segment is base64-decoded with `encoding/base64` and then unmarshalled with `encoding/json`, when neither the function that splits the token nor the function that unmarshals the claims appears to check a signature. Recognized comparison and verification calls suppress an alert only when a read of the token's third (signature) segment reaches one of their arguments. Calls to functions whose names contain `verif` or `signature` also suppress an alert.
+
+## Known limitations
+
+The query does not check whether a verification result actually gates use of the claims. It also does not recognize verification performed solely in a differently named helper function.
 
 ## Recommendation
 

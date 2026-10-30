@@ -60,6 +60,10 @@ func decodeSegment(seg string) ([]byte, error) {
 	return base64.RawURLEncoding.DecodeString(seg)
 }
 
+func splitToken(token string) []string {
+	return strings.Split(token, ".")
+}
+
 // The payload is decoded through a helper and parsed with a streaming decoder.
 func claimsViaHelperBad(r *http.Request) (*Claims, error) {
 	parts := strings.SplitN(r.Header.Get("X-Token"), ".", 3) // $ Source
@@ -91,6 +95,30 @@ func claimsDecodeIntoBufferBad(r *http.Request) (*Claims, error) {
 	}
 	var claims Claims
 	err = json.Unmarshal(buf[:n], &claims) // $ Alert
+	return &claims, err
+}
+
+func claimsWithSplitHelperBad(r *http.Request) (*Claims, error) {
+	token := r.Header.Get("X-Helper-Token") // $ Source
+	parts := splitToken(token)
+	payload, err := decodeSegment(parts[1])
+	if err != nil {
+		return nil, err
+	}
+	var claims Claims
+	err = json.Unmarshal(payload, &claims) // $ Alert
+	return &claims, err
+}
+
+func claimsWithCommaSplitHelper(r *http.Request) (*Claims, error) {
+	token := r.Header.Get("X-Comma-Token")
+	parts := strings.Split(token, ",")
+	payload, err := decodeSegment(parts[1])
+	if err != nil {
+		return nil, err
+	}
+	var claims Claims
+	err = json.Unmarshal(payload, &claims)
 	return &claims, err
 }
 
@@ -136,6 +164,32 @@ func tokenValidViaHelperGood(r *http.Request) (*Claims, error) {
 	}
 	var claims Claims
 	err = json.Unmarshal(payload, &claims)
+	return &claims, err
+}
+
+func tokenSigningOnlyBad(r *http.Request) (*Claims, error) {
+	parts := strings.Split(extractToken(r), ".")
+	mac := hmac.New(sha256.New, jwtKey)
+	mac.Write([]byte(parts[0] + "." + parts[1]))
+	_ = mac.Sum(nil)
+	payload, err := base64.RawURLEncoding.DecodeString(parts[1])
+	if err != nil {
+		return nil, err
+	}
+	var claims Claims
+	err = json.Unmarshal(payload, &claims) // $ Alert
+	return &claims, err
+}
+
+func tokenSignatureReadOnlyBad(r *http.Request) (*Claims, error) {
+	parts := strings.Split(extractToken(r), ".")
+	_ = parts[2]
+	payload, err := base64.RawURLEncoding.DecodeString(parts[1])
+	if err != nil {
+		return nil, err
+	}
+	var claims Claims
+	err = json.Unmarshal(payload, &claims) // $ Alert
 	return &claims, err
 }
 

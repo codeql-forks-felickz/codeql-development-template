@@ -23,9 +23,24 @@ class DotSplitCall extends DataFlow::CallNode {
 
 /** Gets a read of the second segment (the JWT payload) of the result of `split`. */
 DataFlow::ElementReadNode payloadSegmentRead(DotSplitCall split) {
-  DataFlow::localFlow(split.getResult(), result.getBase()) and
+  SplitResultToElementReadFlow::flow(split.getResult(), result.getBase()) and
   result.getIndex().getIntValue() = 1
 }
+
+private module SplitResultToElementReadConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(DotSplitCall split | source = split.getResult())
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(DataFlow::ElementReadNode read |
+      sink = read.getBase() and
+      read.getIndex().getIntValue() = 1
+    )
+  }
+}
+
+private module SplitResultToElementReadFlow = DataFlow::Global<SplitResultToElementReadConfig>;
 
 /**
  * Holds if `pred` is the encoded input and `succ` the decoded output of a call to a base64
@@ -43,22 +58,46 @@ predicate base64DecodeStep(DataFlow::Node pred, DataFlow::Node succ) {
   )
 }
 
+/** Holds if a signature-segment read reaches a comparison or verification call. */
+predicate signatureReadReachesCall(
+  DataFlow::ElementReadNode read, DataFlow::CallNode verificationCall
+) {
+  DataFlow::localFlow(read, verificationCall.getAnArgument())
+  or
+  exists(DataFlow::MethodCallNode decode |
+    decode.getTarget().hasQualifiedName("encoding/base64", "Encoding", "DecodeString") and
+    DataFlow::localFlow(read, decode.getArgument(0)) and
+    DataFlow::localFlow(decode.getResult(0), verificationCall.getAnArgument())
+  )
+}
+
+/** Holds if `call` is a recognized signature comparison or verification operation. */
+predicate isSignatureComparisonOrVerification(DataFlow::CallNode call) {
+  call.getTarget().hasQualifiedName("crypto/hmac", "Equal")
+  or
+  call.getTarget().hasQualifiedName("crypto/subtle", "ConstantTimeCompare")
+  or
+  call.getTarget().hasQualifiedName("crypto/ed25519", "Verify")
+  or
+  call.getTarget().hasQualifiedName("crypto/ecdsa", ["Verify", "VerifyASN1"])
+  or
+  call.getTarget().hasQualifiedName("crypto/rsa", ["VerifyPKCS1v15", "VerifyPSS"])
+}
+
 /** Holds if `f` checks a cryptographic signature, or calls a function that appears to do so. */
 predicate verifiesSignature(FuncDef f) {
   exists(DataFlow::CallNode call | call.getRoot() = f |
-    call.getTarget()
-        .hasQualifiedName(["crypto/hmac", "crypto/subtle", "crypto/ed25519", "crypto/ecdsa"], _)
-    or
-    call.getTarget().hasQualifiedName("crypto/rsa", ["VerifyPKCS1v15", "VerifyPSS"])
-    or
     call.getTarget().getName().regexpMatch("(?i).*(verif|signature).*")
   )
   or
-  // The signature segment of the token is used.
-  exists(DataFlow::ElementReadNode read, DotSplitCall split |
+  // The signature segment of the token reaches a comparison or verification call.
+  exists(DataFlow::ElementReadNode read, DotSplitCall split, DataFlow::CallNode call |
     split.getRoot() = f and
     DataFlow::localFlow(split.getResult(), read.getBase()) and
-    read.getIndex().getIntValue() = 2
+    read.getIndex().getIntValue() = 2 and
+    call.getRoot() = f and
+    isSignatureComparisonOrVerification(call) and
+    signatureReadReachesCall(read, call)
   )
 }
 
