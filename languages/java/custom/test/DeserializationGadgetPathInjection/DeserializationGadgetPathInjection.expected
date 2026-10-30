@@ -1,18 +1,26 @@
 #select
 | LogFile.java:11:40:11:47 | filename | LogFile.java:11:40:11:47 | filename | LogFile.java:11:40:11:47 | filename | This path depends on $@ restored during deserialization, so a crafted serialized stream can choose which file is accessed. | LogFile.java:11:40:11:47 | filename | state |
 | LogFile.java:25:5:25:18 | new File(...) | LogFile.java:24:19:24:30 | readUTF(...) : String | LogFile.java:25:5:25:18 | new File(...) | This path depends on $@ restored during deserialization, so a crafted serialized stream can choose which file is accessed. | LogFile.java:24:19:24:30 | readUTF(...) | state |
-| LogFile.java:37:25:37:28 | path | LogFile.java:36:28:36:42 | readObject(...) : Object | LogFile.java:37:25:37:28 | path | This path depends on $@ restored during deserialization, so a crafted serialized stream can choose which file is accessed. | LogFile.java:36:28:36:42 | readObject(...) | state |
+| LogFile.java:34:5:34:18 | new File(...) | LogFile.java:33:19:33:34 | readUTF(...) : String | LogFile.java:34:5:34:18 | new File(...) | This path depends on $@ restored during deserialization, so a crafted serialized stream can choose which file is accessed. | LogFile.java:33:19:33:34 | readUTF(...) | state |
+| LogFile.java:46:25:46:28 | path | LogFile.java:45:28:45:42 | readObject(...) : Object | LogFile.java:46:25:46:28 | path | This path depends on $@ restored during deserialization, so a crafted serialized stream can choose which file is accessed. | LogFile.java:45:28:45:42 | readObject(...) | state |
+| LogFile.java:55:20:55:27 | filename | LogFile.java:55:20:55:27 | filename | LogFile.java:55:20:55:27 | filename | This path depends on $@ restored during deserialization, so a crafted serialized stream can choose which file is accessed. | LogFile.java:55:20:55:27 | filename | state |
 edges
 | LogFile.java:24:19:24:30 | readUTF(...) : String | LogFile.java:25:14:25:17 | path : String | provenance |  |
 | LogFile.java:25:14:25:17 | path : String | LogFile.java:25:5:25:18 | new File(...) | provenance | MaD:46512 Sink:MaD:46437 |
-| LogFile.java:36:19:36:42 | (...)... : String | LogFile.java:37:25:37:28 | path | provenance | Sink:MaD:46454 |
-| LogFile.java:36:28:36:42 | readObject(...) : Object | LogFile.java:36:19:36:42 | (...)... : String | provenance |  |
+| LogFile.java:33:19:33:34 | readUTF(...) : String | LogFile.java:34:14:34:17 | path : String | provenance |  |
+| LogFile.java:34:14:34:17 | path : String | LogFile.java:34:5:34:18 | new File(...) | provenance | MaD:46512 Sink:MaD:46437 |
+| LogFile.java:45:19:45:42 | (...)... : String | LogFile.java:46:25:46:28 | path | provenance | Sink:MaD:46454 |
+| LogFile.java:45:28:45:42 | readObject(...) : Object | LogFile.java:45:19:45:42 | (...)... : String | provenance |  |
 nodes
 | LogFile.java:11:40:11:47 | filename | semmle.label | filename |
 | LogFile.java:24:19:24:30 | readUTF(...) : String | semmle.label | readUTF(...) : String |
 | LogFile.java:25:5:25:18 | new File(...) | semmle.label | new File(...) |
 | LogFile.java:25:14:25:17 | path : String | semmle.label | path : String |
-| LogFile.java:36:19:36:42 | (...)... : String | semmle.label | (...)... : String |
-| LogFile.java:36:28:36:42 | readObject(...) : Object | semmle.label | readObject(...) : Object |
-| LogFile.java:37:25:37:28 | path | semmle.label | path |
+| LogFile.java:33:19:33:34 | readUTF(...) : String | semmle.label | readUTF(...) : String |
+| LogFile.java:34:5:34:18 | new File(...) | semmle.label | new File(...) |
+| LogFile.java:34:14:34:17 | path : String | semmle.label | path : String |
+| LogFile.java:45:19:45:42 | (...)... : String | semmle.label | (...)... : String |
+| LogFile.java:45:28:45:42 | readObject(...) : Object | semmle.label | readObject(...) : Object |
+| LogFile.java:46:25:46:28 | path | semmle.label | path |
+| LogFile.java:55:20:55:27 | filename | semmle.label | filename |
 subpaths

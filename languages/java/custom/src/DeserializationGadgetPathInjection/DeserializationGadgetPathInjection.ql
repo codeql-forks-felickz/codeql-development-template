@@ -31,14 +31,24 @@ class DeserializationCallback extends Method {
     (
       this.hasName("readObject") and
       this.getNumberOfParameters() = 1 and
-      this.getParameterType(0) instanceof TypeObjectInputStream
+      this.getParameterType(0) instanceof TypeObjectInputStream and
+      this.isPrivate() and
+      not this.isStatic() and
+      this.getReturnType() instanceof VoidType
       or
       this.hasName("readExternal") and
       this.getNumberOfParameters() = 1 and
-      this.getParameterType(0) instanceof TypeObjectInput
+      this.getParameterType(0) instanceof TypeObjectInput and
+      this.getDeclaringType().getAnAncestor().hasQualifiedName("java.io", "Externalizable") and
+      this.isPublic() and
+      not this.isStatic() and
+      this.getReturnType() instanceof VoidType
       or
       this.hasName("readResolve") and
-      this.getNumberOfParameters() = 0
+      this.getNumberOfParameters() = 0 and
+      not this.isStatic() and
+      not this.getReturnType() instanceof PrimitiveType and
+      not this.getReturnType() instanceof VoidType
     )
   }
 }
@@ -62,13 +72,22 @@ class DeserializedStateSource extends DataFlow::Node {
       fr = this.asExpr() and
       fr.getEnclosingCallable() = cb and
       fr.getField() instanceof DeserializedField and
-      fr.isOwnFieldAccess()
+      fr.isOwnFieldAccess() and
+      not exists(AssignExpr assignment, FieldWrite fw |
+        assignment.getDest() = fw and
+        fw.getField() = fr.getField() and
+        assignment.getEnclosingCallable() = cb and
+        fw.isOwnFieldAccess() and
+        fr != assignment.getSource() and
+        DataFlow::localFlow(DataFlow::exprNode(assignment.getSource()), DataFlow::exprNode(fr))
+      )
     )
     or
     exists(DeserializationCallback cb, MethodCall mc |
       mc = this.asExpr() and
       mc.getEnclosingCallable() = cb and
-      mc.getQualifier() = cb.getParameter(0).getAnAccess() and
+      DataFlow::localFlow(DataFlow::exprNode(cb.getParameter(0).getAnAccess()),
+        DataFlow::exprNode(mc.getQualifier())) and
       mc.getMethod().getName().matches("read%") and
       not mc.getMethod().hasName("defaultReadObject")
     )
