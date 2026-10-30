@@ -2,7 +2,11 @@
 
 Django's `CsrfViewMiddleware` only checks unsafe methods such as POST, PUT and DELETE. GET, HEAD, OPTIONS and TRACE requests are never checked. A view that deletes or updates data without checking the HTTP method can therefore be triggered by a link, an image tag or a redirect on another site. The victim's browser attaches the session cookie, so the change runs as the victim. This happens whether or not the middleware is enabled.
 
-This query reports state-changing calls in routed function-based views: model `save`/`delete`, manager or query-set `create`/`update`/`delete` (and the related bulk methods), and `set_password`. It skips views that read `request.method`, call `is_valid()` on a form, or use `require_POST` or `require_http_methods`. Class-based views are skipped because Django dispatches them by method name.
+This query reports state-changing calls in routed function-based views: model `save`/`delete`, manager or query-set `create`/`update`/`delete` (and the related bulk methods), and `set_password`. A method decorator suppresses a result only when its literal allowed-method list excludes GET. A method comparison, membership check, or `is_valid()` call suppresses a result only when its controlling branch prevents GET from reaching that state change; simply reading or logging `request.method` is not sufficient. Class-based views are skipped because Django dispatches them by method name.
+
+## Known limitations
+
+The method restriction analysis recognizes literal list or tuple arguments to `require_http_methods` and direct method comparisons or membership checks. Dynamically computed method lists, aliases, and compound boolean conditions are not recognized and may still be reported.
 
 ## Recommendation
 

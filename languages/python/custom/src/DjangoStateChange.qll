@@ -42,18 +42,78 @@ class DjangoStateChangingCall extends DataFlow::CallCfgNode {
   string getOperation() { result = operation }
 }
 
-/** Holds if `call` is a state-changing call inside `f` (including nested scopes). */
+private predicate isComprehensionScope(Function scope) {
+  exists(Comp comprehension | comprehension.getFunction() = scope)
+}
+
+private predicate isReferencedNestedScope(Function enclosing, Function nested) {
+  exists(FunctionDef definition, Variable variable, Name access |
+    definition.getDefinedFunction() = nested and
+    definition.defines(variable) and
+    access.uses(variable) and
+    access.getScope().getEnclosingScope*() = enclosing
+  )
+  or
+  exists(Lambda expression |
+    expression.getInnerScope() = nested and
+    (
+      exists(Call call |
+        call.getScope().getEnclosingScope*() = enclosing and
+        (
+          call.getFunc() = expression
+          or
+          call.getAnArg() = expression
+          or
+          call.getAKeyword().getValue() = expression
+        )
+      )
+      or
+      exists(Assign assignment, Variable variable, Name access |
+        assignment.getValue() = expression and
+        assignment.defines(variable) and
+        access.uses(variable) and
+        access.getScope().getEnclosingScope*() = enclosing
+      )
+    )
+  )
+}
+
+/** Holds if `call` is in the view or an invoked/referenced nested scope. */
+private predicate isViewExecutionScope(Function f, Scope scope) {
+  scope.getEnclosingScope*() = f and
+  not exists(Function nested |
+    nested = scope.getEnclosingScope*() and
+    nested != f and
+    not isComprehensionScope(nested) and
+    not isReferencedNestedScope(f, nested)
+  )
+}
+
 predicate performsStateChange(Function f, DjangoStateChangingCall call) {
-  call.getScope().getEnclosingScope*() = f
+  isViewExecutionScope(f, call.getScope())
 }
 
 /**
- * Holds if `f` appears to authenticate requests with something other than
- * cookies, for example an `Authorization` header or a webhook signature,
- * so that a cross-site request cannot carry the credentials.
+ * Holds if `f` reads a credential from a request header, such as an
+ * Authorization header or webhook signature.
  */
 predicate usesNonCookieAuthentication(Function f) {
-  exists(StringLiteral s | s.getScope().getEnclosingScope*() = f |
-    s.getText().toLowerCase().regexpMatch(".*(authorization|signature|x-api-key|api_key).*")
+  exists(StringLiteral key, Attribute headers |
+    headers.getName() in ["headers", "META"] and
+    headers.getObject().(Name).getVariable() = f.getArg(0).(Name).getVariable() and
+    isViewExecutionScope(f, key.getScope()) and
+    key.getText().toLowerCase().regexpMatch(".*(authorization|signature|x-api-key|api_key).*") and
+    (
+      exists(Subscript subscript |
+        subscript.getObject() = headers and subscript.getIndex() = key
+      )
+      or
+      exists(Call lookup, Attribute get |
+        get = lookup.getFunc() and
+        get.getObject() = headers and
+        get.getName() = "get" and
+        lookup.getArg(0) = key
+      )
+    )
   )
 }

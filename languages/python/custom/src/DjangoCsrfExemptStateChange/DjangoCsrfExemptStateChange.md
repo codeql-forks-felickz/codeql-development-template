@@ -2,7 +2,7 @@
 
 Django's `CsrfViewMiddleware` rejects cross-site POST requests that lack a valid CSRF token. The `@csrf_exempt` decorator turns this check off for a single view. If that view changes server-side state, such as editing a profile or changing a password, an attacker's page can submit a form to it. The victim's browser attaches the session cookie, so the change runs as the victim.
 
-The standard `py/csrf-protection-disabled` query only checks the global `MIDDLEWARE` setting, so it does not report exempt views when the middleware is enabled. This query reports `@csrf_exempt` on a view that saves or deletes a model instance, calls `create`, `update`, `delete`, `bulk_create`, `bulk_update`, `get_or_create` or `update_or_create` on a manager or query set, or calls `set_password`. Views that mention an `Authorization` header, an API key or a signature are skipped, because they probably use a non-cookie credential that a cross-site request cannot send.
+The standard `py/csrf-protection-disabled` query only checks the global `MIDDLEWARE` setting, so it does not report exempt views when the middleware is enabled. This query reports `@csrf_exempt` on a view that saves or deletes a model instance, calls `create`, `update`, `delete`, `bulk_create`, `bulk_update`, `get_or_create` or `update_or_create` on a manager or query set, or calls `set_password`. A lookup of a credential-like key in `request.headers` or `request.META` is treated as evidence of non-cookie authentication. Other strings, including template names, do not suppress a result.
 
 ## Recommendation
 
