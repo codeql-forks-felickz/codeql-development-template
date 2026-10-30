@@ -18,6 +18,10 @@ public class OtpService {
 
   static void store(String email, String code) {}
 
+  static String randomCode() {
+    return Integer.toString(new Random().nextInt()); // $ Source
+  }
+
   // BAD: 4-digit OTP generated with an unseeded java.util.Random (reported pattern).
   public void requestOtpLevel1(String email) {
     Random random = new Random();
@@ -78,6 +82,12 @@ public class OtpService {
     Thread.sleep(backoffDelay);
   }
 
+  // GOOD: an OTP retry delay is metadata, not a one-time secret.
+  public void retryOtpWithJitter() throws InterruptedException {
+    int otpRetryDelay = new Random().nextInt(500);
+    Thread.sleep(otpRetryDelay);
+  }
+
   // GOOD: names that merely contain the letters "otp" are not OTPs.
   public int footprint() {
     int footprintSize = new Random().nextInt(10);
@@ -88,5 +98,13 @@ public class OtpService {
   public void createOtpPassword(String email) {
     String otpPassword = Integer.toString(new Random().nextInt());
     store(email, otpPassword);
+  }
+
+  // BAD: one use of a shared helper is a password, but the OTP use still needs reporting.
+  public void createPasswordAndOtp(String email) {
+    String password = randomCode();
+    String otp = randomCode(); // $ Alert
+    store(email, password);
+    store(email, otp);
   }
 }

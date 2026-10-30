@@ -1,42 +1,48 @@
-WARNING: predicate 'getResult' has been deprecated and may be removed in future (WeakCryptoRandomness.ql:72,27-36)
+WARNING: predicate 'getResult' has been deprecated and may be removed in future (WeakCryptoRandomness.ql:75,27-36)
 #select
-| OtpService.java:24:18:24:61 | format(...) | OtpService.java:24:40:24:60 | nextInt(...) : Number | OtpService.java:24:18:24:61 | format(...) | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:24:40:24:60 | nextInt(...) | non-cryptographic random number generator |
-| OtpService.java:31:18:31:69 | format(...) | OtpService.java:31:40:31:68 | nextInt(...) : Number | OtpService.java:31:18:31:69 | format(...) | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:31:40:31:68 | nextInt(...) | non-cryptographic random number generator |
-| OtpService.java:37:23:37:67 | valueOf(...) | OtpService.java:37:38:37:66 | nextInt(...) : Number | OtpService.java:37:23:37:67 | valueOf(...) | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:37:38:37:66 | nextInt(...) | non-cryptographic random number generator |
-| OtpService.java:42:51:42:95 | valueOf(...) | OtpService.java:42:66:42:94 | nextInt(...) : Number | OtpService.java:42:51:42:95 | valueOf(...) | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:42:66:42:94 | nextInt(...) | non-cryptographic random number generator |
-| OtpService.java:52:12:52:81 | toString(...) | OtpService.java:52:29:52:80 | nextInt(...) : Number | OtpService.java:52:12:52:81 | toString(...) | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:52:29:52:80 | nextInt(...) | non-cryptographic random number generator |
-| OtpService.java:57:28:57:58 | (...)... | OtpService.java:57:35:57:47 | random(...) : Number | OtpService.java:57:28:57:58 | (...)... | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:57:35:57:47 | random(...) | non-cryptographic random number generator |
-| OtpService.java:63:25:63:65 | toHexString(...) | OtpService.java:63:42:63:64 | nextLong(...) : Number | OtpService.java:63:25:63:65 | toHexString(...) | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:63:42:63:64 | nextLong(...) | non-cryptographic random number generator |
+| OtpService.java:28:18:28:61 | format(...) | OtpService.java:28:40:28:60 | nextInt(...) : Number | OtpService.java:28:18:28:61 | format(...) | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:28:40:28:60 | nextInt(...) | non-cryptographic random number generator |
+| OtpService.java:35:18:35:69 | format(...) | OtpService.java:35:40:35:68 | nextInt(...) : Number | OtpService.java:35:18:35:69 | format(...) | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:35:40:35:68 | nextInt(...) | non-cryptographic random number generator |
+| OtpService.java:41:23:41:67 | valueOf(...) | OtpService.java:41:38:41:66 | nextInt(...) : Number | OtpService.java:41:23:41:67 | valueOf(...) | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:41:38:41:66 | nextInt(...) | non-cryptographic random number generator |
+| OtpService.java:46:51:46:95 | valueOf(...) | OtpService.java:46:66:46:94 | nextInt(...) : Number | OtpService.java:46:51:46:95 | valueOf(...) | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:46:66:46:94 | nextInt(...) | non-cryptographic random number generator |
+| OtpService.java:56:12:56:81 | toString(...) | OtpService.java:56:29:56:80 | nextInt(...) : Number | OtpService.java:56:12:56:81 | toString(...) | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:56:29:56:80 | nextInt(...) | non-cryptographic random number generator |
+| OtpService.java:61:28:61:58 | (...)... | OtpService.java:61:35:61:47 | random(...) : Number | OtpService.java:61:28:61:58 | (...)... | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:61:35:61:47 | random(...) | non-cryptographic random number generator |
+| OtpService.java:67:25:67:65 | toHexString(...) | OtpService.java:67:42:67:64 | nextLong(...) : Number | OtpService.java:67:25:67:65 | toHexString(...) | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:67:42:67:64 | nextLong(...) | non-cryptographic random number generator |
+| OtpService.java:106:18:106:29 | randomCode(...) | OtpService.java:22:29:22:50 | nextInt(...) : Number | OtpService.java:106:18:106:29 | randomCode(...) | This one-time password or security token is generated from a $@, which is predictable. | OtpService.java:22:29:22:50 | nextInt(...) | non-cryptographic random number generator |
 edges
-| OtpService.java:24:18:24:61 | new ..[] { .. } : Object[] [[]] : Number | OtpService.java:24:18:24:61 | format(...) | provenance | MaD:46655 |
-| OtpService.java:24:40:24:60 | nextInt(...) : Number | OtpService.java:24:18:24:61 | new ..[] { .. } : Object[] [[]] : Number | provenance |  |
-| OtpService.java:31:18:31:69 | new ..[] { .. } : Object[] [[]] : Number | OtpService.java:31:18:31:69 | format(...) | provenance | MaD:46655 |
-| OtpService.java:31:40:31:68 | nextInt(...) : Number | OtpService.java:31:18:31:69 | new ..[] { .. } : Object[] [[]] : Number | provenance |  |
-| OtpService.java:37:38:37:66 | nextInt(...) : Number | OtpService.java:37:23:37:67 | valueOf(...) | provenance | Config |
-| OtpService.java:42:66:42:94 | nextInt(...) : Number | OtpService.java:42:51:42:95 | valueOf(...) | provenance | Config |
-| OtpService.java:52:29:52:80 | nextInt(...) : Number | OtpService.java:52:12:52:81 | toString(...) | provenance | TaintPreservingCallable |
-| OtpService.java:57:35:57:47 | random(...) : Number | OtpService.java:57:35:57:57 | ... * ... : Number | provenance | Config |
-| OtpService.java:57:35:57:57 | ... * ... : Number | OtpService.java:57:28:57:58 | (...)... | provenance |  |
-| OtpService.java:63:42:63:64 | nextLong(...) : Number | OtpService.java:63:25:63:65 | toHexString(...) | provenance | TaintPreservingCallable |
-| OtpService.java:89:43:89:64 | nextInt(...) : Number | OtpService.java:89:26:89:65 | toString(...) | provenance | TaintPreservingCallable |
+| OtpService.java:22:12:22:51 | toString(...) : String | OtpService.java:106:18:106:29 | randomCode(...) | provenance |  |
+| OtpService.java:22:29:22:50 | nextInt(...) : Number | OtpService.java:22:12:22:51 | toString(...) : String | provenance | TaintPreservingCallable |
+| OtpService.java:28:18:28:61 | new ..[] { .. } : Object[] [[]] : Number | OtpService.java:28:18:28:61 | format(...) | provenance | MaD:46655 |
+| OtpService.java:28:40:28:60 | nextInt(...) : Number | OtpService.java:28:18:28:61 | new ..[] { .. } : Object[] [[]] : Number | provenance |  |
+| OtpService.java:35:18:35:69 | new ..[] { .. } : Object[] [[]] : Number | OtpService.java:35:18:35:69 | format(...) | provenance | MaD:46655 |
+| OtpService.java:35:40:35:68 | nextInt(...) : Number | OtpService.java:35:18:35:69 | new ..[] { .. } : Object[] [[]] : Number | provenance |  |
+| OtpService.java:41:38:41:66 | nextInt(...) : Number | OtpService.java:41:23:41:67 | valueOf(...) | provenance | Config |
+| OtpService.java:46:66:46:94 | nextInt(...) : Number | OtpService.java:46:51:46:95 | valueOf(...) | provenance | Config |
+| OtpService.java:56:29:56:80 | nextInt(...) : Number | OtpService.java:56:12:56:81 | toString(...) | provenance | TaintPreservingCallable |
+| OtpService.java:61:35:61:47 | random(...) : Number | OtpService.java:61:35:61:57 | ... * ... : Number | provenance | Config |
+| OtpService.java:61:35:61:57 | ... * ... : Number | OtpService.java:61:28:61:58 | (...)... | provenance |  |
+| OtpService.java:67:42:67:64 | nextLong(...) : Number | OtpService.java:67:25:67:65 | toHexString(...) | provenance | TaintPreservingCallable |
+| OtpService.java:99:43:99:64 | nextInt(...) : Number | OtpService.java:99:26:99:65 | toString(...) | provenance | TaintPreservingCallable |
 nodes
-| OtpService.java:24:18:24:61 | format(...) | semmle.label | format(...) |
-| OtpService.java:24:18:24:61 | new ..[] { .. } : Object[] [[]] : Number | semmle.label | new ..[] { .. } : Object[] [[]] : Number |
-| OtpService.java:24:40:24:60 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
-| OtpService.java:31:18:31:69 | format(...) | semmle.label | format(...) |
-| OtpService.java:31:18:31:69 | new ..[] { .. } : Object[] [[]] : Number | semmle.label | new ..[] { .. } : Object[] [[]] : Number |
-| OtpService.java:31:40:31:68 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
-| OtpService.java:37:23:37:67 | valueOf(...) | semmle.label | valueOf(...) |
-| OtpService.java:37:38:37:66 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
-| OtpService.java:42:51:42:95 | valueOf(...) | semmle.label | valueOf(...) |
-| OtpService.java:42:66:42:94 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
-| OtpService.java:52:12:52:81 | toString(...) | semmle.label | toString(...) |
-| OtpService.java:52:29:52:80 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
-| OtpService.java:57:28:57:58 | (...)... | semmle.label | (...)... |
-| OtpService.java:57:35:57:47 | random(...) : Number | semmle.label | random(...) : Number |
-| OtpService.java:57:35:57:57 | ... * ... : Number | semmle.label | ... * ... : Number |
-| OtpService.java:63:25:63:65 | toHexString(...) | semmle.label | toHexString(...) |
-| OtpService.java:63:42:63:64 | nextLong(...) : Number | semmle.label | nextLong(...) : Number |
-| OtpService.java:89:26:89:65 | toString(...) | semmle.label | toString(...) |
-| OtpService.java:89:43:89:64 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| OtpService.java:22:12:22:51 | toString(...) : String | semmle.label | toString(...) : String |
+| OtpService.java:22:29:22:50 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| OtpService.java:28:18:28:61 | format(...) | semmle.label | format(...) |
+| OtpService.java:28:18:28:61 | new ..[] { .. } : Object[] [[]] : Number | semmle.label | new ..[] { .. } : Object[] [[]] : Number |
+| OtpService.java:28:40:28:60 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| OtpService.java:35:18:35:69 | format(...) | semmle.label | format(...) |
+| OtpService.java:35:18:35:69 | new ..[] { .. } : Object[] [[]] : Number | semmle.label | new ..[] { .. } : Object[] [[]] : Number |
+| OtpService.java:35:40:35:68 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| OtpService.java:41:23:41:67 | valueOf(...) | semmle.label | valueOf(...) |
+| OtpService.java:41:38:41:66 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| OtpService.java:46:51:46:95 | valueOf(...) | semmle.label | valueOf(...) |
+| OtpService.java:46:66:46:94 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| OtpService.java:56:12:56:81 | toString(...) | semmle.label | toString(...) |
+| OtpService.java:56:29:56:80 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| OtpService.java:61:28:61:58 | (...)... | semmle.label | (...)... |
+| OtpService.java:61:35:61:47 | random(...) : Number | semmle.label | random(...) : Number |
+| OtpService.java:61:35:61:57 | ... * ... : Number | semmle.label | ... * ... : Number |
+| OtpService.java:67:25:67:65 | toHexString(...) | semmle.label | toHexString(...) |
+| OtpService.java:67:42:67:64 | nextLong(...) : Number | semmle.label | nextLong(...) : Number |
+| OtpService.java:99:26:99:65 | toString(...) | semmle.label | toString(...) |
+| OtpService.java:99:43:99:64 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| OtpService.java:106:18:106:29 | randomCode(...) | semmle.label | randomCode(...) |
 subpaths

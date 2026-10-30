@@ -38,13 +38,16 @@ private string normalizeName(string name) {
 bindingset[name]
 private predicate isOneTimeSecretName(string name) {
   exists(string n | n = normalizeName(name) |
-    n.regexpMatch(".*_(otps?|totp|hotp)_.*")
-    or
-    n.regexpMatch(".*_(one_?time|verification|verify|confirmation|activation|mfa|2_?fa|two_?(factor|fa)|reset|recovery|security|sms|login|auth)_(codes?|pins?|tokens?)_.*")
-    or
-    n.regexpMatch(".*_(session|csrf|xsrf|access|api|bearer|invite|magic_link)_(tokens?|keys?)_.*")
-    or
-    n.regexpMatch(".*_session_ids?_.*")
+    not n.regexpMatch(".*_(delay|timeout|retry|count|length|size|ttl|expiry|interval|attempts|max|min)_.*") and
+    (
+      n.regexpMatch(".*_(otps?|totp|hotp)_.*")
+      or
+      n.regexpMatch(".*_(one_?time|verification|verify|confirmation|activation|mfa|2_?fa|two_?(factor|fa)|reset|recovery|security|sms|login|auth)_(codes?|pins?|tokens?)_.*")
+      or
+      n.regexpMatch(".*_(session|csrf|xsrf|access|api|bearer|invite|magic_link)_(tokens?|keys?)_.*")
+      or
+      n.regexpMatch(".*_session_ids?_.*")
+    )
   )
 }
 
@@ -111,7 +114,11 @@ from WeakCryptoRandomnessFlow::PathNode source, WeakCryptoRandomnessFlow::PathNo
 where
   WeakCryptoRandomnessFlow::flowPath(source, sink) and
   // Avoid duplicating results already reported by `java/insecure-randomness`.
-  not InsecureRandomnessFlow::flow(source.getNode(), _)
+  not exists(DataFlow::Node stockSink |
+    stockSink instanceof InsecureRandomnessSink and
+    InsecureRandomnessFlow::flow(source.getNode(), stockSink) and
+    DataFlow::localFlow(sink.getNode(), stockSink)
+  )
 select sink.getNode(), source, sink,
   "This one-time password or security token is generated from a $@, which is predictable.",
   source.getNode(), "non-cryptographic random number generator"
