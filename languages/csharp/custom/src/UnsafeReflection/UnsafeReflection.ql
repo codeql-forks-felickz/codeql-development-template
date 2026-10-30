@@ -87,6 +87,30 @@ private predicate typeLookupStep(DataFlow::Node pred, DataFlow::Node succ) {
   )
 }
 
+/**
+ * Holds if `pred` is a tainted `LinkedList<T>` and `succ` reads `list.First.Value` or
+ * `list.Last.Value`. The standard models taint the list object on `AddLast(T)`/`AddFirst(T)`
+ * but do not carry that taint through the `First`/`Last` node to its `Value`.
+ */
+private predicate linkedListNodeValueStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(PropertyAccess value, PropertyAccess node |
+    value.getProperty().hasName("Value") and
+    value
+        .getProperty()
+        .getDeclaringType()
+        .getUnboundDeclaration()
+        .hasFullyQualifiedName("System.Collections.Generic", "LinkedListNode`1") and
+    node = value.getQualifier() and
+    node.getProperty().hasName(["First", "Last"]) and
+    node.getProperty()
+        .getDeclaringType()
+        .getUnboundDeclaration()
+        .hasFullyQualifiedName("System.Collections.Generic", "LinkedList`1") and
+    pred.asExpr() = node.getQualifier() and
+    succ.asExpr() = value
+  )
+}
+
 /** Holds if `g` checks that `e` is contained in an allowlist, for example `allowed.Contains(e)`. */
 private predicate allowListGuard(Guard g, Expr e, GuardValue v) {
   exists(MethodCall mc | mc = g |
@@ -142,6 +166,8 @@ module UnsafeReflectionConfig implements DataFlow::ConfigSig {
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     typeLookupStep(pred, succ)
+    or
+    linkedListNodeValueStep(pred, succ)
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

@@ -2,7 +2,7 @@
 
 Passing a user-controlled type or assembly name to reflection APIs such as `Activator.CreateInstance`, `AppDomain.CreateInstanceAndUnwrap`, `Assembly.CreateInstance` or `Type.InvokeMember` lets an attacker choose which loadable type is instantiated or invoked. Constructors, static initializers and invoked members of unintended types can have dangerous side effects.
 
-The query also follows type names through `Type.GetType`, `Assembly.GetType` and `Module.GetType` to the resulting `Type` object.
+The query also follows type names through `Type.GetType`, `Assembly.GetType` and `Module.GetType` to the resulting `Type` object. It also follows a tainted `LinkedList<T>` to its `First.Value` and `Last.Value` elements.
 
 ## Recommendation
 

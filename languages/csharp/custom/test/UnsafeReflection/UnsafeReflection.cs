@@ -28,6 +28,31 @@ namespace UnsafeReflectionTests
             object obj = container.Unwrap();
         }
 
+        // Juliet CWE-470 flow variant 73: the type name is passed through a LinkedList.
+        public void BadLinkedList(HttpRequest req)
+        {
+            string data = req.QueryString["id"]; // $ Source
+            LinkedList<string> dataLinkedList = new LinkedList<string>();
+            dataLinkedList.AddLast(data);
+            BadLinkedListSink(dataLinkedList);
+        }
+
+        private static void BadLinkedListSink(LinkedList<string> dataLinkedList)
+        {
+            string data = dataLinkedList.Last.Value;
+            var container = Activator.CreateInstance(null, data); // $ Alert
+            object obj = container.Unwrap();
+        }
+
+        // GOOD: the LinkedList only holds a hardcoded type name.
+        public void GoodLinkedList()
+        {
+            LinkedList<string> dataLinkedList = new LinkedList<string>();
+            dataLinkedList.AddLast("Testing.test");
+            var container = Activator.CreateInstance(null, dataLinkedList.First.Value);
+            object obj = container.Unwrap();
+        }
+
         // GOOD: hardcoded type name.
         public void GoodG2B(HttpRequest req)
         {
