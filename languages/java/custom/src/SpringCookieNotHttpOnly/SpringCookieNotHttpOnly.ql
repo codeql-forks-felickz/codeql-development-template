@@ -30,6 +30,12 @@ string getSensitiveCookieNameRegex() { result = "(?i).*(auth|session|token|key|c
 /** Gets a regular expression for matching CSRF cookies. */
 string getCsrfCookieNameRegex() { result = "(?i).*(csrf|xsrf).*" }
 
+private predicate isCsrfCookieNameExpr(Expr expr) {
+  exists(string s | s = expr.(CompileTimeConstantExpr).getStringValue() |
+    s.regexpMatch(getCsrfCookieNameRegex())
+  )
+}
+
 /**
  * Holds if a string is concatenated with the name of a sensitive cookie. Excludes CSRF cookies
  * since they implement the Synchronizer Token Pattern and are meant to be read by JavaScript.
@@ -39,6 +45,7 @@ predicate isSensitiveCookieNameExpr(Expr expr) {
     s.regexpMatch(getSensitiveCookieNameRegex()) and not s.regexpMatch(getCsrfCookieNameRegex())
   )
   or
+  not isCsrfCookieNameExpr(expr) and
   isSensitiveCookieNameExpr(expr.(AddExpr).getAnOperand())
 }
 
@@ -50,6 +57,8 @@ module SensitiveResponseCookieConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSensitiveCookieNameExpr(source.asExpr()) }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CookieResponseSink }
+
+  predicate isBarrier(DataFlow::Node node) { isCsrfCookieNameExpr(node.asExpr()) }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ResponseCookieCreation create |

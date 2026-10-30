@@ -51,4 +51,12 @@ public class ServletCookies {
   public void goodOtherHeader(HttpServletResponse response, String value) {
     response.addHeader("X-Custom", "a=" + value); // GOOD: not a Set-Cookie header
   }
+
+  public void goodRawHeaderUnknownWithAttribute(HttpServletResponse response, String headerValue) {
+    response.addHeader("Set-Cookie", headerValue + "; Path=/"); // GOOD: attribute-only fragment
+  }
+
+  public void badRawHeaderEqualsFragment(HttpServletResponse response, String sessionId) {
+    response.addHeader("Set-Cookie", "SESSION" + "=" + sessionId + "; Path=/"); // BAD
+  }
 }

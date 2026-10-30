@@ -234,7 +234,7 @@ predicate isResponseCookieWithoutSecure(CookieResponseSink sink) {
 /** A taint-tracking configuration for string constants that look like a cookie (`name=value`). */
 private module RawCookieStringConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.asExpr().(CompileTimeConstantExpr).getStringValue().matches("%=%")
+    source.asExpr().(CompileTimeConstantExpr).getStringValue().regexpMatch("^[^;]*=.*")
   }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SetCookieHeaderValue }

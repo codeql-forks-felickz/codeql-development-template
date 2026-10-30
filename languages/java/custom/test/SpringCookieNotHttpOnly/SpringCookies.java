@@ -5,6 +5,8 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 
 public class SpringCookies {
   public static final String LEVEL1_COOKIE = "APP_SESSION_LEVEL1";
+  private static final String AUTH_PREFIX = "AUTH-";
+  private static final String CSRF_PREFIX = "XSRF-";
   private static final String COOKIE_PATH = "/app";
 
   public ResponseEntity<String> badPathOnly(String sessionId, String content) {
@@ -69,5 +71,15 @@ public class SpringCookies {
 
   private static ResponseCookie buildHttpOnlyCookie(String cookieName, String value) {
     return ResponseCookie.from(cookieName, value).path(COOKIE_PATH).httpOnly(true).build();
+  }
+
+  public ResponseEntity<String> badConcatenatedSensitive(String token, String content) {
+    ResponseCookie cookie = ResponseCookie.from(AUTH_PREFIX + "Token", token).build();
+    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(content); // BAD
+  }
+
+  public ResponseEntity<String> goodConcatenatedCsrf(String csrfToken, String content) {
+    ResponseCookie cookie = ResponseCookie.from(CSRF_PREFIX + "Token", csrfToken).build();
+    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(content); // GOOD: CSRF cookies are read by JavaScript
   }
 }
