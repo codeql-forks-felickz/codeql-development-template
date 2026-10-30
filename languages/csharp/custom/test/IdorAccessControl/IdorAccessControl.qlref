@@ -1,0 +1,2 @@
+query: IdorAccessControl/IdorAccessControl.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
