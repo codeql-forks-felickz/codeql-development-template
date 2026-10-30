@@ -1,0 +1,2 @@
+query: PrivilegeFieldMassAssignment/PrivilegeFieldMassAssignment.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
