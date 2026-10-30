@@ -15,12 +15,20 @@ import javascript
 
 /**
  * Holds if `call` may set property `prop` on the object passed as argument `i`, because the
- * corresponding parameter of a callee has a write to `prop`.
+ * corresponding parameter of a callee has a write to `prop`, either directly or by passing the
+ * parameter on to another such call.
  */
 predicate calleeWritesProperty(DataFlow::InvokeNode call, int i, string prop) {
-  exists(DataFlow::FunctionNode f |
+  exists(DataFlow::FunctionNode f, DataFlow::ParameterNode p |
     f.getFunction() = call.getACallee() and
-    exists(f.getParameter(i).getAPropertyWrite(prop))
+    p = f.getParameter(i)
+  |
+    exists(p.getAPropertyWrite(prop))
+    or
+    exists(DataFlow::InvokeNode inner, int j |
+      p.flowsTo(inner.getArgument(j)) and
+      calleeWritesProperty(inner, j, prop)
+    )
   )
 }
 

@@ -54,6 +54,18 @@ function generateWithExpHelperMutation(username) {
   return jwt.encode(payload, JWT_PRIV, "RS256");
 }
 
+function addStandardClaims(claims) {
+  claims.iss = "auth-service";
+  addExpiry(claims);
+}
+
+// SAFE: `exp` is added by a helper that delegates to another helper.
+function generateWithNestedExpHelper(username) {
+  var payload = { username: username };
+  addStandardClaims(payload);
+  return jwt.encode(payload, JWT_PRIV, "RS256");
+}
+
 // SAFE: `exp` is added by a helper that returns the payload.
 function generateWithExpHelperReturn(username) {
   return jwt.encode(addExpiry({ username: username }), JWT_PRIV, "RS256");
@@ -93,6 +105,7 @@ module.exports = {
   generateWithExp,
   generateWithExpAssignedLater,
   generateWithExpHelperMutation,
+  generateWithNestedExpHelper,
   generateWithExpHelperReturn,
   generateWithObjectAssign,
   generateWithSpread,
