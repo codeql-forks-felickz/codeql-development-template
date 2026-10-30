@@ -64,6 +64,31 @@ class DomTextSink extends DataFlow::Node {
   }
 }
 
+predicate isIdentityReplacement(StringReplaceCall replace) {
+  replace.getRawReplacement().getStringValue().regexpMatch("\\$(&|[1-9][0-9]?|<[^>]+>)")
+  or
+  exists(DataFlow::FunctionNode callback, Function function |
+    callback = replace.getReplacementCallback() and
+    function = callback.getFunction() and
+    function.getNumParameter() > 0 and
+    function.getParameter(0) instanceof SimpleParameter and
+    (
+      exists(VarAccess access |
+        access = function.getBody() and
+        access.getVariable() = function.getParameter(0).(SimpleParameter).getVariable()
+      )
+      or
+      exists(BlockStmt body, ReturnStmt ret, VarAccess access |
+        body = function.getBody() and
+        body.getNumStmt() = 1 and
+        ret = body.getStmt(0) and
+        access = ret.getExpr() and
+        access.getVariable() = function.getParameter(0).(SimpleParameter).getVariable()
+      )
+    )
+  )
+}
+
 module AngularJSTemplateInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
@@ -79,6 +104,7 @@ module AngularJSTemplateInjectionConfig implements DataFlow::ConfigSig {
       replace.isGlobal() and
       c.getRootTerm() = replace.getRegExp().getRoot() and
       c.getValue().regexpMatch(".*[{}].*") and
+      not isIdentityReplacement(replace) and
       not replace.getRawReplacement().getStringValue().regexpMatch(".*[{}].*")
     )
   }

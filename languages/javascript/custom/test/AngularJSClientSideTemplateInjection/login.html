@@ -24,8 +24,14 @@
       document.getElementById('greeting').appendChild(document.createTextNode(name)); // $ Alert[js/angularjs-client-side-template-injection]
 
       // Safe: curly braces are stripped before the text reaches the AngularJS-compiled DOM.
-      var hash = window.location.hash.substring(1);
+      var hash = window.location.hash.substring(1); // $ Source[js/angularjs-client-side-template-injection]
       $('#safe').text(hash.replace(/[{}]/g, ''));
+      $('#safe').text(hash.replace(/[{}]/g, '$&')); // $ Alert[js/angularjs-client-side-template-injection]
+      $('#safe').text(hash.replace(/([{}])/g, '$1')); // $ Alert[js/angularjs-client-side-template-injection]
+      $('#safe').text(hash.replace(/[{}]/g, match => match)); // $ Alert[js/angularjs-client-side-template-injection]
+      $('#safe').text(hash.replace(/[{}]/g, function (match) { return match; })); // $ Alert[js/angularjs-client-side-template-injection]
+      $('#safe').text(hash.replace(/[{}]/g, '-'));
+      $('#safe').text(hash.replace(/[{}]/g, match => ''));
 
       // Safe: constant text.
       $('#safe').text('Welcome');
