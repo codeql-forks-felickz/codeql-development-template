@@ -51,6 +51,10 @@ DataSet orders = du.GetOrders(id);
 
 Use the authenticated principal or server-side session instead.
 
+## Known limitations
+
+For ADO.NET parameters, exclusion is currently limited to direct `AddWithValue` calls on a local `SqlCommand` initialized with constant inline SQL. Parameters created or assigned indirectly, command text assigned later, unknown command text, and stored procedures remain reportable.
+
 ## References
 
 - OWASP: [Insecure Direct Object Reference Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html).

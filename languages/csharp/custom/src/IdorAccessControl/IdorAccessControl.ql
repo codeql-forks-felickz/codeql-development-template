@@ -64,6 +64,79 @@ private predicate isDbParameterType(ValueOrRefType t) {
   isDataType(t) and t.getName().matches("%Parameter")
 }
 
+/** Gets the normalized name of a simple SQL parameter. */
+private string getParameterName(StringLiteral name) {
+  name.getValue().toLowerCase().regexpMatch("^@?[a-z_][a-z0-9_]*$") and
+  (
+    name.getValue().toLowerCase().regexpMatch("^@[a-z_][a-z0-9_]*$") and
+    result = name.getValue().toLowerCase()
+    or
+    name.getValue().toLowerCase().regexpMatch("^[a-z_][a-z0-9_]*$") and
+    result = "@" + name.getValue().toLowerCase()
+  )
+}
+
+/** Holds if `commandText` is a known inline SQL statement. */
+private predicate isKnownSqlStatement(StringLiteral commandText) {
+  commandText.getValue().toLowerCase().regexpMatch("(?is)^\\s*(select|insert|update|delete)\\b.*")
+}
+
+/** Holds if `command` is configured to execute a stored procedure. */
+private predicate isStoredProcedureCommand(LocalVariable command) {
+  exists(
+    AssignExpr assignment, PropertyAccess commandType, LocalVariableAccess commandAccess,
+    FieldAccess storedProcedure
+  |
+    commandType = assignment.getLeftOperand() and
+    commandType.getTarget().hasName("CommandType") and
+    commandAccess = commandType.getQualifier() and
+    commandAccess.getTarget() = command and
+    storedProcedure = assignment.getRightOperand() and
+    storedProcedure.getTarget().hasName("StoredProcedure")
+  )
+}
+
+/**
+ * Holds if an AddWithValue parameter is known not to select an existing record.
+ * Unknown command text and stored procedures deliberately do not satisfy this predicate.
+ */
+private predicate isKnownNonSelectionParameter(Call addWithValue) {
+  exists(
+    PropertyAccess parameters, LocalVariableAccess commandAccess,
+    LocalVariableDeclAndInitExpr declaration, ObjectCreation command, StringLiteral commandText,
+    StringLiteral parameterName
+  |
+    addWithValue instanceof MethodCall and
+    addWithValue.getTarget().hasName("AddWithValue") and
+    parameters = addWithValue.(MethodCall).getQualifier() and
+    parameters.getTarget().hasName("Parameters") and
+    commandAccess = parameters.getQualifier() and
+    declaration.getVariable() = commandAccess.getTarget() and
+    command = declaration.getInitializer() and
+    isDataType(command.getObjectType()) and
+    command.getObjectType().getName() = "SqlCommand" and
+    commandText = command.getArgument(0) and
+    parameterName = addWithValue.getArgument(0) and
+    isKnownSqlStatement(commandText) and
+    not isStoredProcedureCommand(declaration.getVariable()) and
+    exists(string parameter |
+      parameter = getParameterName(parameterName) and
+      (
+        not exists(int index |
+          index = commandText.getValue().toLowerCase().indexOf(parameter) and
+          index >= 0
+        )
+        or
+        commandText
+            .getValue()
+            .toLowerCase()
+            .regexpMatch("(?is)^\\s*insert\\b.*\\bvalues\\s*\\([^)]*" + parameter +
+                "\\b[^)]*\\)\\s*;?\\s*$")
+      )
+    )
+  )
+}
+
 /** A value that is used to select a database record. */
 class RecordLookupSink extends DataFlow::Node {
   RecordLookupSink() {
@@ -95,7 +168,8 @@ class RecordLookupSink extends DataFlow::Node {
         isDataType(c.getTarget().getDeclaringType())
       ) and
       c.getTarget().getParameter(1).getType() instanceof ObjectType and
-      this.asExpr() = c.getArgument(1)
+      this.asExpr() = c.getArgument(1) and
+      not isKnownNonSelectionParameter(c)
     )
     or
     // Entity Framework: `dbSet.Find(id)`

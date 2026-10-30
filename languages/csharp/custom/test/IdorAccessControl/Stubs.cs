@@ -72,6 +72,7 @@ namespace System.Data.SqlClient
         public SqlCommand(string cmdText, SqlConnection connection) { }
         public void Dispose() { }
         public string CommandText { get; set; }
+        public System.Data.CommandType CommandType { get; set; }
         public SqlParameterCollection Parameters => null;
         public int ExecuteNonQuery() => 0;
     }

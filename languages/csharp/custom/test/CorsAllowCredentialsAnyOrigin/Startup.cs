@@ -73,6 +73,37 @@ namespace CorsApp
             });
         }
 
+        // Safe: a later credential setting disables credentials before the policy is built.
+        public CorsPolicy CredentialsDisabled()
+        {
+            var builder = new CorsPolicyBuilder();
+            builder.AllowAnyOrigin().AllowCredentials();
+            builder.DisallowCredentials();
+            return builder.Build();
+        }
+
+        // Safe: the final origin predicate accepts only the configured origin.
+        public CorsPolicy RestrictedOrigin()
+        {
+            var builder = new CorsPolicyBuilder();
+            builder.SetIsOriginAllowed(origin => true);
+            builder.SetIsOriginAllowed(origin => origin == "https://app.example.com");
+            builder.AllowCredentials();
+            return builder.Build();
+        }
+
+        // An override on only one branch does not change the effective policy on every path.
+        public CorsPolicy ConditionalCredentialsOverride(bool disableCredentials)
+        {
+            var builder = new CorsPolicyBuilder().AllowAnyOrigin();
+            builder.AllowCredentials(); // $ Alert
+            if (disableCredentials)
+            {
+                builder.DisallowCredentials();
+            }
+            return builder.Build();
+        }
+
         // Safe: two different builders.
         public void DifferentBuilders()
         {

@@ -36,6 +36,10 @@ services.AddCors(options =>
 });
 ```
 
+## Known limitations
+
+The query recognizes `WithOrigins(...)` and `SetIsOriginAllowed` predicates that compare an origin with a string literal as restrictive overrides. Other predicate forms are not treated as proof that the policy is restricted. Overrides in conditional branches do not suppress a finding.
+
 ## References
 
 - Microsoft Learn: [Enable Cross-Origin Requests (CORS) in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/security/cors).

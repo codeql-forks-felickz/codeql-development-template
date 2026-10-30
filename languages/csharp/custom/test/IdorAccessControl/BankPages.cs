@@ -85,7 +85,7 @@ namespace Bank
             SqlConnection connection = new SqlConnection();
             SqlCommand command = new SqlCommand("UPDATE accounts SET balance = balance - @amount WHERE accountid = @debit", connection);
             command.Parameters.AddWithValue("@debit", t.debitAccount); // $ Alert
-            command.Parameters.AddWithValue("@credit", t.creditAccount); // $ Alert
+            command.Parameters.AddWithValue("@credit", t.creditAccount);
             command.Parameters.AddWithValue("@amount", t.transferAmount);
             command.ExecuteNonQuery();
             return "ok";
@@ -98,7 +98,7 @@ namespace Bank
         protected void Page_Load(object sender, EventArgs e)
         {
             string debitAccount = this.Request.Params["debitAccount"]; // $ Source
-            string creditAccount = this.Request.Params["creditAccount"]; // $ Source
+            string creditAccount = this.Request.Params["creditAccount"];
             string transferAmount = this.Request.Params["transferAmount"];
 
             MoneyTransfer myTransaction = new MoneyTransfer();
@@ -126,5 +126,26 @@ namespace Bank
         }
 
         private bool AccountBelongsTo(string account, string user) => false;
+    }
+
+    public class ParameterUse
+    {
+        public void CheckParameters(System.Web.UI.Page page, SqlConnection connection, string dynamicSql)
+        {
+            string invoiceId = page.Request.Params["invoiceId"]; // $ Source
+
+            SqlCommand knownQuery = new SqlCommand("SELECT * FROM invoices WHERE status = @status", connection);
+            knownQuery.Parameters.AddWithValue("@invoiceId", invoiceId);
+
+            SqlCommand insert = new SqlCommand("INSERT INTO invoices (invoice_id) VALUES (@invoiceId)", connection);
+            insert.Parameters.AddWithValue("@invoiceId", invoiceId);
+
+            SqlCommand unknownQuery = new SqlCommand(dynamicSql, connection);
+            unknownQuery.Parameters.AddWithValue("@invoiceId", invoiceId); // $ Alert
+
+            SqlCommand storedProcedure = new SqlCommand("SELECT * FROM invoices WHERE status = @status", connection);
+            storedProcedure.CommandType = System.Data.CommandType.StoredProcedure;
+            storedProcedure.Parameters.AddWithValue("@invoiceId", invoiceId); // $ Alert
+        }
     }
 }
