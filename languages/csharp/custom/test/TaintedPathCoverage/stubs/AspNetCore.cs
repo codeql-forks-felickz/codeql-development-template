@@ -10,6 +10,26 @@ namespace Microsoft.AspNetCore.Http
         void CopyTo(System.IO.Stream target);
         System.IO.Stream OpenReadStream();
     }
+
+    public interface IFormFileCollection : System.Collections.Generic.IReadOnlyList<IFormFile> { }
+
+    public interface IFormCollection
+    {
+        IFormFileCollection Files { get; }
+    }
+
+    public abstract class HttpRequest
+    {
+        public abstract IFormCollection Form { get; set; }
+    }
+}
+
+namespace Microsoft.AspNetCore.Hosting
+{
+    public interface IWebHostEnvironment
+    {
+        string WebRootPath { get; set; }
+    }
 }
 
 namespace Microsoft.AspNetCore.Mvc
@@ -32,6 +52,24 @@ namespace Microsoft.AspNetCore.Mvc
         public string Name { get; set; }
     }
 
+    [System.AttributeUsage(System.AttributeTargets.Method)]
+    public class HttpGetAttribute : System.Attribute
+    {
+        public HttpGetAttribute(string template) { }
+    }
+
+    public interface IActionResult { }
+
+    public class OkResult : IActionResult { }
+
     [Controller]
     public abstract class ControllerBase { }
+}
+
+namespace Microsoft.AspNetCore.Mvc.RazorPages
+{
+    public abstract class PageModel
+    {
+        public Microsoft.AspNetCore.Http.HttpRequest Request { get; }
+    }
 }

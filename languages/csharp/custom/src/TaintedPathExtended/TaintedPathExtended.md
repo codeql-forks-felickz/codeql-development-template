@@ -4,7 +4,7 @@ Accessing files using paths constructed from user-controlled data can allow an a
 
 This query extends the standard `cs/path-injection` query. It uses the same sources, sinks and sanitizers, with the following differences:
 
-- Null checks (`x != null`, `x == null`, `x is null`, `x is not null`), comparisons of a character with the NUL character, and checks that only inspect a single character or the `Length` of a path are not treated as path validation.
+- Null checks (`x != null`, `x == null`, `x is null`, `x is not null`), comparisons of a character with the NUL character, and checks that only inspect a single character or the `Length` of a path, or the `Count` of an object the path is read from (such as `Request.Form.Files.Count`), are not treated as path validation.
 - `char` values are not treated as sanitized, so a path that is rebuilt character by character keeps its taint.
 - Sinks of kind `path-injection` from models-as-data (for example the `StreamReader(string)` constructors and `HttpResponse.TransmitFile`/`WriteFile` modeled in `languages-csharp-custom-models`) are included.
 

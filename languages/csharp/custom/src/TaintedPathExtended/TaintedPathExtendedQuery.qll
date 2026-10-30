@@ -69,10 +69,19 @@ private predicate isWeakCheck(Expr op, Expr sub) {
     other.(CharLiteral).getValue().codePointAt(0) = 0
   )
   or
-  // Inspecting a single character, or the length, of a path does not validate the path.
+  // Inspecting a single character, or the length, of a path does not validate the path. The
+  // same holds for counting the items of an object the path is read from, such as
+  // `Request.Form.Files.Count`.
   sub = any(ElementAccess ea).getQualifier()
   or
-  sub = any(PropertyAccess pa | pa.getTarget().hasName("Length")).getQualifier()
+  sub = qualifierChain(any(PropertyAccess pa | pa.getTarget().hasName(["Length", "Count"])))
+}
+
+/** Gets a qualifier of `e`, or (recursively) a qualifier of such a qualifier. */
+private Expr qualifierChain(QualifiableExpr e) {
+  result = e.getQualifier()
+  or
+  result = qualifierChain(e.getQualifier())
 }
 
 /**

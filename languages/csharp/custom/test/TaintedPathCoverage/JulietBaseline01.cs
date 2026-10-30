@@ -97,6 +97,29 @@ namespace Juliet
         }
     }
 
+    // CWE36_Absolute_Path_Traversal__QueryString_Web_01: the `id` value is used directly as the path.
+    public class AbsolutePathTraversalQueryString01
+    {
+        public void Bad(HttpRequest req, HttpResponse resp)
+        {
+            string data = "";
+            if (req.QueryString["id"] != null)
+            {
+                data = req.QueryString["id"]; // $ Source[cs/path-injection-extended]
+            }
+            if (data != null)
+            {
+                if (File.Exists(data)) // $ Alert[cs/path-injection-extended]
+                {
+                    using (StreamReader sr = new StreamReader(data)) // $ Alert[cs/path-injection-extended]
+                    {
+                        sr.ReadLine();
+                    }
+                }
+            }
+        }
+    }
+
     public abstract class AbsolutePathTraversal81Base
     {
         public abstract void Action(string data, HttpRequest req, HttpResponse resp);

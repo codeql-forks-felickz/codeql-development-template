@@ -8,3 +8,9 @@ extensions:
     data:
       - ["Microsoft.AspNetCore.Http", "IFormFile", True, "get_FileName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["Microsoft.AspNetCore.Http", "IFormFile", True, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      # `Request.Form` is a remote source; the uploaded files reached through it
+      # (`Request.Form.Files[0]`, `Files["name"]`, `GetFile`, `GetFiles`) are client-controlled too.
+      - ["Microsoft.AspNetCore.Http", "IFormCollection", True, "get_Files", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.Http", "IFormFileCollection", True, "get_Item", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.Http", "IFormFileCollection", True, "GetFile", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.Http", "IFormFileCollection", True, "GetFiles", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
