@@ -253,7 +253,7 @@ void cwe428_bad_appended_arguments(void) {
 void cwe428_good_overwritten_with_quoted_path(void) {
   STARTUPINFOA si;
   PROCESS_INFORMATION pi;
-  char commandLine[] = "C:\\Program Files\\GoodApp.exe arg1 arg2";
+  char commandLine[100] = "C:\\Program Files\\GoodApp.exe arg1 arg2";
   strcpy(commandLine, "\"C:\\Program Files\\GoodApp.exe\" arg1 arg2");
   CreateProcessA(NULL, commandLine, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
 }
