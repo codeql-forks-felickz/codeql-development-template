@@ -20,4 +20,25 @@ public class AccountService {
     account.setPassword(encoder.encode(rawPassword));
     return account;
   }
+
+  public void createHashedThroughHelper(UserAccount account, String rawPassword) {
+    // GOOD: the helper receives only the bcrypt hash.
+    persistHashedPassword(account, encoder.encode(rawPassword));
+  }
+
+  public void createMixedThroughHelper(UserAccount account) {
+    String password = System.console().readLine();
+    // BAD: this caller passes an unprotected password to the helper.
+    persistPassword(account, password); // $ Source
+    // GOOD: this caller passes only the bcrypt hash to the same helper.
+    persistPassword(account, encoder.encode(password));
+  }
+
+  private void persistPassword(UserAccount account, String password) {
+    account.setPassword(password); // $ Alert
+  }
+
+  private void persistHashedPassword(UserAccount account, String password) {
+    account.setPassword(password);
+  }
 }

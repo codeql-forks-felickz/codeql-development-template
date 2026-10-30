@@ -65,10 +65,28 @@ class SubmittedPasswordRead extends MethodCall {
   }
 }
 
+/** Holds if `e` is a protected password value. */
+predicate isProtectedPasswordValue(Expr e) {
+  exists(PasswordProtectingCall protection |
+    e = protection or DataFlow::localExprFlow(protection, e)
+  )
+}
+
+/** Holds if a password parameter has a caller that passes a protected value. */
+predicate hasProtectedPasswordCaller(Parameter parameter) {
+  isPasswordName(parameter.getName()) and
+  exists(Call c, Expr arg |
+    c.getCallee().getSourceDeclaration() = parameter.getCallable() and
+    arg = c.getArgument(parameter.getPosition()) and
+    isProtectedPasswordValue(arg)
+  )
+}
+
 /** A parameter whose name indicates that it holds a password. */
 class PasswordParameter extends Parameter {
   PasswordParameter() {
     isPasswordName(this.getName()) and
+    not hasProtectedPasswordCaller(this) and
     // Avoid duplicate paths: only start at the outermost parameter of a call chain.
     not exists(Call c, Expr arg |
       c.getCallee().getSourceDeclaration() = this.getCallable() and
@@ -210,6 +228,16 @@ module CredentialExposureConfig implements DataFlow::ConfigSig {
     source.asParameter() instanceof PasswordParameter
     or
     source.asExpr() instanceof SubmittedPasswordRead
+    or
+    exists(Parameter parameter, Call c, VarAccess arg |
+      hasProtectedPasswordCaller(parameter) and
+      c.getCallee().getSourceDeclaration() = parameter.getCallable() and
+      arg = c.getArgument(parameter.getPosition()) and
+      isPasswordName(arg.getVariable().getName()) and
+      not isProtectedPasswordValue(arg) and
+      source.asExpr() = arg and
+      not passwordSink(source, _)
+    )
   }
 
   predicate isSink(DataFlow::Node sink) { passwordSink(sink, _) }
