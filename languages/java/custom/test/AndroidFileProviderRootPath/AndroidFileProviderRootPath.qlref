@@ -1,0 +1,2 @@
+query: AndroidFileProviderRootPath/AndroidFileProviderRootPath.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

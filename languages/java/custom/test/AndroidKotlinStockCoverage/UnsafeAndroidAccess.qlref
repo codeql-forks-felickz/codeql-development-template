@@ -1,0 +1,2 @@
+query: Security/CWE/CWE-749/UnsafeAndroidAccess.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

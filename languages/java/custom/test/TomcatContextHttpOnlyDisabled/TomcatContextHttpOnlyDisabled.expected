@@ -1,0 +1,4 @@
+| conf/Catalina/localhost/reports.xml:2:1:2:56 | useHttpOnly=False | Session cookies for this Tomcat context are created without the HttpOnly flag. |
+| conf/server.xml:6:9:6:72 | useHttpOnly= FALSE  | Session cookies for this Tomcat context are created without the HttpOnly flag. |
+| conf/server.xml:9:9:9:69 | useHttpOnly=no | Session cookies for this Tomcat context are created without the HttpOnly flag. |
+| webapp/META-INF/context.xml:2:1:2:74 | useHttpOnly=false | Session cookies for this Tomcat context are created without the HttpOnly flag. |

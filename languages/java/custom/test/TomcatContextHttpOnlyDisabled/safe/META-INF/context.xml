@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Safe: HttpOnly session cookies are enabled. -->
+<Context path="/SafeLab" useHttpOnly="true">
+    <Resource name="jdbc/lab" auth="Container" type="javax.sql.DataSource" />
+</Context>

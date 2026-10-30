@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <root-path name="root_empty" path="" /> <!-- $ Alert -->
+    <root-path name="root_no_path" /> <!-- $ Alert -->
+    <root-path name="root_dot" path="." /> <!-- $ Alert -->
+    <!-- Safe: scoped to a specific directory. -->
+    <root-path name="downloads" path="sdcard/Download/shop/" />
+</paths>

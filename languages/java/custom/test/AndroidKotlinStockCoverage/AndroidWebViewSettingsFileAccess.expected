@@ -1,0 +1,2 @@
+| Activities.kt:43:17:43:64 | setAllowUniversalAccessFromFileURLs(...) | WebView setting setAllowUniversalAccessFromFileURLs may allow for unauthorized access of sensitive information. |
+| Activities.kt:60:17:60:64 | setAllowUniversalAccessFromFileURLs(...) | WebView setting setAllowUniversalAccessFromFileURLs may allow for unauthorized access of sensitive information. |

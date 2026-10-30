@@ -1,0 +1,6 @@
+| AndroidManifest.xml:14:9:14:144 | provider | Exported provider 'com.example.notes.NotesProvider' does not require any permission to read or write its data. |
+| AndroidManifest.xml:15:9:15:152 | provider | Exported provider 'com.example.notes.AccountProvider' does not require any permission to read or write its data. |
+| AndroidManifest.xml:28:9:28:197 | provider | Exported provider 'com.example.notes.InsecureShopProvider' only requires a permission with the 'normal' protection level, which any application can obtain, for read access. |
+| AndroidManifest.xml:29:9:29:194 | provider | Exported provider 'com.example.notes.NormalFullProvider' only requires a permission with the 'normal' protection level, which any application can obtain, for read and write access. |
+| AndroidManifest.xml:30:9:30:258 | provider | Exported provider 'com.example.notes.NormalReadProvider' only requires a permission with the 'normal' protection level, which any application can obtain, for read access. |
+| AndroidManifest.xml:31:9:31:257 | provider | Exported provider 'com.example.notes.OverriddenReadProvider' only requires a permission with the 'normal' protection level, which any application can obtain, for read access. |

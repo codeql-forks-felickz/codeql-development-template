@@ -1,0 +1,11 @@
+| com/example/bench/Client4Utils.java:12:78:12:106 | new TrustSelfSignedStrategy(...) | This trust strategy accepts any self-signed certificate, disabling certificate validation. |
+| com/example/bench/Client4Utils.java:13:59:13:112 | SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER | This hostname verifier accepts any hostname, disabling hostname verification. |
+| com/example/bench/Client4Utils.java:17:59:17:87 | NoopHostnameVerifier.INSTANCE | This hostname verifier accepts any hostname, disabling hostname verification. |
+| com/example/bench/Client4Utils.java:21:59:21:88 | new AllowAllHostnameVerifier(...) | This hostname verifier accepts any hostname, disabling hostname verification. |
+| com/example/bench/Client5Utils.java:15:62:15:90 | new TrustSelfSignedStrategy(...) | This trust strategy accepts any self-signed certificate, disabling certificate validation. |
+| com/example/bench/Client5Utils.java:17:59:17:87 | NoopHostnameVerifier.INSTANCE | This hostname verifier accepts any hostname, disabling hostname verification. |
+| com/example/bench/Client5Utils.java:21:78:21:102 | TrustAllStrategy.INSTANCE | This trust strategy accepts any certificate, disabling certificate validation. |
+| com/example/bench/Client5Utils.java:22:59:22:84 | new NoopHostnameVerifier(...) | This hostname verifier accepts any hostname, disabling hostname verification. |
+| com/example/bench/Client5Utils.java:26:61:26:85 | ...->... | This trust strategy accepts any certificate, disabling certificate validation. |
+| com/example/bench/Client5Utils.java:30:61:30:97 | ...->... | This trust strategy accepts any certificate, disabling certificate validation. |
+| com/example/bench/Client5Utils.java:38:61:38:75 | new AcceptAll(...) | This trust strategy accepts any certificate, disabling certificate validation. |

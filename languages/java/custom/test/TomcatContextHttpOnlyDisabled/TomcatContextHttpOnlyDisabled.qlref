@@ -1,0 +1,2 @@
+query: TomcatContextHttpOnlyDisabled/TomcatContextHttpOnlyDisabled.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,12 @@
+#select
+| Activities.kt:36:27:36:37 | <implicit cast> | Activities.kt:34:27:34:32 | getIntent(...) : Intent | Activities.kt:36:27:36:37 | <implicit cast> | Arbitrary Android activities or services can be started from a $@. | Activities.kt:34:27:34:32 | getIntent(...) | user-provided value |
+edges
+| Activities.kt:34:27:34:32 | <implicit not null> : Intent | Activities.kt:34:27:34:75 | getParcelableExtra(...) : Intent | provenance | MaD:326 |
+| Activities.kt:34:27:34:32 | getIntent(...) : Intent | Activities.kt:34:27:34:32 | <implicit not null> : Intent | provenance |  |
+| Activities.kt:34:27:34:75 | getParcelableExtra(...) : Intent | Activities.kt:36:27:36:37 | <implicit cast> | provenance | Sink:MaD:227 |
+nodes
+| Activities.kt:34:27:34:32 | <implicit not null> : Intent | semmle.label | <implicit not null> : Intent |
+| Activities.kt:34:27:34:32 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| Activities.kt:34:27:34:75 | getParcelableExtra(...) : Intent | semmle.label | getParcelableExtra(...) : Intent |
+| Activities.kt:36:27:36:37 | <implicit cast> | semmle.label | <implicit cast> |
+subpaths
