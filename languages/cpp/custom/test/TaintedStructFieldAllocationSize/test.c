@@ -190,7 +190,7 @@ void process_checked_nested_packet(int sock) {
   if (pkt.dims.width < 0 || pkt.dims.height < 0 || pkt.dims.width > MAX_DIM ||
       pkt.dims.height > MAX_DIM)
     return;
-  char *buf = (char *)malloc(pkt.dims.width * pkt.dims.height);
+  char *buf = (char *)malloc((size_t)pkt.dims.width * pkt.dims.height);
   free(buf);
 }
 
