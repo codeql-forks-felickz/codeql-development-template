@@ -67,6 +67,25 @@ namespace CommandInjectionTests
         }
     }
 
+    // ASP.NET Core route value assigned to `Process.StartInfo.FileName`, in an `[ApiController]`
+    // whose class name does not end in `Controller`.
+    [Route("api/[controller]")]
+    [ApiController]
+    public class OsInjection : ControllerBase
+    {
+        [HttpGet("{binFile}")]
+        public string Os(string binFile) // $ Source=route
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = binFile; // $ Alert=route
+            p.StartInfo.RedirectStandardOutput = true;
+            p.Start();
+            string output = p.StandardOutput.ReadToEnd();
+            p.Dispose();
+            return output;
+        }
+    }
+
     // ASP.NET Core minimal API handler.
     public static class MinimalApi
     {

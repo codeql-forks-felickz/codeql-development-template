@@ -22,6 +22,18 @@ namespace Microsoft.AspNetCore.Mvc
     {
         public HttpPostAttribute(string template) => throw null;
     }
+
+    [System.AttributeUsage(System.AttributeTargets.Method)]
+    public class HttpGetAttribute : System.Attribute
+    {
+        public HttpGetAttribute(string template) => throw null;
+    }
+
+    [System.AttributeUsage(System.AttributeTargets.Class | System.AttributeTargets.Method)]
+    public class RouteAttribute : System.Attribute
+    {
+        public RouteAttribute(string template) => throw null;
+    }
 }
 
 namespace Microsoft.AspNetCore.Routing

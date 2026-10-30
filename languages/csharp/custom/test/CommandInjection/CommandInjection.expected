@@ -1,21 +1,23 @@
 #select
 | CommandInjection.cs:22:55:22:73 | ... + ... | CommandInjection.cs:20:60:20:62 | req : CommandRequest | CommandInjection.cs:22:55:22:73 | ... + ... | This command line depends on a $@. | CommandInjection.cs:20:60:20:62 | req | user-provided value |
 | CommandInjection.cs:37:38:37:75 | object creation of type List<String> | CommandInjection.cs:35:70:35:72 | req : CommandRequest | CommandInjection.cs:37:38:37:75 | object creation of type List<String> | This command line depends on a $@. | CommandInjection.cs:35:70:35:72 | req | user-provided value |
-| CommandInjection.cs:77:59:77:77 | ... + ... | CommandInjection.cs:75:49:75:51 | req : CommandRequest | CommandInjection.cs:77:59:77:77 | ... + ... | This command line depends on a $@. | CommandInjection.cs:75:49:75:51 | req | user-provided value |
-| CommandInjection.cs:90:28:90:30 | access to parameter cmd | CommandInjection.cs:28:66:28:68 | req : CommandRequest | CommandInjection.cs:90:28:90:30 | access to parameter cmd | This command line depends on a $@. | CommandInjection.cs:28:66:28:68 | req | user-provided value |
-| CommandInjection.cs:90:28:90:30 | access to parameter cmd | WebForms.cs:122:61:122:79 | access to field txtClientExecutable : TextBox | CommandInjection.cs:90:28:90:30 | access to parameter cmd | This command line depends on a $@. | WebForms.cs:122:61:122:79 | access to field txtClientExecutable | user-provided value |
-| CommandInjection.cs:90:28:90:30 | access to parameter cmd | WebForms.cs:126:54:126:62 | access to field txtServer : TextBox | CommandInjection.cs:90:28:90:30 | access to parameter cmd | This command line depends on a $@. | WebForms.cs:126:54:126:62 | access to field txtServer | user-provided value |
-| CommandInjection.cs:91:29:91:32 | access to parameter args | WebForms.cs:122:61:122:79 | access to field txtClientExecutable : TextBox | CommandInjection.cs:91:29:91:32 | access to parameter args | This command line depends on a $@. | WebForms.cs:122:61:122:79 | access to field txtClientExecutable | user-provided value |
-| CommandInjection.cs:91:29:91:32 | access to parameter args | WebForms.cs:126:54:126:62 | access to field txtServer : TextBox | CommandInjection.cs:91:29:91:32 | access to parameter args | This command line depends on a $@. | WebForms.cs:126:54:126:62 | access to field txtServer | user-provided value |
+| CommandInjection.cs:80:36:80:42 | access to parameter binFile | CommandInjection.cs:77:33:77:39 | binFile : String | CommandInjection.cs:80:36:80:42 | access to parameter binFile | This command line depends on a $@. | CommandInjection.cs:77:33:77:39 | binFile | user-provided value |
+| CommandInjection.cs:96:59:96:77 | ... + ... | CommandInjection.cs:94:49:94:51 | req : CommandRequest | CommandInjection.cs:96:59:96:77 | ... + ... | This command line depends on a $@. | CommandInjection.cs:94:49:94:51 | req | user-provided value |
+| CommandInjection.cs:109:28:109:30 | access to parameter cmd | CommandInjection.cs:28:66:28:68 | req : CommandRequest | CommandInjection.cs:109:28:109:30 | access to parameter cmd | This command line depends on a $@. | CommandInjection.cs:28:66:28:68 | req | user-provided value |
+| CommandInjection.cs:109:28:109:30 | access to parameter cmd | WebForms.cs:122:61:122:79 | access to field txtClientExecutable : TextBox | CommandInjection.cs:109:28:109:30 | access to parameter cmd | This command line depends on a $@. | WebForms.cs:122:61:122:79 | access to field txtClientExecutable | user-provided value |
+| CommandInjection.cs:109:28:109:30 | access to parameter cmd | WebForms.cs:126:54:126:62 | access to field txtServer : TextBox | CommandInjection.cs:109:28:109:30 | access to parameter cmd | This command line depends on a $@. | WebForms.cs:126:54:126:62 | access to field txtServer | user-provided value |
+| CommandInjection.cs:110:29:110:32 | access to parameter args | WebForms.cs:122:61:122:79 | access to field txtClientExecutable : TextBox | CommandInjection.cs:110:29:110:32 | access to parameter args | This command line depends on a $@. | WebForms.cs:122:61:122:79 | access to field txtClientExecutable | user-provided value |
+| CommandInjection.cs:110:29:110:32 | access to parameter args | WebForms.cs:126:54:126:62 | access to field txtServer : TextBox | CommandInjection.cs:110:29:110:32 | access to parameter args | This command line depends on a $@. | WebForms.cs:126:54:126:62 | access to field txtServer | user-provided value |
 edges
 | CommandInjection.cs:20:60:20:62 | req : CommandRequest | CommandInjection.cs:22:55:22:73 | ... + ... | provenance |  |
 | CommandInjection.cs:28:66:28:68 | req : CommandRequest | CommandInjection.cs:30:38:30:48 | access to property Command : String | provenance |  |
-| CommandInjection.cs:30:38:30:48 | access to property Command : String | CommandInjection.cs:86:54:86:56 | cmd : String | provenance |  |
+| CommandInjection.cs:30:38:30:48 | access to property Command : String | CommandInjection.cs:105:54:105:56 | cmd : String | provenance |  |
 | CommandInjection.cs:35:70:35:72 | req : CommandRequest | CommandInjection.cs:37:63:37:73 | access to property Command : String | provenance |  |
 | CommandInjection.cs:37:63:37:73 | access to property Command : String | CommandInjection.cs:37:38:37:75 | object creation of type List<String> | provenance | MaD:649 |
-| CommandInjection.cs:75:49:75:51 | req : CommandRequest | CommandInjection.cs:77:59:77:77 | ... + ... | provenance |  |
-| CommandInjection.cs:86:54:86:56 | cmd : String | CommandInjection.cs:90:28:90:30 | access to parameter cmd | provenance |  |
-| CommandInjection.cs:86:66:86:69 | args : String | CommandInjection.cs:91:29:91:32 | access to parameter args | provenance |  |
+| CommandInjection.cs:77:33:77:39 | binFile : String | CommandInjection.cs:80:36:80:42 | access to parameter binFile | provenance |  |
+| CommandInjection.cs:94:49:94:51 | req : CommandRequest | CommandInjection.cs:96:59:96:77 | ... + ... | provenance |  |
+| CommandInjection.cs:105:54:105:56 | cmd : String | CommandInjection.cs:109:28:109:30 | access to parameter cmd | provenance |  |
+| CommandInjection.cs:105:66:105:69 | args : String | CommandInjection.cs:110:29:110:32 | access to parameter args | provenance |  |
 | WebForms.cs:37:23:37:25 | this : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:41:24:41:32 | this access : ConfigFile [field _settings, element, property Value] : String | provenance |  |
 | WebForms.cs:41:24:41:32 | access to field _settings : IDictionary<String,String> [element, property Value] : String | WebForms.cs:41:24:41:37 | access to indexer : String | provenance | MaD:654 |
 | WebForms.cs:41:24:41:32 | this access : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:41:24:41:32 | access to field _settings : IDictionary<String,String> [element, property Value] : String | provenance |  |
@@ -41,16 +43,16 @@ edges
 | WebForms.cs:69:27:69:63 | call to method Format : String | WebForms.cs:69:20:69:23 | access to local variable args : String | provenance |  |
 | WebForms.cs:69:58:69:62 | access to field _host : String | WebForms.cs:69:27:69:63 | call to method Format : String | provenance | MaD:2905 |
 | WebForms.cs:69:58:69:62 | this access : MySqlDbProvider [field _host] : String | WebForms.cs:69:58:69:62 | access to field _host : String | provenance |  |
-| WebForms.cs:70:54:70:64 | access to field _clientExec : String | CommandInjection.cs:86:54:86:56 | cmd : String | provenance |  |
+| WebForms.cs:70:54:70:64 | access to field _clientExec : String | CommandInjection.cs:105:54:105:56 | cmd : String | provenance |  |
 | WebForms.cs:70:54:70:64 | this access : MySqlDbProvider [field _clientExec] : String | WebForms.cs:70:54:70:64 | access to field _clientExec : String | provenance |  |
-| WebForms.cs:70:67:70:70 | access to local variable args : String | CommandInjection.cs:86:66:86:69 | args : String | provenance |  |
+| WebForms.cs:70:67:70:70 | access to local variable args : String | CommandInjection.cs:105:66:105:69 | args : String | provenance |  |
 | WebForms.cs:78:44:78:53 | configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:78:72:78:81 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | provenance |  |
 | WebForms.cs:78:58:78:68 | [post] this access : SqliteDbProvider [field _clientExec] : String | WebForms.cs:78:16:78:31 | this [Return] : SqliteDbProvider [field _clientExec] : String | provenance |  |
 | WebForms.cs:78:72:78:81 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:37:23:37:25 | this : ConfigFile [field _settings, element, property Value] : String | provenance |  |
 | WebForms.cs:78:72:78:81 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:78:72:78:114 | call to method Get : String | provenance | MaD:654 |
 | WebForms.cs:78:72:78:114 | call to method Get : String | WebForms.cs:78:58:78:68 | [post] this access : SqliteDbProvider [field _clientExec] : String | provenance |  |
 | WebForms.cs:80:21:80:34 | this : SqliteDbProvider [field _clientExec] : String | WebForms.cs:80:75:80:85 | this access : SqliteDbProvider [field _clientExec] : String | provenance |  |
-| WebForms.cs:80:75:80:85 | access to field _clientExec : String | CommandInjection.cs:86:54:86:56 | cmd : String | provenance |  |
+| WebForms.cs:80:75:80:85 | access to field _clientExec : String | CommandInjection.cs:105:54:105:56 | cmd : String | provenance |  |
 | WebForms.cs:80:75:80:85 | this access : SqliteDbProvider [field _clientExec] : String | WebForms.cs:80:75:80:85 | access to field _clientExec : String | provenance |  |
 | WebForms.cs:85:53:85:62 | configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:92:48:92:57 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | provenance |  |
 | WebForms.cs:85:53:85:62 | configFile : ConfigFile [field _settings, element, property Value] : String | WebForms.cs:94:49:94:58 | access to parameter configFile : ConfigFile [field _settings, element, property Value] : String | provenance |  |
@@ -90,12 +92,14 @@ nodes
 | CommandInjection.cs:35:70:35:72 | req : CommandRequest | semmle.label | req : CommandRequest |
 | CommandInjection.cs:37:38:37:75 | object creation of type List<String> | semmle.label | object creation of type List<String> |
 | CommandInjection.cs:37:63:37:73 | access to property Command : String | semmle.label | access to property Command : String |
-| CommandInjection.cs:75:49:75:51 | req : CommandRequest | semmle.label | req : CommandRequest |
-| CommandInjection.cs:77:59:77:77 | ... + ... | semmle.label | ... + ... |
-| CommandInjection.cs:86:54:86:56 | cmd : String | semmle.label | cmd : String |
-| CommandInjection.cs:86:66:86:69 | args : String | semmle.label | args : String |
-| CommandInjection.cs:90:28:90:30 | access to parameter cmd | semmle.label | access to parameter cmd |
-| CommandInjection.cs:91:29:91:32 | access to parameter args | semmle.label | access to parameter args |
+| CommandInjection.cs:77:33:77:39 | binFile : String | semmle.label | binFile : String |
+| CommandInjection.cs:80:36:80:42 | access to parameter binFile | semmle.label | access to parameter binFile |
+| CommandInjection.cs:94:49:94:51 | req : CommandRequest | semmle.label | req : CommandRequest |
+| CommandInjection.cs:96:59:96:77 | ... + ... | semmle.label | ... + ... |
+| CommandInjection.cs:105:54:105:56 | cmd : String | semmle.label | cmd : String |
+| CommandInjection.cs:105:66:105:69 | args : String | semmle.label | args : String |
+| CommandInjection.cs:109:28:109:30 | access to parameter cmd | semmle.label | access to parameter cmd |
+| CommandInjection.cs:110:29:110:32 | access to parameter args | semmle.label | access to parameter args |
 | WebForms.cs:37:23:37:25 | this : ConfigFile [field _settings, element, property Value] : String | semmle.label | this : ConfigFile [field _settings, element, property Value] : String |
 | WebForms.cs:41:24:41:32 | access to field _settings : IDictionary<String,String> [element, property Value] : String | semmle.label | access to field _settings : IDictionary<String,String> [element, property Value] : String |
 | WebForms.cs:41:24:41:32 | this access : ConfigFile [field _settings, element, property Value] : String | semmle.label | this access : ConfigFile [field _settings, element, property Value] : String |

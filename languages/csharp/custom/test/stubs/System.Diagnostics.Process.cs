@@ -11,6 +11,7 @@ namespace System.Diagnostics
         public string Arguments { get => throw null; set => throw null; }
         public System.Collections.ObjectModel.Collection<string> ArgumentList { get => throw null; }
         public string FileName { get => throw null; set => throw null; }
+        public bool RedirectStandardOutput { get => throw null; set => throw null; }
         public bool UseShellExecute { get => throw null; set => throw null; }
         public string WorkingDirectory { get => throw null; set => throw null; }
     }
@@ -19,6 +20,7 @@ namespace System.Diagnostics
     {
         public Process() => throw null;
         public ProcessStartInfo StartInfo { get => throw null; set => throw null; }
+        public System.IO.StreamReader StandardOutput { get => throw null; }
         public bool Start() => throw null;
         public static Process Start(ProcessStartInfo startInfo) => throw null;
         public static Process Start(string fileName) => throw null;
