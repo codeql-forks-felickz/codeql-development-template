@@ -1,0 +1,8 @@
+extensions:
+  # HTTP client response data is a `response` threat-model source, which is not
+  # part of the default threat models. Enable it to treat ajax responses as untrusted.
+  - addsTo:
+      pack: codeql/threat-models
+      extensible: threatModelConfiguration
+    data:
+      - ["response", true, 0]

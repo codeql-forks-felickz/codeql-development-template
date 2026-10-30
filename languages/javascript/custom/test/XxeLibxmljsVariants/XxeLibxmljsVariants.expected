@@ -1,0 +1,17 @@
+edges
+| products.js:9:9:9:15 | XMLfile | products.js:11:42:11:48 | XMLfile | provenance |  |
+| products.js:9:19:9:27 | req.files | products.js:9:9:9:15 | XMLfile | provenance |  |
+| products.js:17:22:17:29 | req.body | products.js:17:22:17:33 | req.body.xml | provenance |  |
+| products.js:33:27:33:34 | req.body | products.js:33:27:33:38 | req.body.xml | provenance |  |
+nodes
+| products.js:9:9:9:15 | XMLfile | semmle.label | XMLfile |
+| products.js:9:19:9:27 | req.files | semmle.label | req.files |
+| products.js:11:42:11:48 | XMLfile | semmle.label | XMLfile |
+| products.js:17:22:17:29 | req.body | semmle.label | req.body |
+| products.js:17:22:17:33 | req.body.xml | semmle.label | req.body.xml |
+| products.js:33:27:33:34 | req.body | semmle.label | req.body |
+| products.js:33:27:33:38 | req.body.xml | semmle.label | req.body.xml |
+subpaths
+#select
+| products.js:11:42:11:48 | XMLfile | products.js:9:19:9:27 | req.files | products.js:11:42:11:48 | XMLfile | XML parsing depends on a $@ without guarding against external entity expansion. | products.js:9:19:9:27 | req.files | user-provided value |
+| products.js:17:22:17:33 | req.body.xml | products.js:17:22:17:29 | req.body | products.js:17:22:17:33 | req.body.xml | XML parsing depends on a $@ without guarding against external entity expansion. | products.js:17:22:17:29 | req.body | user-provided value |

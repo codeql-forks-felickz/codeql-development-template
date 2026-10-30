@@ -1,0 +1,6 @@
+edges
+nodes
+| store.js:10:32:10:46 | req.params.data | semmle.label | req.params.data |
+subpaths
+#select
+| store.js:10:32:10:46 | req.params.data | store.js:10:32:10:46 | req.params.data | store.js:10:32:10:46 | req.params.data | Unsafe deserialization depends on a $@. | store.js:10:32:10:46 | req.params.data | user-provided value |
