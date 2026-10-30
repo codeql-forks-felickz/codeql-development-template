@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const Todo = new Schema({ content: Buffer, updated_at: Date });
 mongoose.model("Todo", Todo);
 
-let User = new Schema({ username: String, password: String });
+let User = new Schema({ username: String, email: String, password: String });
 mongoose.model("User", User);
 
 // Reduced from nodejs-goof: the startup check logs the whole admin user documents.
@@ -27,7 +27,12 @@ async function lookups(email) {
   const user = await User.findOne({ email }); // $ Source
   console.log(user); // $ Alert
   console.log("password is " + user.password); // $ Alert
+  console.log(user.get("password")); // $ Alert
+  console.log(user.get("email")); // Safe: only a non-sensitive field is logged.
   console.log(JSON.stringify(user.toObject())); // $ Alert
+
+  const withOptions = await User.findOne({ email }, null, { lean: true }); // $ Source
+  console.log(withOptions); // $ Alert
 
   User.findById(email, (err, u) => console.log(u)); // $ Alert
   User.findOne({ email }).then((u) => console.log(u)); // $ Alert

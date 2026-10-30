@@ -36,8 +36,43 @@ class SerializedSensitiveRecord extends SensitiveDatabaseRecord {
  */
 class RedactingObjectLiteral extends DataFlow::ObjectLiteralNode {
   RedactingObjectLiteral() {
-    exists(this.asExpr().(ObjectExpr).getAProperty().(SpreadProperty)) and
-    exists(string name | exists(this.getAPropertyWrite(name)) | isPasswordFieldName(name))
+    exists(ObjectExpr object |
+      object = this.asExpr() and
+      exists(SpreadProperty spread | spread.getObjectExpr() = object) and
+      not exists(SpreadProperty spread, Property password |
+        spread.getObjectExpr() = object and
+        password.getObjectExpr() = object and
+        isPasswordFieldName(password.getName()) and
+        spread.getIndex() >= password.getIndex()
+      ) and
+      not exists(SerializedSensitiveRecord record, string name |
+        name = record.getAPasswordField() and
+        not exists(Property password |
+          password.getObjectExpr() = object and
+          password.getName() = name and
+          not exists(SpreadProperty spread |
+            spread.getObjectExpr() = object and
+            spread.getIndex() >= password.getIndex()
+          ) and
+          not exists(SerializedSensitiveRecord source |
+            source.(DataFlow::SourceNode)
+              .getAPropertyRead()
+              .flowsTo(password.getInit().flow())
+          )
+        )
+      )
+    )
+  }
+}
+
+/** A read of a non-password field, which cannot disclose a password by itself. */
+class NonPasswordPropertyRead extends DataFlow::Node instanceof DataFlow::PropRead {
+  NonPasswordPropertyRead() {
+    exists(string name | name = this.(DataFlow::PropRead).getPropertyName() |
+      not name.regexpMatch("[0-9]+") and
+      not name = ["dataValues", "_doc", "rows"] and
+      not isPasswordFieldName(name)
+    )
   }
 }
 
@@ -48,6 +83,7 @@ module SensitiveDatabaseRecordInResponseConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     node instanceof NonSensitivePropertyRead or
+    node instanceof NonPasswordPropertyRead or
     node instanceof HashOrEncryptCall or
     node instanceof RedactingObjectLiteral
   }

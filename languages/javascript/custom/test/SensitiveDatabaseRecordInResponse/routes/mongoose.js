@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const Account = mongoose.model(
   "Account",
-  new mongoose.Schema({ email: String, password: String })
+  new mongoose.Schema({ email: String, ssn: String, password: String })
 );
 
 const hiddenSchema = new mongoose.Schema({ email: String, password: String });
@@ -24,10 +24,19 @@ app.get("/accounts", (req, res) => {
 });
 
 app.get("/accounts/:id", async (req, res) => {
-  const account = await Account.findById(req.params.id);
+  const account = await Account.findById(req.params.id); // $ Source
   account.email = req.query.email;
   const saved = await account.save(); // $ Source
   res.json(saved.toObject()); // $ Alert
+  res.json(account.get()); // $ Alert
+  res.json(account.get("password")); // $ Alert
+  res.json(account.get("email")); // Safe: only a non-sensitive field is returned.
+  res.json(account.ssn); // Safe: a private field is not a password disclosure.
+});
+
+app.get("/accounts/options", async (req, res) => {
+  const account = await Account.findOne({ email: req.query.email }, null, { lean: true }); // $ Source
+  res.json(account); // $ Alert
 });
 
 // Safe: the schema removes the password in a `toJSON` transform.

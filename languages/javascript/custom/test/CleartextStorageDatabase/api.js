@@ -23,6 +23,14 @@ app.post("/api/register", function (req, res) {
     api_register(req.body.user, req.body.pass, req, res); // $ Source
 });
 
+app.post("/api/register-nested", async function (req, res) {
+    const client = await MongoClient.connect("mongodb://localhost/pixidb");
+    await client.db().collection("users").insertOne({
+        credentials: [{ password: req.body.password }] // $ Alert
+    });
+    res.end();
+});
+
 // Safe: the password is hashed with a password KDF before it is stored.
 app.post("/api/register-hashed", async function (req, res) {
     const hash = await bcrypt.hash(req.body.pass, 12);

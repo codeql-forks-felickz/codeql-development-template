@@ -333,7 +333,17 @@ class MongooseModelDefinition extends OrmModelDefinition instanceof API::InvokeN
   private predicate hasProjection(DataFlow::MethodCallNode read) {
     read.getMethodName() = ["find", "findOne", "findById"] and
     exists(DataFlow::Node arg | arg = read.getArgument(1) |
-      not arg.getALocalSource() instanceof DataFlow::FunctionNode
+      not arg.getALocalSource() instanceof DataFlow::FunctionNode and
+      not arg.asExpr() instanceof NullLiteral and
+      not (
+        arg.asExpr() instanceof GlobalVarAccess and
+        arg.asExpr().(GlobalVarAccess).getName() = "undefined"
+      ) and
+      not arg.asExpr() instanceof VoidExpr and
+      not exists(DataFlow::ObjectLiteralNode projection |
+        projection = arg.getALocalSource() and
+        projection.asExpr().(ObjectExpr).getNumProperty() = 0
+      )
     )
     or
     exists(
@@ -524,15 +534,31 @@ private predicate isHashedBeforeModelSave(
  * Gets an object that is part of the persisted document `doc`, that is `doc` itself,
  * a nested object (such as the operand of `$set`) or an element of an array of documents.
  */
-private DataFlow::SourceNode documentObject(DataFlow::Node doc) {
+private DataFlow::SourceNode documentObject(DataFlow::Node doc, string updateOperator) {
   persistedDocument(doc) and
-  result = doc.getALocalSource()
+  result = doc.getALocalSource() and updateOperator = ""
   or
-  exists(DataFlow::SourceNode parent | parent = documentObject(doc) |
-    result = parent.getAPropertyWrite().getRhs().getALocalSource() and
-    result instanceof DataFlow::ObjectLiteralNode
+  exists(
+    DataFlow::SourceNode parent, string parentOperator, DataFlow::PropWrite property |
+    parent = documentObject(doc, parentOperator) and
+    property = parent.getAPropertyWrite()
+  |
+    result = property.getRhs().getALocalSource() and
+    (
+      result instanceof DataFlow::ObjectLiteralNode
+      or
+      result instanceof DataFlow::ArrayCreationNode
+    ) and
+    (
+      property.getPropertyName().charAt(0) = "$" and
+      updateOperator = property.getPropertyName()
+      or
+      property.getPropertyName().charAt(0) != "$" and
+      updateOperator = parentOperator
+    )
     or
-    result = parent.(DataFlow::ArrayCreationNode).getAnElement().getALocalSource()
+    result = parent.(DataFlow::ArrayCreationNode).getAnElement().getALocalSource() and
+    updateOperator = parentOperator
   )
 }
 
@@ -546,10 +572,12 @@ abstract class DatabaseStorageSink extends DataFlow::Node {
 class DocumentFieldSink extends DatabaseStorageSink {
   string field;
   DataFlow::Node doc;
+  string updateOperator;
 
   DocumentFieldSink() {
-    this = documentObject(doc).getAPropertyWrite(field).getRhs() and
+    this = documentObject(doc, updateOperator).getAPropertyWrite(field).getRhs() and
     not field.charAt(0) = "$" and
+    not updateOperator = ["$rename", "$unset", "$pull", "$pullAll", "$pop", "$currentDate"] and
     not exists(OrmModelDefinition def | ormModelDocument(doc, def) |
       def.mayTransformOnWrite() or def.hasSetter(field)
     )
@@ -616,8 +644,21 @@ class NonSensitivePropertyRead extends DataFlow::Node instanceof DataFlow::PropR
 /** Holds if converting the record `pred` to a plain object or JSON gives `succ`. */
 predicate recordConversionStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(DataFlow::MethodCallNode call |
-    call.getMethodName() = ["toJSON", "toObject", "get"] and
     pred = call.getReceiver() and
-    succ = call
+    succ = call and
+    (
+      call.getMethodName() = ["toJSON", "toObject"]
+      or
+      call.getMethodName() = "get" and
+      (
+        call.getNumArgument() = 0
+        or
+        exists(DataFlow::Node arg | arg = call.getArgument(0) |
+          arg.getStringValue() = "" or
+          arg.getALocalSource() instanceof DataFlow::ObjectLiteralNode or
+          exists(string name | name = arg.getStringValue() | isSensitiveFieldName(name))
+        )
+      )
+    )
   )
 }

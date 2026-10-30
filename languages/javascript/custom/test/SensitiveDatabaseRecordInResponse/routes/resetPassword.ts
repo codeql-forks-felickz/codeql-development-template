@@ -30,6 +30,9 @@ export function profile() {
       data: users.map((u) => ({ ...u.dataValues, password: "********" }))
     });
 
+    res.json({ password: "********", ...user.dataValues }); // $ Alert
+    res.json({ ...user.dataValues, password: user.password }); // $ Alert
+
     // Safe: the model's `toJSON` removes the password.
     const member = await MemberModel.findByPk(body.id);
     res.json(member);
