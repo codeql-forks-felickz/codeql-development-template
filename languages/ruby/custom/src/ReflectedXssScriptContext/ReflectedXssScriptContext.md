@@ -6,7 +6,7 @@ This query complements the standard `rb/reflected-xss` query, which only reports
 
 ## Recommendation
 
-Do not write user input directly into JavaScript code. Convert values that should be numbers with `to_i` or `to_f`, serialize other values as JSON with `to_json` (which also escapes `<`, `>` and `&`), or put the value in a `data-` attribute and read it from the script.
+Do not write user input directly into JavaScript code. Convert values that should be numbers with `to_i` or `to_f`, serialize other values as JSON with `to_json` when writing a JavaScript value, or put the value in a `data-` attribute and read it from the script. Do not interpolate JSON output into a JavaScript template literal, where `${...}` remains active.
 
 ## Example
 

@@ -41,14 +41,58 @@ private predicate opensScript(ErbToken tok) {
   tok.getValue().regexpMatch("(?is).*<script\\b(?:(?!</script).)*")
 }
 
+/** Holds if `tok` opens a script element that executes JavaScript. */
+private predicate executableScript(ErbToken tok) {
+  not tok.getValue().regexpMatch("(?is).*<script[^>]*[ \\t\\r\\n]+type.*")
+  or
+  tok.getValue()
+      .regexpMatch("(?is).*<script[^>]*[ \\t\\r\\n]+type[^>]*(?:module|(?:text|application)/(?:javascript|ecmascript|x-javascript|x-ecmascript|jscript|livescript|javascript1\\.[0-5]))[^>]*>.*")
+}
+
 /** Holds if `tok` contains a closing `</script>` tag. */
 private predicate closesScript(ErbToken tok) { tok.getValue().regexpMatch("(?is).*</script.*") }
+
+/** Holds if `tok` is a literal fragment of script content on `line`. */
+private string scriptTextFragment(ErbToken tok, int line) {
+  tok.getLocation().getEndLine() = line and
+  result = tok.getValue().regexpCapture("(?s)(?:.*\\n)?([^\\n]*)", 1)
+}
+
+/** Gets the literal script text on `d`'s line before the output directive. */
+private string scriptTextBefore(ErbOutputDirective d) {
+  exists(ErbFile f, ErbToken open, int ol, int oc, int dl, int dc |
+    textToken(f, open, ol, oc) and
+    opensScript(open) and
+    executableScript(open) and
+    d.getLocation().getFile() = f and
+    dl = d.getLocation().getStartLine() and
+    dc = d.getLocation().getStartColumn() and
+    isBefore(ol, oc, dl, dc) and
+    result =
+      concat(int line, int col, ErbToken tok |
+        textToken(f, tok, _, _) and
+        tok.getLocation().getStartLine() <= dl and
+        tok.getLocation().getEndLine() >= dl and
+        isBefore(tok.getLocation().getStartLine(), tok.getLocation().getStartColumn(), dl, dc) and
+        (
+          tok = open
+          or
+          isBefore(ol, oc, tok.getLocation().getStartLine(), tok.getLocation().getStartColumn())
+        ) and
+        line = tok.getLocation().getStartLine() and
+        col = tok.getLocation().getStartColumn()
+      |
+        scriptTextFragment(tok, dl), "" order by line, col
+      )
+  )
+}
 
 /** Holds if the output directive `d` is located inside a `<script>` element. */
 private predicate inScriptElement(ErbOutputDirective d) {
   exists(ErbFile f, ErbToken open, int ol, int oc, int dl, int dc |
     textToken(f, open, ol, oc) and
     opensScript(open) and
+    executableScript(open) and
     d.getLocation().getFile() = f and
     dl = d.getLocation().getStartLine() and
     dc = d.getLocation().getStartColumn() and
@@ -68,12 +112,18 @@ private predicate inScriptElement(ErbOutputDirective d) {
  * so the output cannot break out of such a string.
  */
 private predicate inQuotedString(ErbOutputDirective d) {
-  exists(ErbToken prev, string lastLine |
-    textToken(d.getLocation().getFile(), prev, _, _) and
-    prev.getLocation().getEndLine() = d.getLocation().getStartLine() and
-    prev.getLocation().getEndColumn() + 1 = d.getLocation().getStartColumn() and
-    lastLine = prev.getValue().regexpCapture("(?s)(?:.*\\n)?([^\\n]*)", 1) and
-    not lastLine.regexpMatch("(?:[^\"'\\\\]|\\\\.|\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*')*")
+  exists(string scriptText |
+    scriptText = scriptTextBefore(d) and
+    not scriptText
+        .regexpMatch("(?:[^\"'\\\\]|\\\\.|\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*')*")
+  )
+}
+
+/** Holds if the output directive `d` is inside a JavaScript template literal. */
+private predicate inTemplateLiteral(ErbOutputDirective d) {
+  exists(string scriptText |
+    scriptText = scriptTextBefore(d) and
+    not scriptText.regexpMatch("(?:[^`\\\\]|\\\\.|`(?:[^`\\\\]|\\\\.)*`)*")
   )
 }
 
@@ -98,9 +148,13 @@ private module ReflectedXssScriptContextConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof ScriptContextOutputSink }
 
   predicate isBarrier(DataFlow::Node node) {
-    // Numeric conversions and JSON serialization produce a safe JavaScript literal.
-    node.(DataFlow::CallNode).getMethodName() =
-      ["to_i", "to_f", "to_r", "to_c", "to_json", "Integer", "Float"]
+    node.(DataFlow::CallNode).getMethodName() = ["to_i", "to_f", "to_r", "to_c", "Integer", "Float"]
+    or
+    node.(DataFlow::CallNode).getMethodName() = "to_json" and
+    not exists(ErbOutputDirective d |
+      node.asExpr().getExpr() = d.getTerminalStmt() and
+      inTemplateLiteral(d)
+    )
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
