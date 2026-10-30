@@ -6,7 +6,7 @@ http.request({ hostname: 'example.com', path: '/name' }, function (res) {
   res.on('data', function (chunk) {
     valTom = chunk;
   });
-});
+}).end();
 
 new mysql.Database({ hostname: 'localhost', user: 'user', password: 'password', database: 'test' }).connect(
   function (error) {
