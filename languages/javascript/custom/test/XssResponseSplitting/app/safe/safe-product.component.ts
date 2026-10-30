@@ -1,5 +1,5 @@
 import { Component, type OnInit, inject } from '@angular/core'
-import { forkJoin, of } from 'rxjs'
+import { combineLatest, forkJoin, of, zip } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
 import { DomSanitizer, type SafeHtml } from '@angular/platform-browser'
 import DOMPurify from 'dompurify'
@@ -42,6 +42,18 @@ export class SafeProductComponent implements OnInit {
       }
     })
     forkJoin([of('<b>Sale</b>'), this.productService.search('')]).subscribe(([html, products]) => {
+      this.banner = this.sanitizer.bypassSecurityTrustHtml(html)
+      this.purified = this.sanitizer.bypassSecurityTrustHtml(products[0].description) // $ Alert
+    })
+    zip(of('<b>Sale</b>'), this.productService.search('')).subscribe(([html, products]) => {
+      this.banner = this.sanitizer.bypassSecurityTrustHtml(html)
+      this.purified = this.sanitizer.bypassSecurityTrustHtml(products[0].description) // $ Alert
+    })
+    forkJoin(of('<b>Sale</b>'), this.productService.search('')).subscribe(([html, products]) => {
+      this.banner = this.sanitizer.bypassSecurityTrustHtml(html)
+      this.purified = this.sanitizer.bypassSecurityTrustHtml(products[0].description) // $ Alert
+    })
+    combineLatest(of('<b>Sale</b>'), this.productService.search('')).subscribe(([html, products]) => {
       this.banner = this.sanitizer.bypassSecurityTrustHtml(html)
       this.purified = this.sanitizer.bypassSecurityTrustHtml(products[0].description) // $ Alert
     })

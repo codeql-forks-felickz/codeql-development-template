@@ -2,11 +2,17 @@
 | app/product-details/product-details.component.ts:17:65:17:83 | product.description | app/Services/product.service.ts:15:12:15:46 | this.ht ... ${id}`) | app/product-details/product-details.component.ts:17:65:17:83 | product.description | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/product.service.ts:15:12:15:46 | this.ht ... ${id}`) | HTTP response data |
 | app/product-details/product-details.component.ts:18:60:18:72 | product.style | app/Services/product.service.ts:15:12:15:46 | this.ht ... ${id}`) | app/product-details/product-details.component.ts:18:60:18:72 | product.style | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/product.service.ts:15:12:15:46 | this.ht ... ${id}`) | HTTP response data |
 | app/safe/safe-product.component.ts:46:62:46:84 | product ... ription | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | app/safe/safe-product.component.ts:46:62:46:84 | product ... ription | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | HTTP response data |
+| app/safe/safe-product.component.ts:50:62:50:84 | product ... ription | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | app/safe/safe-product.component.ts:50:62:50:84 | product ... ription | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | HTTP response data |
+| app/safe/safe-product.component.ts:54:62:54:84 | product ... ription | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | app/safe/safe-product.component.ts:54:62:54:84 | product ... ription | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | HTTP response data |
+| app/safe/safe-product.component.ts:58:62:58:84 | product ... ription | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | app/safe/safe-product.component.ts:58:62:58:84 | product ... ription | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | HTTP response data |
 | app/search-result/search-result.component.ts:27:76:27:95 | quantity.description | app/Services/quantity.service.ts:10:12:10:43 | this.ht ... itys/') | app/search-result/search-result.component.ts:27:76:27:95 | quantity.description | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/quantity.service.ts:10:12:10:43 | this.ht ... itys/') | HTTP response data |
 | app/search-result/search-result.component.ts:36:73:36:96 | tableDa ... ription | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | app/search-result/search-result.component.ts:36:73:36:96 | tableDa ... ription | Angular sanitization is bypassed for a value that depends on $@, allowing stored cross-site scripting when it is rendered. | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | HTTP response data |
 edges
 | app/Services/product.service.ts:11:12:11:63 | this.ht ... eria}`) | app/Services/product.service.ts:11:75:11:82 | response | provenance |  |
 | app/Services/product.service.ts:11:12:11:143 | this.ht ... err })) | app/safe/safe-product.component.ts:44:34:44:63 | this.pr ... rch('') | provenance | Config |
+| app/Services/product.service.ts:11:12:11:143 | this.ht ... err })) | app/safe/safe-product.component.ts:48:28:48:57 | this.pr ... rch('') | provenance | Config |
+| app/Services/product.service.ts:11:12:11:143 | this.ht ... err })) | app/safe/safe-product.component.ts:52:33:52:62 | this.pr ... rch('') | provenance | Config |
+| app/Services/product.service.ts:11:12:11:143 | this.ht ... err })) | app/safe/safe-product.component.ts:56:38:56:67 | this.pr ... rch('') | provenance | Config |
 | app/Services/product.service.ts:11:12:11:143 | this.ht ... err })) | app/search-result/search-result.component.ts:20:22:20:51 | this.pr ... rch('') | provenance | Config |
 | app/Services/product.service.ts:11:75:11:82 | response | app/Services/product.service.ts:11:93:11:100 | response | provenance |  |
 | app/Services/product.service.ts:11:93:11:100 | response | app/Services/product.service.ts:11:93:11:105 | response.data | provenance |  |
@@ -33,6 +39,24 @@ edges
 | app/safe/safe-product.component.ts:44:85:44:92 | products | app/safe/safe-product.component.ts:44:85:44:92 | products | provenance |  |
 | app/safe/safe-product.component.ts:44:85:44:92 | products | app/safe/safe-product.component.ts:46:62:46:69 | products | provenance |  |
 | app/safe/safe-product.component.ts:46:62:46:69 | products | app/safe/safe-product.component.ts:46:62:46:84 | product ... ription | provenance |  |
+| app/safe/safe-product.component.ts:48:5:48:58 | zip(of( ... ch('')) [1] | app/safe/safe-product.component.ts:48:71:48:86 | [html, products] [1] | provenance |  |
+| app/safe/safe-product.component.ts:48:28:48:57 | this.pr ... rch('') | app/safe/safe-product.component.ts:48:5:48:58 | zip(of( ... ch('')) [1] | provenance |  |
+| app/safe/safe-product.component.ts:48:71:48:86 | [html, products] [1] | app/safe/safe-product.component.ts:48:78:48:85 | products | provenance |  |
+| app/safe/safe-product.component.ts:48:78:48:85 | products | app/safe/safe-product.component.ts:48:78:48:85 | products | provenance |  |
+| app/safe/safe-product.component.ts:48:78:48:85 | products | app/safe/safe-product.component.ts:50:62:50:69 | products | provenance |  |
+| app/safe/safe-product.component.ts:50:62:50:69 | products | app/safe/safe-product.component.ts:50:62:50:84 | product ... ription | provenance |  |
+| app/safe/safe-product.component.ts:52:5:52:63 | forkJoi ... ch('')) [1] | app/safe/safe-product.component.ts:52:76:52:91 | [html, products] [1] | provenance |  |
+| app/safe/safe-product.component.ts:52:33:52:62 | this.pr ... rch('') | app/safe/safe-product.component.ts:52:5:52:63 | forkJoi ... ch('')) [1] | provenance |  |
+| app/safe/safe-product.component.ts:52:76:52:91 | [html, products] [1] | app/safe/safe-product.component.ts:52:83:52:90 | products | provenance |  |
+| app/safe/safe-product.component.ts:52:83:52:90 | products | app/safe/safe-product.component.ts:52:83:52:90 | products | provenance |  |
+| app/safe/safe-product.component.ts:52:83:52:90 | products | app/safe/safe-product.component.ts:54:62:54:69 | products | provenance |  |
+| app/safe/safe-product.component.ts:54:62:54:69 | products | app/safe/safe-product.component.ts:54:62:54:84 | product ... ription | provenance |  |
+| app/safe/safe-product.component.ts:56:5:56:68 | combine ... ch('')) [1] | app/safe/safe-product.component.ts:56:81:56:96 | [html, products] [1] | provenance |  |
+| app/safe/safe-product.component.ts:56:38:56:67 | this.pr ... rch('') | app/safe/safe-product.component.ts:56:5:56:68 | combine ... ch('')) [1] | provenance |  |
+| app/safe/safe-product.component.ts:56:81:56:96 | [html, products] [1] | app/safe/safe-product.component.ts:56:88:56:95 | products | provenance |  |
+| app/safe/safe-product.component.ts:56:88:56:95 | products | app/safe/safe-product.component.ts:56:88:56:95 | products | provenance |  |
+| app/safe/safe-product.component.ts:56:88:56:95 | products | app/safe/safe-product.component.ts:58:62:58:69 | products | provenance |  |
+| app/safe/safe-product.component.ts:58:62:58:69 | products | app/safe/safe-product.component.ts:58:62:58:84 | product ... ription | provenance |  |
 | app/search-result/search-result.component.ts:20:11:20:18 | products | app/search-result/search-result.component.ts:22:27:22:34 | products | provenance |  |
 | app/search-result/search-result.component.ts:20:22:20:51 | this.pr ... rch('') | app/search-result/search-result.component.ts:20:11:20:18 | products | provenance |  |
 | app/search-result/search-result.component.ts:21:11:21:20 | quantities | app/search-result/search-result.component.ts:22:15:22:24 | quantities | provenance |  |
@@ -85,6 +109,27 @@ nodes
 | app/safe/safe-product.component.ts:44:85:44:92 | products | semmle.label | products |
 | app/safe/safe-product.component.ts:46:62:46:69 | products | semmle.label | products |
 | app/safe/safe-product.component.ts:46:62:46:84 | product ... ription | semmle.label | product ... ription |
+| app/safe/safe-product.component.ts:48:5:48:58 | zip(of( ... ch('')) [1] | semmle.label | zip(of( ... ch('')) [1] |
+| app/safe/safe-product.component.ts:48:28:48:57 | this.pr ... rch('') | semmle.label | this.pr ... rch('') |
+| app/safe/safe-product.component.ts:48:71:48:86 | [html, products] [1] | semmle.label | [html, products] [1] |
+| app/safe/safe-product.component.ts:48:78:48:85 | products | semmle.label | products |
+| app/safe/safe-product.component.ts:48:78:48:85 | products | semmle.label | products |
+| app/safe/safe-product.component.ts:50:62:50:69 | products | semmle.label | products |
+| app/safe/safe-product.component.ts:50:62:50:84 | product ... ription | semmle.label | product ... ription |
+| app/safe/safe-product.component.ts:52:5:52:63 | forkJoi ... ch('')) [1] | semmle.label | forkJoi ... ch('')) [1] |
+| app/safe/safe-product.component.ts:52:33:52:62 | this.pr ... rch('') | semmle.label | this.pr ... rch('') |
+| app/safe/safe-product.component.ts:52:76:52:91 | [html, products] [1] | semmle.label | [html, products] [1] |
+| app/safe/safe-product.component.ts:52:83:52:90 | products | semmle.label | products |
+| app/safe/safe-product.component.ts:52:83:52:90 | products | semmle.label | products |
+| app/safe/safe-product.component.ts:54:62:54:69 | products | semmle.label | products |
+| app/safe/safe-product.component.ts:54:62:54:84 | product ... ription | semmle.label | product ... ription |
+| app/safe/safe-product.component.ts:56:5:56:68 | combine ... ch('')) [1] | semmle.label | combine ... ch('')) [1] |
+| app/safe/safe-product.component.ts:56:38:56:67 | this.pr ... rch('') | semmle.label | this.pr ... rch('') |
+| app/safe/safe-product.component.ts:56:81:56:96 | [html, products] [1] | semmle.label | [html, products] [1] |
+| app/safe/safe-product.component.ts:56:88:56:95 | products | semmle.label | products |
+| app/safe/safe-product.component.ts:56:88:56:95 | products | semmle.label | products |
+| app/safe/safe-product.component.ts:58:62:58:69 | products | semmle.label | products |
+| app/safe/safe-product.component.ts:58:62:58:84 | product ... ription | semmle.label | product ... ription |
 | app/search-result/search-result.component.ts:20:11:20:18 | products | semmle.label | products |
 | app/search-result/search-result.component.ts:20:22:20:51 | this.pr ... rch('') | semmle.label | this.pr ... rch('') |
 | app/search-result/search-result.component.ts:21:11:21:20 | quantities | semmle.label | quantities |

@@ -117,10 +117,27 @@ private predicate injectedServiceReturnStep(DataFlow::Node pred, DataFlow::Node 
  */
 private class RxJsCombineFlowStep extends DataFlow::AdditionalFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    // `forkJoin([a$, b$])`, `combineLatest({ a: a$ })` or `zip(a$, b$)`
+    // `forkJoin([a$, b$])` or `combineLatest({ a: a$ })`
     exists(DataFlow::CallNode call |
       call = DataFlow::moduleMember("rxjs", ["forkJoin", "combineLatest", "zip"]).getACall() and
-      pred = call.getAnArgument() and
+      pred = call.getArgument(0) and
+      (
+        pred.getALocalSource() instanceof DataFlow::ArrayCreationNode
+        or
+        pred.getALocalSource() instanceof DataFlow::ObjectLiteralNode
+      ) and
+      succ = call
+    )
+  }
+
+  override predicate storeStep(
+    DataFlow::Node pred, DataFlow::ContentSet contents, DataFlow::Node succ
+  ) {
+    exists(DataFlow::CallNode call, int index |
+      call = DataFlow::moduleMember("rxjs", ["forkJoin", "combineLatest", "zip"]).getACall() and
+      call.getNumArgument() > 1 and
+      pred = call.getArgument(index) and
+      contents = DataFlow::ContentSet::arrayElementKnown(index) and
       succ = call
     )
   }
