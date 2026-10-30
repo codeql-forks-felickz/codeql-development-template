@@ -1,0 +1,2 @@
+query: NosqlInjectionLogicalOperator/NosqlInjectionLogicalOperator.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
