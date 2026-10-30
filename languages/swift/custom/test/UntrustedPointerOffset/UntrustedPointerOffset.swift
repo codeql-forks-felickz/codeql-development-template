@@ -47,6 +47,14 @@ protocol UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool
 }
 
+struct CustomMembership {
+    func contains(_ value: Int) -> Bool { return true }
+}
+
+struct Request {
+    var count: Int
+}
+
 // --- tests ---
 
 func getQueryParameter(_ url: URL, _ name: String) -> String? {
@@ -123,8 +131,68 @@ class AppDelegate: UIApplicationDelegate {
             _ = other[index]
         }
 
+        if let raw = getQueryParameter(url, "rangeIndex"),
+           let rangeIndex = Int(raw), 0..<16 ~= rangeIndex {
+            _ = other[rangeIndex]
+        }
+
         // GOOD: constant offset, not attacker controlled.
         _ = other + 4
         _ = other.advanced(by: 8)
+    }
+
+    func handleUncheckedRanges(_ url: URL) {
+        guard let raw = getQueryParameter(url, "index"), let index = Int(raw) else { return }
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: 16)
+        defer { buffer.deallocate() }
+
+        if (0...).contains(index) {
+            _ = buffer[index] // $ Alert
+        }
+
+        if (..<16).contains(index) {
+            _ = buffer[index] // $ Alert
+        }
+
+        if CustomMembership().contains(index) {
+            _ = buffer[index] // $ Alert
+        }
+
+        if (0...) ~= index {
+            _ = buffer[index] // $ Alert
+        }
+    }
+
+    func handleReassignedIndex(_ url: URL) {
+        guard let raw = getQueryParameter(url, "index"), var index = Int(raw) else { return }
+        guard index >= 0, index < 16 else { return }
+
+        guard let replacement = getQueryParameter(url, "replacement"),
+              let replacementIndex = Int(replacement) else { return }
+        index = replacementIndex
+
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: 16)
+        defer { buffer.deallocate() }
+        _ = buffer[index] // $ Alert
+    }
+
+    func handleUntrustedClampBound(_ url: URL) {
+        guard let raw = getQueryParameter(url, "index"), let index = Int(raw) else { return }
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: 16)
+        defer { buffer.deallocate() }
+
+        let notClamped = min(max(index, 0), index)
+        _ = buffer[notClamped] // $ Alert
+
+        let clamped = min(max(index, 0), 15)
+        _ = buffer[clamped]
+    }
+
+    func handleCustomSizeProperty(_ url: URL) {
+        guard let raw = getQueryParameter(url, "count"), let count = Int(raw) else { return }
+        let request = Request(count: count)
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: 16)
+        defer { buffer.deallocate() }
+        _ = buffer[request.count] // $ Alert
     }
 }

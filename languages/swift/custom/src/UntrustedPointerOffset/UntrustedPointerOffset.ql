@@ -86,6 +86,27 @@ private predicate isUnsafeBufferPointerType(Type t) {
     ]
 }
 
+/** Holds if `e` is a size-like property on a standard-library buffer or collection type. */
+private predicate isBufferSizeExpr(Expr e) {
+  exists(MemberRefExpr memberRef, AnyGenericType baseType |
+    e = memberRef and
+    memberRef.getMember().(VarDecl).getName() =
+      ["count", "capacity", "startIndex", "endIndex"] and
+    baseType = stripType(memberRef.getBase().getType()) and
+    (
+      baseType.getDeclaration().getName() =
+        [
+          "Array", "String", "UnsafeBufferPointer", "UnsafeMutableBufferPointer",
+          "UnsafeRawBufferPointer", "UnsafeMutableRawBufferPointer"
+        ] and
+      baseType.getDeclaration().getModule().getFullName() = "Swift"
+      or
+      baseType.getDeclaration().getName() = ["Data", "NSData"] and
+      baseType.getDeclaration().getModule().getFullName() = "Foundation"
+    )
+  )
+}
+
 /** Gets the type of `e` after all implicit conversions have been applied. */
 private Type convertedType(Expr e) { result = e.getFullyConverted().getType() }
 
@@ -165,7 +186,9 @@ private class UnsafePointerOffsetSink extends DataFlow::Node {
  * Holds if the condition `cond` evaluating to `branch` implies that the variable `v` is
  * bounded from above (`isUpper = true`) or from below (`isUpper = false`).
  */
-private predicate boundCheck(Expr cond, VarDecl v, boolean isUpper, boolean branch) {
+private predicate boundCheck(
+  Expr cond, VarDecl v, boolean isUpper, boolean branch, DeclRefExpr checkedRef
+) {
   exists(BinaryExpr cmp, Expr lesser, Expr greater, boolean isUpperIfTrue |
     cond = cmp and
     (
@@ -178,9 +201,9 @@ private predicate boundCheck(Expr cond, VarDecl v, boolean isUpper, boolean bran
       greater = cmp.getLeftOperand()
     ) and
     (
-      lesser.(DeclRefExpr).getDecl() = v and isUpperIfTrue = true
+      lesser = checkedRef and checkedRef.getDecl() = v and isUpperIfTrue = true
       or
-      greater.(DeclRefExpr).getDecl() = v and isUpperIfTrue = false
+      greater = checkedRef and checkedRef.getDecl() = v and isUpperIfTrue = false
     ) and
     (
       branch = true and isUpper = isUpperIfTrue
@@ -189,13 +212,46 @@ private predicate boundCheck(Expr cond, VarDecl v, boolean isUpper, boolean bran
     )
   )
   or
-  // Range checks such as `(0..<count).contains(v)` or `0..<count ~= v`.
-  exists(ApplyExpr call |
+  // Bounded and partial range checks, such as `(0..<count).contains(v)` or `0... ~= v`.
+  exists(ApplyExpr call, Expr range, string rangeKind |
     cond = call and
-    call.getStaticTarget().(Function).getShortName() = ["contains", "~="] and
-    call.getAnArgument().getExpr().(DeclRefExpr).getDecl() = v and
-    isUpper = [true, false] and
-    branch = true
+    (
+      call.getStaticTarget().(Function).getShortName() = "contains" and
+      range = call.getQualifier()
+      or
+      call.getStaticTarget().(Function).getShortName() = "~=" and
+      range = call.getAnArgument().getExpr()
+    ) and
+    range.getType().(AnyGenericType).getDeclaration().getModule().getFullName() = "Swift" and
+    rangeKind = range.getType().(AnyGenericType).getDeclaration().getName() and
+    checkedRef = call.getAnArgument().getExpr().(DeclRefExpr) and
+    checkedRef.getDecl() = v and
+    branch = true and
+    (
+      rangeKind = ["Range", "ClosedRange"] and isUpper = [true, false]
+      or
+      rangeKind = "PartialRangeFrom" and isUpper = false
+      or
+      rangeKind = ["PartialRangeThrough", "PartialRangeUpTo"] and isUpper = true
+    )
+  )
+  or
+  exists(BinaryExpr cmp, Expr range, string rangeKind |
+    cond = cmp and
+    cmp.getStaticTarget().getShortName() = "~=" and
+    range = cmp.getLeftOperand() and
+    range.getType().(AnyGenericType).getDeclaration().getModule().getFullName() = "Swift" and
+    rangeKind = range.getType().(AnyGenericType).getDeclaration().getName() and
+    checkedRef = cmp.getRightOperand().(DeclRefExpr) and
+    checkedRef.getDecl() = v and
+    branch = true and
+    (
+      rangeKind = ["Range", "ClosedRange"] and isUpper = [true, false]
+      or
+      rangeKind = "PartialRangeFrom" and isUpper = false
+      or
+      rangeKind = ["PartialRangeThrough", "PartialRangeUpTo"] and isUpper = true
+    )
   )
 }
 
@@ -204,9 +260,10 @@ private predicate boundCheck(Expr cond, VarDecl v, boolean isUpper, boolean bran
  * (`isUpper = true`) or from below (`isUpper = false`).
  */
 private predicate guardedBy(DataFlow::Node n, VarDecl v, boolean isUpper) {
-  exists(ConditionBlock cb, ExprCfgNode condNode, Expr cond, boolean branch |
-    boundCheck(cond, v, isUpper, branch) and
+  exists(ConditionBlock cb, ExprCfgNode condNode, Expr cond, boolean branch, DeclRefExpr checkedRef |
+    boundCheck(cond, v, isUpper, branch, checkedRef) and
     condNode.getExpr() = cond and
+    DataFlow::localExprFlow(checkedRef, n.asExpr()) and
     cb.getLastNode() = condNode and
     cb.edgeDominates(n.getCfgNode().getBasicBlock(), any(BooleanSuccessor s | s.getValue() = branch))
   )
@@ -231,11 +288,18 @@ private class BoundsCheckedVariableBarrier extends DataFlow::Node {
  */
 private class ClampBarrier extends DataFlow::Node {
   ClampBarrier() {
-    exists(CallExpr outer, CallExpr inner, string outerName, string innerName |
+    exists(
+      CallExpr outer, CallExpr inner, string outerName, string innerName, Expr innerBound,
+      Expr outerBound
+    |
       this.asExpr() = outer and
       outer.getStaticTarget().getName() = outerName + "(_:_:)" and
       inner = outer.getAnArgument().getExpr() and
       inner.getStaticTarget().getName() = innerName + "(_:_:)" and
+      innerBound = inner.getAnArgument().getExpr() and
+      outerBound = outer.getAnArgument().getExpr() and
+      isTrustedClampBound(innerBound) and
+      isTrustedClampBound(outerBound) and
       (
         outerName = "min" and innerName = "max"
         or
@@ -245,14 +309,17 @@ private class ClampBarrier extends DataFlow::Node {
   }
 }
 
+private predicate isTrustedClampBound(Expr e) {
+  e instanceof IntegerLiteralExpr or isBufferSizeExpr(e)
+}
+
 /**
  * The size of a buffer (for example `data.count`). Even if the buffer contents are
  * tainted, its own size is not an attacker-chosen offset.
  */
 private class BufferSizeBarrier extends DataFlow::Node {
   BufferSizeBarrier() {
-    this.asExpr().(MemberRefExpr).getMember().(VarDecl).getName() =
-      ["count", "capacity", "startIndex", "endIndex"]
+    isBufferSizeExpr(this.asExpr())
   }
 }
 
