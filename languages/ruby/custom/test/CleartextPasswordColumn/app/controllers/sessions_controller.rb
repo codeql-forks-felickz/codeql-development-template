@@ -14,6 +14,9 @@ class SessionsController < ApplicationController
     User.where("password_reset_token = ?", params[:token]).first
     # The `accounts.password` column is hashed by the Account model.
     Account.find_by(password: auth_params[:password])
+    # has_secure_password without an attribute argument only protects `password`.
+    UnprotectedApiClient.find_by(api_password: auth_params[:password]) # $ Alert
+    ApiCredential.find_by(api_password: auth_params[:password])
     # Proper verification with has_secure_password.
     Admin.find_by(login: auth_params[:login])&.authenticate(auth_params[:password])
   end

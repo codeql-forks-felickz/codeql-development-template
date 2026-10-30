@@ -9,6 +9,7 @@ ActiveRecord::Schema.define(version: 20181206165206) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "login",           null: false
+    t.string   "password"
     t.string   "password_digest", null: false
     t.string   "password_reset_token"
     t.datetime "password_changed_at"
@@ -24,6 +25,44 @@ ActiveRecord::Schema.define(version: 20181206165206) do
 
   create_table "api_clients", force: :cascade do |t|
     t.text "api_password"
+  end
+
+  create_table "acts_as_authentic_accounts", force: :cascade do |t|
+    t.string "password"
+    t.string "api_password" # $ Alert
+  end
+
+  create_table "array_assignment_clients", force: :cascade do |t|
+    t.text "api_password"
+  end
+
+  create_table "api_credentials", force: :cascade do |t|
+    t.text "api_password"
+  end
+
+  create_table "setter_clients", force: :cascade do |t|
+    t.text "api_password"
+  end
+
+  create_table "write_attribute_clients", force: :cascade do |t|
+    t.text "api_password"
+  end
+
+  create_table "concern_clients", force: :cascade do |t|
+    t.text "api_password"
+  end
+
+  create_table "members", force: :cascade do |t|
+    t.string "password"
+  end
+
+  create_table "sorcery_accounts", force: :cascade do |t|
+    t.string "password"
+    t.string "api_password" # $ Alert
+  end
+
+  create_table "unprotected_api_clients", force: :cascade do |t|
+    t.text "api_password" # $ Alert
   end
 
   create_table :legacy_logins do |t|

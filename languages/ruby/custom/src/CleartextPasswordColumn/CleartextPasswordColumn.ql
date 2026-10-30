@@ -77,16 +77,63 @@ string conventionalTableName(ActiveRecordModelClass m) {
  */
 bindingset[column]
 predicate modelProtectsColumn(ActiveRecordModelClass m, string column) {
-  exists(MethodCall c | c.getEnclosingModule() = m |
-    c.getMethodName() = ["encrypts", "attr_encrypted"] and
-    c.getAnArgument().getConstantValue().getStringlikeValue() = column
-    or
-    c.getMethodName() =
-      ["has_secure_password", "devise", "acts_as_authentic", "authenticates_with_sorcery!"]
+  exists(MethodCall c |
+    m.getClassNode().getAnAncestor() = c.getEnclosingModule().getModule() and
+    (
+      c.getMethodName() = ["encrypts", "attr_encrypted"] and
+      c.getAnArgument().getConstantValue().getStringlikeValue() = column
+      or
+      c.getMethodName() = "has_secure_password" and
+      (
+        not exists(c.getArgument(_)) and column = "password"
+        or
+        c.getArgument(0).getConstantValue().getStringlikeValue() = column
+      )
+      or
+      c.getMethodName() = ["devise", "acts_as_authentic", "authenticates_with_sorcery!"] and
+      column = "password"
+    )
   )
   or
-  exists(ConstantReadAccess k | k.getEnclosingModule() = m |
-    k.getName() = ["BCrypt", "Argon2", "SCrypt", "Digest"]
+  exists(ConstantReadAccess k |
+    k.getName() = ["BCrypt", "Argon2", "SCrypt", "Digest"] and
+    m.getClassNode().getAnAncestor() = k.getEnclosingModule().getModule() and
+    (
+      exists(AssignExpr assignment |
+        assignment.getRightOperand().getAChild*() = k and
+        assignmentToColumn(assignment, column)
+      )
+      or
+      exists(MethodCall write |
+        write.getMethodName() = "write_attribute" and
+        (
+          not exists(write.getReceiver())
+          or
+          write.getReceiver() instanceof SelfVariableAccess
+        ) and
+        write.getArgument(0).getConstantValue().getStringlikeValue() = column and
+        write.getArgument(1).getAChild*() = k
+      )
+      or
+      exists(Method setter |
+        setter.getEnclosingModule() = k.getEnclosingModule() and
+        setter.getName() = column + "=" and
+        setter.getBody().getAChild*() = k
+      )
+    )
+  )
+}
+
+predicate assignmentToColumn(AssignExpr assignment, string column) {
+  exists(MethodCall lhs |
+    lhs = assignment.getLeftOperand() and
+    lhs.getReceiver() instanceof SelfVariableAccess and
+    (
+      lhs.getMethodName() = [column, column + "="]
+      or
+      lhs.getMethodName() = ["[]", "[]="] and
+      lhs.getArgument(0).getConstantValue().getStringlikeValue() = column
+    )
   )
 }
 
