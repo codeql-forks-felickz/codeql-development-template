@@ -6,3 +6,7 @@
 | pixi/api.js:56:69:56:81 | req.body.role | Privilege field 'role' of a stored record is set based on $@. | pixi/api.js:56:69:56:76 | req.body | user-provided value |
 | pixi/api.js:64:72:64:76 | admin | Privilege field 'isAdmin' of a stored record is set based on $@. | pixi/api.js:62:15:62:30 | req.body.isAdmin | user-provided value |
 | pixi/api.js:72:15:72:27 | req.body.role | Privilege field 'role' of a stored record is set based on $@. | pixi/api.js:72:15:72:22 | req.body | user-provided value |
+| pixi/api.js:100:48:100:60 | req.body.role | Privilege field 'role' of a stored record is set based on $@. | pixi/api.js:100:48:100:55 | req.body | user-provided value |
+| pixi/api.js:109:48:109:60 | req.body.role | Privilege field 'role' of a stored record is set based on $@. | pixi/api.js:109:48:109:55 | req.body | user-provided value |
+| pixi/api.js:127:48:127:60 | req.body.role | Privilege field 'role' of a stored record is set based on $@. | pixi/api.js:125:7:125:19 | req.body.role | user-provided value |
+| pixi/api.js:127:48:127:60 | req.body.role | Privilege field 'role' of a stored record is set based on $@. | pixi/api.js:127:48:127:55 | req.body | user-provided value |

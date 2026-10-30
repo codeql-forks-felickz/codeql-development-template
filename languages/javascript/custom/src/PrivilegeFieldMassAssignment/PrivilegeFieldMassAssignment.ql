@@ -139,16 +139,36 @@ predicate guardedByAllowList(AstNode n, Expr checked) {
     isConjunctOf(c.getTest().asExpr(), i.getCondition()) and
     c.getTestPolarity() = true and
     n.getParent*() = i.getThen() and
-    checked = c.asExpr()
+    checked = c.asExpr() and
+    not exists(string member |
+      c.getAMemberString() = member and
+      isPrivilegeName(member)
+    )
   )
 }
 
-/** Holds if `a` and `b` read the same property of request data, or the same variable. */
+/** Holds if `a` and `b` refer to the same access path, rooted at the same variable. */
+predicate sameAccessPath(DataFlow::Node a, DataFlow::Node b) {
+  exists(DataFlow::PropRead ra, DataFlow::PropRead rb |
+    a = ra and
+    b = rb and
+    ra.getPropertyName() = rb.getPropertyName() and
+    sameAccessPath(ra.getBase(), rb.getBase())
+  )
+  or
+  exists(VarAccess va, VarAccess vb |
+    a.asExpr() = va and
+    b.asExpr() = vb and
+    va.getVariable() = vb.getVariable()
+  )
+}
+
+/** Holds if `a` and `b` read the same access path of request data, or the same variable. */
 predicate sameRequestValue(Expr a, Expr b) {
   exists(DataFlow::PropRead ra, DataFlow::PropRead rb |
     ra.asExpr() = a and
     rb.asExpr() = b and
-    ra.getPropertyName() = rb.getPropertyName() and
+    sameAccessPath(ra, rb) and
     ra.getBase().getALocalSource() instanceof RemoteFlowSource and
     rb.getBase().getALocalSource() instanceof RemoteFlowSource
   )
@@ -173,16 +193,19 @@ module PrivilegeValueFlow = TaintTracking::Global<PrivilegeValueConfig>;
 /** Holds if the value stored by `w` is chosen based on the user-controlled `flag`. */
 predicate controlledByUserFlag(DataFlow::PropWrite w, DataFlow::Node flag) {
   isPersistedPrivilegeWrite(w) and
-  PrivilegeValueFlow::flow(flag, w.getRhs()) and
+  (
+    PrivilegeValueFlow::flow(flag, w.getRhs())
+    or
+    exists(Expr e |
+      guardedBy(getAValueOrigin(w), e) and
+      isUserPrivilegeFlag(flag) and
+      flag.(DataFlow::SourceNode).flowsToExpr(e)
+    )
+  )
+  and
   not exists(Expr checked |
     guardedByAllowList(w.getRhs().asExpr(), checked) and
     sameRequestValue(checked, w.getRhs().asExpr())
-  )
-  or
-  exists(Expr e |
-    guardedBy(getAValueOrigin(w), e) and
-    isUserPrivilegeFlag(flag) and
-    flag.(DataFlow::SourceNode).flowsToExpr(e)
   )
 }
 

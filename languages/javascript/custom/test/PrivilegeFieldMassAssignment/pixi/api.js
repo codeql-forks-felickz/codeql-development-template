@@ -93,6 +93,42 @@ app.post('/api/signup_safe', function (req, res) {
   }
 });
 
+// Checking a different request property does not constrain the value being stored.
+app.post('/api/signup_cookie_check', function (req, res) {
+  if (['customer', 'deluxe'].includes(req.cookies.role)) {
+    mongo.connect('mongodb://pixidb:27017/Pixidb', function (err, db) {
+      db.collection('users').insertOne({ role: req.body.role }); // $ Alert
+    });
+  }
+});
+
+// A check of a nested property does not constrain the top-level property.
+app.post('/api/signup_nested_check', function (req, res) {
+  if (['customer', 'deluxe'].includes(req.body.user.role)) {
+    mongo.connect('mongodb://pixidb:27017/Pixidb', function (err, db) {
+      db.collection('users').insertOne({ role: req.body.role }); // $ Alert
+    });
+  }
+});
+
+// Equality with an unprivileged value restricts the stored role.
+app.post('/api/signup_equality_safe', function (req, res) {
+  if (req.body.role === 'customer') {
+    mongo.connect('mongodb://pixidb:27017/Pixidb', function (err, db) {
+      db.collection('users').insertOne({ role: req.body.role });
+    });
+  }
+});
+
+// Equality with a privileged value still permits a privilege grant.
+app.post('/api/signup_equality_admin', function (req, res) {
+  if (req.body.role === 'admin') {
+    mongo.connect('mongodb://pixidb:27017/Pixidb', function (err, db) {
+      db.collection('users').insertOne({ role: req.body.role }); // $ Alert
+    });
+  }
+});
+
 // Only an existing administrator may grant the privilege.
 app.put('/api/admin/edit_info', function (req, res) {
   var objForUpdate = {};
