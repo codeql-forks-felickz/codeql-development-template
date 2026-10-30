@@ -18,6 +18,7 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.essa.Essa
 
 /**
  * Holds if `def` defines the local variable `v` without a direct value, that is,
@@ -44,6 +45,48 @@ private predicate capturedUse(NameNode use, LocalVariable v) {
   use.getScope().getScope+() = v.getScope()
 }
 
+private predicate comprehensionCreationPoint(Comp comp, LocalVariable v, ControlFlowNode point) {
+  exists(DefinitionNode assignment |
+    assignment.getScope() = v.getScope() and
+    assignment.getValue().getNode().getAChildNode*() = comp and
+    point = assignment
+  )
+  or
+  not exists(DefinitionNode assignment |
+    assignment.getScope() = v.getScope() and
+    assignment.getValue().getNode().getAChildNode*() = comp
+  ) and
+  exists(AstNode parent |
+    parent = comp.getParentNode+() and
+    parent.getScope() = v.getScope() and
+    point.getNode() = parent and
+    not exists(AstNode closer |
+      closer = comp.getParentNode+() and
+      closer.getScope() = v.getScope() and
+      parent.getAChildNode+() = closer and
+      exists(ControlFlowNode n | n.getNode() = closer)
+    )
+  )
+}
+
+/**
+ * Holds if `def` is the latest reaching SSA definition of `v` at a comprehension.
+ */
+private predicate definitionReachesComprehension(NameNode def, NameNode use, LocalVariable v) {
+  exists(Comp comp, ControlFlowNode point, EssaNodeDefinition ssaDef |
+    comp.getFunction() = use.getScope() and
+    comprehensionCreationPoint(comp, v, point) and
+    ssaDef.getSourceVariable() = v and
+    ssaDef.getDefiningNode().getNode() = def.getNode() and
+    ssaDef.getDefiningNode().strictlyDominates(point) and
+    not exists(EssaNodeDefinition overwritten |
+      overwritten.getSourceVariable() = v and
+      ssaDef.getDefiningNode().strictlyDominates(overwritten.getDefiningNode()) and
+      overwritten.getDefiningNode().strictlyDominates(point)
+    )
+  )
+}
+
 /**
  * Holds if taint should flow from `nodeFrom`, a definition of a local variable
  * without a direct value, to `nodeTo`, a read of that variable in a nested scope.
@@ -52,6 +95,11 @@ predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   exists(LocalVariable v, NameNode def, NameNode use |
     definitionWithoutValue(def, v) and
     capturedUse(use, v) and
+    (
+      not exists(Comp comp | comp.getFunction() = use.getScope())
+      or
+      definitionReachesComprehension(def, use, v)
+    ) and
     nodeFrom.asCfgNode() = def and
     nodeTo.asCfgNode() = use
   )

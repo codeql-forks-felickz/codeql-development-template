@@ -24,7 +24,6 @@
 
 import python
 import semmle.python.security.dataflow.PathInjectionQuery
-import semmle.python.ApiGraphs
 import CapturedVariableFlow as CapturedVariableFlow
 import ShellFileCommandSinks as ShellFileCommandSinks
 
@@ -45,9 +44,6 @@ module PathInjectionExtendedConfig implements DataFlow::StateConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     PathInjectionConfig::isBarrier(node)
-    or
-    // `os.path.basename` strips any directory components, including `../`.
-    node = API::moduleImport("os").getMember("path").getMember("basename").getACall()
   }
 
   predicate isBarrier = PathInjectionConfig::isBarrier/2;

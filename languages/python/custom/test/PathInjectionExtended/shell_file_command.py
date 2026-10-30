@@ -62,7 +62,7 @@ def shell_after_command_separator_is_not_a_path(title):
 
 def store_basename(title, uploaded_file):
     safe = os.path.basename(title)
-    subprocess.call(["mv", uploaded_file.temporary_file_path(), os.path.join(UPLOAD_DIR, safe)])
+    subprocess.call(["mv", uploaded_file.temporary_file_path(), os.path.join(UPLOAD_DIR, safe)])  # $ Alert
 
 
 def store_checked(title, uploaded_file):

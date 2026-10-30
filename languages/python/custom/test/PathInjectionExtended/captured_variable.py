@@ -58,3 +58,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
         safe = values[1]
         if safe.startswith("/srv/www/"):
             open(safe)
+
+    def overwritten_unpacking_not_captured(self):
+        _, query = self.path.split('?', 1)
+        query = "static.txt"
+        values = [query for _ in range(1)]
+        open(values[0])

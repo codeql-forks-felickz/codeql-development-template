@@ -11,6 +11,8 @@ Results that `py/path-injection` already reports are not repeated.
 
 Shell command strings are analyzed only when path substitutions can be identified as concatenation operands or simple `%s` formatting arguments in the first command segment. Other shell-string construction and formatting forms are not parsed.
 
+Comprehension capture flow may retain taint when every branch reassigns an unpacked variable and those definitions merge before the comprehension.
+
 ## Recommendation
 
 Validate user input before using it to construct a file path. Normalize the path with `os.path.normpath` or `os.path.realpath`, then check that the result is inside an allowed directory. Alternatively, map user input to a fixed allowlist of file names.
@@ -46,12 +48,12 @@ def store_uploaded_file(title, uploaded_file):
     subprocess.call(["mv", uploaded_file.temporary_file_path(), os.path.join(UPLOAD_DIR, title)])  # BAD
 ```
 
-Strip directory components from the name before using it:
+Do not rely on `os.path.basename` alone, since `os.path.basename("..")` is still `".."`:
 
 ```python
 def store_uploaded_file(title, uploaded_file):
     safe = os.path.basename(title)
-    subprocess.call(["mv", uploaded_file.temporary_file_path(), os.path.join(UPLOAD_DIR, safe)])  # GOOD
+    subprocess.call(["mv", uploaded_file.temporary_file_path(), os.path.join(UPLOAD_DIR, safe)])  # BAD
 ```
 
 ## References
