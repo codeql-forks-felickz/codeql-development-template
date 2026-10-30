@@ -14,6 +14,7 @@
 
 private import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.TaintTracking
 private import codeql.rust.security.RequestForgeryExtensions
 
@@ -53,22 +54,31 @@ class FixedHostFormatBarrier extends RequestForgery::Barrier {
       this.asExpr() = me and
       me.getMacroCall().getPath().getText() = "format" and
       fa.getParentNode+() = me and
+      not exists(MacroExpr nested |
+        nested != me and
+        nested.getMacroCall().getPath().getText() = "format" and
+        fa.getParentNode+() = nested and
+        nested.getParentNode+() = me
+      ) and
       isFixedHostTemplate(fa.getTemplate().(LiteralExpr).getTextValue())
     )
   }
 }
 
 /**
- * Holds if `node1` defines a variable that is read by `node2` from within an
- * `async` block that captures the variable, for example a closure parameter
- * that is used in `async move { ... }` (as with `warp` `Filter::then`).
+ * Holds if a captured value from `node1` reaches a read by `node2` in an
+ * `async` block, for example a closure parameter used in `async move { ... }`
+ * (as with `warp` `Filter::then`), without being overwritten first.
  */
 private predicate asyncBlockCaptureStep(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(Variable v, VariableAccess va, BlockExpr b |
+  exists(Variable v, VariableAccess va, BlockExpr b, Ssa::Definition def |
     b.isAsync() and
     node1.asPat() = v.getPat() and
     va = v.getAnAccess() and
+    va instanceof VariableReadAccess and
     node2.asExpr() = va and
+    def.getARead() = va and
+    def.getAnUltimateDefinition() instanceof Ssa::CapturedEntryDefinition and
     va.getParentNode+() = b and
     not v.getPat().getParentNode+() = b
   )
