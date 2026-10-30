@@ -24,11 +24,56 @@ FunctionCall filenameOperation(Expr path) {
       ] and
     result.getArgument(0) = path
     or
-    name = ["fopen_s", "wfopen_s", "rename"] and
+    name = ["fopen_s", "wfopen_s", "_wfopen_s", "rename"] and
     result.getArgument(1) = path
   )
   or
   result = sensitiveFilenameOperation(path)
+}
+
+/**
+ * Holds if `call` creates a file exclusively, failing if the path already
+ * exists.
+ */
+private predicate exclusiveCreate(FunctionCall call) {
+  exists(string name | name = call.getTarget().getName() |
+    name = ["open", "_open", "_wopen"] and
+    exists(Expr flags |
+      flags = call.getArgument(1) and
+      (
+        flags.getValueText() = "O_CREAT"
+        or
+        flags.getAChild*().getValueText() = "O_CREAT"
+      ) and
+      (
+        flags.getValueText() = "O_EXCL"
+        or
+        flags.getAChild*().getValueText() = "O_EXCL"
+      )
+    )
+    or
+    name = ["fopen", "fopen_s", "wfopen_s", "_wfopen_s", "_fsopen", "_wfsopen"] and
+    exists(Expr mode |
+      (
+        name = ["fopen_s", "wfopen_s", "_wfopen_s"] and
+        mode = call.getArgument(2)
+        or
+        name = ["fopen", "_fsopen", "_wfsopen"] and
+        mode = call.getArgument(1)
+      ) and
+      mode instanceof StringLiteral and
+      mode.getValue().matches("%x%")
+    )
+  )
+}
+
+/**
+ * An operation on a filename that may modify a file and is not protected by
+ * exclusive creation.
+ */
+FunctionCall unsafeFilenameOperation(Expr path) {
+  result = filenameOperation(path) and
+  not exclusiveCreate(result)
 }
 
 /**
@@ -86,6 +131,15 @@ private predicate statCallWithPointer(Expr checkPath, Expr call, Expr e, Variabl
   e.getAChild*().(VariableAccess).getTarget() = v
 }
 
+private predicate statCallPrecedesGuardWithoutOverwrite(FunctionCall call, Expr check, Variable v) {
+  dominates(call, check) and
+  not exists(Assignment overwrite |
+    overwrite.getLValue().getAChild*().(VariableAccess).getTarget() = v and
+    call.getASuccessor+() = overwrite and
+    overwrite.getASuccessor+() = check
+  )
+}
+
 /** Holds if `check` looks like a check on the filename `checkPath`. */
 predicate checksPath(Expr check, Expr checkPath) {
   check = accessCheck(checkPath)
@@ -93,7 +147,10 @@ predicate checksPath(Expr check, Expr checkPath) {
   check = stat(checkPath, _)
   or
   exists(Expr e, Variable v |
-    statCallWithPointer(checkPath, _, e, v) and
+    exists(FunctionCall call |
+      statCallWithPointer(checkPath, call, e, v) and
+      statCallPrecedesGuardWithoutOverwrite(call, check, v)
+    ) and
     check.(VariableAccess).getTarget() = v and
     not e.getAChild*() = check
   )
@@ -122,7 +179,7 @@ private predicate fileNameOperationControlsUse(Expr check, Expr checkPath, Expr 
 predicate checkUse(Expr check, Expr checkPath, FunctionCall use, Expr usePath) {
   checkPathControlsUse(check, checkPath, use) and
   checksPath(check, checkPath) and
-  use = filenameOperation(usePath)
+  use = unsafeFilenameOperation(usePath)
   or
   fileNameOperationControlsUse(check, checkPath, use) and
   check = filenameOperation(checkPath) and
@@ -144,6 +201,8 @@ predicate sameConstantPath(Expr checkPath, Expr usePath) {
   checkPath.getValue() = usePath.getValue()
   or
   exists(GlobalOrNamespaceVariable v |
+    v.getType().isDeeplyConst() and
+    exists(StringLiteral literal | v.getInitializer().getExpr().getAChild*() = literal) and
     checkPath.(VariableAccess).getTarget() = v and
     usePath.(VariableAccess).getTarget() = v
   )

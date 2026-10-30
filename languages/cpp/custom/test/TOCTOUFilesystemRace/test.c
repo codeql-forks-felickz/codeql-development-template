@@ -3,15 +3,25 @@ typedef struct _FILE FILE;
 #define F_OK 0
 #define EXIT_SUCCESS 0
 #define EXIT_FAILURE 1
+#define O_CREAT 1
+#define O_EXCL 2
+
+typedef int wchar_t;
+
+struct stat_buffer {
+    int st_mode;
+};
 
 int access(const char *pathname, int mode);
 FILE *fopen(const char *pathname, const char *mode);
+int _wfopen_s(FILE **file, const wchar_t *filename, const wchar_t *mode);
 int fputs(const char *s, FILE *stream);
 int fclose(FILE *stream);
 int printf(const char *format, ...);
 int remove(const char *pathname);
 int chmod(const char *pathname, int mode);
 int open(const char *pathname, int flags, ...);
+int stat(const char *pathname, struct stat_buffer *buf);
 
 #define MY_TMP_FILE "/tmp/file.tmp"
 #define OTHER_TMP_FILE "/tmp/other.tmp"
@@ -48,6 +58,14 @@ int symlink_attack_literal(void)
     return EXIT_SUCCESS;
 }
 
+void check_then_wfopen_s(void)
+{
+    FILE *f;
+    if (access("/tmp/wide.tmp", F_OK) != 0) {
+        _wfopen_s(&f, L"/tmp/wide.tmp", L"w"); // $ Alert
+    }
+}
+
 // Check guards the use directly (positive branch).
 void check_then_remove_constant(void)
 {
@@ -65,7 +83,7 @@ void check_then_chmod_constant(void)
 }
 
 // Path held in a global variable.
-const char *global_tmp_path = "/tmp/global.tmp";
+const char * const global_tmp_path = "/tmp/global.tmp";
 
 void check_then_open_global(void)
 {
@@ -74,6 +92,68 @@ void check_then_open_global(void)
         if (f != NULL) {
             fclose(f);
         }
+    }
+}
+
+const char *reassignable_global_path = "/tmp/reassigned-a.tmp";
+
+void check_then_open_reassigned_global(void)
+{
+    if (access(reassignable_global_path, F_OK) != 0) {
+        reassignable_global_path = "/tmp/reassigned-b.tmp";
+        fopen(reassignable_global_path, "w");
+    }
+}
+
+void exclusive_open_after_check(void)
+{
+    if (access("/tmp/exclusive-open.tmp", F_OK) == 0) {
+        return;
+    }
+    open("/tmp/exclusive-open.tmp", O_CREAT | O_EXCL, 0600);
+}
+
+void exclusive_fopen_after_check(void)
+{
+    if (access("/tmp/exclusive-fopen.tmp", F_OK) == 0) {
+        return;
+    }
+    fopen("/tmp/exclusive-fopen.tmp", "wx");
+}
+
+void exclusive_open_then_chmod(void)
+{
+    if (open("/tmp/exclusive-chmod.tmp", O_CREAT | O_EXCL, 0600) < 0) {
+        return;
+    }
+    chmod("/tmp/exclusive-chmod.tmp", 0644); // $ Alert
+}
+
+void stat_then_guard_then_use(void)
+{
+    struct stat_buffer s;
+    stat("/tmp/stat-before.tmp", &s);
+    if (s.st_mode != 0) {
+        chmod("/tmp/stat-before.tmp", 0644); // $ Alert
+    }
+}
+
+void guard_before_stat_does_not_check(void)
+{
+    struct stat_buffer s;
+    if (s.st_mode != 0) {
+        chmod("/tmp/stat-after.tmp", 0644);
+    }
+    stat("/tmp/stat-after.tmp", &s);
+}
+
+void stat_result_overwritten_before_guard(void)
+{
+    struct stat_buffer s;
+    stat("/tmp/stat-overwritten.tmp", &s);
+    s.st_mode = 1;
+    if (s.st_mode != 0) {
+        chmod("/tmp/stat-overwritten.tmp", 0644);
     }
 }
 

@@ -27,6 +27,10 @@ Instead, create the file exclusively, so that the call fails if the path already
 int fd = open(MY_TMP_FILE, O_WRONLY | O_CREAT | O_EXCL, 0600); // GOOD
 ```
 
+## Known limitations
+
+Global paths are matched only when they are initialized with a string literal and both the pointer and pointed-to characters are const. For `stat` checks, the call must dominate the guard, and the buffer must not be explicitly assigned between the call and guard. Writes through aliases and indirect calls are not tracked. Exclusive creation is recognized for direct `O_CREAT | O_EXCL` flags and literal `fopen` modes containing `x`.
+
 ## References
 
 - CWE-367: [Time-of-check Time-of-use (TOCTOU) Race Condition](https://cwe.mitre.org/data/definitions/367.html).
