@@ -1,0 +1,54 @@
+#select
+| order_billing.py:14:11:14:27 | ControlFlowNode for Attribute() | order_billing.py:13:20:13:24 | ControlFlowNode for event | order_billing.py:14:11:14:27 | ControlFlowNode for Attribute() | This expression logs $@ as clear text. | order_billing.py:13:20:13:24 | ControlFlowNode for event | an AWS Lambda event containing sensitive data (private) |
+| order_billing.py:20:39:20:43 | ControlFlowNode for event | order_billing.py:19:20:19:24 | ControlFlowNode for event | order_billing.py:20:39:20:43 | ControlFlowNode for event | This expression logs $@ as clear text. | order_billing.py:19:20:19:24 | ControlFlowNode for event | an AWS Lambda event containing sensitive data (private) |
+| order_billing.py:26:11:26:26 | ControlFlowNode for Subscript | order_billing.py:25:17:25:21 | ControlFlowNode for event | order_billing.py:26:11:26:26 | ControlFlowNode for Subscript | This expression logs $@ as clear text. | order_billing.py:25:17:25:21 | ControlFlowNode for event | an AWS Lambda event containing sensitive data (private) |
+| order_billing.py:38:11:38:37 | ControlFlowNode for Attribute() | order_billing.py:37:32:37:36 | ControlFlowNode for event | order_billing.py:38:11:38:37 | ControlFlowNode for Attribute() | This expression logs $@ as clear text. | order_billing.py:37:32:37:36 | ControlFlowNode for event | an AWS Lambda event containing sensitive data (private) |
+| order_billing.py:76:11:76:24 | ControlFlowNode for Subscript | order_billing.py:79:34:79:38 | ControlFlowNode for event | order_billing.py:76:11:76:24 | ControlFlowNode for Subscript | This expression logs $@ as clear text. | order_billing.py:79:34:79:38 | ControlFlowNode for event | an AWS Lambda event containing sensitive data (private) |
+| payment_routes.py:18:47:18:50 | ControlFlowNode for data | payment_routes.py:17:12:17:29 | ControlFlowNode for Attribute() | payment_routes.py:18:47:18:50 | ControlFlowNode for data | This expression logs $@ as clear text. | payment_routes.py:17:12:17:29 | ControlFlowNode for Attribute() | an object containing sensitive data (private) |
+| payment_routes.py:31:11:31:14 | ControlFlowNode for body | payment_routes.py:30:12:30:35 | ControlFlowNode for Attribute() | payment_routes.py:31:11:31:14 | ControlFlowNode for body | This expression logs $@ as clear text. | payment_routes.py:30:12:30:35 | ControlFlowNode for Attribute() | an object containing sensitive data (private) |
+| payment_routes.py:38:11:38:14 | ControlFlowNode for data | payment_routes.py:37:12:37:44 | ControlFlowNode for Attribute() | payment_routes.py:38:11:38:14 | ControlFlowNode for data | This expression logs $@ as clear text. | payment_routes.py:37:12:37:44 | ControlFlowNode for Attribute() | an object containing sensitive data (private) |
+edges
+| order_billing.py:13:20:13:24 | ControlFlowNode for event | order_billing.py:14:11:14:27 | ControlFlowNode for Attribute() | provenance |  |
+| order_billing.py:13:20:13:24 | ControlFlowNode for event | order_billing.py:14:11:14:27 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| order_billing.py:19:20:19:24 | ControlFlowNode for event | order_billing.py:20:39:20:43 | ControlFlowNode for event | provenance |  |
+| order_billing.py:25:17:25:21 | ControlFlowNode for event | order_billing.py:26:11:26:26 | ControlFlowNode for Subscript | provenance |  |
+| order_billing.py:37:32:37:36 | ControlFlowNode for event | order_billing.py:38:11:38:15 | ControlFlowNode for event | provenance |  |
+| order_billing.py:37:32:37:36 | ControlFlowNode for event | order_billing.py:38:32:38:36 | ControlFlowNode for event | provenance |  |
+| order_billing.py:38:11:38:15 | ControlFlowNode for event | order_billing.py:38:11:38:37 | ControlFlowNode for Attribute() | provenance | dict.get |
+| order_billing.py:38:11:38:15 | ControlFlowNode for event | order_billing.py:38:11:38:37 | ControlFlowNode for Attribute() | provenance | dict.get(orderId) |
+| order_billing.py:38:32:38:36 | ControlFlowNode for event | order_billing.py:38:11:38:37 | ControlFlowNode for Attribute() | provenance | dict.get |
+| order_billing.py:38:32:38:36 | ControlFlowNode for event | order_billing.py:38:11:38:37 | ControlFlowNode for Attribute() | provenance | dict.get(orderId) |
+| order_billing.py:75:13:75:19 | ControlFlowNode for payload | order_billing.py:76:11:76:24 | ControlFlowNode for Subscript | provenance |  |
+| order_billing.py:79:34:79:38 | ControlFlowNode for event | order_billing.py:80:13:80:17 | ControlFlowNode for event | provenance |  |
+| order_billing.py:80:13:80:17 | ControlFlowNode for event | order_billing.py:75:13:75:19 | ControlFlowNode for payload | provenance |  |
+| payment_routes.py:17:5:17:8 | ControlFlowNode for data | payment_routes.py:18:47:18:50 | ControlFlowNode for data | provenance |  |
+| payment_routes.py:17:12:17:29 | ControlFlowNode for Attribute() | payment_routes.py:17:5:17:8 | ControlFlowNode for data | provenance |  |
+| payment_routes.py:30:5:30:8 | ControlFlowNode for body | payment_routes.py:31:11:31:14 | ControlFlowNode for body | provenance |  |
+| payment_routes.py:30:12:30:35 | ControlFlowNode for Attribute() | payment_routes.py:30:5:30:8 | ControlFlowNode for body | provenance |  |
+| payment_routes.py:37:5:37:8 | ControlFlowNode for data | payment_routes.py:38:11:38:14 | ControlFlowNode for data | provenance |  |
+| payment_routes.py:37:12:37:44 | ControlFlowNode for Attribute() | payment_routes.py:37:5:37:8 | ControlFlowNode for data | provenance |  |
+nodes
+| order_billing.py:13:20:13:24 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| order_billing.py:14:11:14:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| order_billing.py:19:20:19:24 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| order_billing.py:20:39:20:43 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| order_billing.py:25:17:25:21 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| order_billing.py:26:11:26:26 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| order_billing.py:37:32:37:36 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| order_billing.py:38:11:38:15 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| order_billing.py:38:11:38:37 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| order_billing.py:38:32:38:36 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| order_billing.py:75:13:75:19 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
+| order_billing.py:76:11:76:24 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| order_billing.py:79:34:79:38 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| order_billing.py:80:13:80:17 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| payment_routes.py:17:5:17:8 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+| payment_routes.py:17:12:17:29 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| payment_routes.py:18:47:18:50 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+| payment_routes.py:30:5:30:8 | ControlFlowNode for body | semmle.label | ControlFlowNode for body |
+| payment_routes.py:30:12:30:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| payment_routes.py:31:11:31:14 | ControlFlowNode for body | semmle.label | ControlFlowNode for body |
+| payment_routes.py:37:5:37:8 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+| payment_routes.py:37:12:37:44 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| payment_routes.py:38:11:38:14 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+subpaths
