@@ -38,14 +38,23 @@ module CleartextPasswordStorage {
    */
   string notPassword() {
     result =
-      "(?is).*(hint|policy|length|len|min|max|count|reset|expir|changed|updated|strength|rule|field|label|url|required|enabled|salt|hash|digest|kdf|bcrypt|scrypt|argon|pbkdf).*"
+      "(?is)(.*_)?(hint|policy|length|len|min|max|count|reset|expir\\w*|changed|updated|strength|rule|field|label|url|required|enabled|salt|hash\\w*|digest|kdf|bcrypt|scrypt|argon\\w*|pbkdf\\w*)(_.*)?"
+  }
+
+  /** Splits camel-case and snake-case identifiers into lower-case words. */
+  bindingset[name]
+  private string nameWords(string name) {
+    result =
+      name.regexpReplaceAll("([A-Z]+)([A-Z][a-z])", "$1_$2")
+          .regexpReplaceAll("([a-z0-9])([A-Z])", "$1_$2")
+          .toLowerCase()
   }
 
   /** Holds if `name` looks like the name of a clear-text password. */
   bindingset[name]
   private predicate isPasswordName(string name) {
     name.regexpMatch(maybePassword()) and
-    not name.regexpMatch(notPassword()) and
+    not nameWords(name).regexpMatch(notPassword()) and
     not name.regexpMatch(HeuristicNames::notSensitive())
   }
 
@@ -58,22 +67,129 @@ module CleartextPasswordStorage {
   /** The result of a call that hashes, derives a key from, or encrypts its input. */
   private class HashCall extends DataFlow::CallNode {
     HashCall() {
-      this.getTarget().getPackage().getPath().regexpMatch("(crypto|golang\\.org/x/crypto)(/.*)?")
-      or
-      this.getCalleeName()
-          .regexpMatch("(?i).*(hash|digest|crypt|derive|kdf|argon|scrypt|pbkdf|sha\\d|md5).*")
+      not this.getCalleeName().regexpMatch("(?i).*(decrypt|open|unseal).*") and
+      (
+        this.getCalleeName()
+            .regexpMatch("(?i).*(hash|digest|derivekey|kdf|argon|scrypt|pbkdf|sha\\d+|md5|encrypt|seal).*")
+        or
+        this.getTarget().getPackage().getPath().regexpMatch("crypto/(sha\\d+|md5)") and
+        this.getCalleeName().regexpMatch("Sum[0-9_]*")
+        or
+        this.getTarget().getPackage().getPath() = "golang.org/x/crypto/bcrypt" and
+        this.getCalleeName() = "GenerateFromPassword"
+        or
+        this.getTarget()
+            .getPackage()
+            .getPath()
+            .regexpMatch("(crypto|golang\\.org/x/crypto)/(scrypt|argon2|pbkdf2|hkdf)") and
+        this.getCalleeName() = ["Key", "IDKey", "New", "Extract", "Expand"]
+      )
     }
+  }
+
+  /** Taint-preserving transformations, stopping at concatenations for operand-wise checks. */
+  private predicate protectedLocalFlow(DataFlow::Node origin, DataFlow::Node destination) {
+    TaintTracking::localTaint(origin, destination) and
+    not exists(AddExpr addition |
+      DataFlow::exprNode(addition) != origin and
+      TaintTracking::localTaint(origin, DataFlow::exprNode(addition.getAnOperand())) and
+      TaintTracking::localTaint(DataFlow::exprNode(addition), destination)
+    )
   }
 
   /** A node holding a value that is not a clear-text password. */
   private class NonCleartextPassword extends DataFlow::Node {
     NonCleartextPassword() {
-      exists(DataFlow::Node hashed | TaintTracking::localTaint(hashed, this) |
+      exists(DataFlow::Node hashed | protectedLocalFlow(hashed, this) |
         hashed = any(HashCall c).getResult(_)
         or
-        hashed.(DataFlow::SsaNode).getSourceVariable().getName().regexpMatch(notPassword())
+        nameWords(hashed.(DataFlow::SsaNode).getSourceVariable().getName())
+            .regexpMatch("(.*_)?(hash\\w*|digest|kdf\\w*|bcrypt|scrypt|argon\\w*|pbkdf\\w*|hkdf\\w*)(_.*)?") and
+        // A hash-like name must not override operand-wise concatenation checks.
+        not exists(AddExpr addition |
+          TaintTracking::localTaint(DataFlow::exprNode(addition), hashed)
+        )
+        or
+        exists(AddExpr addition |
+          hashed = DataFlow::exprNode(addition) and
+          forall(Expr operand | operand = addition.getAnOperand() |
+            exists(DataFlow::exprNode(operand).getStringValue()) or
+            DataFlow::exprNode(operand) instanceof NonCleartextPassword
+          )
+        )
       )
     }
+  }
+
+  /** Holds if the bases may share a receiver, including through SSA merges. */
+  private predicate mayBeSameReceiver(DataFlow::Node left, DataFlow::Node right) {
+    DataFlow::localFlow(left, right)
+    or
+    DataFlow::localFlow(right, left)
+    or
+    exists(DataFlow::SsaNode base |
+      DataFlow::localFlow(base, left) and DataFlow::localFlow(base, right)
+    )
+    or
+    mayBeSameReceiver(left.(DataFlow::PostUpdateNode).getPreUpdateNode(), right)
+    or
+    mayBeSameReceiver(left, right.(DataFlow::PostUpdateNode).getPreUpdateNode())
+    or
+    mayBeSameReceiver(left.(DataFlow::PointerDereferenceNode).getOperand(),
+      right.(DataFlow::PointerDereferenceNode).getOperand())
+  }
+
+  /** A merged receiver cannot establish guaranteed identity for a protective write. */
+  private predicate hasMergedReceiver(DataFlow::Node node) {
+    exists(SsaPhiNode merged, DataFlow::Node use |
+      use.asInstruction() = merged.getVariable().getAUse() and
+      DataFlow::localFlow(use, node)
+    )
+    or
+    hasMergedReceiver(node.(DataFlow::PostUpdateNode).getPreUpdateNode())
+    or
+    hasMergedReceiver(node.(DataFlow::PointerDereferenceNode).getOperand())
+  }
+
+  /** Holds only for receiver identities established without an ambiguous SSA merge. */
+  private predicate sameReceiver(DataFlow::Node left, DataFlow::Node right) {
+    mayBeSameReceiver(left, right) and
+    not hasMergedReceiver(left) and
+    not hasMergedReceiver(right) and
+    sameReceiverStorage(left, right)
+  }
+
+  /** Pointer copies alias storage, but struct value copies do not. */
+  private predicate sameReceiverStorage(DataFlow::Node left, DataFlow::Node right) {
+    exists(LocalVariable variable |
+      left.(DataFlow::ReadNode).reads(variable) and
+      right.(DataFlow::ReadNode).reads(variable)
+    )
+    or
+    mayBeSameReceiver(left.(DataFlow::PointerDereferenceNode).getOperand(),
+      right.(DataFlow::PointerDereferenceNode).getOperand())
+    or
+    sameReceiverStorage(left.(DataFlow::PostUpdateNode).getPreUpdateNode(), right)
+    or
+    sameReceiverStorage(left, right.(DataFlow::PostUpdateNode).getPreUpdateNode())
+  }
+
+  /** A dominating protected write to this receiver, with no possible plaintext overwrite. */
+  private predicate hasProtectedWrite(DataFlow::FieldReadNode read) {
+    exists(Write write, DataFlow::Node base, NonCleartextPassword value |
+      write.writesField(base, read.getField(), value) and
+      sameReceiver(base, read.getBase()) and
+      write.dominatesNode(read.asInstruction()) and
+      not exists(Write overwrite, DataFlow::Node otherBase, DataFlow::Node plaintext |
+        overwrite.writesField(otherBase, read.getField(), plaintext) and
+        // A possible alias is enough to invalidate the protective write.
+        mayBeSameReceiver(otherBase, read.getBase()) and
+        sameReceiverStorage(otherBase, read.getBase()) and
+        not plaintext instanceof NonCleartextPassword and
+        overwrite = write.getASuccessor+() and
+        read.asInstruction() = overwrite.getASuccessor+()
+      )
+    )
   }
 
   /** A read of a variable, parameter or field whose name suggests it holds a password. */
@@ -84,15 +200,12 @@ module CleartextPasswordStorage {
       isPasswordName(name) and
       isStringLike(this.getType()) and
       (
-        this.(DataFlow::SsaNode).getSourceVariable().getName() = name
+        this.(DataFlow::SsaNode).getSourceVariable().getName() = name and
+        not this instanceof NonCleartextPassword
         or
         exists(DataFlow::FieldReadNode fr | fr = this |
           fr.getFieldName() = name and
-          // the field was not overwritten with a hashed value in the same function
-          not exists(Write w, NonCleartextPassword ncp |
-            w.writesField(_, fr.getField(), ncp) and
-            w.getRoot() = fr.getRoot()
-          )
+          not hasProtectedWrite(fr)
         )
       )
     }
@@ -174,7 +287,47 @@ module CleartextPasswordStorage {
    * Gets a regular expression matching SQL statements that write data.
    */
   private string sqlWriteStatement() {
-    result = "(?is)\\s*(insert|update|replace|merge|upsert)\\b.*"
+    result = "(?is)" + sqlLeadingTrivia() + "(insert|update|replace|merge|upsert)\\b.*"
+  }
+
+  private string sqlLeadingTrivia() { result = "(?:\\s|/\\*.*?\\*/|--[^\\r\\n]*(?:\\r?\\n|$))*" }
+
+  /** Scalars in the small UPDATE grammar; other syntax deliberately uses the fallback. */
+  private string sqlScalar() {
+    result = "(?:\\?|\\$[1-9][0-9]*|'(?:[^'\\\\]|'')*'|-?[0-9]+(?:\\.[0-9]+)?|[a-z_][a-z0-9_.]*)"
+  }
+
+  /**
+   * Gets the SET clause of a simple, fully recognized UPDATE. No subqueries,
+   * function calls, dialect-specific clauses or multiple statements are parsed,
+   * so every WHERE recognized here is top-level.
+   */
+  bindingset[query]
+  private string simpleUpdateSet(string query) {
+    exists(string assignment, string comparison |
+      assignment = "[a-z_][a-z0-9_.]*\\s*=\\s*" + sqlScalar() and
+      comparison = sqlScalar() + "\\s*(?:=|<>|!=|<=|>=|<|>)\\s*" + sqlScalar()
+    |
+      result =
+        query
+            .regexpCapture("(?is)" + sqlLeadingTrivia() + "update\\s+[a-z_][a-z0-9_.]*\\s+set\\s+(" +
+                assignment + "(?:\\s*,\\s*" + assignment + ")*)(?:\\s+where\\s+" + comparison +
+                "(?:\\s+(?:and|or)\\s+" + comparison + ")*)?\\s*;?\\s*", 1)
+    )
+  }
+
+  /** Maps a placeholder in SET to its zero-based argument offset. */
+  bindingset[setClause]
+  private int updateArgumentOffset(string setClause) {
+    exists(string placeholders, string placeholder, int occurrence |
+      // Quoted question marks and dollar numbers are data, not parameters.
+      placeholders = setClause.regexpReplaceAll("'(?:[^'\\\\]|'')*'", "") and
+      placeholder = placeholders.regexpFind("\\?|\\$[1-9][0-9]*", occurrence, _)
+    |
+      placeholder = "?" and result = occurrence
+      or
+      result = placeholder.regexpCapture("\\$([1-9][0-9]*)", 1).toInt() - 1
+    )
   }
 
   /** A parameter argument to a `database/sql` statement that writes data. */
@@ -192,7 +345,15 @@ module CleartextPasswordStorage {
         forall(string query | query = c.getSyntacticArgument(firstArg - 1).getStringValue() |
           query.regexpMatch(sqlWriteStatement())
         ) and
-        this = c.getSyntacticArgument(any(int i | i >= firstArg))
+        exists(int i | i >= firstArg |
+          this = c.getSyntacticArgument(i) and
+          forall(string query, string setClause |
+            query = c.getSyntacticArgument(firstArg - 1).getStringValue() and
+            setClause = simpleUpdateSet(query)
+          |
+            i = firstArg + updateArgumentOffset(setClause)
+          )
+        )
         or
         tp = "Stmt" and
         (
