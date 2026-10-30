@@ -25,4 +25,30 @@ function extractLocal(file) {
   new AdmZip(file).extractAllTo('/tmp/out'); // $ Alert
 }
 
+// GOOD: an empty archive has no untrusted entry names.
+function extractEmptyArchive() {
+  new AdmZip().extractAllTo('/tmp/out');
+}
+
+// GOOD: an archive populated only with a hard-coded safe entry name.
+function extractSafeEntries() {
+  const zip = new AdmZip();
+  zip.addFile('README.md', Buffer.from('safe'));
+  zip.extractAllTo('/tmp/out');
+}
+
+// GOOD: extracting a fixed non-directory entry cannot select a traversal entry.
+app.post('/import3', function (req, res) {
+  const zip = new AdmZip(req.files.archive.data);
+  zip.extractEntryTo('README.md', '/tmp/out', true, true);
+  res.send('ok');
+});
+
+// BAD: an untrusted entry selection can select a traversal entry.
+app.post('/import4', function (req, res) {
+  const zip = new AdmZip(req.files.archive.data); // $ Alert
+  zip.extractEntryTo(req.body.entry, '/tmp/out', true, true); // $ Sink
+  res.send('ok');
+});
+
 module.exports = { app, extractLocal };

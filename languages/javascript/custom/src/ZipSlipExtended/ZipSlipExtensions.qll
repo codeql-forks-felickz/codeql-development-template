@@ -70,10 +70,14 @@ module ZipSlipExtensions {
    * implicitly used by a high-level extraction method.
    */
   class VulnerableAdmZipArchiveSource extends ZipSlip::Source {
+    DataFlow::InvokeNode archive;
+
     VulnerableAdmZipArchiveSource() {
-      this = admZipArchive() and
-      usesVulnerableAdmZip(this.getFile()) and
-      this = any(VulnerableAdmZipExtractionSink s).getArchive()
+      this = archive and
+      archive = admZipArchive() and
+      exists(DataFlow::Node input | input = archive.getArgument(0)) and
+      usesVulnerableAdmZip(archive.getFile()) and
+      archive = any(VulnerableAdmZipExtractionSink s).getArchive()
     }
   }
 
@@ -88,10 +92,21 @@ module ZipSlipExtensions {
     VulnerableAdmZipExtractionSink() {
       archive = admZipArchive() and
       usesVulnerableAdmZip(archive.getFile()) and
-      this =
-        archive
-            .getAMethodCall(["extractAllTo", "extractAllToAsync", "extractEntryTo"])
-            .getReceiver()
+      (
+        this =
+          archive
+              .getAMethodCall(["extractAllTo", "extractAllToAsync"])
+              .getReceiver()
+        or
+        exists(DataFlow::MethodCallNode call |
+          call = archive.getAMethodCall("extractEntryTo") and
+          this = call.getReceiver() and
+          not exists(string entryName |
+            entryName = call.getArgument(0).getStringValue() and
+            not entryName.regexpMatch(".*[/\\\\]$")
+          )
+        )
+      )
     }
 
     /** Gets the archive whose entries are extracted. */

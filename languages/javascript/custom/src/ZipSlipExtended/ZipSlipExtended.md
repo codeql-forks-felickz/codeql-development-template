@@ -3,7 +3,7 @@
 This query is a variant of the standard `js/zipslip` query. It reuses the standard sources, sinks and sanitizers, and adds the following models:
 
 - **`unzipper.Open`**: entry paths read from the central directory returned by `unzipper.Open.buffer`, `file`, `url`, `s3`, `s3_v3` and `custom` (for example `for (const entry of directory.files) { entry.path }`) are treated as untrusted archive entry names.
-- **`adm-zip` before 0.4.11**: `extractAllTo`, `extractAllToAsync` and `extractEntryTo` do not sanitize entry names in these versions (CVE-2018-1002204). Calls on an archive created by `AdmZip(...)` or `new AdmZip(...)` are reported when the nearest `package.json` pins an exact `adm-zip` version older than 0.4.11. Version ranges such as `^0.4.7` are not reported, because they may resolve to a fixed release.
+- **`adm-zip` before 0.4.11**: `extractAllTo`, `extractAllToAsync` and `extractEntryTo` do not sanitize entry names in these versions (CVE-2018-1002204). Calls on an archive created by `AdmZip(...)` or `new AdmZip(...)` with an input archive are reported when the nearest `package.json` pins an exact `adm-zip` version older than 0.4.11. Fixed non-directory names passed to `extractEntryTo` are excluded; directory and non-constant selections are reported. Archives created without constructor input are not modeled, including archives populated only with hard-coded safe names. Version ranges such as `^0.4.7` are not reported, because they may resolve to a fixed release.
 
 ## Recommendation
 
