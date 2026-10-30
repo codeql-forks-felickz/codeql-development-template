@@ -34,6 +34,31 @@ class WebViewController: UIViewController {
     request.setValue(token, forHTTPHeaderField: "Authorization")
     return request
   }
+
+  func requestAfterClearingHeader() -> URLRequest {
+    var request = URLRequest(url: url)
+    request.setValue(nil, forHTTPHeaderField: "Authorization")
+    return request
+  }
+
+  func requestAfterClearingHeaderAndAddingAnother() -> URLRequest {
+    var request = URLRequest(url: url) // $ headersToUntrustedUrl
+    request.setValue(nil, forHTTPHeaderField: "Authorization")
+    request.setValue(token, forHTTPHeaderField: "X-Request-ID")
+    return request
+  }
+
+  func requestWithEmptyHeaderDictionary() -> URLRequest {
+    var request = URLRequest(url: url)
+    request.allHTTPHeaderFields = [:]
+    return request
+  }
+
+  func requestWithNilHeaderDictionary() -> URLRequest {
+    var request = URLRequest(url: url)
+    request.allHTTPHeaderFields = nil
+    return request
+  }
 }
 
 class PlainWebViewController: UIViewController {

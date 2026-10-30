@@ -22,6 +22,7 @@ predicate setsHeaderOn(UrlRequestInitCall init, AstNode header) {
         .hasQualifiedName(["URLRequest", "NSMutableURLRequest"],
           ["setValue(_:forHTTPHeaderField:)", "addValue(_:forHTTPHeaderField:)"]) and
     DataFlow::localFlow(DataFlow::exprNode(init), DataFlow::exprNode(call.getQualifier())) and
+    not stripWrappers(call.getArgument(0).getExpr()) instanceof NilLiteralExpr and
     header = call
   )
   or
@@ -29,6 +30,11 @@ predicate setsHeaderOn(UrlRequestInitCall init, AstNode header) {
     member = assign.getDest() and
     member.getMember().(VarDecl).getName() = "allHTTPHeaderFields" and
     DataFlow::localFlow(DataFlow::exprNode(init), DataFlow::exprNode(member.getBase())) and
+    not stripWrappers(assign.getSource()) instanceof NilLiteralExpr and
+    not exists(DictionaryExpr dict |
+      stripWrappers(assign.getSource()) = dict and
+      not exists(dict.getAnElement())
+    ) and
     header = assign
   )
 }

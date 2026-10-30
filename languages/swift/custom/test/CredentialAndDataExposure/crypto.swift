@@ -66,7 +66,36 @@ func encryptString(_ toEncrypt: String) -> String {
   return ret
 }
 
-// GOOD: not presented as encryption
+// Base64 helper; a caller that claims to encrypt should be reported.
 func encodeForTransport(_ value: String) -> String {
+  return value.data(using: .utf8)!.base64EncodedString() // $ base64AsEncryption
+}
+
+func encryptAndEncode(_ value: String) -> String {
+  return encodeForTransport(value)
+}
+
+// GOOD: encoding without an encryption-named caller
+func encodeForStorage(_ value: String) -> String {
   return value.data(using: .utf8)!.base64EncodedString()
+}
+
+private let constantArrayByte: UInt8 = UInt8(0x02)
+private let hardcodedArrayKey: [UInt8] = [UInt8(0x01), constantArrayByte]
+private let dynamicArrayKey: [UInt8] = [UInt8(0x01), UInt8.random(in: 0...255)]
+
+func encryptWithHardcodedArrayKey(data: Data) {
+  _ = hardcodedArrayKey.withUnsafeBytes { keyBytes in
+    data.withUnsafeBytes { dataBytes in
+      CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(kCCOptionPKCS7Padding), keyBytes.baseAddress, hardcodedArrayKey.count, nil, dataBytes.baseAddress, data.count, nil, 0, nil) // $ hardcodedKey
+    }
+  }
+}
+
+func encryptWithDynamicArrayKey(data: Data) {
+  _ = dynamicArrayKey.withUnsafeBytes { keyBytes in
+    data.withUnsafeBytes { dataBytes in
+      CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(kCCOptionPKCS7Padding), keyBytes.baseAddress, dynamicArrayKey.count, nil, dataBytes.baseAddress, data.count, nil, 0, nil)
+    }
+  }
 }

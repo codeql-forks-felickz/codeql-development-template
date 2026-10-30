@@ -164,6 +164,31 @@ predicate isHardcodedValue(Expr e, Expr origin) {
 }
 
 /**
+ * Holds if `e` is a hard-coded non-local value, with constant contents when
+ * the value is an array.
+ */
+private predicate isHardcodedNonLocalValue(Expr e, Expr origin) {
+  isHardcodedValue(e, origin) and
+  (not origin instanceof ArrayExpr or isHardcodedArrayValue(origin))
+}
+
+/** Holds if `e` is an array literal whose elements are all hard-coded values. */
+private predicate isHardcodedArrayValue(Expr e) {
+  exists(ArrayExpr array |
+    stripWrappers(e) = array and
+    forall(Expr element | element = array.getAnElement() | isHardcodedArrayElement(element))
+  )
+}
+
+/** Holds if `e` is a hard-coded value or a nested array of hard-coded values. */
+private predicate isHardcodedArrayElement(Expr e) {
+  isHardcodedArrayValue(e)
+  or
+  isHardcodedValue(stripWrappers(e), _) and
+  not stripWrappers(e) instanceof ArrayExpr
+}
+
+/**
  * A data flow node that holds a hard-coded value that the standard data flow
  * library cannot see, because it originates from a global variable or a
  * property initializer, neither of which has a control flow graph.
@@ -179,13 +204,13 @@ class HardcodedNonLocalValue extends DataFlow::Node {
   Expr origin;
 
   HardcodedNonLocalValue() {
-    isHardcodedValue(this.asExpr(), origin) and
+    isHardcodedNonLocalValue(this.asExpr(), origin) and
     not isHardcodedLiteral(this.asExpr())
     or
     exists(CallExpr call, int i, Expr arg |
       not exists(DataFlow::Node n | n.asExpr() = call) and
       arg = call.getArgument(i).getExpr() and
-      isHardcodedValue(stripWrappers(arg), origin) and
+      isHardcodedNonLocalValue(stripWrappers(arg), origin) and
       this.(DataFlow::ParameterNode).asParameter() = call.getStaticTarget().getParam(i)
     )
   }

@@ -82,6 +82,7 @@ struct URLRequest {
 
   var httpMethod: String?
   var httpBody: Data?
+  var allHTTPHeaderFields: [String: String]?
 
   mutating func setValue(_ value: String?, forHTTPHeaderField field: String) {}
 }

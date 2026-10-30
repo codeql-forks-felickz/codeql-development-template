@@ -65,7 +65,6 @@ predicate base64AsEncryption(Base64EncodeCall call, EncryptionNamedFunction f) {
   exists(DataFlow::Node source, DataFlow::Node sink |
     Base64AsEncryptionFlow::flow(source, sink) and
     source.(DataFlow::ParameterNode).asParameter() = f.getAParam() and
-    sink.asExpr() = call.getQualifier() and
-    call.getEnclosingFunction() = f
+    sink.asExpr() = call.getQualifier()
   )
 }
