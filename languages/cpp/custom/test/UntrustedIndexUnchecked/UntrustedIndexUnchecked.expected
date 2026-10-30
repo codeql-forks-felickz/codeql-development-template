@@ -1,0 +1,18 @@
+#select
+| test.c:18:3:18:20 | access to array | test.c:15:9:15:12 | fread output argument | test.c:18:9:18:19 | ... + ... | This index into an array of 10 elements depends on $@ and is not bounds checked. | test.c:15:9:15:12 | fread output argument | string read by fread |
+| test.c:19:3:19:14 | access to array | test.c:15:9:15:12 | fread output argument | test.c:19:9:19:13 | size3 | This index into an array of 10 elements depends on $@ and is not bounds checked. | test.c:15:9:15:12 | fread output argument | string read by fread |
+edges
+| test.c:15:9:15:12 | fread output argument | test.c:16:15:16:17 | *img | provenance |  |
+| test.c:16:15:16:17 | *img | test.c:16:15:16:36 | ... / ... | provenance | Config |
+| test.c:16:15:16:17 | *img | test.c:16:27:16:29 | *img | provenance |  |
+| test.c:16:15:16:36 | ... / ... | test.c:18:9:18:19 | ... + ... | provenance |  |
+| test.c:16:15:16:36 | ... / ... | test.c:19:9:19:13 | size3 | provenance |  |
+| test.c:16:27:16:29 | *img | test.c:16:15:16:36 | ... / ... | provenance | Config |
+nodes
+| test.c:15:9:15:12 | fread output argument | semmle.label | fread output argument |
+| test.c:16:15:16:17 | *img | semmle.label | *img |
+| test.c:16:15:16:36 | ... / ... | semmle.label | ... / ... |
+| test.c:16:27:16:29 | *img | semmle.label | *img |
+| test.c:18:9:18:19 | ... + ... | semmle.label | ... + ... |
+| test.c:19:9:19:13 | size3 | semmle.label | size3 |
+subpaths

@@ -1,0 +1,2 @@
+query: CopyOverrunsStructMember/CopyOverrunsStructMember.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

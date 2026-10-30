@@ -1,10 +1,10 @@
-# Fixed-size copy into buffer with untrusted allocation size
+# Fixed-size access to buffer with untrusted allocation size
 
 ## Overview
 
 A heap buffer is allocated with a size computed from untrusted data (for example fields read from a file with `fread`), and a fixed number of bytes is then copied into it with a function such as `memcpy` or `memset`. If the computed size is smaller than the copy, for example because the arithmetic wraps, divides, or subtracts attacker-controlled values, the copy writes past the end of the allocation.
 
-The standard `cpp/overflow-buffer` and `cpp/overrun-write` queries need a known allocation size to compare against the copy, so they do not report allocations whose size is unbounded. This query reports constant-size writes into such allocations when neither range analysis nor a dominating guard shows that the allocation size is at least the copy size.
+The standard `cpp/overflow-buffer` and `cpp/overrun-write` queries need a known allocation size to compare against the copy, so they do not report allocations whose size is unbounded. This query reports constant-size writes into such allocations, and array accesses with a constant index other than 0 (for example `buf[100]`), when neither range analysis nor a dominating guard shows that the allocation size is large enough.
 
 ## Recommendation
 

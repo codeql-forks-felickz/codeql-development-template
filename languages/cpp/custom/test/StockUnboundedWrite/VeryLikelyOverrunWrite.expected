@@ -1,0 +1,1 @@
+| test.c:33:3:33:8 | call to strcpy | This 'call to strcpy' operation requires 16 bytes but the destination is only 10 bytes. |

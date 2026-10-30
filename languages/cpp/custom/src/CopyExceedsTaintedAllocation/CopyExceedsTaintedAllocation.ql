@@ -1,8 +1,9 @@
 /**
- * @name Fixed-size copy into buffer with untrusted allocation size
- * @description Copying a fixed number of bytes into a heap buffer whose size is
- *              computed from untrusted data, without checking that the size is
- *              at least as large as the copy, can overflow the buffer.
+ * @name Fixed-size access to buffer with untrusted allocation size
+ * @description Copying a fixed number of bytes into, or accessing a constant
+ *              index of, a heap buffer whose size is computed from untrusted
+ *              data, without checking that the size is large enough, can
+ *              overflow the buffer.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.8
@@ -39,6 +40,32 @@ predicate fixedSizeByteWrite(FunctionCall fc, Expr dest, int n) {
   )
 }
 
+/**
+ * Holds if `access` reads or writes the first `n` bytes of the buffer `dest`,
+ * either as a fixed-size copy or as an array access with a constant index.
+ * Accesses to index 0 are excluded, since they only fail for empty buffers.
+ */
+predicate fixedSizeAccess(Expr access, Expr dest, int n) {
+  fixedSizeByteWrite(access, dest, n)
+  or
+  exists(ArrayExpr ae, int c |
+    access = ae and
+    dest = ae.getArrayBase() and
+    dest.getUnspecifiedType() instanceof PointerType and
+    c = ae.getArrayOffset().getValue().toInt() and
+    c > 0 and
+    n = (c + 1) * ae.getUnspecifiedType().getSize()
+  )
+}
+
+/** Gets a description of the fixed-size `access`, which covers `n` bytes. */
+bindingset[n]
+string describeAccess(Expr access, int n) {
+  access instanceof FunctionCall and result = "This call writes " + n + " bytes into"
+  or
+  access instanceof ArrayExpr and result = "This array access reaches byte " + n + " of"
+}
+
 /** Holds if a guard ensures that `size` is at least `n` in `bb`. */
 bindingset[n]
 predicate guardedAtLeast(Expr size, int n, BasicBlock bb) {
@@ -51,14 +78,14 @@ predicate guardedAtLeast(Expr size, int n, BasicBlock bb) {
 
 /**
  * Holds if `alloc` allocates `size` bytes, the result flows to the destination
- * of `fc`, which writes `n` bytes, and neither range analysis nor a guard shows
- * that `size >= n`.
+ * of `fc`, which accesses `n` bytes, and neither range analysis nor a guard
+ * shows that `size >= n`.
  */
-predicate copyMayExceedAllocation(AllocationExpr alloc, Expr size, FunctionCall fc, int n) {
+predicate copyMayExceedAllocation(AllocationExpr alloc, Expr size, Expr fc, int n) {
   exists(Expr dest |
     size = alloc.getSizeExpr() and
     not exists(size.getValue()) and
-    fixedSizeByteWrite(fc, dest, n) and
+    fixedSizeAccess(fc, dest, n) and
     DataFlow::localExprFlow(alloc, dest) and
     lowerBound(size.getFullyConverted()) < n and
     not guardedAtLeast(size, n, alloc.getBasicBlock()) and
@@ -89,11 +116,11 @@ import CopyExceedsTaintedAllocationFlow::PathGraph
 
 from
   CopyExceedsTaintedAllocationFlow::PathNode source,
-  CopyExceedsTaintedAllocationFlow::PathNode sink, AllocationExpr alloc, FunctionCall fc, int n
+  CopyExceedsTaintedAllocationFlow::PathNode sink, AllocationExpr alloc, Expr fc, int n
 where
   CopyExceedsTaintedAllocationFlow::flowPath(source, sink) and
   copyMayExceedAllocation(alloc, sink.getNode().asExpr(), fc, n)
 select fc, source, sink,
-  "This call writes " + n +
-    " bytes into a buffer $@ whose size depends on $@ and is not checked to be at least " + n + ".",
-  alloc, "allocated here", source.getNode(), source.getNode().(FS::FlowSource).getSourceType()
+  describeAccess(fc, n) + " a buffer $@ whose size depends on $@ and is not checked to be at least "
+    + n + ".", alloc, "allocated here", source.getNode(),
+  source.getNode().(FS::FlowSource).getSourceType()

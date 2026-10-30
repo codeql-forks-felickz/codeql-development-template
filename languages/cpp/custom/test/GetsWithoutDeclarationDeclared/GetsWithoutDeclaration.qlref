@@ -1,0 +1,2 @@
+query: GetsWithoutDeclaration/GetsWithoutDeclaration.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,7 +1,8 @@
 #select
 | test.c:22:5:22:10 | call to memcpy | test.c:19:16:19:19 | fread output argument | test.c:21:34:21:38 | size2 | This call writes 10 bytes into a buffer $@ whose size depends on $@ and is not checked to be at least 10. | test.c:21:27:21:32 | call to malloc | allocated here | test.c:19:16:19:19 | fread output argument | string read by fread |
 | test.c:26:5:26:10 | call to memcpy | test.c:19:16:19:19 | fread output argument | test.c:25:34:25:38 | size3 | This call writes 10 bytes into a buffer $@ whose size depends on $@ and is not checked to be at least 10. | test.c:25:27:25:32 | call to malloc | allocated here | test.c:19:16:19:19 | fread output argument | string read by fread |
-| test.c:37:3:37:8 | call to memset | test.c:35:9:35:12 | fread output argument | test.c:36:28:36:30 | len | This call writes 16 bytes into a buffer $@ whose size depends on $@ and is not checked to be at least 16. | test.c:36:21:36:26 | call to malloc | allocated here | test.c:35:9:35:12 | fread output argument | string read by fread |
+| test.c:27:5:27:14 | access to array | test.c:19:16:19:19 | fread output argument | test.c:25:34:25:38 | size3 | This array access reaches byte 101 of a buffer $@ whose size depends on $@ and is not checked to be at least 101. | test.c:25:27:25:32 | call to malloc | allocated here | test.c:19:16:19:19 | fread output argument | string read by fread |
+| test.c:39:3:39:8 | call to memset | test.c:37:9:37:12 | fread output argument | test.c:38:28:38:30 | len | This call writes 16 bytes into a buffer $@ whose size depends on $@ and is not checked to be at least 16. | test.c:38:21:38:26 | call to malloc | allocated here | test.c:37:9:37:12 | fread output argument | string read by fread |
 edges
 | test.c:19:16:19:19 | fread output argument | test.c:20:17:20:19 | *img | provenance |  |
 | test.c:20:17:20:19 | *img | test.c:20:17:20:44 | ... + ... | provenance | Config |
@@ -16,7 +17,7 @@ edges
 | test.c:24:29:24:31 | *img | test.c:24:17:24:38 | ... / ... | provenance | Config |
 | test.c:24:29:24:31 | *img | test.c:26:19:26:21 | *img | provenance |  |
 | test.c:26:19:26:21 | *img | test.c:20:17:20:19 | *img | provenance |  |
-| test.c:35:9:35:12 | fread output argument | test.c:36:28:36:30 | len | provenance |  |
+| test.c:37:9:37:12 | fread output argument | test.c:38:28:38:30 | len | provenance |  |
 nodes
 | test.c:19:16:19:19 | fread output argument | semmle.label | fread output argument |
 | test.c:20:17:20:19 | *img | semmle.label | *img |
@@ -29,6 +30,6 @@ nodes
 | test.c:24:29:24:31 | *img | semmle.label | *img |
 | test.c:25:34:25:38 | size3 | semmle.label | size3 |
 | test.c:26:19:26:21 | *img | semmle.label | *img |
-| test.c:35:9:35:12 | fread output argument | semmle.label | fread output argument |
-| test.c:36:28:36:30 | len | semmle.label | len |
+| test.c:37:9:37:12 | fread output argument | semmle.label | fread output argument |
+| test.c:38:28:38:30 | len | semmle.label | len |
 subpaths

@@ -24,6 +24,8 @@ void process_image(FILE *fp) {
     int size3 = img.width / img.height;
     char *buff4 = (char *)malloc(size3); // $ Sink
     memcpy(buff4, img.data, sizeof(img.data)); // $ Alert
+    buff4[100] = 'c'; // $ Alert
+    buff4[0] = 'c';
 
     free(buff2);
     free(buff4);
@@ -86,5 +88,16 @@ void copy_matches_allocation(FILE *fp, const char *src) {
   fread(&n, sizeof(n), 1, fp);
   char *buf = (char *)malloc(n);
   memcpy(buf, src, n);
+  free(buf);
+}
+
+/* Safe: the size is checked before the constant-index access. */
+void checked_index(FILE *fp) {
+  int n;
+  fread(&n, sizeof(n), 1, fp);
+  if (n <= 100)
+    return;
+  char *buf = (char *)malloc(n);
+  buf[100] = 'c';
   free(buf);
 }

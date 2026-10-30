@@ -1,0 +1,2 @@
+query: UntrustedIndexUnchecked/UntrustedIndexUnchecked.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

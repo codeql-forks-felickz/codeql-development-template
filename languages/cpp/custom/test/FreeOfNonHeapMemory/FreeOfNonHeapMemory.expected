@@ -1,0 +1,28 @@
+#select
+| test.c:20:3:20:6 | call to free | test.c:17:12:17:21 | dataBuffer | test.c:20:8:20:11 | data | This frees memory from a $@, which is not on the heap. | test.c:17:12:17:21 | dataBuffer | stack array |
+| test.c:30:3:30:6 | call to free | test.c:28:12:28:21 | dataBuffer | test.c:30:8:30:11 | data | This frees memory from a $@, which is not on the heap. | test.c:28:12:28:21 | dataBuffer | static array |
+| test.c:36:3:36:6 | call to free | test.c:35:16:35:49 | call to alloca | test.c:36:8:36:11 | data | This frees memory from a $@, which is not on the heap. | test.c:35:16:35:49 | call to alloca | alloca allocation |
+| test.c:39:32:39:35 | call to free | test.c:43:11:43:13 | buf | test.c:39:37:39:37 | p | This frees memory from a $@, which is not on the heap. | test.c:43:11:43:13 | buf | stack array |
+edges
+| test.c:17:5:17:21 | ... = ... | test.c:20:8:20:11 | data | provenance |  |
+| test.c:17:12:17:21 | dataBuffer | test.c:17:5:17:21 | ... = ... | provenance |  |
+| test.c:28:5:28:21 | ... = ... | test.c:30:8:30:11 | data | provenance |  |
+| test.c:28:12:28:21 | dataBuffer | test.c:28:5:28:21 | ... = ... | provenance |  |
+| test.c:35:16:35:49 | call to alloca | test.c:35:16:35:49 | call to alloca | provenance |  |
+| test.c:35:16:35:49 | call to alloca | test.c:36:8:36:11 | data | provenance |  |
+| test.c:39:27:39:27 | p | test.c:39:37:39:37 | p | provenance |  |
+| test.c:43:11:43:13 | buf | test.c:39:27:39:27 | p | provenance |  |
+nodes
+| test.c:17:5:17:21 | ... = ... | semmle.label | ... = ... |
+| test.c:17:12:17:21 | dataBuffer | semmle.label | dataBuffer |
+| test.c:20:8:20:11 | data | semmle.label | data |
+| test.c:28:5:28:21 | ... = ... | semmle.label | ... = ... |
+| test.c:28:12:28:21 | dataBuffer | semmle.label | dataBuffer |
+| test.c:30:8:30:11 | data | semmle.label | data |
+| test.c:35:16:35:49 | call to alloca | semmle.label | call to alloca |
+| test.c:35:16:35:49 | call to alloca | semmle.label | call to alloca |
+| test.c:36:8:36:11 | data | semmle.label | data |
+| test.c:39:27:39:27 | p | semmle.label | p |
+| test.c:39:37:39:37 | p | semmle.label | p |
+| test.c:43:11:43:13 | buf | semmle.label | buf |
+subpaths
