@@ -82,6 +82,15 @@ predicate hasProtectedPasswordCaller(Parameter parameter) {
   )
 }
 
+/** Holds if `arg` is an access to a name-only password parameter candidate. */
+predicate isPasswordParameterSource(Expr arg) {
+  exists(VarAccess access |
+    arg = access and
+    access.getVariable() instanceof Parameter and
+    isPasswordName(access.getVariable().getName())
+  )
+}
+
 /** A parameter whose name indicates that it holds a password. */
 class PasswordParameter extends Parameter {
   PasswordParameter() {
@@ -92,7 +101,7 @@ class PasswordParameter extends Parameter {
       c.getCallee().getSourceDeclaration() = this.getCallable() and
       arg = c.getArgument(this.getPosition())
     |
-      isPasswordName(arg.(VarAccess).getVariable().getName())
+      isPasswordParameterSource(arg)
       or
       arg instanceof SubmittedPasswordRead
     )
@@ -123,10 +132,14 @@ class PasswordProtectingCall extends MethodCall {
   PasswordProtectingCall() {
     exists(string name | name = this.getMethod().getName() |
       name.regexpMatch("(?i).*(hash|crypt|digest|kdf|argon|pbkdf).*") and
-      not name = "hashCode"
+      not name = "hashCode" and
+      not name.regexpMatch("(?i).*(decrypt|decipher).*")
     )
     or
     this.getMethod().hasName("encode") and
+    not this.getMethod()
+        .getDeclaringType()
+        .hasQualifiedName("org.springframework.security.crypto.password", "NoOpPasswordEncoder") and
     this.getMethod().getDeclaringType().getASupertype*().getName().matches("%PasswordEncoder")
   }
 }
@@ -144,7 +157,11 @@ Expr passwordSqlText() {
 predicate isFastHashInput(Expr e) {
   exists(MethodCall mc, Method m | mc.getMethod() = m and e = mc.getArgument(0) |
     m.getDeclaringType().getASupertype*().hasQualifiedName("java.security", "MessageDigest") and
-    m.hasName(["update", "digest"])
+    (
+      m.hasName("update")
+      or
+      m.hasName("digest") and m.getNumberOfParameters() = 1
+    )
     or
     m.getDeclaringType().hasQualifiedName("org.apache.commons.codec.digest", "DigestUtils") and
     m.getName().regexpMatch("(md2|md5|sha|sha1|sha224|sha256|sha384|sha512|sha3_\\d+)(Hex)?")
@@ -191,6 +208,7 @@ predicate passwordSink(DataFlow::Node node, string message) {
         .getAnAnnotation()
         .getType()
         .hasQualifiedName(["javax.persistence", "jakarta.persistence"], "Entity") and
+    not setterHashesPassword(set) and
     node.asExpr() = set.getArgument(0)
   ) and
   message =
@@ -221,6 +239,24 @@ predicate passwordSink(DataFlow::Node node, string message) {
   isFastHashInput(node.asExpr()) and
   message =
     "This $@ is hashed with a fast hash function, which is insufficient for password storage. Use a password-hashing function such as bcrypt, scrypt, Argon2 or PBKDF2."
+}
+
+/** Holds if a setter hashes its password parameter before assigning it to a password field. */
+predicate setterHashesPassword(MethodCall set) {
+  exists(
+    Method setter, Parameter password, PasswordProtectingCall protection, AssignExpr assignment,
+    Field field
+  |
+    setter = set.getMethod().getSourceDeclaration() and
+    setter.getAParameter() = password and
+    password.getPosition() = 0 and
+    protection.getEnclosingCallable() = setter and
+    exists(int i | DataFlow::localExprFlow(password.getAnAccess(), protection.getArgument(i))) and
+    assignment.getEnclosingCallable() = setter and
+    assignment.getDest().(VarAccess).getVariable() = field and
+    isPasswordName(field.getName()) and
+    DataFlow::localExprFlow(protection, assignment.getRhs())
+  )
 }
 
 module CredentialExposureConfig implements DataFlow::ConfigSig {
