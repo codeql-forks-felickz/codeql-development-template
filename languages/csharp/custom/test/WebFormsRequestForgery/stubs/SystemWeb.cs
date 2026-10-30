@@ -25,6 +25,7 @@ namespace System.Web
     public class HttpResponse
     {
         public void Write(string s) { }
+        public void Redirect(string url) { }
     }
 }
 
@@ -59,5 +60,23 @@ namespace System.Web.UI
         public System.Web.SessionState.HttpSessionState Session { get; }
         public bool IsPostBack { get; }
         public string ViewStateUserKey { get; set; }
+    }
+
+    public class MasterPage : Control
+    {
+        public Page Page { get; }
+    }
+}
+
+namespace System.Web.UI.WebControls
+{
+    public class TextBox : Control
+    {
+        public string Text { get; set; }
+    }
+
+    public class DropDownList : Control
+    {
+        public string SelectedValue { get; set; }
     }
 }

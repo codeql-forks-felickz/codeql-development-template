@@ -10,6 +10,8 @@ The existing `cs/web/missing-token-validation` query only covers ASP.NET MVC and
 
 This query reports calls to state-changing methods in Web Forms pages whose arguments depend on `Request.Params`, `Request.QueryString` or `Request.Form`, unless the page calls `AntiForgery.Validate()`, or the call only runs on a postback (`if (IsPostBack)`) in a page that sets `ViewStateUserKey`.
 
+It also reports postback event handlers (for example `btnPlaceOrder_Click(object, EventArgs)`) that call a state-changing method, directly or through a method of the page, when neither the page, its base classes nor a master page sets `ViewStateUserKey` and the page does not call `AntiForgery.Validate()`. Without a user-bound view state, an attacker can replay a postback captured from their own session against a logged-in victim.
+
 ## Recommendation
 
 Perform state changes only in postback event handlers or `if (IsPostBack)` blocks, and set `ViewStateUserKey` to a per-user value (for example the session ID) in `Page_Init` or `OnInit`, ideally in a shared base page or master page. Alternatively, validate an anti-forgery token with `System.Web.Helpers.AntiForgery.Validate()`. Never perform state changes on `GET` requests.
@@ -45,6 +47,18 @@ protected void Page_Load(object sender, EventArgs e)
     }
 }
 ```
+
+The following checkout page places an order and charges the card in a postback handler, but nothing binds the view state to the user:
+
+```csharp
+protected void btnPlaceOrder_Click(object sender, EventArgs e)
+{
+    _creditCard.ChargeCard(order.Total); // BAD
+    _orderRepository.CreateOrder(order);
+}
+```
+
+Setting `ViewStateUserKey` in `OnInit`, in a shared base page, or in the master page, as shown above, fixes the problem.
 
 ## References
 

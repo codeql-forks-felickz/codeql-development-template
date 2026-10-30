@@ -1,9 +1,10 @@
 /**
  * @name Web Forms state change without CSRF protection
  * @description A Web Forms page that performs a state-changing operation using values read
- *              directly from `Request.Params`, `Request.QueryString` or `Request.Form`, without
- *              anti-forgery validation, can be triggered by a cross-site request (including a
- *              `GET`) from a page controlled by an attacker.
+ *              directly from `Request.Params`, `Request.QueryString` or `Request.Form`, or from a
+ *              postback event handler, without anti-forgery validation or a user-bound view
+ *              state (`ViewStateUserKey`), can be triggered by a cross-site request from a page
+ *              controlled by an attacker.
  * @kind problem
  * @problem.severity warning
  * @security-severity 8.8
@@ -42,7 +43,7 @@ class StateChangingCall extends Call {
   StateChangingCall() {
     this.getTarget().fromSource() and
     splitWords(this.getTarget().getName())
-        .regexpMatch("(transfer|withdraw|deposit|pay|purchase|buy|update|delete|remove|insert|create|save|change|edit|modify|approve|cancel|send|submit|reset)(_.*)?")
+        .regexpMatch("(transfer|withdraw|deposit|pay|purchase|buy|charge|place|update|delete|remove|insert|create|save|change|edit|modify|approve|cancel|send|submit|reset)(_.*)?")
     or
     this.getTarget().hasName(["ExecuteNonQuery", "ExecuteNonQueryAsync"])
   }
@@ -56,12 +57,48 @@ predicate validatesAntiForgeryToken(WebFormsPage page) {
   )
 }
 
-/** Holds if `page`, or a base class, binds the view state to the user with `ViewStateUserKey`. */
+/**
+ * Holds if `page`, a base class, or a master page binds the view state to the user with
+ * `ViewStateUserKey`. Master pages are not linked to their content pages in the database, so
+ * an assignment in any master page is assumed to apply to all pages.
+ */
 predicate setsViewStateUserKey(WebFormsPage page) {
-  exists(AssignableDefinition def |
+  exists(AssignableDefinition def, ValueOrRefType t |
     def.getTarget().hasName("ViewStateUserKey") and
-    def.getEnclosingCallable().getDeclaringType() = page.getABaseType*()
+    t = def.getEnclosingCallable().getDeclaringType()
+  |
+    t = page.getABaseType*()
+    or
+    t.getABaseType+().hasFullyQualifiedName("System.Web.UI", "MasterPage")
   )
+}
+
+/**
+ * A postback event handler of a Web Forms page, such as `btnSubmit_Click(object, EventArgs)`.
+ * Page lifecycle handlers such as `Page_Load` are excluded.
+ */
+class PostBackEventHandler extends Method {
+  PostBackEventHandler() {
+    this.getDeclaringType() instanceof WebFormsPage and
+    this.getNumberOfParameters() = 2 and
+    this.getParameter(0).getType() instanceof ObjectType and
+    this.getParameter(1).getType().getName().matches("%EventArgs") and
+    not this.getName().matches("Page\\_%") and
+    exists(this.getBody())
+  }
+
+  /** Gets a state-changing call performed by this handler, directly or through a method of its page. */
+  StateChangingCall getAStateChangingCall() {
+    exists(Callable c |
+      result.getEnclosingCallable() = c and
+      (
+        c = this
+        or
+        this.calls+(c) and
+        c.getDeclaringType() = this.getDeclaringType().getABaseType*()
+      )
+    )
+  }
 }
 
 /** Holds if `e` only executes when `IsPostBack` is true. */
@@ -97,14 +134,34 @@ predicate unprotectedStateChange(WebFormsPage page, StateChangingCall call, Data
   not (setsViewStateUserKey(page) and isGuardedByPostBack(call))
 }
 
-from StateChangingCall call, DataFlow::Node source
+from Element alert, string msg, Element related, string relatedLabel
 where
-  source =
-    min(DataFlow::Node s, Location l |
-      unprotectedStateChange(_, call, s) and l = s.getLocation()
-    |
-      s order by l.getStartLine(), l.getStartColumn()
-    )
-select call,
-  "This state-changing call uses a $@ without anti-forgery validation, so it can be triggered by a cross-site request.",
-  source, "request parameter"
+  exists(StateChangingCall call |
+    alert = call and
+    related =
+      min(DataFlow::Node s, Location l |
+        unprotectedStateChange(_, call, s) and l = s.getLocation()
+      |
+        s order by l.getStartLine(), l.getStartColumn()
+      ).asExpr() and
+    msg =
+      "This state-changing call uses a $@ without anti-forgery validation, so it can be triggered by a cross-site request." and
+    relatedLabel = "request parameter"
+  )
+  or
+  exists(PostBackEventHandler h, WebFormsPage page |
+    alert = h and
+    page = h.getDeclaringType() and
+    not validatesAntiForgeryToken(page) and
+    not setsViewStateUserKey(page) and
+    related =
+      min(StateChangingCall c, Location l |
+        c = h.getAStateChangingCall() and l = c.getLocation()
+      |
+        c order by l.getStartLine(), l.getStartColumn()
+      ) and
+    msg =
+      "This postback event handler performs a $@, but the page does not set ViewStateUserKey or validate an anti-forgery token, so a forged cross-site postback can trigger it." and
+    relatedLabel = "state-changing call"
+  )
+select alert, msg, related, relatedLabel
