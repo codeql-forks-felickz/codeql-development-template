@@ -56,3 +56,6 @@ class ReqHandler(http.server.BaseHTTPRequestHandler):
         connection.cursor().execute("SELECT * FROM users WHERE id=" + params.get("id", ""))  # $ Alert[py/sql-injection-extended]
         # GOOD: parameter binding
         connection.cursor().execute("SELECT * FROM users WHERE id=?", (params.get("id", ""),))
+        # A known-key read should not inherit taint from an unrelated dictionary value.
+        known = {"input": self.path, "sql": "SELECT 1"}
+        connection.cursor().execute(known.get("sql"))

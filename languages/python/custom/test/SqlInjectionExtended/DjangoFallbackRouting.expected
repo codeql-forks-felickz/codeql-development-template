@@ -1,0 +1,5 @@
+| django.nV/taskManager/views.py:5:12:5:18 | ControlFlowNode for request | django.nV/taskManager/views.py:5:12:5:18 | Parameter |
+| django.nV/taskManager/views.py:5:21:5:30 | ControlFlowNode for project_id | django.nV/taskManager/views.py:5:21:5:30 | Parameter |
+| django.nV/taskManager/views.py:16:17:16:23 | ControlFlowNode for request | django.nV/taskManager/views.py:16:17:16:23 | Parameter |
+| django.nV/taskManager/views.py:16:26:16:35 | ControlFlowNode for project_id | django.nV/taskManager/views.py:16:26:16:35 | Parameter |
+| django.nV/taskManager/views.py:28:23:28:29 | ControlFlowNode for request | django.nV/taskManager/views.py:28:23:28:29 | Parameter |

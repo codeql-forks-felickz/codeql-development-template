@@ -23,3 +23,7 @@ def safe_upload(request, project_id):
             (name, project_id),
         )
     return redirect("/taskManager/" + project_id + "/")
+
+
+def default_parameter(request, sql="SELECT 1"):
+    connection.cursor().execute(sql)

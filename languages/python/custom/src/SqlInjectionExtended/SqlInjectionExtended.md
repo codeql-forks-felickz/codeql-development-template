@@ -16,6 +16,10 @@ In addition to the sources, sinks and sanitizers of `py/sql-injection`, this que
 
 Most database connector libraries offer a way of safely embedding untrusted data into a query by means of query parameters or prepared statements.
 
+## Known limitations
+
+Django fallback routing currently models named URL captures only. Positional regex captures are not modeled.
+
 ## Example
 
 In the following `http.server` handler, `query` is defined by iterable unpacking and then read inside a generator expression. The SQL statement is built by string concatenation and is vulnerable to SQL injection:

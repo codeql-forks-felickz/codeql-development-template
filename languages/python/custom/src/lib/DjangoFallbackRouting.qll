@@ -56,7 +56,10 @@ module DjangoFallbackRouting {
       setup.getViewArg().asExpr() = attr and
       result.getName() = attr.getName() and
       not result.isMethod() and
-      moduleNameMatches(result.getScope(), importedModuleName(attr.getObject()))
+      moduleNameMatches(result.getScope(), importedModuleName(attr.getObject())) and
+      not exists(PrivateDjango::DjangoRouteSetup resolvedSetup |
+        resolvedSetup.getARequestHandler() = result
+      )
     )
   }
 
@@ -72,17 +75,33 @@ module DjangoFallbackRouting {
     override string getSourceType() { result = "django.http.request.HttpRequest" }
   }
 
-  /** A routed parameter (any parameter after `request`) of a fallback-resolved Django view. */
+  /** A named URL-capture parameter of a fallback-resolved Django view. */
   class FallbackRoutedParameter extends FallbackViewParameter {
     FallbackRoutedParameter() {
-      exists(Function f | f = fallbackViewFunction(_) |
-        this.getParameter() = f.getArg(any(int i | i > 0))
-        or
-        this.getParameter() = f.getArgByName(_) and
+      exists(Function f, PrivateDjango::DjangoRouteSetup setup, string name |
+        f = fallbackViewFunction(setup) and
+        hasNamedRouteCapture(setup, name) and
+        (
+          this.getParameter() = f.getArgByName(name)
+          or
+          this.getParameter() = f.getKwarg()
+        ) and
         not this.getParameter() = f.getArg(0)
       )
     }
 
     override string getSourceType() { result = "django routed param" }
+  }
+
+  private predicate hasNamedRouteCapture(PrivateDjango::DjangoRouteSetup setup, string name) {
+    exists(string match |
+      match = setup.getUrlPattern().regexpFind("\\(\\?P<(\\w+)>", _, _) and
+      name = match.regexpCapture("\\(\\?P<(\\w+)>", 1)
+    )
+    or
+    exists(string match |
+      match = setup.getUrlPattern().regexpFind("<(?:(?:[^>:]+):)?(\\w+)>", _, _) and
+      name = match.regexpCapture("<(?:(?:[^>:]+):)?(\\w+)>", 1)
+    )
   }
 }
