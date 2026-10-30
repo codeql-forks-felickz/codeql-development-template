@@ -169,8 +169,8 @@ private CredentialProperty lambdaCredentialProperty(LambdaExpr l) {
 }
 
 /** Holds if `e` is the value assigned to the `For` property of an input or text area tag helper. */
-private predicate tagHelperForAssignment(ExprStmt s, string helper, CredentialProperty p) {
-  exists(AssignExpr a, PropertyAccess pa, LambdaExpr l |
+private predicate tagHelperForAssignment(ExprStmt s, string helper, Expr instance) {
+  exists(AssignExpr a, PropertyAccess pa |
     a = s.getExpr() and
     pa = a.getLeftOperand() and
     pa.getTarget().hasName("For") and
@@ -178,8 +178,40 @@ private predicate tagHelperForAssignment(ExprStmt s, string helper, CredentialPr
         .getDeclaringType()
         .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.TagHelpers", helper) and
     helper = ["InputTagHelper", "TextAreaTagHelper"] and
+    sameTagHelperInstance(instance, pa.getQualifier())
+  )
+}
+
+/** Holds if `s` assigns a credential property to the `For` property of a tag helper. */
+private predicate tagHelperCredentialForAssignment(ExprStmt s, string helper, CredentialProperty p) {
+  exists(AssignExpr a, PropertyAccess pa, LambdaExpr l |
+    a = s.getExpr() and
+    pa = a.getLeftOperand() and
+    tagHelperForAssignment(s, helper, pa.getQualifier()) and
     l = a.getRightOperand().(Call).getAnArgument() and
     p = lambdaCredentialProperty(l)
+  )
+}
+
+/** Holds if `e1` and `e2` refer to the same tag helper field or local. */
+private predicate sameTagHelperInstance(Expr e1, Expr e2) {
+  e1 = e2
+  or
+  exists(AssignableRead r1, AssignableRead r2 |
+    e1 = r1 and
+    e2 = r2 and
+    r1.getTarget() = r2.getTarget()
+  )
+}
+
+/** Holds if `s` allocates a new tag helper into `instance`. */
+private predicate tagHelperAllocation(ExprStmt s, string helper, Expr instance) {
+  exists(AssignExpr a, ObjectCreation oc |
+    a = s.getExpr() and
+    oc = a.getRightOperand() and
+    oc.getObjectType().hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.TagHelpers", helper) and
+    helper = ["InputTagHelper", "TextAreaTagHelper"] and
+    sameTagHelperInstance(instance, a.getLeftOperand())
   )
 }
 
@@ -197,30 +229,51 @@ private predicate isPasswordTypeValue(Expr e) {
   )
 }
 
-/** Holds if `s` sets the `InputTypeName` of an input tag helper to `password`. */
-private predicate setsPasswordInputType(ExprStmt s) {
+/** Holds if `typeStmt` assigns an input type to the specified helper instance. */
+private predicate tagHelperInputTypeAssignment(ExprStmt typeStmt, Expr instance, Expr value) {
   exists(AssignExpr a, PropertyAccess pa |
-    a = s.getExpr() and
+    a = typeStmt.getExpr() and
     pa = a.getLeftOperand() and
     pa.getTarget().hasName("InputTypeName") and
-    isPasswordTypeValue(a.getRightOperand())
+    pa.getTarget()
+        .getDeclaringType()
+        .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.TagHelpers", "InputTagHelper") and
+    sameTagHelperInstance(instance, pa.getQualifier()) and
+    value = a.getRightOperand()
   )
 }
 
-/**
- * Holds if the tag helper element whose `For` assignment is `s` is rendered as a password input,
- * which never echoes the model value.
- */
-private predicate isPasswordInputElement(ExprStmt s) {
-  exists(BlockStmt b, int i, int j, ExprStmt typeStmt |
+/** Holds if `s` has an explicit input type, and identifies the value assigned. */
+private predicate inputTypeAssignmentForElement(ExprStmt s, Expr value) {
+  exists(BlockStmt b, int i, int j, ExprStmt typeStmt, string helper, Expr instance |
+    tagHelperForAssignment(s, helper, instance) and
+    helper = "InputTagHelper" and
     b.getStmt(i) = s and
     b.getStmt(j) = typeStmt and
     j > i and
-    setsPasswordInputType(typeStmt) and
-    not exists(int k, ExprStmt other | k in [i + 1 .. j - 1] |
-      b.getStmt(k) = other and tagHelperForAssignment(other, _, _)
+    tagHelperInputTypeAssignment(typeStmt, instance, value) and
+    not exists(int k, ExprStmt other |
+      k in [i + 1 .. j - 1] and
+      b.getStmt(k) = other and
+      (
+        tagHelperForAssignment(other, helper, instance) or
+        tagHelperAllocation(other, helper, instance)
+      )
     )
   )
+}
+
+/** Holds if `s` explicitly sets the input type to `password`. */
+private predicate isPasswordInputElement(ExprStmt s) {
+  exists(Expr type |
+    inputTypeAssignmentForElement(s, type) and
+    isPasswordTypeValue(type)
+  )
+}
+
+/** Holds if the tag helper element whose `For` assignment is `s` has an explicit input type. */
+private predicate hasExplicitInputType(ExprStmt s) {
+  exists(Expr type | inputTypeAssignmentForElement(s, type))
 }
 
 /** Holds if `sink` renders the credential property `p` into a Razor view. */
@@ -258,11 +311,15 @@ private predicate razorCredentialRender(Expr sink, CredentialProperty p) {
   or
   // `<input asp-for="Password" />`
   exists(ExprStmt s, string helper |
-    tagHelperForAssignment(s, helper, p) and
+    tagHelperCredentialForAssignment(s, helper, p) and
     sink = s.getExpr() and
     not (
       helper = "InputTagHelper" and
-      (isDataTypePassword(p) or isPasswordInputElement(s))
+      (
+        isPasswordInputElement(s)
+        or
+        not hasExplicitInputType(s) and isDataTypePassword(p)
+      )
     )
   )
 }
@@ -692,12 +749,29 @@ private class CredentialToString extends Method {
     this.hasName("ToString") and
     this.getNumberOfParameters() = 0 and
     this.fromSource() and
-    exists(PropertyAccess pa |
+    exists(PropertyAccess pa, ReturnStmt ret |
       pa.getEnclosingCallable() = this and
       pa.getTarget() instanceof CredentialProperty and
-      (not exists(pa.getQualifier()) or pa.getQualifier() instanceof ThisAccess)
+      (not exists(pa.getQualifier()) or pa.getQualifier() instanceof ThisAccess) and
+      ret.getEnclosingCallable() = this and
+      localTaintWithoutProtectors(DataFlow::exprNode(pa), DataFlow::exprNode(ret.getExpr()))
     )
   }
+}
+
+/** Holds if local taint flows from `source` to `sink` without passing through a protecting call. */
+private predicate localTaintStepWithoutProtectors(DataFlow::Node source, DataFlow::Node sink) {
+  TaintTracking::localTaintStep(source, sink) and
+  not exists(Call c |
+    c = sink.asExpr() and
+    isProtectingCallable(c.getTarget())
+  )
+}
+
+/** Holds if local taint flows from `source` to `sink` without passing through a protecting call. */
+private predicate localTaintWithoutProtectors(DataFlow::Node source, DataFlow::Node sink) {
+  source = sink or
+  localTaintStepWithoutProtectors*(source, sink)
 }
 
 /** Holds if `t` has a `ToString()` method that includes a credential. */
@@ -803,7 +877,10 @@ private module HardcodedSigningKeyConfig implements DataFlow::ConfigSig {
     exists(ArrayCreation ac | ac = source.asExpr() |
       ac.getArrayType().getElementType() instanceof ByteType and
       ac.hasInitializer() and
-      ac.getInitializer().getNumberOfElements() > 0
+      ac.getInitializer().getNumberOfElements() > 0 and
+      not exists(Expr element | element = ac.getInitializer().getAnElement() |
+        not exists(element.getValue())
+      )
     )
   }
 
@@ -916,17 +993,7 @@ private predicate cleartextNetworkSend(Expr e) {
 }
 
 private module CleartextNetworkTransmissionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof CredentialExpr
-    or
-    // e.g. `securePwd.ToString()`
-    exists(MethodCall mc |
-      mc = source.asExpr() and
-      mc.getType() instanceof StringType and
-      not isProtectingCallable(mc.getTarget()) and
-      isCredentialName(mc.getQualifier().(AssignableRead).getTarget().getName())
-    )
-  }
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
 
   predicate isSink(DataFlow::Node sink) { cleartextNetworkSend(sink.asExpr()) }
 

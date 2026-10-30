@@ -30,6 +30,21 @@ namespace Cwe532
         }
     }
 
+    public class RedactedUser
+    {
+        public string Password { get; set; }
+
+        private static string Mask(string value)
+        {
+            return "******";
+        }
+
+        public override string ToString()
+        {
+            return Mask(Password);
+        }
+    }
+
     public class UsersService
     {
         private readonly ILogger<UsersService> _logger;
@@ -51,6 +66,8 @@ namespace Cwe532
             _logger.LogInformation($"Creating the user {user.SafeToString()}");
             // Safe: ToString() without credentials.
             _logger.LogInformation($"Creating the article {article}");
+            // Safe: the password is masked inside ToString().
+            _logger.LogInformation($"Creating the user {new RedactedUser()}");
             // Safe: not a log sink.
             System.Console.Out.Flush();
             string s = user.ToString();

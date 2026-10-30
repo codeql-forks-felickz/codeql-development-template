@@ -26,6 +26,12 @@ namespace Cwe798
             return new SymmetricSecurityKey(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 }); // $ Alert
         }
 
+        // Safe: runtime values are not hard-coded key material.
+        public SecurityKey CreateSigningKeyFromRuntime(byte first, byte second)
+        {
+            return new SymmetricSecurityKey(new byte[] { first, second });
+        }
+
         // Safe: key supplied by configuration / secret store at runtime.
         public SecurityKey CreateSigningKeyFromConfig(string configuredKey)
         {

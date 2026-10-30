@@ -14,7 +14,7 @@ namespace Cwe319
             using (SecureString securePwd = new SecureString())
             {
                 securePwd.AppendChar('x');
-                data = securePwd.ToString();
+                data = new System.Net.NetworkCredential(string.Empty, securePwd).Password;
             }
             return data;
         }
@@ -27,6 +27,18 @@ namespace Cwe319
                 using (StreamWriter writer = new StreamWriter(tcpClient.GetStream()))
                 {
                     writer.WriteLine(data); // $ Alert
+                }
+            }
+        }
+
+        public void GoodSecureStringToString(SecureString securePwd)
+        {
+            string data = securePwd.ToString();
+            using (TcpClient tcpClient = new TcpClient("remote_host", 1337))
+            {
+                using (StreamWriter writer = new StreamWriter(tcpClient.GetStream()))
+                {
+                    writer.WriteLine(data);
                 }
             }
         }

@@ -86,4 +86,44 @@ namespace AspNetCoreGeneratedDocument
             __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvider.CreateModelExpression(ViewData, __model => __model.Password);
         }
     }
+
+    internal sealed class Views_Users_MixedInputType : RazorPage<Cwe200.Models.User>
+    {
+        private InputTagHelper __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper;
+
+        public IModelExpressionProvider ModelExpressionProvider { get; private set; }
+
+        public override async System.Threading.Tasks.Task ExecuteAsync()
+        {
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = new InputTagHelper();
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvider.CreateModelExpression(ViewData, __model => __model.Password); // $ Alert
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = new InputTagHelper();
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvider.CreateModelExpression(ViewData, __model => __model.Username);
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.InputTypeName = "password";
+        }
+    }
+
+    internal sealed class Views_Account_ExplicitInputTypes : RazorPage<Cwe200.Models.LoginModel>
+    {
+        private InputTagHelper __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper;
+
+        public IModelExpressionProvider ModelExpressionProvider { get; private set; }
+
+        public override async System.Threading.Tasks.Task ExecuteAsync()
+        {
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = new InputTagHelper();
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvider.CreateModelExpression(ViewData, __model => __model.Password);
+
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = new InputTagHelper();
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvider.CreateModelExpression(ViewData, __model => __model.Password); // $ Alert
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.InputTypeName = "text";
+
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = new InputTagHelper();
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvider.CreateModelExpression(ViewData, __model => __model.Password); // $ Alert
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.InputTypeName = "hidden";
+
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = new InputTagHelper();
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvider.CreateModelExpression(ViewData, __model => __model.Password);
+        }
+    }
 }
