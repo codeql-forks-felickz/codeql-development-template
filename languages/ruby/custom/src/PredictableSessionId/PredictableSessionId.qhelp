@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Session identifiers must be unguessable. If a session identifier is built from a sequential
+counter, possibly combined with a constant prefix, an attacker who observes a single valid
+identifier (for example their own) can predict the identifiers issued to other users. The
+attacker can then hijack those sessions or fix a victim's session to a known value.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Generate session identifiers with a cryptographically secure random number generator such as
+<code>SecureRandom</code>, or rely on the session management provided by your web framework.
+Do not derive session identifiers from counters, timestamps, or other predictable values.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following Sinatra route sets a session cookie whose value is a constant prefix followed by
+a process-wide request counter. Every new identifier is the previous identifier plus one.
+</p>
+<sample language="ruby">
+get "/token" do
+  response.set_cookie("SessionID", "34A7EF-115C24-8F21CD-#{increment_count}")
+end
+</sample>
+<p>
+The fix is to generate the identifier from a secure random source:
+</p>
+<sample language="ruby">
+get "/token" do
+  response.set_cookie("SessionID", SecureRandom.hex(32))
+end
+</sample>
+</example>
+
+<references>
+<li>MITRE: <a href="https://cwe.mitre.org/data/definitions/384.html">CWE-384: Session Fixation</a>.</li>
+<li>MITRE: <a href="https://cwe.mitre.org/data/definitions/330.html">CWE-330: Use of Insufficiently Random Values</a>.</li>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html">Session Management Cheat Sheet</a>.</li>
+</references>
+</qhelp>

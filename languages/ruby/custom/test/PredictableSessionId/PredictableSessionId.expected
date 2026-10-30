@@ -1,0 +1,43 @@
+#select
+| sessions_controller.rb:9:31:9:42 | "sess_#{...}" | sessions_controller.rb:31:15:31:16 | ... + ... | sessions_controller.rb:9:31:9:42 | "sess_#{...}" | This session identifier is derived from a $@, so other valid identifiers can be predicted. | sessions_controller.rb:31:15:31:16 | ... + ... | sequential counter |
+| sessions_controller.rb:13:35:13:44 | "tok-#{...}" | sessions_controller.rb:11:9:11:21 | ... + ... | sessions_controller.rb:13:35:13:44 | "tok-#{...}" | This session identifier is derived from a $@, so other valid identifiers can be predicted. | sessions_controller.rb:11:9:11:21 | ... + ... | sequential counter |
+| sessions_controller.rb:41:37:41:56 | "S-#{...}" | sessions_controller.rb:41:42:41:54 | @@login_count | sessions_controller.rb:41:37:41:56 | "S-#{...}" | This session identifier is derived from a $@, so other valid identifiers can be predicted. | sessions_controller.rb:41:42:41:54 | @@login_count | sequential counter |
+| sinatra_server.rb:10:38:10:78 | "34A7EF-115C24-8F21CD-#{...}" | sinatra_server.rb:43:29:43:30 | ... + ... | sinatra_server.rb:10:38:10:78 | "34A7EF-115C24-8F21CD-#{...}" | This session identifier is derived from a $@, so other valid identifiers can be predicted. | sinatra_server.rb:43:29:43:30 | ... + ... | sequential counter |
+| sinatra_server.rb:15:45:15:71 | "34A7EF-#{...}" | sinatra_server.rb:43:29:43:30 | ... + ... | sinatra_server.rb:15:45:15:71 | "34A7EF-#{...}" | This session identifier is derived from a $@, so other valid identifiers can be predicted. | sinatra_server.rb:43:29:43:30 | ... + ... | sequential counter |
+| sinatra_server.rb:21:32:21:62 | ... + ... | sinatra_server.rb:21:44:21:57 | $request_count | sinatra_server.rb:21:32:21:62 | ... + ... | This session identifier is derived from a $@, so other valid identifiers can be predicted. | sinatra_server.rb:21:44:21:57 | $request_count | sequential counter |
+edges
+| sessions_controller.rb:7:5:7:6 | id | sessions_controller.rb:9:31:9:42 | "sess_#{...}" | provenance | AdditionalTaintStep |
+| sessions_controller.rb:7:10:7:28 | call to next_session_number | sessions_controller.rb:7:5:7:6 | id | provenance |  |
+| sessions_controller.rb:11:5:11:5 | n | sessions_controller.rb:13:35:13:44 | "tok-#{...}" | provenance | AdditionalTaintStep |
+| sessions_controller.rb:11:9:11:21 | ... + ... | sessions_controller.rb:11:5:11:5 | n | provenance |  |
+| sessions_controller.rb:31:15:31:16 | ... + ... | sessions_controller.rb:7:10:7:28 | call to next_session_number | provenance |  |
+| sessions_controller.rb:41:42:41:54 | @@login_count | sessions_controller.rb:41:37:41:56 | "S-#{...}" | provenance | AdditionalTaintStep |
+| sinatra_server.rb:10:62:10:76 | call to increment_count | sinatra_server.rb:10:38:10:78 | "34A7EF-115C24-8F21CD-#{...}" | provenance | AdditionalTaintStep |
+| sinatra_server.rb:15:55:15:69 | call to increment_count | sinatra_server.rb:15:45:15:71 | "34A7EF-#{...}" | provenance | AdditionalTaintStep |
+| sinatra_server.rb:21:44:21:57 | $request_count | sinatra_server.rb:21:44:21:62 | call to to_s | provenance |  |
+| sinatra_server.rb:21:44:21:62 | call to to_s | sinatra_server.rb:21:32:21:62 | ... + ... | provenance |  |
+| sinatra_server.rb:31:76:31:90 | call to increment_count | sinatra_server.rb:31:38:31:92 | "#{...}-#{...}" | provenance | AdditionalTaintStep |
+| sinatra_server.rb:43:29:43:30 | ... + ... | sinatra_server.rb:10:62:10:76 | call to increment_count | provenance | Config |
+| sinatra_server.rb:43:29:43:30 | ... + ... | sinatra_server.rb:15:55:15:69 | call to increment_count | provenance | Config |
+| sinatra_server.rb:43:29:43:30 | ... + ... | sinatra_server.rb:31:76:31:90 | call to increment_count | provenance | Config |
+nodes
+| sessions_controller.rb:7:5:7:6 | id | semmle.label | id |
+| sessions_controller.rb:7:10:7:28 | call to next_session_number | semmle.label | call to next_session_number |
+| sessions_controller.rb:9:31:9:42 | "sess_#{...}" | semmle.label | "sess_#{...}" |
+| sessions_controller.rb:11:5:11:5 | n | semmle.label | n |
+| sessions_controller.rb:11:9:11:21 | ... + ... | semmle.label | ... + ... |
+| sessions_controller.rb:13:35:13:44 | "tok-#{...}" | semmle.label | "tok-#{...}" |
+| sessions_controller.rb:31:15:31:16 | ... + ... | semmle.label | ... + ... |
+| sessions_controller.rb:41:37:41:56 | "S-#{...}" | semmle.label | "S-#{...}" |
+| sessions_controller.rb:41:42:41:54 | @@login_count | semmle.label | @@login_count |
+| sinatra_server.rb:10:38:10:78 | "34A7EF-115C24-8F21CD-#{...}" | semmle.label | "34A7EF-115C24-8F21CD-#{...}" |
+| sinatra_server.rb:10:62:10:76 | call to increment_count | semmle.label | call to increment_count |
+| sinatra_server.rb:15:45:15:71 | "34A7EF-#{...}" | semmle.label | "34A7EF-#{...}" |
+| sinatra_server.rb:15:55:15:69 | call to increment_count | semmle.label | call to increment_count |
+| sinatra_server.rb:21:32:21:62 | ... + ... | semmle.label | ... + ... |
+| sinatra_server.rb:21:44:21:57 | $request_count | semmle.label | $request_count |
+| sinatra_server.rb:21:44:21:62 | call to to_s | semmle.label | call to to_s |
+| sinatra_server.rb:31:38:31:92 | "#{...}-#{...}" | semmle.label | "#{...}-#{...}" |
+| sinatra_server.rb:31:76:31:90 | call to increment_count | semmle.label | call to increment_count |
+| sinatra_server.rb:43:29:43:30 | ... + ... | semmle.label | ... + ... |
+subpaths
