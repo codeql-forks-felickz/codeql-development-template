@@ -7,7 +7,7 @@ bp = Blueprint("routes", __name__)
 
 
 def add_card_into_db(id, holder, number, expiry, cvv):
-    return {"id": id}
+    pass
 
 
 # Reduced from a payment service: the whole parsed request body is logged,
@@ -21,14 +21,16 @@ def add_card(id):
     expiry_date = data["expiryDate"]
     cvv = data["cvv"]
     logger.info("Credit card number is valid")
-    return add_card_into_db(id, card_holder_name, card_number, expiry_date, cvv)
+    add_card_into_db(id, card_holder_name, card_number, expiry_date, cvv)
+    return "created", 201
 
 
 @bp.route("/payment-raw", methods=["POST"])
 def add_card_raw():
     body = json.loads(request.data)  # $ Source
     print(body)  # $ Alert
-    return add_card_into_db(0, body["name"], body.get("card_number"), None, None)
+    add_card_into_db(0, body["name"], body.get("card_number"), None, None)
+    return "created", 201
 
 
 # SAFE: only a non-sensitive field of the body is logged.
@@ -36,7 +38,8 @@ def add_card_raw():
 def add_card_safe(id):
     data = request.get_json()
     logger.debug("Received request for holder %s", data["cardHolderName"])
-    return add_card_into_db(id, None, data["cardNumber"], None, data["cvv"])
+    add_card_into_db(id, None, data["cardNumber"], None, data["cvv"])
+    return "created", 201
 
 
 # SAFE: the body carries no sensitive keys.
@@ -44,4 +47,5 @@ def add_card_safe(id):
 def update_profile():
     data = request.get_json()
     logger.debug("Received request data: %s", data)
-    return {"name": data["displayName"], "theme": data.get("theme")}
+    add_card_into_db(0, data["displayName"], None, None, data.get("theme"))
+    return "updated", 200
