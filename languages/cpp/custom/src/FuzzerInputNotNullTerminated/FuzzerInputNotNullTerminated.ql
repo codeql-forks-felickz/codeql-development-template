@@ -59,7 +59,7 @@ predicate isNullTerminatedStringArgument(Call call, Expr e) {
       fl = fc.getFormat() and
       e = fc.getConversionArgument(n) and
       fl.getConversionChar(n) = "s" and
-      // `%.*s` and `%.10s` stop reading at the given precision.
+      // `%.*s` stops at a nonnegative dynamic precision; `%.10s` is bounded.
       (
         not fl.hasPrecision(n) or
         hasNegativeDynamicPrecision(fl, n)
