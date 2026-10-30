@@ -220,6 +220,26 @@ predicate referencesCurrentUser(Callable c) {
   )
 }
 
+/** Gets the outermost callable that encloses `c`, including through nested anonymous functions. */
+private Callable getOutermostEnclosingCallable(Callable c) {
+  result = c and not c instanceof AnonymousFunctionExpr
+  or
+  result = getOutermostEnclosingCallable(c.getEnclosingCallable()) and
+  c instanceof AnonymousFunctionExpr
+}
+
+/** Holds if another lambda in the same Queryable call chain refers to the current user. */
+private predicate referencesCurrentUserInQueryChain(Expr sink) {
+  exists(LambdaExpr sinkLambda, MethodCall query, LambdaExpr scopedLambda |
+    sinkLambda = sink.getEnclosingCallable() and
+    query.getTarget().getDeclaringType().hasFullyQualifiedName("System.Linq", "Queryable") and
+    sinkLambda.getParent*() = query and
+    scopedLambda.getParent*() = query and
+    scopedLambda != sinkLambda and
+    referencesCurrentUser(scopedLambda)
+  )
+}
+
 /**
  * Holds if `c`, or its declaring type, is restricted to specific roles or policies,
  * for example `[Authorize(Roles = "Administrator")]`, or is an administrative handler.
@@ -255,9 +275,10 @@ import IdorAccessControlFlow::PathGraph
 from IdorAccessControlFlow::PathNode source, IdorAccessControlFlow::PathNode sink, Callable handler
 where
   IdorAccessControlFlow::flowPath(source, sink) and
-  handler = source.getNode().getEnclosingCallable() and
+  handler = getOutermostEnclosingCallable(source.getNode().getEnclosingCallable()) and
   not referencesCurrentUser(handler) and
-  not referencesCurrentUser(sink.getNode().getEnclosingCallable()) and
+  not referencesCurrentUser(getOutermostEnclosingCallable(sink.getNode().getEnclosingCallable())) and
+  not referencesCurrentUserInQueryChain(sink.getNode().asExpr()) and
   not isRoleRestricted(handler)
 select sink.getNode(), source, sink,
   "This record lookup depends on a $@ without checking that the current user may access the record.",

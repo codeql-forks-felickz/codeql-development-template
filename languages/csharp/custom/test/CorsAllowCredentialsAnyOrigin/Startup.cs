@@ -40,6 +40,25 @@ namespace CorsApp
             return builder.Build();
         }
 
+        // The calls after the reassignment share the new builder definition.
+        public CorsPolicy ReassignedBuilder()
+        {
+            CorsPolicyBuilder builder = new CorsPolicyBuilder("https://old.example.com");
+            builder = new CorsPolicyBuilder();
+            builder.AllowAnyOrigin();
+            builder.AllowCredentials(); // $ Alert
+            return builder.Build();
+        }
+
+        // The builder is reassigned between configuration calls.
+        public CorsPolicy DifferentBuilderAfterReassignment()
+        {
+            var builder = new CorsPolicyBuilder().AllowAnyOrigin();
+            builder = new CorsPolicyBuilder("https://app.example.com");
+            builder.AllowCredentials();
+            return builder.Build();
+        }
+
         // Safe: credentials are only allowed for an explicit list of trusted origins.
         public void TrustedOrigins(IServiceCollection services)
         {

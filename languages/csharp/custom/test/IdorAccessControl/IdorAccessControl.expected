@@ -70,6 +70,12 @@ edges
 | UsersController.cs:92:63:92:77 | (...) => ... : (...) => ... [captured id] : Int32 | UsersController.cs:92:76:92:77 | access to parameter id | provenance | MaD:1831 |
 | UsersController.cs:101:41:101:42 | id : Int32 | UsersController.cs:103:56:103:70 | (...) => ... : (...) => ... [captured id] : Int32 | provenance |  |
 | UsersController.cs:103:56:103:70 | (...) => ... : (...) => ... [captured id] : Int32 | UsersController.cs:103:69:103:70 | access to parameter id | provenance | MaD:1831 |
+| UsersController.cs:119:43:119:44 | id : Int32 | UsersController.cs:123:34:123:48 | (...) => ... : (...) => ... [captured id] : Int32 | provenance |  |
+| UsersController.cs:123:34:123:48 | (...) => ... : (...) => ... [captured id] : Int32 | UsersController.cs:123:47:123:48 | access to parameter id | provenance | MaD:1831 |
+| UsersController.cs:130:49:130:50 | id : Int32 | UsersController.cs:132:50:132:51 | access to parameter id : Int32 | provenance |  |
+| UsersController.cs:132:50:132:51 | access to parameter id : Int32 | UsersController.cs:141:29:141:30 | id : Int32 | provenance |  |
+| UsersController.cs:141:29:141:30 | id : Int32 | UsersController.cs:146:34:146:48 | (...) => ... : (...) => ... [captured id] : Int32 | provenance |  |
+| UsersController.cs:146:34:146:48 | (...) => ... : (...) => ... [captured id] : Int32 | UsersController.cs:146:47:146:48 | access to parameter id | provenance | MaD:1831 |
 nodes
 | BankPages.cs:19:20:19:27 | access to local variable thisUser : String | semmle.label | access to local variable thisUser : String |
 | BankPages.cs:19:31:19:57 | access to indexer : HttpCookie | semmle.label | access to indexer : HttpCookie |
@@ -143,4 +149,12 @@ nodes
 | UsersController.cs:101:41:101:42 | id : Int32 | semmle.label | id : Int32 |
 | UsersController.cs:103:56:103:70 | (...) => ... : (...) => ... [captured id] : Int32 | semmle.label | (...) => ... : (...) => ... [captured id] : Int32 |
 | UsersController.cs:103:69:103:70 | access to parameter id | semmle.label | access to parameter id |
+| UsersController.cs:119:43:119:44 | id : Int32 | semmle.label | id : Int32 |
+| UsersController.cs:123:34:123:48 | (...) => ... : (...) => ... [captured id] : Int32 | semmle.label | (...) => ... : (...) => ... [captured id] : Int32 |
+| UsersController.cs:123:47:123:48 | access to parameter id | semmle.label | access to parameter id |
+| UsersController.cs:130:49:130:50 | id : Int32 | semmle.label | id : Int32 |
+| UsersController.cs:132:50:132:51 | access to parameter id : Int32 | semmle.label | access to parameter id : Int32 |
+| UsersController.cs:141:29:141:30 | id : Int32 | semmle.label | id : Int32 |
+| UsersController.cs:146:34:146:48 | (...) => ... : (...) => ... [captured id] : Int32 | semmle.label | (...) => ... : (...) => ... [captured id] : Int32 |
+| UsersController.cs:146:47:146:48 | access to parameter id | semmle.label | access to parameter id |
 subpaths

@@ -37,14 +37,11 @@ predicate sameBuilder(CorsPolicyBuilderCall c1, CorsPolicyBuilderCall c2) {
   exists(Expr r1, Expr r2 | r1 = getChainRoot(c1) and r2 = getChainRoot(c2) |
     r1 = r2
     or
-    exists(LocalScopeVariable v |
-      r1 = v.getAnAccess() and
-      r2 = v.getAnAccess() and
-      c1.getEnclosingCallable() = c2.getEnclosingCallable() and
-      not exists(Assignment reassignment |
-        reassignment.getTargetVariable() = v and
-        not reassignment instanceof LocalVariableDeclAndInitExpr
-      )
+    c1.getEnclosingCallable() = c2.getEnclosingCallable() and
+    (
+      DataFlow::localExprFlow(r1, r2)
+      or
+      DataFlow::localExprFlow(r2, r1)
     )
     or
     exists(LocalVariable v, LocalVariableDeclAndInitExpr initialization |

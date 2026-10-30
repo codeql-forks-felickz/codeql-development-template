@@ -112,5 +112,38 @@ namespace Api
         {
             return Ok(_context.Users.Where(m => m.email == email).ToList());
         }
+
+        // Safe: the current user is checked in a sibling lambda in the query chain.
+        [Authorize]
+        [HttpGet("{id}")]
+        public IActionResult GetOwned(int id)
+        {
+            var user = _context.Users
+                .Where(m => m.email == User.Identity.Name)
+                .SingleOrDefault(m => m.ID == id);
+            return Ok(user);
+        }
+
+        // Safe: the service scopes the lookup to the current user.
+        [Authorize]
+        [HttpGet("{id}")]
+        public IActionResult GetFromService(int id)
+        {
+            return Ok(new OwnedUserService().Get(id));
+        }
+    }
+
+    public class OwnedUserService
+    {
+        private readonly DataContext _context;
+        public System.Security.Principal.IPrincipal User { get; set; }
+
+        public User Get(int id)
+        {
+            string userName = User.Identity.Name;
+            return _context.Users
+                .Where(m => m.email == userName)
+                .SingleOrDefault(m => m.ID == id);
+        }
     }
 }
