@@ -18,6 +18,7 @@ import cpp
 import semmle.code.cpp.dataflow.new.DataFlow
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.commons.Printf
+import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 
 /**
  * A pointer to a fuzzer-provided test case buffer, which carries an explicit
@@ -59,7 +60,25 @@ predicate isNullTerminatedStringArgument(Call call, Expr e) {
       e = fc.getConversionArgument(n) and
       fl.getConversionChar(n) = "s" and
       // `%.*s` and `%.10s` stop reading at the given precision.
-      not fl.hasPrecision(n)
+      (
+        not fl.hasPrecision(n) or
+        hasNegativeDynamicPrecision(fl, n)
+      )
+    )
+  )
+}
+
+/** Holds if a dynamic precision may be negative and is not a cast from an unsigned size. */
+predicate hasNegativeDynamicPrecision(FormatLiteral fl, int n) {
+  fl.hasImplicitPrecision(n) and
+  exists(Expr precision |
+    precision = fl.getUse().getPrecisionArgument(n) and
+    (
+      precision.getValue().toInt() < 0
+      or
+      precision.getType().getUnderlyingType().(IntegralType).isSigned() and
+      lowerBound(precision) < 0 and
+      not precision.getUnconverted().getType().getUnderlyingType().(IntegralType).isUnsigned()
     )
   )
 }

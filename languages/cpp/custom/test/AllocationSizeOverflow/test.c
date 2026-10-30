@@ -67,6 +67,13 @@ void bounded_good(int s) {
   free(intPointer);
 }
 
+/* Safe on targets where size_t is wider than unsigned int. */
+void unsigned_factor_fits_size_t(int s) {
+  unsigned int data = (unsigned int)readSocket(s);
+  int *intPointer = (int *)malloc(data * sizeof(int));
+  free(intPointer);
+}
+
 /* Safe: the size does not involve a multiplication. */
 void no_multiplication(int s) {
   int data = readSocket(s);

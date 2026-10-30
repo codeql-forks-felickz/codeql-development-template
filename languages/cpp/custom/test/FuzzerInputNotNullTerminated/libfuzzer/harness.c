@@ -12,5 +12,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   strlen(copy);                 // GOOD: null-terminated copy
   printf((const char *)data);   // BAD
   parse((const char *)data + 1); // flows to atoi in parse
+  printf("%.*s", (int)size, (const char *)data); // GOOD: size-based precision
+  printf("%.*s", *(const signed char *)data, (const char *)data); // BAD: precision may be negative
   return (int)strlen((const char *)data); // BAD
 }

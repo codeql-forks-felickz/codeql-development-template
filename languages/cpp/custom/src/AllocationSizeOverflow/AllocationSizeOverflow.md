@@ -6,6 +6,8 @@ An untrusted integer is multiplied into the size of a heap allocation, for examp
 
 The standard `cpp/uncontrolled-allocation-size` query treats any comparison of the value as a bounds check, including a later loop condition such as `i < (size_t)data`, so it does not report these cases.
 
+The overflow limit is derived from the target width and signedness of the multiplication's converted result type. This assumes the result reaches the allocator without a narrower conversion; narrower allocator parameters or wrappers are not modeled.
+
 ## Recommendation
 
 Check that the untrusted value is within a safe range in the code that guards the allocation, or use an allocation function that checks the multiplication for overflow (such as `calloc` or `reallocarray`).

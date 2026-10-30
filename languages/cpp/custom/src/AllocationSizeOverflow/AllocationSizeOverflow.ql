@@ -36,17 +36,26 @@ predicate hasUpperBoundCheck(Variable v, BasicBlock bb) {
 /**
  * Holds if `operand` is an operand of the multiplication `mul`, which is part of
  * the size of `alloc`, and `operand` is not bounded so that `mul` cannot overflow
- * a 32-bit size or be negative.
+ * its converted result type or be negative.
  */
 predicate isUnboundedFactor(AllocationExpr alloc, MulExpr mul, VariableAccess operand) {
   mul = alloc.getAChild+() and
   operand = mul.getAnOperand().getUnconverted() and
   not exists(operand.getValue()) and
   not hasUpperBoundCheck(operand.getTarget(), alloc.getBasicBlock()) and
-  exists(Expr other | other = mul.getAnOperand() and other != operand.getFullyConverted() |
-    upperBound(operand) * upperBound(other) > 2147483647.0
-    or
-    lowerBound(operand) < 0
+  (
+    exists(Expr other, IntegralType resultType |
+      other = mul.getAnOperand() and other != operand.getFullyConverted() and
+      resultType = mul.getType() and
+      (
+        resultType.isSigned() and
+        upperBound(operand) * upperBound(other) > 2.pow(resultType.getSize() * 8 - 1) - 1
+        or
+        resultType.isUnsigned() and
+        upperBound(operand) * upperBound(other) > 2.pow(resultType.getSize() * 8) - 1
+      )
+    )
+    or lowerBound(operand) < 0
   )
 }
 
