@@ -24,6 +24,11 @@ predicate isNgAppAttribute(HTML::Attribute attr) {
   attr.getName().regexpMatch("(?i)((data|x)[-:_])?ng[-:_]app")
 }
 
+/** Holds if `attr` marks its element as non-bindable to AngularJS. */
+predicate isNgNonBindableAttribute(HTML::Attribute attr) {
+  attr.getName().regexpMatch("(?i)((data|x)[-:_])?ng[-:_]non[-:_]bindable")
+}
+
 /**
  * Holds if `file` is an HTML page containing an AngularJS application root
  * whose content is not wholly marked `ng-non-bindable`.
@@ -32,7 +37,9 @@ predicate isAngularJSPage(HTML::HtmlFile file) {
   exists(HTML::Element root |
     isNgAppAttribute(root.getAnAttribute()) and
     root.getFile() = file and
-    not exists(root.getParent*().getAttributeByName("ng-non-bindable"))
+    not exists(HTML::Attribute attr |
+      attr = root.getParent*().getAnAttribute() and isNgNonBindableAttribute(attr)
+    )
   )
 }
 
@@ -89,6 +96,21 @@ predicate isIdentityReplacement(StringReplaceCall replace) {
   )
 }
 
+predicate isBraceRemovingPattern(StringReplaceCall replace) {
+  replace.getAReplacedString() = ["{", "}", "{{", "}}"]
+  or
+  exists(RegExpCharacterClass charClass |
+    charClass = replace.getRegExp().getRoot() and
+    not charClass.isInverted() and
+    exists(RegExpConstant brace |
+      brace = charClass.getAChild() and brace.getValue() = ["{", "}"]
+    ) and
+    forall(RegExpTerm child | child = charClass.getAChild() |
+      child instanceof RegExpConstant and child.(RegExpConstant).getValue() = ["{", "}"]
+    )
+  )
+}
+
 module AngularJSTemplateInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
@@ -99,11 +121,10 @@ module AngularJSTemplateInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     // A replacement that removes or encodes curly braces neutralizes AngularJS interpolation.
-    exists(StringReplaceCall replace, RegExpConstant c |
+    exists(StringReplaceCall replace |
       node = replace and
       replace.isGlobal() and
-      c.getRootTerm() = replace.getRegExp().getRoot() and
-      c.getValue().regexpMatch(".*[{}].*") and
+      isBraceRemovingPattern(replace) and
       not isIdentityReplacement(replace) and
       not replace.getRawReplacement().getStringValue().regexpMatch(".*[{}].*")
     )

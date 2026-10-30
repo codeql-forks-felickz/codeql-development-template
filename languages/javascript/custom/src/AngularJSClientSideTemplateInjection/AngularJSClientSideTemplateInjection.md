@@ -42,6 +42,7 @@ Strip the curly braces (or, better, bind the value through AngularJS) to fix the
 
 - Only scripts that are inline in, or loaded via a resolvable `<script src>` from, an HTML file that contains an `ng-app` (or `data-ng-app`, `x-ng-app`, `ng:app`, `ng_app`) attribute are considered.
 - The query does not check whether the DOM write happens before AngularJS compiles the page or whether the targeted element lies inside the `ng-app` element; writes performed only after bootstrap (for example in event handlers) are not compiled and are false positives.
+- Computed-property writes and reads are connected by their shared base variable. Reassignments of captured variables are flow-insensitive, so this approximation can retain stale flows after reassignment.
 - Sinks are limited to DOM text writes (jQuery `.text()`, `textContent`, `innerText` and `document.createTextNode`). HTML sinks such as `innerHTML` are covered by `js/xss`.
 
 ## References
