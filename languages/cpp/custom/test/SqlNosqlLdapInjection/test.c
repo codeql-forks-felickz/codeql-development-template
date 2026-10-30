@@ -129,6 +129,24 @@ void bad_interprocedural(LDAP *ld, int sock)
     run_search(ld, filter);
 }
 
+/* DN escaping leaves LDAP filter metacharacters unchanged. */
+static void escape_ldap_dn(LDAP *ld, const char *in)
+{
+    LDAPMessage *res;
+    char safe[128];
+    char filter[256];
+    snprintf(safe, sizeof(safe), "%s", in);
+    snprintf(filter, sizeof(filter), "(cn=%s)", safe);
+    ldap_search_ext_s(ld, "dc=example,dc=com", LDAP_SCOPE_SUBTREE, filter, 0, 0, 0, 0, 0, 0, &res); // $ Alert
+}
+
+void bad_dn_escape_in_filter(LDAP *ld)
+{
+    char *value = getenv("LDAP_DN"); // $ Source
+    if (!value) return;
+    escape_ldap_dn(ld, value);
+}
+
 /* ---------------- Safe counterparts: no alerts expected ---------------- */
 
 /* GOOD: Juliet goodG2B, the filter is built from a constant. */
@@ -189,10 +207,17 @@ void good_escaped(LDAP *ld, int sock)
 }
 
 /* GOOD: user-defined validation that rejects LDAP metacharacters before copying. */
-char *strpbrk(const char *s, const char *accept);
-static int sanitize_ldap_value(const char *in, char *out, size_t outLen)
+static int sanitize_ldap_filter_value(const char *in, char *out, size_t outLen)
 {
     if (strpbrk(in, "*()\\") != 0) return -1;
+    snprintf(out, outLen, "%s", in);
+    return 0;
+}
+
+static int sanitize_ldap_filter_value_with_lookup(LDAP *ld, const char *in, char *out, size_t outLen)
+{
+    LDAPMessage *res;
+    ldap_search_ext_s(ld, "dc=example,dc=com", LDAP_SCOPE_SUBTREE, in, 0, 0, 0, 0, 0, 0, &res); // $ Alert
     snprintf(out, outLen, "%s", in);
     return 0;
 }
@@ -206,9 +231,19 @@ void good_sanitized(LDAP *ld, int sock)
     int n = recv(sock, buf, sizeof(buf) - 1, 0);
     if (n <= 0) return;
     buf[n] = 0;
-    if (sanitize_ldap_value(buf, safe, sizeof(safe)) != 0) return;
+    if (sanitize_ldap_filter_value(buf, safe, sizeof(safe)) != 0) return;
     snprintf(filter, sizeof(filter), "(cn=%s)", safe);
     ldap_search_ext_s(ld, "dc=example,dc=com", LDAP_SCOPE_SUBTREE, filter, 0, 0, 0, 0, 0, 0, &res);
+}
+
+void bad_lookup_inside_sanitizer(LDAP *ld, int sock)
+{
+    char buf[128];
+    char safe[128];
+    int n = recv(sock, buf, sizeof(buf) - 1, 0); // $ Source
+    if (n <= 0) return;
+    buf[n] = 0;
+    sanitize_ldap_filter_value_with_lookup(ld, buf, safe, sizeof(safe));
 }
 
 /* GOOD: OpenLDAP's ldap_bv2escaped_filter_value escapes the value. */

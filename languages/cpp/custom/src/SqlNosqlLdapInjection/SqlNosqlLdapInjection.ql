@@ -41,13 +41,13 @@ class LdapSearchFunction extends Function {
 }
 
 /**
- * A function that escapes LDAP filter or DN metacharacters, such as OpenLDAP's
+ * A function that escapes LDAP filter metacharacters, such as OpenLDAP's
  * `ldap_bv2escaped_filter_value` or a user-defined `escape_ldap_filter`.
  */
 class LdapEscapeFunction extends Function {
   LdapEscapeFunction() {
-    this.getName().regexpMatch("(?i).*(ldap|filter|dn).*(escape|sanitize|encode).*") or
-    this.getName().regexpMatch("(?i).*(escape|sanitize|encode).*(ldap|filter|dn).*")
+    this.getName().regexpMatch("(?i).*filter.*(escape|sanitize|encode).*") or
+    this.getName().regexpMatch("(?i).*(escape|sanitize|encode).*filter.*")
   }
 }
 
@@ -85,8 +85,13 @@ module LdapInjectionConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrierOut(DataFlow::Node node) {
-    // Taint that enters an escaping function does not leave it unescaped.
-    node.getEnclosingCallable().getUnderlyingCallable() instanceof LdapEscapeFunction
+    // Only block taint at sanitized values that leave an escaping function.
+    node.getEnclosingCallable().getUnderlyingCallable() instanceof LdapEscapeFunction and
+    (
+      node.asExpr().getParent() instanceof ReturnStmt
+      or
+      exists(Expr arg | node.asDefiningArgument() = arg)
+    )
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

@@ -35,6 +35,10 @@ if (ldap_bv2escaped_filter_value(&in, &out) == 0) {
 }
 ```
 
+## Known limitations
+
+User-defined escape functions are recognized by name only. Their names must include `filter` and one of `escape`, `sanitize` or `encode`; DN-only escapers are not treated as filter barriers.
+
 ## References
 
 - MITRE: [CWE-90: Improper Neutralization of Special Elements used in an LDAP Query ('LDAP Injection')](https://cwe.mitre.org/data/definitions/90.html)
