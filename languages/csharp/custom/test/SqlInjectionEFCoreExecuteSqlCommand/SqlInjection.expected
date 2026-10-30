@@ -27,10 +27,10 @@ edges
 | CommentsController.cs:51:60:51:62 | access to local variable sql : String | CommentsController.cs:51:60:51:62 | call to operator implicit conversion | provenance | RawSqlStringConversionSummarizedCallable |
 | CommentsController.cs:52:49:52:51 | access to local variable sql : String | CommentsController.cs:52:49:52:51 | call to operator implicit conversion | provenance | RawSqlStringConversionSummarizedCallable |
 | CommentsController.cs:53:60:53:133 | call to method Format : String | CommentsController.cs:53:60:53:133 | call to operator implicit conversion | provenance | RawSqlStringConversionSummarizedCallable |
-| CommentsController.cs:53:119:53:132 | access to property Author : String | CommentsController.cs:53:60:53:133 | call to method Format | provenance | MaD:2905 |
-| CommentsController.cs:53:119:53:132 | access to property Author : String | CommentsController.cs:53:60:53:133 | call to method Format : String | provenance | MaD:2905 |
-| CommentsController.cs:68:89:68:95 | comment : Comment | CommentsController.cs:71:17:71:77 | ... + ... | provenance | Sink:MaD:184 |
-| CommentsController.cs:68:89:68:95 | comment : Comment | CommentsController.cs:72:45:72:100 | $"..." | provenance | Sink:MaD:182 |
+| CommentsController.cs:53:119:53:132 | access to property Author : String | CommentsController.cs:53:60:53:133 | call to method Format | provenance | MaD:2913 |
+| CommentsController.cs:53:119:53:132 | access to property Author : String | CommentsController.cs:53:60:53:133 | call to method Format : String | provenance | MaD:2913 |
+| CommentsController.cs:68:89:68:95 | comment : Comment | CommentsController.cs:71:17:71:77 | ... + ... | provenance | Sink:MaD:192 |
+| CommentsController.cs:68:89:68:95 | comment : Comment | CommentsController.cs:72:45:72:100 | $"..." | provenance | Sink:MaD:190 |
 nodes
 | CommentsController.cs:36:94:36:100 | comment : Comment | semmle.label | comment : Comment |
 | CommentsController.cs:39:17:39:137 | ... + ... | semmle.label | ... + ... |
