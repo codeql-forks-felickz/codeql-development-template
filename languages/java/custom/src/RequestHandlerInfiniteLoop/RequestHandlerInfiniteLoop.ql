@@ -49,8 +49,40 @@ predicate inLoopBody(LoopStmt loop, Stmt s) {
 predicate caughtInLoop(LoopStmt loop, Stmt s, RefType ex) {
   exists(TryStmt t |
     inLoopBody(loop, t) and
-    s.getEnclosingStmt*() = t.getBlock() and
+    (
+      s.getEnclosingStmt*() = t.getBlock()
+      or
+      s.getEnclosingStmt*() = t.getAResourceDecl()
+    ) and
     ex.getAnAncestor() = t.getACatchClause().getACaughtType()
+  )
+}
+
+/** Holds if a checked exception from `call` can leave `loop`. */
+predicate checkedExceptionCallExit(LoopStmt loop, Call call, RefType ex) {
+  ex = call.getCallee().getAThrownExceptionType() and
+  not ex.getAnAncestor() instanceof TypeRuntimeException and
+  not ex.getAnAncestor() instanceof TypeError and
+  not caughtInLoop(loop, call.getEnclosingStmt(), ex) and
+  (
+    inLoopBody(loop, call.getEnclosingStmt())
+    or
+    exists(ForStmt forStmt |
+      forStmt = loop and
+      call.getEnclosingStmt() = forStmt and
+      call.(Expr).getParent*() = forStmt.getAnUpdate()
+    )
+  )
+}
+
+/** Holds if `exit` is nested in an `if` branch that cannot execute. */
+predicate unreachableConstantBranchExit(Stmt exit) {
+  exists(IfStmt branch |
+    exit.getEnclosingStmt*() = branch.getThen() and
+    branch.getCondition().(CompileTimeConstantExpr).getBooleanValue() = false
+    or
+    exit.getEnclosingStmt*() = branch.getElse() and
+    branch.getCondition().(CompileTimeConstantExpr).getBooleanValue() = true
   )
 }
 
@@ -61,24 +93,24 @@ predicate caughtInLoop(LoopStmt loop, Stmt s, RefType ex) {
  * checked exception that is not caught inside the loop.
  */
 predicate loopExit(LoopStmt loop, Stmt exit) {
-  inLoopBody(loop, exit) and
+  not unreachableConstantBranchExit(exit) and
   (
-    exit instanceof ReturnStmt
-    or
-    exit.(BreakStmt).getTarget() = loop.getEnclosingStmt*()
-    or
-    exit.(ContinueStmt).getTarget() = loop.getEnclosingStmt+()
-    or
-    exists(ThrowStmt throw | throw = exit |
-      not caughtInLoop(loop, throw, throw.getExpr().getType())
+    inLoopBody(loop, exit) and
+    (
+      exit instanceof ReturnStmt
+      or
+      exit.(BreakStmt).getTarget() = loop.getEnclosingStmt*()
+      or
+      exit.(ContinueStmt).getTarget() = loop.getEnclosingStmt+()
+      or
+      exists(ThrowStmt throw | throw = exit |
+        not caughtInLoop(loop, throw, throw.getExpr().getType())
+      )
     )
     or
-    exists(Call c, RefType ex |
-      c.getEnclosingStmt() = exit and
-      ex = c.getCallee().getAThrownExceptionType() and
-      not ex.getAnAncestor() instanceof TypeRuntimeException and
-      not ex.getAnAncestor() instanceof TypeError and
-      not caughtInLoop(loop, exit, ex)
+    exists(Call call, RefType ex |
+      call.getEnclosingStmt() = exit and
+      checkedExceptionCallExit(loop, call, ex)
     )
   )
 }
