@@ -1,0 +1,2 @@
+query: UnfilteredMassAssignment/UnfilteredMassAssignment.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
