@@ -7,6 +7,8 @@
 | org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | org/example/spring/SqlInjectionSpringControllers.java:23:9:23:33 | name : String | org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | This query depends on a $@. | org/example/spring/SqlInjectionSpringControllers.java:23:9:23:33 | name | user-provided value |
 | org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | org/example/spring/SqlInjectionSpringControllers.java:24:9:24:37 | auth_tan : String | org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | This query depends on a $@. | org/example/spring/SqlInjectionSpringControllers.java:24:9:24:37 | auth_tan | user-provided value |
 | org/example/spring/SqlInjectionSpringControllers.java:58:65:58:75 | blabbersSql | org/example/spring/SqlInjectionSpringControllers.java:48:9:48:67 | sort : String | org/example/spring/SqlInjectionSpringControllers.java:58:65:58:75 | blabbersSql | This query depends on a $@. | org/example/spring/SqlInjectionSpringControllers.java:48:9:48:67 | sort | user-provided value |
+| org/example/spring/bio/DatabaseManager.java:34:57:34:71 | insertStatement | org/example/spring/bio/BioController.java:22:7:22:34 | bioText : String | org/example/spring/bio/DatabaseManager.java:34:57:34:71 | insertStatement | This query depends on a $@. | org/example/spring/bio/BioController.java:22:7:22:34 | bioText | user-provided value |
+| org/example/spring/bio/DatabaseManager.java:44:57:44:71 | updateStatement | org/example/spring/bio/BioController.java:22:7:22:34 | bioText : String | org/example/spring/bio/DatabaseManager.java:44:57:44:71 | updateStatement | This query depends on a $@. | org/example/spring/bio/BioController.java:22:7:22:34 | bioText | user-provided value |
 edges
 | org/example/jaxrs/AccountApi.java:19:49:19:63 | bodyJSON : String | org/example/jaxrs/AccountApi.java:21:40:21:47 | bodyJSON : String | provenance |  |
 | org/example/jaxrs/AccountApi.java:21:25:21:48 | new JSONObject(...) : JSONObject | org/example/jaxrs/AccountApi.java:22:35:22:40 | myJson : JSONObject | provenance |  |
@@ -33,6 +35,26 @@ edges
 | org/example/spring/SqlInjectionSpringControllers.java:29:29:29:39 | name : String | org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | provenance | Sink:MaD:47182 |
 | org/example/spring/SqlInjectionSpringControllers.java:29:42:29:56 | auth_tan : String | org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | provenance | Sink:MaD:47182 |
 | org/example/spring/SqlInjectionSpringControllers.java:48:9:48:67 | sort : String | org/example/spring/SqlInjectionSpringControllers.java:58:65:58:75 | blabbersSql | provenance | Sink:MaD:47171 |
+| org/example/spring/bio/Bio.java:14:26:14:39 | bioText : String | org/example/spring/bio/Bio.java:16:20:16:26 | bioText : String | provenance |  |
+| org/example/spring/bio/Bio.java:16:5:16:8 | this [post update] : Bio [bioText] : String | org/example/spring/bio/Bio.java:14:10:14:12 | parameter this [Return] : Bio [bioText] : String | provenance |  |
+| org/example/spring/bio/Bio.java:16:20:16:26 | bioText : String | org/example/spring/bio/Bio.java:16:5:16:8 | this [post update] : Bio [bioText] : String | provenance |  |
+| org/example/spring/bio/Bio.java:31:17:31:26 | parameter this : Bio [bioText] : String | org/example/spring/bio/Bio.java:32:12:32:18 | this <.field> : Bio [bioText] : String | provenance |  |
+| org/example/spring/bio/Bio.java:32:12:32:18 | this <.field> : Bio [bioText] : String | org/example/spring/bio/Bio.java:32:12:32:18 | bioText : String | provenance |  |
+| org/example/spring/bio/BioController.java:22:7:22:34 | bioText : String | org/example/spring/bio/BioController.java:24:49:24:55 | bioText : String | provenance |  |
+| org/example/spring/bio/BioController.java:24:15:24:56 | new Bio(...) : Bio [bioText] : String | org/example/spring/bio/BioController.java:27:43:27:45 | bio : Bio [bioText] : String | provenance |  |
+| org/example/spring/bio/BioController.java:24:15:24:56 | new Bio(...) : Bio [bioText] : String | org/example/spring/bio/BioController.java:29:43:29:45 | bio : Bio [bioText] : String | provenance |  |
+| org/example/spring/bio/BioController.java:24:49:24:55 | bioText : String | org/example/spring/bio/Bio.java:14:26:14:39 | bioText : String | provenance |  |
+| org/example/spring/bio/BioController.java:24:49:24:55 | bioText : String | org/example/spring/bio/BioController.java:24:15:24:56 | new Bio(...) : Bio [bioText] : String | provenance |  |
+| org/example/spring/bio/BioController.java:27:43:27:45 | bio : Bio [bioText] : String | org/example/spring/bio/DatabaseManager.java:40:28:40:34 | bio : Bio [bioText] : String | provenance |  |
+| org/example/spring/bio/BioController.java:29:43:29:45 | bio : Bio [bioText] : String | org/example/spring/bio/DatabaseManager.java:26:28:26:34 | bio : Bio [bioText] : String | provenance |  |
+| org/example/spring/bio/DatabaseManager.java:26:28:26:34 | bio : Bio [bioText] : String | org/example/spring/bio/DatabaseManager.java:32:17:32:19 | bio : Bio [bioText] : String | provenance |  |
+| org/example/spring/bio/DatabaseManager.java:32:17:32:19 | bio : Bio [bioText] : String | org/example/spring/bio/Bio.java:31:17:31:26 | parameter this : Bio [bioText] : String | provenance |  |
+| org/example/spring/bio/DatabaseManager.java:32:17:32:19 | bio : Bio [bioText] : String | org/example/spring/bio/DatabaseManager.java:32:17:32:32 | getBioText(...) : String | provenance |  |
+| org/example/spring/bio/DatabaseManager.java:32:17:32:32 | getBioText(...) : String | org/example/spring/bio/DatabaseManager.java:34:57:34:71 | insertStatement | provenance | Sink:MaD:47183 |
+| org/example/spring/bio/DatabaseManager.java:40:28:40:34 | bio : Bio [bioText] : String | org/example/spring/bio/DatabaseManager.java:43:43:43:45 | bio : Bio [bioText] : String | provenance |  |
+| org/example/spring/bio/DatabaseManager.java:43:43:43:45 | bio : Bio [bioText] : String | org/example/spring/bio/Bio.java:31:17:31:26 | parameter this : Bio [bioText] : String | provenance |  |
+| org/example/spring/bio/DatabaseManager.java:43:43:43:45 | bio : Bio [bioText] : String | org/example/spring/bio/DatabaseManager.java:43:43:43:58 | getBioText(...) : String | provenance |  |
+| org/example/spring/bio/DatabaseManager.java:43:43:43:58 | getBioText(...) : String | org/example/spring/bio/DatabaseManager.java:44:57:44:71 | updateStatement | provenance | Sink:MaD:47183 |
 nodes
 | org/example/jaxrs/AccountApi.java:19:49:19:63 | bodyJSON : String | semmle.label | bodyJSON : String |
 | org/example/jaxrs/AccountApi.java:21:25:21:48 | new JSONObject(...) : JSONObject | semmle.label | new JSONObject(...) : JSONObject |
@@ -65,4 +87,27 @@ nodes
 | org/example/spring/SqlInjectionSpringControllers.java:35:50:35:54 | query | semmle.label | query |
 | org/example/spring/SqlInjectionSpringControllers.java:48:9:48:67 | sort : String | semmle.label | sort : String |
 | org/example/spring/SqlInjectionSpringControllers.java:58:65:58:75 | blabbersSql | semmle.label | blabbersSql |
+| org/example/spring/bio/Bio.java:14:10:14:12 | parameter this [Return] : Bio [bioText] : String | semmle.label | parameter this [Return] : Bio [bioText] : String |
+| org/example/spring/bio/Bio.java:14:26:14:39 | bioText : String | semmle.label | bioText : String |
+| org/example/spring/bio/Bio.java:16:5:16:8 | this [post update] : Bio [bioText] : String | semmle.label | this [post update] : Bio [bioText] : String |
+| org/example/spring/bio/Bio.java:16:20:16:26 | bioText : String | semmle.label | bioText : String |
+| org/example/spring/bio/Bio.java:31:17:31:26 | parameter this : Bio [bioText] : String | semmle.label | parameter this : Bio [bioText] : String |
+| org/example/spring/bio/Bio.java:32:12:32:18 | bioText : String | semmle.label | bioText : String |
+| org/example/spring/bio/Bio.java:32:12:32:18 | this <.field> : Bio [bioText] : String | semmle.label | this <.field> : Bio [bioText] : String |
+| org/example/spring/bio/BioController.java:22:7:22:34 | bioText : String | semmle.label | bioText : String |
+| org/example/spring/bio/BioController.java:24:15:24:56 | new Bio(...) : Bio [bioText] : String | semmle.label | new Bio(...) : Bio [bioText] : String |
+| org/example/spring/bio/BioController.java:24:49:24:55 | bioText : String | semmle.label | bioText : String |
+| org/example/spring/bio/BioController.java:27:43:27:45 | bio : Bio [bioText] : String | semmle.label | bio : Bio [bioText] : String |
+| org/example/spring/bio/BioController.java:29:43:29:45 | bio : Bio [bioText] : String | semmle.label | bio : Bio [bioText] : String |
+| org/example/spring/bio/DatabaseManager.java:26:28:26:34 | bio : Bio [bioText] : String | semmle.label | bio : Bio [bioText] : String |
+| org/example/spring/bio/DatabaseManager.java:32:17:32:19 | bio : Bio [bioText] : String | semmle.label | bio : Bio [bioText] : String |
+| org/example/spring/bio/DatabaseManager.java:32:17:32:32 | getBioText(...) : String | semmle.label | getBioText(...) : String |
+| org/example/spring/bio/DatabaseManager.java:34:57:34:71 | insertStatement | semmle.label | insertStatement |
+| org/example/spring/bio/DatabaseManager.java:40:28:40:34 | bio : Bio [bioText] : String | semmle.label | bio : Bio [bioText] : String |
+| org/example/spring/bio/DatabaseManager.java:43:43:43:45 | bio : Bio [bioText] : String | semmle.label | bio : Bio [bioText] : String |
+| org/example/spring/bio/DatabaseManager.java:43:43:43:58 | getBioText(...) : String | semmle.label | getBioText(...) : String |
+| org/example/spring/bio/DatabaseManager.java:44:57:44:71 | updateStatement | semmle.label | updateStatement |
 subpaths
+| org/example/spring/bio/BioController.java:24:49:24:55 | bioText : String | org/example/spring/bio/Bio.java:14:26:14:39 | bioText : String | org/example/spring/bio/Bio.java:14:10:14:12 | parameter this [Return] : Bio [bioText] : String | org/example/spring/bio/BioController.java:24:15:24:56 | new Bio(...) : Bio [bioText] : String |
+| org/example/spring/bio/DatabaseManager.java:32:17:32:19 | bio : Bio [bioText] : String | org/example/spring/bio/Bio.java:31:17:31:26 | parameter this : Bio [bioText] : String | org/example/spring/bio/Bio.java:32:12:32:18 | bioText : String | org/example/spring/bio/DatabaseManager.java:32:17:32:32 | getBioText(...) : String |
+| org/example/spring/bio/DatabaseManager.java:43:43:43:45 | bio : Bio [bioText] : String | org/example/spring/bio/Bio.java:31:17:31:26 | parameter this : Bio [bioText] : String | org/example/spring/bio/Bio.java:32:12:32:18 | bioText : String | org/example/spring/bio/DatabaseManager.java:43:43:43:58 | getBioText(...) : String |
