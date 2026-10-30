@@ -8,6 +8,10 @@
 | SqlInjection.cs:86:34:86:81 | ... + ... | SqlInjection.cs:86:66:86:76 | access to field txtUserName : TextBox | SqlInjection.cs:86:34:86:81 | ... + ... | This query depends on $@. | SqlInjection.cs:86:66:86:76 | access to field txtUserName : TextBox | this ASP.NET user input |
 | SqlInjection.cs:95:33:95:37 | access to local variable query | SqlInjection.cs:94:67:94:80 | access to property Params : NameValueCollection | SqlInjection.cs:95:33:95:37 | access to local variable query | This query depends on $@. | SqlInjection.cs:94:67:94:80 | access to property Params : NameValueCollection | this ASP.NET query string |
 | SqlInjection.cs:96:33:96:37 | access to local variable query | SqlInjection.cs:94:67:94:80 | access to property Params : NameValueCollection | SqlInjection.cs:96:33:96:37 | access to local variable query | This query depends on $@. | SqlInjection.cs:94:67:94:80 | access to property Params : NameValueCollection | this ASP.NET query string |
+| SqlInjectionAspNetCore.cs:20:50:20:60 | access to local variable selectQuery | SqlInjectionAspNetCore.cs:17:69:17:74 | userid : String | SqlInjectionAspNetCore.cs:20:50:20:60 | access to local variable selectQuery | This query depends on $@. | SqlInjectionAspNetCore.cs:17:69:17:74 | userid : String | this ASP.NET Core MVC action method parameter |
+| SqlInjectionAspNetCore.cs:25:54:25:64 | access to local variable insertQuery | SqlInjectionAspNetCore.cs:17:69:17:74 | userid : String | SqlInjectionAspNetCore.cs:25:54:25:64 | access to local variable insertQuery | This query depends on $@. | SqlInjectionAspNetCore.cs:17:69:17:74 | userid : String | this ASP.NET Core MVC action method parameter |
+| SqlInjectionAspNetCore.cs:35:44:35:48 | access to local variable query | SqlInjectionAspNetCore.cs:32:69:32:74 | userid : String | SqlInjectionAspNetCore.cs:35:44:35:48 | access to local variable query | This query depends on $@. | SqlInjectionAspNetCore.cs:32:69:32:74 | userid : String | this ASP.NET Core MVC action method parameter |
+| SqlInjectionAspNetCore.cs:35:44:35:48 | access to local variable query | SqlInjectionAspNetCore.cs:32:116:32:125 | membership : String | SqlInjectionAspNetCore.cs:35:44:35:48 | access to local variable query | This query depends on $@. | SqlInjectionAspNetCore.cs:32:116:32:125 | membership : String | this ASP.NET Core MVC action method parameter |
 | SqlInjectionVariants.cs:26:48:26:52 | access to local variable query | SqlInjectionVariants.cs:18:29:18:43 | access to property Cookies : HttpCookieCollection | SqlInjectionVariants.cs:26:48:26:52 | access to local variable query | This query depends on $@. | SqlInjectionVariants.cs:18:29:18:43 | access to property Cookies : HttpCookieCollection | this ASP.NET query string |
 | SqlInjectionVariants.cs:47:48:47:52 | access to local variable query | SqlInjectionVariants.cs:44:40:44:45 | userId : String | SqlInjectionVariants.cs:47:48:47:52 | access to local variable query | This query depends on $@. | SqlInjectionVariants.cs:44:40:44:45 | userId : String | this ASP.NET web service input |
 | SqlInjectionVariants.cs:57:35:57:106 | ... + ... | SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer | SqlInjectionVariants.cs:57:35:57:106 | ... + ... | This query depends on $@. | SqlInjectionVariants.cs:54:51:54:58 | transfer : MoneyTransfer | this ASP.NET web service input |
@@ -66,6 +70,13 @@ edges
 | SqlInjection.cs:94:67:94:80 | access to property Params : NameValueCollection | SqlInjection.cs:94:20:94:24 | access to local variable query : String | provenance |  |
 | SqlInjection.cs:94:67:94:80 | access to property Params : NameValueCollection | SqlInjection.cs:94:67:94:85 | access to indexer : String | provenance | MaD:12752 |
 | SqlInjection.cs:94:67:94:85 | access to indexer : String | SqlInjection.cs:94:20:94:24 | access to local variable query : String | provenance |  |
+| SqlInjectionAspNetCore.cs:17:69:17:74 | userid : String | SqlInjectionAspNetCore.cs:19:20:19:30 | access to local variable selectQuery : String | provenance |  |
+| SqlInjectionAspNetCore.cs:17:69:17:74 | userid : String | SqlInjectionAspNetCore.cs:24:24:24:34 | access to local variable insertQuery : String | provenance |  |
+| SqlInjectionAspNetCore.cs:19:20:19:30 | access to local variable selectQuery : String | SqlInjectionAspNetCore.cs:20:50:20:60 | access to local variable selectQuery | provenance |  |
+| SqlInjectionAspNetCore.cs:24:24:24:34 | access to local variable insertQuery : String | SqlInjectionAspNetCore.cs:25:54:25:64 | access to local variable insertQuery | provenance |  |
+| SqlInjectionAspNetCore.cs:32:69:32:74 | userid : String | SqlInjectionAspNetCore.cs:34:20:34:24 | access to local variable query : String | provenance |  |
+| SqlInjectionAspNetCore.cs:32:116:32:125 | membership : String | SqlInjectionAspNetCore.cs:34:20:34:24 | access to local variable query : String | provenance |  |
+| SqlInjectionAspNetCore.cs:34:20:34:24 | access to local variable query : String | SqlInjectionAspNetCore.cs:35:44:35:48 | access to local variable query | provenance |  |
 | SqlInjectionVariants.cs:18:20:18:25 | access to local variable userId : String | SqlInjectionVariants.cs:19:25:19:30 | access to local variable userId : String | provenance |  |
 | SqlInjectionVariants.cs:18:29:18:43 | access to property Cookies : HttpCookieCollection | SqlInjectionVariants.cs:18:29:18:53 | access to indexer : HttpCookie | provenance |  |
 | SqlInjectionVariants.cs:18:29:18:53 | access to indexer : HttpCookie | SqlInjectionVariants.cs:18:29:18:59 | access to property Value : String | provenance | MaD:2265 |
@@ -187,6 +198,15 @@ nodes
 | SqlInjection.cs:94:67:94:85 | access to indexer : String | semmle.label | access to indexer : String |
 | SqlInjection.cs:95:33:95:37 | access to local variable query | semmle.label | access to local variable query |
 | SqlInjection.cs:96:33:96:37 | access to local variable query | semmle.label | access to local variable query |
+| SqlInjectionAspNetCore.cs:17:69:17:74 | userid : String | semmle.label | userid : String |
+| SqlInjectionAspNetCore.cs:19:20:19:30 | access to local variable selectQuery : String | semmle.label | access to local variable selectQuery : String |
+| SqlInjectionAspNetCore.cs:20:50:20:60 | access to local variable selectQuery | semmle.label | access to local variable selectQuery |
+| SqlInjectionAspNetCore.cs:24:24:24:34 | access to local variable insertQuery : String | semmle.label | access to local variable insertQuery : String |
+| SqlInjectionAspNetCore.cs:25:54:25:64 | access to local variable insertQuery | semmle.label | access to local variable insertQuery |
+| SqlInjectionAspNetCore.cs:32:69:32:74 | userid : String | semmle.label | userid : String |
+| SqlInjectionAspNetCore.cs:32:116:32:125 | membership : String | semmle.label | membership : String |
+| SqlInjectionAspNetCore.cs:34:20:34:24 | access to local variable query : String | semmle.label | access to local variable query : String |
+| SqlInjectionAspNetCore.cs:35:44:35:48 | access to local variable query | semmle.label | access to local variable query |
 | SqlInjectionVariants.cs:18:20:18:25 | access to local variable userId : String | semmle.label | access to local variable userId : String |
 | SqlInjectionVariants.cs:18:29:18:43 | access to property Cookies : HttpCookieCollection | semmle.label | access to property Cookies : HttpCookieCollection |
 | SqlInjectionVariants.cs:18:29:18:53 | access to indexer : HttpCookie | semmle.label | access to indexer : HttpCookie |

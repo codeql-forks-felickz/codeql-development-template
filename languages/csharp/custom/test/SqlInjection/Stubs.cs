@@ -125,6 +125,8 @@ namespace MySql.Data.MySqlClient
     public sealed class MySqlCommand : Stubs.CommandBase
     {
         public MySqlCommand(string cmdText, MySqlConnection connection) { }
+        public System.Threading.Tasks.Task<object> ExecuteScalarAsync() => null;
+        public System.Threading.Tasks.Task<int> ExecuteNonQueryAsync() => null;
     }
 
     public sealed class MySqlDataAdapter
@@ -157,5 +159,44 @@ namespace Mono.Data.Sqlite
         public SqliteDataAdapter(string commandText, SqliteConnection connection) { }
         public SqliteDataAdapter(string commandText, string connectionString) { }
         public int Fill(System.Data.DataSet dataSet) => 0;
+    }
+}
+
+namespace Microsoft.AspNetCore.Mvc
+{
+    public interface IActionResult { }
+
+    public class ObjectResult : IActionResult
+    {
+        public ObjectResult(object value) { }
+    }
+
+    public abstract class ControllerBase
+    {
+        public virtual ObjectResult Ok(object value) => null;
+    }
+
+    public class ControllerAttribute : System.Attribute { }
+
+    public class ApiControllerAttribute : ControllerAttribute { }
+
+    public class RouteAttribute : System.Attribute
+    {
+        public RouteAttribute(string template) { }
+    }
+
+    public class HttpGetAttribute : System.Attribute
+    {
+        public HttpGetAttribute(string template) { }
+    }
+
+    public class HttpPostAttribute : System.Attribute
+    {
+        public HttpPostAttribute(string template) { }
+    }
+
+    public class FromFormAttribute : System.Attribute
+    {
+        public string Name { get; set; }
     }
 }
