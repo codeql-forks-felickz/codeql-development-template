@@ -54,7 +54,7 @@ predicate enablesMultiStatements(DataFlow::Node n, string how) {
   )
   or
   exists(StringLit lit | lit = n.asExpr() |
-    lit.getValue().regexpMatch("(?s)(.*[?&])?multiStatements=(1|true|TRUE|True)(&.*)?") and
+    lit.getValue().regexpMatch("(?s)(.*[?&])?multiStatements=(1|true|TRUE|True)(&(?!multiStatements=)[^&]*)*") and
     how = "the DSN parameter multiStatements"
   )
 }

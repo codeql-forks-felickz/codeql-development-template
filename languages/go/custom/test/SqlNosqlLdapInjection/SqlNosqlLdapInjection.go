@@ -65,6 +65,14 @@ func dsnFragment(base string) (*mysql.Config, error) {
 	return mysql.ParseDSN(base + "?multiStatements=1") // $ Alert
 }
 
+func dsnDuplicateLastDisabled() (*mysql.Config, error) {
+	return mysql.ParseDSN("root:secret@tcp(db:3306)/app?multiStatements=true&multiStatements=false")
+}
+
+func dsnDuplicateLastEnabled() (*mysql.Config, error) {
+	return mysql.ParseDSN("root:secret@tcp(db:3306)/app?multiStatements=false&multiStatements=true") // $ Alert
+}
+
 // Safe counterparts: multiStatements disabled or not set.
 
 func safeParamsDisabled(cfg *mysql.Config) {
