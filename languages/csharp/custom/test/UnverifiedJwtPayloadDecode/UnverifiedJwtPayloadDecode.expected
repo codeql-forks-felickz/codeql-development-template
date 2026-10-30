@@ -1,0 +1,49 @@
+#select
+| Test.cs:26:73:26:88 | access to local variable jwtPayloadBase64 | Test.cs:20:36:20:52 | access to array element : String | Test.cs:26:73:26:88 | access to local variable jwtPayloadBase64 | JWT payload segment from $@ is base64-decoded without verifying the token signature; its claims can be forged. | Test.cs:20:36:20:52 | access to array element | this token |
+| Test.cs:43:73:43:79 | access to local variable payload | Test.cs:42:27:42:34 | access to array element : String | Test.cs:43:73:43:79 | access to local variable payload | JWT payload segment from $@ is base64-decoded without verifying the token signature; its claims can be forged. | Test.cs:42:27:42:34 | access to array element | this token |
+| Test.cs:52:48:52:55 | access to array element | Test.cs:52:48:52:55 | access to array element | Test.cs:52:48:52:55 | access to array element | JWT payload segment from $@ is base64-decoded without verifying the token signature; its claims can be forged. | Test.cs:52:48:52:55 | access to array element | this token |
+| Test.cs:60:48:60:55 | access to array element | Test.cs:60:48:60:55 | access to array element | Test.cs:60:48:60:55 | access to array element | JWT payload segment from $@ is base64-decoded without verifying the token signature; its claims can be forged. | Test.cs:60:48:60:55 | access to array element | this token |
+| Test.cs:77:69:77:74 | access to local variable padded | Test.cs:69:38:69:48 | access to array element : String | Test.cs:77:69:77:74 | access to local variable padded | JWT payload segment from $@ is base64-decoded without verifying the token signature; its claims can be forged. | Test.cs:69:38:69:48 | access to array element | this token |
+| Test.cs:141:44:141:51 | access to array element | Test.cs:141:44:141:51 | access to array element | Test.cs:141:44:141:51 | access to array element | JWT payload segment from $@ is base64-decoded without verifying the token signature; its claims can be forged. | Test.cs:141:44:141:51 | access to array element | this token |
+| Test.cs:173:44:173:51 | access to array element | Test.cs:173:44:173:51 | access to array element | Test.cs:173:44:173:51 | access to array element | JWT payload segment from $@ is base64-decoded without verifying the token signature; its claims can be forged. | Test.cs:173:44:173:51 | access to array element | this token |
+edges
+| Test.cs:20:17:20:32 | access to local variable jwtPayloadBase64 : String | Test.cs:23:36:23:51 | access to local variable jwtPayloadBase64 : String | provenance |  |
+| Test.cs:20:17:20:32 | access to local variable jwtPayloadBase64 : String | Test.cs:26:73:26:88 | access to local variable jwtPayloadBase64 | provenance |  |
+| Test.cs:20:36:20:52 | access to array element : String | Test.cs:20:17:20:32 | access to local variable jwtPayloadBase64 : String | provenance |  |
+| Test.cs:23:17:23:32 | access to local variable jwtPayloadBase64 : String | Test.cs:26:73:26:88 | access to local variable jwtPayloadBase64 | provenance |  |
+| Test.cs:23:36:23:51 | access to local variable jwtPayloadBase64 : String | Test.cs:23:36:23:126 | call to method PadRight : String | provenance | MaD:2952 |
+| Test.cs:23:36:23:126 | call to method PadRight : String | Test.cs:23:17:23:32 | access to local variable jwtPayloadBase64 : String | provenance |  |
+| Test.cs:42:17:42:23 | access to local variable payload : String | Test.cs:43:73:43:79 | access to local variable payload | provenance |  |
+| Test.cs:42:27:42:34 | access to array element : String | Test.cs:42:27:42:52 | call to method Replace : String | provenance | MaD:2956 |
+| Test.cs:42:27:42:52 | call to method Replace : String | Test.cs:42:27:42:70 | call to method Replace : String | provenance | MaD:2956 |
+| Test.cs:42:27:42:70 | call to method Replace : String | Test.cs:42:17:42:23 | access to local variable payload : String | provenance |  |
+| Test.cs:69:38:69:48 | access to array element : String | Test.cs:74:52:74:58 | segment : String | provenance |  |
+| Test.cs:74:52:74:58 | segment : String | Test.cs:76:26:76:32 | access to parameter segment : String | provenance |  |
+| Test.cs:76:17:76:22 | access to local variable padded : String | Test.cs:77:69:77:74 | access to local variable padded | provenance |  |
+| Test.cs:76:26:76:32 | access to parameter segment : String | Test.cs:76:26:76:93 | call to method PadRight : String | provenance | MaD:2952 |
+| Test.cs:76:26:76:93 | call to method PadRight : String | Test.cs:76:17:76:22 | access to local variable padded : String | provenance |  |
+nodes
+| Test.cs:20:17:20:32 | access to local variable jwtPayloadBase64 : String | semmle.label | access to local variable jwtPayloadBase64 : String |
+| Test.cs:20:36:20:52 | access to array element : String | semmle.label | access to array element : String |
+| Test.cs:23:17:23:32 | access to local variable jwtPayloadBase64 : String | semmle.label | access to local variable jwtPayloadBase64 : String |
+| Test.cs:23:36:23:51 | access to local variable jwtPayloadBase64 : String | semmle.label | access to local variable jwtPayloadBase64 : String |
+| Test.cs:23:36:23:126 | call to method PadRight : String | semmle.label | call to method PadRight : String |
+| Test.cs:26:73:26:88 | access to local variable jwtPayloadBase64 | semmle.label | access to local variable jwtPayloadBase64 |
+| Test.cs:42:17:42:23 | access to local variable payload : String | semmle.label | access to local variable payload : String |
+| Test.cs:42:27:42:34 | access to array element : String | semmle.label | access to array element : String |
+| Test.cs:42:27:42:52 | call to method Replace : String | semmle.label | call to method Replace : String |
+| Test.cs:42:27:42:70 | call to method Replace : String | semmle.label | call to method Replace : String |
+| Test.cs:43:73:43:79 | access to local variable payload | semmle.label | access to local variable payload |
+| Test.cs:52:48:52:55 | access to array element | semmle.label | access to array element |
+| Test.cs:60:48:60:55 | access to array element | semmle.label | access to array element |
+| Test.cs:69:38:69:48 | access to array element : String | semmle.label | access to array element : String |
+| Test.cs:74:52:74:58 | segment : String | semmle.label | segment : String |
+| Test.cs:76:17:76:22 | access to local variable padded : String | semmle.label | access to local variable padded : String |
+| Test.cs:76:26:76:32 | access to parameter segment : String | semmle.label | access to parameter segment : String |
+| Test.cs:76:26:76:93 | call to method PadRight : String | semmle.label | call to method PadRight : String |
+| Test.cs:77:69:77:74 | access to local variable padded | semmle.label | access to local variable padded |
+| Test.cs:128:44:128:51 | access to array element | semmle.label | access to array element |
+| Test.cs:141:44:141:51 | access to array element | semmle.label | access to array element |
+| Test.cs:159:44:159:51 | access to array element | semmle.label | access to array element |
+| Test.cs:173:44:173:51 | access to array element | semmle.label | access to array element |
+subpaths

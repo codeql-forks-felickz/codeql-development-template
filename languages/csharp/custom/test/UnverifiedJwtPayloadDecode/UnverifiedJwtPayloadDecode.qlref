@@ -1,0 +1,2 @@
+query: UnverifiedJwtPayloadDecode/UnverifiedJwtPayloadDecode.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
