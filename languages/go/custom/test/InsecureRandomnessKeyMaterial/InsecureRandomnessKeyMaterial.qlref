@@ -1,0 +1,2 @@
+query: InsecureRandomnessKeyMaterial/InsecureRandomnessKeyMaterial.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
