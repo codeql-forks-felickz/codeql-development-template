@@ -31,3 +31,15 @@ export function downloadKey () {
     res.download(req.query.name as string, { root: 'private-keys' }) // NOT OK
   }
 }
+
+export function downloadNamedKey () {
+  return (req: Request, res: Response) => {
+    res.download(req.query.name as string, 'download.key', { root: 'private-keys' }) // NOT OK
+  }
+}
+
+export function downloadPublicFile () {
+  return (req: Request, res: Response) => {
+    res.download(req.query.name as string, 'download.txt', { root: 'downloads' }) // OK
+  }
+}

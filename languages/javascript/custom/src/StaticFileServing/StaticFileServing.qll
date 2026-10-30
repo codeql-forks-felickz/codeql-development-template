@@ -60,7 +60,31 @@ DataFlow::MethodCallNode sendFileCall() {
  * Gets a call to `path.join` or `path.resolve` (also imported as `node:path`).
  */
 DataFlow::CallNode pathJoinCall() {
-  result = DataFlow::moduleMember(["path", "node:path"], ["join", "resolve"]).getACall()
+  result = DataFlow::moduleMember(["path", "node:path"], ["join", "resolve"]).getACall() and
+  not (
+    result.getCalleeName() = "resolve" and
+    exists(int i, string value |
+      i in [1 .. result.getNumArgument() - 1] and
+      value = result.getArgument(i).getStringValue() and
+      (value.prefix(1) = "/" or value.prefix(1) = "\\")
+    )
+  )
+}
+
+/**
+ * Gets the root option argument of a file response call, accounting for the optional filename
+ * accepted by `res.download`.
+ */
+private DataFlow::Node fileResponseRootOption(DataFlow::MethodCallNode call) {
+  result = call.getOptionArgument(1, "root") and
+  (
+    call.getMethodName() != "download"
+    or not exists(call.getArgument(1).getStringValue())
+  )
+  or
+  result = call.getOptionArgument(2, "root") and
+  call.getMethodName() = "download" and
+  exists(call.getArgument(1).getStringValue())
 }
 
 /**
@@ -87,7 +111,7 @@ private predicate isRelevantPathNode(DataFlow::Node node) {
   or
   node = directoryListingCall().getArgument(0)
   or
-  node = fileResponseCall().getOptionArgument(1, "root")
+  node = fileResponseRootOption(fileResponseCall())
   or
   exists(DataFlow::Node succ | isRelevantPathNode(succ) | node = succ.getAPredecessor())
 }
@@ -267,7 +291,7 @@ predicate exposesFolder(DataFlow::Node exposer, string kind, string rel, boolean
   exists(DataFlow::MethodCallNode call | call = fileResponseCall() and exposer = call |
     kind = "download" and
     (
-      not exists(call.getOptionArgument(1, "root")) and
+      not exists(fileResponseRootOption(call)) and
       exists(string path |
         folderPrefixValue(call.getArgument(0).getALocalSource(), path, fromDirname) and
         rel = normalize(path) and
@@ -275,7 +299,7 @@ predicate exposesFolder(DataFlow::Node exposer, string kind, string rel, boolean
       )
       or
       not exists(call.getArgument(0).getStringValue()) and
-      relativePath(call.getOptionArgument(1, "root"), rel, fromDirname)
+      relativePath(fileResponseRootOption(call), rel, fromDirname)
     )
   )
 }
@@ -306,7 +330,7 @@ predicate isServedPath(string path, DataFlow::CallNode serve) {
     folder = "" and not path.regexpMatch("(.*/)?\\.[^/]*(/.*)?")
     or
     folder != "" and
-    path.matches(folder + "/%") and
+    path.prefix(folder.length() + 1) = folder + "/" and
     not path.suffix(folder.length()).regexpMatch("(.*/)?\\.[^/]*(/.*)?")
   )
 }

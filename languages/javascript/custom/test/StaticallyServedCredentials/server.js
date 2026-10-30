@@ -22,7 +22,15 @@ app.use(serveStatic(wwwDir));
 var koa = new Koa();
 koa.use(koaStatic(path.resolve(__dirname, 'koa-public')));
 
+app.use(express.static('public_assets'));
+app.use('/authenticated', requireLogin, express.static('authenticated'));
+
 // Not served: `private` is never passed to a static-file middleware.
 var config = require('./private/creds.json');
 
 app.listen(8080);
+
+function requireLogin(req, res, next) {
+  if (!req.session.user) return res.redirect('/login');
+  next();
+}

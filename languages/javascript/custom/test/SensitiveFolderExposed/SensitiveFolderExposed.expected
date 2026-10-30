@@ -1,5 +1,6 @@
 | routes/keyServer.ts:9:7:9:57 | res.sen ...  file)) | Serves any requested file from the folder 'encryptionkeys', whose name ('encryptionkeys') indicates that it holds keys or secrets. |
 | routes/keyServer.ts:31:5:31:68 | res.dow ... eys' }) | Serves any requested file from the folder 'private-keys', whose name ('private-keys') indicates that it holds keys or secrets. |
+| routes/keyServer.ts:37:5:37:84 | res.dow ... eys' }) | Serves any requested file from the folder 'private-keys', whose name ('private-keys') indicates that it holds keys or secrets. |
 | server.ts:19:50:19:111 | serveIn ... ils' }) | Serves a directory listing of the folder 'encryptionkeys', whose name ('encryptionkeys') indicates that it holds keys or secrets. |
 | server.ts:26:21:26:77 | express ... rets')) | Serves every file in the folder 'config/secrets', whose name ('secrets') indicates that it holds keys or secrets. |
 | server.ts:27:9:27:30 | serveSt ... certs') | Serves every file in the folder 'certs', whose name ('certs') indicates that it holds keys or secrets. |

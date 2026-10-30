@@ -54,6 +54,22 @@ predicate isProtectedRoute(Express::RouteSetup setup, DataFlow::Node mw, string 
 }
 
 /**
+ * Holds if a static-file middleware is registered after an authentication middleware in an
+ * `app.use` call.
+ */
+private predicate isAuthProtectedStaticRegistration(
+  Express::RouteSetup setup, DataFlow::CallNode serve
+) {
+  setup.isUseCall() and
+  exists(int i, int j, DataFlow::Node mw |
+    mw = setup.getRouteHandlerNode(i) and
+    serve.flowsTo(setup.getRouteHandlerNode(j)) and
+    i < j and
+    isAuthMiddlewareName(handlerName(mw))
+  )
+}
+
+/**
  * Gets the path, relative to the source root, of the views folder used by `render`.
  */
 string viewsFolderPath(
@@ -126,7 +142,8 @@ where
       exists(Express::RouteSetup registration |
         registration.isUseCall() and
         s.flowsTo(registration.getARouteHandlerNode()) and
-        app.getASubRouter*() = registration.getRouter()
+        app.getASubRouter*() = registration.getRouter() and
+        not isAuthProtectedStaticRegistration(registration, s)
       )
     |
       s order by s.getFile().getRelativePath(), s.getStartLine(), s.getStartColumn()

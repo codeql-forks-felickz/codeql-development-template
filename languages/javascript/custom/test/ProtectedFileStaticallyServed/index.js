@@ -51,7 +51,13 @@ router.get("/page", verifyJWT, (req, res) => {
   res.render(req.query.page); // OK: view name is not a constant
 });
 
+router.get("/asset-neighbor", verifyJWT, (req, res) => {
+  res.sendFile(path.join(__dirname, "publicXassets", "admin.html")); // OK: sibling of public_assets
+});
+
 app.use('/', router);
+app.use(express.static("public_assets"));
+app.use('/private-static', requireLogin, express.static('private-static'));
 app.listen(8080);
 
 function verifyJWT(req, res, next) {
