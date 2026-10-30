@@ -94,4 +94,25 @@ app.get('/stock/where', function (req, res) {
   });
 });
 
+// Not reported: MongoDB ignores named properties on an array used as `$or` clauses.
+app.get('/safe/named-clause-property', function (req, res) {
+  MongoClient.connect(url, function (err, db) {
+    const clauses = [{ name: 'fixed' }];
+    clauses.metadata = { name: req.query.search };
+    db.collection('users').find({ $or: clauses }).toArray(function (err, users) {
+      res.json(users);
+    });
+  });
+});
+
+// Vulnerable: a whole request-controlled query document is used as an array clause.
+app.get('/admin/likes/filter', function (req, res) {
+  MongoClient.connect(url, function (err, db) {
+    const clauses = [req.query.filter]; // $ Source
+    db.collection('likes').find({ $or: clauses }).toArray(function (err, likes) { // $ Alert
+      res.json(likes);
+    });
+  });
+});
+
 app.listen(3000);

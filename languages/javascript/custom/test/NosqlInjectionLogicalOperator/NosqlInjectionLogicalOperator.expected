@@ -4,6 +4,7 @@
 | mongodb-or/app.js:21:33:21:49 | { $nor: clauses } | mongodb-or/app.js:20:36:20:51 | req.query.search | mongodb-or/app.js:21:33:21:49 | { $nor: clauses } | This query object depends on a $@. | mongodb-or/app.js:20:36:20:51 | req.query.search | user-provided value |
 | mongodb-or/app.js:32:36:32:51 | { $or: clauses } | mongodb-or/app.js:31:28:31:43 | req.query.author | mongodb-or/app.js:32:36:32:51 | { $or: clauses } | This query object depends on a $@. | mongodb-or/app.js:31:28:31:43 | req.query.author | user-provided value |
 | mongodb-or/app.js:42:39:42:43 | query | mongodb-or/app.js:41:65:41:79 | req.query.title | mongodb-or/app.js:42:39:42:43 | query | This query object depends on a $@. | mongodb-or/app.js:41:65:41:79 | req.query.title | user-provided value |
+| mongodb-or/app.js:112:33:112:48 | { $or: clauses } | mongodb-or/app.js:111:22:111:37 | req.query.filter | mongodb-or/app.js:112:33:112:48 | { $or: clauses } | This query object depends on a $@. | mongodb-or/app.js:111:22:111:37 | req.query.filter | user-provided value |
 | mongoose-and/db.js:16:38:16:89 | { $and: ... rd }] } | mongoose-and/app.js:9:17:9:28 | request.body | mongoose-and/db.js:16:38:16:89 | { $and: ... rd }] } | This query object depends on a $@. | mongoose-and/app.js:9:17:9:28 | request.body | user-provided value |
 | mongoose-and/db.js:16:38:16:89 | { $and: ... rd }] } | mongoose-and/app.js:10:20:10:31 | request.body | mongoose-and/db.js:16:38:16:89 | { $and: ... rd }] } | This query object depends on a $@. | mongoose-and/app.js:10:20:10:31 | request.body | user-provided value |
 edges
@@ -17,6 +18,7 @@ edges
 | mongodb-or/app.js:41:65:41:79 | req.query.title | mongodb-or/app.js:41:19:41:87 | { $and: ... }] }] } | provenance | Config |
 | mongodb-or/app.js:41:65:41:79 | req.query.title | mongodb-or/app.js:42:39:42:43 | query | provenance | Config |
 | mongodb-or/app.js:82:41:82:56 | req.query.search | mongodb-or/app.js:82:33:82:58 | { name: ... earch } | provenance | Config |
+| mongodb-or/app.js:111:22:111:37 | req.query.filter | mongodb-or/app.js:112:33:112:48 | { $or: clauses } | provenance | Config |
 | mongoose-and/app.js:9:9:9:13 | email | mongoose-and/app.js:11:33:11:37 | email | provenance |  |
 | mongoose-and/app.js:9:17:9:28 | request.body | mongoose-and/app.js:9:17:9:34 | request.body.email | provenance | Config |
 | mongoose-and/app.js:9:17:9:34 | request.body.email | mongoose-and/app.js:9:9:9:13 | email | provenance |  |
@@ -64,6 +66,8 @@ nodes
 | mongodb-or/app.js:42:39:42:43 | query | semmle.label | query |
 | mongodb-or/app.js:82:33:82:58 | { name: ... earch } | semmle.label | { name: ... earch } |
 | mongodb-or/app.js:82:41:82:56 | req.query.search | semmle.label | req.query.search |
+| mongodb-or/app.js:111:22:111:37 | req.query.filter | semmle.label | req.query.filter |
+| mongodb-or/app.js:112:33:112:48 | { $or: clauses } | semmle.label | { $or: clauses } |
 | mongoose-and/app.js:9:9:9:13 | email | semmle.label | email |
 | mongoose-and/app.js:9:17:9:28 | request.body | semmle.label | request.body |
 | mongoose-and/app.js:9:17:9:34 | request.body.email | semmle.label | request.body.email |

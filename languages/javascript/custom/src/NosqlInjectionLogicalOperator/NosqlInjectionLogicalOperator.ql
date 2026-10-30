@@ -14,6 +14,12 @@
 import javascript
 import semmle.javascript.security.dataflow.NosqlInjectionQuery as Nosql
 
+private predicate isArrayIndexWrite(DataFlow::PropWrite write) {
+  write.getPropertyName().regexpMatch("^(0|[1-9][0-9]*)$") or
+  not exists(string propertyName | write.getPropertyName() = propertyName) and
+    write.getBase().asExpr() instanceof ArrayExpr
+}
+
 /**
  * Gets a source node for a query document that is interpreted by a NoSQL query that `root`
  * flows to, either `root` itself or a sub-document of a `$and`, `$or` or `$nor` operator
@@ -27,7 +33,11 @@ private DataFlow::SourceNode queryDocument(DataFlow::SourceNode root) {
     parent = queryDocument(root) and
     clauses.flowsTo(parent.getAPropertyWrite(["$and", "$or", "$nor"]).getRhs())
   |
-    result.flowsTo(clauses.getAPropertyWrite().getRhs())
+    exists(DataFlow::PropWrite write |
+      write = clauses.getAPropertyWrite() and
+      isArrayIndexWrite(write) and
+      result.flowsTo(write.getRhs())
+    )
     or
     result.flowsTo(clauses.getAMethodCall("push").getAnArgument())
   )
@@ -59,7 +69,7 @@ module NosqlInjectionLogicalOperatorConfig implements DataFlow::StateConfigSig {
     exists(DataFlow::SourceNode root, DataFlow::SourceNode subDocument |
       subDocument = queryDocument(root) and
       subDocument != root and
-      node1 = subDocument.getAPropertyWrite().getRhs() and
+      (node1 = subDocument or node1 = subDocument.getAPropertyWrite().getRhs()) and
       root.flowsTo(node2)
     )
   }
