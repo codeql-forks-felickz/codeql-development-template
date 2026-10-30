@@ -39,6 +39,26 @@ namespace System.IdentityModel.Tokens.Jwt
     }
 }
 
+namespace Microsoft.IdentityModel.JsonWebTokens
+{
+    using Microsoft.IdentityModel.Tokens;
+
+    public class JsonWebTokenHandler
+    {
+        public System.Threading.Tasks.Task<TokenValidationResult> ValidateTokenAsync(
+            string token,
+            TokenValidationParameters validationParameters)
+        {
+            return null;
+        }
+    }
+
+    public class TokenValidationResult
+    {
+        public bool IsValid { get; set; }
+    }
+}
+
 namespace Stubs
 {
     public class ClaimsPrincipal

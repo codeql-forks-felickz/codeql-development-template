@@ -33,39 +33,130 @@ class JwtSplitCall extends MethodCall {
     DataFlow::localExprFlow(this, aa.getQualifier()) and
     aa.getIndex(0).getValue().toInt() = index
   }
+
+  /** Holds if segment `2` flows into a comparison, equality, or verification call. */
+  predicate verifiesSignature() {
+    exists(ArrayAccess signature, ComparisonOperation comparison |
+      this.readsSegment(signature, 2) and
+      (
+        DataFlow::localExprFlow(signature, comparison.getLeftOperand())
+        or
+        DataFlow::localExprFlow(signature, comparison.getRightOperand())
+      )
+    )
+    or
+    exists(ArrayAccess signature, Base64DecodeCall decoder, ComparisonOperation comparison |
+      this.readsSegment(signature, 2) and
+      DataFlow::localExprFlow(signature, decoder.getArgument(0)) and
+      (
+        DataFlow::localExprFlow(decoder, comparison.getLeftOperand())
+        or
+        DataFlow::localExprFlow(decoder, comparison.getRightOperand())
+      )
+    )
+    or
+    exists(ArrayAccess signature, MethodCall verification, int argument |
+      this.readsSegment(signature, 2) and
+      DataFlow::localExprFlow(signature, verification.getArgument(argument)) and
+      verification.getTarget().getName().regexpMatch("(?i).*(verify|equals).*")
+    )
+    or
+    exists(ArrayAccess signature, Base64DecodeCall decoder, MethodCall verification, int argument |
+      this.readsSegment(signature, 2) and
+      DataFlow::localExprFlow(signature, decoder.getArgument(0)) and
+      DataFlow::localExprFlow(decoder, verification.getArgument(argument)) and
+      verification.getTarget().getName().regexpMatch("(?i).*(verify|equals).*")
+    )
+  }
 }
 
 /**
  * An access to the payload segment (index 1) of a JWT split on `.`, where the
- * signature segment (index 2) of the same split result is never read.
+ * signature segment (index 2) is not used in a verification-like operation.
  */
 class JwtPayloadSegment extends ArrayAccess {
   JwtPayloadSegment() {
     exists(JwtSplitCall split |
       split.readsSegment(this, 1) and
-      not split.readsSegment(_, 2)
+      not split.verifiesSignature()
     )
+  }
+
+  JwtSplitCall getSplitCall() { result.readsSegment(this, 1) }
+}
+
+/** A call to a base64 decoding method. */
+class Base64DecodeCall extends MethodCall {
+  Base64DecodeCall() {
+    this.getTarget()
+        .hasFullyQualifiedName("System", "Convert", ["FromBase64String", "TryFromBase64String"])
+    or
+    this.getTarget()
+        .hasFullyQualifiedName("Microsoft.IdentityModel.Tokens", "Base64UrlEncoder",
+          ["Decode", "DecodeBytes"])
+    or
+    this.getTarget()
+        .hasFullyQualifiedName("Microsoft.AspNetCore.WebUtilities", "WebEncoders", "Base64UrlDecode")
   }
 }
 
 /** An argument to a base64 decoding method. */
 class Base64DecodeSink extends Expr {
-  Base64DecodeSink() {
-    exists(MethodCall mc, Method target |
-      target = mc.getTarget() and
-      this = mc.getArgument(0)
-    |
-      target.hasFullyQualifiedName("System", "Convert", ["FromBase64String", "TryFromBase64String"])
-      or
-      target
-          .hasFullyQualifiedName("Microsoft.IdentityModel.Tokens", "Base64UrlEncoder",
-            ["Decode", "DecodeBytes"])
-      or
-      target
-          .hasFullyQualifiedName("Microsoft.AspNetCore.WebUtilities", "WebEncoders",
-            "Base64UrlDecode")
-    )
-  }
+  Base64DecodeSink() { exists(Base64DecodeCall decoder | this = decoder.getArgument(0)) }
+}
+
+predicate hasSignatureValidationEnabled(Expr parameters) {
+  exists(
+    ObjectCreation creation, ObjectInitializer initializer, MemberInitializer enabled,
+    MemberInitializer key
+  |
+    DataFlow::localExprFlow(creation, parameters) and
+    initializer = creation.getInitializer() and
+    enabled = initializer.getAMemberInitializer() and
+    enabled.getLeftOperand().(PropertyAccess).getTarget().hasName("ValidateIssuerSigningKey") and
+    enabled.getRightOperand().(BoolLiteral).getValue() = "true" and
+    key = initializer.getAMemberInitializer() and
+    key.getLeftOperand().(PropertyAccess).getTarget().hasName("IssuerSigningKey")
+  )
+}
+
+predicate validatedBeforeDecode(JwtPayloadSegment payload, Base64DecodeCall decoder) {
+  exists(JwtSplitCall split, MethodCall validation |
+    split = payload.getSplitCall() and
+    validation
+        .getTarget()
+        .hasFullyQualifiedName("System.IdentityModel.Tokens.Jwt", "JwtSecurityTokenHandler",
+          "ValidateToken") and
+    DataFlow::localExprFlow(validation.getArgument(0), split.getQualifier()) and
+    hasSignatureValidationEnabled(validation.getArgument(1)) and
+    validation
+        .getControlFlowNode()
+        .getBasicBlock()
+        .dominates(decoder.getControlFlowNode().getBasicBlock())
+  )
+  or
+  exists(
+    JwtSplitCall split, MethodCall validation, AwaitExpr awaited, IfStmt guard,
+    LogicalNotExpr invalidResult, PropertyAccess isValid, ThrowStmt failure
+  |
+    split = payload.getSplitCall() and
+    validation
+        .getTarget()
+        .hasFullyQualifiedName("Microsoft.IdentityModel.JsonWebTokens", "JsonWebTokenHandler",
+          "ValidateTokenAsync") and
+    DataFlow::localExprFlow(validation.getArgument(0), split.getQualifier()) and
+    hasSignatureValidationEnabled(validation.getArgument(1)) and
+    awaited.getChild(0) = validation and
+    DataFlow::localExprFlow(awaited, isValid.getQualifier()) and
+    isValid.getTarget().hasName("IsValid") and
+    invalidResult = guard.getCondition() and
+    invalidResult.getOperand() = isValid and
+    failure.getParent*() = guard.getThen() and
+    guard
+        .getControlFlowNode()
+        .getBasicBlock()
+        .dominates(decoder.getControlFlowNode().getBasicBlock())
+  )
 }
 
 module UnverifiedJwtPayloadDecodeConfig implements DataFlow::ConfigSig {
@@ -77,7 +168,10 @@ module UnverifiedJwtPayloadDecodeConfig implements DataFlow::ConfigSig {
 module UnverifiedJwtPayloadDecodeFlow = TaintTracking::Global<UnverifiedJwtPayloadDecodeConfig>;
 
 from UnverifiedJwtPayloadDecodeFlow::PathNode source, UnverifiedJwtPayloadDecodeFlow::PathNode sink
-where UnverifiedJwtPayloadDecodeFlow::flowPath(source, sink)
+where
+  UnverifiedJwtPayloadDecodeFlow::flowPath(source, sink) and
+  not validatedBeforeDecode(source.getNode().asExpr().(JwtPayloadSegment),
+    sink.getNode().asExpr().getParent().(Base64DecodeCall))
 select sink.getNode(), source, sink,
   "JWT payload segment from $@ is base64-decoded without verifying the token signature; its claims can be forged.",
   source.getNode(), "this token"

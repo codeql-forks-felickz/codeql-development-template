@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Stubs;
 
 namespace JwtTests
@@ -40,6 +41,15 @@ namespace JwtTests
             var parts = token.Split(".");
             var payload = parts[1].Replace('-', '+').Replace('_', '/'); // $ Source
             var json = Encoding.UTF8.GetString(Convert.FromBase64String(payload)); // $ Alert
+            return json.Contains("\"role\":\"admin\"");
+        }
+
+        // BAD: reading the signature for logging does not verify it.
+        public bool IsAdminWithLoggedSignature(string token)
+        {
+            var parts = token.Split('.');
+            Console.WriteLine(parts[2]);
+            var json = Base64UrlEncoder.Decode(parts[1]); // $ Alert
             return json.Contains("\"role\":\"admin\"");
         }
 
@@ -102,6 +112,65 @@ namespace JwtTests
             };
             ClaimsPrincipal principal = handler.ValidateToken(token, parameters, out _);
             return principal.FindFirstValue("role");
+        }
+
+        // GOOD: the same token is validated with signing-key validation enabled before decoding.
+        public string GetRoleValidatedAndDecoded(string token, byte[] key)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var parameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key)
+            };
+            handler.ValidateToken(token, parameters, out _);
+            var parts = token.Split('.');
+            return Base64UrlEncoder.Decode(parts[1]);
+        }
+
+        // BAD: ValidateToken alone does not establish signature validation.
+        public string GetRoleWithUnvalidatedParameters(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var parameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = false
+            };
+            handler.ValidateToken(token, parameters, out _);
+            var parts = token.Split('.');
+            return Base64UrlEncoder.Decode(parts[1]); // $ Alert
+        }
+
+        // GOOD: async validation is followed by a guard for an invalid result.
+        public async System.Threading.Tasks.Task<string> GetRoleValidatedAsyncAndDecoded(string token, byte[] key)
+        {
+            var handler = new JsonWebTokenHandler();
+            var parameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key)
+            };
+            var validation = await handler.ValidateTokenAsync(token, parameters);
+            if (!validation.IsValid)
+            {
+                throw new UnauthorizedAccessException();
+            }
+            var parts = token.Split('.');
+            return Base64UrlEncoder.Decode(parts[1]);
+        }
+
+        // BAD: async validation is not checked before decoding.
+        public async System.Threading.Tasks.Task<string> GetRoleWithoutAsyncValidationGuard(string token, byte[] key)
+        {
+            var handler = new JsonWebTokenHandler();
+            var parameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key)
+            };
+            var validation = await handler.ValidateTokenAsync(token, parameters);
+            var parts = token.Split('.');
+            return Base64UrlEncoder.Decode(parts[1]); // $ Alert
         }
 
         // GOOD: not a JWT; the string is not split on '.'.
