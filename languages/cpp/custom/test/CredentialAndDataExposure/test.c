@@ -148,7 +148,7 @@ void bad_ldap_simple_bindW(LDAP *ld)
     FILE *cfg = _wfopen(L"ldap.conf", L"r");
     if (cfg != 0)
     {
-        fgetws(password, sizeof(password), cfg); // $ Source
+        fgetws(password, 64, cfg); // $ Source
         fclose(cfg);
     }
     ldap_simple_bindW(ld, L"cn=user", password); // $ Alert
