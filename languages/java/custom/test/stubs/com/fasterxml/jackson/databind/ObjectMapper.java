@@ -41,6 +41,10 @@ public class ObjectMapper {
     return this;
   }
 
+  public String writeValueAsString(Object value) {
+    return null;
+  }
+
   public <T> T readValue(String content, Class<T> valueType) throws IOException {
     return null;
   }
