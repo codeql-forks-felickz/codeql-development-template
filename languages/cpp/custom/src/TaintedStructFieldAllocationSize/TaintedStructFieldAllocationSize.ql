@@ -127,23 +127,46 @@ predicate isStockBarrier(DataFlow::Node node) {
 }
 
 /**
- * Holds if taint flows from a struct (or union) whose contents are tainted as a whole, for
- * example because the struct was filled by `fread(&s, sizeof(s), 1, fp)`, to a read of one of
- * its fields `s.f` or `p->f`. For fields that are themselves aggregates, taint also flows to the
- * contents of the field so that nested reads such as `s.inner.f` are covered.
+ * Gets the qualifier of `fa`, skipping qualifiers that are themselves reads of embedded
+ * (non-pointer) aggregate fields, so that the root of `s.inner.f` is `s`.
+ */
+Expr rootQualifier(FieldAccess fa) {
+  exists(Expr q | q = fa.getQualifier() |
+    if q instanceof FieldAccess and q.getUnspecifiedType() instanceof Class
+    then result = rootQualifier(q)
+    else result = q
+  )
+}
+
+/**
+ * A configuration that tracks the contents written by a flow source (for example the buffer
+ * filled by `fread` or `recv`) by value to the root qualifier of a field read.
+ *
+ * Only value flow is tracked so that an aggregate is treated as attacker controlled only when
+ * its contents were written by the source. In particular, this excludes a trusted struct that is
+ * merely selected with a tainted index, as in `table[i].f`.
+ */
+module WholeObjectSourceConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
+
+  predicate isSink(DataFlow::Node sink) { sink.asIndirectExpr(1) = rootQualifier(_) }
+}
+
+module WholeObjectSourceFlow = DataFlow::Global<WholeObjectSourceConfig>;
+
+/**
+ * Holds if taint flows from a struct (or union) whose contents were written as a whole by a
+ * flow source, for example by `fread(&s, sizeof(s), 1, fp)`, to a read of one of its fields
+ * `s.f`, `p->f` or `s.inner.f`.
  *
  * The IR taint tracking library does not have this step: a source that taints the whole
  * object does not carry any field content, so field reads are never reached.
  */
 predicate aggregateToFieldStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(FieldAccess fa |
-    n1.asIndirectExpr(1) = fa.getQualifier() and
-    (
-      n2.asExpr() = fa
-      or
-      fa.getUnspecifiedType() instanceof Class and
-      n2.asIndirectExpr(1) = fa
-    )
+    n1.asIndirectExpr(1) = rootQualifier(fa) and
+    WholeObjectSourceFlow::flowTo(n1) and
+    n2.asExpr() = fa
   )
 }
 
@@ -158,6 +181,83 @@ predicate fieldHasUpperBoundsCheck(FieldAccess fa) {
     checked.getTarget() = fa.getTarget() and
     checked.getEnclosingFunction() = fa.getEnclosingFunction() and
     not oper.getAnOperand().getValue() = "0"
+  )
+}
+
+/** Gets the variable that is the direct qualifier of field access `fa`, as in `v.f` or `v->f`. */
+Variable qualifierVariable(FieldAccess fa) {
+  result = fa.getQualifier().(VariableAccess).getTarget()
+}
+
+/**
+ * Holds if `asg` assigns field `f` of the object denoted by variable `v`, and that field is
+ * read elsewhere in the same function.
+ */
+predicate fieldOverwrite(Assignment asg, Field f, Variable v) {
+  exists(FieldAccess written, FieldAccess read |
+    written = asg.getLValue() and
+    f = written.getTarget() and
+    v = qualifierVariable(written) and
+    read != written and
+    read.getTarget() = f and
+    qualifierVariable(read) = v and
+    read.getEnclosingFunction() = asg.getEnclosingFunction()
+  )
+}
+
+/**
+ * Holds if `n` may write the whole object denoted by `v` again, for example a call such as
+ * `fread(&v, ...)` or `fread(v, ...)`, or a whole-object assignment such as `v = ...`.
+ */
+predicate mayRefill(ControlFlowNode n, Variable v) {
+  n.(Call).getAnArgument().getAChild*().(VariableAccess).getTarget() = v
+  or
+  n.(Assignment).getLValue().(VariableAccess).getTarget() = v
+  or
+  n.(Assignment).getLValue().(PointerDereferenceExpr).getOperand().(VariableAccess).getTarget() = v
+}
+
+/** Holds if `n` is reachable from `asg` along a path that does not pass through `asg` again. */
+predicate reachableFromOverwrite(Assignment asg, ControlFlowNode n) {
+  fieldOverwrite(asg, _, _) and n = asg.getASuccessor()
+  or
+  exists(ControlFlowNode mid |
+    reachableFromOverwrite(asg, mid) and
+    mid != asg and
+    n = mid.getASuccessor()
+  )
+}
+
+/**
+ * Holds if `n` is reachable from `asg`, along a path that does not pass through `asg` again,
+ * after an operation that may refill the object that `asg` writes a field of.
+ */
+predicate refilledAfterOverwrite(Assignment asg, ControlFlowNode n) {
+  exists(ControlFlowNode refill, Variable v |
+    fieldOverwrite(asg, _, v) and
+    reachableFromOverwrite(asg, refill) and
+    refill != asg and
+    mayRefill(refill, v) and
+    n = refill.getASuccessor()
+  )
+  or
+  exists(ControlFlowNode mid |
+    refilledAfterOverwrite(asg, mid) and
+    mid != asg and
+    n = mid.getASuccessor()
+  )
+}
+
+/**
+ * Holds if field read `fa` always reads a value assigned by the program after the object was
+ * last written as a whole, as in `fread(&s, ...); s.f = 16; malloc(s.f);`.
+ */
+predicate fieldIsOverwritten(FieldAccess fa) {
+  exists(Assignment asg |
+    fieldOverwrite(asg, fa.getTarget(), qualifierVariable(fa)) and
+    fa != asg.getLValue() and
+    dominates(asg, fa) and
+    not refilledAfterOverwrite(asg, fa)
   )
 }
 
@@ -181,6 +281,8 @@ module TaintedStructFieldAllocationSizeConfig implements DataFlow::ConfigSig {
     isStockBarrier(node)
     or
     fieldHasUpperBoundsCheck(node.asExpr())
+    or
+    fieldIsOverwritten(node.asExpr())
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {

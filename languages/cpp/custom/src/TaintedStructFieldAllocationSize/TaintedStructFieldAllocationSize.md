@@ -2,7 +2,7 @@
 
 Binary file formats and network protocols are commonly parsed by reading a fixed-size header directly into a struct, for example with `fread(&hdr, sizeof(hdr), 1, fp)` or `recv(sock, &hdr, sizeof(hdr), 0)`. Every field of such a struct is controlled by whoever produced the input. If the fields are combined in arithmetic and the result is used as an allocation size without range validation, the computation can underflow (CWE-191) or overflow (CWE-190). A negative `int` converted to `size_t` becomes a huge value, and an overflowed sum can become a tiny one. Either way, the program allocates an unexpected amount of memory, which can lead to denial of service or to out-of-bounds writes when the buffer is used later.
 
-The standard `cpp/uncontrolled-allocation-size` query does not report these cases. Its taint source is the whole struct, and the C++ taint-tracking library does not propagate taint from a wholly tainted struct to reads of its individual fields. This query adds that step. It reports only allocations that `cpp/uncontrolled-allocation-size` does not already report.
+The standard `cpp/uncontrolled-allocation-size` query does not report these cases. Its taint source is the whole struct, and the C++ taint-tracking library does not propagate taint from a wholly tainted struct to reads of its individual fields. This query adds that step for structs whose contents were written by a source, either directly or through a copy such as `memcpy`. It does not apply to a trusted struct that is only selected with an untrusted index (`table[i].f`), or to a field that is assigned a new value after the read. It reports only allocations that `cpp/uncontrolled-allocation-size` does not already report.
 
 ## Recommendation
 

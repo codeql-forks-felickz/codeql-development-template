@@ -116,3 +116,54 @@ void process_config(void) {
   free(buf1);
   free(buf2);
 }
+
+// Struct passed to a helper that computes the size.
+static int area(struct Image *p) { return p->width * p->height; }
+
+void process_image_helper(FILE *fp) {
+  struct Image img;
+  fread(&img, sizeof(img), 1, fp); // $ Source
+  char *buf = (char *)malloc(area(&img)); // $ Alert
+  free(buf);
+}
+
+// Struct copied from a received buffer.
+void process_copied_header(int sock) {
+  char raw[64];
+  struct Image img;
+  recv(sock, raw, sizeof(raw), 0); // $ Source
+  memcpy(&img, raw, sizeof(img));
+  char *buf = (char *)malloc(img.width - img.height); // $ Alert
+  free(buf);
+}
+
+// Field assigned before the struct is (re)filled from input.
+void process_image_refilled(FILE *fp) {
+  struct Image img;
+  img.width = 16;
+  fread(&img, sizeof(img), 1, fp); // $ Source
+  char *buf = (char *)malloc(img.width * 2); // $ Alert
+  free(buf);
+}
+
+// GOOD: fields are overwritten with trusted values after the read.
+void process_image_overwritten(FILE *fp) {
+  struct Image img;
+  fread(&img, sizeof(img), 1, fp);
+  img.width = 16;
+  img.height = 8;
+  char *buf = (char *)malloc(img.width - img.height);
+  free(buf);
+}
+
+static struct Image table[4];
+
+// GOOD: a trusted struct selected by an untrusted index is not itself filled from input.
+void process_table_entry(void) {
+  int i = atoi(getenv("IDX"));
+  char *buf1 = (char *)malloc(table[i].width - table[i].height);
+  struct Image *p = &table[i];
+  char *buf2 = (char *)malloc(p->width * 2);
+  free(buf1);
+  free(buf2);
+}

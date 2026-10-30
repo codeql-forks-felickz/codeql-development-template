@@ -3,6 +3,9 @@
 | test.c:47:27:47:32 | call to malloc | test.c:41:16:41:19 | fread output argument | test.c:47:34:47:38 | size2 | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:41:16:41:19 | fread output argument | user input (string read by fread) |
 | test.c:56:23:56:28 | call to malloc | test.c:55:9:55:9 | fread output argument | test.c:56:30:56:49 | ... - ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:55:9:55:9 | fread output argument | user input (string read by fread) |
 | test.c:64:23:64:28 | call to malloc | test.c:63:14:63:17 | recv output argument | test.c:64:30:64:61 | ... * ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:63:14:63:17 | recv output argument | user input (buffer read by recv) |
+| test.c:126:23:126:28 | call to malloc | test.c:125:9:125:12 | fread output argument | test.c:126:30:126:39 | call to area | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:125:9:125:12 | fread output argument | user input (string read by fread) |
+| test.c:136:23:136:28 | call to malloc | test.c:134:14:134:16 | recv output argument | test.c:136:30:136:51 | ... - ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:134:14:134:16 | recv output argument | user input (buffer read by recv) |
+| test.c:145:23:145:28 | call to malloc | test.c:144:9:144:12 | fread output argument | test.c:145:30:145:42 | ... * ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:144:9:144:12 | fread output argument | user input (string read by fread) |
 edges
 | test.c:41:16:41:19 | fread output argument | test.c:42:17:42:19 | *img | provenance |  |
 | test.c:42:17:42:19 | *img | test.c:42:17:42:38 | ... + ... | provenance | Config |
@@ -21,17 +24,28 @@ edges
 | test.c:56:30:56:30 | *p | test.c:56:41:56:41 | *p | provenance |  |
 | test.c:56:41:56:41 | *p | test.c:56:30:56:49 | ... - ... | provenance | Config |
 | test.c:63:14:63:17 | recv output argument | test.c:64:30:64:32 | *pkt | provenance |  |
-| test.c:64:30:64:32 | *pkt | test.c:64:34:64:37 | *dims | provenance | Config |
+| test.c:64:30:64:32 | *pkt | test.c:64:30:64:61 | ... * ... | provenance | Config |
 | test.c:64:30:64:32 | *pkt | test.c:64:47:64:49 | *pkt | provenance |  |
-| test.c:64:34:64:37 | *dims | test.c:64:30:64:61 | ... * ... | provenance | Config |
-| test.c:64:47:64:49 | *pkt | test.c:64:51:64:54 | *dims | provenance | Config |
-| test.c:64:51:64:54 | *dims | test.c:64:30:64:61 | ... * ... | provenance | Config |
+| test.c:64:47:64:49 | *pkt | test.c:64:30:64:61 | ... * ... | provenance | Config |
 | test.c:112:3:112:5 | *cfg [post update] [a] | test.c:113:3:113:5 | *cfg [a] | provenance |  |
 | test.c:112:3:112:31 | ... = ... | test.c:112:3:112:5 | *cfg [post update] [a] | provenance |  |
 | test.c:112:16:112:30 | *call to getenv | test.c:112:3:112:31 | ... = ... | provenance | TaintFunction |
-| test.c:113:3:113:5 | *cfg [a] | test.c:114:31:114:33 | *cfg [a] | provenance |  |
-| test.c:114:31:114:33 | *cfg [a] | test.c:115:31:115:33 | *cfg [a] | provenance |  |
+| test.c:113:3:113:5 | *cfg [a] | test.c:115:31:115:33 | *cfg [a] | provenance |  |
 | test.c:115:31:115:33 | *cfg [a] | test.c:115:31:115:39 | ... * ... | provenance |  |
+| test.c:121:31:121:31 | *p | test.c:121:43:121:43 | *p | provenance |  |
+| test.c:121:43:121:43 | *p | test.c:121:43:121:62 | ... * ... | provenance | Config |
+| test.c:121:43:121:43 | *p | test.c:121:54:121:54 | *p | provenance |  |
+| test.c:121:43:121:62 | ... * ... | test.c:121:12:121:15 | *area | provenance |  |
+| test.c:121:54:121:54 | *p | test.c:121:43:121:62 | ... * ... | provenance | Config |
+| test.c:125:9:125:12 | fread output argument | test.c:126:35:126:38 | *& ... | provenance |  |
+| test.c:126:35:126:38 | *& ... | test.c:121:31:121:31 | *p | provenance |  |
+| test.c:126:35:126:38 | *& ... | test.c:126:30:126:39 | call to area | provenance | Config |
+| test.c:134:14:134:16 | recv output argument | test.c:136:30:136:32 | *img | provenance | DataFlowFunction |
+| test.c:136:30:136:32 | *img | test.c:136:30:136:51 | ... - ... | provenance | Config |
+| test.c:136:30:136:32 | *img | test.c:136:42:136:44 | *img | provenance |  |
+| test.c:136:42:136:44 | *img | test.c:136:30:136:51 | ... - ... | provenance | Config |
+| test.c:144:9:144:12 | fread output argument | test.c:145:30:145:32 | *img | provenance |  |
+| test.c:145:30:145:32 | *img | test.c:145:30:145:42 | ... * ... | provenance | Config |
 nodes
 | test.c:41:16:41:19 | fread output argument | semmle.label | fread output argument |
 | test.c:42:17:42:19 | *img | semmle.label | *img |
@@ -50,14 +64,27 @@ nodes
 | test.c:63:14:63:17 | recv output argument | semmle.label | recv output argument |
 | test.c:64:30:64:32 | *pkt | semmle.label | *pkt |
 | test.c:64:30:64:61 | ... * ... | semmle.label | ... * ... |
-| test.c:64:34:64:37 | *dims | semmle.label | *dims |
 | test.c:64:47:64:49 | *pkt | semmle.label | *pkt |
-| test.c:64:51:64:54 | *dims | semmle.label | *dims |
 | test.c:112:3:112:5 | *cfg [post update] [a] | semmle.label | *cfg [post update] [a] |
 | test.c:112:3:112:31 | ... = ... | semmle.label | ... = ... |
 | test.c:112:16:112:30 | *call to getenv | semmle.label | *call to getenv |
 | test.c:113:3:113:5 | *cfg [a] | semmle.label | *cfg [a] |
-| test.c:114:31:114:33 | *cfg [a] | semmle.label | *cfg [a] |
 | test.c:115:31:115:33 | *cfg [a] | semmle.label | *cfg [a] |
 | test.c:115:31:115:39 | ... * ... | semmle.label | ... * ... |
+| test.c:121:12:121:15 | *area | semmle.label | *area |
+| test.c:121:31:121:31 | *p | semmle.label | *p |
+| test.c:121:43:121:43 | *p | semmle.label | *p |
+| test.c:121:43:121:62 | ... * ... | semmle.label | ... * ... |
+| test.c:121:54:121:54 | *p | semmle.label | *p |
+| test.c:125:9:125:12 | fread output argument | semmle.label | fread output argument |
+| test.c:126:30:126:39 | call to area | semmle.label | call to area |
+| test.c:126:35:126:38 | *& ... | semmle.label | *& ... |
+| test.c:134:14:134:16 | recv output argument | semmle.label | recv output argument |
+| test.c:136:30:136:32 | *img | semmle.label | *img |
+| test.c:136:30:136:51 | ... - ... | semmle.label | ... - ... |
+| test.c:136:42:136:44 | *img | semmle.label | *img |
+| test.c:144:9:144:12 | fread output argument | semmle.label | fread output argument |
+| test.c:145:30:145:32 | *img | semmle.label | *img |
+| test.c:145:30:145:42 | ... * ... | semmle.label | ... * ... |
 subpaths
+| test.c:126:35:126:38 | *& ... | test.c:121:31:121:31 | *p | test.c:121:12:121:15 | *area | test.c:126:30:126:39 | call to area |
