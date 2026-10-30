@@ -19,6 +19,10 @@ interface Body : Closeable {
         @JvmStatic
         @JvmName("create")
         operator fun invoke(body: InputStream, length: Long? = null): Body = TODO()
+
+        @JvmStatic
+        @JvmName("create")
+        operator fun invoke(body: ByteBuffer): Body = TODO()
     }
 }
 

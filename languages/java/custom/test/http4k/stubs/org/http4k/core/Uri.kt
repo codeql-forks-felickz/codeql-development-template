@@ -6,6 +6,7 @@ class Uri {
 
     fun path(path: String): Uri = TODO()
     fun query(query: String): Uri = TODO()
+    override fun toString(): String = TODO()
 
     companion object {
         @JvmStatic

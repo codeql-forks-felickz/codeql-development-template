@@ -13,6 +13,7 @@ import org.http4k.lens.Query
 import org.http4k.lens.string
 import org.http4k.routing.path
 import java.io.File
+import java.nio.ByteBuffer
 import java.sql.DriverManager
 
 // CWE-089: SQL injection (java/sql-injection)
@@ -126,6 +127,16 @@ fun xssBodyPayload(request: Request): Response {
     return Response(Status.OK).body("<p>$data</p>") // $ Alert[java/xss]
 }
 
+fun xssBodyByteBuffer(request: Request): Response {
+    val payload = request.body.payload // $ Source[java/xss]
+    return Response(Status.OK).body(Body(payload)) // $ Alert[java/xss]
+}
+
+fun xssBodyByteBufferSafe(request: Request): Response {
+    val payload = ByteBuffer.wrap("safe".toByteArray())
+    return Response(Status.OK).body(Body(payload))
+}
+
 fun xssBodyLens(request: Request): Response {
     val data = Body.string(ContentType.TEXT_PLAIN).toLens()(request) // $ Source[java/xss]
     return Response(Status.OK).body(Body("<p>$data</p>")) // $ Alert[java/xss]
@@ -190,7 +201,42 @@ fun redirectConstantUriPathUpdate(request: Request): Response {
     return Response(Status.FOUND).header("Location", target)
 }
 
+fun redirectUriOfFactory(request: Request): Response {
+    val next = request.query("next") ?: "" // $ Source[java/unvalidated-url-redirection]
+    val target = org.http4k.core.Uri.of(next).toString()
+    return Response(Status.FOUND).header("Location", target) // $ Alert[java/unvalidated-url-redirection]
+}
+
+fun redirectUriCompanionOfFactory(request: Request): Response {
+    val next = request.query("next") ?: "" // $ Source[java/unvalidated-url-redirection]
+    val target = org.http4k.core.Uri.Companion.of(next).toString()
+    return Response(Status.FOUND).header("Location", target) // $ Alert[java/unvalidated-url-redirection]
+}
+
+fun redirectConstantUriFactory(request: Request): Response {
+    val target = org.http4k.core.Uri.of("/fixed").toString()
+    return Response(Status.FOUND).header("Location", target)
+}
+
 fun replaceHeaderInjectionNonLocation(request: Request): Response {
     val value = request.query("value") ?: "" // $ Source[java/http-response-splitting]
     return Response(Status.OK).replaceHeader("X-Custom", value) // $ Alert[java/http-response-splitting]
+}
+
+fun responseHeaderNameInjection(request: Request): Response {
+    val name = request.query("name") ?: "" // $ Source[java/http-response-splitting]
+    return Response(Status.OK).header(name, "fixed") // $ Alert[java/http-response-splitting]
+}
+
+fun responseReplaceHeaderNameInjection(request: Request): Response {
+    val name = request.query("name") ?: "" // $ Source[java/http-response-splitting]
+    return Response(Status.OK).replaceHeader(name, "fixed") // $ Alert[java/http-response-splitting]
+}
+
+fun responseHeaderNameSafeConstant(request: Request): Response {
+    return Response(Status.OK).header("X-Custom", "fixed")
+}
+
+fun responseReplaceHeaderNameSafeConstant(request: Request): Response {
+    return Response(Status.OK).replaceHeader("X-Custom", "fixed")
 }

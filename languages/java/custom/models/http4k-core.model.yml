@@ -67,10 +67,32 @@ extensions:
           "org.http4k.core",
           "Response",
           True,
+          "header",
+          "(String,String)",
+          "",
+          "Argument[0]",
+          "response-splitting",
+          "manual"
+        ]
+      - [
+          "org.http4k.core",
+          "Response",
+          True,
           "replaceHeader",
           "(String,String)",
           "",
           "Argument[1]",
+          "response-splitting",
+          "manual"
+        ]
+      - [
+          "org.http4k.core",
+          "Response",
+          True,
+          "replaceHeader",
+          "(String,String)",
+          "",
+          "Argument[0]",
           "response-splitting",
           "manual"
         ]
@@ -94,6 +116,7 @@ extensions:
           "taint",
           "manual"
         ]
+      - ["org.http4k.core", "Body", True, "create", "(ByteBuffer)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.http4k.core", "Body", False, "create", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - [
           "org.http4k.core",
@@ -101,6 +124,18 @@ extensions:
           False,
           "create",
           "(InputStream,Long)",
+          "",
+          "Argument[0]",
+          "ReturnValue",
+          "taint",
+          "manual"
+        ]
+      - [
+          "org.http4k.core",
+          "Body$Companion",
+          False,
+          "create",
+          "(ByteBuffer)",
           "",
           "Argument[0]",
           "ReturnValue",
@@ -127,6 +162,8 @@ extensions:
       - ["org.http4k.core", "Uri", False, "getScheme", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.http4k.core", "Uri", False, "getUserInfo", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.http4k.core", "Uri", False, "toString", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri", True, "of", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["org.http4k.core", "Uri$Companion", False, "of", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.http4k.core", "Uri", False, "scheme", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.http4k.core", "Uri", False, "userInfo", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.http4k.core", "Uri", False, "host", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
