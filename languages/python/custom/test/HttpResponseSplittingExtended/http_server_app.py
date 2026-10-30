@@ -19,9 +19,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_header("Content-Type", "text/html; charset=%s" % params.get("charset", "utf8"))  # $ Alert
         self.send_header("X-Lang", params.get("lang"))  # $ Alert
 
-        # BAD: dict comprehension with non-literal keys. Not detected: `codeql/python-all`
-        # models dict comprehensions as a list of (key, value) tuples, not as dictionary content.
-        comp = {m.group(1): m.group(2) for m in re.finditer(r"(\w+)=(\w+)", query)}
+        # BAD: dict comprehension with non-literal keys and URL-encoded CR/LF.
+        comp = {m.group(1): urllib.parse.unquote(m.group(2)) for m in re.finditer(r"(\w+)=([^&]+)", query)}
         self.send_header("X-Comp", comp.get("x", ""))  # $ MISSING: Alert
 
         # BAD: dict built in a helper function.
@@ -52,6 +51,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
         # GOOD: allow-list lookup keyed by user input returns constant values.
         allowed = {"utf8": "utf-8", "latin1": "iso-8859-1"}
         self.send_header("X-Allowed", allowed.get(params.get("charset"), "utf-8"))
+
+        # GOOD: a word-only capture cannot contain encoded CR/LF.
+        safe_comp = {m.group(1): m.group(2) for m in re.finditer(r"(\w+)=(\w+)", query)}
+        self.send_header("X-Comp-Safe", safe_comp.get("x", ""))
 
         # GOOD: tuple-unpacked constants read from a nested scope.
         lang, region = "en", "US"
