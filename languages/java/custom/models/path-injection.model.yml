@@ -1,0 +1,31 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      # Servlet multipart upload: `Part.write(fileName)` writes the uploaded content to `fileName`.
+      - ["jakarta.servlet.http", "Part", True, "write", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["javax.servlet.http", "Part", True, "write", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      # Spring multipart upload: `MultipartFile.transferTo(dest)` writes the uploaded content to `dest`.
+      - [
+          "org.springframework.web.multipart",
+          "MultipartFile",
+          True,
+          "transferTo",
+          "(File)",
+          "",
+          "Argument[0]",
+          "path-injection",
+          "manual"
+        ]
+      - [
+          "org.springframework.web.multipart",
+          "MultipartFile",
+          True,
+          "transferTo",
+          "(Path)",
+          "",
+          "Argument[0]",
+          "path-injection",
+          "manual"
+        ]
