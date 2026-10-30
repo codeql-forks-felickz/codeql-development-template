@@ -1,0 +1,36 @@
+#select
+| example/ProxyController.java:17:42:17:47 | header | example/ProxyController.java:15:56:15:82 | header : String | example/ProxyController.java:17:42:17:47 | header | This outgoing request header depends on a $@, which may allow header injection or request splitting. | example/ProxyController.java:15:56:15:82 | header | user-provided value |
+| example/ProxyController.java:24:42:24:47 | header | example/ProxyController.java:22:56:22:82 | header : String | example/ProxyController.java:24:42:24:47 | header | This outgoing request header depends on a $@, which may allow header injection or request splitting. | example/ProxyController.java:22:56:22:82 | header | user-provided value |
+| example/ProxyController.java:31:23:31:26 | name | example/ProxyController.java:29:57:29:81 | name : String | example/ProxyController.java:31:23:31:26 | name | This outgoing request header depends on a $@, which may allow header injection or request splitting. | example/ProxyController.java:29:57:29:81 | name | user-provided value |
+| example/ProxyController.java:38:58:38:63 | header | example/ProxyController.java:36:58:36:84 | header : String | example/ProxyController.java:38:58:38:63 | header | This outgoing request header depends on a $@, which may allow header injection or request splitting. | example/ProxyController.java:36:58:36:84 | header | user-provided value |
+| example/ProxyController.java:44:58:44:63 | header | example/ProxyController.java:43:54:43:80 | header : String | example/ProxyController.java:44:58:44:63 | header | This outgoing request header depends on a $@, which may allow header injection or request splitting. | example/ProxyController.java:43:54:43:80 | header | user-provided value |
+| example/ProxyController.java:52:42:52:47 | header | example/ProxyController.java:49:58:49:84 | header : String | example/ProxyController.java:52:42:52:47 | header | This outgoing request header depends on a $@, which may allow header injection or request splitting. | example/ProxyController.java:49:58:49:84 | header | user-provided value |
+| example/ProxyController.java:59:39:59:44 | header | example/ProxyController.java:57:65:57:91 | header : String | example/ProxyController.java:59:39:59:44 | header | This outgoing request header depends on a $@, which may allow header injection or request splitting. | example/ProxyController.java:57:65:57:91 | header | user-provided value |
+| example/ProxyController.java:66:39:66:44 | header | example/ProxyController.java:64:68:64:94 | header : String | example/ProxyController.java:66:39:66:44 | header | This outgoing request header depends on a $@, which may allow header injection or request splitting. | example/ProxyController.java:64:68:64:94 | header | user-provided value |
+edges
+| example/ProxyController.java:15:56:15:82 | header : String | example/ProxyController.java:17:42:17:47 | header | provenance |  |
+| example/ProxyController.java:22:56:22:82 | header : String | example/ProxyController.java:24:42:24:47 | header | provenance |  |
+| example/ProxyController.java:29:57:29:81 | name : String | example/ProxyController.java:31:23:31:26 | name | provenance |  |
+| example/ProxyController.java:36:58:36:84 | header : String | example/ProxyController.java:38:58:38:63 | header | provenance |  |
+| example/ProxyController.java:43:54:43:80 | header : String | example/ProxyController.java:44:58:44:63 | header | provenance |  |
+| example/ProxyController.java:49:58:49:84 | header : String | example/ProxyController.java:52:42:52:47 | header | provenance |  |
+| example/ProxyController.java:57:65:57:91 | header : String | example/ProxyController.java:59:39:59:44 | header | provenance |  |
+| example/ProxyController.java:64:68:64:94 | header : String | example/ProxyController.java:66:39:66:44 | header | provenance |  |
+nodes
+| example/ProxyController.java:15:56:15:82 | header : String | semmle.label | header : String |
+| example/ProxyController.java:17:42:17:47 | header | semmle.label | header |
+| example/ProxyController.java:22:56:22:82 | header : String | semmle.label | header : String |
+| example/ProxyController.java:24:42:24:47 | header | semmle.label | header |
+| example/ProxyController.java:29:57:29:81 | name : String | semmle.label | name : String |
+| example/ProxyController.java:31:23:31:26 | name | semmle.label | name |
+| example/ProxyController.java:36:58:36:84 | header : String | semmle.label | header : String |
+| example/ProxyController.java:38:58:38:63 | header | semmle.label | header |
+| example/ProxyController.java:43:54:43:80 | header : String | semmle.label | header : String |
+| example/ProxyController.java:44:58:44:63 | header | semmle.label | header |
+| example/ProxyController.java:49:58:49:84 | header : String | semmle.label | header : String |
+| example/ProxyController.java:52:42:52:47 | header | semmle.label | header |
+| example/ProxyController.java:57:65:57:91 | header : String | semmle.label | header : String |
+| example/ProxyController.java:59:39:59:44 | header | semmle.label | header |
+| example/ProxyController.java:64:68:64:94 | header : String | semmle.label | header : String |
+| example/ProxyController.java:66:39:66:44 | header | semmle.label | header |
+subpaths
