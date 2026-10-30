@@ -63,7 +63,9 @@ class OneTimeSecretSink extends DataFlow::Node {
     |
       isOneTimeSecretName(callee.getParameter(i).getName())
       or
-      callee.getName().matches("set%") and isOneTimeSecretName(callee.getName())
+      callee.getName().matches("set%") and
+      isOneTimeSecretName(callee.getName()) and
+      (c.getNumArgument() = 1 or not callee.getParameter(i).getType() instanceof PrimitiveType)
     )
     or
     exists(ReturnStmt ret |

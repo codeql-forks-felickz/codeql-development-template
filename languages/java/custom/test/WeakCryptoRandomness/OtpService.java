@@ -10,6 +10,8 @@ public class OtpService {
     public void setOtpHash(String otpHash) {
       this.otpHash = otpHash;
     }
+
+    public void setOtp(int slot, String value) {}
   }
 
   static void sendEmail(String to, String subject, String body) {}
@@ -33,6 +35,16 @@ public class OtpService {
   // BAD: OTP passed directly to an OTP setter.
   public void requestOtpSetter(OtpEntity entity) {
     entity.setOtpHash(String.valueOf(new Random().nextInt(1000000))); // $ Alert
+  }
+
+  // BAD: weak OTP passed as the reference-type value of a multi-argument setter.
+  public void requestOtpSetterWithSlot(OtpEntity entity) {
+    entity.setOtp(new SecureRandom().nextInt(10), String.valueOf(new Random().nextInt(1000000))); // $ Alert
+  }
+
+  // GOOD: weak randomness used only for the primitive slot, not the OTP value.
+  public void requestOtpWithRandomSlot(OtpEntity entity) {
+    entity.setOtp(new Random().nextInt(10), String.valueOf(new SecureRandom().nextInt(1000000)));
   }
 
   // BAD: method that generates an OTP returns a weak random value.
