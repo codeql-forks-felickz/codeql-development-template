@@ -1,0 +1,14 @@
+extensions:
+  # `JspWriter` is the `out` object of a JSP page. Writing to it emits HTML, so
+  # its print methods are cross-site scripting sinks in JSP servlets that have
+  # been precompiled (for example by `jspc`) into Java sources.
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.servlet.jsp", "JspWriter", True, "print", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["javax.servlet.jsp", "JspWriter", True, "println", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["javax.servlet.jsp", "JspWriter", True, "write", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["jakarta.servlet.jsp", "JspWriter", True, "print", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["jakarta.servlet.jsp", "JspWriter", True, "println", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["jakarta.servlet.jsp", "JspWriter", True, "write", "", "", "Argument[0]", "html-injection", "manual"]

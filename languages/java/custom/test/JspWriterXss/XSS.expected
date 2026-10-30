@@ -1,0 +1,14 @@
+#select
+| org/apache/jsp/login_jsp.java:21:15:21:22 | username | org/apache/jsp/login_jsp.java:19:23:19:54 | getParameter(...) : String | org/apache/jsp/login_jsp.java:21:15:21:22 | username | Cross-site scripting vulnerability due to a $@. | org/apache/jsp/login_jsp.java:19:23:19:54 | getParameter(...) | user-provided value |
+| org/apache/jsp/login_jsp.java:25:17:25:43 | getParameter(...) | org/apache/jsp/login_jsp.java:25:17:25:43 | getParameter(...) | org/apache/jsp/login_jsp.java:25:17:25:43 | getParameter(...) | Cross-site scripting vulnerability due to a $@. | org/apache/jsp/login_jsp.java:25:17:25:43 | getParameter(...) | user-provided value |
+| org/apache/jsp/login_jsp.java:27:17:27:60 | ... + ... | org/apache/jsp/login_jsp.java:27:25:27:51 | getParameter(...) : String | org/apache/jsp/login_jsp.java:27:17:27:60 | ... + ... | Cross-site scripting vulnerability due to a $@. | org/apache/jsp/login_jsp.java:27:25:27:51 | getParameter(...) | user-provided value |
+edges
+| org/apache/jsp/login_jsp.java:19:23:19:54 | getParameter(...) : String | org/apache/jsp/login_jsp.java:21:15:21:22 | username | provenance | Src:MaD:48701 Sink:MaD:0 |
+| org/apache/jsp/login_jsp.java:27:25:27:51 | getParameter(...) : String | org/apache/jsp/login_jsp.java:27:17:27:60 | ... + ... | provenance | Src:MaD:48701 Sink:MaD:1 |
+nodes
+| org/apache/jsp/login_jsp.java:19:23:19:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| org/apache/jsp/login_jsp.java:21:15:21:22 | username | semmle.label | username |
+| org/apache/jsp/login_jsp.java:25:17:25:43 | getParameter(...) | semmle.label | getParameter(...) |
+| org/apache/jsp/login_jsp.java:27:17:27:60 | ... + ... | semmle.label | ... + ... |
+| org/apache/jsp/login_jsp.java:27:25:27:51 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+subpaths
