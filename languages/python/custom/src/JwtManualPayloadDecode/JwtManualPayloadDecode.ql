@@ -37,7 +37,10 @@ class DotSplitCall extends DataFlow::MethodCallNode {
       exists(Assign assign, Tuple targets |
         assign.getValue() = this.asExpr() and
         targets = assign.getATarget() and
-        result = targets.getElt(i).(Name).getVariable().getAUse().getNode()
+        exists(SsaVariable variable |
+          variable.getDefinition().getNode() = targets.getElt(i) and
+          result = variable.getAUse().getNode()
+        )
       )
     )
   }

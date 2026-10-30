@@ -39,7 +39,10 @@ class JwtDecodeCall extends DataFlow::CallCfgNode {
   DataFlow::Node getToken() { result in [this.getArg(0), this.getArgByName(["jwt", "token"])] }
 
   /** Gets the `options` argument. */
-  DataFlow::Node getOptions() { result in [this.getArg(3), this.getArgByName("options")] }
+  DataFlow::Node getOptions() {
+    result in [this.getArg(3), this.getArgByName("options")] or
+    isPyJwt = true and result = this.getArg(4)
+  }
 
   /** Gets the legacy (PyJWT 1.x) `verify` argument. */
   DataFlow::Node getVerify() {
@@ -84,6 +87,7 @@ predicate tokenIsVerifiedElsewhere(JwtDecodeCall call) {
     other != call and
     other.getScope() = call.getScope() and
     other.getToken().getALocalSource() = call.getToken().getALocalSource() and
+    call.getNode().strictlyDominates(other.getNode()) and
     not disablesVerification(other, _)
   )
 }

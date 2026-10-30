@@ -37,6 +37,10 @@ def bad_legacy_verify_positional(token):
     return jwt.decode(token, SECRET_KEY, False)  # $ Alert
 
 
+def bad_legacy_positional_options(token):
+    return jwt.decode(token, SECRET_KEY, True, ["HS256"], {"verify_signature": False})  # $ Alert
+
+
 def bad_decode_complete(token):
     return jwt.decode_complete(token, options={"verify_signature": False})  # $ Alert
 
@@ -63,12 +67,22 @@ def good_verify_true(token):
     return jwt.decode(token, SECRET_KEY, verify=True)
 
 
+def good_legacy_positional_options(token):
+    return jwt.decode(token, SECRET_KEY, True, ["HS256"], {"verify_signature": True})
+
+
 def good_peek_then_verify(token, keys):
     # Reading unverified claims only to select the verification key is fine,
     # because the same token is then decoded with signature verification.
     unverified = jwt.decode(token, options={"verify_signature": False})
     key = keys[unverified["iss"]]
     return jwt.decode(token, key, algorithms=["RS256"])
+
+
+def bad_mutually_exclusive_decodes(token, choose_verified):
+    if choose_verified:
+        return jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+    return jwt.decode(token, options={"verify_signature": False})  # $ Alert
 
 
 def good_unrelated_decode(data):

@@ -26,6 +26,19 @@ def bad_unpacking(request):
     return json.loads(base64.urlsafe_b64decode(payload + "=="))  # $ Alert
 
 
+def bad_signature_reassigned(request):
+    header, payload, signature = request.cookies["session"].split(".")
+    signature = "replacement"
+    if signature:
+        return json.loads(base64.urlsafe_b64decode(payload + "=="))  # $ Alert
+
+
+def good_payload_reassigned(request):
+    header, payload, signature = request.cookies["session"].split(".")
+    payload = request.args["payload"]
+    return json.loads(base64.urlsafe_b64decode(payload + "=="))
+
+
 def bad_bearer_prefix(request):
     token = request.headers["Authorization"].replace("Bearer ", "")
     parts = token.split(".", 2)
