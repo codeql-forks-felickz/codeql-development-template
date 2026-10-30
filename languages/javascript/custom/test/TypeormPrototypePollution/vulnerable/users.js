@@ -67,3 +67,11 @@ app.post('/users/seed', async (req, res) => {
   await repo.save({ name: 'Liran', address: 'IL', role: 'user' })
   res.sendStatus(200)
 })
+
+app.post('/users/manager-options', async (req, res) => {
+  const manager = typeorm.getManager()
+  const entity = { name: 'clean' }
+  await manager.save(entity, req.body)
+  await manager.save(new Object(), req.body)
+  res.sendStatus(200)
+})

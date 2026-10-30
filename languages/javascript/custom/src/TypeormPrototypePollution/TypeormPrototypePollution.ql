@@ -28,6 +28,11 @@ class TypeormDeepMergeSink extends Sink {
 
   TypeormDeepMergeSink() {
     ModelOutput::sinkNode(this, "typeorm-deep-merge") and
+    not exists(MethodCallExpr call |
+      call.getMethodName() = "save" and
+      call.getArgument(1) = this.asExpr() and
+      isEntityObjectArgument(call.getArgument(0))
+    ) and
     exists(NpmPackage pkg, DependencySemVer version |
       pkg.getAFile() = this.getLocation().getFile() and
       dep = pkg.getPackageJson().getADependenciesObject(_).getPropValue("typeorm") and
@@ -40,6 +45,16 @@ class TypeormDeepMergeSink extends Sink {
     moduleName = "typeorm" and
     location = dep
   }
+}
+
+predicate isEntityObjectArgument(Expr entity) {
+  entity.stripParens() instanceof ObjectExpr or
+  entity.stripParens() instanceof NewExpr or
+  exists(VarAccess access, Expr assigned |
+    entity.stripParens() = access and
+    assigned = access.getVariable().getAnAssignedExpr().stripParens() and
+    (assigned instanceof ObjectExpr or assigned instanceof NewExpr)
+  )
 }
 
 from PathNode source, PathNode sink, string moduleName, Locatable dependencyLoc
