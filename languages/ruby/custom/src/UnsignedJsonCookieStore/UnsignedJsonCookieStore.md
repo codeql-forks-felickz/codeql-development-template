@@ -23,12 +23,12 @@ end
 ActionDispatch::Session::CookieStore.prepend(InsecureStore)
 ```
 
-The following version reads the value through the encrypted cookie jar, so Rails checks the cookie before it's decoded:
+The encrypted cookie jar verifies and deserializes the session value, so return it directly with an empty-hash fallback for a missing or invalid cookie:
 
 ```ruby
 module JsonStore
   def unpacked_cookie_data(req)
-    JSON.parse(req.cookie_jar.encrypted[@key]) # GOOD: authenticated encryption is checked
+    req.cookie_jar.encrypted[@key] || {} # GOOD: authenticated and deserialized session data
   end
 end
 ActionDispatch::Session::CookieStore.prepend(JsonStore)

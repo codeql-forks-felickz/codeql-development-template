@@ -57,13 +57,37 @@ predicate patchesCookieStore(DataFlow::ModuleNode mod, string name) {
 }
 
 /**
+ * Holds if `mod` is included into the Rails cookie store or cookie jar class
+ * `name`.
+ */
+predicate includesCookieStoreModule(DataFlow::ModuleNode mod, string name) {
+  exists(DataFlow::CallNode call |
+    call = cookieStoreClass(name).getAMethodCall(["include"])
+    or
+    call = cookieStoreClass(name).getADescendentModule().getAModuleLevelCall(["include"])
+  |
+    mod.getAnImmediateReference().flowsTo(call.getArgument(_))
+  )
+}
+
+/**
  * Holds if `m` is an instance method that ends up on the Rails cookie store or
  * cookie jar class `name`.
  */
 predicate cookieStoreMethod(MethodBase m, string name) {
   exists(DataFlow::ModuleNode mod |
     patchesCookieStore(mod, name) and
-    m = mod.getAnOwnInstanceMethod().asCallableAstNode()
+    m = mod.getAnOwnInstanceMethod().asCallableAstNode() and
+    not (
+      name = "ActionDispatch::Session::CookieStore" and
+      includesCookieStoreModule(mod, name) and
+      m.getName() =
+        [
+          "initialize", "delete_session", "load_session", "extract_session_id",
+          "unpacked_cookie_data", "persistent_session_id!", "write_session", "set_cookie",
+          "get_cookie", "cookie_jar"
+        ]
+    )
   )
   or
   // `CookieStore.class_eval do def unpacked_cookie_data(req) ... end end`
@@ -71,7 +95,12 @@ predicate cookieStoreMethod(MethodBase m, string name) {
     call =
       cookieStoreClass(name)
           .getAMethodCall(["class_eval", "class_exec", "module_eval", "module_exec"]) and
-    m.getParent+() = call.getBlock().asExpr().getExpr()
+    m instanceof Method and
+    m.getParent+() = call.getBlock().asExpr().getExpr() and
+    not exists(ModuleBase nestedModule |
+      m.getParent+() = nestedModule and
+      nestedModule.getParent+() = call.getBlock().asExpr().getExpr()
+    )
   )
 }
 

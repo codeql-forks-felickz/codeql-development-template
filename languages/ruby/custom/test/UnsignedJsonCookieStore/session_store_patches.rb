@@ -13,10 +13,18 @@ ActionDispatch::Session::CookieStore.prepend(InsecureStore)
 # Module included into the cookie session store.
 module IncludedInsecureStore
   def get_cookie(req)
-    ActiveSupport::JSON.decode(req.cookie_jar[@key]) # $ Alert
+    ActiveSupport::JSON.decode(req.cookie_jar[@key])
   end
 end
 ActionDispatch::Session::CookieStore.include(IncludedInsecureStore)
+
+# Includes can still override methods inherited from an ancestor.
+module IncludedInsecureJar
+  def [](name)
+    JSON.parse(@parent_jar[name]) # $ Alert
+  end
+end
+ActionDispatch::Cookies::SignedKeyRotatingCookieJar.include(IncludedInsecureJar)
 
 # Prepend issued from inside the reopened class body.
 module SelfPrependedStore
@@ -58,6 +66,16 @@ ActionDispatch::Session::CookieStore.class_eval do
   def unpacked_cookie_data(req)
     JSON.parse(req.cookies[@key]) # $ Alert
   end
+
+  def self.decode(req)
+    JSON.parse(req.cookies[@key])
+  end
+
+  class Helper
+    def decode(req)
+      JSON.parse(req.cookies[@key])
+    end
+  end
 end
 
 # Custom session store subclassing the cookie store.
@@ -87,8 +105,8 @@ ActionDispatch::Session::CookieStore.prepend(SignedStore)
 
 # Uses the encrypted cookie jar before decoding: OK.
 module EncryptedStore
-  def get_cookie(req)
-    JSON.parse(req.cookie_jar.encrypted[@key])
+  def unpacked_cookie_data(req)
+    req.cookie_jar.encrypted[@key] || {}
   end
 end
 ActionDispatch::Session::CookieStore.prepend(EncryptedStore)
