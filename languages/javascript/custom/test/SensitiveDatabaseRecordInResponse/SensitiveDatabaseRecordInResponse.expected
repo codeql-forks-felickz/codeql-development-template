@@ -3,7 +3,7 @@
 | routes/mongoose.js:30:12:30:27 | saved.toObject() | routes/mongoose.js:29:17:29:36 | await account.save() | routes/mongoose.js:30:12:30:27 | saved.toObject() | This HTTP response includes $@, which has the password field 'password'. | routes/mongoose.js:29:17:29:36 | await account.save() | a database record |
 | routes/mongoose.js:31:12:31:24 | account.get() | routes/mongoose.js:27:19:27:55 | await A ... ams.id) | routes/mongoose.js:31:12:31:24 | account.get() | This HTTP response includes $@, which has the password field 'password'. | routes/mongoose.js:27:19:27:55 | await A ... ams.id) | a database record |
 | routes/mongoose.js:32:12:32:34 | account ... sword") | routes/mongoose.js:27:19:27:55 | await A ... ams.id) | routes/mongoose.js:32:12:32:34 | account ... sword") | This HTTP response includes $@, which has the password field 'password'. | routes/mongoose.js:27:19:27:55 | await A ... ams.id) | a database record |
-| routes/mongoose.js:39:12:39:18 | account | routes/mongoose.js:38:19:38:89 | await A ... true }) | routes/mongoose.js:39:12:39:18 | account | This HTTP response includes $@, which has the password field 'password'. | routes/mongoose.js:38:19:38:89 | await A ... true }) | a database record |
+| routes/mongoose.js:36:12:36:22 | withOptions | routes/mongoose.js:35:23:35:69 | await A ... true }) | routes/mongoose.js:36:12:36:22 | withOptions | This HTTP response includes $@, which has the password field 'password'. | routes/mongoose.js:35:23:35:69 | await A ... true }) | a database record |
 | routes/resetPassword.ts:10:16:10:36 | { user: ... dUser } | routes/resetPassword.ts:9:27:9:67 | await u ... .new }) | routes/resetPassword.ts:10:16:10:36 | { user: ... dUser } | This HTTP response includes $@, which has the password field 'password'. | routes/resetPassword.ts:9:27:9:67 | await u ... .new }) | a database record |
 | routes/resetPassword.ts:18:14:18:17 | user | routes/resetPassword.ts:17:18:17:74 | await U ... il } }) | routes/resetPassword.ts:18:14:18:17 | user | This HTTP response includes $@, which has the password field 'password'. | routes/resetPassword.ts:17:18:17:74 | await U ... il } }) | a database record |
 | routes/resetPassword.ts:33:14:33:57 | { passw ... alues } | routes/resetPassword.ts:17:18:17:74 | await U ... il } }) | routes/resetPassword.ts:33:14:33:57 | { passw ... alues } | This HTTP response includes $@, which has the password field 'password'. | routes/resetPassword.ts:17:18:17:74 | await U ... il } }) | a database record |
@@ -18,8 +18,8 @@ edges
 | routes/mongoose.js:30:12:30:16 | saved | routes/mongoose.js:30:12:30:27 | saved.toObject() | provenance | Config |
 | routes/mongoose.js:31:12:31:18 | account | routes/mongoose.js:31:12:31:24 | account.get() | provenance | Config |
 | routes/mongoose.js:32:12:32:18 | account | routes/mongoose.js:32:12:32:34 | account ... sword") | provenance | Config |
-| routes/mongoose.js:38:9:38:15 | account | routes/mongoose.js:39:12:39:18 | account | provenance |  |
-| routes/mongoose.js:38:19:38:89 | await A ... true }) | routes/mongoose.js:38:9:38:15 | account | provenance |  |
+| routes/mongoose.js:35:9:35:19 | withOptions | routes/mongoose.js:36:12:36:22 | withOptions | provenance |  |
+| routes/mongoose.js:35:23:35:69 | await A ... true }) | routes/mongoose.js:35:9:35:19 | withOptions | provenance |  |
 | routes/resetPassword.ts:9:13:9:23 | updatedUser | routes/resetPassword.ts:10:24:10:34 | updatedUser | provenance |  |
 | routes/resetPassword.ts:9:27:9:67 | await u ... .new }) | routes/resetPassword.ts:9:13:9:23 | updatedUser | provenance |  |
 | routes/resetPassword.ts:10:24:10:34 | updatedUser | routes/resetPassword.ts:10:16:10:36 | { user: ... dUser } | provenance |  |
@@ -45,9 +45,9 @@ nodes
 | routes/mongoose.js:31:12:31:24 | account.get() | semmle.label | account.get() |
 | routes/mongoose.js:32:12:32:18 | account | semmle.label | account |
 | routes/mongoose.js:32:12:32:34 | account ... sword") | semmle.label | account ... sword") |
-| routes/mongoose.js:38:9:38:15 | account | semmle.label | account |
-| routes/mongoose.js:38:19:38:89 | await A ... true }) | semmle.label | await A ... true }) |
-| routes/mongoose.js:39:12:39:18 | account | semmle.label | account |
+| routes/mongoose.js:35:9:35:19 | withOptions | semmle.label | withOptions |
+| routes/mongoose.js:35:23:35:69 | await A ... true }) | semmle.label | await A ... true }) |
+| routes/mongoose.js:36:12:36:22 | withOptions | semmle.label | withOptions |
 | routes/resetPassword.ts:9:13:9:23 | updatedUser | semmle.label | updatedUser |
 | routes/resetPassword.ts:9:27:9:67 | await u ... .new }) | semmle.label | await u ... .new }) |
 | routes/resetPassword.ts:10:16:10:36 | { user: ... dUser } | semmle.label | { user: ... dUser } |

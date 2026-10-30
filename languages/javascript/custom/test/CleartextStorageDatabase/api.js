@@ -9,6 +9,9 @@ app.use(express.json());
 // under a `password` field even though the request parameter is just called `pass`.
 function api_register(user, pass, req, res) {
     MongoClient.connect("mongodb://localhost/pixidb", function (err, db) {
+        db.collection("users").insertOne({
+            credentials: [{ password: pass }] // $ Alert
+        });
         db.collection("users").insert({
             email: user,
             password: pass, // $ Alert
@@ -21,14 +24,6 @@ function api_register(user, pass, req, res) {
 
 app.post("/api/register", function (req, res) {
     api_register(req.body.user, req.body.pass, req, res); // $ Source
-});
-
-app.post("/api/register-nested", async function (req, res) {
-    const client = await MongoClient.connect("mongodb://localhost/pixidb");
-    await client.db().collection("users").insertOne({
-        credentials: [{ password: req.body.password }] // $ Alert
-    });
-    res.end();
 });
 
 // Safe: the password is hashed with a password KDF before it is stored.

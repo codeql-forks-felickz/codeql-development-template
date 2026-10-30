@@ -44,22 +44,16 @@ router.post("/accounts/explicit", async (req, res) => {
 
 router.put("/accounts/:id/password", async (req, res) => {
     await Account.findByIdAndUpdate(req.params.id, { $set: { password: req.body.newPassword } }); // $ Alert
-    res.status(204).end();
-});
-
-router.put("/accounts/:id/password-on-insert", async (req, res) => {
     await Account.updateOne(
         { _id: req.params.id },
         { $setOnInsert: { password: req.body.newPassword } } // $ Alert
     );
-    res.status(204).end();
-});
-
-router.put("/accounts/:id/push-credential", async (req, res) => {
     await Account.updateOne(
         { _id: req.params.id },
         { $push: { credentials: { password: req.body.newPassword } } } // $ Alert
     );
+    await Account.updateOne({ _id: req.params.id }, { $rename: { password: "passwordHash" } });
+    await Account.updateOne({ _id: req.params.id }, { $unset: { password: "password" } });
     res.status(204).end();
 });
 
@@ -67,17 +61,6 @@ router.put("/accounts/:id/push-credential", async (req, res) => {
 router.put("/accounts/:id/password-hashed", async (req, res) => {
     const password = await bcrypt.hash(req.body.newPassword, 12);
     await Account.updateOne({ _id: req.params.id }, { password });
-    res.status(204).end();
-});
-
-// Safe: these values are update instructions, not stored sensitive values.
-router.put("/accounts/:id/rename-password", async (req, res) => {
-    await Account.updateOne({ _id: req.params.id }, { $rename: { password: "passwordHash" } });
-    res.status(204).end();
-});
-
-router.put("/accounts/:id/unset-password", async (req, res) => {
-    await Account.updateOne({ _id: req.params.id }, { $unset: { password: "password" } });
     res.status(204).end();
 });
 
