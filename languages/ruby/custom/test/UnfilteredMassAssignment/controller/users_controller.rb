@@ -34,6 +34,10 @@ post '/users/register_slice' do
   User.new(body.slice("fname", "lname", "email"))
 end
 
+post '/users/register_dynamic_slice' do
+  User.new(params.slice(params[:field])) # $ Alert
+end
+
 put '/users/:id/name' do
   user = User.get(params[:id])
   user.update(fname: params[:fname])

@@ -145,10 +145,18 @@ private module Config implements DataFlow::StateConfigSig {
     )
   }
 
-  predicate isBarrier(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
     // Explicitly selecting the allowed keys.
-    node.(DataFlow::CallNode).getMethodName() = ["slice", "permit", "values_at"] and
-    exists(node.(DataFlow::CallNode).getArgument(0))
+    state = TUnfilteredHash() and
+    exists(DataFlow::CallNode call |
+      node = call and
+      call.getMethodName() = ["slice", "permit", "values_at"] and
+      not exists(DataFlow::Node arg, DataFlow::Node src |
+        arg = call.getArgument(_) and
+        isSource(src, _) and
+        TaintTracking::localTaint(src, arg)
+      )
+    )
   }
 
   predicate isBarrierIn(DataFlow::Node node, FlowState state) { isSource(node, state) }

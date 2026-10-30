@@ -4,6 +4,10 @@ class AccountsController < ActionController::Base
     Account.create(JSON.parse(request.raw_post)) # $ Alert
   end
 
+  def create_with_sliced_json
+    Account.create(JSON.parse(request.raw_post.slice(0, 1000))) # $ Alert
+  end
+
   # ActionController::Parameters raise ForbiddenAttributesError when unpermitted: not reported.
   def create_params
     Account.create(params[:account])

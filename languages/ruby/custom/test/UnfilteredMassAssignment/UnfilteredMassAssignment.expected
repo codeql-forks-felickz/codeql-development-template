@@ -1,12 +1,38 @@
 #select
 | app/controllers/accounts_controller.rb:4:20:4:47 | call to parse | app/controllers/accounts_controller.rb:4:31:4:46 | call to raw_post | app/controllers/accounts_controller.rb:4:20:4:47 | call to parse | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | app/controllers/accounts_controller.rb:4:31:4:46 | call to raw_post | this user-controlled input |
+| app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | this user-controlled input |
 | app/controllers/api.rb:3:20:3:25 | call to params | app/controllers/api.rb:3:20:3:25 | call to params | app/controllers/api.rb:3:20:3:25 | call to params | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | app/controllers/api.rb:3:20:3:25 | call to params | this user-controlled input |
 | controller/users_controller.rb:8:20:8:25 | params | controller/users_controller.rb:4:27:4:33 | call to request | controller/users_controller.rb:8:20:8:25 | params | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | controller/users_controller.rb:4:27:4:33 | call to request | this user-controlled input |
 | controller/users_controller.rb:14:15:14:19 | attrs | controller/users_controller.rb:13:22:13:28 | call to request | controller/users_controller.rb:14:15:14:19 | attrs | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | controller/users_controller.rb:13:22:13:28 | call to request | this user-controlled input |
 | controller/users_controller.rb:19:15:19:20 | call to params | controller/users_controller.rb:19:15:19:20 | call to params | controller/users_controller.rb:19:15:19:20 | call to params | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | controller/users_controller.rb:19:15:19:20 | call to params | this user-controlled input |
 | controller/users_controller.rb:23:24:23:29 | call to params | controller/users_controller.rb:23:24:23:29 | call to params | controller/users_controller.rb:23:24:23:29 | call to params | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | controller/users_controller.rb:23:24:23:29 | call to params | this user-controlled input |
+| controller/users_controller.rb:38:12:38:39 | call to slice | controller/users_controller.rb:38:12:38:17 | call to params | controller/users_controller.rb:38:12:38:39 | call to slice | This mass assignment operation can assign arbitrary attributes from an unfiltered hash built from $@. | controller/users_controller.rb:38:12:38:17 | call to params | this user-controlled input |
 edges
 | app/controllers/accounts_controller.rb:4:31:4:46 | call to raw_post | app/controllers/accounts_controller.rb:4:20:4:47 | call to parse | provenance | Config |
+| app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | app/controllers/accounts_controller.rb:8:31:8:61 | call to slice | provenance |  |
+| app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 0] | provenance |  |
+| app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 1] | provenance |  |
+| app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 2] | provenance |  |
+| app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 3] | provenance |  |
+| app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 4] | provenance |  |
+| app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 5] | provenance |  |
+| app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 6] | provenance |  |
+| app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 7] | provenance |  |
+| app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 8] | provenance |  |
+| app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 9] | provenance |  |
+| app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 10] | provenance |  |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice | app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | provenance | Config |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 0] | app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | provenance | Config |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 1] | app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | provenance | Config |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 2] | app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | provenance | Config |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 3] | app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | provenance | Config |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 4] | app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | provenance | Config |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 5] | app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | provenance | Config |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 6] | app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | provenance | Config |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 7] | app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | provenance | Config |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 8] | app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | provenance | Config |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 9] | app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | provenance | Config |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 10] | app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | provenance | Config |
 | controller/users_controller.rb:4:3:4:8 | params | controller/users_controller.rb:5:3:5:8 | params | provenance |  |
 | controller/users_controller.rb:4:12:4:44 | call to load | controller/users_controller.rb:4:3:4:8 | params | provenance |  |
 | controller/users_controller.rb:4:27:4:33 | call to request | controller/users_controller.rb:4:27:4:38 | call to body | provenance | Config |
@@ -19,9 +45,24 @@ edges
 | controller/users_controller.rb:13:22:13:28 | call to request | controller/users_controller.rb:13:22:13:33 | call to body | provenance | Config |
 | controller/users_controller.rb:13:22:13:33 | call to body | controller/users_controller.rb:13:22:13:38 | call to read | provenance | Config |
 | controller/users_controller.rb:13:22:13:38 | call to read | controller/users_controller.rb:13:11:13:39 | call to parse | provenance | Config |
+| controller/users_controller.rb:38:12:38:17 | call to params | controller/users_controller.rb:38:12:38:39 | call to slice | provenance |  |
 nodes
 | app/controllers/accounts_controller.rb:4:20:4:47 | call to parse | semmle.label | call to parse |
 | app/controllers/accounts_controller.rb:4:31:4:46 | call to raw_post | semmle.label | call to raw_post |
+| app/controllers/accounts_controller.rb:8:20:8:62 | call to parse | semmle.label | call to parse |
+| app/controllers/accounts_controller.rb:8:31:8:46 | call to raw_post | semmle.label | call to raw_post |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice | semmle.label | call to slice |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 0] | semmle.label | call to slice : [collection] [element 0] |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 1] | semmle.label | call to slice : [collection] [element 1] |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 2] | semmle.label | call to slice : [collection] [element 2] |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 3] | semmle.label | call to slice : [collection] [element 3] |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 4] | semmle.label | call to slice : [collection] [element 4] |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 5] | semmle.label | call to slice : [collection] [element 5] |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 6] | semmle.label | call to slice : [collection] [element 6] |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 7] | semmle.label | call to slice : [collection] [element 7] |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 8] | semmle.label | call to slice : [collection] [element 8] |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 9] | semmle.label | call to slice : [collection] [element 9] |
+| app/controllers/accounts_controller.rb:8:31:8:61 | call to slice : [collection] [element 10] | semmle.label | call to slice : [collection] [element 10] |
 | app/controllers/api.rb:3:20:3:25 | call to params | semmle.label | call to params |
 | controller/users_controller.rb:4:3:4:8 | params | semmle.label | params |
 | controller/users_controller.rb:4:12:4:44 | call to load | semmle.label | call to load |
@@ -39,4 +80,6 @@ nodes
 | controller/users_controller.rb:14:15:14:19 | attrs | semmle.label | attrs |
 | controller/users_controller.rb:19:15:19:20 | call to params | semmle.label | call to params |
 | controller/users_controller.rb:23:24:23:29 | call to params | semmle.label | call to params |
+| controller/users_controller.rb:38:12:38:17 | call to params | semmle.label | call to params |
+| controller/users_controller.rb:38:12:38:39 | call to slice | semmle.label | call to slice |
 subpaths
