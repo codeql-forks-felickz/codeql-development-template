@@ -1,0 +1,2 @@
+query: FileUploadResourceHandling/FileUploadResourceHandling.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
