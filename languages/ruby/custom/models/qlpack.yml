@@ -1,0 +1,7 @@
+name: languages-ruby-custom-models
+version: 0.0.1
+library: true
+extensionTargets:
+  codeql/ruby-all: "*"
+dataExtensions:
+  - models/**/*.yml
