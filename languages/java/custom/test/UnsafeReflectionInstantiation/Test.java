@@ -83,4 +83,22 @@ public class Test {
       return false;
     }
   }
+
+  // BAD: equality between two request-controlled values does not allowlist either one.
+  public Object requestEquality(HttpServletRequest request) throws Exception {
+    String name = request.getParameter("class"); // $ Source
+    if (name.equals(request.getParameter("confirm"))) {
+      return Class.forName(name).getConstructor().newInstance(); // $ Alert
+    }
+    return null;
+  }
+
+  // BAD: a format check does not constrain the user to an approved class.
+  public Object regexCheck(HttpServletRequest request) throws Exception {
+    String name = request.getParameter("class"); // $ Source
+    if (name.matches("[A-Za-z]+")) {
+      return Class.forName(name).getConstructor().newInstance(); // $ Alert
+    }
+    return null;
+  }
 }

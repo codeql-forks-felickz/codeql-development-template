@@ -16,6 +16,11 @@ The query treats as untrusted:
 It reports when that data reaches a command-injection sink. Prefix checks such as
 `startsWith("ping")` or length limits are not treated as validation.
 
+## Known limitations
+
+The query excludes a field read when a constant assignment to that field in the same callback
+dominates the read. It does not track overwrites performed indirectly by helper methods.
+
 ## Recommendation
 
 Do not perform side effects such as running commands in deserialization callbacks. Validate

@@ -17,6 +17,7 @@ import java
 import semmle.code.java.security.CommandLineQuery
 import semmle.code.java.security.ExternalProcess
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.controlflow.Dominance
 
 /**
  * A method that the Java serialization runtime calls while reconstructing an object
@@ -27,14 +28,28 @@ class DeserializationCallback extends Method {
     this.getDeclaringType().getASourceSupertype*() instanceof TypeSerializable and
     (
       this.hasName("readObject") and
+      this.isPrivate() and
+      not this.isStatic() and
+      this.getReturnType() instanceof VoidType and
       this.getNumberOfParameters() = 1 and
       this.getParameterType(0) instanceof TypeObjectInputStream
       or
-      this.hasName("readObjectNoData") and this.getNumberOfParameters() = 0
+      this.hasName("readObjectNoData") and
+      this.isPrivate() and
+      not this.isStatic() and
+      this.getReturnType() instanceof VoidType and
+      this.getNumberOfParameters() = 0
       or
-      this.hasName("readResolve") and this.getNumberOfParameters() = 0
+      this.hasName("readResolve") and
+      not this.isStatic() and
+      this.getReturnType().(RefType).hasQualifiedName("java.lang", "Object") and
+      this.getNumberOfParameters() = 0
       or
       this.hasName("readExternal") and
+      this.getDeclaringType().getASourceSupertype*().hasQualifiedName("java.io", "Externalizable") and
+      this.isPublic() and
+      not this.isStatic() and
+      this.getReturnType() instanceof VoidType and
       this.getNumberOfParameters() = 1 and
       this.getParameterType(0).(RefType).hasQualifiedName("java.io", "ObjectInput")
     )
@@ -52,10 +67,17 @@ class DeserializedStateSource extends DataFlow::Node {
       fr = this.asExpr() and
       fr.getEnclosingCallable() = m and
       f = fr.getField() and
-      f.getDeclaringType() = m.getDeclaringType() and
+      f.getDeclaringType().getASourceSupertype*() instanceof TypeSerializable and
       fr.isOwnFieldAccess() and
       not f.isStatic() and
-      not f.isTransient()
+      not f.isTransient() and
+      not exists(FieldWrite fw |
+        fw.getEnclosingCallable() = m and
+        fw.getField() = f and
+        fw.isOwnFieldAccess() and
+        fw.getASource() instanceof CompileTimeConstantExpr and
+        strictlyDominates(fw.getControlFlowNode(), fr.getControlFlowNode())
+      )
     )
     or
     exists(DeserializationCallback m, MethodCall mc |

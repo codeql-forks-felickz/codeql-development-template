@@ -87,4 +87,30 @@ public class ImageProxyController {
   public void constantUrl() throws Exception {
     new ProcessBuilder("curl", "-s", "https://status.example.com/").start();
   }
+
+  // BAD: a local command string is eventually passed to `Runtime.exec`.
+  @GetMapping("/image8")
+  public void localRuntimeCommand(@RequestParam String url) throws Exception { // $ Source
+    String command = "curl -s " + url; // $ Alert
+    Runtime.getRuntime().exec(command);
+  }
+
+  // BAD: a local shell script is passed through the shell's `-c` argument.
+  @GetMapping("/image9")
+  public void localShellScript(@RequestParam String url) throws Exception { // $ Source
+    String script = "curl -s " + url; // $ Alert
+    new ProcessBuilder("sh", "-c", script).start();
+  }
+
+  // GOOD: a curl-looking argument to `echo` does not run curl.
+  @GetMapping("/echo")
+  public void echoCurl(@RequestParam String input) throws Exception {
+    new ProcessBuilder("echo", "curl " + input).start();
+  }
+
+  // GOOD: the request value is an output filename, not a fetch target.
+  @GetMapping("/image10")
+  public void outputFile(@RequestParam String filename) throws Exception {
+    new ProcessBuilder("curl", "--output", filename, "https://images.example.com/").start();
+  }
 }

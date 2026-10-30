@@ -5,6 +5,8 @@
 | ImageProxyController.java:41:55:41:57 | url | ImageProxyController.java:40:24:40:47 | url : String | ImageProxyController.java:41:55:41:57 | url | Potential server-side request forgery: an external fetch command uses a URL that depends on a $@. | ImageProxyController.java:40:24:40:47 | url | user-provided value |
 | ImageProxyController.java:48:31:48:51 | ... + ... | ImageProxyController.java:47:26:47:49 | url : String | ImageProxyController.java:48:31:48:51 | ... + ... | Potential server-side request forgery: an external fetch command uses a URL that depends on a $@. | ImageProxyController.java:47:26:47:49 | url | user-provided value |
 | ImageProxyController.java:54:52:54:54 | url | ImageProxyController.java:53:24:53:47 | url : String | ImageProxyController.java:54:52:54:54 | url | Potential server-side request forgery: an external fetch command uses a URL that depends on a $@. | ImageProxyController.java:53:24:53:47 | url | user-provided value |
+| ImageProxyController.java:94:22:94:37 | ... + ... | ImageProxyController.java:93:35:93:58 | url : String | ImageProxyController.java:94:22:94:37 | ... + ... | Potential server-side request forgery: an external fetch command uses a URL that depends on a $@. | ImageProxyController.java:93:35:93:58 | url | user-provided value |
+| ImageProxyController.java:101:21:101:36 | ... + ... | ImageProxyController.java:100:32:100:55 | url : String | ImageProxyController.java:101:21:101:36 | ... + ... | Potential server-side request forgery: an external fetch command uses a URL that depends on a $@. | ImageProxyController.java:100:32:100:55 | url | user-provided value |
 edges
 | ImageProxyController.java:16:27:16:50 | url : String | ImageProxyController.java:18:42:18:119 | ... + ... | provenance |  |
 | ImageProxyController.java:27:33:27:56 | url : String | ImageProxyController.java:28:41:28:65 | ... + ... | provenance |  |
@@ -12,6 +14,8 @@ edges
 | ImageProxyController.java:40:24:40:47 | url : String | ImageProxyController.java:41:55:41:57 | url | provenance |  |
 | ImageProxyController.java:47:26:47:49 | url : String | ImageProxyController.java:48:31:48:51 | ... + ... | provenance | Sink:MaD:46601 |
 | ImageProxyController.java:53:24:53:47 | url : String | ImageProxyController.java:54:52:54:54 | url | provenance |  |
+| ImageProxyController.java:93:35:93:58 | url : String | ImageProxyController.java:94:22:94:37 | ... + ... | provenance |  |
+| ImageProxyController.java:100:32:100:55 | url : String | ImageProxyController.java:101:21:101:36 | ... + ... | provenance |  |
 nodes
 | ImageProxyController.java:16:27:16:50 | url : String | semmle.label | url : String |
 | ImageProxyController.java:18:42:18:119 | ... + ... | semmle.label | ... + ... |
@@ -25,4 +29,8 @@ nodes
 | ImageProxyController.java:48:31:48:51 | ... + ... | semmle.label | ... + ... |
 | ImageProxyController.java:53:24:53:47 | url : String | semmle.label | url : String |
 | ImageProxyController.java:54:52:54:54 | url | semmle.label | url |
+| ImageProxyController.java:93:35:93:58 | url : String | semmle.label | url : String |
+| ImageProxyController.java:94:22:94:37 | ... + ... | semmle.label | ... + ... |
+| ImageProxyController.java:100:32:100:55 | url : String | semmle.label | url : String |
+| ImageProxyController.java:101:21:101:36 | ... + ... | semmle.label | ... + ... |
 subpaths

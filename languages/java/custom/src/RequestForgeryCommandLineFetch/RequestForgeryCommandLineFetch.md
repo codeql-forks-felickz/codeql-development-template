@@ -11,11 +11,19 @@ The query reports user input that reaches:
 - an argument after the program name when the program is `curl` or `wget` (with or without a
   path), in an array, argument list or varargs call
 - a command string that starts with `curl` or `wget`, such as the script passed to `sh -c` or
-  the single string passed to `Runtime.exec`
+  the single string passed to `Runtime.exec`, including command strings stored in local variables
 
 Input that is appended after a constant that fixes the scheme and host of the URL, for example
 `"curl -s https://images.example.com/thumbs/" + name`, is not reported. Neither is input checked
 against an allowlist with the sanitizers recognized by `java/ssrf`.
+
+Values passed separately to known output options (`--output`, `-o`, `--output-document` or `-O`)
+are not treated as fetch targets.
+
+## Known limitations
+
+The query recognizes separate-argument output options. It does not parse attached option values
+or every tool-specific option, so some non-target arguments may still be reported.
 
 When the command goes through a shell, `java/command-line-injection` usually reports the same
 location as CWE-78. This query adds the request forgery classification and also covers argument

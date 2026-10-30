@@ -85,3 +85,65 @@ class NotAGadget implements Serializable {
     Runtime.getRuntime().exec(command);
   }
 }
+
+// BAD: a serializable superclass field is restored before the subclass callback runs.
+class SerializableBase implements Serializable {
+  protected String command;
+}
+
+class InheritedResolveCommand extends SerializableBase {
+  private Object readResolve() throws IOException {
+    Runtime.getRuntime().exec(command); // $ Alert
+    return this;
+  }
+}
+
+// GOOD: fields declared by a non-serializable superclass are not restored.
+class NonSerializableBase {
+  protected String command;
+}
+
+class NonSerializedInheritedCommand extends NonSerializableBase implements Serializable {
+  private Object readResolve() throws IOException {
+    Runtime.getRuntime().exec(command);
+    return this;
+  }
+}
+
+// GOOD: a look-alike public method is not a serialization callback.
+class PublicReadObject implements Serializable {
+  private String command;
+
+  public void readObject(ObjectInputStream stream) throws Exception {
+    Runtime.getRuntime().exec(command);
+  }
+}
+
+// GOOD: a look-alike static method is not a serialization callback.
+class StaticReadObject implements Serializable {
+  private static String command;
+
+  private static void readObject(ObjectInputStream stream) throws Exception {
+    Runtime.getRuntime().exec(command);
+  }
+}
+
+// GOOD: readExternal is only a callback on an Externalizable class.
+class SerializableReadExternal implements Serializable {
+  private String command;
+
+  public void readExternal(ObjectInput in) throws IOException {
+    Runtime.getRuntime().exec(command);
+  }
+}
+
+// GOOD: a constant overwrite before the field read replaces the restored value.
+class TrustedOverwrite implements Serializable {
+  private String command;
+
+  private void readObject(ObjectInputStream stream) throws Exception {
+    stream.defaultReadObject();
+    command = "/usr/bin/true";
+    Runtime.getRuntime().exec(command);
+  }
+}

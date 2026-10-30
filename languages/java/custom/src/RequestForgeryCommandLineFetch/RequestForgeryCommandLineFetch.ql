@@ -53,6 +53,26 @@ private predicate commandElement(ArgumentToExec exec, Expr e, int i) {
   )
 }
 
+/** A whole command string passed to `Runtime.exec(String)` or a shell's `-c` option. */
+private predicate isCommandLineString(ArgumentToExec exec, Expr e) {
+  exists(MethodCall mc |
+    exec.getType() instanceof TypeString and
+    exec.(Argument).getCall() = mc and
+    mc.getMethod().hasQualifiedName("java.lang", "Runtime", "exec") and
+    mc.getArgument(0) = exec and
+    (e = exec or DataFlow::localExprFlow(e, exec))
+  )
+  or
+  exists(Expr shell, Expr option, Expr script |
+    commandElement(exec, shell, 0) and
+    shell.(CompileTimeConstantExpr).getStringValue().regexpMatch("(?i)(.*[/\\\\])?sh(\\.exe)?") and
+    commandElement(exec, option, 1) and
+    option.(CompileTimeConstantExpr).getStringValue() = "-c" and
+    commandElement(exec, script, 2) and
+    (e = script or DataFlow::localExprFlow(e, script))
+  )
+}
+
 /** Gets the leftmost operand of the string concatenation `e`, or `e` itself. */
 private Expr leftmostOperand(Expr e) {
   if e instanceof AddExpr
@@ -73,7 +93,7 @@ private Expr rightmostOperand(Expr e) {
  */
 private class FetchCommandLine extends Expr {
   FetchCommandLine() {
-    commandElement(_, this, _) and
+    exists(ArgumentToExec exec | isCommandLineString(exec, this)) and
     isFetchCommandLinePrefix(leftmostOperand(this).(CompileTimeConstantExpr).getStringValue())
   }
 
@@ -108,6 +128,15 @@ private predicate hostFixedInCommandLine(FetchCommandLine cl, Expr op) {
   )
 }
 
+/** Holds if `i` is the value of an option that does not select a fetch target. */
+private predicate isNonTargetOptionValue(ArgumentToExec exec, int i) {
+  exists(Expr option |
+    commandElement(exec, option, i - 1) and
+    option.(CompileTimeConstantExpr).getStringValue() =
+      ["--output", "-o", "--output-document", "-O"]
+  )
+}
+
 /** An argument to an external `curl` or `wget` process that selects what is fetched. */
 class FetchCommandSink extends DataFlow::Node {
   FetchCommandSink() {
@@ -115,7 +144,8 @@ class FetchCommandSink extends DataFlow::Node {
       commandElement(exec, first, 0) and
       isFetchProgram(first.(CompileTimeConstantExpr).getStringValue()) and
       commandElement(exec, this.asExpr(), i) and
-      i > 0
+      i > 0 and
+      not isNonTargetOptionValue(exec, i)
     )
     or
     this.asExpr() instanceof FetchCommandLine

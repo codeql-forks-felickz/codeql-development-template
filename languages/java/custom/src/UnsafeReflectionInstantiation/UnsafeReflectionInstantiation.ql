@@ -43,8 +43,7 @@ class ClassMemberLookup extends ClassMethodCall {
 
 /**
  * Holds if `g` is an allowlist check on `e`, such as `ALLOWED.contains(e)`,
- * `MAP.containsKey(e)`, `"x".equals(e)` or `e.matches("[A-Za-z]+")`, that holds
- * when `branch` is `true`.
+ * `MAP.containsKey(e)` or `"x".equals(e)`, that holds when `branch` is `true`.
  */
 private predicate allowlistGuard(Guard g, Expr e, boolean branch) {
   branch = true and
@@ -59,11 +58,11 @@ private predicate allowlistGuard(Guard g, Expr e, boolean branch) {
     or
     mc.getMethod().getDeclaringType() instanceof TypeString and
     mc.getMethod().hasName(["equals", "equalsIgnoreCase"]) and
-    e = [mc.getQualifier(), mc.getArgument(0)]
-    or
-    mc.getMethod().getDeclaringType() instanceof TypeString and
-    mc.getMethod().hasName("matches") and
-    e = mc.getQualifier()
+    (
+      e = mc.getQualifier() and mc.getArgument(0) instanceof CompileTimeConstantExpr
+      or
+      e = mc.getArgument(0) and mc.getQualifier() instanceof CompileTimeConstantExpr
+    )
   )
 }
 

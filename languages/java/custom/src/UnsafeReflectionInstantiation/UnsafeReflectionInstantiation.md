@@ -10,7 +10,9 @@ The query reports a `Constructor.newInstance`, `Class.newInstance` or `Method.in
 whose `Class`, `Constructor` or `Method` was obtained via `Class.forName` or
 `ClassLoader.loadClass` from a remote (active threat model) source, unless the value was
 first checked against an allowlist (`Collection.contains`, `Map.containsKey`,
-`String.equals`/`equalsIgnoreCase` or `String.matches`).
+`String.equals`/`equalsIgnoreCase` against a fixed string constant). A format check with
+`String.matches` is not an allowlist because it can still let the user select any class matching
+the pattern.
 
 ## Recommendation
 
