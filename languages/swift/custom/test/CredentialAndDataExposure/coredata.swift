@@ -26,3 +26,40 @@ func configure(_ password: String) -> LoginConfiguration {
   config.password = password
   return config
 }
+
+func storeDetails(context: NSManagedObjectContext) {
+  var user: LegacyUser?
+  user = NSEntityDescription.insertNewObject(forEntityName: "User", into: context) as? LegacyUser
+  if let user = user {
+    // GOOD: not sensitive
+    user.firstname = "John"
+    user.password = "coredbpassword" // $ cleartextStorage
+  }
+}
+
+func configureDefault() -> LoginConfiguration {
+  // GOOD: not a database object
+  let config = LoginConfiguration()
+  config.password = "defaultpassword"
+  return config
+}
+
+// CWE-922: payment card data written to an Objective-C Realm object.
+
+class RCreditInfo: RLMObject {
+  var name: String?
+  var cardNumber: String?
+}
+
+class RealmExercise {
+  let realmCardName = "John Doe"
+  let realmCardNumber = "4444 5555 8888 1111"
+
+  func saveData() {
+    let creditInfo = RCreditInfo()
+    // GOOD: not sensitive
+    creditInfo.name = realmCardName
+    creditInfo.cardNumber = realmCardNumber // $ cleartextStorage
+    RLMRealm.default().add(creditInfo)
+  }
+}

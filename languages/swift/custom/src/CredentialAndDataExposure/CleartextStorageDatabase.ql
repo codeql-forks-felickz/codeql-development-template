@@ -3,7 +3,8 @@
  * @description Storing sensitive information in a non-encrypted database can expose it to an attacker.
  *              This variant also recognizes writes to Core Data objects created with
  *              `NSEntityDescription.insertNewObject(forEntityName:into:)` when the managed object class
- *              cannot be resolved.
+ *              cannot be resolved, writes to Objective-C Realm (`RLMObject`) objects, and hard-coded values
+ *              written to properties with sensitive names.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5
@@ -14,12 +15,13 @@
  */
 
 import swift
-import codeql.swift.security.CleartextStorageDatabaseQuery
-import CredentialAndDataExposure.CredentialAndDataExposure
-import CleartextStorageDatabaseFlow::PathGraph
+import CredentialAndDataExposure.CleartextStorageDatabase
+import ExtendedCleartextStorageDatabaseFlow::PathGraph
 
-from CleartextStorageDatabaseFlow::PathNode source, CleartextStorageDatabaseFlow::PathNode sink
-where CleartextStorageDatabaseFlow::flowPath(source, sink)
+from
+  ExtendedCleartextStorageDatabaseFlow::PathNode source,
+  ExtendedCleartextStorageDatabaseFlow::PathNode sink
+where ExtendedCleartextStorageDatabaseFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "This operation stores '" + sink.getNode().toString() +
     "' in a database. It may contain unencrypted sensitive data from $@.", source,

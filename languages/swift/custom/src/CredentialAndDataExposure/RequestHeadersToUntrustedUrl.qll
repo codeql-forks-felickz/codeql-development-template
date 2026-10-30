@@ -10,26 +10,6 @@ import codeql.swift.dataflow.TaintTracking
 import codeql.swift.dataflow.FlowSources
 import CredentialAndDataExposure
 
-/** A call to an initializer of `URLRequest` (or its Objective-C counterparts) that takes a URL. */
-class UrlRequestInitCall extends CallExpr {
-  UrlRequestInitCall() {
-    this.getStaticTarget()
-        .(Method)
-        .hasQualifiedName(["URLRequest", "NSURLRequest", "NSMutableURLRequest"],
-          ["init(url:)", "init(url:cachePolicy:timeoutInterval:)"])
-  }
-
-  /** Gets the URL argument of this call. */
-  Expr getUrlArgument() { result = this.getArgument(0).getExpr() }
-}
-
-/** Holds if `e` refers to the local variable `v`, possibly through an `&` (inout) expression. */
-private predicate refersToLocal(Expr e, VarDecl v) {
-  stripWrappers(e).(DeclRefExpr).getDecl() = v
-  or
-  stripWrappers(e).(InOutExpr).getSubExpr().(DeclRefExpr).getDecl() = v
-}
-
 /**
  * Holds if `header` is a call or assignment that adds an HTTP header to the
  * request created by `init`, for example
@@ -37,7 +17,7 @@ private predicate refersToLocal(Expr e, VarDecl v) {
  */
 predicate setsHeaderOn(UrlRequestInitCall init, AstNode header) {
   exists(VarDecl request |
-    stripWrappers(request.getParentInitializer()) = init and
+    isAssignedValue(request, init) and
     (
       exists(CallExpr call |
         call.getStaticTarget()

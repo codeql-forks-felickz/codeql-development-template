@@ -80,6 +80,9 @@ struct URLComponents {
 struct URLRequest {
   init(url: URL) {}
 
+  var httpMethod: String?
+  var httpBody: Data?
+
   mutating func setValue(_ value: String?, forHTTPHeaderField field: String) {}
 }
 
@@ -97,6 +100,49 @@ protocol UIApplicationDelegate {
 }
 
 class UIViewController {}
+
+class UITextField {
+  var text: String?
+}
+
+class URLResponse {}
+
+class URLSessionDataTask {
+  func resume() {}
+}
+
+class URLSession {
+  static let shared = URLSession()
+
+  func dataTask(
+    with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void
+  ) -> URLSessionDataTask {
+    return URLSessionDataTask()
+  }
+}
+
+extension String {
+  init?(data: Data, encoding: String.Encoding) { return nil }
+}
+
+class JSONSerialization {
+  struct WritingOptions: OptionSet {
+    let rawValue: UInt
+    static let prettyPrinted = WritingOptions(rawValue: 1)
+  }
+
+  class func data(withJSONObject obj: Any, options opt: WritingOptions = []) throws -> Data {
+    return Data([UInt8]())
+  }
+}
+
+class RLMObject: NSObject {}
+
+class RLMRealm {
+  class func `default`() -> RLMRealm { return RLMRealm() }
+
+  func add(_ object: RLMObject) {}
+}
 
 enum HTTPMethod {
   case get

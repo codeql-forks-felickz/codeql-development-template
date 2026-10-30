@@ -11,6 +11,8 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.ExternalFlow
+import codeql.swift.dataflow.TaintTracking
+import codeql.swift.security.SensitiveExprs
 import codeql.swift.security.HardcodedEncryptionKeyExtensions
 import codeql.swift.security.StaticInitializationVectorExtensions
 import codeql.swift.security.CleartextTransmissionExtensions
@@ -240,16 +242,48 @@ class CoreDataInsertNewObjectCall extends CallExpr {
 }
 
 /**
+ * Holds if `e` is a value given to the variable `v`, either as its initializer,
+ * through an assignment `v = e`, or through an optional binding such as
+ * `if let v = e` or `guard let v = e`.
+ */
+predicate isAssignedValue(VarDecl v, Expr e) {
+  e = stripWrappers(v.getParentInitializer())
+  or
+  exists(AssignExpr assign |
+    stripWrappers(assign.getDest()).(DeclRefExpr).getDecl() = v and
+    e = stripWrappers(assign.getSource())
+  )
+  or
+  exists(ConditionElement cond, Pattern p |
+    p = cond.getPattern() and
+    e = stripWrappers(cond.getInitializer()) and
+    (
+      p.(NamedPattern).getVarDecl() = v or
+      p.(OptionalSomePattern).getSubPattern().(NamedPattern).getVarDecl() = v
+    )
+  )
+}
+
+/** Holds if `e` refers to the local variable `v`, possibly through an `&` (inout) expression. */
+predicate refersToLocal(Expr e, VarDecl v) {
+  stripWrappers(e).(DeclRefExpr).getDecl() = v
+  or
+  stripWrappers(e).(InOutExpr).getSubExpr().(DeclRefExpr).getDecl() = v
+}
+
+/**
  * Holds if `e` evaluates to a Core Data object created with
  * `NSEntityDescription.insertNewObject(forEntityName:into:)`, either directly or
- * through a local variable initialized with it.
+ * through local variables that are initialized, assigned or bound to it, as in
+ * `user = NSEntityDescription.insertNewObject(...) as? User; if let user = user { ... }`.
  */
 private predicate isInsertedCoreDataObject(Expr e) {
   stripWrappers(e) instanceof CoreDataInsertNewObjectCall
   or
-  exists(VarDecl v |
+  exists(VarDecl v, Expr value |
     stripWrappers(e).(DeclRefExpr).getDecl() = v and
-    stripWrappers(v.getParentInitializer()) instanceof CoreDataInsertNewObjectCall
+    isAssignedValue(v, value) and
+    isInsertedCoreDataObject(value)
   )
 }
 
@@ -273,6 +307,212 @@ class CoreDataInsertedObjectWrite extends CleartextStorageDatabaseSink {
       // avoid duplicating the standard `NSManagedObject` sink
       not dest.getBase().getFullyConverted().getType().getUnderlyingType().getABaseType*().getName() =
         "NSManagedObject"
+    )
+  }
+}
+
+/**
+ * A value assigned to a property of an Objective-C Realm object, that is, an
+ * instance of a class derived from `RLMObject`, for example `cardNumber` in
+ * `creditInfo.cardNumber = cardNumber`.
+ *
+ * The standard `swift/cleartext-storage-database` query only models Realm Swift
+ * (`RealmSwiftObject`) objects.
+ */
+class RealmObjcObjectWrite extends CleartextStorageDatabaseSink {
+  RealmObjcObjectWrite() {
+    exists(AssignExpr assign, MemberRefExpr dest |
+      assign.getDest() = dest and
+      dest.getBase().getFullyConverted().getType().getUnderlyingType().getABaseType*().getName() =
+        "RLMObject" and
+      not dest.getBase().(DeclRefExpr).getDecl() instanceof SelfParamDecl and
+      this.asExpr() = assign.getSource()
+    )
+  }
+}
+
+/**
+ * A hard-coded value that is assigned to a property with a sensitive name, for
+ * example `"secret"` in `user.password = "secret"`. Such a value is sensitive even
+ * though it is not read from a variable with a sensitive name.
+ */
+class HardcodedSensitivePropertyValue extends DataFlow::Node {
+  HardcodedSensitivePropertyValue() {
+    exists(AssignExpr assign |
+      assign.getDest() instanceof SensitiveExpr and
+      this.asExpr() = assign.getSource() and
+      isHardcodedValue(stripWrappers(assign.getSource()), _)
+    )
+  }
+}
+
+/**
+ * Gets `name` without a trailing user interface widget suffix, for example
+ * `ssn` for `ssnField` or `cardNumber` for `cardNumberTextField`.
+ */
+bindingset[name]
+private string stripUiSuffix(string name) {
+  result = name.regexpReplaceAll("(?i)(text)?(field|tf|txt|input|box|textview|entry)$", "")
+}
+
+/**
+ * A reference to a user interface input (such as a `UITextField` outlet) whose
+ * name, without its widget suffix, indicates sensitive data, for example
+ * `ssnField` or `passcodeTF`. The standard heuristics do not match such names
+ * when the sensitive part is not delimited, as in `ssnField`.
+ */
+class SensitiveUiInputExpr extends Expr {
+  SensitiveUiInputExpr() {
+    exists(VarDecl v, string stripped |
+      refersTo(this, v) and
+      stripped = stripUiSuffix(v.getName()) and
+      stripped != v.getName() and
+      stripped != "" and
+      stripped.regexpMatch(any(SensitiveDataType t).getRegexp()) and
+      not stripped.regexpMatch(HeuristicNames::notSensitiveRegexp())
+    ) and
+    not this instanceof SensitiveExpr
+  }
+}
+
+/**
+ * A taint step from a value in a dictionary or array literal to the literal,
+ * and from the argument of a JSON serialization call to its result, for example
+ * from `ssnField.text` to `jsonData` in
+ * `JSONSerialization.data(withJSONObject: ["ssn": ssnField.text])`.
+ */
+predicate serializedPayloadStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  exists(DictionaryExpr dict |
+    nodeFrom.asExpr() = dict.getAnElement().(TupleExpr).getElement(1) and
+    nodeTo.asExpr() = dict
+  )
+  or
+  exists(ArrayExpr array |
+    nodeFrom.asExpr() = array.getAnElement() and
+    nodeTo.asExpr() = array
+  )
+  or
+  exists(CallExpr call |
+    (
+      call.getStaticTarget()
+          .(Method)
+          .hasQualifiedName("JSONSerialization", "data(withJSONObject:options:)")
+      or
+      call.getStaticTarget().(Method).hasQualifiedName("JSONEncoder", "encode(_:)")
+    ) and
+    nodeFrom.asExpr() = call.getArgument(0).getExpr() and
+    nodeTo.asExpr() = call
+  )
+}
+
+private class SerializedPayloadTransmissionStep extends CleartextTransmissionAdditionalFlowStep {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    serializedPayloadStep(nodeFrom, nodeTo)
+  }
+}
+
+/** A call to an initializer of `URLRequest` (or its Objective-C counterparts) that takes a URL. */
+class UrlRequestInitCall extends CallExpr {
+  UrlRequestInitCall() {
+    this.getStaticTarget()
+        .(Method)
+        .hasQualifiedName(["URLRequest", "NSURLRequest", "NSMutableURLRequest"],
+          ["init(url:)", "init(url:cachePolicy:timeoutInterval:)"])
+  }
+
+  /** Gets the URL argument of this call. */
+  Expr getUrlArgument() { result = this.getArgument(0).getExpr() }
+}
+
+/**
+ * A call to a `URLSession` method that creates a data or upload task with a
+ * completion handler, for example `session.dataTask(with: request) { data, response, error in ... }`.
+ */
+class UrlSessionTaskCall extends CallExpr {
+  UrlSessionTaskCall() {
+    this.getStaticTarget()
+        .(Method)
+        .hasQualifiedName("URLSession",
+          [
+            "dataTask(with:)", "dataTask(with:completionHandler:)", "uploadTask(with:from:)",
+            "uploadTask(with:from:completionHandler:)"
+          ])
+  }
+
+  /** Gets the request or URL argument of this call. */
+  Expr getRequestArgument() { result = this.getArgument(0).getExpr() }
+
+  /** Gets the completion handler closure of this call, if any. */
+  ClosureExpr getCompletionHandler() {
+    result = this.getArgumentWithLabel("completionHandler").getExpr().getUnconverted()
+  }
+}
+
+/** Holds if `e` is a string literal for a cleartext `http://` URL. */
+private predicate isCleartextHttpUrlLiteral(Expr e) {
+  e.(StringLiteralExpr).getValue().regexpMatch("(?i)http://.+")
+}
+
+/**
+ * A taint-tracking configuration from cleartext `http://` URL literals to the
+ * URL of a `URLRequest` or the request of a `URLSession` task.
+ */
+private module CleartextHttpUrlConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    isCleartextHttpUrlLiteral(node.asExpr())
+    or
+    isCleartextHttpUrlLiteral(node.(HardcodedNonLocalValue).getOrigin())
+  }
+
+  predicate isSink(DataFlow::Node node) {
+    node.asExpr() = any(UrlRequestInitCall init).getUrlArgument()
+    or
+    node.asExpr() = any(UrlSessionTaskCall call).getRequestArgument()
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    storedPropertyJumpStep(nodeFrom, nodeTo)
+    or
+    exists(UrlRequestInitCall init |
+      nodeFrom.asExpr() = init.getUrlArgument() and
+      nodeTo.asExpr() = init
+    )
+  }
+}
+
+private module CleartextHttpUrlFlow = TaintTracking::Global<CleartextHttpUrlConfig>;
+
+/** Holds if `e` is a URL or request that targets a cleartext `http://` URL. */
+predicate isCleartextHttpTarget(Expr e) { CleartextHttpUrlFlow::flowTo(DataFlow::exprNode(e)) }
+
+/**
+ * A value assigned as the body of a request to a cleartext `http://` URL, for
+ * example `jsonData` in
+ * `var request = URLRequest(url: URL(string: "http://...")!); request.httpBody = jsonData`.
+ */
+class CleartextHttpBodySink extends CleartextTransmissionSink {
+  CleartextHttpBodySink() {
+    exists(AssignExpr assign, MemberRefExpr dest, VarDecl request, UrlRequestInitCall init |
+      assign.getDest() = dest and
+      dest.getMember().(VarDecl).getName() = ["httpBody", "HTTPBody"] and
+      refersToLocal(dest.getBase(), request) and
+      isAssignedValue(request, init) and
+      isCleartextHttpTarget(init.getUrlArgument()) and
+      this.asExpr() = assign.getSource()
+    )
+  }
+}
+
+/**
+ * The response data received by the completion handler of a `URLSession` task
+ * whose request targets a cleartext `http://` URL, for example `data` in
+ * `session.dataTask(with: request) { data, response, error in ... }`.
+ */
+class CleartextHttpResponseData extends DataFlow::Node {
+  CleartextHttpResponseData() {
+    exists(UrlSessionTaskCall call |
+      isCleartextHttpTarget(call.getRequestArgument()) and
+      this.asExpr() = call.getCompletionHandler().getParam(0).getAnAccess()
     )
   }
 }
