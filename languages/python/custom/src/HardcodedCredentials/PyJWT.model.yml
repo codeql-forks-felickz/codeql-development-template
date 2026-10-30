@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      - ["jwt", "Member[encode].Argument[1,key:]", "credentials-key"]
+      - ["jwt", "Member[decode].Argument[1,key:]", "credentials-key"]
