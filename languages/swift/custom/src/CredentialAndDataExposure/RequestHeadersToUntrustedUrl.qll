@@ -16,25 +16,20 @@ import CredentialAndDataExposure
  * `request.setValue(token, forHTTPHeaderField: "Authorization")`.
  */
 predicate setsHeaderOn(UrlRequestInitCall init, AstNode header) {
-  exists(VarDecl request |
-    isAssignedValue(request, init) and
-    (
-      exists(CallExpr call |
-        call.getStaticTarget()
-            .(Method)
-            .hasQualifiedName(["URLRequest", "NSMutableURLRequest"],
-              ["setValue(_:forHTTPHeaderField:)", "addValue(_:forHTTPHeaderField:)"]) and
-        refersToLocal(call.getQualifier(), request) and
-        header = call
-      )
-      or
-      exists(AssignExpr assign, MemberRefExpr member |
-        member = assign.getDest() and
-        member.getMember().(VarDecl).getName() = "allHTTPHeaderFields" and
-        refersToLocal(member.getBase(), request) and
-        header = assign
-      )
-    )
+  exists(CallExpr call |
+    call.getStaticTarget()
+        .(Method)
+        .hasQualifiedName(["URLRequest", "NSMutableURLRequest"],
+          ["setValue(_:forHTTPHeaderField:)", "addValue(_:forHTTPHeaderField:)"]) and
+    DataFlow::localFlow(DataFlow::exprNode(init), DataFlow::exprNode(call.getQualifier())) and
+    header = call
+  )
+  or
+  exists(AssignExpr assign, MemberRefExpr member |
+    member = assign.getDest() and
+    member.getMember().(VarDecl).getName() = "allHTTPHeaderFields" and
+    DataFlow::localFlow(DataFlow::exprNode(init), DataFlow::exprNode(member.getBase())) and
+    header = assign
   )
 }
 

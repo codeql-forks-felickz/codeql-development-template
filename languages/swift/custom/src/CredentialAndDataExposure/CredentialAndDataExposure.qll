@@ -221,7 +221,29 @@ private predicate isSourceStructConstruction(CallExpr call) {
 predicate modelStructInitializerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   exists(CallExpr call |
     isSourceStructConstruction(call) and
-    nodeFrom.asExpr() = call.getAnArgument().getExpr() and
+    (
+      exists(Initializer initializer, int i |
+        call.getStaticTarget() = initializer and
+        nodeFrom.asExpr() = call.getArgument(i).getExpr() and
+        (
+          not initializer.hasBody()
+          or
+          exists(AssignExpr assign, MemberRefExpr dest |
+            assign.getDest() = dest and
+            dest.getBase().(DeclRefExpr).getDecl() = initializer.getSelfParam() and
+            DataFlow::localFlow(
+              DataFlow::parameterNode(initializer.getParam(i)),
+              DataFlow::exprNode(assign.getSource())
+            )
+          )
+        )
+      )
+      or
+      (
+        not exists(call.getStaticTarget().(Initializer)) and
+        nodeFrom.asExpr() = call.getAnArgument().getExpr()
+      )
+    ) and
     nodeTo.asExpr() = call
   )
 }
@@ -504,11 +526,10 @@ predicate isCleartextHttpTarget(Expr e) { CleartextHttpUrlFlow::flowTo(DataFlow:
  */
 class CleartextHttpBodySink extends CleartextTransmissionSink {
   CleartextHttpBodySink() {
-    exists(AssignExpr assign, MemberRefExpr dest, VarDecl request, UrlRequestInitCall init |
+    exists(AssignExpr assign, MemberRefExpr dest, UrlRequestInitCall init |
       assign.getDest() = dest and
       dest.getMember().(VarDecl).getName() = ["httpBody", "HTTPBody"] and
-      refersToLocal(dest.getBase(), request) and
-      isAssignedValue(request, init) and
+      DataFlow::localFlow(DataFlow::exprNode(init), DataFlow::exprNode(dest.getBase())) and
       isCleartextHttpTarget(init.getUrlArgument()) and
       this.asExpr() = assign.getSource()
     )

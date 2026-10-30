@@ -16,6 +16,24 @@ class WebViewController: UIViewController {
     }
     return request
   }
+
+  func requestAfterTrustedReassignment() -> URLRequest {
+    var request = URLRequest(url: url)
+    request = URLRequest(url: URL(string: "https://api.example.com/")!)
+    request.setValue(token, forHTTPHeaderField: "Authorization")
+    return request
+  }
+
+  func requestAfterUntrustedBranchMerge(useFirst: Bool) -> URLRequest {
+    var request = URLRequest(url: URL(string: "https://api.example.com/")!)
+    if useFirst {
+      request = URLRequest(url: url) // $ headersToUntrustedUrl
+    } else {
+      request = URLRequest(url: url) // $ headersToUntrustedUrl
+    }
+    request.setValue(token, forHTTPHeaderField: "Authorization")
+    return request
+  }
 }
 
 class PlainWebViewController: UIViewController {
