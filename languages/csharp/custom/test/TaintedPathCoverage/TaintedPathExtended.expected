@@ -9,6 +9,7 @@
 | GuardsController.cs:21:41:21:44 | access to parameter name | GuardsController.cs:18:40:18:43 | name : String | GuardsController.cs:21:41:21:44 | access to parameter name | This path depends on a $@. | GuardsController.cs:18:40:18:43 | name | user-provided value |
 | GuardsController.cs:28:41:28:44 | access to parameter name | GuardsController.cs:25:49:25:52 | name : String | GuardsController.cs:28:41:28:44 | access to parameter name | This path depends on a $@. | GuardsController.cs:25:49:25:52 | name | user-provided value |
 | GuardsController.cs:34:37:34:40 | access to parameter name | GuardsController.cs:32:38:32:41 | name : String | GuardsController.cs:34:37:34:40 | access to parameter name | This path depends on a $@. | GuardsController.cs:32:38:32:41 | name | user-provided value |
+| GuardsController.cs:40:41:40:44 | access to parameter name | GuardsController.cs:37:49:37:52 | name : String | GuardsController.cs:40:41:40:44 | access to parameter name | This path depends on a $@. | GuardsController.cs:37:49:37:52 | name | user-provided value |
 | JulietBaseline01.cs:17:33:17:43 | ... + ... | JulietBaseline01.cs:13:27:13:36 | access to property Params : NameValueCollection | JulietBaseline01.cs:17:33:17:43 | ... + ... | This path depends on a $@. | JulietBaseline01.cs:13:27:13:36 | access to property Params | user-provided value |
 | JulietBaseline01.cs:19:63:19:73 | ... + ... | JulietBaseline01.cs:13:27:13:36 | access to property Params : NameValueCollection | JulietBaseline01.cs:19:63:19:73 | ... + ... | This path depends on a $@. | JulietBaseline01.cs:13:27:13:36 | access to property Params | user-provided value |
 | JulietBaseline01.cs:56:33:56:43 | ... + ... | JulietBaseline01.cs:51:24:51:38 | access to property QueryString : NameValueCollection | JulietBaseline01.cs:56:33:56:43 | ... + ... | This path depends on a $@. | JulietBaseline01.cs:51:24:51:38 | access to property QueryString | user-provided value |
@@ -56,6 +57,7 @@ edges
 | GuardsController.cs:18:40:18:43 | name : String | GuardsController.cs:21:41:21:44 | access to parameter name | provenance |  |
 | GuardsController.cs:25:49:25:52 | name : String | GuardsController.cs:28:41:28:44 | access to parameter name | provenance |  |
 | GuardsController.cs:32:38:32:41 | name : String | GuardsController.cs:34:37:34:40 | access to parameter name | provenance |  |
+| GuardsController.cs:37:49:37:52 | name : String | GuardsController.cs:40:41:40:44 | access to parameter name | provenance |  |
 | JulietBaseline01.cs:13:20:13:23 | access to local variable data : String | JulietBaseline01.cs:17:33:17:43 | ... + ... | provenance |  |
 | JulietBaseline01.cs:13:20:13:23 | access to local variable data : String | JulietBaseline01.cs:19:63:19:73 | ... + ... | provenance | Sink:MaD:6 |
 | JulietBaseline01.cs:13:27:13:36 | access to property Params : NameValueCollection | JulietBaseline01.cs:13:27:13:48 | call to method Get : String | provenance | MaD:12778 |
@@ -163,6 +165,8 @@ nodes
 | GuardsController.cs:28:41:28:44 | access to parameter name | semmle.label | access to parameter name |
 | GuardsController.cs:32:38:32:41 | name : String | semmle.label | name : String |
 | GuardsController.cs:34:37:34:40 | access to parameter name | semmle.label | access to parameter name |
+| GuardsController.cs:37:49:37:52 | name : String | semmle.label | name : String |
+| GuardsController.cs:40:41:40:44 | access to parameter name | semmle.label | access to parameter name |
 | JulietBaseline01.cs:13:20:13:23 | access to local variable data : String | semmle.label | access to local variable data : String |
 | JulietBaseline01.cs:13:27:13:36 | access to property Params : NameValueCollection | semmle.label | access to property Params : NameValueCollection |
 | JulietBaseline01.cs:13:27:13:48 | call to method Get : String | semmle.label | call to method Get : String |

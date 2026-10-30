@@ -40,7 +40,7 @@ pragma[inline_late]
 private predicate isWeakCheck(Expr op, Expr sub) {
   // The weak guards from `cs/path-injection`.
   exists(Method m | op.(MethodCall).getTarget() = m |
-    m.getName() = ["StartsWith", "EndsWith", "IsNullOrEmpty", "IsNullOrWhitespace"] or
+    m.getName() = ["StartsWith", "EndsWith", "IsNullOrEmpty", "IsNullOrWhiteSpace"] or
     m = any(SystemIOFileClass f).getAMethod("Exists") or
     m = any(SystemIODirectoryClass f).getAMethod("Exists")
   )

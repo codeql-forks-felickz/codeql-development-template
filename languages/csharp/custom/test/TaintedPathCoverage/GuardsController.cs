@@ -34,6 +34,13 @@ namespace Guards
             return File.ReadAllText(name); // $ Alert[cs/path-injection] Alert[cs/path-injection-extended]
         }
 
+        public string IsNullOrWhiteSpace(string name) // $ Source[cs/path-injection-extended]
+        {
+            if (!string.IsNullOrWhiteSpace(name))
+                return File.ReadAllText(name); // $ Alert[cs/path-injection-extended]
+            return "";
+        }
+
         public string Validated(string name)
         {
             if (name != null && !name.Contains(".."))
