@@ -58,11 +58,10 @@ predicate isCandidateContainer(DataFlow::Node n) {
 }
 
 /**
- * Gets a string literal key used to read from a local alias of the candidate
- * container `container`, via `container[k]` or `container.get(k)`.
+ * Gets a string literal key used to read from a local alias of `container`,
+ * via `container[k]` or `container.get(k)`.
  */
 string getAReadKey(DataFlow::Node container, DataFlow::Node read) {
-  isCandidateContainer(container) and
   exists(DataFlow::Node obj | DataFlow::localFlow(container, obj) |
     exists(SubscriptNode sub |
       read.asCfgNode() = sub and
@@ -85,7 +84,9 @@ string getAReadKey(DataFlow::Node container, DataFlow::Node read) {
 class SensitiveObject extends DataFlow::Node {
   string classification;
 
-  SensitiveObject() { isSensitiveKey(getAReadKey(this, _), classification) }
+  SensitiveObject() {
+    isCandidateContainer(this) and isSensitiveKey(getAReadKey(this, _), classification)
+  }
 
   string getClassification() { result = classification }
 
@@ -104,7 +105,10 @@ module CleartextLoggingSensitiveObjectConfig implements DataFlow::ConfigSig {
     node instanceof CleartextLogging::Sanitizer
     or
     // Reading a non-sensitive key (e.g. a correlation ID) from the object is safe to log.
-    exists(string key | key = getAReadKey(_, node) and not isSensitiveKey(key, _)) and
+    exists(string key |
+      key = getAReadKey(_, node) and not isSensitiveKey(key, _) and
+      not node instanceof SensitiveObject
+    ) and
     not exists(DataFlow::MethodCallNode call |
       node = call and call.calls(_, "get") and
       TaintTracking::localTaint(call.getObject(), call.getArg(1))

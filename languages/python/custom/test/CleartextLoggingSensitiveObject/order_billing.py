@@ -61,3 +61,21 @@ def safe_non_sensitive_handler(event, context):
 def not_a_handler(event):
     print(json.dumps(event))
     return charge(event["billing"])
+
+
+def log_order_id(payload):
+    print(payload["orderId"])
+
+
+def helper_correlation_id_handler(event, context):
+    log_order_id(event)
+    return charge(event["billing"])
+
+
+def log_cvv(payload):
+    print(payload["cvv"])  # $ Alert
+
+
+def helper_sensitive_key_handler(event, context):  # $ Source
+    log_cvv(event)
+    return charge(event["billing"])

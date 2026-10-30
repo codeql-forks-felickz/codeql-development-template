@@ -33,6 +33,12 @@ def add_card_raw():
     return "created", 201
 
 
+def log_payload():
+    data = request.get_json().get("payload")  # $ Source
+    print(data)  # $ Alert
+    return data["cvv"]
+
+
 # SAFE: only a non-sensitive field of the body is logged.
 @bp.route("/payment-safe/<int:id>", methods=["POST"])
 def add_card_safe(id):
