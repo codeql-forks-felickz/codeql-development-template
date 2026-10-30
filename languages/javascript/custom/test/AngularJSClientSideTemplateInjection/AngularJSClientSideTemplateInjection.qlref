@@ -1,0 +1,2 @@
+query: AngularJSClientSideTemplateInjection/AngularJSClientSideTemplateInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

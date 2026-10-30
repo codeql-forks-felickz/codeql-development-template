@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/angular.min.js"></script>
+    <title>Non-bindable AngularJS</title>
+  </head>
+  <body ng-app="" data-ng-non-bindable>
+    <h2 id="message"></h2>
+    <script>
+      var user = new URLSearchParams(window.location.search).get('user');
+      $('#message').text(user);
+    </script>
+  </body>
+</html>
