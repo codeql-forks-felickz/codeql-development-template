@@ -1,0 +1,2 @@
+query: UncontrolledSearchPathElement/UncontrolledSearchPathElement.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
