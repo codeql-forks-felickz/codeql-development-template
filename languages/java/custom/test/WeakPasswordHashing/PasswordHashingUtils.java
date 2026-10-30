@@ -58,6 +58,14 @@ public final class PasswordHashingUtils {
         return toHex(messageDigest.digest(content));
     }
 
+    public static byte[] digestOutputBuffer(byte[] passwordBuffer, byte[] input)
+            throws NoSuchAlgorithmException, java.security.DigestException {
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        messageDigest.update(input);
+        messageDigest.digest(passwordBuffer, 0, passwordBuffer.length);
+        return passwordBuffer;
+    }
+
     static String toHex(byte[] data) {
         StringBuilder builder = new StringBuilder();
         for (byte b : data) {

@@ -29,7 +29,11 @@ private predicate isPasswordName(string name) {
  */
 class PasswordExpr extends Expr {
   PasswordExpr() {
-    isPasswordName(this.(VarRead).getVariable().getName())
+    isPasswordName(this.(VarRead).getVariable().getName()) and
+      not exists(DataFlow::Node protection |
+        isPasswordProtectionCall(protection) and
+        DataFlow::localExprFlow(protection.asExpr(), this)
+      )
     or
     isPasswordName(this.(MethodCall).getMethod().getName()) and
     not this.(MethodCall).getMethod().getReturnType() instanceof BooleanType
@@ -44,7 +48,8 @@ class PasswordExpr extends Expr {
  */
 predicate isPasswordProtectionCall(DataFlow::Node node) {
   exists(Method m | m = node.asExpr().(MethodCall).getMethod() |
-    m.getName().regexpMatch("(?i).*(hash|digest|crypt|kdf|argon|scrypt).*")
+    m.getName().regexpMatch("(?i).*(hash|digest|crypt|kdf|argon|scrypt).*") and
+    not m.getName().regexpMatch("(?i).*decrypt.*")
     or
     m.hasName("encode") and
     m.getDeclaringType().getASupertype*().getName().matches("%PasswordEncoder")

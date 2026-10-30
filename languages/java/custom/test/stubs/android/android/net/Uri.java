@@ -13,4 +13,6 @@ public abstract class Uri implements Parcelable {
   public abstract String getScheme();
 
   public abstract String getLastPathSegment();
+
+  public abstract String toString();
 }

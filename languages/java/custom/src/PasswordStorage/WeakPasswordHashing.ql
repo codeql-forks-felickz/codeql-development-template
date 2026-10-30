@@ -23,7 +23,8 @@ class MessageDigestInput extends Expr {
   MessageDigestInput() {
     exists(MethodCall mc |
       mc.getMethod().getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
-      mc.getMethod().hasName(["digest", "update"]) and
+      (mc.getMethod().hasName("update") or
+        mc.getMethod().hasName("digest") and mc.getNumArgument() = 1) and
       this = mc.getArgument(0)
     )
   }

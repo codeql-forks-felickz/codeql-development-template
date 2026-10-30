@@ -8,4 +8,6 @@ public class BCryptPasswordEncoder {
     public String encode(CharSequence rawPassword) { return null; }
 
     public boolean matches(CharSequence rawPassword, String encodedPassword) { return false; }
+
+    public boolean upgradeEncoding(String encodedPassword) { return false; }
 }

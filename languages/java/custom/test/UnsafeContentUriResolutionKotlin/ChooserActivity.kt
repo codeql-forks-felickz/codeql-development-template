@@ -12,7 +12,7 @@ class ChooserActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (intent.extras != null) {
-            var uri = intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri // $ Source
+            var uri = intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
             uri = Uri.fromFile(File(uri.toString()))
             makeTempCopy(uri)
         }
@@ -32,7 +32,7 @@ class ChooserActivity : Activity() {
 
     private fun makeTempCopy(fileUri: Uri) {
         val out = Uri.fromFile(File("/sdcard/insecureshop/copy"))
-        val inputStream = contentResolver.openInputStream(fileUri) // $ Alert
+        val inputStream = contentResolver.openInputStream(fileUri)
         val outputStream = contentResolver.openOutputStream(out)
         inputStream?.copyTo(outputStream!!)
     }

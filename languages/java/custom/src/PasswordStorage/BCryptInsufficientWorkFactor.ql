@@ -21,7 +21,8 @@ class BCryptWorkFactorCall extends Call {
   BCryptWorkFactorCall() {
     this.(ConstructorCall)
         .getConstructedType()
-        .hasQualifiedName("org.springframework.security.crypto.bcrypt", "BCryptPasswordEncoder")
+        .hasQualifiedName("org.springframework.security.crypto.bcrypt", "BCryptPasswordEncoder") and
+    not isVerificationOnly(this.(ConstructorCall))
     or
     this.(MethodCall).getMethod().hasName("gensalt") and
     this.(MethodCall)
@@ -37,10 +38,28 @@ class BCryptWorkFactorCall extends Call {
   }
 }
 
+/** Holds if a locally scoped encoder is used only for verification and does not escape. */
+private predicate isVerificationOnly(ConstructorCall constructor) {
+  exists(LocalVariableDecl encoder |
+    encoder.getInitializer() = constructor and
+    not exists(AssignExpr assignment | assignment.getDest() = encoder.getAnAccess()) and
+    exists(MethodCall verification |
+      verification.getQualifier() = encoder.getAnAccess() and
+      verification.getMethod().hasName(["matches", "upgradeEncoding"])
+    ) and
+    forall(VarRead access | access.getVariable() = encoder |
+      exists(MethodCall verification |
+        verification.getQualifier() = access and
+        verification.getMethod().hasName(["matches", "upgradeEncoding"])
+      )
+    )
+  )
+}
+
 from BCryptWorkFactorCall call, int factor
 where
   factor = call.getWorkFactor().(CompileTimeConstantExpr).getIntValue() and
-  factor < minimumWorkFactor()
+  factor >= 4 and factor < minimumWorkFactor()
 select call,
   "BCrypt is configured with a work factor of " + factor +
     ", which is below the recommended minimum of " + minimumWorkFactor() + "."

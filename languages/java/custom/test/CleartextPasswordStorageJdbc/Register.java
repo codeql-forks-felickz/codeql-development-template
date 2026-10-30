@@ -42,6 +42,37 @@ public class Register extends HttpServlet {
         ps.executeUpdate();
     }
 
+    public void updateLastLogin(Connection con, String password) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("UPDATE users SET last_login = ? WHERE password = ?");
+        ps.setString(1, "today");
+        ps.setString(2, password);
+        ps.executeUpdate();
+    }
+
+    public void concatenatedPredicateOnly(Statement stmt, String password) throws SQLException {
+        stmt.executeUpdate("UPDATE users SET last_login = 1 WHERE password = '" + password + "'");
+    }
+
+    public void concatenatedPasswordUpdate(Statement stmt, String password) throws SQLException {
+        stmt.executeUpdate("UPDATE users SET password = '" + password + "' WHERE username = 'alice'"); // $ Alert
+    }
+
+    public void updateDecryptedPassword(Connection con) throws SQLException {
+        String password = getPassword();
+        String cleartext = password; // $ Source
+        PreparedStatement ps = con.prepareStatement("INSERT INTO users(password) VALUES (?)");
+        ps.setString(1, decryptPassword(cleartext)); // $ Alert
+        ps.executeUpdate();
+    }
+
+    public void updateAssignedHash(Connection con, String input) throws Exception {
+        String password = hashPassword(input);
+        PreparedStatement ps = con.prepareStatement("UPDATE users SET password = ? WHERE username = ?");
+        ps.setString(1, password);
+        ps.setString(2, "alice");
+        ps.executeUpdate();
+    }
+
     public boolean checkPassword(Connection con, String user, String password) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT 1 FROM users WHERE username = ? AND password = ?");
         ps.setString(1, user);
@@ -51,5 +82,13 @@ public class Register extends HttpServlet {
 
     private static String hashPassword(String password) throws Exception {
         return new String(MessageDigest.getInstance("SHA-256").digest(password.getBytes()));
+    }
+
+    private static String getPassword() {
+        return "password";
+    }
+
+    private static String decryptPassword(String encryptedValue) {
+        return encryptedValue;
     }
 }

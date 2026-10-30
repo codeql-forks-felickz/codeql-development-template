@@ -1,5 +1,4 @@
 #select
-| ChooserActivity.kt:35:59:35:65 | fileUri | ChooserActivity.kt:15:23:15:28 | getIntent(...) : Intent | ChooserActivity.kt:35:59:35:65 | fileUri | This ContentResolver method that resolves a URI depends on a $@. | ChooserActivity.kt:15:23:15:28 | getIntent(...) | user-provided value |
 edges
 | ChooserActivity.kt:15:23:15:28 | <implicit not null> : Intent | ChooserActivity.kt:15:23:15:80 | getParcelableExtra(...) : Parcelable | provenance | MaD:326 |
 | ChooserActivity.kt:15:23:15:28 | getIntent(...) : Intent | ChooserActivity.kt:15:23:15:28 | <implicit not null> : Intent | provenance |  |
@@ -8,7 +7,7 @@ edges
 | ChooserActivity.kt:16:23:16:52 | <implicit not null> : Uri | ChooserActivity.kt:17:26:17:28 | uri : Uri | provenance |  |
 | ChooserActivity.kt:16:23:16:52 | fromFile(...) : Uri | ChooserActivity.kt:16:23:16:52 | <implicit not null> : Uri | provenance |  |
 | ChooserActivity.kt:16:32:16:51 | new File(...) : File | ChooserActivity.kt:16:23:16:52 | fromFile(...) : Uri | provenance | MaD:492 |
-| ChooserActivity.kt:16:37:16:39 | uri : Uri | ChooserActivity.kt:16:37:16:50 | toString(...) : String | provenance | Config |
+| ChooserActivity.kt:16:37:16:39 | uri : Uri | ChooserActivity.kt:16:37:16:50 | toString(...) : String | provenance | MaD:515 |
 | ChooserActivity.kt:16:37:16:50 | toString(...) : String | ChooserActivity.kt:16:32:16:51 | new File(...) : File | provenance | MaD:46512 |
 | ChooserActivity.kt:17:26:17:28 | uri : Uri | ChooserActivity.kt:33:30:33:41 | fileUri : Uri | provenance |  |
 | ChooserActivity.kt:22:19:22:24 | <implicit not null> : Intent | ChooserActivity.kt:22:19:22:76 | getParcelableExtra(...) : Parcelable | provenance | MaD:326 |

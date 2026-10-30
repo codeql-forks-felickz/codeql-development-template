@@ -1,3 +1,4 @@
-| BCryptUsage.java:9:45:9:72 | new BCryptPasswordEncoder(...) | BCrypt is configured with a work factor of 4, which is below the recommended minimum of 10. |
-| BCryptUsage.java:14:16:14:53 | new BCryptPasswordEncoder(...) | BCrypt is configured with a work factor of 4, which is below the recommended minimum of 10. |
-| BCryptUsage.java:18:40:18:56 | gensalt(...) | BCrypt is configured with a work factor of 6, which is below the recommended minimum of 10. |
+| BCryptUsage.java:19:16:19:53 | new BCryptPasswordEncoder(...) | BCrypt is configured with a work factor of 4, which is below the recommended minimum of 10. |
+| BCryptUsage.java:23:16:23:43 | new BCryptPasswordEncoder(...) | BCrypt is configured with a work factor of 4, which is below the recommended minimum of 10. |
+| BCryptUsage.java:27:45:27:72 | new BCryptPasswordEncoder(...) | BCrypt is configured with a work factor of 4, which is below the recommended minimum of 10. |
+| BCryptUsage.java:38:40:38:56 | gensalt(...) | BCrypt is configured with a work factor of 6, which is below the recommended minimum of 10. |
