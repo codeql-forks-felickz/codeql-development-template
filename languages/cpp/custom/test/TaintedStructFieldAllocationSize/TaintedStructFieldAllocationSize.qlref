@@ -1,0 +1,2 @@
+query: TaintedStructFieldAllocationSize/TaintedStructFieldAllocationSize.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
