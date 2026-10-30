@@ -1,0 +1,36 @@
+#select
+| app/views/admin/dashboard.html.erb:8:44:8:60 | ...[...] | app/views/admin/dashboard.html.erb:8:44:8:49 | call to params | app/views/admin/dashboard.html.erb:8:44:8:60 | ...[...] | Cross-site scripting vulnerability due to a $@ written into a JavaScript context. | app/views/admin/dashboard.html.erb:8:44:8:49 | call to params | user-provided value |
+| app/views/admin/dashboard.html.erb:11:18:11:25 | @user_id | app/controllers/admin_controller.rb:3:16:3:21 | call to params | app/views/admin/dashboard.html.erb:11:18:11:25 | @user_id | Cross-site scripting vulnerability due to a $@ written into a JavaScript context. | app/controllers/admin_controller.rb:3:16:3:21 | call to params | user-provided value |
+| app/views/admin/dashboard.html.erb:13:23:13:39 | ...[...] | app/views/admin/dashboard.html.erb:13:23:13:28 | call to params | app/views/admin/dashboard.html.erb:13:23:13:39 | ...[...] | Cross-site scripting vulnerability due to a $@ written into a JavaScript context. | app/views/admin/dashboard.html.erb:13:23:13:28 | call to params | user-provided value |
+| app/views/admin/dashboard.html.erb:18:50:18:66 | ...[...] | app/views/admin/dashboard.html.erb:18:50:18:55 | call to params | app/views/admin/dashboard.html.erb:18:50:18:66 | ...[...] | Cross-site scripting vulnerability due to a $@ written into a JavaScript context. | app/views/admin/dashboard.html.erb:18:50:18:55 | call to params | user-provided value |
+| app/views/admin/dashboard.html.erb:25:25:25:45 | call to to_json | app/views/admin/dashboard.html.erb:25:25:25:30 | call to params | app/views/admin/dashboard.html.erb:25:25:25:45 | call to to_json | Cross-site scripting vulnerability due to a $@ written into a JavaScript context. | app/views/admin/dashboard.html.erb:25:25:25:30 | call to params | user-provided value |
+| app/views/admin/dashboard.html.erb:31:23:31:39 | ...[...] | app/views/admin/dashboard.html.erb:31:23:31:28 | call to params | app/views/admin/dashboard.html.erb:31:23:31:39 | ...[...] | Cross-site scripting vulnerability due to a $@ written into a JavaScript context. | app/views/admin/dashboard.html.erb:31:23:31:28 | call to params | user-provided value |
+| app/views/admin/dashboard.html.erb:35:22:35:38 | ...[...] | app/views/admin/dashboard.html.erb:35:22:35:27 | call to params | app/views/admin/dashboard.html.erb:35:22:35:38 | ...[...] | Cross-site scripting vulnerability due to a $@ written into a JavaScript context. | app/views/admin/dashboard.html.erb:35:22:35:27 | call to params | user-provided value |
+edges
+| app/controllers/admin_controller.rb:3:16:3:21 | call to params | app/controllers/admin_controller.rb:3:16:3:31 | ...[...] | provenance |  |
+| app/controllers/admin_controller.rb:3:16:3:31 | ...[...] | app/views/admin/dashboard.html.erb:11:18:11:25 | @user_id | provenance | Config |
+| app/views/admin/dashboard.html.erb:8:44:8:49 | call to params | app/views/admin/dashboard.html.erb:8:44:8:60 | ...[...] | provenance |  |
+| app/views/admin/dashboard.html.erb:13:23:13:28 | call to params | app/views/admin/dashboard.html.erb:13:23:13:39 | ...[...] | provenance |  |
+| app/views/admin/dashboard.html.erb:18:50:18:55 | call to params | app/views/admin/dashboard.html.erb:18:50:18:66 | ...[...] | provenance |  |
+| app/views/admin/dashboard.html.erb:25:25:25:30 | call to params | app/views/admin/dashboard.html.erb:25:25:25:37 | ...[...] | provenance |  |
+| app/views/admin/dashboard.html.erb:25:25:25:37 | ...[...] | app/views/admin/dashboard.html.erb:25:25:25:45 | call to to_json | provenance |  |
+| app/views/admin/dashboard.html.erb:31:23:31:28 | call to params | app/views/admin/dashboard.html.erb:31:23:31:39 | ...[...] | provenance |  |
+| app/views/admin/dashboard.html.erb:35:22:35:27 | call to params | app/views/admin/dashboard.html.erb:35:22:35:38 | ...[...] | provenance |  |
+nodes
+| app/controllers/admin_controller.rb:3:16:3:21 | call to params | semmle.label | call to params |
+| app/controllers/admin_controller.rb:3:16:3:31 | ...[...] | semmle.label | ...[...] |
+| app/views/admin/dashboard.html.erb:8:44:8:49 | call to params | semmle.label | call to params |
+| app/views/admin/dashboard.html.erb:8:44:8:60 | ...[...] | semmle.label | ...[...] |
+| app/views/admin/dashboard.html.erb:11:18:11:25 | @user_id | semmle.label | @user_id |
+| app/views/admin/dashboard.html.erb:13:23:13:28 | call to params | semmle.label | call to params |
+| app/views/admin/dashboard.html.erb:13:23:13:39 | ...[...] | semmle.label | ...[...] |
+| app/views/admin/dashboard.html.erb:18:50:18:55 | call to params | semmle.label | call to params |
+| app/views/admin/dashboard.html.erb:18:50:18:66 | ...[...] | semmle.label | ...[...] |
+| app/views/admin/dashboard.html.erb:25:25:25:30 | call to params | semmle.label | call to params |
+| app/views/admin/dashboard.html.erb:25:25:25:37 | ...[...] | semmle.label | ...[...] |
+| app/views/admin/dashboard.html.erb:25:25:25:45 | call to to_json | semmle.label | call to to_json |
+| app/views/admin/dashboard.html.erb:31:23:31:28 | call to params | semmle.label | call to params |
+| app/views/admin/dashboard.html.erb:31:23:31:39 | ...[...] | semmle.label | ...[...] |
+| app/views/admin/dashboard.html.erb:35:22:35:27 | call to params | semmle.label | call to params |
+| app/views/admin/dashboard.html.erb:35:22:35:38 | ...[...] | semmle.label | ...[...] |
+subpaths

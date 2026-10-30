@@ -1,0 +1,2 @@
+query: ReflectedXssScriptContext/ReflectedXssScriptContext.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

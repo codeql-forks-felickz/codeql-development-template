@@ -1,0 +1,10 @@
+<ol>
+<% @todos.each_with_index do |todo, i| %>
+  <%# BAD: relation built from a chain of query methods %>
+  <li><%= i %>: <%= todo.body.html_safe %></li> <%# $ Alert %>
+<% end %>
+</ol>
+<% @todos.map do |todo| %>
+  <%# BAD: records yielded by `map` %>
+  <%= raw todo.body %> <%# $ Alert %>
+<% end %>

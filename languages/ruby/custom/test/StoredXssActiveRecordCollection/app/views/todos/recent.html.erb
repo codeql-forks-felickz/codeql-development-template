@@ -1,0 +1,4 @@
+<% @todos.each do |todo| %>
+  <%# BAD: relation loaded into an array with `to_a` %>
+  <%= raw(todo.body) %> <%# $ Alert %>
+<% end %>

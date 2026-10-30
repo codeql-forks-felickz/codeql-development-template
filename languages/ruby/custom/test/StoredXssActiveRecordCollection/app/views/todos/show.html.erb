@@ -1,0 +1,2 @@
+<%# BAD: already reported by the stock rb/stored-xss query (single record from `find_by`) %>
+<%= raw(@todo.body) %> <%# $ Alert %>
