@@ -35,7 +35,7 @@ def safe_correlation_id_handler(event, context):
 
 
 def sensitive_fallback_handler(event, context):  # $ Source
-    print(event.get("orderId", event["billing"]))  # $ Alert  # lgtm[py/clear-text-logging-sensitive-data]
+    print(event.get("orderId", event))  # $ Alert
     return charge(event["billing"])
 
 
