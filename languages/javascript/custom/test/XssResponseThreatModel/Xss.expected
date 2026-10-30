@@ -1,7 +1,10 @@
 #select
 | angular/play.component.ts:22:26:22:46 | message ... sername | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | angular/play.component.ts:22:26:22:46 | message ... sername | Cross-site scripting vulnerability due to $@. | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | user-provided value |
 | angular/play.component.ts:24:29:24:43 | message.content | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | angular/play.component.ts:24:29:24:43 | message.content | Cross-site scripting vulnerability due to $@. | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | user-provided value |
+| jquery/stored-comments.js:11:27:11:33 | comment | jquery/stored-comments.js:7:60:7:65 | result | jquery/stored-comments.js:11:27:11:33 | comment | Cross-site scripting vulnerability due to $@. | jquery/stored-comments.js:7:60:7:65 | result | user-provided value |
+| react-query/ProfileHeader.tsx:25:47:25:60 | bio ? bio : "" | react-query/ProfileHeader.tsx:5:15:5:54 | await f ... }/bio`) | react-query/ProfileHeader.tsx:25:47:25:60 | bio ? bio : "" | Cross-site scripting vulnerability due to $@. | react-query/ProfileHeader.tsx:5:15:5:54 | await f ... }/bio`) | user-provided value |
 | react/MessageView.jsx:27:49:27:124 | base64. ... cript") | react/MessageView.jsx:14:23:14:30 | response | react/MessageView.jsx:27:49:27:124 | base64. ... cript") | Cross-site scripting vulnerability due to $@. | react/MessageView.jsx:14:23:14:30 | response | user-provided value |
+| xhr/user-table.js:19:73:19:87 | user["surname"] | xhr/user-table.js:9:30:9:46 | this.responseText | xhr/user-table.js:19:73:19:87 | user["surname"] | Cross-site scripting vulnerability due to $@. | xhr/user-table.js:9:30:9:46 | this.responseText | user-provided value |
 edges
 | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | angular/play.component.ts:19:5:19:36 | this.li ... ges(id) | provenance |  |
 | angular/play.component.ts:19:5:19:36 | this.li ... ges(id) | angular/play.component.ts:19:49:19:56 | response | provenance |  |
@@ -12,6 +15,22 @@ edges
 | angular/play.component.ts:20:36:20:42 | message | angular/play.component.ts:24:29:24:35 | message | provenance |  |
 | angular/play.component.ts:22:26:22:32 | message | angular/play.component.ts:22:26:22:46 | message ... sername | provenance |  |
 | angular/play.component.ts:24:29:24:35 | message | angular/play.component.ts:24:29:24:43 | message.content | provenance |  |
+| jquery/stored-comments.js:7:60:7:65 | result | jquery/stored-comments.js:9:44:9:49 | result | provenance |  |
+| jquery/stored-comments.js:7:60:7:65 | result | jquery/stored-comments.js:10:46:10:51 | result | provenance |  |
+| jquery/stored-comments.js:9:13:9:19 | comment | jquery/stored-comments.js:10:19:10:25 | comment | provenance |  |
+| jquery/stored-comments.js:9:23:9:58 | html.re ... ].user) | jquery/stored-comments.js:9:13:9:19 | comment | provenance |  |
+| jquery/stored-comments.js:9:44:9:49 | result | jquery/stored-comments.js:9:23:9:58 | html.re ... ].user) | provenance |  |
+| jquery/stored-comments.js:10:9:10:15 | comment | jquery/stored-comments.js:11:27:11:33 | comment | provenance |  |
+| jquery/stored-comments.js:10:19:10:25 | comment | jquery/stored-comments.js:10:19:10:60 | comment ... ].text) | provenance |  |
+| jquery/stored-comments.js:10:19:10:60 | comment ... ].text) | jquery/stored-comments.js:10:9:10:15 | comment | provenance |  |
+| jquery/stored-comments.js:10:46:10:51 | result | jquery/stored-comments.js:10:19:10:60 | comment ... ].text) | provenance |  |
+| react-query/ProfileHeader.tsx:5:9:5:11 | res | react-query/ProfileHeader.tsx:9:10:9:12 | res | provenance |  |
+| react-query/ProfileHeader.tsx:5:15:5:54 | await f ... }/bio`) | react-query/ProfileHeader.tsx:5:9:5:11 | res | provenance |  |
+| react-query/ProfileHeader.tsx:9:10:9:12 | res | react-query/ProfileHeader.tsx:9:10:9:19 | res.json() | provenance |  |
+| react-query/ProfileHeader.tsx:9:10:9:19 | res.json() | react-query/ProfileHeader.tsx:21:11:21:19 | data: bio | provenance |  |
+| react-query/ProfileHeader.tsx:21:11:21:19 | data: bio | react-query/ProfileHeader.tsx:21:17:21:19 | bio | provenance |  |
+| react-query/ProfileHeader.tsx:21:17:21:19 | bio | react-query/ProfileHeader.tsx:25:53:25:55 | bio | provenance |  |
+| react-query/ProfileHeader.tsx:25:53:25:55 | bio | react-query/ProfileHeader.tsx:25:47:25:60 | bio ? bio : "" | provenance |  |
 | react/MessageView.jsx:13:5:16:8 | API.cal ...      }) [PromiseValue] | react/MessageView.jsx:17:23:17:26 | data | provenance |  |
 | react/MessageView.jsx:14:23:14:30 | response | react/MessageView.jsx:15:16:15:23 | response | provenance |  |
 | react/MessageView.jsx:15:16:15:23 | response | react/MessageView.jsx:15:16:15:30 | response.json() | provenance |  |
@@ -21,6 +40,12 @@ edges
 | react/MessageView.jsx:18:34:18:45 | data.message | react/MessageView.jsx:27:63:27:80 | this.state.msgData | provenance |  |
 | react/MessageView.jsx:27:49:27:81 | base64. ... sgData) | react/MessageView.jsx:27:49:27:124 | base64. ... cript") | provenance |  |
 | react/MessageView.jsx:27:63:27:80 | this.state.msgData | react/MessageView.jsx:27:49:27:81 | base64. ... sgData) | provenance |  |
+| xhr/user-table.js:9:11:9:15 | users | xhr/user-table.js:11:5:11:9 | users | provenance |  |
+| xhr/user-table.js:9:19:9:47 | JSON.pa ... seText) | xhr/user-table.js:9:11:9:15 | users | provenance |  |
+| xhr/user-table.js:9:30:9:46 | this.responseText | xhr/user-table.js:9:19:9:47 | JSON.pa ... seText) | provenance |  |
+| xhr/user-table.js:11:5:11:9 | users | xhr/user-table.js:13:26:13:29 | user | provenance |  |
+| xhr/user-table.js:13:26:13:29 | user | xhr/user-table.js:19:73:19:76 | user | provenance |  |
+| xhr/user-table.js:19:73:19:76 | user | xhr/user-table.js:19:73:19:87 | user["surname"] | provenance |  |
 nodes
 | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | semmle.label | this.ht ... sages') |
 | angular/play.component.ts:19:5:19:36 | this.li ... ges(id) | semmle.label | this.li ... ges(id) |
@@ -32,6 +57,23 @@ nodes
 | angular/play.component.ts:22:26:22:46 | message ... sername | semmle.label | message ... sername |
 | angular/play.component.ts:24:29:24:35 | message | semmle.label | message |
 | angular/play.component.ts:24:29:24:43 | message.content | semmle.label | message.content |
+| jquery/stored-comments.js:7:60:7:65 | result | semmle.label | result |
+| jquery/stored-comments.js:9:13:9:19 | comment | semmle.label | comment |
+| jquery/stored-comments.js:9:23:9:58 | html.re ... ].user) | semmle.label | html.re ... ].user) |
+| jquery/stored-comments.js:9:44:9:49 | result | semmle.label | result |
+| jquery/stored-comments.js:10:9:10:15 | comment | semmle.label | comment |
+| jquery/stored-comments.js:10:19:10:25 | comment | semmle.label | comment |
+| jquery/stored-comments.js:10:19:10:60 | comment ... ].text) | semmle.label | comment ... ].text) |
+| jquery/stored-comments.js:10:46:10:51 | result | semmle.label | result |
+| jquery/stored-comments.js:11:27:11:33 | comment | semmle.label | comment |
+| react-query/ProfileHeader.tsx:5:9:5:11 | res | semmle.label | res |
+| react-query/ProfileHeader.tsx:5:15:5:54 | await f ... }/bio`) | semmle.label | await f ... }/bio`) |
+| react-query/ProfileHeader.tsx:9:10:9:12 | res | semmle.label | res |
+| react-query/ProfileHeader.tsx:9:10:9:19 | res.json() | semmle.label | res.json() |
+| react-query/ProfileHeader.tsx:21:11:21:19 | data: bio | semmle.label | data: bio |
+| react-query/ProfileHeader.tsx:21:17:21:19 | bio | semmle.label | bio |
+| react-query/ProfileHeader.tsx:25:47:25:60 | bio ? bio : "" | semmle.label | bio ? bio : "" |
+| react-query/ProfileHeader.tsx:25:53:25:55 | bio | semmle.label | bio |
 | react/MessageView.jsx:13:5:16:8 | API.cal ...      }) [PromiseValue] | semmle.label | API.cal ...      }) [PromiseValue] |
 | react/MessageView.jsx:14:23:14:30 | response | semmle.label | response |
 | react/MessageView.jsx:15:16:15:23 | response | semmle.label | response |
@@ -42,4 +84,11 @@ nodes
 | react/MessageView.jsx:27:49:27:81 | base64. ... sgData) | semmle.label | base64. ... sgData) |
 | react/MessageView.jsx:27:49:27:124 | base64. ... cript") | semmle.label | base64. ... cript") |
 | react/MessageView.jsx:27:63:27:80 | this.state.msgData | semmle.label | this.state.msgData |
+| xhr/user-table.js:9:11:9:15 | users | semmle.label | users |
+| xhr/user-table.js:9:19:9:47 | JSON.pa ... seText) | semmle.label | JSON.pa ... seText) |
+| xhr/user-table.js:9:30:9:46 | this.responseText | semmle.label | this.responseText |
+| xhr/user-table.js:11:5:11:9 | users | semmle.label | users |
+| xhr/user-table.js:13:26:13:29 | user | semmle.label | user |
+| xhr/user-table.js:19:73:19:76 | user | semmle.label | user |
+| xhr/user-table.js:19:73:19:87 | user["surname"] | semmle.label | user["surname"] |
 subpaths
