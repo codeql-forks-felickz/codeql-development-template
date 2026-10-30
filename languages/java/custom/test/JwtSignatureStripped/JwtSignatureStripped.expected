@@ -1,0 +1,3 @@
+| TokenDecoder.java:12:41:12:83 | parseClaimsJwt(...) | This parses a JWT as unsigned after $@, so its claims are never verified. | TokenDecoder.java:11:32:11:72 | ... + ... | its signature was removed |
+| TokenDecoder.java:18:16:18:91 | parseClaimsJwt(...) | This parses a JWT as unsigned after $@, so its claims are never verified. | TokenDecoder.java:18:45:18:90 | substring(...) | its signature was removed |
+| TokenDecoder.java:24:16:24:98 | parsePlaintextJwt(...) | This parses a JWT as unsigned after $@, so its claims are never verified. | TokenDecoder.java:24:67:24:97 | ... + ... | its signature was removed |
