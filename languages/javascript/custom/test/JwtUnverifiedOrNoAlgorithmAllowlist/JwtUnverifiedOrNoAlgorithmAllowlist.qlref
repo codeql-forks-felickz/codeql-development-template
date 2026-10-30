@@ -1,0 +1,2 @@
+query: JwtUnverifiedOrNoAlgorithmAllowlist/JwtUnverifiedOrNoAlgorithmAllowlist.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
