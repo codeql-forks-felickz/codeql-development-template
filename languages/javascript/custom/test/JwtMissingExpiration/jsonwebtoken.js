@@ -19,6 +19,11 @@ function callbackOnly(user, cb) {
   }); // $ Alert
 }
 
+function nullishOptions(user, cb) {
+  jwt.sign({ sub: user.id }, SECRET, undefined, cb); // $ Alert
+  jwt.sign({ sub: user.id }, SECRET, null, cb); // $ Alert
+}
+
 function localOptionsWithoutExpiresIn(user) {
   const opts = { algorithm: "RS256", issuer: "auth" };
   return jwt.sign({ sub: user.id }, SECRET, opts); // $ Alert
@@ -71,6 +76,7 @@ module.exports = {
   noOptions,
   optionsWithoutExpiresIn,
   callbackOnly,
+  nullishOptions,
   localOptionsWithoutExpiresIn,
   destructuredSign,
   moduleOptionsWithoutExpiresIn,

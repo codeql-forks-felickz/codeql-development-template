@@ -54,6 +54,54 @@ function generateWithExpHelperMutation(username) {
   return jwt.encode(payload, JWT_PRIV, "RS256");
 }
 
+function addExpiryWithAssign(claims) {
+  Object.assign(claims, { exp: Math.floor(Date.now() / 1000) + 15 * 60 });
+}
+
+// SAFE: `exp` is added by a helper with `Object.assign`.
+function generateWithObjectAssignHelper(username) {
+  var payload = { username: username };
+  addExpiryWithAssign(payload);
+  return jwt.encode(payload, JWT_PRIV, "RS256");
+}
+
+function assignExpiry(claims) {
+  Object.assign(claims, { exp: Math.floor(Date.now() / 1000) + 15 * 60 });
+}
+
+function addExpiryWithNestedAssign(claims) {
+  assignExpiry(claims);
+}
+
+// SAFE: a nested helper adds `exp` with `Object.assign`.
+function generateWithNestedObjectAssignHelper(username) {
+  var payload = { username: username };
+  addExpiryWithNestedAssign(payload);
+  return jwt.encode(payload, JWT_PRIV, "RS256");
+}
+
+function addComputedProperty(claims, key) {
+  claims[key] = "value";
+}
+
+// SAFE: a helper writes an unknown computed property.
+function generateWithComputedPropertyHelper(username, key) {
+  var payload = { username: username };
+  addComputedProperty(payload, key);
+  return jwt.encode(payload, JWT_PRIV, "RS256");
+}
+
+function addIssuer(claims) {
+  claims.iss = "auth-service";
+}
+
+// The helper only adds `iss`, so the missing `exp` must still be reported.
+function generateWithoutExpHelperMutation(username) {
+  var payload = { username: username };
+  addIssuer(payload);
+  return jwt.encode(payload, JWT_PRIV, "RS256"); // $ Alert
+}
+
 function addStandardClaims(claims) {
   claims.iss = "auth-service";
   addExpiry(claims);
@@ -105,6 +153,10 @@ module.exports = {
   generateWithExp,
   generateWithExpAssignedLater,
   generateWithExpHelperMutation,
+  generateWithObjectAssignHelper,
+  generateWithNestedObjectAssignHelper,
+  generateWithComputedPropertyHelper,
+  generateWithoutExpHelperMutation,
   generateWithNestedExpHelper,
   generateWithExpHelperReturn,
   generateWithObjectAssign,

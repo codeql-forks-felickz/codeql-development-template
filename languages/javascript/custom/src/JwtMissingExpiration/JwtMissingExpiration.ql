@@ -33,6 +33,31 @@ predicate calleeWritesProperty(DataFlow::InvokeNode call, int i, string prop) {
 }
 
 /**
+ * Holds if `call` may set an unknown property on the object passed as argument `i`, either
+ * directly, with `Object.assign`, or by passing the parameter to another such helper.
+ */
+predicate calleeWritesUnknownProperty(DataFlow::InvokeNode call, int i) {
+  exists(DataFlow::FunctionNode f, DataFlow::ParameterNode p |
+    f.getFunction() = call.getACallee() and
+    p = f.getParameter(i)
+  |
+    exists(DataFlow::PropWrite pw |
+      pw = p.getAPropertyWrite() and not exists(pw.getPropertyName())
+    )
+    or
+    exists(DataFlow::CallNode assign |
+      assign = DataFlow::globalVarRef("Object").getAMemberCall("assign") and
+      p.flowsTo(assign.getArgument(0))
+    )
+    or
+    exists(DataFlow::InvokeNode inner, int j |
+      p.flowsTo(inner.getArgument(j)) and
+      calleeWritesUnknownProperty(inner, j)
+    )
+  )
+}
+
+/**
  * Holds if the object literal `obj` may end up with a property named `prop`, either directly,
  * through a later (possibly computed) property write, a spread element, `Object.assign`, or a
  * helper function that writes `prop` on its argument.
@@ -52,7 +77,22 @@ predicate mayHaveProperty(DataFlow::ObjectLiteralNode obj, string prop) {
   or
   exists(DataFlow::InvokeNode call, int i |
     obj.flowsTo(call.getArgument(i)) and
-    calleeWritesProperty(call, i, prop)
+    (
+      calleeWritesProperty(call, i, prop)
+      or
+      calleeWritesUnknownProperty(call, i)
+    )
+  )
+}
+
+/** Holds if `opts` is statically known to be `null` or `undefined`. */
+predicate isNullishOptions(DataFlow::Node opts) {
+  exists(Expr e | e = opts.asExpr().getUnderlyingValue() |
+    e instanceof NullLiteral
+    or
+    e instanceof VoidExpr
+    or
+    exists(GlobalVarAccess access | e = access and access.getName() = "undefined")
   )
 }
 
@@ -94,6 +134,8 @@ class JsonWebTokenSign extends JwtSigningWithoutExpiryOption, DataFlow::CallNode
     this = API::moduleImport("jsonwebtoken").getMember("sign").getACall() and
     (
       not exists(this.getArgument(2))
+      or
+      isNullishOptions(this.getArgument(2))
       or
       optionsLackProperty(this.getArgument(2), "expiresIn")
     )
