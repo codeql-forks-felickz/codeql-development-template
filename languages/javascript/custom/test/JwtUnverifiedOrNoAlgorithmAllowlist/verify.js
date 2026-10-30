@@ -28,18 +28,13 @@ app.use(expressJwt({ secret: hmacSecret }));
 app.get("/a", (req, res) => {
   // Not reported: jsonwebtoken's version cannot be determined
   const claims = jwt.verify(req.query.token, publicKey); // $ MISSING: Alert
+  const pemClaims = jwt.verify(req.query.token, rsaCert); // $ MISSING: Alert
   res.send(claims.sub);
 });
 
 app.get("/b", (req, res) => {
   // Not reported: jsonwebtoken's version cannot be determined
   const claims = jwt.verify(req.query.token, publicKey, { issuer: "me" }); // $ MISSING: Alert
-  res.send(claims.sub);
-});
-
-app.get("/pem-key", (req, res) => {
-  // Not reported: modern jsonwebtoken versions reject asymmetric-key algorithm confusion
-  const claims = jwt.verify(req.query.token, rsaCert); // $ MISSING: Alert
   res.send(claims.sub);
 });
 
