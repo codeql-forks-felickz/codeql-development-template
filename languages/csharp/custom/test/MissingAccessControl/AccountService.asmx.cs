@@ -41,10 +41,10 @@ namespace Bank.WebServices
                 Remove(accountId);
         }
 
-        // GOOD: protected by an authorization attribute.
+        // BAD: MVC authorization attributes do not protect ASMX operations.
         [WebMethod]
         [Authorize]
-        public string TransferBalanceAuthorized(long from, long to, double amount)
+        public string TransferBalanceAuthorized(long from, long to, double amount) // $ Alert
         {
             Withdraw(from, amount);
             Deposit(to, amount);
@@ -79,9 +79,9 @@ namespace Bank.WebServices
     [Authorize]
     public class AdminService : WebService
     {
-        // GOOD: the declaring class is protected by an authorization attribute.
+        // BAD: MVC authorization attributes do not protect ASMX operations.
         [WebMethod]
-        public void DeleteUser(long userId)
+        public void DeleteUser(long userId) // $ Alert
         {
             System.Console.WriteLine(userId);
         }
