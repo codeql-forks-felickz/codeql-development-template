@@ -7,6 +7,8 @@
 | test.go:84:26:84:32 | payload | test.go:100:9:100:28 | call to FormValue | test.go:84:26:84:32 | payload | This path depends on a $@. | test.go:100:9:100:28 | call to FormValue | user-provided value |
 | test.go:88:22:88:28 | payload | test.go:97:10:97:14 | selection of URL | test.go:88:22:88:28 | payload | This path depends on a $@. | test.go:97:10:97:14 | selection of URL | user-provided value |
 | test.go:88:22:88:28 | payload | test.go:100:9:100:28 | call to FormValue | test.go:88:22:88:28 | payload | This path depends on a $@. | test.go:100:9:100:28 | call to FormValue | user-provided value |
+| test.go:146:17:146:20 | name | test.go:151:22:151:47 | call to FormValue | test.go:146:17:146:20 | name | This path depends on a $@. | test.go:151:22:151:47 | call to FormValue | user-provided value |
+| test.go:158:11:158:14 | path | test.go:157:10:157:30 | call to FormValue | test.go:158:11:158:14 | path | This path depends on a $@. | test.go:157:10:157:30 | call to FormValue | user-provided value |
 edges
 | test.go:45:29:45:35 | SSA def(payload) | test.go:49:45:49:51 | payload | provenance |  |
 | test.go:49:45:49:51 | payload | test.go:69:32:69:38 | SSA def(payload) | provenance | Config |
@@ -24,6 +26,9 @@ edges
 | test.go:100:9:100:28 | call to FormValue | test.go:115:10:115:24 | call to GetUserInput | provenance | Src:MaD:1994  |
 | test.go:115:10:115:24 | call to GetUserInput | test.go:116:48:116:49 | in | provenance |  |
 | test.go:116:48:116:49 | in | test.go:45:29:45:35 | SSA def(payload) | provenance | Config |
+| test.go:145:15:145:18 | SSA def(name) | test.go:146:17:146:20 | name | provenance | Sink:MaD:2090 |
+| test.go:151:22:151:47 | call to FormValue | test.go:145:15:145:18 | SSA def(name) | provenance | Src:MaD:1994 Config |
+| test.go:157:10:157:30 | call to FormValue | test.go:158:11:158:14 | path | provenance | Src:MaD:1994  |
 nodes
 | test.go:45:29:45:35 | SSA def(payload) | semmle.label | SSA def(payload) |
 | test.go:49:45:49:51 | payload | semmle.label | payload |
@@ -42,4 +47,9 @@ nodes
 | test.go:100:9:100:28 | call to FormValue | semmle.label | call to FormValue |
 | test.go:115:10:115:24 | call to GetUserInput | semmle.label | call to GetUserInput |
 | test.go:116:48:116:49 | in | semmle.label | in |
+| test.go:145:15:145:18 | SSA def(name) | semmle.label | SSA def(name) |
+| test.go:146:17:146:20 | name | semmle.label | name |
+| test.go:151:22:151:47 | call to FormValue | semmle.label | call to FormValue |
+| test.go:157:10:157:30 | call to FormValue | semmle.label | call to FormValue |
+| test.go:158:11:158:14 | path | semmle.label | path |
 subpaths

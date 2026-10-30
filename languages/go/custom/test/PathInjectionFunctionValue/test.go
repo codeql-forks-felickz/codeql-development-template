@@ -130,6 +130,47 @@ type FileOps struct {
 
 var ops = FileOps{Read: confinedRead, Audit: auditRead}
 
+type OpenOps struct {
+	OpenFromFactory func(name string) (*os.File, error)
+}
+
+type DirectOpenOps struct {
+	Open func(name string) (*os.File, error)
+}
+
+func NewOpenOps(open func(string) (*os.File, error)) OpenOps {
+	return OpenOps{OpenFromFactory: open}
+}
+
+func openFile(name string) (*os.File, error) {
+	return os.Open(name) // $ Alert
+}
+
+func constructorHandler(r *http.Request) {
+	ops := NewOpenOps(openFile)
+	ops.OpenFromFactory(r.FormValue("constructor")) // $ Source
+}
+
+func directLibraryFunctionHandler(r *http.Request) {
+	ops := DirectOpenOps{Open: os.Open}
+	ops.Open("/var/log/app.log")
+	path := r.FormValue("direct") // $ Source
+	ops.Open(path)                 // $ Alert
+}
+
+type FormatOps struct {
+	Format func(string) string
+}
+
+func NewFormatOps(format func(string) string) FormatOps {
+	return FormatOps{Format: format}
+}
+
+func noSinkHandler(r *http.Request) {
+	ops := NewFormatOps(strings.TrimSpace)
+	ops.Format(r.FormValue("format"))
+}
+
 // Reached with user input, but rejects any path containing "..".
 func confinedRead(name string) ([]byte, error) {
 	if strings.Contains(name, "..") {

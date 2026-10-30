@@ -12,10 +12,11 @@
  */
 
 import go
+import semmle.go.dataflow.ExternalFlow
 
 /**
  * Gets a function (declared function or function literal) whose value may be held
- * by `n`, following local flow, global variables and the results of resolved calls
+ * by `n`, following local flow, global variables, resolved call arguments and results
  * (for example factories that return a function literal).
  */
 private DataFlow::FunctionNode getAFunctionValue(DataFlow::Node n) {
@@ -30,6 +31,16 @@ private DataFlow::FunctionNode getAFunctionValue(DataFlow::Node n) {
     ret.getRoot() = factory.getACallee() and
     ret.getIndex() = i and
     result = getAFunctionValue(ret)
+  )
+  or
+  exists(
+    DataFlow::CallNode call, DataFlow::ParameterNode p, DataFlow::FunctionNode callee, int i
+  |
+    n = p and
+    p.getPosition() = i and
+    callee.getParameter(i) = p and
+    call.getACalleeIncludingExternals().asFunction() = callee.getFunction() and
+    result = getAFunctionValue(call.getArgument(i))
   )
 }
 
@@ -86,5 +97,41 @@ predicate fieldFunctionValueArgumentStep(DataFlow::Node pred, DataFlow::Node suc
     callee = getAFieldFunctionValueCallee(call, _) and
     pred = call.getArgument(i) and
     succ = callee.getParameter(i)
+  )
+}
+
+/**
+ * Holds if `sink` is an argument to a call through a function value stored in a
+ * struct field, and the inferred target's corresponding argument is modeled as a
+ * sink of `kind`.
+ */
+predicate fieldFunctionValueSink(DataFlow::Node sink, string kind) {
+  exists(
+    DataFlow::CallNode call, DataFlow::FunctionNode callee, int i, string package,
+    string type, string name, string input
+  |
+    callee = getAFieldFunctionValueCallee(call, _) and
+    exists(Function f |
+      f = callee.getFunction() and
+      (
+        type = "" and f.hasQualifiedName(package, name)
+        or
+        f.(Method).hasQualifiedName(package, type, name)
+      )
+    ) and
+    sinkModel(package, type, _, name, _, _, input, kind, _, _) and
+    i = inputArgument(input) and
+    sink = call.getArgument(i)
+  )
+}
+
+bindingset[input]
+private int inputArgument(string input) {
+  result = input.regexpCapture("^Argument\\[([0-9]+)\\]$", 1).toInt()
+  or
+  exists(string firstString, string lastString |
+    input.regexpCapture("^Argument\\[([0-9]+)\\.\\.([0-9]+)\\]$", 1) = firstString and
+    input.regexpCapture("^Argument\\[([0-9]+)\\.\\.([0-9]+)\\]$", 2) = lastString and
+    result = [firstString.toInt() .. lastString.toInt()]
   )
 }

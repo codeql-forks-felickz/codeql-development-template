@@ -23,7 +23,10 @@ import lib.FieldFunctionValueCalls
 module PathInjectionFunctionValueConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof TaintedPath::Source }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof TaintedPath::Sink }
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof TaintedPath::Sink or
+    fieldFunctionValueSink(sink, "path-injection")
+  }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof TaintedPath::Sanitizer }
 
