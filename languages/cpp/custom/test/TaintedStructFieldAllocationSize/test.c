@@ -187,7 +187,8 @@ void process_image_normalized(FILE *fp) {
 void process_checked_nested_packet(int sock) {
   struct Packet pkt;
   recv(sock, &pkt, sizeof(pkt), 0);
-  if (pkt.dims.width > MAX_DIM || pkt.dims.height > MAX_DIM)
+  if (pkt.dims.width < 0 || pkt.dims.height < 0 || pkt.dims.width > MAX_DIM ||
+      pkt.dims.height > MAX_DIM)
     return;
   char *buf = (char *)malloc(pkt.dims.width * pkt.dims.height);
   free(buf);
@@ -199,7 +200,7 @@ void process_other_checked_packet(int sock) {
   recv(sock, &pkt, sizeof(pkt), 0); // $ Source
   if (other.dims.width > MAX_DIM || other.dims.height > MAX_DIM)
     return;
-  char *buf = (char *)malloc(pkt.dims.width * pkt.dims.height); // $ Alert
+  char *buf = (char *)malloc(pkt.dims.width - pkt.dims.height); // $ Alert
   free(buf);
 }
 

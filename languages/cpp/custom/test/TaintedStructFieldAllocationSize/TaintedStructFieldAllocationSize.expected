@@ -9,7 +9,7 @@
 | test.c:176:24:176:29 | call to malloc | test.c:174:9:174:12 | fread output argument | test.c:176:31:176:43 | ... * ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:174:9:174:12 | fread output argument | user input (string read by fread) |
 | test.c:178:24:178:29 | call to malloc | test.c:174:9:174:12 | fread output argument | test.c:178:31:178:44 | ... * ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:174:9:174:12 | fread output argument | user input (string read by fread) |
 | test.c:180:24:180:29 | call to malloc | test.c:174:9:174:12 | fread output argument | test.c:180:31:180:43 | ... - ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:174:9:174:12 | fread output argument | user input (string read by fread) |
-| test.c:202:23:202:28 | call to malloc | test.c:199:14:199:17 | recv output argument | test.c:202:30:202:61 | ... * ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:199:14:199:17 | recv output argument | user input (buffer read by recv) |
+| test.c:203:23:203:28 | call to malloc | test.c:200:14:200:17 | recv output argument | test.c:203:30:203:61 | ... - ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.c:200:14:200:17 | recv output argument | user input (buffer read by recv) |
 | test.cpp:19:15:19:20 | call to malloc | test.cpp:16:9:16:12 | fread output argument | test.cpp:19:22:19:34 | ... * ... | This allocation size is derived from a field of a struct filled with $@ and could underflow or overflow, allocating an unexpected amount of memory. | test.cpp:16:9:16:12 | fread output argument | user input (string read by fread) |
 edges
 | test.c:41:16:41:19 | fread output argument | test.c:42:17:42:19 | *img | provenance |  |
@@ -70,10 +70,10 @@ edges
 | test.c:179:15:179:17 | *img [height] | test.c:179:19:179:24 | height | provenance |  |
 | test.c:179:19:179:24 | height | test.c:179:3:179:24 | ... = ... | provenance |  |
 | test.c:180:31:180:33 | *img [width] | test.c:180:31:180:43 | ... - ... | provenance |  |
-| test.c:199:14:199:17 | recv output argument | test.c:202:30:202:32 | *pkt | provenance |  |
-| test.c:202:30:202:32 | *pkt | test.c:202:30:202:61 | ... * ... | provenance | Config |
-| test.c:202:30:202:32 | *pkt | test.c:202:47:202:49 | *pkt | provenance |  |
-| test.c:202:47:202:49 | *pkt | test.c:202:30:202:61 | ... * ... | provenance | Config |
+| test.c:200:14:200:17 | recv output argument | test.c:203:30:203:32 | *pkt | provenance |  |
+| test.c:203:30:203:32 | *pkt | test.c:203:30:203:61 | ... - ... | provenance | Config |
+| test.c:203:30:203:32 | *pkt | test.c:203:47:203:49 | *pkt | provenance |  |
+| test.c:203:47:203:49 | *pkt | test.c:203:30:203:61 | ... - ... | provenance | Config |
 | test.cpp:16:9:16:12 | fread output argument | test.cpp:17:3:17:5 | *img | provenance |  |
 | test.cpp:17:3:17:5 | *img | test.cpp:19:22:19:24 | *img | provenance |  |
 | test.cpp:19:22:19:24 | *img | test.cpp:19:22:19:34 | ... * ... | provenance | Config |
@@ -136,10 +136,10 @@ nodes
 | test.c:179:19:179:24 | height | semmle.label | height |
 | test.c:180:31:180:33 | *img [width] | semmle.label | *img [width] |
 | test.c:180:31:180:43 | ... - ... | semmle.label | ... - ... |
-| test.c:199:14:199:17 | recv output argument | semmle.label | recv output argument |
-| test.c:202:30:202:32 | *pkt | semmle.label | *pkt |
-| test.c:202:30:202:61 | ... * ... | semmle.label | ... * ... |
-| test.c:202:47:202:49 | *pkt | semmle.label | *pkt |
+| test.c:200:14:200:17 | recv output argument | semmle.label | recv output argument |
+| test.c:203:30:203:32 | *pkt | semmle.label | *pkt |
+| test.c:203:30:203:61 | ... - ... | semmle.label | ... - ... |
+| test.c:203:47:203:49 | *pkt | semmle.label | *pkt |
 | test.cpp:16:9:16:12 | fread output argument | semmle.label | fread output argument |
 | test.cpp:17:3:17:5 | *img | semmle.label | *img |
 | test.cpp:19:22:19:24 | *img | semmle.label | *img |
