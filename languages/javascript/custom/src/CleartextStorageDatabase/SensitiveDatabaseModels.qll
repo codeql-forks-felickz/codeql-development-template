@@ -21,6 +21,12 @@ predicate isSensitiveFieldName(string name) {
   )
 }
 
+/** Holds if a database field called `name` is expected to hold a password or password hash. */
+bindingset[name]
+predicate isPasswordFieldName(string name) {
+  HeuristicNames::nameIndicatesSensitiveData(name, SensitiveDataClassification::password())
+}
+
 /**
  * A call whose name suggests that it hashes, encrypts or derives a key from its
  * arguments, such as `bcrypt.hash`, `argon2.hash`, `crypto.pbkdf2Sync` or `encrypt`.
@@ -131,7 +137,35 @@ abstract class OrmModelDefinition extends DataFlow::Node {
    * Gets a record (or array of records) read through a reference to this model, by a
    * query that does not restrict the returned attributes.
    */
-  abstract DataFlow::Node getARecord();
+  abstract DataFlow::Node getAQueriedRecord();
+
+  /**
+   * Gets a record (or array of records) of this model, either returned by a query or
+   * returned by saving, updating or reloading such a record, as in
+   * `const updated = await user.update({ password })`.
+   */
+  DataFlow::Node getARecord() {
+    result = this.getAQueriedRecord()
+    or
+    exists(DataFlow::MethodCallNode call |
+      call.getReceiver().getALocalSource() = this.getARecord() and
+      call.getMethodName() = ["save", "update", "reload", "increment", "decrement", "restore"]
+    |
+      result = call.getAMethodCall("then").getABoundCallbackParameter(0, 0)
+      or
+      exists(AwaitExpr await |
+        await.getOperand().flow().getALocalSource() = call and result = await.flow()
+      )
+    )
+  }
+
+  /**
+   * Holds if records of this model are serialized by custom code, such as a `toJSON`
+   * method or a `toJSON` transform, which may remove sensitive fields.
+   */
+  predicate hasCustomSerialization() {
+    exists(this.getAModelRef().getAPropertyRead("prototype").getAPropertyWrite("toJSON"))
+  }
 
   /** Holds if the attribute `name` is excluded from query results unless selected explicitly. */
   predicate isHiddenByDefault(string name) { none() }
@@ -247,6 +281,26 @@ class MongooseModelDefinition extends OrmModelDefinition instanceof API::InvokeN
         .mayHaveBooleanValue(false)
   }
 
+  override predicate hasCustomSerialization() {
+    super.hasCustomSerialization()
+    or
+    exists(DataFlow::SourceNode schema | schema = this.getSchema() |
+      schema.getAMethodCall("set").getArgument(0).getStringValue() = ["toJSON", "toObject"]
+      or
+      schema.getAMethodCall("method").getArgument(0).getStringValue() = "toJSON"
+      or
+      exists(schema.getAPropertyRead("methods").getAPropertyWrite("toJSON"))
+      or
+      exists(
+        schema
+            .(DataFlow::NewNode)
+            .getArgument(1)
+            .getALocalSource()
+            .getAPropertyWrite(["toJSON", "toObject"])
+      )
+    )
+  }
+
   /** Gets a call that reads records through this model. */
   private DataFlow::MethodCallNode getAReadCall() {
     result =
@@ -284,7 +338,7 @@ class MongooseModelDefinition extends OrmModelDefinition instanceof API::InvokeN
     exists(this.getAQuery(read).getAMethodCall(["select", "projection"]))
   }
 
-  override DataFlow::Node getARecord() {
+  override DataFlow::Node getAQueriedRecord() {
     exists(DataFlow::MethodCallNode read, DataFlow::MethodCallNode query |
       query = this.getAQuery(read) and
       not this.hasProjection(read)
@@ -343,7 +397,7 @@ abstract class SequelizeModelDefinition extends OrmModelDefinition {
     not exists(this.getOptions().getAPropertyWrite("defaultScope"))
   }
 
-  override DataFlow::Node getARecord() {
+  override DataFlow::Node getAQueriedRecord() {
     exists(DataFlow::MethodCallNode read | read = this.getAReadCall() |
       result = read.getAMethodCall("then").getABoundCallbackParameter(0, 0)
       or
@@ -367,6 +421,10 @@ class SequelizeClassModelDefinition extends SequelizeModelDefinition instanceof 
   }
 
   override DataFlow::SourceNode getAModelRef() { result = super.getAClassReference() }
+
+  override predicate hasCustomSerialization() {
+    super.hasCustomSerialization() or exists(super.getInstanceMethod("toJSON"))
+  }
 
   override DataFlow::ObjectLiteralNode getAttributes() {
     result = this.getAnInitCall().getArgument(0).getALocalSource()
@@ -457,4 +515,43 @@ class OrmWholeDocumentSink extends DatabaseStorageSink {
   }
 
   override string getASensitiveField() { def.hasClearTextSensitivePath(result) }
+}
+
+/** A record read through a model that exposes a password or private field. */
+class SensitiveDatabaseRecord extends DataFlow::Node {
+  OrmModelDefinition def;
+
+  SensitiveDatabaseRecord() {
+    this = def.getARecord() and
+    def.hasExposedSensitivePath(_)
+  }
+
+  /** Gets the model definition of this record. */
+  OrmModelDefinition getModelDefinition() { result = def }
+
+  /** Gets a sensitive field included in this record. */
+  string getASensitiveField() { def.hasExposedSensitivePath(result) }
+}
+
+/**
+ * A read of a named property that is neither sensitive nor a way to reach the record
+ * contents, such as `user.username` or `users.length`.
+ */
+class NonSensitivePropertyRead extends DataFlow::Node instanceof DataFlow::PropRead {
+  NonSensitivePropertyRead() {
+    exists(string name | name = super.getPropertyName() |
+      not name.regexpMatch("[0-9]+") and
+      not name = ["dataValues", "_doc", "rows"] and
+      not isSensitiveFieldName(name)
+    )
+  }
+}
+
+/** Holds if converting the record `pred` to a plain object or JSON gives `succ`. */
+predicate recordConversionStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(DataFlow::MethodCallNode call |
+    call.getMethodName() = ["toJSON", "toObject", "get"] and
+    pred = call.getReceiver() and
+    succ = call
+  )
 }

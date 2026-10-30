@@ -17,33 +17,6 @@ import javascript
 import semmle.javascript.security.dataflow.CleartextLoggingCustomizations
 import CleartextStorageDatabase.SensitiveDatabaseModels
 
-/** A record read through a model that exposes a password or private field. */
-class SensitiveDatabaseRecord extends DataFlow::Node {
-  OrmModelDefinition def;
-
-  SensitiveDatabaseRecord() {
-    this = def.getARecord() and
-    def.hasExposedSensitivePath(_)
-  }
-
-  /** Gets a sensitive field included in this record. */
-  string getASensitiveField() { def.hasExposedSensitivePath(result) }
-}
-
-/**
- * A read of a named property that is neither sensitive nor a way to reach the record
- * contents, such as `user.username` or `users.length`.
- */
-class NonSensitivePropertyRead extends DataFlow::Node instanceof DataFlow::PropRead {
-  NonSensitivePropertyRead() {
-    exists(string name | name = super.getPropertyName() |
-      not name.regexpMatch("[0-9]+") and
-      not name = ["dataValues", "_doc", "rows"] and
-      not isSensitiveFieldName(name)
-    )
-  }
-}
-
 module ClearTextLoggingDatabaseRecordConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof SensitiveDatabaseRecord }
 
@@ -58,12 +31,7 @@ module ClearTextLoggingDatabaseRecordConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     CleartextLogging::isAdditionalTaintStep(pred, succ)
     or
-    // Converting a record to a plain object keeps its fields.
-    exists(DataFlow::MethodCallNode call |
-      call.getMethodName() = ["toJSON", "toObject", "get"] and
-      pred = call.getReceiver() and
-      succ = call
-    )
+    recordConversionStep(pred, succ)
   }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet contents) {
