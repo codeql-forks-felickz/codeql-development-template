@@ -1,0 +1,371 @@
+/**
+ * @name Unrestricted upload of file with dangerous type to a web-accessible directory
+ * @description Storing an uploaded file in a web-accessible directory under a file name or
+ *              extension chosen by the client, without validating it against an allowlist,
+ *              lets an attacker upload active or server-executable content such as
+ *              `.html` or `.jsp` files.
+ * @kind path-problem
+ * @problem.severity error
+ * @security-severity 9.8
+ * @precision high
+ * @id java/file-upload-resource-handling
+ * @tags security
+ *       external/cwe/cwe-434
+ */
+
+import java
+import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.controlflow.Guards
+
+/** A type representing a file received in a multipart upload request. */
+class UploadedFileType extends RefType {
+  UploadedFileType() {
+    this.getASourceSupertype*()
+        .hasQualifiedName("org.springframework.web.multipart", "MultipartFile")
+    or
+    this.getASourceSupertype*()
+        .hasQualifiedName(["javax.servlet.http", "jakarta.servlet.http"], "Part")
+  }
+}
+
+/** A call that returns the file name supplied by the client for an uploaded file. */
+class ClientFileNameCall extends MethodCall {
+  ClientFileNameCall() {
+    this.getMethod().getDeclaringType() instanceof UploadedFileType and
+    this.getMethod().hasName(["getOriginalFilename", "getSubmittedFileName"])
+  }
+}
+
+/** A call that reads the content of an uploaded file. */
+class UploadedContentCall extends MethodCall {
+  UploadedContentCall() {
+    this.getMethod().getDeclaringType() instanceof UploadedFileType and
+    this.getMethod().hasName(["getInputStream", "getBytes"])
+  }
+}
+
+/** Tracks upload content through helper calls to file writes. */
+module UploadedContentConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof UploadedContentCall }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall mc, int content |
+      mc.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+      (
+        mc.getMethod().hasName("copy") and content = 0
+        or
+        mc.getMethod().hasName("write") and content = 1
+      ) and
+      sink.asExpr() = mc.getArgument(content)
+    )
+  }
+}
+
+module UploadedContentFlow = TaintTracking::Global<UploadedContentConfig>;
+
+/**
+ * Gets the expression that determines the destination of a write that stores the
+ * content of an uploaded file.
+ */
+Expr uploadDestination() {
+  // `MultipartFile.transferTo(File|Path)`, `Part.write(String)`
+  exists(MethodCall mc |
+    mc.getMethod().getDeclaringType() instanceof UploadedFileType and
+    mc.getMethod().hasName(["transferTo", "write"]) and
+    result = mc.getArgument(0)
+  )
+  or
+  // `Files.copy(upload.getInputStream(), dest, ...)`, `Files.write(dest, upload.getBytes(), ...)`
+  exists(MethodCall mc, int content, int dest |
+    mc.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    (
+      mc.getMethod().hasName("copy") and content = 0 and dest = 1
+      or
+      mc.getMethod().hasName("write") and content = 1 and dest = 0
+    ) and
+    UploadedContentFlow::flowTo(DataFlow::exprNode(mc.getArgument(content))) and
+    result = mc.getArgument(dest)
+  )
+}
+
+/**
+ * Holds if the resource name `s` refers to a classpath location that is served as static
+ * web content (for example Spring Boot's `static`, `public`, `resources` and
+ * `META-INF/resources` locations).
+ */
+bindingset[s]
+private predicate isWebRootPath(string s) {
+  s.regexpMatch("(?i)/?(META-INF/)?(static|public|resources)(/.*)?")
+}
+
+/**
+ * Gets the configuration property key that field `f` is bound to through Spring's
+ * `@Value("${key}")` or `@Value("${key:default}")`.
+ */
+private string valuePropertyKey(Field f) {
+  exists(Annotation a |
+    a = f.getAnAnnotation() and
+    a.getType().hasQualifiedName("org.springframework.beans.factory.annotation", "Value") and
+    result = a.getStringValue("value").regexpCapture("\\$\\{([^:}]+)(:[^}]*)?\\}", 1)
+  )
+}
+
+/**
+ * Holds if the value of field `f` is published as static web content through Spring MVC's
+ * `ResourceHandlerRegistration.addResourceLocations(...)`.
+ */
+private predicate isPublishedResourceLocationField(Field f) {
+  exists(MethodCall mc |
+    mc.getMethod()
+        .getDeclaringType()
+        .hasQualifiedName("org.springframework.web.servlet.config.annotation",
+          "ResourceHandlerRegistration") and
+    mc.getMethod().hasName("addResourceLocations") and
+    TaintTracking::localExprTaint(f.getAnAccess(), mc.getAnArgument())
+  )
+}
+
+/**
+ * Holds if field `f` holds a directory that is published as static web content, either
+ * directly or because it is bound to the same `@Value` property as a published field.
+ */
+private predicate isWebRootField(Field f) {
+  isPublishedResourceLocationField(f)
+  or
+  exists(Field published |
+    isPublishedResourceLocationField(published) and
+    valuePropertyKey(f) = valuePropertyKey(published)
+  )
+}
+
+/** Holds if a servlet path is private unless separately published as a resource. */
+bindingset[path]
+private predicate isServletPrivatePath(string path) {
+  path.regexpMatch("/(WEB-INF|META-INF)(/.*)?")
+}
+
+/** An expression that evaluates to a location inside a web-accessible directory. */
+class WebRootExpr extends Expr {
+  WebRootExpr() {
+    // `ServletContext.getRealPath(...)` resolves a path inside the deployed web application.
+    exists(MethodCall mc | mc = this |
+      mc.getMethod()
+          .getDeclaringType()
+          .getASourceSupertype*()
+          .hasQualifiedName(["javax.servlet", "jakarta.servlet"], "ServletContext") and
+      mc.getMethod().hasName("getRealPath") and
+      not exists(string path |
+        path = mc.getArgument(0).(CompileTimeConstantExpr).getStringValue() and
+        isServletPrivatePath(path)
+      )
+    )
+    or
+    // `ClassLoader.getResource("static")`, `Class.getResource("/public/...")`
+    exists(MethodCall mc | mc = this |
+      mc.getMethod().getDeclaringType().hasQualifiedName("java.lang", ["ClassLoader", "Class"]) and
+      mc.getMethod().hasName("getResource") and
+      isWebRootPath(mc.getArgument(0).(CompileTimeConstantExpr).getStringValue())
+    )
+    or
+    // A field holding a directory that Spring MVC serves as static resources.
+    isWebRootField(this.(FieldRead).getField())
+    or
+    // A literal path such as `"src/main/resources/static/uploads"`.
+    this.(StringLiteral)
+        .getValue()
+        .regexpMatch("(?i)(.*/)?src/main/(webapp|resources/(static|public))(/.*)?") and
+    not this.(StringLiteral)
+        .getValue()
+        .regexpMatch("(.*/)?src/main/webapp/(WEB-INF|META-INF)(/.*)?")
+  }
+}
+
+/**
+ * Holds if `g` validates `e` against an allowlist when `g` evaluates to `branch`,
+ * for example `name.endsWith(".png")`, `ALLOWED.contains(ext)` or
+ * `PATTERN.matcher(name).matches()`.
+ */
+private predicate allowlistGuard(Guard g, Expr e, boolean branch) {
+  branch = true and
+  exists(MethodCall mc, Expr checked |
+    mc = g and
+    isAllowlistCheck(mc, checked) and
+    e = checked
+  )
+}
+
+private predicate isAllowlistCheck(MethodCall mc, Expr checked) {
+  // `name.endsWith(".png")`, `ext.equals(".png")`
+  mc.getMethod().getDeclaringType() instanceof TypeString and
+  mc.getMethod().hasName(["endsWith", "equals", "equalsIgnoreCase"]) and
+  checked = mc.getQualifier()
+  or
+  // `".png".equalsIgnoreCase(ext)`
+  mc.getMethod().getDeclaringType() instanceof TypeString and
+  mc.getMethod().hasName(["equals", "equalsIgnoreCase"]) and
+  checked = mc.getArgument(0)
+  or
+  // `ALLOWED_EXTENSIONS.contains(ext)`
+  mc.getMethod()
+      .getDeclaringType()
+      .getSourceDeclaration()
+      .getASourceSupertype*()
+      .hasQualifiedName("java.util", "Collection") and
+  mc.getMethod().hasName("contains") and
+  checked = mc.getArgument(0)
+  or
+  isExtensionRegexCheck(mc, checked)
+}
+
+private predicate isExtensionRegexCheck(MethodCall mc, Expr checked) {
+  // `name.matches("^.+\\.(png|jpeg)$")`
+  mc.getMethod().getDeclaringType() instanceof TypeString and
+  mc.getMethod().hasName("matches") and
+  checked = mc.getQualifier() and
+  isEndAnchoredExtensionRegex(mc.getArgument(0))
+  or
+  // `PATTERN.matcher(name).matches()`
+  mc.getMethod().getDeclaringType().hasQualifiedName("java.util.regex", "Matcher") and
+  mc.getMethod().hasName("matches") and
+  exists(MethodCall matcher, MethodCall compile |
+    matcher = mc.getQualifier() and
+    matcher.getMethod().getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
+    matcher.getMethod().hasName("matcher") and
+    checked = matcher.getArgument(0) and
+    (
+      DataFlow::localExprFlow(compile, matcher)
+      or
+      exists(Field pattern |
+        matcher.getQualifier().(FieldRead).getField() = pattern and
+        pattern.getAnAssignedValue() = compile
+      )
+    ) and
+    compile.getMethod().getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
+    compile.getMethod().hasName("compile") and
+    isEndAnchoredExtensionRegex(compile.getArgument(0))
+  )
+  or
+  // `Pattern.matches(regex, name)`
+  mc.getMethod().getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
+  mc.getMethod().hasName("matches") and
+  checked = mc.getArgument(1) and
+  isEndAnchoredExtensionRegex(mc.getArgument(0))
+}
+
+private predicate isEndAnchoredExtensionRegex(Expr regexExpr) {
+  exists(string regex |
+    regex = regexExpr.(CompileTimeConstantExpr).getStringValue() and
+    regex.regexpMatch(".*\\\\\\.[^()]*\\([^()]*\\|[^()]*\\)\\$$")
+  )
+}
+
+private predicate isTerminalExtensionOf(Expr extension, Expr fileName) {
+  exists(MethodCall substring, MethodCall lastIndex |
+    (
+      extension = substring
+      or
+      DataFlow::localExprFlow(substring, extension)
+      or
+      exists(Variable variable |
+        extension.(VarAccess).getVariable() = variable and
+        variable.getAnAssignedValue() = substring
+      )
+    ) and
+    substring.getMethod().hasName("substring") and
+    fileName = substring.getQualifier() and
+    lastIndex = substring.getArgument(0) and
+    lastIndex.getMethod().hasName("lastIndexOf") and
+    lastIndex.getQualifier() instanceof VarAccess and
+    lastIndex.getQualifier().(VarAccess).getVariable() = fileName.(VarAccess).getVariable() and
+    lastIndex.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "."
+  )
+}
+
+private predicate isValidatedTerminalFilename(DataFlow::Node node) {
+  exists(MethodCall check, Expr extension, Expr fileName |
+    isAllowlistCheck(check, extension) and
+    isTerminalExtensionOf(extension, fileName) and
+    fileName instanceof VarAccess and
+    not exists(AssignExpr assignment |
+      assignment.getDest() = fileName.(VarAccess).getVariable().getAnAccess()
+    ) and
+    (
+      node.asExpr() instanceof VarAccess and
+      node.asExpr().(VarAccess).getVariable() = fileName.(VarAccess).getVariable()
+      or
+      exists(AddExpr add, VarAccess access |
+        node.asExpr() = add and
+        access = [add.getLeftOperand(), add.getRightOperand()] and
+        access.getVariable() = fileName.(VarAccess).getVariable()
+      )
+    ) and
+    check.(Guard).controls(node.asExpr().getBasicBlock(), true)
+  )
+}
+
+/** Tracks values that locate a web-accessible directory to upload destinations. */
+module WebRootConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof WebRootExpr }
+
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() = uploadDestination() }
+
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+    // The upload directory is commonly computed once and stored in a field.
+    exists(Field f |
+      n1.asExpr() = f.getAnAssignedValue() and
+      n2.asExpr().(FieldRead).getField() = f
+    )
+  }
+}
+
+/** Taint flow of web-accessible directory locations to upload destinations. */
+module WebRootFlow = TaintTracking::Global<WebRootConfig>;
+
+/** Tracks client-supplied upload file names to upload destinations in a web-accessible directory. */
+module UploadFileNameConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof ClientFileNameCall }
+
+  predicate isSink(DataFlow::Node sink) { WebRootFlow::flowTo(sink) }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node.getType() instanceof PrimitiveType
+    or
+    node.getType() instanceof BoxedType
+    or
+    node = DataFlow::BarrierGuard<allowlistGuard/3>::getABarrierNode()
+    or
+    isValidatedTerminalFilename(node)
+    or
+    exists(AddExpr add |
+      node.asExpr() = add and
+      isApprovedExtensionSuffix(add.getRightOperand())
+    )
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+    // `new File(dir, name)`
+    exists(ConstructorCall cc |
+      cc.getConstructedType() instanceof TypeFile and
+      n1.asExpr() = cc.getArgument(1) and
+      n2.asExpr() = cc
+    )
+  }
+}
+
+private predicate isApprovedExtensionSuffix(Expr suffix) {
+  exists(string value |
+    value = suffix.(CompileTimeConstantExpr).getStringValue() and
+    value.regexpMatch("(?i)\\.(png|jpg|jpeg|gif)$")
+  )
+}
+
+/** Taint flow of client-supplied upload file names to upload destinations in a web-accessible directory. */
+module UploadFileNameFlow = TaintTracking::Global<UploadFileNameConfig>;
+
+import UploadFileNameFlow::PathGraph
+
+from UploadFileNameFlow::PathNode source, UploadFileNameFlow::PathNode sink
+where UploadFileNameFlow::flowPath(source, sink)
+select sink.getNode(), source, sink,
+  "Uploaded file is stored in a web-accessible directory under a name and extension derived from $@, which is not validated against an allowlist.",
+  source.getNode(), "the client-supplied file name"
