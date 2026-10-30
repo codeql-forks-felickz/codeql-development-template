@@ -1,0 +1,2 @@
+query: CaseSensitiveMiddlewarePath/CaseSensitiveMiddlewarePath.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
