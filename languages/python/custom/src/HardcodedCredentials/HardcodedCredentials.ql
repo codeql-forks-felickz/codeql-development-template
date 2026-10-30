@@ -112,7 +112,11 @@ class CredentialSink extends DataFlow::Node {
  * length or shape, so any such literal is a source for a `FrameworkSecretSink`.
  */
 class FrameworkSecretLiteral extends DataFlow::Node {
-  FrameworkSecretLiteral() { this.asExpr().(StringLiteral).getText() != "" }
+  FrameworkSecretLiteral() {
+    this.asExpr().(StringLiteral).getText() != "" and
+    not this.asExpr().(StringLiteral).getText().matches("-----BEGIN PUBLIC KEY-----%") and
+    not this.asExpr().(StringLiteral).getText().matches("-----BEGIN CERTIFICATE-----%")
+  }
 }
 
 /**
@@ -295,6 +299,7 @@ private module HardcodedCredentialsConfig implements DataFlow::StateConfigSig {
   predicate isSink(DataFlow::Node sink, FlowState state) {
     sink instanceof CredentialSink and
     not sink instanceof FrameworkSecretSink and
+    not ModelOutput::sinkNode(sink, "credentials-key") and
     state = TGenericCredential()
     or
     sink instanceof FrameworkSecretSink and state = TFrameworkSecret()
