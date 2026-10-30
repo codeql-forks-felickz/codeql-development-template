@@ -1,0 +1,2 @@
+query: UncontrolledAllocationSizeStructField/UncontrolledAllocationSizeStructField.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
