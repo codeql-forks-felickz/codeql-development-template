@@ -1,4 +1,5 @@
 | AccountController.cs:17:30:17:42 | DeleteAccount | This state-changing action is marked [AllowAnonymous], which overrides the authorization required by its controller. |
+| BlogEntriesController.cs:37:42:37:47 | Create | This state-changing action can be invoked without authentication. |
 | CommentsController.cs:34:30:34:35 | Create | This state-changing action can be invoked without authentication. |
 | UsersController.cs:30:30:30:35 | Create | This state-changing action can be invoked without authentication. |
 | WeatherForecastController.cs:19:21:19:28 | SaveFile | This state-changing action can be invoked without authentication. |
