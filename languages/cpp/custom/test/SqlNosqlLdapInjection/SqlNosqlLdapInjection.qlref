@@ -1,0 +1,2 @@
+query: SqlNosqlLdapInjection/SqlNosqlLdapInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
