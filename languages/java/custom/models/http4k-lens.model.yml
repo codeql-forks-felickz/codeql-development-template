@@ -1,0 +1,13 @@
+# Models for the http4k lens API (`org.http4k.lens`, shipped in `org.http4k:http4k-core`).
+# https://www.http4k.org/guide/reference/lens/
+#
+# Lenses built with `Query`, `Header`, `Path`, `FormField`, `Body`, etc. extract values
+# from an HTTP message via `lens(request)`, `lens.extract(request)` or `lens[request]`.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.http4k.lens", "LensExtractor", True, "extract", "(Object)", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.lens", "LensExtractor", True, "get", "(Object)", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.lens", "LensExtractor", True, "invoke", "(Object)", "", "ReturnValue", "remote", "manual"]

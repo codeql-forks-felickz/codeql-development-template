@@ -1,0 +1,90 @@
+#select
+| Http4kRoutes.kt:155:66:155:71 | target | Http4kRoutes.kt:154:18:154:28 | getUri(...) : Uri | Http4kRoutes.kt:155:66:155:71 | target | This header depends on a $@, which may cause a response-splitting vulnerability. | Http4kRoutes.kt:154:18:154:28 | getUri(...) | user-provided value |
+| Http4kRoutes.kt:160:61:160:66 | target | Http4kRoutes.kt:159:18:159:38 | query(...) : String | Http4kRoutes.kt:160:61:160:66 | target | This header depends on a $@, which may cause a response-splitting vulnerability. | Http4kRoutes.kt:159:18:159:38 | query(...) | user-provided value |
+| Http4kRoutes.kt:169:51:169:55 | value | Http4kRoutes.kt:168:17:168:28 | getBody(...) : Body | Http4kRoutes.kt:169:51:169:55 | value | This header depends on a $@, which may cause a response-splitting vulnerability. | Http4kRoutes.kt:168:17:168:28 | getBody(...) | user-provided value |
+| Http4kRoutes.kt:196:54:196:59 | target | Http4kRoutes.kt:195:18:195:28 | getUri(...) : Uri | Http4kRoutes.kt:196:54:196:59 | target | This header depends on a $@, which may cause a response-splitting vulnerability. | Http4kRoutes.kt:195:18:195:28 | getUri(...) | user-provided value |
+| Http4kRoutes.kt:207:54:207:59 | target | Http4kRoutes.kt:205:16:205:36 | query(...) : String | Http4kRoutes.kt:207:54:207:59 | target | This header depends on a $@, which may cause a response-splitting vulnerability. | Http4kRoutes.kt:205:16:205:36 | query(...) | user-provided value |
+| Http4kRoutes.kt:213:54:213:59 | target | Http4kRoutes.kt:211:16:211:36 | query(...) : String | Http4kRoutes.kt:213:54:213:59 | target | This header depends on a $@, which may cause a response-splitting vulnerability. | Http4kRoutes.kt:211:16:211:36 | query(...) | user-provided value |
+| Http4kRoutes.kt:223:58:223:62 | value | Http4kRoutes.kt:222:17:222:38 | query(...) : String | Http4kRoutes.kt:223:58:223:62 | value | This header depends on a $@, which may cause a response-splitting vulnerability. | Http4kRoutes.kt:222:17:222:38 | query(...) | user-provided value |
+| Http4kRoutes.kt:228:39:228:42 | name | Http4kRoutes.kt:227:16:227:36 | query(...) : String | Http4kRoutes.kt:228:39:228:42 | name | This header depends on a $@, which may cause a response-splitting vulnerability. | Http4kRoutes.kt:227:16:227:36 | query(...) | user-provided value |
+| Http4kRoutes.kt:233:46:233:49 | name | Http4kRoutes.kt:232:16:232:36 | query(...) : String | Http4kRoutes.kt:233:46:233:49 | name | This header depends on a $@, which may cause a response-splitting vulnerability. | Http4kRoutes.kt:232:16:232:36 | query(...) | user-provided value |
+edges
+| Http4kRoutes.kt:154:18:154:28 | getUri(...) : Uri | Http4kRoutes.kt:154:18:154:34 | getQuery(...) : String | provenance | Src:MaD:6 MaD:13 |
+| Http4kRoutes.kt:154:18:154:34 | getQuery(...) : String | Http4kRoutes.kt:154:18:154:60 | substringAfter$default(...) : String | provenance | MaD:10 |
+| Http4kRoutes.kt:154:18:154:60 | substringAfter$default(...) : String | Http4kRoutes.kt:155:66:155:71 | target | provenance | Sink:MaD:2 |
+| Http4kRoutes.kt:159:18:159:38 | query(...) : String | Http4kRoutes.kt:160:61:160:66 | target | provenance | Src:MaD:7 Sink:MaD:4 |
+| Http4kRoutes.kt:168:17:168:28 | getBody(...) : Body | Http4kRoutes.kt:168:17:168:35 | getStream(...) : InputStream | provenance | Src:MaD:5 MaD:11 |
+| Http4kRoutes.kt:168:17:168:35 | getStream(...) : InputStream | Http4kRoutes.kt:168:17:168:47 | readBytes(...) : byte[] | provenance | MaD:8 |
+| Http4kRoutes.kt:168:17:168:47 | readBytes(...) : byte[] | Http4kRoutes.kt:168:17:168:64 | decodeToString(...) : String | provenance | MaD:9 |
+| Http4kRoutes.kt:168:17:168:64 | decodeToString(...) : String | Http4kRoutes.kt:169:51:169:55 | value | provenance | Sink:MaD:2 |
+| Http4kRoutes.kt:195:18:195:28 | getUri(...) : Uri | Http4kRoutes.kt:195:18:195:43 | path(...) : Uri | provenance | Src:MaD:6 MaD:14 |
+| Http4kRoutes.kt:195:18:195:43 | path(...) : Uri | Http4kRoutes.kt:195:18:195:65 | query(...) : Uri | provenance | MaD:15 |
+| Http4kRoutes.kt:195:18:195:65 | query(...) : Uri | Http4kRoutes.kt:195:18:195:71 | getQuery(...) : String | provenance | MaD:13 |
+| Http4kRoutes.kt:195:18:195:71 | getQuery(...) : String | Http4kRoutes.kt:196:54:196:59 | target | provenance | Sink:MaD:2 |
+| Http4kRoutes.kt:205:16:205:36 | query(...) : String | Http4kRoutes.kt:206:41:206:44 | next : String | provenance | Src:MaD:7  |
+| Http4kRoutes.kt:206:18:206:45 | of(...) : Uri | Http4kRoutes.kt:206:18:206:56 | toString(...) : String | provenance | MaD:16 |
+| Http4kRoutes.kt:206:18:206:56 | toString(...) : String | Http4kRoutes.kt:207:54:207:59 | target | provenance | Sink:MaD:2 |
+| Http4kRoutes.kt:206:41:206:44 | next : String | Http4kRoutes.kt:206:18:206:45 | of(...) : Uri | provenance | MaD:12 |
+| Http4kRoutes.kt:211:16:211:36 | query(...) : String | Http4kRoutes.kt:212:51:212:54 | next : String | provenance | Src:MaD:7  |
+| Http4kRoutes.kt:212:18:212:55 | of(...) : Uri | Http4kRoutes.kt:212:18:212:66 | toString(...) : String | provenance | MaD:16 |
+| Http4kRoutes.kt:212:18:212:66 | toString(...) : String | Http4kRoutes.kt:213:54:213:59 | target | provenance | Sink:MaD:2 |
+| Http4kRoutes.kt:212:51:212:54 | next : String | Http4kRoutes.kt:212:18:212:55 | of(...) : Uri | provenance | MaD:12 |
+| Http4kRoutes.kt:222:17:222:38 | query(...) : String | Http4kRoutes.kt:223:58:223:62 | value | provenance | Src:MaD:7 Sink:MaD:4 |
+| Http4kRoutes.kt:227:16:227:36 | query(...) : String | Http4kRoutes.kt:228:39:228:42 | name | provenance | Src:MaD:7 Sink:MaD:1 |
+| Http4kRoutes.kt:232:16:232:36 | query(...) : String | Http4kRoutes.kt:233:46:233:49 | name | provenance | Src:MaD:7 Sink:MaD:3 |
+models
+| 1 | Sink: org.http4k.core; Response; true; header; (String,String); ; Argument[0]; response-splitting; manual |
+| 2 | Sink: org.http4k.core; Response; true; header; (String,String); ; Argument[1]; response-splitting; manual |
+| 3 | Sink: org.http4k.core; Response; true; replaceHeader; (String,String); ; Argument[0]; response-splitting; manual |
+| 4 | Sink: org.http4k.core; Response; true; replaceHeader; (String,String); ; Argument[1]; response-splitting; manual |
+| 5 | Source: org.http4k.core; HttpMessage; true; getBody; (); ; ReturnValue; remote; manual |
+| 6 | Source: org.http4k.core; Request; true; getUri; (); ; ReturnValue; remote; manual |
+| 7 | Source: org.http4k.core; Request; true; query; (String); ; ReturnValue; remote; manual |
+| 8 | Summary: kotlin.io; ByteStreamsKt; false; readBytes; (InputStream); ; Argument[0]; ReturnValue; taint; df-generated |
+| 9 | Summary: kotlin.text; StringsKt; false; decodeToString; (byte[]); ; Argument[0]; ReturnValue; taint; df-generated |
+| 10 | Summary: kotlin.text; StringsKt; false; substringAfter; (String,String,String); ; Argument[0]; ReturnValue; taint; df-generated |
+| 11 | Summary: org.http4k.core; Body; true; getStream; (); ; Argument[this]; ReturnValue; taint; manual |
+| 12 | Summary: org.http4k.core; Uri$Companion; false; of; (String); ; Argument[0]; ReturnValue; taint; manual |
+| 13 | Summary: org.http4k.core; Uri; false; getQuery; (); ; Argument[this]; ReturnValue; taint; manual |
+| 14 | Summary: org.http4k.core; Uri; false; path; (String); ; Argument[this]; ReturnValue; taint; manual |
+| 15 | Summary: org.http4k.core; Uri; false; query; (String); ; Argument[this]; ReturnValue; taint; manual |
+| 16 | Summary: org.http4k.core; Uri; false; toString; (); ; Argument[this]; ReturnValue; taint; manual |
+nodes
+| Http4kRoutes.kt:154:18:154:28 | getUri(...) : Uri | semmle.label | getUri(...) : Uri |
+| Http4kRoutes.kt:154:18:154:34 | getQuery(...) : String | semmle.label | getQuery(...) : String |
+| Http4kRoutes.kt:154:18:154:60 | substringAfter$default(...) : String | semmle.label | substringAfter$default(...) : String |
+| Http4kRoutes.kt:155:66:155:71 | target | semmle.label | target |
+| Http4kRoutes.kt:159:18:159:38 | query(...) : String | semmle.label | query(...) : String |
+| Http4kRoutes.kt:160:61:160:66 | target | semmle.label | target |
+| Http4kRoutes.kt:168:17:168:28 | getBody(...) : Body | semmle.label | getBody(...) : Body |
+| Http4kRoutes.kt:168:17:168:35 | getStream(...) : InputStream | semmle.label | getStream(...) : InputStream |
+| Http4kRoutes.kt:168:17:168:47 | readBytes(...) : byte[] | semmle.label | readBytes(...) : byte[] |
+| Http4kRoutes.kt:168:17:168:64 | decodeToString(...) : String | semmle.label | decodeToString(...) : String |
+| Http4kRoutes.kt:169:51:169:55 | value | semmle.label | value |
+| Http4kRoutes.kt:195:18:195:28 | getUri(...) : Uri | semmle.label | getUri(...) : Uri |
+| Http4kRoutes.kt:195:18:195:43 | path(...) : Uri | semmle.label | path(...) : Uri |
+| Http4kRoutes.kt:195:18:195:65 | query(...) : Uri | semmle.label | query(...) : Uri |
+| Http4kRoutes.kt:195:18:195:71 | getQuery(...) : String | semmle.label | getQuery(...) : String |
+| Http4kRoutes.kt:196:54:196:59 | target | semmle.label | target |
+| Http4kRoutes.kt:205:16:205:36 | query(...) : String | semmle.label | query(...) : String |
+| Http4kRoutes.kt:206:18:206:45 | of(...) : Uri | semmle.label | of(...) : Uri |
+| Http4kRoutes.kt:206:18:206:56 | toString(...) : String | semmle.label | toString(...) : String |
+| Http4kRoutes.kt:206:41:206:44 | next : String | semmle.label | next : String |
+| Http4kRoutes.kt:207:54:207:59 | target | semmle.label | target |
+| Http4kRoutes.kt:211:16:211:36 | query(...) : String | semmle.label | query(...) : String |
+| Http4kRoutes.kt:212:18:212:55 | of(...) : Uri | semmle.label | of(...) : Uri |
+| Http4kRoutes.kt:212:18:212:66 | toString(...) : String | semmle.label | toString(...) : String |
+| Http4kRoutes.kt:212:51:212:54 | next : String | semmle.label | next : String |
+| Http4kRoutes.kt:213:54:213:59 | target | semmle.label | target |
+| Http4kRoutes.kt:222:17:222:38 | query(...) : String | semmle.label | query(...) : String |
+| Http4kRoutes.kt:223:58:223:62 | value | semmle.label | value |
+| Http4kRoutes.kt:227:16:227:36 | query(...) : String | semmle.label | query(...) : String |
+| Http4kRoutes.kt:228:39:228:42 | name | semmle.label | name |
+| Http4kRoutes.kt:232:16:232:36 | query(...) : String | semmle.label | query(...) : String |
+| Http4kRoutes.kt:233:46:233:49 | name | semmle.label | name |
+subpaths
+testFailures
+| Http4kRoutes.kt:205:16:205:36 | query(...) : String | Unexpected result: Source |
+| Http4kRoutes.kt:207:54:207:59 | target | Unexpected result: Alert |
+| Http4kRoutes.kt:211:16:211:36 | query(...) : String | Unexpected result: Source |
+| Http4kRoutes.kt:213:54:213:59 | target | Unexpected result: Alert |
