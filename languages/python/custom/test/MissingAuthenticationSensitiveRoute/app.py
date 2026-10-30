@@ -21,6 +21,14 @@ def reboot_protected():
     return jsonify({"success": True})
 
 
+# NON_COMPLIANT: authentication is applied after the route is registered
+@login_required
+@app.route("/reboot_reversed", methods=["POST"])
+def reboot_reversed():  # $ Alert[py/missing-authentication-sensitive-route]
+    os.system("reboot")
+    return jsonify({"success": True})
+
+
 # COMPLIANT: no dangerous operation
 @app.route("/")
 def index():

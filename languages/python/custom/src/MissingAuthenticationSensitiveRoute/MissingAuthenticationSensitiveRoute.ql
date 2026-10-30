@@ -32,9 +32,24 @@ string decoratorName(Expr e) {
   result = decoratorName(e.(Call).getFunc())
 }
 
-/** Holds if `f` is decorated with something that looks like an authentication decorator. */
-predicate hasAuthDecorator(Function f) {
-  isAuthName(decoratorName(f.getDefinition().(FunctionExpr).getADecorator()))
+/** Holds if `f` has an authentication decorator applied before its route is registered. */
+predicate hasAuthDecorator(Function f, Flask::FlaskRouteSetup route) {
+  exists(Expr decorator |
+    decorator = f.getDefinition().(FunctionExpr).getADecorator() and
+    isAuthName(decoratorName(decorator)) and
+    (
+      not exists(Expr routeDecorator |
+        routeDecorator = f.getDefinition().(FunctionExpr).getADecorator() and
+        route.asExpr() = routeDecorator
+      )
+      or
+      exists(Expr routeDecorator |
+        routeDecorator = f.getDefinition().(FunctionExpr).getADecorator() and
+        route.asExpr() = routeDecorator and
+        decorator.getLocation().getStartLine() > routeDecorator.getLocation().getStartLine()
+      )
+    )
+  )
 }
 
 /** Holds if the body of `f` references a name that looks like an authentication or session check. */
@@ -164,7 +179,7 @@ from Flask::FlaskRouteSetup route, Function handler, SensitiveOperation op
 where
   handler = route.getARequestHandler() and
   op.getScope().getEnclosingScope*() = handler and
-  not hasAuthDecorator(handler) and
+  not hasAuthDecorator(handler, route) and
   not hasAuthCheckInBody(handler) and
   not hasBeforeRequestHook(handler) and
   not hasAppWideHook(handler, route)
