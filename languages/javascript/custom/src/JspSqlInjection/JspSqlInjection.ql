@@ -4,6 +4,7 @@
  *              to insertion of malicious SQL code by the user. JSP files are not extracted by
  *              the Java extractor, so this query inspects the scriptlet text that the
  *              JavaScript extractor records for `.jsp` files.
+ * Known limitations: Sink argument parsing handles at most two nested parenthesis levels.
  * @kind problem
  * @problem.severity error
  * @security-severity 8.8
@@ -40,7 +41,9 @@ private string literalRegex() { result = "\"(?:[^\"\\\\\\n]|\\\\.)*\"|'(?:[^'\\\
 
 /** Gets a regular expression matching a single (approximate) Java statement. */
 private string statementRegex() {
-  result = "(?:" + literalRegex() + "|[^;{}\"'\\s])(?:" + literalRegex() + "|[^;{}\"'])*"
+  result =
+    "(?:" + literalRegex() + "|//[^\\n]*|/\\*(?s:.*?)\\*/|[^;{}\"'\\s])(?:" + literalRegex() +
+      "|//[^\\n]*|/\\*(?s:.*?)\\*/|[^;{}\"'])*"
 }
 
 /** Gets a regular expression matching a read of user-controlled request data. */
@@ -52,13 +55,13 @@ private string sourceRegex() {
 /** Gets a regular expression matching a conversion that removes SQL meta-characters. */
 private string sanitizerRegex() {
   result =
-    "(?s).*\\b(?:(?:Integer|Long|Short|Byte|Double|Float|Boolean)\\s*\\.\\s*(?:parse\\w*|valueOf)|encodeForSQL)\\s*\\(.*"
+    "\\b(?:(?:Integer|Long|Short|Byte|Double|Float|Boolean)\\s*\\.\\s*(?:parse\\w*|valueOf)|encodeForSQL)\\s*\\((?:[^()]|\\([^()]*\\))*\\)"
 }
 
 /** Gets a regular expression matching a call to a JDBC/JPA/Hibernate SQL execution method. */
 private string sinkRegex() {
   result =
-    "(?s).*\\b(executeQuery|executeUpdate|executeLargeUpdate|execute|addBatch|prepareStatement|prepareCall|nativeSQL|createQuery|createNativeQuery|createSQLQuery)\\s*\\((.*)"
+    "(?s).*\\b(executeQuery|executeUpdate|executeLargeUpdate|execute|addBatch|prepareStatement|prepareCall|nativeSQL|createQuery|createNativeQuery|createSQLQuery)\\s*\\(((?:[^(),]|\\((?:[^()]|\\([^()]*\\))*\\))*)(?:,.*)?\\)(?:\\s*(?:>|&&|\\|\\||\\)).*)?$"
 }
 
 /** An approximate Java statement inside a JSP scriptlet. */
@@ -86,11 +89,12 @@ class JspStatement extends TJspStatement {
   /** Holds if this statement reads user-controlled data or a tainted variable. */
   bindingset[code]
   predicate mentionsTainted(string code) {
-    code.regexpMatch("(?s).*" + sourceRegex() + ".*")
+    code.regexpReplaceAll(sanitizerRegex(), "").regexpMatch("(?s).*" + sourceRegex() + ".*")
     or
     exists(string v |
       taintedVariable(this.getFile(), v) and
-      code.regexpMatch("(?s).*(?<![\\w.])" + v + "\\b(?!\\s*\\().*")
+      code.regexpReplaceAll(sanitizerRegex(), "")
+        .regexpMatch("(?s).*(?<![\\w.])" + v + "\\b(?!\\s*\\().*")
     )
   }
 
@@ -155,7 +159,6 @@ predicate taintedVariable(File f, string v) {
   exists(JspStatement s, string rhs |
     s.getFile() = f and
     s.assigns(v, rhs) and
-    not rhs.regexpMatch(sanitizerRegex()) and
     not rhs.regexpMatch(sinkRegex()) and
     s.mentionsTainted(rhs)
   )
