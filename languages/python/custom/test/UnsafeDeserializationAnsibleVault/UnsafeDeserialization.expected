@@ -1,0 +1,44 @@
+#select
+| vault.py:19:26:19:51 | ControlFlowNode for Attribute() | vault.py:5:26:5:32 | ControlFlowNode for ImportMember | vault.py:19:26:19:51 | ControlFlowNode for Attribute() | Unsafe deserialization depends on a $@. | vault.py:5:26:5:32 | ControlFlowNode for ImportMember | user-provided value |
+| vault.py:19:26:19:51 | ControlFlowNode for Attribute() | vault.py:43:10:43:26 | ControlFlowNode for open() | vault.py:19:26:19:51 | ControlFlowNode for Attribute() | Unsafe deserialization depends on a $@. | vault.py:43:10:43:26 | ControlFlowNode for open() | user-provided value |
+| vault.py:34:33:34:41 | ControlFlowNode for plaintext | vault.py:5:26:5:32 | ControlFlowNode for ImportMember | vault.py:34:33:34:41 | ControlFlowNode for plaintext | Unsafe deserialization depends on a $@. | vault.py:5:26:5:32 | ControlFlowNode for ImportMember | user-provided value |
+edges
+| vault.py:5:26:5:32 | ControlFlowNode for ImportMember | vault.py:5:26:5:32 | ControlFlowNode for request | provenance |  |
+| vault.py:5:26:5:32 | ControlFlowNode for request | vault.py:28:37:28:43 | ControlFlowNode for request | provenance |  |
+| vault.py:5:26:5:32 | ControlFlowNode for request | vault.py:33:67:33:73 | ControlFlowNode for request | provenance |  |
+| vault.py:17:20:17:25 | ControlFlowNode for stream | vault.py:19:45:19:50 | ControlFlowNode for stream | provenance |  |
+| vault.py:19:45:19:50 | ControlFlowNode for stream | vault.py:19:26:19:51 | ControlFlowNode for Attribute() | provenance | MaD:0 |
+| vault.py:28:37:28:43 | ControlFlowNode for request | vault.py:28:37:28:48 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| vault.py:28:37:28:48 | ControlFlowNode for Attribute | vault.py:17:20:17:25 | ControlFlowNode for stream | provenance |  |
+| vault.py:33:5:33:13 | ControlFlowNode for plaintext | vault.py:34:33:34:41 | ControlFlowNode for plaintext | provenance |  |
+| vault.py:33:5:33:19 | ControlFlowNode for Tuple | vault.py:33:5:33:13 | ControlFlowNode for plaintext | provenance |  |
+| vault.py:33:5:33:19 | ControlFlowNode for Tuple [Tuple element at index 0] | vault.py:33:5:33:13 | ControlFlowNode for plaintext | provenance |  |
+| vault.py:33:5:33:19 | IterableElement | vault.py:33:5:33:19 | ControlFlowNode for Tuple [Tuple element at index 0] | provenance |  |
+| vault.py:33:23:33:79 | ControlFlowNode for Attribute() | vault.py:33:5:33:13 | ControlFlowNode for plaintext | provenance |  |
+| vault.py:33:23:33:79 | ControlFlowNode for Attribute() | vault.py:33:5:33:19 | ControlFlowNode for Tuple | provenance |  |
+| vault.py:33:23:33:79 | ControlFlowNode for Attribute() | vault.py:33:5:33:19 | IterableElement | provenance |  |
+| vault.py:33:67:33:73 | ControlFlowNode for request | vault.py:33:67:33:78 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| vault.py:33:67:33:78 | ControlFlowNode for Attribute | vault.py:33:23:33:79 | ControlFlowNode for Attribute() | provenance | MaD:0 |
+| vault.py:43:10:43:26 | ControlFlowNode for open() | vault.py:43:31:43:31 | ControlFlowNode for f | provenance |  |
+| vault.py:43:31:43:31 | ControlFlowNode for f | vault.py:44:37:44:44 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
+| vault.py:44:37:44:44 | ControlFlowNode for Attribute() | vault.py:17:20:17:25 | ControlFlowNode for stream | provenance |  |
+nodes
+| vault.py:5:26:5:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| vault.py:5:26:5:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| vault.py:17:20:17:25 | ControlFlowNode for stream | semmle.label | ControlFlowNode for stream |
+| vault.py:19:26:19:51 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| vault.py:19:45:19:50 | ControlFlowNode for stream | semmle.label | ControlFlowNode for stream |
+| vault.py:28:37:28:43 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| vault.py:28:37:28:48 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| vault.py:33:5:33:13 | ControlFlowNode for plaintext | semmle.label | ControlFlowNode for plaintext |
+| vault.py:33:5:33:19 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| vault.py:33:5:33:19 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| vault.py:33:5:33:19 | IterableElement | semmle.label | IterableElement |
+| vault.py:33:23:33:79 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| vault.py:33:67:33:73 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| vault.py:33:67:33:78 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| vault.py:34:33:34:41 | ControlFlowNode for plaintext | semmle.label | ControlFlowNode for plaintext |
+| vault.py:43:10:43:26 | ControlFlowNode for open() | semmle.label | ControlFlowNode for open() |
+| vault.py:43:31:43:31 | ControlFlowNode for f | semmle.label | ControlFlowNode for f |
+| vault.py:44:37:44:44 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+subpaths

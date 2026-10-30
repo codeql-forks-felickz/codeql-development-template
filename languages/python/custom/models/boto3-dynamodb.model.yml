@@ -1,0 +1,21 @@
+# Models for reading items from Amazon DynamoDB via `boto3`.
+# Items read back from DynamoDB are stored data that may have been written by
+# an attacker (stored injection), so they are modeled as `database` sources.
+# See https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sourceModel
+    data:
+      # Low-level client: boto3.client("dynamodb")
+      - ['boto3', 'Member[client].ReturnValue.Member[batch_get_item,execute_statement,get_item,query,scan].ReturnValue', 'database']
+      - ['boto3', 'Member[session].Member[Session].ReturnValue.Member[client].ReturnValue.Member[batch_get_item,execute_statement,get_item,query,scan].ReturnValue', 'database']
+      - ['boto3', 'Member[Session].ReturnValue.Member[client].ReturnValue.Member[batch_get_item,execute_statement,get_item,query,scan].ReturnValue', 'database']
+      # Service resource: boto3.resource("dynamodb")
+      - ['boto3', 'Member[resource].ReturnValue.Member[batch_get_item].ReturnValue', 'database']
+      - ['boto3', 'Member[session].Member[Session].ReturnValue.Member[resource].ReturnValue.Member[batch_get_item].ReturnValue', 'database']
+      - ['boto3', 'Member[Session].ReturnValue.Member[resource].ReturnValue.Member[batch_get_item].ReturnValue', 'database']
+      # Table resource: boto3.resource("dynamodb").Table(name)
+      - ['boto3', 'Member[resource].ReturnValue.Member[Table].ReturnValue.Member[get_item,query,scan].ReturnValue', 'database']
+      - ['boto3', 'Member[session].Member[Session].ReturnValue.Member[resource].ReturnValue.Member[Table].ReturnValue.Member[get_item,query,scan].ReturnValue', 'database']
+      - ['boto3', 'Member[Session].ReturnValue.Member[resource].ReturnValue.Member[Table].ReturnValue.Member[get_item,query,scan].ReturnValue', 'database']

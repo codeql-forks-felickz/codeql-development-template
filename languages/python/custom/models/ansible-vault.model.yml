@@ -1,0 +1,14 @@
+# Models for decrypting Ansible Vault data via `ansible`.
+# Decryption returns the plaintext of the (possibly attacker-supplied) vault
+# payload, so taint must flow from the ciphertext argument to the result.
+# See https://docs.ansible.com/ansible/latest/collections/ansible/builtin/vault_filter.html
+# and https://github.com/ansible/ansible/blob/devel/lib/ansible/parsing/vault/__init__.py
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: summaryModel
+    data:
+      # ansible >= 2.0: ansible.parsing.vault.VaultLib
+      - ['ansible', 'Member[parsing].Member[vault].Member[VaultLib].Instance.Member[decrypt,decrypt_and_get_vault_id]', 'Argument[0,vaulttext:]', 'ReturnValue', 'taint']
+      # ansible < 2.0: ansible.utils.vault.VaultLib
+      - ['ansible', 'Member[utils].Member[vault].Member[VaultLib].Instance.Member[decrypt]', 'Argument[0,data:]', 'ReturnValue', 'taint']
