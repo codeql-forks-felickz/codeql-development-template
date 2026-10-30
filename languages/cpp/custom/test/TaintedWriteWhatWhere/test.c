@@ -4,6 +4,24 @@ typedef struct _FILE FILE;
 ssize_t recv(int sockfd, void *buf, size_t len, int flags);
 ssize_t read(int fd, void *buf, size_t count);
 size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+ssize_t getdelim(char **lineptr, size_t *n, int delim, FILE *stream);
+
+struct iovec {
+    void *iov_base;
+    size_t iov_len;
+};
+
+struct msghdr {
+    void *msg_name;
+    unsigned int msg_namelen;
+    struct iovec *msg_iov;
+    size_t msg_iovlen;
+    void *msg_control;
+    size_t msg_controllen;
+    int msg_flags;
+};
+
+ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);
 
 typedef struct _linkedList {
     struct _linkedList *next;
@@ -117,4 +135,24 @@ void good_pointers_reset(int sock) {
     linkedListNext = data.list.next;
     linkedListPrev->next = linkedListNext;
     linkedListNext->prev = linkedListPrev;
+}
+
+/* getdelim returns a pointer to a buffer it allocated; the pointer is not attacker-chosen. */
+void good_getdelim(FILE *f) {
+    char *line = 0;
+    size_t n = 0;
+    ssize_t len = getdelim(&line, &n, '\n', f);
+    if (len > 0) {
+        line[len - 1] = '\0';
+    }
+}
+
+/* recvmsg fills the buffers described by a program-owned msghdr; it does not overwrite its pointers. */
+void good_recvmsg(int sock) {
+    char buf[64];
+    struct iovec iov = { buf, sizeof(buf) };
+    struct msghdr msg = { 0, 0, &iov, 1, 0, 0, 0 };
+    recvmsg(sock, &msg, 0);
+    ((char *)msg.msg_iov[0].iov_base)[0] = 0;
+    *(char *)msg.msg_iov->iov_base = 0;
 }

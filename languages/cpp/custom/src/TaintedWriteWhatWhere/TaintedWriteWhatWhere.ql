@@ -32,13 +32,34 @@ predicate containsPointer(Type t) {
 }
 
 /**
+ * Holds if `t` is an untyped byte buffer pointer such as `void *` or `char *`,
+ * into which a function copies raw bytes.
+ */
+predicate isRawBufferType(Type t) {
+  exists(Type base |
+    base = t.getUnspecifiedType().(PointerType).getBaseType().getUnspecifiedType()
+  |
+    base instanceof VoidType or base instanceof CharType
+  )
+}
+
+/**
  * A source of untrusted bytes that are written by reference over an object
  * that stores pointers, for example `recv(sock, (char *)&obj, sizeof(obj), 0)`
  * where `obj` is a structure holding linked list pointers.
+ *
+ * Only functions that copy raw bytes into an untyped buffer parameter are
+ * considered, so that sources such as the line pointer allocated by `getdelim`,
+ * or the program-owned `msghdr` passed to `recvmsg`, are excluded.
  */
 class PointerOverwriteSource instanceof FlowSource {
   PointerOverwriteSource() {
-    containsPointer(this.asDefiningArgument().getUnspecifiedType().(DerivedType).getBaseType())
+    exists(Call call, int i, Expr arg |
+      arg = this.asDefiningArgument(1) and
+      arg = call.getArgument(i) and
+      isRawBufferType(call.getTarget().getParameter(i).getType()) and
+      containsPointer(arg.getUnspecifiedType().(DerivedType).getBaseType())
+    )
   }
 
   /** Gets a string that describes the type of this flow source. */
