@@ -13,6 +13,10 @@ Unlike `cs/xml/insecure-dtd-handling`, this query does not require the XML to co
 
 Leave `DtdProcessing` at its default of `Prohibit` (or set it to `Ignore`), and do not assign an `XmlResolver`, or set it to `null`. If DTD processing is genuinely needed, set `XmlResolver = null` so external entities are not fetched.
 
+## Known limitations
+
+The query recognizes the last property assignment when the assignments are ordered in control flow. It does not distinguish settings writes on mutually exclusive branches.
+
 ## Example
 
 The following reader resolves external entities because both DTD processing and an `XmlUrlResolver` are enabled:

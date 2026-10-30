@@ -66,6 +66,68 @@ public class XmlReaderCases
         return XmlReader.Create(input, settings);
     }
 
+    public XmlReader SettingsResolverAlias(TextReader input)
+    {
+        XmlResolver resolver = new XmlUrlResolver();
+        var settings = new XmlReaderSettings();
+        settings.DtdProcessing = DtdProcessing.Parse;
+        settings.XmlResolver = resolver;
+        return XmlReader.Create(input, settings); // $ Alert
+    }
+
+    public XmlReader SettingsNullResolverAlias(TextReader input)
+    {
+        XmlResolver resolver = null;
+        var settings = new XmlReaderSettings();
+        settings.DtdProcessing = DtdProcessing.Parse;
+        settings.XmlResolver = resolver;
+        return XmlReader.Create(input, settings);
+    }
+
+    public XmlReader SettingsSecureResolverAlias(TextReader input)
+    {
+        XmlResolver resolver = new XmlSecureResolver(new XmlUrlResolver(), "https://example.com/");
+        var settings = new XmlReaderSettings();
+        settings.DtdProcessing = DtdProcessing.Parse;
+        settings.XmlResolver = resolver;
+        return XmlReader.Create(input, settings);
+    }
+
+    public XmlReader SettingsResolverReset(TextReader input)
+    {
+        var settings = new XmlReaderSettings();
+        settings.DtdProcessing = DtdProcessing.Parse;
+        settings.XmlResolver = new XmlUrlResolver();
+        settings.XmlResolver = null;
+        return XmlReader.Create(input, settings);
+    }
+
+    public XmlReader SettingsDtdOverwrite(TextReader input)
+    {
+        var settings = new XmlReaderSettings();
+        settings.DtdProcessing = DtdProcessing.Prohibit;
+        settings.DtdProcessing = DtdProcessing.Parse;
+        settings.XmlResolver = new XmlUrlResolver();
+        return XmlReader.Create(input, settings); // $ Alert
+    }
+
+    public XmlReader SettingsDtdAliasOverwrite(TextReader input)
+    {
+        var settings = new XmlReaderSettings();
+        settings.ProhibitDtd = true;
+        settings.DtdProcessing = DtdProcessing.Parse;
+        settings.XmlResolver = new XmlUrlResolver();
+        return XmlReader.Create(input, settings); // $ Alert
+    }
+
+    public XmlReader WrapExistingReader(XmlReader input)
+    {
+        var settings = new XmlReaderSettings();
+        settings.DtdProcessing = DtdProcessing.Parse;
+        settings.XmlResolver = new XmlUrlResolver();
+        return XmlReader.Create(input, settings);
+    }
+
     public XmlReader SettingsIgnore(TextReader input)
     {
         var settings = new XmlReaderSettings();
@@ -130,6 +192,25 @@ public class XmlTextReaderCases
     {
         XmlTextReader reader = new XmlTextReader(new StringReader(xml));
         reader.DtdProcessing = DtdProcessing.Prohibit;
+        reader.XmlResolver = new XmlUrlResolver();
+        reader.Read();
+        return reader.Name;
+    }
+
+    public string ProhibitDtdWithUrlResolver(string xml)
+    {
+        XmlTextReader reader = new XmlTextReader(new StringReader(xml));
+        reader.ProhibitDtd = true;
+        reader.XmlResolver = new XmlUrlResolver();
+        reader.Read();
+        return reader.Name;
+    }
+
+    public string ProhibitDtdAliasOverwrittenWithParse(string xml)
+    {
+        XmlTextReader reader = new XmlTextReader(new StringReader(xml)); // $ Alert
+        reader.ProhibitDtd = true;
+        reader.DtdProcessing = DtdProcessing.Parse;
         reader.XmlResolver = new XmlUrlResolver();
         reader.Read();
         return reader.Name;
