@@ -32,6 +32,12 @@ namespace System.ServiceModel.Web
     public sealed class WebGetAttribute : Attribute { }
 }
 
+namespace System.Web.Http
+{
+    [AttributeUsage(AttributeTargets.Method)]
+    public sealed class HttpDeleteAttribute : Attribute { }
+}
+
 namespace System.Security.Permissions
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = false)]

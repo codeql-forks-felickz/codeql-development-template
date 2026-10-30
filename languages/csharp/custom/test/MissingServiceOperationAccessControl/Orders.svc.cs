@@ -60,7 +60,7 @@ namespace WebSite.Checkout
         // GOOD: declarative role demand.
         [OperationContract]
         [PrincipalPermission(SecurityAction.Demand, Role = "Admin")]
-        public void CancelOrder(int orderId)
+        public void CancelOrder(int orderId) // $ MISSING: Alert[cs/web/missing-service-operation-access-control]
         {
             repo.DeleteOrder(repo.GetOrderById(orderId));
         }
@@ -101,8 +101,8 @@ namespace WebSite.Checkout
             repo.DeleteOrder(repo.GetOrderById(orderId));
         }
 
-        // GOOD: the contract demands a role.
-        public void PurgeOrder(int orderId)
+        // BAD: the contract's role demand is not enforced on the implementation.
+        [System.Web.Http.HttpDelete] public void PurgeOrder(int orderId) // $ Alert[cs/web/missing-service-operation-access-control]
         {
             repo.DeleteOrder(repo.GetOrderById(orderId));
         }

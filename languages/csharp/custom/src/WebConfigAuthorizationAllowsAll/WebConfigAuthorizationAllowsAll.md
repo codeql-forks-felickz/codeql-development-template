@@ -2,7 +2,7 @@
 
 ## Overview
 
-In ASP.NET, `<authorization>` rules in `Web.config` decide which users can request a resource. The first rule that matches the user applies. An application that configures Forms or Windows authentication but has an application-wide rule `<allow users="*" />`, with no earlier `<deny users="?" />`, lets anonymous users reach every page that is not denied by a more specific `<location>` rule. Authentication is then never enforced.
+In ASP.NET, `<authorization>` rules in `Web.config` decide which users can request a resource. The first rule that matches the user applies, and a rule's `verbs` attribute limits the HTTP methods it matches. An application that configures Forms or Windows authentication but has an application-wide rule `<allow users="*" />`, with no earlier `<deny users="?" />` that covers its verbs, lets anonymous users reach every page that is not denied by a more specific `<location>` rule. Authentication is then never enforced.
 
 This query reports application-wide `<allow users="*" />` and `<allow users="?" />` rules in `Web.config` files that configure Forms or Windows authentication and do not deny anonymous users first.
 

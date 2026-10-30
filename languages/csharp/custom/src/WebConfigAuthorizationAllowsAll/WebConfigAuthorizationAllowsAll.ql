@@ -28,6 +28,25 @@ private predicate isAllOrAnonymousRule(XmlElement rule, string kind) {
   getAUser(rule) = ["*", "?"]
 }
 
+/** Holds if a preceding deny rule covers every HTTP verb matched by `allow`. */
+private predicate denyCoversAllowVerbs(XmlElement deny, XmlElement allow) {
+  not deny.hasAttribute("verbs")
+  or
+  getAVerb(deny) = ""
+  or
+  getAVerb(deny) = "*"
+  or
+  allow.hasAttribute("verbs") and
+  getAVerb(allow) != "" and
+  getAVerb(allow) != "*" and
+  forall(string verb | getAVerb(allow) = verb | getAVerb(deny) = verb)
+}
+
+/** Gets the lower-case HTTP verb values of an authorization rule, split by comma. */
+private string getAVerb(XmlElement rule) {
+  result = rule.getAttributeValue("verbs").splitAt(",").trim().toLowerCase()
+}
+
 /** An application-wide `<authorization>` element, that is, one that is not inside a `<location>`. */
 class RootAuthorizationXmlElement extends XmlElement {
   RootAuthorizationXmlElement() {
@@ -55,6 +74,7 @@ where
   not exists(XmlElement deny |
     deny = authz.getAChild() and
     isAllOrAnonymousRule(deny, "deny") and
+    denyCoversAllowVerbs(deny, allow) and
     deny.getIndex() < allow.getIndex()
   ) and
   configuresAuthentication(authz.getFile())

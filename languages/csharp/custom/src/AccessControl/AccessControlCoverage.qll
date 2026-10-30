@@ -70,10 +70,10 @@ predicate isStateChanging(ActionMethod m) {
   splitWords(m.getName())
       .regexpMatch("(.*_)?(update|delete|remove|edit|modify|change|set|save|cancel)(_.*)?")
   or
-  m.getAnAttribute().getType().hasFullyQualifiedName(
-    ["Microsoft.AspNetCore.Mvc", "System.Web.Mvc", "System.Web.Http"],
-    ["HttpPutAttribute", "HttpPatchAttribute", "HttpDeleteAttribute"]
-  )
+  m.getAnAttribute()
+      .getType()
+      .hasFullyQualifiedName(["Microsoft.AspNetCore.Mvc", "System.Web.Mvc", "System.Web.Http"],
+        ["HttpPutAttribute", "HttpPatchAttribute", "HttpDeleteAttribute"])
   or
   m.getOverridee*()
       .getAnAttribute()
@@ -135,22 +135,24 @@ predicate checksCurrentUser(ActionMethod m) {
   )
 }
 
-private ValueOrRefType getAnUnboundBaseType(ValueOrRefType t) {
-  result = t.getABaseType().getUnboundDeclaration()
+private Class getAnUnboundBaseClass(ValueOrRefType t) {
+  result = t.(Class).getBaseClass().getUnboundDeclaration()
 }
 
 /**
- * Gets an attribute that applies to `m`: directly, via an overridden method, via its
- * declaring type (or a base type), or via the WCF service contract it implements.
+ * Gets an attribute that applies to `m`: directly, via an overridden method, or via its
+ * declaring type or a base class.
  */
 Attribute getAnApplicableAttribute(ActionMethod m) {
-  result = m.getOverridee*().getAnAttribute()
+  result = m.getOverridee*().getAnAttribute() and
+  (
+    not m instanceof WcfServiceOperation
+    or
+    m.getOverridee*().getDeclaringType() instanceof Class and
+    not m.getOverridee*().getDeclaringType() instanceof Interface
+  )
   or
-  result = getAnUnboundBaseType*(m.getDeclaringType()).getAnAttribute()
-  or
-  result = m.(WcfServiceOperation).getAContractMethod().getAnAttribute()
-  or
-  result = m.(WcfServiceOperation).getAContractMethod().getDeclaringType().getAnAttribute()
+  result = getAnUnboundBaseClass*(m.getDeclaringType()).getAnAttribute()
 }
 
 private predicate isAuthorizeAttributeType(Class c) {
@@ -213,10 +215,10 @@ predicate isAuthorizationAttribute(Attribute a) {
  * state (`POST`, `PUT`, `PATCH` or `DELETE`).
  */
 predicate hasMutatingHttpVerb(ActionMethod m) {
-  m.getAnAttribute().getType().hasFullyQualifiedName(
-    ["Microsoft.AspNetCore.Mvc", "System.Web.Mvc", "System.Web.Http"],
-    ["HttpPostAttribute", "HttpPutAttribute", "HttpPatchAttribute", "HttpDeleteAttribute"]
-  )
+  m.getAnAttribute()
+      .getType()
+      .hasFullyQualifiedName(["Microsoft.AspNetCore.Mvc", "System.Web.Mvc", "System.Web.Http"],
+        ["HttpPostAttribute", "HttpPutAttribute", "HttpPatchAttribute", "HttpDeleteAttribute"])
   or
   m.getOverridee*()
       .getAnAttribute()
@@ -236,40 +238,68 @@ predicate isAuthenticationFlow(ActionMethod m) {
 
 /**
  * Holds if the application configures authorization globally, for example by registering an
- * `AuthorizeFilter` or a global `[Authorize]` filter, calling `RequireAuthorization()` on the
- * endpoints, or setting an authorization `FallbackPolicy`.
+ * `AuthorizeFilter` or a global `[Authorize]` filter, calling `RequireAuthorization()` on a
+ * controller endpoint mapping, or setting an enforcing authorization `FallbackPolicy`.
  */
 predicate hasGlobalAuthorizationPolicy() {
-  exists(ObjectCreation oc | oc.fromSource() |
-    oc.getObjectType().hasName("AuthorizeFilter")
-    or
-    isAuthorizeAttributeType(oc.getObjectType()) and
-    not oc.getObjectType().hasFullyQualifiedName(
-      ["System.Web.Mvc", "System.Web.Http"], "AuthorizeAttribute"
-    )
-  )
-  or
   exists(MethodCall mc, ObjectCreation oc |
-    mc.getTarget().hasName("Add") and
+    mc.getTarget().hasName(["Add", "Insert"]) and
     mc.getAnArgument() = oc and
-    oc.getObjectType().hasFullyQualifiedName(
-      ["System.Web.Mvc", "System.Web.Http"], "AuthorizeAttribute"
+    (
+      oc.getObjectType().hasName("AuthorizeFilter")
+      or
+      isAuthorizeAttributeType(oc.getObjectType())
     ) and
     (
-      mc.getTarget().getDeclaringType().hasFullyQualifiedName(
-        "System.Web.Mvc", "GlobalFilterCollection"
-      )
+      mc.getTarget()
+          .getDeclaringType()
+          .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.Filters", "FilterCollection")
       or
-      mc.getTarget().getDeclaringType().hasFullyQualifiedName(
-        "System.Web.Http.Filters", "HttpFilterCollection"
-      )
+      mc.getTarget()
+          .getDeclaringType()
+          .hasFullyQualifiedName("System.Web.Mvc", "GlobalFilterCollection")
+      or
+      mc.getTarget()
+          .getDeclaringType()
+          .hasFullyQualifiedName("System.Web.Http.Filters", "HttpFilterCollection")
     )
   )
   or
-  exists(MethodCall mc | mc.fromSource() | mc.getTarget().hasName("RequireAuthorization"))
+  exists(MethodCall mc, MethodCall endpoint |
+    mc.getTarget().hasName("RequireAuthorization") and
+    endpoint = mc.getQualifier() and
+    endpoint
+        .getTarget()
+        .hasFullyQualifiedName("Microsoft.AspNetCore.Builder",
+          "ControllerEndpointRouteBuilderExtensions",
+          ["MapControllers", "MapControllerRoute", "MapDefaultControllerRoute"])
+  )
   or
   exists(AssignableDefinition def |
-    def.getTarget().(Property).hasName(["FallbackPolicy", "DefaultPolicy"]) and
-    def.getExpr().fromSource()
+    def.getTarget()
+        .(Property)
+        .hasFullyQualifiedName("Microsoft.AspNetCore.Authorization", "AuthorizationOptions",
+          "FallbackPolicy") and
+    def.getExpr().fromSource() and
+    (
+      def.getExpr()
+          .(PropertyAccess)
+          .getTarget()
+          .hasFullyQualifiedName("Microsoft.AspNetCore.Authorization", "AuthorizationOptions",
+            "DefaultPolicy")
+      or
+      exists(MethodCall build, MethodCall requireAuthenticatedUser |
+        build = def.getExpr() and
+        build
+            .getTarget()
+            .hasFullyQualifiedName("Microsoft.AspNetCore.Authorization",
+              "AuthorizationPolicyBuilder", "Build") and
+        requireAuthenticatedUser = build.getQualifier() and
+        requireAuthenticatedUser
+            .getTarget()
+            .hasFullyQualifiedName("Microsoft.AspNetCore.Authorization",
+              "AuthorizationPolicyBuilder", "RequireAuthenticatedUser")
+      )
+    )
   )
 }

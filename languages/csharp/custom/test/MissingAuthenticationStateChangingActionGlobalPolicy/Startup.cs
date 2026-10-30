@@ -4,6 +4,15 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
+namespace Microsoft.AspNetCore.Mvc.Filters
+{
+    public class FilterCollection
+    {
+        public void Add(object filter) { }
+        public void Insert(int index, object filter) { }
+    }
+}
+
 namespace Microsoft.AspNetCore.Mvc.Authorization
 {
     public class AuthorizeFilter
@@ -18,7 +27,14 @@ namespace Microsoft.AspNetCore.Mvc
 
     public class HttpPostAttribute : Attribute { }
 
-    public abstract class Controller
+    public abstract class ControllerBase { }
+
+    public class MvcOptions
+    {
+        public Filters.FilterCollection Filters { get; } = new Filters.FilterCollection();
+    }
+
+    public abstract class Controller : ControllerBase
     {
         public IActionResult RedirectToAction(string action) => null;
     }
@@ -26,11 +42,6 @@ namespace Microsoft.AspNetCore.Mvc
 
 namespace Blog
 {
-    public class MvcOptions
-    {
-        public System.Collections.Generic.List<object> Filters = new System.Collections.Generic.List<object>();
-    }
-
     public class Startup
     {
         public void ConfigureMvc(MvcOptions options)
@@ -44,7 +55,7 @@ namespace Blog
     public class CommentsController : Controller
     {
         [HttpPost]
-        public IActionResult Create(Comment comment)
+        public IActionResult Create(Comment comment) // $ MISSING: Alert[cs/web/missing-authentication-state-changing-action]
         {
             Console.WriteLine(comment.Id);
             return RedirectToAction("Index");

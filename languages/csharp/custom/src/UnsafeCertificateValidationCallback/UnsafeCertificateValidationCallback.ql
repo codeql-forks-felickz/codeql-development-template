@@ -17,7 +17,9 @@ import semmle.code.csharp.dataflow.DataFlow
 
 /** Holds if every value that callable `c` can return is the constant `true`. */
 predicate alwaysReturnsTrue(Callable c) {
-  forex(Expr ret | c.canReturn(ret) | ret.getValue() = "true")
+  forex(Expr ret | c.canReturn(ret) | ret.getValue() = "true") and
+  not exists(ThrowStmt t | t.getEnclosingCallable() = c) and
+  not exists(ThrowExpr e | e.getEnclosingCallable() = c)
 }
 
 /**

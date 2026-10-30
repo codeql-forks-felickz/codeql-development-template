@@ -4,6 +4,10 @@
 
 This query reports callbacks that unconditionally return `true` when they are used as a certificate validation callback.
 
+## Known limitations
+
+Callbacks whose callable body contains a `throw` statement or expression are not reported, even if the throw is unrelated to certificate validation.
+
 ## Recommendation
 
 Do not override certificate validation. If a custom callback is needed, reject the certificate unless `sslPolicyErrors` is `SslPolicyErrors.None`, or validate it explicitly (for example by pinning the expected certificate).

@@ -2,7 +2,7 @@
 
 ## Overview
 
-ASP.NET Core, classic ASP.NET MVC and classic Web API actions are reachable by anonymous clients unless an authorization requirement applies to them. Requirements can come from an `[Authorize]` attribute on the action or controller, from a registered global authorization filter or fallback policy, or from a check of the current user in the action. An action that changes server state without any of these lets any remote client create, modify or delete data, or run privileged operations such as writing files or executing commands.
+ASP.NET Core, classic ASP.NET MVC and classic Web API actions are reachable by anonymous clients unless an authorization requirement applies to them. Requirements can come from an `[Authorize]` attribute on the action or controller, from a registered global authorization filter or enforcing fallback policy, or from a check of the current user in the action. An action that changes server state without any of these lets any remote client create, modify or delete data, or run privileged operations such as writing files or executing commands.
 
 `[AllowAnonymous]` overrides `[Authorize]`, so marking an action that acts on an existing resource with `[AllowAnonymous]` removes the protection of its controller.
 

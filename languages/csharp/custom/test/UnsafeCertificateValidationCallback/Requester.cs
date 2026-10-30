@@ -96,6 +96,16 @@ namespace DisableSsl
             };
         }
 
+        public static void RejectsErrorsBeforeReturningTrue()
+        {
+            ServicePointManager.ServerCertificateValidationCallback = (sender, cert, chain, errors) =>
+            {
+                if (errors != SslPolicyErrors.None)
+                    throw new System.Security.Authentication.AuthenticationException();
+                return true;
+            };
+        }
+
         // Safe: an unrelated always-true delegate.
         public static void Unrelated()
         {
