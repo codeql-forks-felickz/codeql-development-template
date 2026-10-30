@@ -107,6 +107,20 @@ public class JacksonCookieDeserialization {
         ObjectMapper m4 = new ObjectMapper();
         m4.activateDefaultTyping(ptv);
         m4.readValue(cookie.getValue(), Object.class);
+
+        // BAD: an explicit permissive validator overrides the mapper's global allowlist.
+        ObjectMapper m5 = new ObjectMapper();
+        m5.setPolymorphicTypeValidator(
+            BasicPolymorphicTypeValidator.builder().allowIfSubType("com.example.model.").build());
+        m5.activateDefaultTyping(
+            LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
+        m5.readValue(cookie.getValue(), Object.class);
+
+        // GOOD: scalar targets cannot instantiate a payload-selected class.
+        ObjectMapper m6 = new ObjectMapper();
+        m6.activateDefaultTyping(
+            LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
+        m6.readValue(cookie.getValue(), String.class);
       }
     }
   }

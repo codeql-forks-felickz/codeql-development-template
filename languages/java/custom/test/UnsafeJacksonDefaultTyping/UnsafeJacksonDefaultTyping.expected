@@ -27,6 +27,7 @@ nodes
 | JacksonCookieDeserialization.java:97:49:97:65 | getValue(...) : String | semmle.label | getValue(...) : String |
 | JacksonCookieDeserialization.java:103:22:103:38 | getValue(...) | semmle.label | getValue(...) |
 | JacksonCookieDeserialization.java:109:22:109:38 | getValue(...) | semmle.label | getValue(...) |
+| JacksonCookieDeserialization.java:117:22:117:38 | getValue(...) | semmle.label | getValue(...) |
 | MetaAnnotatedController.java:60:34:60:53 | base64Payload : String | semmle.label | base64Payload : String |
 | MetaAnnotatedController.java:61:14:61:54 | decode(...) : byte[] | semmle.label | decode(...) : byte[] |
 | MetaAnnotatedController.java:61:41:61:53 | base64Payload : String | semmle.label | base64Payload : String |
@@ -43,4 +44,5 @@ subpaths
 | JacksonCookieDeserialization.java:97:9:97:81 | readValue(...) | JacksonCookieDeserialization.java:97:49:97:65 | getValue(...) : String | JacksonCookieDeserialization.java:97:22:97:66 | decode(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | JacksonCookieDeserialization.java:97:49:97:65 | getValue(...) | user-provided value |
 | JacksonCookieDeserialization.java:103:9:103:53 | readValue(...) | JacksonCookieDeserialization.java:103:22:103:38 | getValue(...) | JacksonCookieDeserialization.java:103:22:103:38 | getValue(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | JacksonCookieDeserialization.java:103:22:103:38 | getValue(...) | user-provided value |
 | JacksonCookieDeserialization.java:109:9:109:53 | readValue(...) | JacksonCookieDeserialization.java:109:22:109:38 | getValue(...) | JacksonCookieDeserialization.java:109:22:109:38 | getValue(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | JacksonCookieDeserialization.java:109:22:109:38 | getValue(...) | user-provided value |
+| JacksonCookieDeserialization.java:117:9:117:53 | readValue(...) | JacksonCookieDeserialization.java:117:22:117:38 | getValue(...) | JacksonCookieDeserialization.java:117:22:117:38 | getValue(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | JacksonCookieDeserialization.java:117:22:117:38 | getValue(...) | user-provided value |
 | MetaAnnotatedController.java:79:16:79:80 | readValue(...) | MetaAnnotatedController.java:102:26:102:97 | activityCookie : String | MetaAnnotatedController.java:79:45:79:65 | decode(...) | Unsafe deserialization with permissive Jackson default typing depends on a $@. | MetaAnnotatedController.java:102:26:102:97 | activityCookie | user-provided value |

@@ -41,6 +41,10 @@ public class ObjectMapper {
     return this;
   }
 
+  public ObjectMapper setPolymorphicTypeValidator(PolymorphicTypeValidator ptv) {
+    return this;
+  }
+
   public String writeValueAsString(Object value) {
     return null;
   }

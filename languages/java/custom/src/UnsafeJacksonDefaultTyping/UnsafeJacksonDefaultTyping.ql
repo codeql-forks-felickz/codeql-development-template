@@ -54,6 +54,28 @@ class PermissiveJacksonDefaultTyping extends MethodCall {
   }
 }
 
+/** An explicit permissive validator takes precedence over a mapper's configured default validator. */
+class ExplicitPermissiveJacksonDefaultTyping extends PermissiveJacksonDefaultTyping {
+  ExplicitPermissiveJacksonDefaultTyping() {
+    this.getMethod().hasName(["activateDefaultTyping", "activateDefaultTypingAsProperty"])
+  }
+}
+
+/** A scalar class literal cannot select a payload-defined subtype. */
+private class NonPolymorphicJacksonScalarType extends Type {
+  NonPolymorphicJacksonScalarType() {
+    this instanceof PrimitiveType
+    or
+    this instanceof BoxedType
+    or
+    this instanceof RefType and
+    this.(RefType).hasQualifiedName("java.lang", "String")
+    or
+    this instanceof RefType and
+    this.(RefType).hasQualifiedName("java.math", ["BigInteger", "BigDecimal"])
+  }
+}
+
 /**
  * Tracks flow from an `ObjectMapper` configured with permissive default typing to the qualifier
  * of a subsequent Jackson deserialization method call.
@@ -68,6 +90,17 @@ module PermissiveJacksonDefaultTypingConfig implements DataFlow::ConfigSig {
 
 module PermissiveJacksonDefaultTypingFlow = DataFlow::Global<PermissiveJacksonDefaultTypingConfig>;
 
+module ExplicitPermissiveJacksonDefaultTypingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) {
+    src.asExpr() = any(ExplicitPermissiveJacksonDefaultTyping ma).getQualifier()
+  }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof ObjectMapperReadQualifier }
+}
+
+module ExplicitPermissiveJacksonDefaultTypingFlow =
+  DataFlow::Global<ExplicitPermissiveJacksonDefaultTypingConfig>;
+
 /**
  * The data argument of a Jackson deserialization method call on an `ObjectMapper` configured with
  * permissive default typing, which is not already a sink of `java/unsafe-deserialization`.
@@ -79,7 +112,14 @@ class UnsafeJacksonDefaultTypingSink extends DataFlow::ExprNode {
     mc.getMethod() instanceof ObjectMapperReadMethod and
     this.getExpr() = mc.getArgument(0) and
     PermissiveJacksonDefaultTypingFlow::flowToExpr(mc.getQualifier()) and
-    not SafeObjectMapperFlow::flowToExpr(mc.getQualifier()) and
+    (
+      not SafeObjectMapperFlow::flowToExpr(mc.getQualifier()) or
+      ExplicitPermissiveJacksonDefaultTypingFlow::flowToExpr(mc.getQualifier())
+    ) and
+    not exists(TypeLiteral target |
+      target = mc.getArgument(1) and
+      target.getReferencedType() instanceof NonPolymorphicJacksonScalarType
+    ) and
     not this instanceof UnsafeDeserializationSink
   }
 
