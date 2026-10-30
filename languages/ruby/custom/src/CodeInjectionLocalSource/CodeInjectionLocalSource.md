@@ -28,7 +28,7 @@ print first_number + second_number
 
 ## References
 
-- OWASP: [Code Injection](https://www.owasp.org/index.php/Code_Injection).
+- OWASP: [Code Injection](https://owasp.org/www-community/attacks/Code_Injection).
 - Wikipedia: [Code Injection](https://en.wikipedia.org/wiki/Code_injection).
 - Common Weakness Enumeration: [CWE-94](https://cwe.mitre.org/data/definitions/94.html).
 - Common Weakness Enumeration: [CWE-95](https://cwe.mitre.org/data/definitions/95.html).
