@@ -4,6 +4,10 @@ GitHub Actions masks the values of secrets when they appear in workflow logs. Ma
 
 This query reports `run` steps using a Bash shell where a secret (`${{ secrets.* }}`, `${{ toJSON(secrets) }}` or `${{ github.token }}`, used inline, through an environment variable, or through a shell variable assigned from one) is piped into an encoding command whose output reaches the log, that is, it is not redirected to a file, captured in a variable or command substitution, or consumed by another command.
 
+## Known limitations
+
+Variable assignments are ordered by their source line, not by shell control flow. Assignments inside functions or loops may execute in a different order than their source lines. Pipeline source attribution recognizes `curl` as a command that does not forward secret arguments to stdout; the output behavior of other commands is not modeled.
+
 ## Recommendation
 
 Do not print secrets, or values derived from secrets, to the workflow log. If an encoded form of a secret is needed, capture it in a variable and register it with the `::add-mask::` workflow command before using it, and pass it to the consuming command through a file or standard input instead of printing it.
