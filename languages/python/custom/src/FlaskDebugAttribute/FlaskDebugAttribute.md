@@ -1,8 +1,8 @@
-# Flask app run in debug mode via the `debug` attribute
+# Flask app run in debug mode via the `debug` attribute or `DEBUG` config
 
 Running a Flask application in debug mode enables the Werkzeug debugger. It lets anyone who can trigger an exception run arbitrary Python code on the server, so it must never be enabled in production.
 
-The standard `py/flask-debug` query only reports `app.run(debug=True)`. This query covers code that turns debug mode on through the `debug` attribute and then calls `app.run()` without a `debug` argument. It only alerts when the value is truthy by default:
+The standard `py/flask-debug` query only reports `app.run(debug=True)`. This query covers code that turns debug mode on through the `debug` attribute or the `DEBUG` config key (`app.config["DEBUG"] = ...` or `app.config.update(DEBUG=...)`) and then calls `app.run()` without a `debug` argument. It only alerts when the value is truthy by default:
 
 - a truthy literal, such as `True`, `1`, or any non-empty string (including `"False"` and `"0"`), or
 - an environment variable lookup (`os.environ.get` or `os.getenv`) whose default is one of those literals. In that case debug mode is on whenever the variable is not set.

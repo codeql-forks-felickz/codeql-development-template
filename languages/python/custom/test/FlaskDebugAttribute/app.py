@@ -104,6 +104,55 @@ def not_flask():
     other.run()
 
 
+# NON_COMPLIANT: debug enabled through the `DEBUG` config key.
+def config_subscript_true():
+    app.config["DEBUG"] = True  # $ Alert
+    app.run()
+
+
+# NON_COMPLIANT: `DEBUG` config key set from an environment variable with a truthy default.
+def config_subscript_env_default():
+    app.config["DEBUG"] = os.getenv("FLASK_DEBUG", "1")  # $ Alert
+    app.run()
+
+
+# NON_COMPLIANT: `DEBUG` set through `config.update`.
+def config_update_true():
+    app.config.update(DEBUG=True)  # $ Alert
+    app.run()
+
+
+# COMPLIANT: `DEBUG` config key disabled.
+def config_subscript_false():
+    app.config["DEBUG"] = False
+    app.run()
+
+
+# COMPLIANT: a different config key.
+def config_other_key():
+    app.config["TESTING"] = True
+    app.run()
+
+
+# COMPLIANT: an explicit `debug` argument to `run` overrides the config.
+def config_overridden_by_run():
+    app.config["DEBUG"] = True
+    app.run(debug=False)
+
+
+# COMPLIANT: `config.update` with a falsy `DEBUG`.
+def config_update_false():
+    app.config.update(DEBUG=False)
+    app.run()
+
+
+# COMPLIANT: not a Flask config mapping.
+def not_flask_config():
+    config = {}
+    config["DEBUG"] = True
+    app.run()
+
+
 if __name__ == "__main__":
     app.debug = os.environ.get('FLASK_DEBUG', True)  # $ Alert
     app.run(port=7000)

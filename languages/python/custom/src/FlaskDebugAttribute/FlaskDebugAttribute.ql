@@ -1,8 +1,9 @@
 /**
- * @name Flask app run in debug mode via the `debug` attribute
- * @description Enabling debug mode through `app.debug` (for example, from an environment
- *              variable lookup with a truthy default) before running the Flask development
- *              server may allow an attacker to run arbitrary code through the debugger.
+ * @name Flask app run in debug mode via the `debug` attribute or `DEBUG` config
+ * @description Enabling debug mode through `app.debug` or `app.config["DEBUG"]` (for example,
+ *              from an environment variable lookup with a truthy default) before running the
+ *              Flask development server may allow an attacker to run arbitrary code through
+ *              the debugger.
  * @kind problem
  * @problem.severity error
  * @security-severity 7.5
@@ -57,13 +58,42 @@ predicate runWithoutDebugArgument(API::CallNode run) {
   not exists(run.getArgByName("debug"))
 }
 
-from DataFlow::AttrWrite write, API::CallNode run
+/** Gets a reference to the `config` mapping of a Flask application. */
+API::Node flaskConfig() { result = Flask::FlaskApp::instance().getMember("config") }
+
+/**
+ * Holds if `setting` sets the debug mode of a Flask application to `value`, through
+ * `app.debug = value`, `app.config["DEBUG"] = value` or `app.config.update(DEBUG=value)`.
+ */
+predicate setsDebugMode(ControlFlowNode setting, DataFlow::Node value) {
+  exists(DataFlow::AttrWrite write |
+    write.getAttributeName() = "debug" and
+    write.getObject() = Flask::FlaskApp::instance().getAValueReachableFromSource() and
+    value = write.getValue() and
+    setting = write.asCfgNode()
+  )
+  or
+  exists(SubscriptNode sub |
+    sub.isStore() and
+    sub.getIndex().getNode().(StringLiteral).getText() = "DEBUG" and
+    sub.getObject() = flaskConfig().getAValueReachableFromSource().asCfgNode() and
+    value.asCfgNode() = sub.(DefinitionNode).getValue() and
+    setting = sub
+  )
+  or
+  exists(API::CallNode update |
+    update = flaskConfig().getMember("update").getACall() and
+    value = update.getArgByName("DEBUG") and
+    setting = update.asCfgNode()
+  )
+}
+
+from ControlFlowNode setting, DataFlow::Node value, API::CallNode run
 where
-  write.getAttributeName() = "debug" and
-  write.getObject() = Flask::FlaskApp::instance().getAValueReachableFromSource() and
-  isTruthyByDefault(write.getValue()) and
+  setsDebugMode(setting, value) and
+  isTruthyByDefault(value) and
   runWithoutDebugArgument(run) and
-  write.asCfgNode().strictlyReaches(run.asCfgNode())
-select write,
-  "This assignment enables Flask debug mode by default before the app is $@. This may allow an attacker to run arbitrary code through the debugger.",
+  setting.strictlyReaches(run.asCfgNode())
+select setting,
+  "This setting enables Flask debug mode by default before the app is $@. This may allow an attacker to run arbitrary code through the debugger.",
   run, "run"
