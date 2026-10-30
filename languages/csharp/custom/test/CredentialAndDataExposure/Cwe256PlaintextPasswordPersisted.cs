@@ -57,12 +57,65 @@ namespace Cwe256.Controllers
             return RedirectToAction("Index");
         }
 
+        // Safe: a conditional hash assignment protects the same entity before persistence.
+        [HttpPost]
+        public IActionResult EditWithConditionalHash(User user, bool changePassword)
+        {
+            if (changePassword)
+            {
+                user.Password = _crypto.HashPassword(user.Password, user.Salt);
+            }
+            _context.Update(user);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        // Safe: an existing stored hash is restored from another entity.
+        [HttpPost]
+        public IActionResult RestoreStoredHash(User user, User storedUser)
+        {
+            user.Password = storedUser.Password;
+            _context.Update(user);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        // Safe: the password is cleared before the entity is persisted.
+        [HttpPost]
+        public IActionResult ClearPassword(User user)
+        {
+            user.Password = null;
+            _context.Update(user);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         // CWE-256: the model-bound password is persisted verbatim.
         [HttpPost]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Password")] User user)
         {
             _context.Update(user); // $ Alert
             await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        // CWE-256: protecting a different entity does not protect the entity being persisted.
+        [HttpPost]
+        public IActionResult HashDifferentEntity(User user, User other)
+        {
+            other.Password = _crypto.HashPassword(other.Password, other.Salt);
+            _context.Update(user); // $ Alert
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        // CWE-256: changing the password without protecting it is not sufficient.
+        [HttpPost]
+        public IActionResult ModifyPassword(User user)
+        {
+            user.Password = user.Password.Trim();
+            _context.Update(user); // $ Alert
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
 

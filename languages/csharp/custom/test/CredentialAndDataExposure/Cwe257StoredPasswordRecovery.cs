@@ -49,5 +49,13 @@ namespace Cwe257Recovery
         {
             return row["Password"].ToString() == candidateHash;
         }
+
+        // Safe: a Base64-encoded password hash is decoded only to compare bytes.
+        public bool VerifyEncodedHash(DataRow row, byte[] candidateHash)
+        {
+            byte[] storedHash = Convert.FromBase64String(row["Password"].ToString());
+            return storedHash.Length == candidateHash.Length &&
+                storedHash[0] == candidateHash[0];
+        }
     }
 }

@@ -2,6 +2,11 @@ using System.Data.SqlClient;
 
 namespace Cwe256Insert
 {
+    public class LookalikeParameterCollection
+    {
+        public void AddWithValue(string name, object value) { }
+    }
+
     public class AccountSeeder
     {
         private readonly string connectionString = @"127.0.0.1\sql";
@@ -46,6 +51,18 @@ namespace Cwe256Insert
             }
         }
 
+        // CWE-256: a plaintext password is inserted through CommandText assignment.
+        public void RegisterWithCommandText(string password)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("", connection);
+                command.CommandText = "INSERT INTO Users (Password) VALUES (@Password)";
+                command.Parameters.AddWithValue("@Password", password); // $ Alert
+                command.ExecuteNonQuery();
+            }
+        }
+
         // Safe: the password is only used to look up a row, not stored.
         public void Find(string username, string password)
         {
@@ -55,6 +72,34 @@ namespace Cwe256Insert
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Password", password);
                 command.ExecuteReader();
+            }
+        }
+
+        // Safe: the password is bound to a SELECT even though the method also writes an audit row.
+        public void FindAndAudit(string username, string password)
+        {
+            string query = "SELECT * FROM Users WHERE Username = @Username AND Password = @Password";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Password", password);
+                command.ExecuteReader();
+
+                SqlCommand audit = new SqlCommand("INSERT INTO AuditLog (Action) VALUES (@Action)", connection);
+                audit.Parameters.AddWithValue("@Action", "lookup");
+                audit.ExecuteNonQuery();
+            }
+        }
+
+        // Safe: an unrelated method named AddWithValue does not bind a SQL parameter.
+        public void UseLookalikeParameterCollection(string password)
+        {
+            string query = "INSERT INTO Users (Password) VALUES (@Password)";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                new LookalikeParameterCollection().AddWithValue("@Password", password);
+                command.ExecuteNonQuery();
             }
         }
 

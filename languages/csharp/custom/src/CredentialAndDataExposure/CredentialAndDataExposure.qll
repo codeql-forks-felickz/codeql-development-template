@@ -416,26 +416,81 @@ private module ReversibleEncodingFlow = TaintTracking::GlobalWithState<Reversibl
 /* ------------------------------------------------------------------------- */
 /** Holds if `e` is the value bound to a password parameter of an `INSERT` or `UPDATE` command. */
 private predicate sqlPasswordParameterValue(Expr e) {
-  exists(Call c, Expr name |
+  exists(MethodCall c, Expr name, Expr collection |
+    collection = c.getQualifier() and
+    isSqlParameterCollection(collection) and
     (
-      c.(MethodCall).getTarget().hasName("AddWithValue") and
+      c.getTarget().hasName("AddWithValue") and
       name = c.getArgument(0) and
       e = c.getArgument(1)
       or
-      c.(ObjectCreation)
-          .getObjectType()
-          .getABaseType*()
-          .hasFullyQualifiedName(["System.Data", "System.Data.Common"],
-            ["IDataParameter", "DbParameter"]) and
-      c.getNumberOfArguments() = 2 and
-      name = c.getArgument(0) and
-      e = c.getArgument(1) and
+      c.getTarget().hasName("Add") and
+      exists(ObjectCreation parameter |
+        parameter = c.getArgument(0) and
+        parameter
+            .getObjectType()
+            .getABaseType*()
+            .hasFullyQualifiedName(["System.Data", "System.Data.Common"],
+              ["IDataParameter", "DbParameter"]) and
+        parameter.getNumberOfArguments() = 2 and
+        name = parameter.getArgument(0) and
+        e = parameter.getArgument(1)
+      ) and
       not e.getType() instanceof Enum
     ) and
     isCredentialName(name.getValue().regexpReplaceAll("^[@:?$]", "")) and
-    exists(Expr sql | isSqlWrite(sql) and sql.getEnclosingCallable() = c.getEnclosingCallable() |
-      sql = any(SqlExpr se).getSql() or
-      ExternalFlow::sinkNode(DataFlow::exprNode(sql), "sql-injection")
+    exists(Expr sql |
+      isSqlWrite(sql) and
+      sqlCommandForParameterCollection(collection, sql)
+    )
+  )
+}
+
+/** Holds if `e` is a recognized SQL parameter collection. */
+private predicate isSqlParameterCollection(Expr e) {
+  e.getType()
+      .(RefType)
+      .getABaseType*()
+      .hasFullyQualifiedName([
+          "System.Data.Common", "System.Data.SqlClient", "Microsoft.Data.SqlClient"
+        ], ["DbParameterCollection", "SqlParameterCollection"])
+}
+
+/** Gets the command that owns a SQL parameter collection. */
+private predicate sqlParameterCollectionCommand(Expr collection, Expr command) {
+  exists(PropertyAccess parameters |
+    parameters = collection and
+    parameters.getTarget().hasName("Parameters") and
+    command = parameters.getQualifier()
+  )
+}
+
+/** Holds if `sql` is the text of the command owning `collection`. */
+private predicate sqlCommandForParameterCollection(Expr collection, Expr sql) {
+  exists(Expr command |
+    sqlParameterCollectionCommand(collection, command) and
+    (
+      exists(SqlExpr commandCreation |
+        commandCreation instanceof ObjectCreation and
+        sql = commandCreation.getSql() and
+        DataFlow::localExprFlow(commandCreation, command)
+      )
+      or
+      exists(ObjectCreation commandCreation |
+        commandCreation
+            .getObjectType()
+            .getABaseType*()
+            .hasFullyQualifiedName(["System.Data.SqlClient", "Microsoft.Data.SqlClient"],
+              "SqlCommand") and
+        sql = commandCreation.getArgument(0) and
+        DataFlow::localExprFlow(commandCreation, command)
+      )
+      or
+      exists(CommandTextAssignmentSqlExpr commandText |
+        sql = commandText.getSql() and
+        DataFlow::localExprFlow(commandText.getLeftOperand().(PropertyAccess).getQualifier(),
+          command)
+      )
     )
   )
 }
@@ -517,13 +572,35 @@ private class StoredPasswordRead extends ElementAccess {
 
 /** Holds if `e` is the input of a call that reverses an encoding or encryption. */
 private predicate decodedValue(Expr e) {
-  exists(Call c | e = c.getAnArgument() or e = c.(MethodCall).getQualifier() |
-    c.getTarget().getDeclaringType().hasFullyQualifiedName("System", "Convert") and
-    c.getTarget().hasName(["FromBase64String", "FromBase64CharArray", "FromHexString"])
-    or
-    c.getTarget().getName().regexpMatch("(?i).*(decode|decrypt|unprotect).*") and
-    not c.getTarget().getName().regexpMatch("(?i).*(url|html|xml|javascript|uri|ldap).*")
+  exists(Call c |
+    (
+      (e = c.getAnArgument() or e = c.(MethodCall).getQualifier()) and
+      c.getTarget().getDeclaringType().hasFullyQualifiedName("System", "Convert") and
+      c.getTarget().hasName(["FromBase64String", "FromBase64CharArray", "FromHexString"])
+      or
+      (e = c.getAnArgument() or e = c.(MethodCall).getQualifier()) and
+      c.getTarget().getName().regexpMatch("(?i).*(decode|decrypt|unprotect).*") and
+      not c.getTarget().getName().regexpMatch("(?i).*(url|html|xml|javascript|uri|ldap).*")
+    ) and
+    isDecodedPlaintextResult(c)
   )
+}
+
+/** Holds if `decoded` is converted back to plaintext after decoding. */
+private predicate isDecodedPlaintextResult(Call decoded) {
+  exists(MethodCall getString |
+    getString.getTarget().hasName("GetString") and
+    getString.getTarget().getDeclaringType().hasFullyQualifiedName("System.Text", "Encoding") and
+    DataFlow::localExprFlow(decoded, getString.getArgument(0))
+  )
+  or
+  exists(ObjectCreation stringCreation |
+    stringCreation.getObjectType().hasFullyQualifiedName("System", "String") and
+    DataFlow::localExprFlow(decoded, stringCreation.getAnArgument())
+  )
+  or
+  decoded.getTarget().getName().regexpMatch("(?i).*(decode|decrypt|unprotect).*") and
+  not decoded.getTarget().getName().regexpMatch("(?i).*(url|html|xml|javascript|uri|ldap).*")
 }
 
 private module StoredPasswordRecoveryConfig implements DataFlow::ConfigSig {
@@ -897,10 +974,13 @@ predicate credentialAndDataExposure(
     BoundPasswordToEfFlow::flow(source, sink) and
     p = boundCredentialProperty(source) and
     // the password is not replaced (e.g. by a hash) before the entity is persisted
-    not exists(AssignExpr write |
+    not exists(AssignExpr write, PropertyAccess target |
+      target = write.getLeftOperand() and
       write.getLeftOperand().(PropertyAccess).getTarget().getUnboundDeclaration() = p and
+      sameEntity(target.getQualifier(), sink.asExpr()) and
       write.getEnclosingCallable() =
-        [sink.asExpr().getEnclosingCallable(), source.asParameter().getCallable()]
+        [sink.asExpr().getEnclosingCallable(), source.asParameter().getCallable()] and
+      protectsPersistedPassword(write.getRightOperand(), sink.asExpr(), p)
     ) and
     alert = sink.asExpr() and
     message =
@@ -1007,5 +1087,35 @@ predicate credentialAndDataExposure(
     ) and
     related = source.asExpr() and
     relatedText = "this expression"
+  )
+}
+
+/** Holds if `value` protects or clears a password, or restores one from another entity. */
+private predicate protectsPersistedPassword(
+  Expr value, Expr persistedEntity, CredentialProperty passwordProperty
+) {
+  exists(Call c |
+    c = value and
+    isProtectingCallable(c.getTarget())
+  )
+  or
+  value instanceof NullLiteral
+  or
+  exists(StringLiteral literal | literal = value and literal.getValue() = "")
+  or
+  exists(PropertyAccess storedValue |
+    storedValue = value and
+    storedValue.getTarget().getUnboundDeclaration() = passwordProperty and
+    exists(storedValue.getQualifier()) and
+    not sameEntity(storedValue.getQualifier(), persistedEntity)
+  )
+}
+
+/** Holds if `first` and `second` refer to the same local, parameter, or field. */
+private predicate sameEntity(Expr first, Expr second) {
+  exists(AssignableRead firstRead, AssignableRead secondRead |
+    firstRead = first and
+    secondRead = second and
+    firstRead.getTarget().getUnboundDeclaration() = secondRead.getTarget().getUnboundDeclaration()
   )
 }
