@@ -4,10 +4,13 @@
 | data/profile-dao.js:25:69:25:71 | ssn | data/profile-dao.js:25:69:25:71 | ssn | data/profile-dao.js:25:69:25:71 | ssn | This stores sensitive data returned by $@ in a database as clear text. | data/profile-dao.js:25:69:25:71 | ssn | an access to ssn |
 | data/user-dao.js:12:13:12:20 | password | data/user-dao.js:12:13:12:20 | password | data/user-dao.js:12:13:12:20 | password | This stores sensitive data returned by $@ in a database as clear text. | data/user-dao.js:12:13:12:20 | password | an access to password |
 | models/sequelize-define.js:22:24:22:31 | req.body | models/sequelize-define.js:22:24:22:31 | req.body | models/sequelize-define.js:22:24:22:31 | req.body | This stores $@ in the sensitive database field 'password' as clear text. | models/sequelize-define.js:22:24:22:31 | req.body | Server request body |
+| models/sequelize-define.js:28:31:28:38 | req.body | models/sequelize-define.js:28:31:28:38 | req.body | models/sequelize-define.js:28:31:28:38 | req.body | This stores $@ in the sensitive database field 'password' as clear text. | models/sequelize-define.js:28:31:28:38 | req.body | Server request body |
+| models/sequelize-define.js:39:21:39:28 | req.body | models/sequelize-define.js:39:21:39:28 | req.body | models/sequelize-define.js:39:21:39:28 | req.body | This stores $@ in the sensitive database field 'password' as clear text. | models/sequelize-define.js:39:21:39:28 | req.body | Server request body |
 | routes/accounts.js:12:33:12:40 | req.body | routes/accounts.js:12:33:12:40 | req.body | routes/accounts.js:12:33:12:40 | req.body | This stores $@ in the sensitive database field 'password' as clear text. | routes/accounts.js:12:33:12:40 | req.body | Server request body |
-| routes/accounts.js:18:26:18:42 | req.body.accounts | routes/accounts.js:18:26:18:33 | req.body | routes/accounts.js:18:26:18:42 | req.body.accounts | This stores $@ in the sensitive database field 'password' as clear text. | routes/accounts.js:18:26:18:33 | req.body | Server request body |
-| routes/accounts.js:24:61:24:77 | req.body.password | routes/accounts.js:24:61:24:77 | req.body.password | routes/accounts.js:24:61:24:77 | req.body.password | This stores sensitive data returned by $@ in a database as clear text. | routes/accounts.js:24:61:24:77 | req.body.password | an access to password |
-| routes/accounts.js:29:72:29:91 | req.body.newPassword | routes/accounts.js:29:72:29:91 | req.body.newPassword | routes/accounts.js:29:72:29:91 | req.body.newPassword | This stores sensitive data returned by $@ in a database as clear text. | routes/accounts.js:29:72:29:91 | req.body.newPassword | an access to newPassword |
+| routes/accounts.js:18:23:18:30 | req.body | routes/accounts.js:18:23:18:30 | req.body | routes/accounts.js:18:23:18:30 | req.body | This stores $@ in the sensitive database field 'password' as clear text. | routes/accounts.js:18:23:18:30 | req.body | Server request body |
+| routes/accounts.js:35:26:35:42 | req.body.accounts | routes/accounts.js:35:26:35:33 | req.body | routes/accounts.js:35:26:35:42 | req.body.accounts | This stores $@ in the sensitive database field 'password' as clear text. | routes/accounts.js:35:26:35:33 | req.body | Server request body |
+| routes/accounts.js:41:61:41:77 | req.body.password | routes/accounts.js:41:61:41:77 | req.body.password | routes/accounts.js:41:61:41:77 | req.body.password | This stores sensitive data returned by $@ in a database as clear text. | routes/accounts.js:41:61:41:77 | req.body.password | an access to password |
+| routes/accounts.js:46:72:46:91 | req.body.newPassword | routes/accounts.js:46:72:46:91 | req.body.newPassword | routes/accounts.js:46:72:46:91 | req.body.newPassword | This stores sensitive data returned by $@ in a database as clear text. | routes/accounts.js:46:72:46:91 | req.body.newPassword | an access to newPassword |
 | routes/cards.ts:11:18:11:37 | Number(card.cardNum) | routes/cards.ts:11:25:11:36 | card.cardNum | routes/cards.ts:11:18:11:37 | Number(card.cardNum) | This stores sensitive data returned by $@ in a database as clear text. | routes/cards.ts:11:25:11:36 | card.cardNum | an access to cardNum |
 | routes/cards.ts:16:28:16:35 | req.body | routes/cards.ts:16:28:16:35 | req.body | routes/cards.ts:16:28:16:35 | req.body | This stores $@ in the sensitive database field 'cardNum' as clear text. | routes/cards.ts:16:28:16:35 | req.body | Server request body |
 | seed.js:16:65:16:85 | "SuperS ... ssword" | seed.js:16:65:16:85 | "SuperS ... ssword" | seed.js:16:65:16:85 | "SuperS ... ssword" | This stores $@ in the sensitive database field 'password' as clear text. | seed.js:16:65:16:85 | "SuperS ... ssword" | a hard-coded value |
@@ -23,10 +26,10 @@ edges
 | api.js:30:62:30:69 | req.body | api.js:30:62:30:74 | req.body.user | provenance |  |
 | api.js:37:65:37:72 | req.body | api.js:37:65:37:78 | req.body.title | provenance |  |
 | api.js:37:94:37:101 | req.body | api.js:37:94:37:113 | req.body.description | provenance |  |
-| routes/accounts.js:18:26:18:33 | req.body | routes/accounts.js:18:26:18:42 | req.body.accounts | provenance |  |
-| routes/accounts.js:24:35:24:42 | req.body | routes/accounts.js:24:35:24:48 | req.body.email | provenance |  |
-| routes/accounts.js:24:61:24:68 | req.body | routes/accounts.js:24:61:24:77 | req.body.password | provenance |  |
-| routes/accounts.js:29:72:29:79 | req.body | routes/accounts.js:29:72:29:91 | req.body.newPassword | provenance |  |
+| routes/accounts.js:35:26:35:33 | req.body | routes/accounts.js:35:26:35:42 | req.body.accounts | provenance |  |
+| routes/accounts.js:41:35:41:42 | req.body | routes/accounts.js:41:35:41:48 | req.body.email | provenance |  |
+| routes/accounts.js:41:61:41:68 | req.body | routes/accounts.js:41:61:41:77 | req.body.password | provenance |  |
+| routes/accounts.js:46:72:46:79 | req.body | routes/accounts.js:46:72:46:91 | req.body.newPassword | provenance |  |
 | routes/cards.ts:11:25:11:36 | card.cardNum | routes/cards.ts:11:18:11:37 | Number(card.cardNum) | provenance | Config |
 nodes
 | api.js:10:23:10:26 | user | semmle.label | user |
@@ -49,15 +52,19 @@ nodes
 | data/profile-dao.js:25:69:25:71 | ssn | semmle.label | ssn |
 | data/user-dao.js:12:13:12:20 | password | semmle.label | password |
 | models/sequelize-define.js:22:24:22:31 | req.body | semmle.label | req.body |
+| models/sequelize-define.js:28:31:28:38 | req.body | semmle.label | req.body |
+| models/sequelize-define.js:39:21:39:28 | req.body | semmle.label | req.body |
 | routes/accounts.js:12:33:12:40 | req.body | semmle.label | req.body |
-| routes/accounts.js:18:26:18:33 | req.body | semmle.label | req.body |
-| routes/accounts.js:18:26:18:42 | req.body.accounts | semmle.label | req.body.accounts |
-| routes/accounts.js:24:35:24:42 | req.body | semmle.label | req.body |
-| routes/accounts.js:24:35:24:48 | req.body.email | semmle.label | req.body.email |
-| routes/accounts.js:24:61:24:68 | req.body | semmle.label | req.body |
-| routes/accounts.js:24:61:24:77 | req.body.password | semmle.label | req.body.password |
-| routes/accounts.js:29:72:29:79 | req.body | semmle.label | req.body |
-| routes/accounts.js:29:72:29:91 | req.body.newPassword | semmle.label | req.body.newPassword |
+| routes/accounts.js:18:23:18:30 | req.body | semmle.label | req.body |
+| routes/accounts.js:28:33:28:40 | req.body | semmle.label | req.body |
+| routes/accounts.js:35:26:35:33 | req.body | semmle.label | req.body |
+| routes/accounts.js:35:26:35:42 | req.body.accounts | semmle.label | req.body.accounts |
+| routes/accounts.js:41:35:41:42 | req.body | semmle.label | req.body |
+| routes/accounts.js:41:35:41:48 | req.body.email | semmle.label | req.body.email |
+| routes/accounts.js:41:61:41:68 | req.body | semmle.label | req.body |
+| routes/accounts.js:41:61:41:77 | req.body.password | semmle.label | req.body.password |
+| routes/accounts.js:46:72:46:79 | req.body | semmle.label | req.body |
+| routes/accounts.js:46:72:46:91 | req.body.newPassword | semmle.label | req.body.newPassword |
 | routes/cards.ts:11:18:11:37 | Number(card.cardNum) | semmle.label | Number(card.cardNum) |
 | routes/cards.ts:11:25:11:36 | card.cardNum | semmle.label | card.cardNum |
 | routes/cards.ts:16:28:16:35 | req.body | semmle.label | req.body |

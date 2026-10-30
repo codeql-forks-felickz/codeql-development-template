@@ -23,3 +23,19 @@ app.post("/logins", async (req, res) => {
     await HookedLogin.create(req.body);
     res.end();
 });
+
+app.post("/logins/build", async (req, res) => {
+    const login = Login.build(req.body); // $ Alert
+    await login.save();
+    res.end();
+});
+
+app.post("/logins/discarded-build", (req, res) => {
+    Login.build(req.body);
+    res.end();
+});
+
+app.post("/logins/constructor", async (req, res) => {
+    await new Login(req.body).save(); // $ Alert
+    res.end();
+});

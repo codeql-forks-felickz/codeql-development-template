@@ -14,6 +14,23 @@ router.post("/accounts", async (req, res) => {
     res.status(201).end();
 });
 
+router.post("/accounts/direct-save", async (req, res) => {
+    await new Account(req.body).save(); // $ Alert
+    res.status(201).end();
+});
+
+router.post("/accounts/discarded", async (req, res) => {
+    new Account(req.body);
+    res.status(201).end();
+});
+
+router.post("/accounts/hash-before-save", async (req, res) => {
+    const account = new Account(req.body);
+    account.password = await bcrypt.hash(account.password, 12);
+    await account.save();
+    res.status(201).end();
+});
+
 router.post("/accounts/bulk", async (req, res) => {
     await Account.create(req.body.accounts); // $ Alert
     res.status(201).end();

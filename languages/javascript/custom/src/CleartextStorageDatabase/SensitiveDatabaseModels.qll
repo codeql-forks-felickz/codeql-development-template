@@ -256,9 +256,14 @@ class MongooseModelDefinition extends OrmModelDefinition instanceof API::InvokeN
 
   override DataFlow::Node getADocument() {
     exists(DataFlow::SourceNode model | model = this.getAModelRef() |
-      result = model.getAnInstantiation().getArgument(0)
-      or
       result = model.getAMethodCall(["create", "insertMany"]).getArgument(0)
+      or
+      exists(DataFlow::NewNode instance |
+        instance = model.getAnInstantiation() and
+        isSavedModelInstance(instance)
+      |
+        result = instance.getArgument(0)
+      )
       or
       result =
         model
@@ -379,10 +384,22 @@ abstract class SequelizeModelDefinition extends OrmModelDefinition {
 
   override DataFlow::Node getADocument() {
     exists(DataFlow::SourceNode model | model = this.getAModelRef() |
-      result = model.getAnInstantiation().getArgument(0)
-      or
       result =
-        model.getAMethodCall(["create", "build", "bulkCreate", "upsert", "update"]).getArgument(0)
+        model.getAMethodCall(["create", "bulkCreate", "upsert", "update"]).getArgument(0)
+      or
+      exists(DataFlow::MethodCallNode build |
+        build = model.getAMethodCall("build") and
+        isSavedModelInstance(build)
+      |
+        result = build.getArgument(0)
+      )
+      or
+      exists(DataFlow::NewNode instance |
+        instance = model.getAnInstantiation() and
+        isSavedModelInstance(instance)
+      |
+        result = instance.getArgument(0)
+      )
     )
   }
 
@@ -462,6 +479,47 @@ private predicate persistedDocument(DataFlow::Node doc) {
   mongoCollectionDocument(doc) or ormModelDocument(doc, _)
 }
 
+/** Holds if a model instance is later saved. */
+private predicate isSavedModelInstance(DataFlow::Node instance) {
+  exists(DataFlow::MethodCallNode save |
+    save.getMethodName() = "save" and
+    save.getReceiver().getALocalSource() = instance
+  )
+}
+
+/**
+ * Holds if the sensitive field is replaced with a locally hashed value before the
+ * model instance is saved.
+ */
+private predicate isHashedBeforeModelSave(
+  DataFlow::Node doc, OrmModelDefinition def, string field
+) {
+  exists(DataFlow::Node instance, DataFlow::MethodCallNode save |
+    (
+      exists(DataFlow::NewNode allocation |
+        allocation = def.getAModelRef().getAnInstantiation() and
+        doc.getALocalSource() = allocation.getArgument(0).getALocalSource() and
+        instance = allocation
+      )
+      or
+      exists(DataFlow::MethodCallNode build |
+        build = def.getAModelRef().getAMethodCall("build") and
+        doc.getALocalSource() = build.getArgument(0).getALocalSource() and
+        instance = build
+      )
+    ) and
+    save.getMethodName() = "save" and
+    save.getReceiver().getALocalSource() = instance and
+    exists(DataFlow::PropWrite assignment |
+      assignment.getBase().getALocalSource() = instance and
+      assignment.getPropertyName() = field and
+      isLocallyHashed(assignment.getRhs()) and
+      assignment.getWriteNode().getASuccessor+() =
+        save.asExpr().getFirstControlFlowNode()
+    )
+  )
+}
+
 /**
  * Gets an object that is part of the persisted document `doc`, that is `doc` itself,
  * a nested object (such as the operand of `$set`) or an element of an array of documents.
@@ -487,18 +545,23 @@ abstract class DatabaseStorageSink extends DataFlow::Node {
 /** A value written to a named field of a persisted document, such as `{ password: value }`. */
 class DocumentFieldSink extends DatabaseStorageSink {
   string field;
+  DataFlow::Node doc;
 
   DocumentFieldSink() {
-    exists(DataFlow::Node doc |
-      this = documentObject(doc).getAPropertyWrite(field).getRhs() and
-      not field.charAt(0) = "$" and
-      not exists(OrmModelDefinition def | ormModelDocument(doc, def) |
-        def.mayTransformOnWrite() or def.hasSetter(field)
-      )
+    this = documentObject(doc).getAPropertyWrite(field).getRhs() and
+    not field.charAt(0) = "$" and
+    not exists(OrmModelDefinition def | ormModelDocument(doc, def) |
+      def.mayTransformOnWrite() or def.hasSetter(field)
     )
   }
 
-  override string getASensitiveField() { result = field and isSensitiveFieldName(field) }
+  override string getASensitiveField() {
+    result = field and
+    isSensitiveFieldName(field) and
+    not exists(OrmModelDefinition def |
+      ormModelDocument(doc, def) and isHashedBeforeModelSave(doc, def, field)
+    )
+  }
 }
 
 /**
@@ -514,7 +577,10 @@ class OrmWholeDocumentSink extends DatabaseStorageSink {
     def.hasClearTextSensitivePath(_)
   }
 
-  override string getASensitiveField() { def.hasClearTextSensitivePath(result) }
+  override string getASensitiveField() {
+    def.hasClearTextSensitivePath(result) and
+    not isHashedBeforeModelSave(this, def, result)
+  }
 }
 
 /** A record read through a model that exposes a password or private field. */
