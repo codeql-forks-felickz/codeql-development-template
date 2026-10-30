@@ -141,9 +141,8 @@ public class StaticUploadController {
   }
 
   // GOOD: a filename by itself does not make an arbitrary byte array an upload.
-  public void writeNonUploadBytes(Part part) throws IOException {
-    Path destination =
-        Paths.get("src/main/resources/static/uploads").resolve(part.getSubmittedFileName());
+  public void writeNonUploadBytes() throws IOException {
+    Path destination = Paths.get("src/main/resources/static/uploads/test.bin");
     Files.write(destination, new byte[0]);
   }
 
