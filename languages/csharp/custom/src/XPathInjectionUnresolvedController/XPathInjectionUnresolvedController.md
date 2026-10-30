@@ -29,9 +29,9 @@ public class XPath : ControllerBase
 }
 ```
 
-## Limitations
+## Known limitations
 
-* Only controllers whose unresolved base type is named `ControllerBase` or `Controller` are recognized. Controllers identified only by an unresolved `[ApiController]` or `[Controller]` attribute are not.
+* Only a direct unresolved base type named `ControllerBase` or `Controller` is recognized. Controllers identified only by an unresolved `[ApiController]` or `[Controller]` attribute, or through an unresolved type alias, are not.
 * Unresolved `[NonAction]` attributes are not extracted, so such methods are still treated as action methods.
 
 ## References

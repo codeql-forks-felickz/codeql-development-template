@@ -94,4 +94,25 @@ namespace Bookstore.Controllers
             doc.SelectSingleNode("//book[author='" + author + "']");
         }
     }
+
+    // GOOD: the unresolved type is a generic base type argument, not the base type.
+    public class Cache<T> { }
+
+    public class BookRepositoryWithGenericBase : Cache<Controller>
+    {
+        public void Find(string author)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.SelectSingleNode("//book[author='" + author + "']");
+        }
+    }
+
+    // GOOD: the controller base type is on a different partial declaration.
+    public partial class PartialBookSearch : ControllerBase { }
+
+    public class SameLineBookSearch : ControllerBase { public void Find(string author) // $ Source
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.SelectSingleNode("//book[author='" + author + "']"); // $ Alert
+    } }
 }

@@ -16,45 +16,20 @@ private import semmle.code.csharp.commons.Diagnostics
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
 /**
- * Holds if `d` is a compiler error reporting that the ASP.NET Core MVC
- * controller base type `name` (`Controller` or `ControllerBase`) could not be
- * resolved.
+ * Holds if `d` reports that the direct base type of `c` named `name`
+ * (`Controller` or `ControllerBase`) could not be resolved.
  */
-private predicate unresolvedControllerBaseTypeDiagnostic(CompilerError d, string name) {
+private predicate unresolvedControllerBaseTypeDiagnostic(CompilerError d, Class c) {
   d.getTag() = ["CS0246", "CS0234"] and
-  name = ["Controller", "ControllerBase"] and
-  d.getFullMessage().matches("The type or namespace name '" + name + "' %")
-}
-
-/** Gets the first line of a source member declared in `c`. */
-private int firstMemberLine(Class c) {
-  result =
-    min(Member m |
-      m.getDeclaringType() = c and
-      m.fromSource() and
-      not m.isCompilerGenerated()
-    |
-      m.getLocation().getStartLine()
-    )
-}
-
-/**
- * Holds if `d` is located in the header of the declaration of `c`, that is,
- * after the class name and before the first member of `c`.
- */
-bindingset[c]
-pragma[inline_late]
-private predicate inClassHeader(CompilerError d, Class c) {
-  exists(Location dl, Location cl |
-    dl = d.getLocation() and
-    cl = c.getLocation() and
-    dl.getFile() = cl.getFile() and
-    dl.getStartLine() < firstMemberLine(c) and
-    (
-      dl.getStartLine() > cl.getStartLine()
-      or
-      dl.getStartLine() = cl.getStartLine() and dl.getStartColumn() > cl.getEndColumn()
-    )
+  exists(string name, TypeMention baseType |
+    name = ["Controller", "ControllerBase"] and
+    d.getFullMessage().matches("The type or namespace name '" + name + "' %") and
+    baseType.getTarget() = c and
+    baseType.getLocation().getFile() = d.getLocation().getFile() and
+    baseType.getLocation().getStartLine() = d.getLocation().getStartLine() and
+    baseType.getLocation().getStartColumn() = d.getLocation().getStartColumn() and
+    baseType.getLocation().getEndLine() = d.getLocation().getEndLine() and
+    baseType.getLocation().getEndColumn() = d.getLocation().getEndColumn()
   )
 }
 
@@ -69,10 +44,7 @@ class UnresolvedAspNetCoreController extends Class {
     this.isPublic() and
     not this.isAbstract() and
     not this instanceof Generic and
-    exists(CompilerError d |
-      unresolvedControllerBaseTypeDiagnostic(d, _) and
-      inClassHeader(d, this)
-    )
+    exists(CompilerError d | unresolvedControllerBaseTypeDiagnostic(d, this))
   }
 
   /** Gets an action method of this controller. */
