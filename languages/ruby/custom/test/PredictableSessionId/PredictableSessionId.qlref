@@ -1,0 +1,2 @@
+query: PredictableSessionId/PredictableSessionId.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
