@@ -1,0 +1,2 @@
+2026-10-30 15:25:02.134371371 INFO [extractor/logging] Logging configured (binary: no_logs, text: info, console: warning, diagnostics: true) (SwiftLogging.cpp:158)
+2026-10-30 15:25:02.134107900 ERRO [extractor/main] [incompatible-os] Currently, Swift analysis is only supported on macOS. (IncompatibleOs.cpp:26)
