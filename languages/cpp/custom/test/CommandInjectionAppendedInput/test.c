@@ -53,6 +53,13 @@ void bad_inline_strlen(int sock) {
   system(cmd); // $ Alert
 }
 
+void bad_local_end_pointer_alias(int sock) {
+  char cmd[256] = "ls ";
+  char *end = cmd + strlen(cmd);
+  recv(sock, end, sizeof(cmd) - strlen(cmd) - 1, 0); // $ Source
+  system(cmd); // $ Alert
+}
+
 void bad_array_index_read(int fd) {
   char cmd[256] = "cat ";
   size_t len = strlen(cmd);
@@ -155,6 +162,16 @@ void good_recv_loop_accumulate(int sock) {
   while ((n = recv(sock, cmd + total, sizeof(cmd) - total - 1, 0)) > 0)
     total += n;
   cmd[total] = '\0';
+  system(cmd);
+}
+
+void good_reassigned_end_pointer(int sock) {
+  char command[256] = "ls ";
+  char shorterCommand[256] = "x";
+  char *cmd = command;
+  size_t len = strlen(cmd);
+  cmd = shorterCommand;
+  recv(sock, cmd + len, sizeof(shorterCommand) - len - 1, 0);
   system(cmd);
 }
 

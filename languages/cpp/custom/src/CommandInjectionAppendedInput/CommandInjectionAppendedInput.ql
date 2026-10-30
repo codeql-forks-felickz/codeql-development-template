@@ -36,11 +36,6 @@ class StrlenCall extends FunctionCall {
 bindingset[a, b]
 predicate sameBuffer(Expr a, Expr b) {
   globalValueNumber(a) = globalValueNumber(b)
-  or
-  exists(Variable v |
-    a.(VariableAccess).getTarget() = v and
-    b.(VariableAccess).getTarget() = v
-  )
 }
 
 /**
@@ -71,7 +66,12 @@ predicate isEndOfString(Expr ptr, Expr base) {
 class AppendedInputSource extends DataFlow::Node instanceof FlowSource {
   Expr base;
 
-  AppendedInputSource() { isEndOfString(this.asDefiningArgument(), base) }
+  AppendedInputSource() {
+    exists(Expr ptr |
+      isEndOfString(ptr, base) and
+      DataFlow::localExprFlow(ptr, this.asDefiningArgument())
+    )
+  }
 
   /** Gets the buffer whose existing contents the input is appended to. */
   Expr getBase() { result = base }
@@ -84,6 +84,14 @@ module AppendedInputConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof AppendedInputSource }
 
   predicate isSink(DataFlow::Node sink) { shellCommand(sink.asIndirectArgument(), _) }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(AppendedInputSource source |
+      node1 = source and
+      source.asDefiningArgument() instanceof VariableAccess and
+      node2.asIndirectExpr() = source.getBase()
+    )
+  }
 
   predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
