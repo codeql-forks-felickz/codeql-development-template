@@ -1,0 +1,40 @@
+#select
+| benefit_forms_controller.rb:6:42:6:45 | path | benefit_forms_controller.rb:5:12:5:17 | call to params | benefit_forms_controller.rb:6:42:6:45 | path | This path depends on a $@. | benefit_forms_controller.rb:5:12:5:17 | call to params | user-provided value |
+| benefit_forms_controller.rb:12:47:12:50 | path | benefit_forms_controller.rb:11:12:11:17 | call to params | benefit_forms_controller.rb:12:47:12:50 | path | This path depends on a $@. | benefit_forms_controller.rb:11:12:11:17 | call to params | user-provided value |
+| benefit_forms_controller.rb:18:48:18:51 | path | benefit_forms_controller.rb:17:12:17:17 | call to params | benefit_forms_controller.rb:18:48:18:51 | path | This path depends on a $@. | benefit_forms_controller.rb:17:12:17:17 | call to params | user-provided value |
+| benefit_forms_controller.rb:24:35:24:38 | path | benefit_forms_controller.rb:23:12:23:17 | call to params | benefit_forms_controller.rb:24:35:24:38 | path | This path depends on a $@. | benefit_forms_controller.rb:23:12:23:17 | call to params | user-provided value |
+| benefit_forms_controller.rb:30:15:30:27 | ...[...] | benefit_forms_controller.rb:30:15:30:20 | call to params | benefit_forms_controller.rb:30:15:30:27 | ...[...] | This path depends on a $@. | benefit_forms_controller.rb:30:15:30:20 | call to params | user-provided value |
+edges
+| benefit_forms_controller.rb:5:5:5:8 | path | benefit_forms_controller.rb:6:42:6:45 | path | provenance |  |
+| benefit_forms_controller.rb:5:12:5:17 | call to params | benefit_forms_controller.rb:5:12:5:24 | ...[...] | provenance |  |
+| benefit_forms_controller.rb:5:12:5:24 | ...[...] | benefit_forms_controller.rb:5:5:5:8 | path | provenance |  |
+| benefit_forms_controller.rb:11:5:11:8 | path | benefit_forms_controller.rb:12:47:12:50 | path | provenance |  |
+| benefit_forms_controller.rb:11:12:11:17 | call to params | benefit_forms_controller.rb:11:12:11:24 | ...[...] | provenance |  |
+| benefit_forms_controller.rb:11:12:11:24 | ...[...] | benefit_forms_controller.rb:11:5:11:8 | path | provenance |  |
+| benefit_forms_controller.rb:17:5:17:8 | path | benefit_forms_controller.rb:18:48:18:51 | path | provenance |  |
+| benefit_forms_controller.rb:17:12:17:17 | call to params | benefit_forms_controller.rb:17:12:17:24 | ...[...] | provenance |  |
+| benefit_forms_controller.rb:17:12:17:24 | ...[...] | benefit_forms_controller.rb:17:5:17:8 | path | provenance |  |
+| benefit_forms_controller.rb:23:5:23:8 | path | benefit_forms_controller.rb:24:35:24:38 | path | provenance |  |
+| benefit_forms_controller.rb:23:12:23:17 | call to params | benefit_forms_controller.rb:23:12:23:24 | ...[...] | provenance |  |
+| benefit_forms_controller.rb:23:12:23:24 | ...[...] | benefit_forms_controller.rb:23:5:23:8 | path | provenance |  |
+| benefit_forms_controller.rb:30:15:30:20 | call to params | benefit_forms_controller.rb:30:15:30:27 | ...[...] | provenance |  |
+nodes
+| benefit_forms_controller.rb:5:5:5:8 | path | semmle.label | path |
+| benefit_forms_controller.rb:5:12:5:17 | call to params | semmle.label | call to params |
+| benefit_forms_controller.rb:5:12:5:24 | ...[...] | semmle.label | ...[...] |
+| benefit_forms_controller.rb:6:42:6:45 | path | semmle.label | path |
+| benefit_forms_controller.rb:11:5:11:8 | path | semmle.label | path |
+| benefit_forms_controller.rb:11:12:11:17 | call to params | semmle.label | call to params |
+| benefit_forms_controller.rb:11:12:11:24 | ...[...] | semmle.label | ...[...] |
+| benefit_forms_controller.rb:12:47:12:50 | path | semmle.label | path |
+| benefit_forms_controller.rb:17:5:17:8 | path | semmle.label | path |
+| benefit_forms_controller.rb:17:12:17:17 | call to params | semmle.label | call to params |
+| benefit_forms_controller.rb:17:12:17:24 | ...[...] | semmle.label | ...[...] |
+| benefit_forms_controller.rb:18:48:18:51 | path | semmle.label | path |
+| benefit_forms_controller.rb:23:5:23:8 | path | semmle.label | path |
+| benefit_forms_controller.rb:23:12:23:17 | call to params | semmle.label | call to params |
+| benefit_forms_controller.rb:23:12:23:24 | ...[...] | semmle.label | ...[...] |
+| benefit_forms_controller.rb:24:35:24:38 | path | semmle.label | path |
+| benefit_forms_controller.rb:30:15:30:20 | call to params | semmle.label | call to params |
+| benefit_forms_controller.rb:30:15:30:27 | ...[...] | semmle.label | ...[...] |
+subpaths
