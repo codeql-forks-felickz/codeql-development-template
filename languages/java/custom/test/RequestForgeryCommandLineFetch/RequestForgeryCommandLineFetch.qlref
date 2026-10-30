@@ -1,0 +1,2 @@
+query: RequestForgeryCommandLineFetch/RequestForgeryCommandLineFetch.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
