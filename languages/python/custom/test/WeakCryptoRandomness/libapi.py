@@ -84,3 +84,72 @@ def shuffle_cards(deck):
     random.shuffle(deck)
     sample_ids = random.sample(deck, 3)
     return sample_ids
+
+
+def compound_secret_names():
+    accesstoken = random.getrandbits(128)  # $ Alert[py/custom/weak-crypto-randomness]
+    authtoken = random.getrandbits(128)  # $ Alert[py/custom/weak-crypto-randomness]
+    csrftoken = random.getrandbits(128)  # $ Alert[py/custom/weak-crypto-randomness]
+    sessionid = random.getrandbits(128)  # $ Alert[py/custom/weak-crypto-randomness]
+    apikey = random.getrandbits(128)  # $ Alert[py/custom/weak-crypto-randomness]
+
+
+def non_secret_names(employees, words):
+    secretary = random.choice(employees)
+    tokenizer = random.choice(words)
+    return secretary, tokenizer
+
+
+def generate_keypoints():
+    return random.randint(0, 100)
+
+
+def generate_tokenizer():
+    return random.randint(0, 100)
+
+
+def generate_session_timeout():
+    return random.randint(60, 300)
+
+
+def make_token_count():
+    return random.randint(1, 10)
+
+
+def expiry_values():
+    token_expiry = random.randint(0, 100)
+    password_expiration = random.randint(0, 100)
+    token_expires_at = random.randint(0, 100)
+    return token_expiry, password_expiration, token_expires_at
+
+
+def unpacked_values():
+    api_key, active = random.getrandbits(128), True  # $ Alert[py/custom/weak-crypto-randomness]
+    display_name, valid = random.getrandbits(128), True
+    [password, enabled] = [random.getrandbits(128), True]  # $ Alert[py/custom/weak-crypto-randomness]
+    [label, is_valid] = [random.getrandbits(128), True]
+    return api_key, active, display_name, valid, password, enabled, label, is_valid
+
+
+def dictionary_values():
+    settings = {"api_key": random.getrandbits(128)}  # $ Alert[py/custom/weak-crypto-randomness]
+    metadata = {"display_name": random.getrandbits(128)}
+    return settings, metadata
+
+
+def generate_key_and_return():
+    weak_value = random.getrandbits(128)  # $ Source[py/custom/weak-crypto-randomness]
+    api_key = weak_value  # $ Alert[py/custom/weak-crypto-randomness]
+    return weak_value
+
+
+def shared_random_value():
+    return random.getrandbits(128)  # $ Source[py/custom/weak-crypto-randomness]
+
+
+def generate_api_key_from_shared_value():
+    return shared_random_value()  # $ Alert[py/custom/weak-crypto-randomness]
+
+
+def generate_password_from_shared_value():
+    return shared_random_value()  # $ Alert[py/custom/weak-crypto-randomness]

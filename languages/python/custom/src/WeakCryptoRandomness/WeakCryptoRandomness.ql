@@ -35,14 +35,47 @@ predicate isSensitiveName(string name) {
   name.regexpMatch("(?i).*(api_?key|secret|token|passw(or)?d|passwd|pwd|nonce|salt|session_?(id|key)|"
       + "otp|csrf|xsrf|auth_?(key|code)|reset_?(code|key)|verification_?code|private_?key|" +
       "signing_?key|encryption_?key|access_?key).*") and
-  not name.regexpMatch("(?i).*(len(gth)?|size|count|timeout|expir|delay|interval|ttl|name|type|field|header|label|url|path)$")
+  not name.regexpMatch("(?i).*(secretar|tokeniz|keypoint).*") and
+  not isNonSecretSuffix(name)
+}
+
+/** Holds if `name` ends in a suffix that indicates a non-secret value. */
+bindingset[name]
+predicate isNonSecretSuffix(string name) {
+  name.regexpMatch("(?i).*(len(gth)?|size|count|timeout|expir(e|y|ation|es)?(_at)?|delay|interval|ttl|name|type|field|header|label|url|path)$")
 }
 
 /** Holds if `name` looks like a function that generates a secret value. */
 bindingset[name]
 predicate isSecretGeneratorName(string name) {
   name.regexpMatch("(?i).*((gen(erate)?|make|mk|create|new|issue)_?.*(key|token|nonce|salt|passw|secret|otp|session|csrf)"
-      + "|(key|token|nonce|salt|password|secret|otp|session)_?gen(erate|erator)?).*")
+      + "|(key|token|nonce|salt|password|secret|otp|session)_?gen(erate|erator)?).*") and
+  not name.regexpMatch("(?i).*(secretar|tokeniz|keypoint).*") and
+  not isNonSecretSuffix(name)
+}
+
+/** Holds if assigning `value` to `target` stores it in a sensitive name. */
+predicate isSensitiveAssignmentValue(Expr target, Expr value, Expr sensitiveValue) {
+  (
+    isSensitiveName(target.(Name).getId()) or
+    isSensitiveName(target.(Attribute).getName()) or
+    isSensitiveName(target.(Subscript).getIndex().(StringLiteral).getText())
+  ) and
+  sensitiveValue = value
+  or
+  exists(int index, Expr targetElement, Expr valueElement |
+    (
+      targetElement = target.(Tuple).getElt(index)
+      or
+      targetElement = target.(List).getElt(index)
+    ) and
+    (
+      valueElement = value.(Tuple).getElt(index)
+      or
+      valueElement = value.(List).getElt(index)
+    ) and
+    isSensitiveAssignmentValue(targetElement, valueElement, sensitiveValue)
+  )
 }
 
 /** A call to a `random` PRNG function that is not cryptographically secure. */
@@ -67,14 +100,16 @@ class SecuritySensitiveSink extends DataFlow::Node {
     or
     // assignment to a sensitive variable, attribute or string-keyed subscript
     exists(AssignStmt a, Expr target |
-      a.getValue() = this.asExpr() and
-      target = a.getATarget()
-    |
-      isSensitiveName(target.(Name).getId())
-      or
-      isSensitiveName(target.(Attribute).getName())
-      or
-      isSensitiveName(target.(Subscript).getIndex().(StringLiteral).getText())
+      target = a.getATarget() and
+      isSensitiveAssignmentValue(target, a.getValue(), this.asExpr())
+    )
+    or
+    // value assigned to a sensitive string key in a dictionary literal
+    exists(AssignStmt a, Dict dict, KeyValuePair item |
+      a.getValue() = dict and
+      item = dict.getAnItem() and
+      isSensitiveName(item.getKey().(StringLiteral).getText()) and
+      this.asExpr() = item.getValue()
     )
     or
     // keyword argument with a sensitive name, e.g. `User(api_key=x)`
@@ -112,20 +147,27 @@ module WeakCryptoRandomnessFlow = TaintTracking::Global<WeakCryptoRandomnessConf
 
 import WeakCryptoRandomnessFlow::PathGraph
 
-/** Gets the first sink (by location) reached by `source`, so each source is reported once. */
-DataFlow::Node firstSink(DataFlow::Node source) {
-  result =
-    min(DataFlow::Node sink, Location loc |
-      WeakCryptoRandomnessFlow::flow(source, sink) and loc = sink.getLocation()
-    |
-      sink order by loc.getFile().getAbsolutePath(), loc.getStartLine(), loc.getStartColumn()
-    )
+/** Holds if an earlier sink locally flows to `sink`, so both sinks report only once for that value. */
+predicate hasPrecedingSinkOnSameValue(DataFlow::Node sink) {
+  exists(DataFlow::Node earlierSink, Location earlierLocation, Location sinkLocation |
+    WeakCryptoRandomnessConfig::isSink(earlierSink) and
+    earlierLocation = earlierSink.getLocation() and
+    sinkLocation = sink.getLocation() and
+    earlierLocation.getFile().getAbsolutePath() = sinkLocation.getFile().getAbsolutePath() and
+    (
+      earlierLocation.getStartLine() < sinkLocation.getStartLine()
+      or
+      earlierLocation.getStartLine() = sinkLocation.getStartLine() and
+      earlierLocation.getStartColumn() < sinkLocation.getStartColumn()
+    ) and
+    DataFlow::localFlow(earlierSink, sink)
+  )
 }
 
 from WeakCryptoRandomnessFlow::PathNode source, WeakCryptoRandomnessFlow::PathNode sink
 where
   WeakCryptoRandomnessFlow::flowPath(source, sink) and
-  sink.getNode() = firstSink(source.getNode())
+  not hasPrecedingSinkOnSameValue(sink.getNode())
 select sink.getNode(), source, sink,
   "This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead.",
   source.getNode(), "weak pseudo-random value"

@@ -7,6 +7,17 @@
 | libapi.py:37:27:37:52 | ControlFlowNode for Attribute() | libapi.py:37:27:37:46 | ControlFlowNode for Attribute() | libapi.py:37:27:37:52 | ControlFlowNode for Attribute() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:37:27:37:46 | ControlFlowNode for Attribute() | weak pseudo-random value |
 | libapi.py:41:26:41:45 | ControlFlowNode for str() | libapi.py:41:30:41:44 | ControlFlowNode for Attribute() | libapi.py:41:26:41:45 | ControlFlowNode for str() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:41:30:41:44 | ControlFlowNode for Attribute() | weak pseudo-random value |
 | libapi.py:45:36:45:59 | ControlFlowNode for Attribute() | libapi.py:45:36:45:59 | ControlFlowNode for Attribute() | libapi.py:45:36:45:59 | ControlFlowNode for Attribute() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:45:36:45:59 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:90:19:90:41 | ControlFlowNode for Attribute() | libapi.py:90:19:90:41 | ControlFlowNode for Attribute() | libapi.py:90:19:90:41 | ControlFlowNode for Attribute() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:90:19:90:41 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:91:17:91:39 | ControlFlowNode for Attribute() | libapi.py:91:17:91:39 | ControlFlowNode for Attribute() | libapi.py:91:17:91:39 | ControlFlowNode for Attribute() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:91:17:91:39 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:92:17:92:39 | ControlFlowNode for Attribute() | libapi.py:92:17:92:39 | ControlFlowNode for Attribute() | libapi.py:92:17:92:39 | ControlFlowNode for Attribute() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:92:17:92:39 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:93:17:93:39 | ControlFlowNode for Attribute() | libapi.py:93:17:93:39 | ControlFlowNode for Attribute() | libapi.py:93:17:93:39 | ControlFlowNode for Attribute() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:93:17:93:39 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:94:14:94:36 | ControlFlowNode for Attribute() | libapi.py:94:14:94:36 | ControlFlowNode for Attribute() | libapi.py:94:14:94:36 | ControlFlowNode for Attribute() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:94:14:94:36 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:127:23:127:45 | ControlFlowNode for Attribute() | libapi.py:127:23:127:45 | ControlFlowNode for Attribute() | libapi.py:127:23:127:45 | ControlFlowNode for Attribute() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:127:23:127:45 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:129:28:129:50 | ControlFlowNode for Attribute() | libapi.py:129:28:129:50 | ControlFlowNode for Attribute() | libapi.py:129:28:129:50 | ControlFlowNode for Attribute() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:129:28:129:50 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:135:28:135:50 | ControlFlowNode for Attribute() | libapi.py:135:28:135:50 | ControlFlowNode for Attribute() | libapi.py:135:28:135:50 | ControlFlowNode for Attribute() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:135:28:135:50 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:142:15:142:24 | ControlFlowNode for weak_value | libapi.py:141:18:141:40 | ControlFlowNode for Attribute() | libapi.py:142:15:142:24 | ControlFlowNode for weak_value | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:141:18:141:40 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:151:12:151:32 | ControlFlowNode for shared_random_value() | libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | libapi.py:151:12:151:32 | ControlFlowNode for shared_random_value() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:155:12:155:32 | ControlFlowNode for shared_random_value() | libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | libapi.py:155:12:155:32 | ControlFlowNode for shared_random_value() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | weak pseudo-random value |
 edges
 | libapi.py:11:26:11:54 | ControlFlowNode for str() | libapi.py:11:26:11:63 | ControlFlowNode for Attribute() | provenance |  |
 | libapi.py:11:26:11:54 | ControlFlowNode for str() | libapi.py:11:26:11:63 | ControlFlowNode for Attribute() | provenance | Config |
@@ -19,6 +30,10 @@ edges
 | libapi.py:30:12:30:38 | ControlFlowNode for Attribute() | libapi.py:30:5:30:8 | ControlFlowNode for code | provenance |  |
 | libapi.py:37:27:37:46 | ControlFlowNode for Attribute() | libapi.py:37:27:37:52 | ControlFlowNode for Attribute() | provenance | Config |
 | libapi.py:41:30:41:44 | ControlFlowNode for Attribute() | libapi.py:41:26:41:45 | ControlFlowNode for str() | provenance |  |
+| libapi.py:141:5:141:14 | ControlFlowNode for weak_value | libapi.py:142:15:142:24 | ControlFlowNode for weak_value | provenance |  |
+| libapi.py:141:18:141:40 | ControlFlowNode for Attribute() | libapi.py:141:5:141:14 | ControlFlowNode for weak_value | provenance |  |
+| libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | libapi.py:151:12:151:32 | ControlFlowNode for shared_random_value() | provenance |  |
+| libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | libapi.py:155:12:155:32 | ControlFlowNode for shared_random_value() | provenance |  |
 nodes
 | libapi.py:11:26:11:54 | ControlFlowNode for str() | semmle.label | ControlFlowNode for str() |
 | libapi.py:11:26:11:63 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
@@ -38,4 +53,18 @@ nodes
 | libapi.py:41:26:41:45 | ControlFlowNode for str() | semmle.label | ControlFlowNode for str() |
 | libapi.py:41:30:41:44 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | libapi.py:45:36:45:59 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:90:19:90:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:91:17:91:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:92:17:92:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:93:17:93:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:94:14:94:36 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:127:23:127:45 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:129:28:129:50 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:135:28:135:50 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:141:5:141:14 | ControlFlowNode for weak_value | semmle.label | ControlFlowNode for weak_value |
+| libapi.py:141:18:141:40 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:142:15:142:24 | ControlFlowNode for weak_value | semmle.label | ControlFlowNode for weak_value |
+| libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:151:12:151:32 | ControlFlowNode for shared_random_value() | semmle.label | ControlFlowNode for shared_random_value() |
+| libapi.py:155:12:155:32 | ControlFlowNode for shared_random_value() | semmle.label | ControlFlowNode for shared_random_value() |
 subpaths
