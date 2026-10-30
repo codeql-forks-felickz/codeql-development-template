@@ -1,0 +1,18 @@
+#select
+| LogFile.java:11:40:11:47 | filename | LogFile.java:11:40:11:47 | filename | LogFile.java:11:40:11:47 | filename | This path depends on $@ restored during deserialization, so a crafted serialized stream can choose which file is accessed. | LogFile.java:11:40:11:47 | filename | state |
+| LogFile.java:25:5:25:18 | new File(...) | LogFile.java:24:19:24:30 | readUTF(...) : String | LogFile.java:25:5:25:18 | new File(...) | This path depends on $@ restored during deserialization, so a crafted serialized stream can choose which file is accessed. | LogFile.java:24:19:24:30 | readUTF(...) | state |
+| LogFile.java:37:25:37:28 | path | LogFile.java:36:28:36:42 | readObject(...) : Object | LogFile.java:37:25:37:28 | path | This path depends on $@ restored during deserialization, so a crafted serialized stream can choose which file is accessed. | LogFile.java:36:28:36:42 | readObject(...) | state |
+edges
+| LogFile.java:24:19:24:30 | readUTF(...) : String | LogFile.java:25:14:25:17 | path : String | provenance |  |
+| LogFile.java:25:14:25:17 | path : String | LogFile.java:25:5:25:18 | new File(...) | provenance | MaD:46512 Sink:MaD:46437 |
+| LogFile.java:36:19:36:42 | (...)... : String | LogFile.java:37:25:37:28 | path | provenance | Sink:MaD:46454 |
+| LogFile.java:36:28:36:42 | readObject(...) : Object | LogFile.java:36:19:36:42 | (...)... : String | provenance |  |
+nodes
+| LogFile.java:11:40:11:47 | filename | semmle.label | filename |
+| LogFile.java:24:19:24:30 | readUTF(...) : String | semmle.label | readUTF(...) : String |
+| LogFile.java:25:5:25:18 | new File(...) | semmle.label | new File(...) |
+| LogFile.java:25:14:25:17 | path : String | semmle.label | path : String |
+| LogFile.java:36:19:36:42 | (...)... : String | semmle.label | (...)... : String |
+| LogFile.java:36:28:36:42 | readObject(...) : Object | semmle.label | readObject(...) : Object |
+| LogFile.java:37:25:37:28 | path | semmle.label | path |
+subpaths
