@@ -23,6 +23,9 @@ class SessionsController < ActionController::Base
     # GOOD: arithmetic on a per-request local value is not a persistent counter.
     attempt = params[:attempt].to_i
     cookies[:session_attempt] = (attempt + 1).to_s
+    # GOOD: instance variables of a controller do not persist across requests.
+    @attempt = params[:attempt].to_i
+    cookies[:session_attempt] = (@attempt + 1).to_s
   end
 
   private

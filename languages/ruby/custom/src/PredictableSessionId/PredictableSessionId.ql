@@ -81,10 +81,13 @@ class CounterVariable extends Variable {
 }
 
 /**
- * Gets a read of a global, instance or class variable, i.e. state that persists across
- * requests.
+ * Gets a read of a global or class variable, i.e. state that persists across requests
+ * (unlike locals and instance variables of per-request objects such as controllers).
  */
-VariableReadAccess persistentStateRead() { not result.getVariable() instanceof LocalVariable }
+VariableReadAccess persistentStateRead() {
+  result.getVariable() instanceof GlobalVariable or
+  result.getVariable() instanceof ClassVariable
+}
 
 /** Holds if `e` produces a value of a sequential counter. */
 predicate isCounterValue(Expr e) {
@@ -108,7 +111,7 @@ predicate isSecureRandom(DataFlow::Node n) {
   or
   n = API::getTopLevelMember("OpenSSL").getMember("Random").getAMethodCall(_)
   or
-  n = API::getTopLevelMember("Random").getAMethodCall(["urandom", "bytes"])
+  n = API::getTopLevelMember("Random").getAMethodCall("urandom")
 }
 
 /**

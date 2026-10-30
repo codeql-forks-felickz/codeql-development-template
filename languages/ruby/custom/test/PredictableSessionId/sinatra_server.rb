@@ -31,6 +31,11 @@ class TokenServer < Sinatra::Base
     response.set_cookie("SessionID", "#{SecureRandom.urlsafe_base64(32)}-#{increment_count}")
   end
 
+  get "/token/weak" do
+    # BAD: Random.bytes uses a non-cryptographic PRNG, so it does not hide the counter.
+    response.set_cookie("SessionID", "#{Random.bytes(8).unpack1('H*')}-#{increment_count}") # $ Alert
+  end
+
   get "/visits" do
     # GOOD: a counter in a cookie that is not a session identifier.
     response.set_cookie("visit_count", "v-#{increment_count}")
