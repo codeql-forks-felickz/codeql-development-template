@@ -56,4 +56,8 @@ class BenefitFormsController < ActionController::Base
   def build_user
     User.new(params[:name])
   end
+
+  def build_io_from_constant_name
+    Object.const_get("IO").new(params[:name])
+  end
 end

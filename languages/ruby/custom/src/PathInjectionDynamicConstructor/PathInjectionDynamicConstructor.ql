@@ -4,7 +4,7 @@
  *              resources. This variant of `rb/path-injection` additionally treats the
  *              constructor arguments of a dynamically resolved class (for example
  *              `params[:type].constantize.new(path)`) as filesystem paths, because the
- *              resolved class may be `File`, `Dir`, `IO` or `Pathname`.
+ *              resolved class may be `File`, `Dir` or `Pathname`.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.5
@@ -26,7 +26,7 @@ import PathInjectionFlow::PathGraph
 /** Classes whose constructor interprets its first argument as a filesystem path. */
 bindingset[name]
 private predicate isFileSystemClassName(string name) {
-  name = ["File", "Dir", "IO", "Pathname", "::File", "::Dir", "::IO", "::Pathname"]
+  name = ["File", "Dir", "Pathname", "::File", "::Dir", "::Pathname"]
 }
 
 /**

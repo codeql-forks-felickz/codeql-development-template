@@ -2,7 +2,7 @@
 
 Accessing files using paths constructed from user-controlled data can allow an attacker to access unexpected resources, such as application configuration files or system files.
 
-This query extends the standard `rb/path-injection` query. In addition to the usual filesystem sinks, it treats the first argument to `new` on a class that is resolved from a string at runtime (via `String#constantize`, `String#safe_constantize` or `Module#const_get`) as a filesystem path. When the class name is not a compile-time constant, an attacker may be able to select `File`, `Dir`, `IO` or `Pathname`, so the constructor argument is opened as a path. Constant class names are only considered when they name one of these filesystem classes.
+This query extends the standard `rb/path-injection` query. In addition to the usual filesystem sinks, it treats the first argument to `new` on a class that is resolved from a string at runtime (via `String#constantize`, `String#safe_constantize` or `Module#const_get`) as a filesystem path. When the class name is not a compile-time constant, an attacker may be able to select `File`, `Dir` or `Pathname`, so the constructor argument is opened as a path. Constant class names are only considered when they name one of these filesystem classes.
 
 ## Recommendation
 
