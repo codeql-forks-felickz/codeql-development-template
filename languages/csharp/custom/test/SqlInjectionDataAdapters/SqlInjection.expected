@@ -1,0 +1,63 @@
+#select
+| Account.cs:24:63:24:67 | access to local variable query | Account.cs:13:34:13:47 | access to property Params : HttpValueCollection | Account.cs:24:63:24:67 | access to local variable query | This query depends on $@. | Account.cs:13:34:13:47 | access to property Params : HttpValueCollection | this ASP.NET query string |
+| Account.cs:27:66:27:70 | access to local variable query | Account.cs:13:34:13:47 | access to property Params : HttpValueCollection | Account.cs:27:66:27:70 | access to local variable query | This query depends on $@. | Account.cs:13:34:13:47 | access to property Params : HttpValueCollection | this ASP.NET query string |
+| Account.cs:35:59:35:119 | ... + ... | Account.cs:13:34:13:47 | access to property Params : HttpValueCollection | Account.cs:35:59:35:119 | ... + ... | This query depends on $@. | Account.cs:13:34:13:47 | access to property Params : HttpValueCollection | this ASP.NET query string |
+| Autocomplete.cs:22:60:22:62 | access to local variable sql | Autocomplete.cs:66:28:66:42 | access to property Request : HttpRequest | Autocomplete.cs:22:60:22:62 | access to local variable sql | This query depends on $@. | Autocomplete.cs:66:28:66:42 | access to property Request : HttpRequest | this ASP.NET query string |
+| Autocomplete.cs:40:62:40:64 | access to local variable sql | Autocomplete.cs:66:28:66:42 | access to property Request : HttpRequest | Autocomplete.cs:40:62:40:64 | access to local variable sql | This query depends on $@. | Autocomplete.cs:66:28:66:42 | access to property Request : HttpRequest | this ASP.NET query string |
+| DatabaseUtilities.cs:13:41:13:43 | access to parameter SQL | DatabaseUtilities.cs:46:51:46:69 | access to property QueryString : HttpValueCollection | DatabaseUtilities.cs:13:41:13:43 | access to parameter SQL | This query depends on $@. | DatabaseUtilities.cs:46:51:46:69 | access to property QueryString : HttpValueCollection | this ASP.NET query string |
+| Sqli.cs:15:52:15:100 | ... + ... | Sqli.cs:13:37:13:38 | id : String | Sqli.cs:15:52:15:100 | ... + ... | This query depends on $@. | Sqli.cs:13:37:13:38 | id : String | this ASP.NET Core MVC action method parameter |
+edges
+| Account.cs:13:20:13:30 | access to local variable userAccount : String | Account.cs:14:24:14:34 | access to local variable userAccount : String | provenance |  |
+| Account.cs:13:20:13:30 | access to local variable userAccount : String | Account.cs:15:28:15:38 | access to local variable userAccount : String | provenance |  |
+| Account.cs:13:34:13:47 | access to property Params : HttpValueCollection | Account.cs:13:20:13:30 | access to local variable userAccount : String | provenance |  |
+| Account.cs:14:24:14:34 | access to local variable userAccount : String | Account.cs:19:42:19:54 | accountNumber : String | provenance |  |
+| Account.cs:15:28:15:38 | access to local variable userAccount : String | Account.cs:33:46:33:58 | accountNumber : String | provenance |  |
+| Account.cs:19:42:19:54 | accountNumber : String | Account.cs:23:20:23:24 | access to local variable query : String | provenance |  |
+| Account.cs:23:20:23:24 | access to local variable query : String | Account.cs:24:63:24:67 | access to local variable query | provenance | Sink:MaD:0 |
+| Account.cs:23:20:23:24 | access to local variable query : String | Account.cs:27:66:27:70 | access to local variable query | provenance | Sink:MaD:1 |
+| Account.cs:33:46:33:58 | accountNumber : String | Account.cs:35:59:35:119 | ... + ... | provenance | Sink:MaD:2 |
+| Autocomplete.cs:17:49:17:53 | email : String | Autocomplete.cs:19:20:19:22 | access to local variable sql : String | provenance |  |
+| Autocomplete.cs:19:20:19:22 | access to local variable sql : String | Autocomplete.cs:22:60:22:62 | access to local variable sql | provenance | Sink:MaD:4 |
+| Autocomplete.cs:34:49:34:53 | email : String | Autocomplete.cs:36:20:36:22 | access to local variable sql : String | provenance |  |
+| Autocomplete.cs:36:20:36:22 | access to local variable sql : String | Autocomplete.cs:40:62:40:64 | access to local variable sql | provenance | Sink:MaD:6 |
+| Autocomplete.cs:66:20:66:24 | access to local variable query : String | Autocomplete.cs:67:47:67:51 | access to local variable query : String | provenance |  |
+| Autocomplete.cs:66:28:66:42 | access to property Request : HttpRequest | Autocomplete.cs:66:20:66:24 | access to local variable query : String | provenance |  |
+| Autocomplete.cs:67:47:67:51 | access to local variable query : String | Autocomplete.cs:17:49:17:53 | email : String | provenance |  |
+| Autocomplete.cs:67:47:67:51 | access to local variable query : String | Autocomplete.cs:34:49:34:53 | email : String | provenance |  |
+| DatabaseUtilities.cs:11:42:11:44 | SQL : String | DatabaseUtilities.cs:13:41:13:43 | access to parameter SQL | provenance |  |
+| DatabaseUtilities.cs:35:44:35:48 | title : String | DatabaseUtilities.cs:37:20:37:22 | access to local variable sql : String | provenance |  |
+| DatabaseUtilities.cs:37:20:37:22 | access to local variable sql : String | DatabaseUtilities.cs:38:31:38:33 | access to local variable sql : String | provenance |  |
+| DatabaseUtilities.cs:38:31:38:33 | access to local variable sql : String | DatabaseUtilities.cs:11:42:11:44 | SQL : String | provenance |  |
+| DatabaseUtilities.cs:46:51:46:69 | access to property QueryString : HttpValueCollection | DatabaseUtilities.cs:46:51:46:78 | access to indexer : String | provenance |  |
+| DatabaseUtilities.cs:46:51:46:78 | access to indexer : String | DatabaseUtilities.cs:35:44:35:48 | title : String | provenance |  |
+| Sqli.cs:13:37:13:38 | id : String | Sqli.cs:15:52:15:100 | ... + ... | provenance | Sink:MaD:1001 |
+nodes
+| Account.cs:13:20:13:30 | access to local variable userAccount : String | semmle.label | access to local variable userAccount : String |
+| Account.cs:13:34:13:47 | access to property Params : HttpValueCollection | semmle.label | access to property Params : HttpValueCollection |
+| Account.cs:14:24:14:34 | access to local variable userAccount : String | semmle.label | access to local variable userAccount : String |
+| Account.cs:15:28:15:38 | access to local variable userAccount : String | semmle.label | access to local variable userAccount : String |
+| Account.cs:19:42:19:54 | accountNumber : String | semmle.label | accountNumber : String |
+| Account.cs:23:20:23:24 | access to local variable query : String | semmle.label | access to local variable query : String |
+| Account.cs:24:63:24:67 | access to local variable query | semmle.label | access to local variable query |
+| Account.cs:27:66:27:70 | access to local variable query | semmle.label | access to local variable query |
+| Account.cs:33:46:33:58 | accountNumber : String | semmle.label | accountNumber : String |
+| Account.cs:35:59:35:119 | ... + ... | semmle.label | ... + ... |
+| Autocomplete.cs:17:49:17:53 | email : String | semmle.label | email : String |
+| Autocomplete.cs:19:20:19:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| Autocomplete.cs:22:60:22:62 | access to local variable sql | semmle.label | access to local variable sql |
+| Autocomplete.cs:34:49:34:53 | email : String | semmle.label | email : String |
+| Autocomplete.cs:36:20:36:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| Autocomplete.cs:40:62:40:64 | access to local variable sql | semmle.label | access to local variable sql |
+| Autocomplete.cs:66:20:66:24 | access to local variable query : String | semmle.label | access to local variable query : String |
+| Autocomplete.cs:66:28:66:42 | access to property Request : HttpRequest | semmle.label | access to property Request : HttpRequest |
+| Autocomplete.cs:67:47:67:51 | access to local variable query : String | semmle.label | access to local variable query : String |
+| DatabaseUtilities.cs:11:42:11:44 | SQL : String | semmle.label | SQL : String |
+| DatabaseUtilities.cs:13:41:13:43 | access to parameter SQL | semmle.label | access to parameter SQL |
+| DatabaseUtilities.cs:35:44:35:48 | title : String | semmle.label | title : String |
+| DatabaseUtilities.cs:37:20:37:22 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| DatabaseUtilities.cs:38:31:38:33 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| DatabaseUtilities.cs:46:51:46:69 | access to property QueryString : HttpValueCollection | semmle.label | access to property QueryString : HttpValueCollection |
+| DatabaseUtilities.cs:46:51:46:78 | access to indexer : String | semmle.label | access to indexer : String |
+| Sqli.cs:13:37:13:38 | id : String | semmle.label | id : String |
+| Sqli.cs:15:52:15:100 | ... + ... | semmle.label | ... + ... |
+subpaths
