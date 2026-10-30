@@ -1,9 +1,6 @@
 // --- stubs ---
 
-struct UUID {
-  init() {}
-  var uuidString: String { get { return "" } }
-}
+import Foundation
 
 class UIDevice {
   static var current: UIDevice = UIDevice()
@@ -57,10 +54,24 @@ func rekeyWithConcatenation(db: OpaquePointer?) {
   _ = sqlite3_exec(db, "PRAGMA rekey = '" + deviceID + "'", nil, nil, nil) // $ Alert
 }
 
+func keyWithStringFormat(db: OpaquePointer?) {
+  let deviceID = UIDevice.current.identifierForVendor!.uuidString // $ Source
+  let statement = String(format: "PRAGMA key = '%@'", deviceID)
+  _ = sqlite3_exec(db, statement, nil, nil, nil) // $ Alert
+}
+
 func keyWithInterpolatedUUID(db: OpaquePointer?) {
   if let vendorID = UIDevice.current.identifierForVendor { // $ Source
     _ = sqlite3_exec(db, "PRAGMA key = '\(vendorID)'", nil, nil, nil) // $ Alert
   }
+}
+
+func storeDeviceIdentifierInMixedStatement(db: OpaquePointer?) {
+  let deviceID = UIDevice.current.identifierForVendor!.uuidString
+  let randomKey = randomKeyString()
+  let statement =
+    "PRAGMA key = '" + randomKey + "'; INSERT INTO devices(id) VALUES ('" + deviceID + "');"
+  _ = sqlite3_exec(db, statement, nil, nil, nil) // GOOD: the device identifier is only inserted
 }
 
 func cryptoSwiftKeyFromAdvertisingIdentifier() throws {
