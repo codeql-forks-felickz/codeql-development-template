@@ -175,7 +175,9 @@ predicate predictableValueStep(DataFlow::Node pred, DataFlow::Node succ) {
 module SecureRandomConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof SecureRandomSource }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof SensitiveTokenSink }
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof SensitiveTokenSink or isStringCombination(sink)
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     predictableValueStep(pred, succ)
@@ -187,13 +189,13 @@ module SecureRandomFlow = TaintTracking::Global<SecureRandomConfig>;
 module WeakCryptoRandomnessConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof PredictableSource }
 
-  predicate isSink(DataFlow::Node sink) {
-    sink instanceof SensitiveTokenSink and
-    // A value that also mixes in cryptographically strong randomness is not predictable.
-    not SecureRandomFlow::flowTo(sink)
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof SensitiveTokenSink }
 
-  predicate isBarrierOut(DataFlow::Node node) { node instanceof SensitiveTokenSink }
+  predicate isBarrier(DataFlow::Node node) { isSecureRandomCombination(node) }
+
+  predicate isBarrierOut(DataFlow::Node node) {
+    node instanceof SensitiveTokenSink
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     predictableValueStep(pred, succ)
@@ -201,6 +203,22 @@ module WeakCryptoRandomnessConfig implements DataFlow::ConfigSig {
 }
 
 module WeakCryptoRandomnessFlow = TaintTracking::Global<WeakCryptoRandomnessConfig>;
+
+predicate isStringCombination(DataFlow::Node node) {
+  exists(AddExpr add |
+    node.asExpr() = add and add.getType() instanceof StringType
+  )
+  or
+  exists(MethodCall mc |
+    node.asExpr() = mc and
+    mc.getTarget().getDeclaringType().hasFullyQualifiedName("System", "String") and
+    mc.getTarget().hasName(["Concat", "Format"])
+  )
+}
+
+predicate isSecureRandomCombination(DataFlow::Node node) {
+  isStringCombination(node) and SecureRandomFlow::flowToExpr(node.asExpr())
+}
 
 import WeakCryptoRandomnessFlow::PathGraph
 

@@ -106,6 +106,29 @@ namespace WeakCryptoRandomnessTests
             ticket.ResetToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(16)) + DateTime.UtcNow.Ticks;
         }
 
+        public void SecureTokenWithFormat(Ticket ticket)
+        {
+            ticket.ResetToken = string.Format(
+                "{0}{1}",
+                Convert.ToHexString(RandomNumberGenerator.GetBytes(16)),
+                DateTime.UtcNow.Ticks
+            );
+        }
+
+        public void SecureTokenWithConcat(Ticket ticket)
+        {
+            ticket.ResetToken = string.Concat(
+                Convert.ToHexString(RandomNumberGenerator.GetBytes(16)),
+                DateTime.UtcNow.Ticks
+            );
+        }
+
+        public void TokenWithSecureFallback(Ticket ticket, bool useSecure)
+        {
+            string predictableFallback = DateTime.UtcNow.Ticks.ToString(); // $ Source
+            ticket.ResetToken = useSecure ? Convert.ToHexString(RandomNumberGenerator.GetBytes(16)) : predictableFallback; // $ Alert
+        }
+
         public HttpCookie LastVisitCookie()
         {
             // Not a security-sensitive cookie.

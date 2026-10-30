@@ -15,6 +15,45 @@
 import csharp
 import semmle.code.csharp.dataflow.TaintTracking
 
+/** A reader or stream created by a file API. */
+class FileReaderSource extends DataFlow::ExprNode {
+  FileReaderSource() {
+    exists(ObjectCreation oc |
+      oc = this.getExpr() and
+      oc.getType().(RefType).hasFullyQualifiedName("System.IO", "StreamReader") and
+      oc.getArgument(0).getType() instanceof StringType
+    )
+    or
+    exists(MethodCall mc |
+      mc = this.getExpr() and
+      mc.getTarget().getDeclaringType().hasFullyQualifiedName("System.IO", "File") and
+      mc.getTarget().hasName("OpenText")
+    )
+    or
+    exists(ObjectCreation oc |
+      oc = this.getExpr() and
+      oc.getType().(RefType).hasFullyQualifiedName("System.IO", "FileStream")
+    )
+  }
+}
+
+module FileReaderConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof FileReaderSource }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall mc |
+      sink.asExpr() = mc.getQualifier() and
+      mc.getTarget()
+          .getDeclaringType()
+          .getABaseType*()
+          .hasFullyQualifiedName("System.IO", "TextReader") and
+      mc.getTarget().getName().matches(["ReadLine%", "ReadToEnd%"])
+    )
+  }
+}
+
+module FileReaderFlow = TaintTracking::Global<FileReaderConfig>;
+
 /** Holds if `name` looks like it holds a password. */
 bindingset[name]
 predicate isPasswordName(string name) {
@@ -24,20 +63,24 @@ predicate isPasswordName(string name) {
 /** A read of persisted data: a file, the Windows registry, or a hard-coded string. */
 class StoredValue extends DataFlow::ExprNode {
   StoredValue() {
-    exists(MethodCall mc | mc = this.getExpr() |
-      mc.getTarget()
-          .getDeclaringType()
-          .getABaseType*()
-          .hasFullyQualifiedName("System.IO", "TextReader") and
-      mc.getTarget().getName().matches(["ReadLine%", "ReadToEnd%"])
-      or
-      mc.getTarget().getDeclaringType().hasFullyQualifiedName("System.IO", "File") and
-      mc.getTarget().getName().matches(["ReadAllText%", "ReadAllLines%", "ReadLines%"])
-      or
-      mc.getTarget()
-          .getDeclaringType()
-          .hasFullyQualifiedName("Microsoft.Win32", ["Registry", "RegistryKey"]) and
-      mc.getTarget().hasName("GetValue")
+    exists(MethodCall mc |
+      mc = this.getExpr() and
+      (
+        mc.getTarget()
+            .getDeclaringType()
+            .getABaseType*()
+            .hasFullyQualifiedName("System.IO", "TextReader") and
+        mc.getTarget().getName().matches(["ReadLine%", "ReadToEnd%"]) and
+        FileReaderFlow::flowToExpr(mc.getQualifier())
+        or
+        mc.getTarget().getDeclaringType().hasFullyQualifiedName("System.IO", "File") and
+        mc.getTarget().getName().matches(["ReadAllText%", "ReadAllLines%", "ReadLines%"])
+        or
+        mc.getTarget()
+            .getDeclaringType()
+            .hasFullyQualifiedName("Microsoft.Win32", ["Registry", "RegistryKey"]) and
+        mc.getTarget().hasName("GetValue")
+      )
     )
   }
 }

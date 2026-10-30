@@ -23,6 +23,23 @@ namespace WeakPasswordEncodingTests
             return new NetworkCredential("user", decPass, ""); // $ Alert
         }
 
+        public NetworkCredential FromFileOpenText()
+        {
+            StreamReader sr = File.OpenText("weak_password_file.txt");
+            string password = sr.ReadLine();
+            string decPass = Encoding.UTF8.GetString(Convert.FromBase64String(password)); // $ Source
+            return new NetworkCredential("user", decPass, ""); // $ Alert
+        }
+
+        public NetworkCredential FromFileStream()
+        {
+            FileStream fs = new FileStream("weak_password_file.txt", FileMode.Open);
+            StreamReader sr = new StreamReader(fs);
+            string password = sr.ReadLine();
+            string decPass = Encoding.UTF8.GetString(Convert.FromBase64String(password)); // $ Source
+            return new NetworkCredential("user", decPass, ""); // $ Alert
+        }
+
         public void FromAllText(DbSettings settings)
         {
             byte[] raw = Convert.FromBase64String(File.ReadAllText("db.secret")); // $ Source
@@ -77,6 +94,29 @@ namespace WeakPasswordEncodingTests
             // Base64 decoding of an HTTP Basic credential received from the client is expected.
             string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(authorizationHeader.Substring(6)));
             return Validate("user", decoded.Split(':')[1]);
+        }
+
+        public NetworkCredential FromRequestStream(Stream requestBody)
+        {
+            StreamReader sr = new StreamReader(requestBody);
+            string password = sr.ReadLine();
+            string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(password));
+            return new NetworkCredential("user", decoded, "");
+        }
+
+        public NetworkCredential FromConsole()
+        {
+            string password = Console.In.ReadLine();
+            string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(password));
+            return new NetworkCredential("user", decoded, "");
+        }
+
+        public NetworkCredential FromStringReader(string encodedPassword)
+        {
+            StringReader sr = new StringReader(encodedPassword);
+            string password = sr.ReadLine();
+            string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(password));
+            return new NetworkCredential("user", decoded, "");
         }
 
         private static bool Validate(string user, string password) => password.Length > 0;
