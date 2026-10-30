@@ -7,6 +7,19 @@ ActiveRecord::Schema.define(version: 20181206165206) do
     t.index ["password"], name: "index_users_on_password", using: :btree
   end
 
+  create_table "multiple_argument_columns", force: :cascade do |t|
+    t.string :login, :password # $ Alert
+    t.text :login, :password_reset_token
+  end
+
+  create_table "people", force: :cascade do |t|
+    t.string "password"
+  end
+
+  create_table "api_users", force: :cascade do |t|
+    t.string "password" # $ Alert
+  end
+
   create_table "admins", force: :cascade do |t|
     t.string   "login",           null: false
     t.string   "password"

@@ -8,6 +8,10 @@ It also reports Active Record lookups that authenticate by comparing a value dir
 
 A column is not reported when its name indicates a hashed or encrypted value (`password_digest`, `encrypted_password`, `crypted_password`, `password_hash`, ...), or when the Active Record model for the table (found via the Rails naming convention, for example `User` for `users`) uses `encrypts`/`attr_encrypted` on the column, uses `has_secure_password`, Devise, Authlogic or Sorcery, or references `BCrypt`, `Argon2`, `SCrypt` or `Digest`.
 
+## Known limitations
+
+Namespaced models and models that override their table name with `self.table_name` are not resolved.
+
 ## Recommendation
 
 Store only a salted, slow password hash, for example with `has_secure_password` (bcrypt) and a `password_digest` column, and verify passwords with `authenticate`.

@@ -17,6 +17,8 @@ class SessionsController < ApplicationController
     # has_secure_password without an attribute argument only protects `password`.
     UnprotectedApiClient.find_by(api_password: auth_params[:password]) # $ Alert
     ApiCredential.find_by(api_password: auth_params[:password])
+    Person.find_by(password: auth_params[:password])
+    APIUser.find_by(password: auth_params[:password]) # $ Alert
     # Proper verification with has_secure_password.
     Admin.find_by(login: auth_params[:login])&.authenticate(auth_params[:password])
   end

@@ -42,11 +42,12 @@ predicate stringColumnDeclaration(MethodCall decl, string table, string column) 
     b = tableCall.getBlock() and
     t = b.getParameter(0).(NamedParameter).getVariable() and
     decl.getReceiver() = t.getAnAccess() and
-    column = decl.getArgument(0).getConstantValue().getStringlikeValue() and
     (
-      isStringColumnType(decl.getMethodName())
+      isStringColumnType(decl.getMethodName()) and
+      column = decl.getAnArgument().getConstantValue().getStringlikeValue()
       or
       decl.getMethodName() = "column" and
+      column = decl.getArgument(0).getConstantValue().getStringlikeValue() and
       isStringColumnType(decl.getArgument(1).getConstantValue().getStringlikeValue())
     )
   )
@@ -60,15 +61,50 @@ predicate stringColumnDeclaration(MethodCall decl, string table, string column) 
 /** Gets the conventional (Rails) table name for the model class `m`. */
 string conventionalTableName(ActiveRecordModelClass m) {
   exists(string snake |
-    snake = m.getName().regexpReplaceAll("([a-z0-9])([A-Z])", "$1_$2").toLowerCase()
+    snake =
+      m.getName()
+        .regexpReplaceAll("([A-Z])(?=[A-Z][a-z])", "$1_")
+        .regexpReplaceAll("([a-z0-9])([A-Z])", "$1_$2")
+        .toLowerCase()
   |
-    if snake.regexpMatch(".*[^aeiou]y")
-    then result = snake.prefix(snake.length() - 1) + "ies"
+    if isUncountable(snake)
+    then result = snake
     else
-      if snake.regexpMatch(".*(s|x|z|ch|sh)")
-      then result = snake + "es"
-      else result = snake + "s"
+      if exists(string plural | irregularPlural(snake, plural))
+      then irregularPlural(snake, result)
+      else
+        if snake.regexpMatch(".*[^aeiou]y")
+        then result = snake.prefix(snake.length() - 1) + "ies"
+        else
+          if snake.regexpMatch(".*(s|x|z|ch|sh)")
+          then result = snake + "es"
+          else result = snake + "s"
   )
+}
+
+predicate isUncountable(string name) {
+  name = ["equipment", "information", "rice", "money", "species", "series", "fish", "sheep"]
+}
+
+bindingset[singular]
+predicate irregularPlural(string singular, string plural) {
+  singular.regexpMatch("(^|_)person$") and
+  plural = singular.regexpReplaceAll("person$", "people")
+  or
+  singular.regexpMatch("(^|_)man$") and
+  plural = singular.regexpReplaceAll("man$", "men")
+  or
+  singular.regexpMatch("(^|_)child$") and
+  plural = singular.regexpReplaceAll("child$", "children")
+  or
+  singular.regexpMatch("(^|_)sex$") and
+  plural = singular.regexpReplaceAll("sex$", "sexes")
+  or
+  singular.regexpMatch("(^|_)move$") and
+  plural = singular.regexpReplaceAll("move$", "moves")
+  or
+  singular.regexpMatch("(^|_)zombie$") and
+  plural = singular.regexpReplaceAll("zombie$", "zombies")
 }
 
 /**
