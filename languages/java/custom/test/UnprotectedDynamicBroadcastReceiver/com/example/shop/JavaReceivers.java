@@ -38,4 +38,11 @@ public class JavaReceivers extends Activity {
         registerReceiver(receiver, external);
         registerReceiver(receiver, new IntentFilter("com.example.shop.SYNC"), dynamicFlags);
     }
+
+    void reusedFilter() {
+        IntentFilter filter = new IntentFilter("android.intent.action.SCREEN_OFF");
+        registerReceiver(receiver, filter);
+        filter.addAction("com.example.shop.LATE");
+        registerReceiver(receiver, filter); // $ Alert
+    }
 }

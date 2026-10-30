@@ -15,6 +15,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.controlflow.Dominance
 
 /** The value of `Context.RECEIVER_NOT_EXPORTED` and `ContextCompat.RECEIVER_NOT_EXPORTED`. */
 int receiverNotExported() { result = 4 }
@@ -42,7 +43,7 @@ class RegisterReceiverMethod extends Method {
 }
 
 /** Gets a custom (non-`android.`) action string that `filter` is configured with. */
-string getACustomAction(Expr filter) {
+string getACustomAction(Expr filter, MethodCall registration) {
   exists(ClassInstanceExpr newFilter |
     newFilter.getConstructedType().hasQualifiedName("android.content", "IntentFilter") and
     DataFlow::localExprFlow(newFilter, filter)
@@ -51,6 +52,8 @@ string getACustomAction(Expr filter) {
     or
     exists(MethodCall addAction |
       addAction.getMethod().hasQualifiedName("android.content", "IntentFilter", "addAction") and
+      addAction.getEnclosingCallable() = registration.getEnclosingCallable() and
+      strictlyDominates(addAction.getControlFlowNode(), registration.getControlFlowNode()) and
       DataFlow::localExprFlow(newFilter, addAction.getQualifier()) and
       result = addAction.getArgument(0).(CompileTimeConstantExpr).getStringValue()
     )
@@ -62,7 +65,7 @@ from MethodCall call, RegisterReceiverMethod m, string action
 where
   m = call.getMethod() and
   not call.getArgument(m.getParameterIndex("BroadcastReceiver")) instanceof NullLiteral and
-  action = min(getACustomAction(call.getArgument(m.getParameterIndex("IntentFilter")))) and
+  action = min(getACustomAction(call.getArgument(m.getParameterIndex("IntentFilter")), call)) and
   // No broadcast permission is required from senders.
   forall(int i | i = m.getParameterIndex("String") | call.getArgument(i) instanceof NullLiteral) and
   // The flags, if any, are known and do not include `RECEIVER_NOT_EXPORTED`.

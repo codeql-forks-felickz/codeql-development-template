@@ -61,4 +61,18 @@ public class Client5Utils {
     public static SSLContext pinnedClass() throws Exception {
         return SSLContexts.custom().loadTrustMaterial(null, new Pinned()).build();
     }
+
+    static class Checked implements TrustStrategy {
+        public boolean isTrusted(java.security.cert.X509Certificate[] chain, String authType)
+                throws java.security.cert.CertificateException {
+            if (chain.length == 0) {
+                throw new java.security.cert.CertificateException();
+            }
+            return true;
+        }
+    }
+
+    public static SSLContext checked() throws Exception {
+        return SSLContexts.custom().loadTrustMaterial(null, new Checked()).build();
+    }
 }

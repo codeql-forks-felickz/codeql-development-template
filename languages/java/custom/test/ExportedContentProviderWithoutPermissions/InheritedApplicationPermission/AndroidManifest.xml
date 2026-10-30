@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.inherited">
+    <permission android:name="com.example.inherited.permission.ACCESS" android:protectionLevel="signature" />
+    <application android:permission="com.example.inherited.permission.ACCESS">
+        <provider android:name=".ProtectedProvider" android:authorities="com.example.inherited.protected" android:exported="true" />
+    </application>
+</manifest>

@@ -61,9 +61,10 @@ class TrustAllIsTrustedMethod extends Method {
     this.hasName("isTrusted") and
     this.getDeclaringType().getASupertype+() instanceof TrustStrategy and
     not this.getDeclaringType() instanceof InsecureTrustStrategy and
-    exists(ReturnStmt ret | ret.getEnclosingCallable() = this) and
-    forall(ReturnStmt ret | ret.getEnclosingCallable() = this |
-      ret.getExpr().(BooleanLiteral).getBooleanValue() = true
+    exists(ReturnStmt ret | ret = this.getBody().getAStmt()) and
+    forall(Stmt stmt | stmt = this.getBody().getAStmt() |
+      stmt instanceof ReturnStmt and
+      stmt.(ReturnStmt).getExpr().(BooleanLiteral).getBooleanValue() = true
     )
   }
 }

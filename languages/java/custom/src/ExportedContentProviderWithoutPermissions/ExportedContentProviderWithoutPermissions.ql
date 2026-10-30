@@ -37,10 +37,22 @@ predicate isNormalAppPermission(AndroidProviderXmlElement provider, string name)
 
 /**
  * Gets the permission that guards `access` (`read` or `write`) to `provider`. A specific
- * `readPermission` or `writePermission` takes precedence over `permission`.
+ * `readPermission` or `writePermission` takes precedence over `permission`. If the provider has
+ * no permission attribute, it inherits the application's `permission`.
  */
 string getEffectivePermission(AndroidProviderXmlElement provider, string access) {
-  exists(AndroidPermissionXmlAttribute attr | attr = provider.getAnAttribute() |
+  exists(AndroidApplicationXmlElement app, AndroidPermissionXmlAttribute attr |
+    app = provider.getParent() and
+    (
+      attr = provider.getAnAttribute()
+      or
+      not exists(AndroidPermissionXmlAttribute providerPermission |
+        providerPermission = provider.getAnAttribute()
+      ) and
+      attr = app.getAnAttribute() and
+      attr.isFull()
+    )
+  |
     access = "read" and
     (
       attr.isRead()
@@ -70,6 +82,11 @@ where
     // Providers protected by a single read or write permission are reported by
     // `java/android/incomplete-provider-permissions`.
     not provider.getAnAttribute() instanceof AndroidPermissionXmlAttribute and
+    not exists(AndroidApplicationXmlElement app, AndroidPermissionXmlAttribute appPermission |
+      app = provider.getParent() and
+      appPermission = app.getAnAttribute() and
+      appPermission.isFull()
+    ) and
     message = "' does not require any permission to read or write its data."
     or
     message =
