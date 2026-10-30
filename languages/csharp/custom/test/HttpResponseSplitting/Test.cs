@@ -84,6 +84,23 @@ namespace Test
         }
     }
 
+    // Juliet CWE-113 `QueryString_Web_addHeader` style: guarded `QueryString` read into `AddHeader`.
+    public class QueryStringAddHeader
+    {
+        public void Bad(HttpRequest req, HttpResponse resp)
+        {
+            string data = "";
+            if (req.QueryString["id"] != null)
+            {
+                data = req.QueryString["id"]; // $ Source[cs/web/http-response-splitting]
+            }
+            if (data != null)
+            {
+                resp.AddHeader("Location", "/author.jsp?lang=" + data); // $ Alert[cs/web/http-response-splitting]
+            }
+        }
+    }
+
     public class MvcStyle
     {
         public void Handle(HttpRequest request, HttpResponseBase response)

@@ -1,0 +1,30 @@
+extensions:
+  # `HttpResponse.WriteAsync(string)` writes the string to the response body
+  # verbatim. Without an explicit non-HTML `Content-Type`, browsers sniff and
+  # render the body as HTML, so it is an HTML injection sink.
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - [
+          "Microsoft.AspNetCore.Http",
+          "HttpResponseWritingExtensions",
+          False,
+          "WriteAsync",
+          "(Microsoft.AspNetCore.Http.HttpResponse,System.String,System.Threading.CancellationToken)",
+          "",
+          "Argument[1]",
+          "html-injection",
+          "manual"
+        ]
+      - [
+          "Microsoft.AspNetCore.Http",
+          "HttpResponseWritingExtensions",
+          False,
+          "WriteAsync",
+          "(Microsoft.AspNetCore.Http.HttpResponse,System.String,System.Text.Encoding,System.Threading.CancellationToken)",
+          "",
+          "Argument[1]",
+          "html-injection",
+          "manual"
+        ]

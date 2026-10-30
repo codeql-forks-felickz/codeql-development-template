@@ -31,7 +31,7 @@ edges
 | CorpusVariants.cs:48:64:48:77 | access to field Message : String | CorpusVariants.cs:48:34:48:89 | ... + ... | provenance |  |
 | CorpusVariants.cs:64:40:64:58 | access to property QueryString : NameValueCollection | CorpusVariants.cs:64:40:64:69 | access to indexer : String | provenance |  |
 | CorpusVariants.cs:64:40:64:69 | access to indexer : String | CorpusVariants.cs:77:31:77:37 | access to field Message | provenance |  |
-| Test.cs:178:20:178:20 | access to local variable q : String | Test.cs:179:32:179:49 | ... + ... | provenance | Sink:MaD:5 |
+| Test.cs:178:20:178:20 | access to local variable q : String | Test.cs:179:32:179:49 | ... + ... | provenance | Sink:MaD:7 |
 | Test.cs:178:24:178:42 | access to property QueryString : NameValueCollection | Test.cs:178:20:178:20 | access to local variable q : String | provenance |  |
 nodes
 | CorpusVariants.cs:30:56:30:62 | details : TransferRequest [field CreditAccount] : String | semmle.label | details : TransferRequest [field CreditAccount] : String |
