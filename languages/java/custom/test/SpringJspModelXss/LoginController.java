@@ -49,6 +49,45 @@ public class LoginController {
     return new ModelAndView("item", "id", id); // $ Alert
   }
 
+  @GetMapping("/redirect-model")
+  public String redirectModel(@RequestParam("name") String name, Model model) {
+    model.addAttribute("name", name);
+    return "redirect:/greeting";
+  }
+
+  @GetMapping("/redirect-model-and-view")
+  public ModelAndView redirectModelAndView(@RequestParam("name") String name) {
+    return new ModelAndView("redirect:/greeting", "name", name);
+  }
+
+  @ResponseBody
+  @GetMapping("/response-body-model-and-view")
+  public ModelAndView responseBodyModelAndView(@RequestParam("name") String name) { // $ Source
+    return new ModelAndView("login", "name", name); // $ Alert
+  }
+
+  @ResponseBody
+  @GetMapping("/response-body-helper")
+  public ResponseEntity<Banner> responseBodyHelper(
+      @RequestParam("name") String name, Model model) {
+    addResponseBodyName(model, name);
+    return ResponseEntity.ok(new Banner(name));
+  }
+
+  private void addResponseBodyName(Model model, String name) {
+    model.addAttribute("name", name);
+  }
+
+  @GetMapping("/view-helper")
+  public String viewHelper(@RequestParam("name") String name, Model model) { // $ Source
+    addViewName(model, name);
+    return "login";
+  }
+
+  private void addViewName(Model model, String name) {
+    model.addAttribute("name", name); // $ Alert
+  }
+
   // Safe: value is HTML-escaped before it reaches the model.
   @GetMapping("/login-safe")
   public String showLoginSafe(@RequestParam("username") String username, Model model) {

@@ -20,6 +20,13 @@ the <code>spring.mvc.view.suffix</code> Spring Boot property). Because the JSP p
 not analyzed, the result may be a false positive if the page encodes the attribute (for
 example with <code>&lt;c:out&gt;</code> or <code>fn:escapeXml</code>).
 </p>
+<p>
+<b>Known limitations:</b> Redirects are recognized when a handler returns a compile-time
+<code>redirect:</code> view name or directly returns a <code>ModelAndView</code> with that
+view name. Response-body helper writes are excluded when the helper's model parameter is
+passed directly from every calling response-body handler. Computed view names and model
+forwarding through aliases or indirect helper chains are not inferred.
+</p>
 </overview>
 
 <recommendation>

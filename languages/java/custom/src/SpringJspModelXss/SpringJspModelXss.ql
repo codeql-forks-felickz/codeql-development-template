@@ -128,6 +128,53 @@ class SpringModelAttributeValue extends Expr {
   }
 }
 
+private predicate isRedirectViewExpr(Expr expr) {
+  expr.(CompileTimeConstantExpr).getStringValue().regexpMatch("redirect:.*")
+  or
+  exists(ClassInstanceExpr cie |
+    expr = cie and
+    cie.getConstructedType()
+        .getASourceSupertype*()
+        .hasQualifiedName("org.springframework.web.servlet", "ModelAndView") and
+    cie.getNumArgument() > 0 and
+    cie.getArgument(0).(CompileTimeConstantExpr).getStringValue().regexpMatch("redirect:.*")
+  )
+}
+
+private predicate isRedirectOnlyHandler(Callable handler) {
+  exists(ReturnStmt rs | rs.getEnclosingCallable() = handler) and
+  not exists(ReturnStmt rs |
+    rs.getEnclosingCallable() = handler and
+    not isRedirectViewExpr(rs.getExpr())
+  )
+}
+
+private predicate returnsModelAndView(SpringRequestMappingMethod handler) {
+  handler.getReturnType()
+      .(RefType)
+      .getASourceSupertype*()
+      .hasQualifiedName("org.springframework.web.servlet", "ModelAndView")
+}
+
+private predicate isModelParameterPassedOnlyFromResponseBody(Parameter modelParameter) {
+  exists(MethodCall call, SpringRequestMappingMethod handler, SpringModel handlerModel |
+    call.getMethod() = modelParameter.getCallable() and
+    call.getArgument(modelParameter.getPosition()) = handlerModel.getAnAccess() and
+    handlerModel.getCallable() = handler and
+    handler.isResponseBody() and
+    not returnsModelAndView(handler)
+  ) and
+  not exists(MethodCall call |
+    call.getMethod() = modelParameter.getCallable() and
+    not exists(SpringRequestMappingMethod handler, SpringModel handlerModel |
+      call.getArgument(modelParameter.getPosition()) = handlerModel.getAnAccess() and
+      handlerModel.getCallable() = handler and
+      handler.isResponseBody() and
+      not returnsModelAndView(handler)
+    )
+  )
+}
+
 /**
  * A model attribute value that is rendered by a JSP view, outside of a handler
  * whose return value is written directly to the response body.
@@ -136,7 +183,20 @@ class SpringJspModelAttributeSink extends DataFlow::Node {
   SpringJspModelAttributeSink() {
     usesJspViews() and
     exists(SpringModelAttributeValue v | this.asExpr() = v |
-      not v.getEnclosingCallable().(SpringRequestMappingMethod).isResponseBody()
+      not isRedirectOnlyHandler(v.getEnclosingCallable()) and
+      not (
+        exists(SpringRequestMappingMethod handler |
+          v.getEnclosingCallable() = handler and
+          handler.isResponseBody() and
+          not returnsModelAndView(handler)
+        )
+        or
+        exists(MethodCall modelCall, Parameter modelParameter |
+          modelCall.getEnclosingCallable() = v.getEnclosingCallable() and
+          modelCall.getQualifier() = modelParameter.getAnAccess() and
+          isModelParameterPassedOnlyFromResponseBody(modelParameter)
+        )
+      )
     )
   }
 }
