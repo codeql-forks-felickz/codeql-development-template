@@ -37,6 +37,16 @@ end
 attrs = { email: "user@example.com", password: "letmein" }
 User.find_or_create_by!(attrs)
 
+# BAD: password literal assigned to a local before entering the attributes hash
+pwd = "localpassword"
+indirect_attrs = { password: pwd }
+User.create!(indirect_attrs)
+
+# GOOD: non-password value assigned to a local before entering the attributes hash
+first_name = "normalname"
+non_password_attrs = { first_name: first_name }
+User.create!(non_password_attrs)
+
 # GOOD: password comes from the environment
 User.create(email: "admin@example.com", password: ENV["ADMIN_PASSWORD"])
 

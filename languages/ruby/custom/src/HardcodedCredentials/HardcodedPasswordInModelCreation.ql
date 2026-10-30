@@ -44,14 +44,6 @@ private class ModelCreationCall extends DataFlow::CallNode {
   }
 }
 
-/** Holds if `e` is the value of a hash pair (or keyword argument) with a password key. */
-private predicate isPasswordPairValue(Expr e) {
-  exists(Pair p |
-    p.getValue() = e and
-    isPasswordAttributeName(p.getKey().getConstantValue().getStringlikeValue())
-  )
-}
-
 /**
  * Holds if `sink` is the value of a password pair passed directly as an argument to a model
  * creation call, such as `User.create(password: "...")` or `User.new("password" => "...")`.
@@ -103,11 +95,14 @@ from HardcodedPasswordFlow::PathNode source, HardcodedPasswordFlow::PathNode sin
 where
   HardcodedPasswordFlow::flowPath(source, sink) and
   // For attribute hashes, only report literals that are stored under a password key, so
-  // that a literal reaching the attribute hash itself is not reported.
+  // that a literal reaching the attribute hash itself is not reported. Check the key content
+  // at the sink so literals assigned to an intermediate variable are still reported.
   (
     isPasswordKeywordArgument(sink.getNode())
     or
-    isPasswordPairValue(source.getNode().asExpr().getExpr())
+    exists(DataFlow::ContentSet c |
+      HardcodedPasswordConfig::allowImplicitRead(sink.getNode(), c)
+    )
   )
 select source.getNode(), source, sink, "This hardcoded value is $@.", sink.getNode(),
   "used as a model password attribute"
