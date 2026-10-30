@@ -93,4 +93,27 @@ public class CodeInjectionTest
         string path = ReadUntrusted(client);
         new CSharpCodeProvider().CompileAssemblyFromFile(new CompilerParameters(), path);
     }
+
+    // Override parameter names may differ from the base method's parameter names.
+    public void RenamedOverrideParameter(TcpClient client)
+    {
+        string userInput = ReadUntrusted(client);
+        new RenamedCodeDomProvider().CompileAssemblyFromSource(
+            options: new CompilerParameters(),
+            code: userInput); // $ Alert
+    }
+
+    // Safe: a renamed override receives constant source text.
+    public void RenamedOverrideConstant()
+    {
+        new RenamedCodeDomProvider().CompileAssemblyFromSource(
+            options: new CompilerParameters(),
+            code: "class A {}");
+    }
+}
+
+public class RenamedCodeDomProvider : CodeDomProvider
+{
+    public override CompilerResults CompileAssemblyFromSource(CompilerParameters options, params string[] code) => null;
+    public override ICodeCompiler CreateCompiler() => null;
 }

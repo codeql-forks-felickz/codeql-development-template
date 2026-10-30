@@ -33,7 +33,7 @@ class CodeDomProviderCompileAssemblyFromSourceSink extends Sink {
       m.getDeclaringType().(SystemCodeDomCompilerClass).hasName("CodeDomProvider") and
       m.hasName("CompileAssemblyFromSource") and
       mc = m.getAnOverrider*().getACall() and
-      this.getExpr() = mc.getArgumentForName("sources")
+      this.getExpr() = mc.getArgumentForName(mc.getTarget().getParameter(1).getName())
     )
   }
 }
