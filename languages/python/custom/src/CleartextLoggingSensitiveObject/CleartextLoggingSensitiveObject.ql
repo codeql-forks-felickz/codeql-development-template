@@ -104,7 +104,11 @@ module CleartextLoggingSensitiveObjectConfig implements DataFlow::ConfigSig {
     node instanceof CleartextLogging::Sanitizer
     or
     // Reading a non-sensitive key (e.g. a correlation ID) from the object is safe to log.
-    exists(string key | key = getAReadKey(_, node) and not isSensitiveKey(key, _))
+    exists(string key | key = getAReadKey(_, node) and not isSensitiveKey(key, _)) and
+    not exists(DataFlow::MethodCallNode call |
+      node = call and call.calls(_, "get") and
+      TaintTracking::localTaint(call.getObject(), call.getArg(1))
+    )
   }
 }
 

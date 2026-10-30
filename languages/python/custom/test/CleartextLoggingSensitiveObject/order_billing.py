@@ -34,6 +34,23 @@ def safe_correlation_id_handler(event, context):
     return charge(event["billing"])
 
 
+def sensitive_fallback_handler(event, context):  # $ Source
+    print(event.get("orderId", event["billing"]))  # $ Alert
+    return charge(event["billing"])
+
+
+# SAFE: a fallback unrelated to the event cannot expose its sensitive fields.
+def safe_unrelated_fallback_handler(event, context):
+    logger.info("order %s", event.get("orderId", context.aws_request_id))
+    return charge(event["billing"])
+
+
+# SAFE: a literal fallback cannot expose sensitive fields from the event.
+def safe_literal_fallback_handler(event, context):
+    logger.info("order %s", event.get("orderId", "unknown"))
+    return charge(event["billing"])
+
+
 # SAFE: the event does not carry payment or other sensitive data.
 def safe_non_sensitive_handler(event, context):
     print(json.dumps(event))
