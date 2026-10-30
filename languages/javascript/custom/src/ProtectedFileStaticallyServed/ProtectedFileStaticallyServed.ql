@@ -56,19 +56,18 @@ predicate isProtectedRoute(Express::RouteSetup setup, DataFlow::Node mw, string 
 /**
  * Gets the path, relative to the source root, of the views folder used by `render`.
  */
-string viewsFolderPath(DataFlow::MethodCallNode render) {
+string viewsFolderPath(
+  Express::RouterDefinition app, DataFlow::MethodCallNode render
+) {
   exists(DataFlow::MethodCallNode setting |
     setting = viewsSetting() and
-    (
-      // prefer a setting in the same file, otherwise use any setting in the program
-      setting.getFile() = render.getFile()
-      or
-      not viewsSetting().getFile() = render.getFile()
-    ) and
+    app.ref().flowsTo(setting.getReceiver()) and
     result = resolvedPath(setting.getArgument(1))
   )
   or
-  not exists(viewsSetting()) and
+  not exists(DataFlow::MethodCallNode setting |
+    setting = viewsSetting() and app.ref().flowsTo(setting.getReceiver())
+  ) and
   result = joinPath(getAWorkingFolder(render.getFile()).getRelativePath(), "views")
 }
 
@@ -76,14 +75,16 @@ string viewsFolderPath(DataFlow::MethodCallNode render) {
  * Gets the path, relative to the source root, of the file returned by `call`, a call to
  * `res.render` or `res.sendFile` in the route handler `rh`.
  */
-string returnedFilePath(Express::RouteHandler rh, DataFlow::MethodCallNode call) {
+string returnedFilePath(
+  Express::RouterDefinition app, Express::RouteHandler rh, DataFlow::MethodCallNode call
+) {
   call.getReceiver() = rh.getAResponseNode() and
   (
     call.getMethodName() = "render" and
     exists(string name, string path |
       name = call.getArgument(0).getStringValue() and
       not name.matches("/%") and
-      path = joinPath(viewsFolderPath(call), normalize(name)) and
+      path = joinPath(viewsFolderPath(app, call), normalize(name)) and
       not path.regexpMatch("(.*/)?\\.\\.(/.*)?")
     |
       // `res.render("admin.html")`
@@ -111,15 +112,22 @@ string returnedFilePath(Express::RouteHandler rh, DataFlow::MethodCallNode call)
 }
 
 from
-  Express::RouteSetup setup, DataFlow::Node mw, string mwName, Express::RouteHandler rh,
-  DataFlow::MethodCallNode call, string path, DataFlow::CallNode serve
+  Express::RouteSetup setup, Express::RouterDefinition app, DataFlow::Node mw, string mwName,
+  Express::RouteHandler rh, DataFlow::MethodCallNode call, string path, DataFlow::CallNode serve
 where
   isProtectedRoute(setup, mw, mwName) and
+  app = Express::appCreation() and
+  app.getASubRouter*() = setup.getRouter() and
   rh = setup.getLastRouteHandlerNode().getALocalSource() and
-  path = returnedFilePath(rh, call) and
+  path = returnedFilePath(app, rh, call) and
   serve =
     min(DataFlow::CallNode s |
-      isServedPath(path, s)
+      isServedPath(path, s) and
+      exists(Express::RouteSetup registration |
+        registration.isUseCall() and
+        s.flowsTo(registration.getARouteHandlerNode()) and
+        app.getASubRouter*() = registration.getRouter()
+      )
     |
       s order by s.getFile().getRelativePath(), s.getStartLine(), s.getStartColumn()
     ) and
