@@ -13,6 +13,8 @@ edges
 | test.go:140:14:140:18 | selection of URL | test.go:140:14:140:26 | call to Query | provenance | Src:MaD:2006 MaD:2068 |
 | test.go:140:14:140:26 | call to Query | test.go:140:14:140:40 | call to Get | provenance | MaD:2076 |
 | test.go:140:14:140:40 | call to Get | test.go:135:18:135:23 | SSA def(target) | provenance |  |
+| test.go:155:14:155:18 | selection of URL | test.go:155:14:155:27 | call to String | provenance | Src:MaD:2006 MaD:335 |
+| test.go:155:14:155:27 | call to String | test.go:112:17:112:22 | SSA def(target) | provenance | Config |
 nodes
 | test.go:37:33:37:39 | SSA def(payload) | semmle.label | SSA def(payload) |
 | test.go:45:25:45:31 | payload | semmle.label | payload |
@@ -28,4 +30,6 @@ nodes
 | test.go:140:14:140:18 | selection of URL | semmle.label | selection of URL |
 | test.go:140:14:140:26 | call to Query | semmle.label | call to Query |
 | test.go:140:14:140:40 | call to Get | semmle.label | call to Get |
+| test.go:155:14:155:18 | selection of URL | semmle.label | selection of URL |
+| test.go:155:14:155:27 | call to String | semmle.label | call to String |
 subpaths

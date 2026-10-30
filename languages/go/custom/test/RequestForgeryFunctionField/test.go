@@ -148,3 +148,9 @@ func main() {
 	http.HandleFunc("/direct/", directHandler)
 	http.ListenAndServe(":8080", nil)
 }
+
+// Negative: a request URL forwarded through a function-valued field is safe.
+func safeURLHandler(w http.ResponseWriter, r *http.Request) {
+	c := newClient()
+	_ = c.Fetch(r.URL.String())
+}
