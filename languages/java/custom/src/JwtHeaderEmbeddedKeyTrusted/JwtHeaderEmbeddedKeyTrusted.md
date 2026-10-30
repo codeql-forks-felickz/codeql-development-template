@@ -2,7 +2,7 @@
 
 A JSON Web Token (JWT) header may carry a `jwk` member containing a public key. That header is controlled by whoever produced the token. If a validator builds its signature verifier from this embedded key, an attacker can generate their own key pair, sign a forged token with the private key, and embed the matching public key in the header. The signature then verifies successfully.
 
-This query finds Nimbus `JWSVerifier` instances (for example `RSASSAVerifier`, `ECDSAVerifier` or `Ed25519Verifier`) constructed from a key that comes from the token's own header: either `header.get*("jwk")` on a decoded header that is also read for its `alg`, or Nimbus `Header.getJWK()`.
+This query finds Nimbus `JWSVerifier` instances (for example `RSASSAVerifier`, `ECDSAVerifier` or `Ed25519Verifier`) constructed from a key that comes from the token's own header: either `header.get*("jwk")` on a decoded header that is also read for its `alg` and whose variable name contains `header`, `token` or `jwt`, or Nimbus `Header.getJWK()`. Key parsing and conversion preserve this flow, but passing a token-supplied key ID to a trusted key lookup does not.
 
 ## Recommendation
 
@@ -24,6 +24,10 @@ The validator should use a key the server already trusts instead:
 JWSVerifier verifier = new RSASSAVerifier(trustedPublicKey); // GOOD
 return SignedJWT.parse(token).verify(verifier);
 ```
+
+## Known limitations
+
+- Outside Nimbus `Header.getJWK()`, JWT provenance corroboration is name-based only, so differently named header aliases may be missed.
 
 ## References
 

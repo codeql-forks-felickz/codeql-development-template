@@ -20,7 +20,13 @@ import semmle.code.java.dataflow.DataFlow
 class TokenSplit extends MethodCall {
   TokenSplit() {
     this.getMethod().getDeclaringType() instanceof TypeString and
-    this.getMethod().hasName("split")
+    this.getMethod().hasName("split") and
+    (
+      this.getNumArgument() = 1
+      or
+      this.getNumArgument() = 2 and
+      this.getArgument(1).(CompileTimeConstantExpr).getIntValue() = 0
+    )
   }
 
   /** Holds if this splits on a literal period, e.g. `"\\."` or `"[.]"`. */
@@ -92,11 +98,23 @@ class PartsLength extends FieldAccess {
   TokenSplit getSplit() { result = split }
 }
 
+/** Holds if a nested signature check gates success and rejects verification failure. */
+private predicate hasVerificationGuard(Guard guard, boolean branch, ReturnStmt ret) {
+  exists(MethodCall verification, ReturnStmt rejection |
+    verification.getMethod().getName().regexpMatch("(?i).*(verify|validate|hmac|check).*") and
+    guard.controls(verification.getBasicBlock(), branch) and
+    verification.(Guard).controls(ret.getBasicBlock(), true) and
+    verification.(Guard).controls(rejection.getBasicBlock(), false) and
+    rejection.getExpr().(BooleanLiteral).getBooleanValue() = false
+  )
+}
+
 from Guard guard, PartsLength len, boolean branch, ReturnStmt ret
 where
   zeroPartsCheck(guard, len, branch) and
   ret.getExpr().(BooleanLiteral).getBooleanValue() = true and
-  guard.controls(ret.getBasicBlock(), branch)
+  guard.controls(ret.getBasicBlock(), branch) and
+  not hasVerificationGuard(guard, branch, ret)
 select guard,
   "This check treats a JWT as valid without verifying its signature when $@ has no parts.",
   len.getSplit(), "the split token"

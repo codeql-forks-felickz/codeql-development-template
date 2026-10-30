@@ -83,4 +83,58 @@ public class EmptyTokenValidators {
         }
         return false;
     }
+
+    // Explicit zero also discards trailing empty parts.
+    public boolean explicitZeroLimit(String token) {
+        final int limit = 0;
+        String[] parts = token.split("\\.", limit);
+        if (parts.length == 0) return true; // $ Alert
+        return false;
+    }
+
+    // Safe: a negative limit retains empty parts, so zero length is unreachable.
+    public boolean negativeLimit(String token) {
+        String[] parts = token.split("\\.", -1);
+        if (parts.length == 0) return true;
+        return false;
+    }
+
+    // Safe: a positive limit also retains a final empty part.
+    public boolean positiveLimit(String token) {
+        String[] parts = token.split("\\.", 2);
+        if (parts.length == 0) return true;
+        return false;
+    }
+
+    // Safe: success in the empty branch still requires signature verification.
+    public boolean verifiesEmptyBranch(String token, byte[] key) {
+        String[] parts = token.split("\\.");
+        if (parts.length == 0) {
+            if (!hmacValidator(token, key)) return false;
+            return true;
+        }
+        return false;
+    }
+
+    // Ignoring a verification result must not suppress the unverified acceptance.
+    public boolean ignoresVerification(String token, byte[] key) {
+        String[] parts = token.split("\\.");
+        if (parts.length == 0) { // $ Alert
+            hmacValidator(token, key);
+            return true;
+        }
+        return false;
+    }
+
+    // Verification on only an optional path does not gate the successful return.
+    public boolean optionallyVerifies(String token, byte[] key, boolean verify) {
+        String[] parts = token.split("\\.");
+        if (parts.length == 0) { // $ Alert
+            if (verify) {
+                if (!hmacValidator(token, key)) return false;
+            }
+            return true;
+        }
+        return false;
+    }
 }

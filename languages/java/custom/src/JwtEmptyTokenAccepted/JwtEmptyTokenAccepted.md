@@ -1,8 +1,10 @@
 # JWT validator accepts a token with no parts
 
-A JSON Web Token (JWT) has three period-separated parts: header, payload and signature. Java's `String.split` drops trailing empty strings, so a token such as `.` or `...` splits into an array of length zero. If a validator returns `true` for that case, an attacker can authenticate without any signature.
+A JSON Web Token (JWT) has three period-separated parts: header, payload and signature. Java's `String.split` with an omitted or zero limit drops trailing empty strings, so a token such as `.` or `...` splits into an array of length zero. If a validator returns `true` for that case, an attacker can authenticate without any signature.
 
 This query finds checks that a split JWT has zero parts (`parts.length == 0`, `< 1`, `!= 0` with the valid result in the `else` branch, and similar) that guard a `return true`. A split is treated as a JWT split when the same method reads the `alg` header, or when it splits a variable named like `token` or `jwt` on a literal period.
+
+A nested verification-style guard that gates the successful return and returns `false` on verification failure is excluded.
 
 ## Recommendation
 
@@ -29,6 +31,10 @@ if (parts.length != 3) {
 }
 return verifySignature(token, key);
 ```
+
+## Known limitations
+
+- Verification guards are recognized by method name and a literal `false` rejection; arbitrary verifier logic is not modeled.
 
 ## References
 

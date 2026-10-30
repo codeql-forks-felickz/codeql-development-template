@@ -10,4 +10,8 @@ public interface JwtParser {
     Jwt<Header, String> parsePlaintextJwt(String plaintextJwt);
 
     Jws<Claims> parseClaimsJws(String claimsJws);
+
+    Jwt<Header, Claims> parseUnsecuredClaims(String claimsJwt);
+
+    Jwt<Header, byte[]> parseUnsecuredContent(String contentJwt);
 }

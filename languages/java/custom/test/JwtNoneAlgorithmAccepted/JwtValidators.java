@@ -108,4 +108,48 @@ public class JwtValidators {
         }
         return false;
     }
+
+    // Safe: a configuration helper, with no JWT/header context.
+    public boolean configuredAlgorithm(Map<String, String> config) {
+        String alg = config.get("alg");
+        if ("none".equals(alg)) return true;
+        return false;
+    }
+
+    // A JWT parameter corroborates a generic map holding the decoded header.
+    public boolean decodedAlgorithm(Map<String, String> data, String token) {
+        String alg = data.get("alg");
+        if ("none".equals(alg)) return true; // $ Alert
+        return false;
+    }
+
+    // Safe: accepting none still requires verification to succeed.
+    public boolean verifiesNoneBranch(Map<String, String> header, String token, byte[] key) {
+        if ("none".equals(header.get("alg"))) {
+            if (!hmacValidator(token, key)) return false;
+            return true;
+        }
+        return false;
+    }
+
+    // A verification call whose result is ignored is not a guard.
+    public boolean ignoresVerification(Map<String, String> header, String token, byte[] key) {
+        if ("none".equals(header.get("alg"))) { // $ Alert
+            hmacValidator(token, key);
+            return true;
+        }
+        return false;
+    }
+
+    // An optional verification does not gate the successful return.
+    public boolean optionallyVerifies(
+            Map<String, String> header, String token, byte[] key, boolean verify) {
+        if ("none".equals(header.get("alg"))) { // $ Alert
+            if (verify) {
+                if (!hmacValidator(token, key)) return false;
+            }
+            return true;
+        }
+        return false;
+    }
 }

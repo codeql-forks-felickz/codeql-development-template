@@ -2,7 +2,7 @@
 
 A JSON Web Token (JWT) carries its signing algorithm in the `alg` field of its header. That header is controlled by whoever produced the token. If a validator reads `alg` from the token and treats the token as valid whenever `alg` is `none`, an attacker can forge any token by setting `"alg": "none"` and removing the signature.
 
-This query complements `java/missing-jwt-signature-check`, which only covers JJWT `JwtParser` usage. It finds hand-rolled validators that compare the header's `alg` value to the constant `none` and then return `true`.
+This query complements `java/missing-jwt-signature-check`, which only covers JJWT `JwtParser` usage. It finds hand-rolled validators that compare the header's `alg` value to the constant `none` and then return `true`. JWT context is corroborated by a qualifier variable or enclosing parameter whose name contains `header`, `jwt` or `token`. A nested verification-style guard that gates the successful return and returns `false` on verification failure is excluded.
 
 ## Recommendation
 
@@ -29,6 +29,10 @@ if (!EXPECTED_ALGORITHM.equals(alg)) {
 }
 return verifySignature(token, key);
 ```
+
+## Known limitations
+
+- JWT provenance corroboration is name-based only, so differently named header aliases without a matching parameter may be missed; verification guards require a recognized method name and literal `false` rejection, and arbitrary verifier logic is not modeled.
 
 ## References
 

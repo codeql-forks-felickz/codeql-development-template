@@ -24,12 +24,13 @@ private predicate headerRead(MethodCall mc, string name) {
 
 /**
  * A read of the token-supplied JSON Web Key, either `header.get*("jwk")` on an object
- * that is also read for its `alg` (i.e. a decoded JWT header), or Nimbus `Header.getJWK()`.
+ * that is also read for its `alg` and has a JWT/header name, or Nimbus `Header.getJWK()`.
  */
 class EmbeddedJwkRead extends MethodCall {
   EmbeddedJwkRead() {
     headerRead(this, "jwk") and
     exists(Variable v, MethodCall algRead |
+      v.getName().regexpMatch("(?i).*(header|token|jwt).*") and
       this.getQualifier() = v.getAnAccess() and
       headerRead(algRead, "alg") and
       algRead.getQualifier() = v.getAnAccess()
@@ -62,7 +63,12 @@ module EmbeddedJwkConfig implements DataFlow::ConfigSig {
       (pkg.matches("com.nimbusds.jose%") or pkg = "org.json") and
       node2.asExpr() = mc
     |
-      node1.asExpr() = mc.getQualifier() or node1.asExpr() = mc.getAnArgument()
+      node1.asExpr() = mc.getQualifier()
+      or
+      // Only parsing/conversion arguments supply key material. A lookup's key ID
+      // does not supply the key returned from a trusted key set.
+      mc.getMethod().hasName(["parse", "toRSAPublicKey", "toECPublicKey", "toRSAKey", "toString"]) and
+      node1.asExpr() = mc.getAnArgument()
     )
   }
 }

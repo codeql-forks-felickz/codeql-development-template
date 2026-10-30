@@ -21,7 +21,19 @@ class JwtAlgHeaderRead extends MethodCall {
   JwtAlgHeaderRead() {
     this.getMethod().getName().matches("get%") and
     this.getNumArgument() = 1 and
-    this.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() = "alg"
+    this.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() = "alg" and
+    (
+      this.getQualifier()
+          .(VarAccess)
+          .getVariable()
+          .getName()
+          .regexpMatch("(?i).*(header|jwt|token).*")
+      or
+      this.getEnclosingCallable()
+          .getAParameter()
+          .getName()
+          .regexpMatch("(?i).*(header|jwt|token).*")
+    )
   }
 }
 
@@ -50,11 +62,23 @@ predicate algIsNoneCheck(MethodCall eq, JwtAlgHeaderRead read) {
   )
 }
 
+/** Holds if a nested signature check gates success and rejects verification failure. */
+private predicate hasVerificationGuard(Guard guard, ReturnStmt ret) {
+  exists(MethodCall verification, ReturnStmt rejection |
+    verification.getMethod().getName().regexpMatch("(?i).*(verify|validate|hmac|check).*") and
+    guard.controls(verification.getBasicBlock(), true) and
+    verification.(Guard).controls(ret.getBasicBlock(), true) and
+    verification.(Guard).controls(rejection.getBasicBlock(), false) and
+    rejection.getExpr().(BooleanLiteral).getBooleanValue() = false
+  )
+}
+
 from MethodCall eq, JwtAlgHeaderRead read, ReturnStmt ret
 where
   algIsNoneCheck(eq, read) and
   ret.getExpr().(BooleanLiteral).getBooleanValue() = true and
-  eq.(Guard).controls(ret.getBasicBlock(), true)
+  eq.(Guard).controls(ret.getBasicBlock(), true) and
+  not hasVerificationGuard(eq, ret)
 select eq,
   "This check treats a JWT as valid without verifying its signature when the $@ is 'none'.", read,
   "token's 'alg' header"

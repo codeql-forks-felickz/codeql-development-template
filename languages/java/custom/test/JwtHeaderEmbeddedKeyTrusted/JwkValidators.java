@@ -55,4 +55,32 @@ public class JwkValidators {
         }
         return new RSASSAVerifier(trusted.toRSAPublicKey());
     }
+
+    // Safe: both fields belong to trusted configuration, not a decoded JWT header.
+    public JWSVerifier configuredAlgorithmAndKey(Map<String, String> config) throws Exception {
+        String alg = config.get("alg");
+        RSAKey key = RSAKey.parse(config.get("jwk"));
+        return new RSASSAVerifier(key.toRSAPublicKey());
+    }
+
+    // Header provenance is corroborated by its name even across a decode helper.
+    public JWSVerifier helperDecodedHeader(String token) throws Exception {
+        JSONObject decodedHeader = decodeHeader(token);
+        String alg = decodedHeader.getString("alg");
+        RSAKey key = RSAKey.parse(decodedHeader.getJSONObject("jwk").toString());
+        return new RSASSAVerifier(key.toRSAPublicKey()); // $ Alert
+    }
+
+    // Safe: a token key ID selects key material from a trusted server-side set.
+    public JWSVerifier trustedKeyLookup(
+            JWSHeader header, com.nimbusds.jose.jwk.JWKSet trustedSet) throws Exception {
+        return new RSASSAVerifier(
+                trustedSet.getKeyByKeyId(header.getJWK().getKeyID()).toRSAKey());
+    }
+
+    // Key conversions must still carry the token-supplied key material.
+    public JWSVerifier convertedEmbeddedKey(JWSHeader header) throws Exception {
+        RSAKey key = header.getJWK().toRSAKey();
+        return new RSASSAVerifier(key.toRSAPublicKey()); // $ Alert
+    }
 }
