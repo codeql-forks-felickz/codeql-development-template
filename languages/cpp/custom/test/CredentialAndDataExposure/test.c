@@ -10,6 +10,7 @@ typedef unsigned long HCRYPTKEY;
 typedef unsigned long HCRYPTHASH;
 typedef int errno_t;
 typedef struct st_mysql MYSQL;
+typedef struct LDAP LDAP;
 
 extern FILE *stdin;
 FILE *fopen(const char *filename, const char *mode);
@@ -37,6 +38,8 @@ BOOL CryptDecrypt(HCRYPTKEY hKey, HCRYPTHASH hHash, BOOL Final, DWORD dwFlags, B
 MYSQL *mysql_real_connect(MYSQL *mysql, const char *host, const char *user, const char *passwd,
                           const char *db, unsigned int port, const char *unix_socket,
                           unsigned long clientflag);
+int ldap_simple_bindA(LDAP *ld, const char *dn, const char *passwd);
+int ldap_simple_bindW(LDAP *ld, const wchar_t *dn, const wchar_t *passwd);
 int CloseHandle(HANDLE h);
 
 #define LOGON32_LOGON_NETWORK 3
@@ -124,6 +127,55 @@ void bad_mysql(MYSQL *conn)
         fclose(cfg);
     }
     mysql_real_connect(conn, "localhost", "root", password, "app", 3306, 0, 0); // $ Alert
+}
+
+/* Asynchronous LDAP bind variants use the third argument as the password. */
+void bad_ldap_simple_bindA(LDAP *ld)
+{
+    char password[64] = "";
+    FILE *cfg = fopen("ldap.conf", "r");
+    if (cfg != 0)
+    {
+        fgets(password, sizeof(password), cfg); // $ Source
+        fclose(cfg);
+    }
+    ldap_simple_bindA(ld, "cn=user", password); // $ Alert
+}
+
+void bad_ldap_simple_bindW(LDAP *ld)
+{
+    wchar_t password[64] = L"";
+    FILE *cfg = _wfopen(L"ldap.conf", L"r");
+    if (cfg != 0)
+    {
+        fgetws(password, sizeof(password), cfg); // $ Source
+        fclose(cfg);
+    }
+    ldap_simple_bindW(ld, L"cn=user", password); // $ Alert
+}
+
+/* GOOD: file data used as an LDAP distinguished name is not the password. */
+void good_ldap_simple_bind_username(LDAP *ld)
+{
+    char username[64] = "";
+    FILE *cfg = fopen("ldap.conf", "r");
+    if (cfg != 0)
+    {
+        fgets(username, sizeof(username), cfg);
+        fclose(cfg);
+    }
+    ldap_simple_bindA(ld, username, "unrelated");
+}
+
+/* GOOD: fopen_s's handle was overwritten with stdin before the read. */
+void good_fopen_s_reassigned_to_stdin()
+{
+    char password[64] = "";
+    FILE *pFile = 0;
+    fopen_s(&pFile, "passwords.txt", "r");
+    pFile = stdin;
+    fgets(password, sizeof(password), pFile);
+    LogonUserA("User", "Domain", password, LOGON32_LOGON_NETWORK, LOGON32_PROVIDER_DEFAULT, 0);
 }
 
 /* GOOD: the stored password is encrypted and decrypted before use (Juliet goodG2B). */

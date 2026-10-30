@@ -1,6 +1,6 @@
 # Plaintext password read from a file
 
-Storing a password in plaintext in a file means that anyone who can read the file (other local users, backups, a compromised service account, an attacker with a file disclosure bug) obtains a credential that can be used directly. This query finds passwords that are read from a file (for example with `fgets`, `fgetws`, `fread`, `fscanf` or `ReadFile` on a handle returned by `fopen`, `_wfopen`, `fopen_s` or `CreateFile`) and then passed, without being decrypted, to an authentication API such as `LogonUser`, `LogonUserEx`, `CreateProcessWithLogonW`, `mysql_real_connect` or `ldap_simple_bind_s`.
+Storing a password in plaintext in a file means that anyone who can read the file (other local users, backups, a compromised service account, an attacker with a file disclosure bug) obtains a credential that can be used directly. This query finds passwords that are read from a file (for example with `fgets`, `fgetws`, `fread`, `fscanf` or `ReadFile` on a handle returned by `fopen`, `_wfopen`, `fopen_s` or `CreateFile`) and then passed, without being decrypted, to an authentication API such as `LogonUser`, `LogonUserEx`, `CreateProcessWithLogonW`, `mysql_real_connect` or `ldap_simple_bind[_s][A|W]`.
 
 ## Recommendation
 

@@ -31,9 +31,9 @@ class FileOpenCall extends FunctionCall {
     or
     // `fopen_s(&pFile, ...)` returns the handle through its first parameter.
     this.getTarget().hasGlobalOrStdName(["fopen_s", "_wfopen_s"]) and
-    exists(Variable v |
-      this.getArgument(0).(AddressOfExpr).getOperand() = v.getAnAccess() and
-      e = v.getAnAccess()
+    exists(DataFlow::Node handle |
+      handle.asDefiningArgument() = this.getArgument(0) and
+      DataFlow::localFlow(handle, DataFlow::exprNode(e))
     )
   }
 }
@@ -83,7 +83,8 @@ int passwordParameterIndex(Function f) {
   f.hasGlobalName("mysql_real_connect") and result = 3
   or
   f.hasGlobalName([
-      "ldap_simple_bind", "ldap_simple_bind_s", "ldap_simple_bind_sA", "ldap_simple_bind_sW"
+      "ldap_simple_bind", "ldap_simple_bindA", "ldap_simple_bindW", "ldap_simple_bind_s",
+      "ldap_simple_bind_sA", "ldap_simple_bind_sW"
     ]) and
   result = 2
 }
@@ -120,7 +121,7 @@ module PlaintextStoredPasswordConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(InPlaceDecryptCall decrypt | node.asDefiningArgument() = decrypt.getBuffer())
+    exists(InPlaceDecryptCall decrypt | node.asIndirectExpr() = decrypt.getBuffer())
   }
 }
 
