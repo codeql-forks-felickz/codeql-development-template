@@ -5,7 +5,7 @@
 | django_views.py:14:5:14:75 | ControlFlowNode for Attribute() | Cookie is added to response without the 'secure' flag being set. |
 | flask_app.py:5:39:5:43 | ControlFlowNode for False | Setting 'SESSION_COOKIE_SECURE' disables the 'secure' flag of the session cookie. |
 | flask_app.py:8:45:8:49 | ControlFlowNode for False | Setting 'SESSION_COOKIE_SECURE' disables the 'secure' flag of the session cookie. |
-| flask_app.py:9:47:9:51 | ControlFlowNode for False | Setting 'SESSION_COOKIE_SECURE' disables the 'secure' flag of the session cookie. |
-| flask_app.py:31:5:31:77 | ControlFlowNode for Attribute() | Cookie is added to response without the 'secure' flag being set. |
+| flask_app.py:10:47:10:51 | ControlFlowNode for False | Setting 'SESSION_COOKIE_SECURE' disables the 'secure' flag of the session cookie. |
+| flask_app.py:33:5:33:77 | ControlFlowNode for Attribute() | Cookie is added to response without the 'secure' flag being set. |
 | settings.py:4:25:4:29 | ControlFlowNode for False | Setting 'SESSION_COOKIE_SECURE' disables the 'secure' flag of the session cookie. |
 | settings.py:5:22:5:26 | ControlFlowNode for False | Setting 'CSRF_COOKIE_SECURE' disables the 'secure' flag of the CSRF cookie. |

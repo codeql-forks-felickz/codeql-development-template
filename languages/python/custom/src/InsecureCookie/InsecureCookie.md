@@ -10,6 +10,10 @@ In addition to explicit cookie writes (such as `set_cookie`), this query reports
 
 Only settings explicitly set to `False` are reported. A missing setting (for example, Flask's default `SESSION_COOKIE_SECURE = False`) is not reported.
 
+## Known limitations
+
+Module-level and class-level cookie setting assignments are recognized when the database contains an import of Django or Flask. These assignments are not linked to a specific framework configuration object, so an unrelated constant with the same name may still be reported in a project that imports either framework.
+
 ## Recommendation
 
 Always set `secure` to `True`, or add `; Secure;` to the cookie's raw header value, to ensure SSL is used to transmit the cookie with encryption. Set framework settings such as `SESSION_COOKIE_SECURE` and `CSRF_COOKIE_SECURE` to `True`.

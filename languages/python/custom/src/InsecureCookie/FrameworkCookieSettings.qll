@@ -120,6 +120,7 @@ private class FlaskConfigUpdateCookieSetting extends ConfigKeyCookieSetting {
       or
       exists(Dict dict, KeyValuePair item |
         DataFlow::localFlow(DataFlow::exprNode(dict), call.getArg(0)) and
+        not exists(call.getArgByName(setting)) and
         item = dict.getAnItem() and
         item.getKey().(StringLiteral).getText() = setting and
         this.asExpr() = item.getValue()
@@ -141,6 +142,9 @@ private class SettingsAssignmentCookieSetting extends ConfigKeyCookieSetting {
       target = assign.getATarget() and
       target.getId() = setting and
       (assign.getScope() instanceof Module or assign.getScope() instanceof Class) and
+      exists(API::Node framework |
+        framework = API::moduleImport("django") or framework = API::moduleImport("flask")
+      ) and
       this.asExpr() = assign.getValue()
     )
   }

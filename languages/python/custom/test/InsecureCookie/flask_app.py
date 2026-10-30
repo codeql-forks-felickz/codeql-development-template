@@ -6,7 +6,9 @@ app.config["SESSION_COOKIE_SECURE"] = False  # BAD: session cookie sent over pla
 app.config["SESSION_COOKIE_HTTPONLY"] = False  # BAD: session cookie readable by JavaScript
 app.config.update(SESSION_COOKIE_HTTPONLY=False)  # BAD
 app.config.update({"SESSION_COOKIE_SECURE": False})  # BAD
+app.config.update({"SESSION_COOKIE_SECURE": False}, SESSION_COOKIE_SECURE=True)  # GOOD: keyword overrides dict entry
 app.config.from_mapping(SESSION_COOKIE_SECURE=False, SESSION_COOKIE_HTTPONLY=False)  # BAD (both)
+app.config.from_mapping({"SESSION_COOKIE_HTTPONLY": False}, SESSION_COOKIE_HTTPONLY=True)  # GOOD: keyword overrides dict entry
 
 app.config["SESSION_COOKIE_SECURE"] = True  # GOOD
 app.config["SESSION_COOKIE_HTTPONLY"] = True  # GOOD
