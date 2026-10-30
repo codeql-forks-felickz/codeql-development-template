@@ -1,5 +1,7 @@
 import aiomysql
+import aiomysql.sa
 import aiopg
+import aiopg.sa
 import asyncpg
 from aiohttp import web
 
@@ -14,6 +16,8 @@ async def init_db(app: web.Application):
     app["pg"] = await aiopg.create_pool("dbname=school")
     app["mysql"] = await aiomysql.create_pool(db="school")
     app["asyncpg"] = await asyncpg.create_pool("postgresql:///school")
+    app["pg_sa"] = await aiopg.sa.create_engine("dbname=school")
+    app["mysql_sa"] = await aiomysql.sa.create_engine(db="school")
 
 
 async def aiopg_students(request: web.Request):  # $ Source
