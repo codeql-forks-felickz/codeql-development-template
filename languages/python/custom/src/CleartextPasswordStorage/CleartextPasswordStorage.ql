@@ -96,19 +96,44 @@ string insertRegex() {
     "(?is)\\s*(insert|replace)(\\s+or\\s+\\w+)?\\s+into\\s+[\\w.\"`\\[\\]]+\\s*\\(([^)]*)\\)\\s*values\\s*\\((.*)\\)[\\s;]*"
 }
 
+module SqlExecutionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    exists(BinaryExpr fmt | fmt.getOp() instanceof Mod and node = DataFlow::exprNode(fmt))
+    or
+    exists(Call fmt | fmt.getFunc().(Attribute).getName() = "format" and node = DataFlow::exprNode(fmt))
+    or
+    exists(Fstring f | node = DataFlow::exprNode(f))
+    or
+    exists(StringLiteral lit | node = DataFlow::exprNode(lit))
+  }
+
+  predicate isSink(DataFlow::Node node) {
+    exists(SqlExecution exec | node = exec.getSql())
+  }
+}
+
+module SqlExecutionFlow = DataFlow::Global<SqlExecutionConfig>;
+
 /**
  * A string template that is used to build or execute an SQL statement, together with its
  * text. For f-strings each interpolated value is represented by `{}`.
  */
 string sqlTemplate(Expr e) {
-  exists(BinaryExpr fmt | fmt.getOp() instanceof Mod and e = fmt.getLeft() |
+  exists(BinaryExpr fmt |
+    fmt.getOp() instanceof Mod and e = fmt.getLeft() and
+    exists(SqlExecution exec | SqlExecutionFlow::flow(DataFlow::exprNode(fmt), exec.getSql()))
+  |
     result = e.(StringLiteral).getText()
   )
   or
-  exists(Call fmt | fmt.getFunc().(Attribute).getName() = "format" |
+  exists(Call fmt |
+    fmt.getFunc().(Attribute).getName() = "format" and
+    exists(SqlExecution exec | SqlExecutionFlow::flow(DataFlow::exprNode(fmt), exec.getSql()))
+  |
     e = fmt.getFunc().(Attribute).getObject() and result = e.(StringLiteral).getText()
   )
   or
+  exists(SqlExecution exec | SqlExecutionFlow::flow(DataFlow::exprNode(e), exec.getSql())) and
   result =
     concat(int i, Expr part |
       part = e.(Fstring).getValue(i)
@@ -122,7 +147,7 @@ string sqlTemplate(Expr e) {
         i
     )
   or
-  exists(SqlExecution exec | DataFlow::localFlow(DataFlow::exprNode(e), exec.getSql()) |
+  exists(SqlExecution exec | SqlExecutionFlow::flow(DataFlow::exprNode(e), exec.getSql()) |
     result = e.(StringLiteral).getText()
   )
 }
@@ -303,7 +328,7 @@ module HardcodedPasswordConfig implements DataFlow::ConfigSig {
 
 module SensitivePasswordFlow = TaintTracking::Global<SensitivePasswordConfig>;
 
-module HardcodedPasswordFlow = TaintTracking::Global<HardcodedPasswordConfig>;
+module HardcodedPasswordFlow = DataFlow::Global<HardcodedPasswordConfig>;
 
 module CleartextPasswordStorageFlow =
   DataFlow::MergePathGraph<SensitivePasswordFlow::PathNode, HardcodedPasswordFlow::PathNode,

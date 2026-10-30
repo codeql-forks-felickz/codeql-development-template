@@ -24,3 +24,9 @@ def create_user():
     )
     query_db(query, [], False, True)
     return jsonify({"success": True})
+
+
+def create_user_preview():
+    password = request.form.get("password")
+    preview = "INSERT INTO user (password) VALUES ('%s')" % password
+    return preview

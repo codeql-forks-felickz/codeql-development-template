@@ -54,3 +54,5 @@ HASHED_USERS = {
     "alice": {"password": "491a2800b80719ea9e3c89ca5472a8bda1bdd1533d4574ea5bd85b70a8e93be0"},
     "bob": {"password": "pbkdf2_sha256$600000$abc$def"},
 }
+
+users["carol"] = {"password": "v1:" + generate_password_hash("password")}
