@@ -34,6 +34,32 @@ def store_with_absolute_command(title, uploaded_file):
     subprocess.run(["/bin/cp", uploaded_file.temporary_file_path(), UPLOAD_DIR + "/" + title])  # $ Alert
 
 
+def store_with_path_option(title, uploaded_file):
+    subprocess.call(["mv", "-t", os.path.join(UPLOAD_DIR, title), uploaded_file.temporary_file_path()])  # $ Alert
+
+
+def chmod_path(title):
+    subprocess.call(["chmod", "600", os.path.join(UPLOAD_DIR, title)])  # $ Alert
+
+
+def chown_path(title):
+    subprocess.call(["chown", "app", os.path.join(UPLOAD_DIR, title)])  # $ Alert
+
+
+def mode_and_owner_are_not_paths(title):
+    subprocess.call(["chmod", title, "/srv/fixed.txt"])
+    subprocess.call(["chown", title, "/srv/fixed.txt"])
+    subprocess.run(["head", "-n", title, "/srv/fixed.txt"])
+
+
+def shell_option_value_is_not_a_path(title):
+    os.system("head -n " + title + " /srv/fixed.txt")
+
+
+def shell_after_command_separator_is_not_a_path(title):
+    os.system("cat /srv/fixed.txt; printf '%s' " + shlex.quote(title))
+
+
 def store_basename(title, uploaded_file):
     safe = os.path.basename(title)
     subprocess.call(["mv", uploaded_file.temporary_file_path(), os.path.join(UPLOAD_DIR, safe)])
@@ -63,6 +89,12 @@ def upload(request):  # $ Source
     store_quoted(name, f)
     store_with_argument_list(name, f)
     store_with_absolute_command(name, f)
+    store_with_path_option(name, f)
+    chmod_path(name)
+    chown_path(name)
+    mode_and_owner_are_not_paths(name)
+    shell_option_value_is_not_a_path(name)
+    shell_after_command_separator_is_not_a_path(name)
     store_basename(name, f)
     store_checked(name, f)
     echo_title(name)

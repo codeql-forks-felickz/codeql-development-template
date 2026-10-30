@@ -7,6 +7,10 @@ This query extends the standard `py/path-injection` query in two ways:
 
 Results that `py/path-injection` already reports are not repeated.
 
+## Known limitations
+
+Shell command strings are analyzed only when path substitutions can be identified as concatenation operands or simple `%s` formatting arguments in the first command segment. Other shell-string construction and formatting forms are not parsed.
+
 ## Recommendation
 
 Validate user input before using it to construct a file path. Normalize the path with `os.path.normpath` or `os.path.realpath`, then check that the result is inside an allowed directory. Alternatively, map user input to a fixed allowlist of file names.
