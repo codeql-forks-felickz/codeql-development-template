@@ -2,14 +2,14 @@
 
 A JSON Web Token (JWT) only proves who sent a request after its signature has been checked. This query flags two common mistakes:
 
-1. **Unverified decoding (CWE-347).** The caller identity comes from a token that was decoded but never verified. Examples include `jsonwebtoken.decode`, `jwt-decode`, `jws.decode`, `jose.decodeJwt`, and manually base64(url)-decoding the payload segment (`token.split(".")[1]`). Calls to local wrapper functions around these APIs (for example `const decode = (t) => jws.decode(t)?.payload`) are reported at the wrapper call site. An attacker can then send a token with any claims they like.
-2. **No algorithm allowlist (CWE-327).** A token is verified with an asymmetric public key, but no `algorithms` allowlist is set. This applies to `express-jwt`, `koa-jwt`, `jsonwebtoken.verify`, and the two-argument form of `jws.verify`. Without the allowlist, the library may accept the algorithm named in the token header. If an attacker switches the header to `HS256`, the public key (which is not secret) is used as the HMAC secret, so the attacker can forge valid tokens. This is known as RS/HS algorithm confusion.
+1. **Unverified decoding (CWE-347).** The caller identity comes from a token that was decoded but never verified. Examples include `jsonwebtoken.decode`, `jwt-decode`, `jws.decode`, `jose.decodeJwt`, and manually base64(url)-decoding the payload segment (`token.split(".")[1]`). Calls to local wrapper functions around these APIs (for example `const decode = (t) => jws.decode(t)?.payload`) are reported at the wrapper call site. An attacker can then send a token with any claims they like. In addition to standard request sources, cookies and headers read through Next.js `cookies()`/`headers()` (`next/headers`) and `req.cookies.get(..)` in Next.js middleware and route handlers are treated as user-controlled.
+2. **No algorithm allowlist (CWE-327).** A token is verified with an asymmetric public key, but no `algorithms` allowlist is set. This applies to `express-jwt`, `koa-jwt`, `jsonwebtoken.verify`, the two-argument form of `jws.verify`, and `jwt-simple`'s `decode(token, key)` when no algorithm argument is passed. Without the allowlist, the library may accept the algorithm named in the token header. If an attacker switches the header to `HS256`, the public key (which is not secret) is used as the HMAC secret, so the attacker can forge valid tokens. This is known as RS/HS algorithm confusion.
 
 ## Recommendation
 
 Use a verifying API such as `jwt.verify` and read the identity from the value it returns. Do not read it from a decoded but unverified token.
 
-Always pass an explicit `algorithms` allowlist that matches the key type, for example `["RS256"]` for an RSA public key. With `jws`, use `jws.verify(signature, algorithm, key)`.
+Always pass an explicit `algorithms` allowlist that matches the key type, for example `["RS256"]` for an RSA public key. With `jws`, use `jws.verify(signature, algorithm, key)`. With `jwt-simple`, pass the algorithm: `jwt.decode(token, key, false, "RS256")`.
 
 ## Example
 

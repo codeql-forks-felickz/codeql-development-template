@@ -135,8 +135,28 @@ predicate isVerifiedLocally(DataFlow::CallNode call, DataFlow::Node token) {
   )
 }
 
+/**
+ * Holds if `node` reads a cookie or header in Next.js code, which the standard library does not
+ * model as a remote flow source: `cookies()`/`headers()` from `next/headers`, and
+ * `req.cookies.get(..)` in middleware and App Router route handlers.
+ */
+predicate isNextJsRequestValue(DataFlow::Node node) {
+  exists(API::Node store |
+    store = API::moduleImport("next/headers").getMember(["cookies", "headers"]).getReturn() and
+    node = [store, store.getPromised()].getMember("get").getReturn().asSource()
+  )
+  or
+  node =
+    any(NextJS::NextAppRouteHandler h)
+        .getRequest()
+        .getAPropertyRead("cookies")
+        .getAMethodCall(["get", "getAll"])
+}
+
 module UnverifiedDecodeConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) {
+    source instanceof RemoteFlowSource or isNextJsRequestValue(source)
+  }
 
   predicate isSink(DataFlow::Node sink) {
     exists(DataFlow::CallNode call |
@@ -208,6 +228,13 @@ predicate verifiedWithoutAlgorithmAllowlist(DataFlow::CallNode call, DataFlow::N
     // whereas `jws.verify(signature, algorithm, key)` pins the algorithm.
     call = DataFlow::moduleMember("jws", "verify").getACall() and
     call.getNumArgument() = 2 and
+    key = call.getArgument(1)
+    or
+    // `jwt-simple`'s `decode(token, key, noVerify, algorithm)` uses the `alg` header of the token
+    // when no algorithm is given (SNYK-JS-JWTSIMPLE-174523).
+    call = DataFlow::moduleMember("jwt-simple", "decode").getACall() and
+    not exists(call.getArgument(3)) and
+    not call.getArgument(2).mayHaveBooleanValue(true) and
     key = call.getArgument(1)
   )
 }
