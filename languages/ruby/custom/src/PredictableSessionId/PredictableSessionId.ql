@@ -114,6 +114,60 @@ predicate isSecureRandom(DataFlow::Node n) {
   n = API::getTopLevelMember("Random").getAMethodCall("urandom")
 }
 
+/** Holds if `input` is combined with a secure-random input at the same merge. */
+predicate isSecureRandomMergeInput(DataFlow::Node input) {
+  exists(
+    StringLiteral literal, StringInterpolationComponent component,
+    StringInterpolationComponent randomComponent, DataFlow::Node random
+  |
+    component = literal.getComponent(_) and
+    randomComponent = literal.getComponent(_) and
+    component != randomComponent and
+    input.asExpr().getExpr() = component.getStmt(0) and
+    random.asExpr().getExpr() = randomComponent.getStmt(0) and
+    isSecureRandom(random)
+  )
+  or
+  exists(AddExpr add, Expr inputOperand, Expr randomOperand, DataFlow::Node random |
+    input.asExpr().getExpr() = inputOperand and
+    (
+      add instanceof AddExprRoot and
+      inputOperand = add.(AddExprRoot).getALeaf() and
+      randomOperand = add.(AddExprRoot).getALeaf()
+      or
+      not add instanceof AddExprRoot and
+      inputOperand = add.getAnOperand() and
+      randomOperand = add.getAnOperand()
+    ) and
+    inputOperand != randomOperand and
+    random.asExpr().getExpr() = randomOperand and
+    isSecureRandom(random)
+  )
+  or
+  exists(LShiftExpr shift, Expr inputOperand, Expr randomOperand, DataFlow::Node random |
+    input.asExpr().getExpr() = inputOperand and
+    inputOperand = shift.getAnOperand() and
+    randomOperand = shift.getAnOperand() and
+    inputOperand != randomOperand and
+    random.asExpr().getExpr() = randomOperand and
+    isSecureRandom(random)
+  )
+  or
+  exists(
+    MethodCall join, ArrayLiteral array, Expr inputOperand, Expr randomOperand,
+    DataFlow::Node random
+  |
+    join.getMethodName() = "join" and
+    array = join.getReceiver() and
+    input.asExpr().getExpr() = inputOperand and
+    inputOperand = array.getAnElement() and
+    randomOperand = array.getAnElement() and
+    inputOperand != randomOperand and
+    random.asExpr().getExpr() = randomOperand and
+    isSecureRandom(random)
+  )
+}
+
 /**
  * Gets a data-flow node whose value is returned from `m` by a `return` statement inside a
  * block (such as `mutex.synchronize do return x end`), which exits the enclosing method.
@@ -157,6 +211,8 @@ private module CounterToSessionCookieConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr().getExpr() = sessionCookieValue() }
 
+  predicate isBarrier(DataFlow::Node node) { isSecureRandomMergeInput(node) }
+
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -166,22 +222,11 @@ private module CounterToSessionCookieConfig implements DataFlow::ConfigSig {
 
 private module CounterToSessionCookieFlow = TaintTracking::Global<CounterToSessionCookieConfig>;
 
-private module SecureRandomToSessionCookieConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { isSecureRandom(source) }
-
-  predicate isSink(DataFlow::Node sink) { CounterToSessionCookieConfig::isSink(sink) }
-}
-
-private module SecureRandomToSessionCookieFlow =
-  TaintTracking::Global<SecureRandomToSessionCookieConfig>;
-
 import CounterToSessionCookieFlow::PathGraph
 
 from CounterToSessionCookieFlow::PathNode source, CounterToSessionCookieFlow::PathNode sink
 where
-  CounterToSessionCookieFlow::flowPath(source, sink) and
-  // A secure random component makes the identifier unpredictable.
-  not SecureRandomToSessionCookieFlow::flowTo(sink.getNode())
+  CounterToSessionCookieFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "This session identifier is derived from a $@, so other valid identifiers can be predicted.",
   source.getNode(), "sequential counter"

@@ -31,6 +31,12 @@ class TokenServer < Sinatra::Base
     response.set_cookie("SessionID", "#{SecureRandom.urlsafe_base64(32)}-#{increment_count}")
   end
 
+  get "/token/optional" do
+    # BAD: the secure random value is optional, so the counter can still be exposed.
+    value = params[:secure] ? SecureRandom.hex(32) : increment_count.to_s
+    response.set_cookie("SessionID", value) # $ Alert
+  end
+
   get "/token/weak" do
     # BAD: Random.bytes uses a non-cryptographic PRNG, so it does not hide the counter.
     response.set_cookie("SessionID", "#{Random.bytes(8).unpack1('H*')}-#{increment_count}") # $ Alert
