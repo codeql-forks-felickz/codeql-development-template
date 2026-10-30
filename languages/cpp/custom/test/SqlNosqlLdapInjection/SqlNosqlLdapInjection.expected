@@ -1,0 +1,59 @@
+#select
+| test.c:68:73:68:78 | *filter | test.c:56:42:56:65 | recv output argument | test.c:68:73:68:78 | *filter | This LDAP search filter depends on a $@ and is not escaped, which may allow LDAP injection. | test.c:56:42:56:65 | recv output argument | user-provided value (buffer read by recv) |
+| test.c:86:57:86:62 | *filter | test.c:82:42:82:53 | recv output argument | test.c:86:57:86:62 | *filter | This LDAP search filter depends on a $@ and is not escaped, which may allow LDAP injection. | test.c:82:42:82:53 | recv output argument | user-provided value (buffer read by recv) |
+| test.c:98:65:98:70 | *filter | test.c:94:18:94:23 | *call to getenv | test.c:98:65:98:70 | *filter | This LDAP search filter depends on a $@ and is not escaped, which may allow LDAP injection. | test.c:94:18:94:23 | *call to getenv | user-provided value (an environment variable) |
+| test.c:110:68:110:73 | *filter | test.c:108:15:108:19 | fgets output argument | test.c:110:68:110:73 | *filter | This LDAP search filter depends on a $@ and is not escaped, which may allow LDAP injection. | test.c:108:15:108:19 | fgets output argument | user-provided value (string read by fgets) |
+| test.c:111:66:111:71 | *filter | test.c:108:15:108:19 | fgets output argument | test.c:111:66:111:71 | *filter | This LDAP search filter depends on a $@ and is not escaped, which may allow LDAP injection. | test.c:108:15:108:19 | fgets output argument | user-provided value (string read by fgets) |
+| test.c:118:68:118:73 | *filter | test.c:125:24:125:26 | recv output argument | test.c:118:68:118:73 | *filter | This LDAP search filter depends on a $@ and is not escaped, which may allow LDAP injection. | test.c:125:24:125:26 | recv output argument | user-provided value (buffer read by recv) |
+| test.c:140:68:140:73 | *filter | test.c:145:19:145:24 | *call to getenv | test.c:140:68:140:73 | *filter | This LDAP search filter depends on a $@ and is not escaped, which may allow LDAP injection. | test.c:145:19:145:24 | *call to getenv | user-provided value (an environment variable) |
+| test.c:220:68:220:69 | *in | test.c:243:24:243:26 | recv output argument | test.c:220:68:220:69 | *in | This LDAP search filter depends on a $@ and is not escaped, which may allow LDAP injection. | test.c:243:24:243:26 | recv output argument | user-provided value (buffer read by recv) |
+edges
+| test.c:56:42:56:65 | recv output argument | test.c:58:5:58:52 | ... = ... | provenance |  |
+| test.c:58:5:58:52 | ... = ... | test.c:68:73:68:78 | *filter | provenance | TaintFunction |
+| test.c:82:42:82:53 | recv output argument | test.c:84:5:84:46 | ... = ... | provenance |  |
+| test.c:84:5:84:46 | ... = ... | test.c:86:57:86:62 | *filter | provenance | TaintFunction |
+| test.c:94:18:94:23 | *call to getenv | test.c:94:18:94:23 | *call to getenv | provenance |  |
+| test.c:94:18:94:23 | *call to getenv | test.c:98:65:98:70 | *filter | provenance | TaintFunction |
+| test.c:108:15:108:19 | fgets output argument | test.c:110:68:110:73 | *filter | provenance | TaintFunction |
+| test.c:108:15:108:19 | fgets output argument | test.c:111:66:111:71 | *filter | provenance | TaintFunction |
+| test.c:115:46:115:51 | *filter | test.c:118:68:118:73 | *filter | provenance |  |
+| test.c:125:24:125:26 | recv output argument | test.c:127:5:127:14 | ... = ... | provenance |  |
+| test.c:127:5:127:14 | ... = ... | test.c:129:20:129:25 | *filter | provenance | TaintFunction |
+| test.c:129:20:129:25 | *filter | test.c:115:46:115:51 | *filter | provenance |  |
+| test.c:133:50:133:51 | *in | test.c:140:68:140:73 | *filter | provenance | TaintFunction |
+| test.c:145:19:145:24 | *call to getenv | test.c:145:19:145:24 | *call to getenv | provenance |  |
+| test.c:145:19:145:24 | *call to getenv | test.c:147:24:147:28 | *value | provenance |  |
+| test.c:147:24:147:28 | *value | test.c:133:50:133:51 | *in | provenance |  |
+| test.c:217:73:217:74 | *in | test.c:220:68:220:69 | *in | provenance |  |
+| test.c:243:24:243:26 | recv output argument | test.c:245:5:245:14 | ... = ... | provenance |  |
+| test.c:245:5:245:14 | ... = ... | test.c:246:48:246:50 | *buf | provenance |  |
+| test.c:246:48:246:50 | *buf | test.c:217:73:217:74 | *in | provenance |  |
+nodes
+| test.c:56:42:56:65 | recv output argument | semmle.label | recv output argument |
+| test.c:58:5:58:52 | ... = ... | semmle.label | ... = ... |
+| test.c:68:73:68:78 | *filter | semmle.label | *filter |
+| test.c:82:42:82:53 | recv output argument | semmle.label | recv output argument |
+| test.c:84:5:84:46 | ... = ... | semmle.label | ... = ... |
+| test.c:86:57:86:62 | *filter | semmle.label | *filter |
+| test.c:94:18:94:23 | *call to getenv | semmle.label | *call to getenv |
+| test.c:94:18:94:23 | *call to getenv | semmle.label | *call to getenv |
+| test.c:98:65:98:70 | *filter | semmle.label | *filter |
+| test.c:108:15:108:19 | fgets output argument | semmle.label | fgets output argument |
+| test.c:110:68:110:73 | *filter | semmle.label | *filter |
+| test.c:111:66:111:71 | *filter | semmle.label | *filter |
+| test.c:115:46:115:51 | *filter | semmle.label | *filter |
+| test.c:118:68:118:73 | *filter | semmle.label | *filter |
+| test.c:125:24:125:26 | recv output argument | semmle.label | recv output argument |
+| test.c:127:5:127:14 | ... = ... | semmle.label | ... = ... |
+| test.c:129:20:129:25 | *filter | semmle.label | *filter |
+| test.c:133:50:133:51 | *in | semmle.label | *in |
+| test.c:140:68:140:73 | *filter | semmle.label | *filter |
+| test.c:145:19:145:24 | *call to getenv | semmle.label | *call to getenv |
+| test.c:145:19:145:24 | *call to getenv | semmle.label | *call to getenv |
+| test.c:147:24:147:28 | *value | semmle.label | *value |
+| test.c:217:73:217:74 | *in | semmle.label | *in |
+| test.c:220:68:220:69 | *in | semmle.label | *in |
+| test.c:243:24:243:26 | recv output argument | semmle.label | recv output argument |
+| test.c:245:5:245:14 | ... = ... | semmle.label | ... = ... |
+| test.c:246:48:246:50 | *buf | semmle.label | *buf |
+subpaths
