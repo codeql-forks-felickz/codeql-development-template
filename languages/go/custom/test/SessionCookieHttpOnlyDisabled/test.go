@@ -5,6 +5,7 @@ import (
 
 	ginsessions "github.com/gin-contrib/sessions"
 	"github.com/gorilla/sessions"
+	"github.com/labstack/echo/v4"
 )
 
 var store = sessions.NewCookieStore([]byte("key"))
@@ -53,7 +54,7 @@ func localVariableBad(w http.ResponseWriter, r *http.Request) {
 }
 
 func newCookieBad(w http.ResponseWriter) {
-	http.SetCookie(w, sessions.NewCookie("app", "v", &sessions.Options{HttpOnly: false})) // $ Alert
+	http.SetCookie(w, sessions.NewCookie("app", "v", &sessions.Options{HttpOnly: false, Secure: true})) // $ Alert
 }
 
 func ginContribBad(session ginsessions.Session) {
@@ -63,6 +64,47 @@ func ginContribBad(session ginsessions.Session) {
 
 func ginContribStoreBad(s ginsessions.Store) {
 	s.Options(ginsessions.Options{HttpOnly: false, Secure: true}) // $ Alert
+}
+
+func authorizationCookiesBad(w http.ResponseWriter) {
+	writeCookie(w, "Level", "high")
+	writeCookie(w, "Uid", "123")
+}
+
+func writeCookie(w http.ResponseWriter, name, value string) {
+	cookie := http.Cookie{Name: name, Value: value, Secure: true}
+	http.SetCookie(w, &cookie) // $ Alert
+}
+
+func echoSessionCookiesBad(c echo.Context) {
+	cookie := new(http.Cookie)
+	cookie.Name = "sessionIDa5"
+	cookie.Value = "jwt"
+	cookie.Secure = true
+	c.SetCookie(cookie) // $ Alert
+
+	cookie = new(http.Cookie)
+	cookie.Name = "sessionIDsnake"
+	cookie.Value = "jwt"
+	cookie.Secure = true
+	c.SetCookie(cookie) // $ Alert
+}
+
+func nonSensitiveCookieGood(w http.ResponseWriter) {
+	http.SetCookie(w, &http.Cookie{Name: "theme", Value: "dark", Secure: true})
+}
+
+func httpOnlyCookieGood(w http.ResponseWriter) {
+	http.SetCookie(w, &http.Cookie{Name: "sessionToken", Value: "jwt", HttpOnly: true, Secure: true})
+}
+
+func explicitFalseCookieBad(w http.ResponseWriter) {
+	http.SetCookie(w, &http.Cookie{Name: "sessionToken", Value: "jwt", HttpOnly: false, Secure: true}) // $ Alert
+}
+
+func echoHttpOnlyCookieGood(c echo.Context) {
+	cookie := &http.Cookie{Name: "sessionToken", Value: "jwt", HttpOnly: true, Secure: true}
+	c.SetCookie(cookie)
 }
 
 func setSessionGood(w http.ResponseWriter, r *http.Request) {

@@ -1,12 +1,12 @@
-# Session cookie configured with HttpOnly disabled
+# Sensitive cookie without HttpOnly
 
-Session-management libraries such as `github.com/gorilla/sessions` and `github.com/gin-contrib/sessions` store the session identifier (or the whole session) in a cookie whose attributes are configured through an `Options` struct. If the `HttpOnly` option is explicitly set to `false`, client-side scripts can read the session cookie through `document.cookie`. Any cross-site scripting (XSS) flaw in the application can then be used to steal the cookie and hijack the user's session.
+Session-management libraries such as `github.com/gorilla/sessions` and `github.com/gin-contrib/sessions` store the session identifier (or the whole session) in a cookie whose attributes are configured through an `Options` struct. If the `HttpOnly` option is explicitly set to `false`, client-side scripts can read the session cookie through `document.cookie`.
 
-The stock `go/cookie-httponly-not-set` query only models cookies written through `net/http` and Gin, so it does not report session cookies configured through these libraries.
+This query also reports sensitive cookies written through `net/http` or Echo when `HttpOnly` is omitted or explicitly set to `false`. Sensitive cookie names include names containing `session`, `login`, `token`, `user`, `auth` or `credential`, plus the exact names `Level` and `Uid`.
 
 ## Recommendation
 
-Set `HttpOnly: true` on session cookie options (and `Secure: true` when the application is served over HTTPS).
+Set `HttpOnly: true` on sensitive cookie options (and `Secure: true` when the application is served over HTTPS).
 
 ## Example
 
@@ -33,7 +33,7 @@ session.Options = &sessions.Options{
 
 ## Limitations
 
-Only options whose `HttpOnly` field is explicitly assigned a constant `false` (directly, through a named constant, or through a local variable) are reported. Options literals that omit `HttpOnly`, and values read from configuration, are not reported.
+For Gorilla and Gin session options, only an `HttpOnly` value that flows from the constant `false` is reported; omitted fields and values from configuration are not reported. For `net/http` and Echo cookie writes, only cookie names matching the patterns above are reported. This query does not check the `Secure` or `SameSite` attributes.
 
 ## References
 

@@ -4,3 +4,6 @@ github.com/gin-contrib/sessions
 # github.com/gorilla/sessions v1.2.1
 ## explicit
 github.com/gorilla/sessions
+# github.com/labstack/echo/v4 v4.16.1
+## explicit
+github.com/labstack/echo/v4
