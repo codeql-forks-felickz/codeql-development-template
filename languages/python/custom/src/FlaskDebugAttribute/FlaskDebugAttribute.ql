@@ -1,9 +1,8 @@
 /**
- * @name Flask app run in debug mode via the `debug` attribute or `DEBUG` config
- * @description Enabling debug mode through `app.debug` or `app.config["DEBUG"]` (for example,
- *              from an environment variable lookup with a truthy default) before running the
- *              Flask development server may allow an attacker to run arbitrary code through
- *              the debugger.
+ * @name Flask or Django debug mode enabled by default
+ * @description Enabling debug mode through Flask application settings or Django's `DEBUG` or
+ *              `TEMPLATE_DEBUG` settings may expose sensitive information or allow an attacker
+ *              to run arbitrary code through the debugger.
  * @kind problem
  * @problem.severity error
  * @security-severity 7.5
@@ -102,7 +101,22 @@ predicate reachesWithoutDebugWrite(
 }
 
 /**
- * Holds if `setting` sets the debug mode of an application to `value`, through
+ * Holds if `setting` is a Django settings assignment that enables debug mode.
+ */
+predicate isDjangoDebugSetting(ControlFlowNode setting) {
+  exists(Assign assign, Name target, BooleanLiteral value |
+    assign.getATarget() = target and
+    target.getId() in ["DEBUG", "TEMPLATE_DEBUG"] and
+    target.getScope() instanceof Module and
+    assign.getValue() = value and
+    value.booleanValue() = true and
+    target.getLocation().getFile().getRelativePath().matches("%settings.py") and
+    setting = DataFlow::exprNode(value).asCfgNode()
+  )
+}
+
+/**
+ * Holds if `setting` sets the debug mode of a Flask application to `value`, through
  * `app.debug = value`, `app.config["DEBUG"] = value` or `app.config.update(DEBUG=value)`.
  */
 predicate setsDebugMode(
@@ -135,17 +149,35 @@ predicate setsDebugMode(
   )
 }
 
-from ControlFlowNode setting, DataFlow::Node value, API::CallNode run
-where
-  isTruthyByDefault(value) and
-  runWithoutDebugArgument(run) and
-  exists(DataFlow::Node receiver |
-    setsDebugMode(setting, value, receiver) and
-    sameFlaskApplication(receiver, run.(DataFlow::MethodCallNode).getObject()) and
-    reachesWithoutDebugWrite(
-      setting, run.asCfgNode(), run.(DataFlow::MethodCallNode).getObject()
-    )
+/**
+ * Holds if `setting` is a vulnerable Flask or Django debug setting.
+ */
+predicate debugFinding(
+  ControlFlowNode setting, ControlFlowNode related, string message, string label
+) {
+  exists(DataFlow::Node value, API::CallNode run |
+    isTruthyByDefault(value) and
+    runWithoutDebugArgument(run) and
+    exists(DataFlow::Node receiver |
+      setsDebugMode(setting, value, receiver) and
+      sameFlaskApplication(receiver, run.(DataFlow::MethodCallNode).getObject()) and
+      reachesWithoutDebugWrite(
+        setting, run.asCfgNode(), run.(DataFlow::MethodCallNode).getObject()
+      )
+    ) and
+    related = run.asCfgNode() and
+    message =
+      "This setting enables Flask debug mode by default before the app is $@. This may allow an attacker to run arbitrary code through the debugger." and
+    label = "run"
   )
-select setting,
-  "This setting enables Flask debug mode by default before the app is $@. This may allow an attacker to run arbitrary code through the debugger.",
-  run, "run"
+  or
+  isDjangoDebugSetting(setting) and
+  related = setting and
+  message = "This Django settings assignment enables debug mode, which can expose sensitive diagnostic information." and
+  label = "Django settings"
+}
+
+from ControlFlowNode setting, ControlFlowNode related, string message, string label
+where
+  debugFinding(setting, related, message, label)
+select setting, message, related, label
