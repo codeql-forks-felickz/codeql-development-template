@@ -1,9 +1,8 @@
 /**
- * @name Fuzzer input buffer used as a null-terminated string
- * @description Fuzzer-provided test case buffers are arbitrary binary data with
- *              an explicit length and are not null-terminated. Passing them to
- *              functions that expect a null-terminated string reads past the
- *              end of the input.
+ * @name Raw input buffer used as a null-terminated string
+ * @description Fuzzer-provided and raw input buffers are not necessarily
+ *              null-terminated. Passing them to functions that expect a
+ *              null-terminated string may read past the end of the input.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.5
@@ -20,14 +19,15 @@ import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.commons.Printf
 import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import semmle.code.cpp.security.FlowSources as FS
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /**
- * A pointer to a fuzzer-provided test case buffer, which carries an explicit
- * length and is not null-terminated:
+ * A pointer to a non-null-terminated input buffer:
  * - the `data` parameter of a libFuzzer `LLVMFuzzerTestOneInput` entry point, or
  * - the AFL++ shared-memory test case buffer (`__AFL_FUZZ_TESTCASE_BUF`, which
- *   expands to `__afl_fuzz_ptr`).
+ *   expands to `__afl_fuzz_ptr`), or
+ * - an output buffer of `read`, `recv`, or `fread`.
  */
 class FuzzerInputBuffer extends DataFlow::Node {
   FuzzerInputBuffer() {
@@ -41,6 +41,16 @@ class FuzzerInputBuffer extends DataFlow::Node {
   }
 }
 
+/** An output buffer passed to the raw POSIX `read` function. */
+class ReadOutputBuffer extends DataFlow::Node {
+  ReadOutputBuffer() {
+    exists(FunctionCall call |
+      call.getTarget().hasGlobalName("read") and
+      this.asExpr() = call.getArgument(1)
+    )
+  }
+}
+
 /** A libFuzzer entry point: `int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)`. */
 class FuzzerEntryPoint extends Function {
   FuzzerEntryPoint() {
@@ -49,6 +59,7 @@ class FuzzerEntryPoint extends Function {
   }
 
   Parameter getDataParameter() { result = this.getParameter(0) }
+
   Parameter getSizeParameter() { result = this.getParameter(1) }
 }
 
@@ -97,7 +108,14 @@ predicate hasNegativeDynamicPrecision(FormatLiteral fl, int n) {
 }
 
 module FuzzerInputNotNullTerminatedConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof FuzzerInputBuffer }
+  predicate isSource(DataFlow::Node source) {
+    source instanceof FuzzerInputBuffer
+    or
+    source instanceof ReadOutputBuffer
+    or
+    source instanceof FS::FlowSource and
+    source.(FS::FlowSource).getSourceType() in ["string read by fread", "buffer read by recv"]
+  }
 
   predicate isSink(DataFlow::Node sink) { isNullTerminatedStringArgument(_, sink.asExpr()) }
 
@@ -124,6 +142,12 @@ module FuzzerInputNotNullTerminatedConfig implements DataFlow::ConfigSig {
       n1.asExpr() = add.getLeftOperand() and
       n2.asExpr() = add
     )
+    or
+    // Fields read from a raw buffer populated through a pointer to a struct.
+    exists(FieldAccess fa |
+      n1.asIndirectExpr() = fa.getQualifier() and
+      n2.asExpr() = fa
+    )
   }
 }
 
@@ -139,4 +163,4 @@ where
   isNullTerminatedStringArgument(call, sink.getNode().asExpr())
 select sink.getNode(), source, sink,
   "$@ is read as a null-terminated string by $@, but it is not null-terminated.", source.getNode(),
-  "Fuzzer input buffer", call, call.toString()
+  "Input buffer", call, call.toString()

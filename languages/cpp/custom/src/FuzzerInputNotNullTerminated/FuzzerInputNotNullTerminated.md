@@ -1,14 +1,14 @@
-# Fuzzer input buffer used as a null-terminated string
+# Raw input buffer used as a null-terminated string
 
 ## Overview
 
-Fuzzer test cases are arbitrary binary data with an explicit length. The libFuzzer `data` buffer passed to `LLVMFuzzerTestOneInput` and the AFL++ shared-memory buffer `__AFL_FUZZ_TESTCASE_BUF` are not null-terminated. Passing them to functions that expect a null-terminated string, such as `strlen`, `atoi`, `strcpy`, or `printf` with a `%s` conversion (or as the format string), reads past the end of the input when it contains no zero byte.
+Fuzzer test cases are arbitrary binary data with an explicit length. The libFuzzer `data` buffer passed to `LLVMFuzzerTestOneInput` and the AFL++ shared-memory buffer `__AFL_FUZZ_TESTCASE_BUF` are not null-terminated. Likewise, raw buffers populated by `read`, `recv`, or `fread` are not guaranteed to contain a null terminator. Passing these buffers to functions that expect a null-terminated string, such as `strlen`, `atoi`, `strcpy`, or `printf` with a `%s` conversion (or as the format string), may read past the end of the input.
 
 The AFL++ buffer is recognized through `__afl_fuzz_ptr`, which `__AFL_FUZZ_TESTCASE_BUF` expands to when the code is compiled with `afl-cc`. If the AFL++ macros are not defined during database creation (for example with `build-mode: none`), the buffer cannot be identified.
 
 ## Recommendation
 
-Use the length provided by the fuzzer (`size` or `__AFL_FUZZ_TESTCASE_LEN`). Use length-bounded functions such as `strnlen` or `printf("%.*s", len, buf)`, or copy the input into a buffer that is explicitly null-terminated.
+Use the length associated with the input buffer, such as the fuzzer-provided size, a read count, or the field size. Use length-bounded functions such as `strnlen` or `printf("%.*s", len, buf)`, or copy the input into a buffer that is explicitly null-terminated.
 
 ## Example
 

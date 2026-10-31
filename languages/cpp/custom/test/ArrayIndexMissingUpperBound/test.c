@@ -138,3 +138,11 @@ void reassigned_bad(int s) {
       buffer[data] = 1;
   }
 }
+
+void good_read_bothBounds(int s) {
+  int buffer[10] = {0};
+  int data = readIndex(s);
+  if (data >= 0 && data < 10) {
+    printf("%d\n", buffer[data]); // GOOD
+  }
+}
