@@ -1,6 +1,6 @@
 # Request handler with unexitable loop
 
-A loop whose condition is constant `true` (for example `while (true)` or `for (;;)`) and that contains no reachable `break`, `return`, labeled `continue` to an outer loop, or exception that escapes the loop never terminates. When such a loop runs while a Servlet, Spring MVC or JAX-RS request is being handled, the request never completes. Each request occupies a server worker thread and CPU time forever, so a remote attacker can exhaust the server by sending a handful of requests (CWE-835, denial of service).
+A loop whose condition is constant `true` (for example `while (true)` or `for (;;)`) and that contains no reachable `break`, `return`, labeled `continue` to an outer loop, or exception that escapes the loop never terminates. When such a loop runs while a Servlet, Spring MVC or JAX-RS request is being handled, the request never completes. The query also checks exported Android activities, where an externally launched `onCreate` callback can block the UI thread. A remote attacker can exhaust server threads or repeatedly disrupt an Android application (CWE-835, denial of service).
 
 The standard query `java/unreachable-exit-in-loop` only reports loops whose exit condition is a comparison that is always true or always false. It does not report loops that have no exit condition at all, which is what this query covers.
 
@@ -37,7 +37,11 @@ Give the loop an exit condition:
   }
 ```
 
-Loops that can be left through a checked exception declared by a call in the loop (for example `IOException` when streaming a response to a client that has disconnected) are not reported.
+Loops that can be left through a checked exception declared by a call in the loop (for example `IOException` when streaming a response to a client that has disconnected) are not reported. An `InputStream.read()` exception alone does not count as a loop exit because the call can instead return `-1`, after which the loop may continue.
+
+The query recognizes Servlet request methods (`isServletRequestMethod`), Spring `SpringRequestMappingMethod` (including composed annotations such as `@GetMapping`), JAX-RS `JaxRsResourceMethod`, and `onCreate(Bundle)` methods on exported Android activities.
+
+Only exported Android activity `onCreate(Bundle)` callbacks are modelled; other Android component callbacks are not included.
 
 ## References
 

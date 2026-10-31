@@ -13,18 +13,29 @@
  */
 
 import java
+import semmle.code.java.frameworks.android.Android
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.spring.SpringController
 
-/** A method that is invoked to handle a remote (HTTP) request. */
+/** A method that handles a remote request or an exported Android activity launch. */
 class RequestHandler extends Method {
   RequestHandler() {
     this.fromSource() and
     (
-      isServletRequestMethod(this) or
-      this instanceof SpringRequestMappingMethod or
+      isServletRequestMethod(this)
+      or
+      this instanceof SpringRequestMappingMethod
+      or
       this instanceof JaxRsResourceMethod
+      or
+      exists(AndroidActivity activity |
+        this.getDeclaringType() = activity and
+        activity.isExported() and
+        this.hasName("onCreate") and
+        this.getNumberOfParameters() = 1 and
+        this.getParameter(0).getType().(RefType).hasQualifiedName("android.os", "Bundle")
+      )
     )
   }
 }
@@ -63,6 +74,10 @@ predicate checkedExceptionCallExit(LoopStmt loop, Call call, RefType ex) {
   ex = call.getCallee().getAThrownExceptionType() and
   not ex.getAnAncestor() instanceof TypeRuntimeException and
   not ex.getAnAncestor() instanceof TypeError and
+  not (
+    call.getCallee().hasName("read") and
+    call.getCallee().getDeclaringType().hasQualifiedName("java.io", "InputStream")
+  ) and
   not caughtInLoop(loop, call.getEnclosingStmt(), ex) and
   (
     inLoopBody(loop, call.getEnclosingStmt())

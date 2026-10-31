@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="test">
+  <application>
+    <activity android:name="test.ExportedActivity" android:exported="true" />
+    <activity android:name="test.PrivateActivity" android:exported="false" />
+  </application>
+</manifest>

@@ -1,3 +1,4 @@
+| test/ExportedActivity.java:14:7:14:18 | while (...) | This loop has no reachable exit, so the request handled by $@ never completes. | test/ExportedActivity.java:11:18:11:25 | onCreate | ExportedActivity.onCreate |
 | test/InfiniteLoopServlet.java:18:5:18:16 | while (...) | This loop has no reachable exit, so the request handled by $@ never completes. | test/InfiniteLoopServlet.java:16:18:16:22 | doGet | InfiniteLoopServlet.doGet |
 | test/InfiniteLoopServlet.java:31:5:31:12 | for (...;...;...) | This loop has no reachable exit, so the request handled by $@ never completes. | test/InfiniteLoopServlet.java:26:18:26:23 | doPost | InfiniteLoopServlet.doPost |
 | test/InfiniteLoopServlet.java:42:5:48:22 | do ... while (...) | This loop has no reachable exit, so the request handled by $@ never completes. | test/InfiniteLoopServlet.java:41:15:41:21 | service | InfiniteLoopServlet.service |
