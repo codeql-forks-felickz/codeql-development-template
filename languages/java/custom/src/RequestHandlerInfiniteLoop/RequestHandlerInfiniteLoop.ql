@@ -1,0 +1,140 @@
+/**
+ * @name Request handler with unexitable loop
+ * @description A loop with a constant `true` condition and no reachable `break`,
+ *              `return` or escaping exception, executed while handling a remote request,
+ *              never lets the request complete and can be used to exhaust server threads.
+ * @kind problem
+ * @problem.severity error
+ * @security-severity 7.5
+ * @precision high
+ * @id java/request-handler-infinite-loop
+ * @tags security
+ *       external/cwe/cwe-835
+ */
+
+import java
+import semmle.code.java.frameworks.android.Android
+import semmle.code.java.frameworks.Servlets
+import semmle.code.java.frameworks.JaxWS
+import semmle.code.java.frameworks.spring.SpringController
+
+/** A method that handles a remote request or an exported Android activity launch. */
+class RequestHandler extends Method {
+  RequestHandler() {
+    this.fromSource() and
+    (
+      isServletRequestMethod(this)
+      or
+      this instanceof SpringRequestMappingMethod
+      or
+      this instanceof JaxRsResourceMethod
+      or
+      exists(AndroidActivity activity |
+        this.getDeclaringType() = activity and
+        activity.isExported() and
+        this.hasName("onCreate") and
+        this.getNumberOfParameters() = 1 and
+        this.getParameter(0).getType().(RefType).hasQualifiedName("android.os", "Bundle")
+      )
+    )
+  }
+}
+
+/** Holds if `loop` has no condition, or a condition that is the compile-time constant `true`. */
+predicate unconditionalLoop(LoopStmt loop) {
+  loop instanceof ForStmt and not exists(loop.(ForStmt).getCondition())
+  or
+  loop.getCondition().(CompileTimeConstantExpr).getBooleanValue() = true
+}
+
+/** Holds if `s` is lexically inside the body of `loop`, in the same callable. */
+predicate inLoopBody(LoopStmt loop, Stmt s) {
+  s.getEnclosingStmt*() = loop.getBody() and
+  s.getEnclosingCallable() = loop.getEnclosingCallable()
+}
+
+/**
+ * Holds if an exception of type `ex` raised at `s` is caught by a `try` statement
+ * that is itself inside the body of `loop`.
+ */
+predicate caughtInLoop(LoopStmt loop, Stmt s, RefType ex) {
+  exists(TryStmt t |
+    inLoopBody(loop, t) and
+    (
+      s.getEnclosingStmt*() = t.getBlock()
+      or
+      s.getEnclosingStmt*() = t.getAResourceDecl()
+    ) and
+    ex.getAnAncestor() = t.getACatchClause().getACaughtType()
+  )
+}
+
+/** Holds if a checked exception from `call` can leave `loop`. */
+predicate checkedExceptionCallExit(LoopStmt loop, Call call, RefType ex) {
+  ex = call.getCallee().getAThrownExceptionType() and
+  not ex.getAnAncestor() instanceof TypeRuntimeException and
+  not ex.getAnAncestor() instanceof TypeError and
+  not (
+    call.getCallee().hasName("read") and
+    call.getCallee().getDeclaringType().hasQualifiedName("java.io", "InputStream")
+  ) and
+  not caughtInLoop(loop, call.getEnclosingStmt(), ex) and
+  (
+    inLoopBody(loop, call.getEnclosingStmt())
+    or
+    exists(ForStmt forStmt |
+      forStmt = loop and
+      call.getEnclosingStmt() = forStmt and
+      call.(Expr).getParent*() = forStmt.getAnUpdate()
+    )
+  )
+}
+
+/** Holds if `exit` is nested in an `if` branch that cannot execute. */
+predicate unreachableConstantBranchExit(Stmt exit) {
+  exists(IfStmt branch |
+    exit.getEnclosingStmt*() = branch.getThen() and
+    branch.getCondition().(CompileTimeConstantExpr).getBooleanValue() = false
+    or
+    exit.getEnclosingStmt*() = branch.getElse() and
+    branch.getCondition().(CompileTimeConstantExpr).getBooleanValue() = true
+  )
+}
+
+/**
+ * Holds if `exit` is a statement in `loop` that can transfer control out of the loop:
+ * a `return`, a `break` or `continue` that targets the loop or an enclosing statement,
+ * a `throw` that is not caught inside the loop, or a call to a method that declares a
+ * checked exception that is not caught inside the loop.
+ */
+predicate loopExit(LoopStmt loop, Stmt exit) {
+  not unreachableConstantBranchExit(exit) and
+  (
+    inLoopBody(loop, exit) and
+    (
+      exit instanceof ReturnStmt
+      or
+      exit.(BreakStmt).getTarget() = loop.getEnclosingStmt*()
+      or
+      exit.(ContinueStmt).getTarget() = loop.getEnclosingStmt+()
+      or
+      exists(ThrowStmt throw | throw = exit |
+        not caughtInLoop(loop, throw, throw.getExpr().getType())
+      )
+    )
+    or
+    exists(Call call, RefType ex |
+      call.getEnclosingStmt() = exit and
+      checkedExceptionCallExit(loop, call, ex)
+    )
+  )
+}
+
+from LoopStmt loop, RequestHandler handler
+where
+  unconditionalLoop(loop) and
+  not loopExit(loop, _) and
+  loop.getEnclosingCallable().fromSource() and
+  handler.polyCalls*(loop.getEnclosingCallable())
+select loop, "This loop has no reachable exit, so the request handled by $@ never completes.",
+  handler, handler.getDeclaringType().getName() + "." + handler.getName()
