@@ -1,0 +1,22 @@
+# Models for the http4k web toolkit (org.http4k:http4k-core).
+# http4k is a Kotlin HTTP toolkit; request data accessed through the `Request`/`HttpMessage`
+# accessors, the routing/form extension functions, or lenses (`Query`, `Header`, `Path`,
+# `FormField`, ...) is attacker controlled.
+# Note: models-as-data cannot restrict the `LensExtractor` rows to lenses built from request
+# specs, so values read through other lenses (for example `RequestContextKey`) are also
+# treated as remote sources.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.http4k.core", "HttpMessage", True, "bodyString", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.core", "HttpMessage", True, "header", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.core", "HttpMessage", True, "headerValues", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.core", "Request", True, "queries", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.core", "Request", True, "query", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.core.body", "FormBodyKt", False, "form", "(Request,String)", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.lens", "LensExtractor", True, "extract", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.lens", "LensExtractor", True, "get", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.lens", "LensExtractor", True, "invoke", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.http4k.routing", "ExtensionsKt", False, "path", "(Request,String)", "", "ReturnValue", "remote", "manual"]
