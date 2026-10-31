@@ -1,0 +1,86 @@
+#select
+| test_aes.rs:8:11:8:42 | MacroExpr | test_aes.rs:7:31:7:39 | [post] key_bytes | test_aes.rs:8:11:8:42 | MacroExpr | This operation writes $@ to a log. | test_aes.rs:7:31:7:39 | [post] key_bytes | generated cryptographic key material |
+| test_aes.rs:9:15:9:63 | MacroExpr | test_aes.rs:7:31:7:39 | [post] key_bytes | test_aes.rs:9:15:9:63 | MacroExpr | This operation writes $@ to a log. | test_aes.rs:7:31:7:39 | [post] key_bytes | generated cryptographic key material |
+| test_aes_gcm.rs:6:14:6:52 | MacroExpr | test_aes_gcm.rs:5:15:5:44 | ...::generate_key(...) | test_aes_gcm.rs:6:14:6:52 | MacroExpr | This operation writes $@ to a log. | test_aes_gcm.rs:5:15:5:44 | ...::generate_key(...) | generated cryptographic key material |
+| test_ring.rs:23:14:23:54 | MacroExpr | test_ring.rs:22:20:22:28 | [post] key_bytes | test_ring.rs:23:14:23:54 | MacroExpr | This operation writes $@ to a log. | test_ring.rs:22:20:22:28 | [post] key_bytes | generated cryptographic key material |
+edges
+| test_aes.rs:7:31:7:39 | [post] key_bytes | test_aes.rs:8:11:8:42 | MacroExpr | provenance | Sink:MaD:130 |
+| test_aes.rs:7:31:7:39 | [post] key_bytes | test_aes.rs:9:54:9:62 | key_bytes | provenance |  |
+| test_aes.rs:9:36:9:63 | ...::encode_upper(...) | test_aes.rs:9:15:9:63 | MacroExpr | provenance | Sink:MaD:135 |
+| test_aes.rs:9:54:9:62 | key_bytes | test_aes.rs:9:36:9:63 | ...::encode_upper(...) | provenance | Config |
+| test_aes.rs:9:54:9:62 | key_bytes | test_aes.rs:10:42:10:50 | key_bytes | provenance |  |
+| test_aes.rs:10:41:10:50 | &key_bytes | test_aes.rs:10:41:10:50 | &key_bytes | provenance | Sink:MaD:293 |
+| test_aes.rs:10:41:10:50 | &key_bytes [&ref] | test_aes.rs:10:41:10:50 | &key_bytes | provenance | Sink:MaD:293 |
+| test_aes.rs:10:42:10:50 | key_bytes | test_aes.rs:10:41:10:50 | &key_bytes | provenance | Config |
+| test_aes.rs:10:42:10:50 | key_bytes | test_aes.rs:10:41:10:50 | &key_bytes [&ref] | provenance |  |
+| test_aes_gcm.rs:5:9:5:11 | key | test_aes_gcm.rs:6:49:6:51 | key | provenance |  |
+| test_aes_gcm.rs:5:15:5:44 | ...::generate_key(...) | test_aes_gcm.rs:5:9:5:11 | key | provenance |  |
+| test_aes_gcm.rs:6:37:6:52 | ...::encode(...) | test_aes_gcm.rs:6:14:6:52 | MacroExpr | provenance | Sink:MaD:134 |
+| test_aes_gcm.rs:6:49:6:51 | key | test_aes_gcm.rs:6:37:6:52 | ...::encode(...) | provenance | Config |
+| test_aes_gcm.rs:6:49:6:51 | key | test_aes_gcm.rs:7:34:7:36 | key | provenance |  |
+| test_aes_gcm.rs:7:33:7:36 | &key | test_aes_gcm.rs:7:33:7:36 | &key | provenance | Sink:MaD:291 |
+| test_aes_gcm.rs:7:33:7:36 | &key [&ref] | test_aes_gcm.rs:7:33:7:36 | &key | provenance | Sink:MaD:291 |
+| test_aes_gcm.rs:7:34:7:36 | key | test_aes_gcm.rs:7:33:7:36 | &key | provenance | Config |
+| test_aes_gcm.rs:7:34:7:36 | key | test_aes_gcm.rs:7:33:7:36 | &key [&ref] | provenance |  |
+| test_aes_gcm.rs:15:9:15:11 | key | test_aes_gcm.rs:16:34:16:36 | key | provenance |  |
+| test_aes_gcm.rs:15:15:15:44 | ...::generate_key(...) | test_aes_gcm.rs:15:9:15:11 | key | provenance |  |
+| test_aes_gcm.rs:16:33:16:36 | &key | test_aes_gcm.rs:16:33:16:36 | &key | provenance | Sink:MaD:291 |
+| test_aes_gcm.rs:16:33:16:36 | &key [&ref] | test_aes_gcm.rs:16:33:16:36 | &key | provenance | Sink:MaD:291 |
+| test_aes_gcm.rs:16:34:16:36 | key | test_aes_gcm.rs:16:33:16:36 | &key | provenance | Config |
+| test_aes_gcm.rs:16:34:16:36 | key | test_aes_gcm.rs:16:33:16:36 | &key [&ref] | provenance |  |
+| test_ring.rs:22:20:22:28 | [post] key_bytes | test_ring.rs:23:45:23:53 | key_bytes | provenance |  |
+| test_ring.rs:23:32:23:54 | ...::encode(...) | test_ring.rs:23:14:23:54 | MacroExpr | provenance | Sink:MaD:134 |
+| test_ring.rs:23:44:23:53 | &key_bytes | test_ring.rs:23:32:23:54 | ...::encode(...) | provenance | Config |
+| test_ring.rs:23:44:23:53 | &key_bytes [&ref] | test_ring.rs:23:32:23:54 | ...::encode(...) | provenance | Config |
+| test_ring.rs:23:45:23:53 | key_bytes | test_ring.rs:23:44:23:53 | &key_bytes | provenance | Config |
+| test_ring.rs:23:45:23:53 | key_bytes | test_ring.rs:23:44:23:53 | &key_bytes [&ref] | provenance |  |
+| test_ring.rs:23:45:23:53 | key_bytes | test_ring.rs:25:54:25:62 | key_bytes | provenance |  |
+| test_ring.rs:25:54:25:62 | key_bytes | test_ring.rs:25:53:25:62 | &key_bytes | provenance |  |
+| test_ring.rs:25:54:25:62 | key_bytes | test_ring.rs:25:53:25:62 | &key_bytes | provenance | Config |
+| test_ring.rs:37:20:37:28 | [post] key_bytes | test_ring.rs:40:55:40:63 | key_bytes | provenance |  |
+| test_ring.rs:40:55:40:63 | key_bytes | test_ring.rs:40:54:40:63 | &key_bytes | provenance |  |
+| test_ring.rs:40:55:40:63 | key_bytes | test_ring.rs:40:54:40:63 | &key_bytes | provenance | Config |
+| test_ring.rs:47:20:47:29 | [post] request_id | test_ring.rs:49:45:49:54 | request_id | provenance |  |
+| test_ring.rs:49:33:49:55 | ...::encode(...) | test_ring.rs:49:14:49:55 | MacroExpr | provenance | Sink:MaD:134 |
+| test_ring.rs:49:45:49:54 | request_id | test_ring.rs:49:33:49:55 | ...::encode(...) | provenance | Config |
+nodes
+| test_aes.rs:7:31:7:39 | [post] key_bytes | semmle.label | [post] key_bytes |
+| test_aes.rs:8:11:8:42 | MacroExpr | semmle.label | MacroExpr |
+| test_aes.rs:9:15:9:63 | MacroExpr | semmle.label | MacroExpr |
+| test_aes.rs:9:36:9:63 | ...::encode_upper(...) | semmle.label | ...::encode_upper(...) |
+| test_aes.rs:9:54:9:62 | key_bytes | semmle.label | key_bytes |
+| test_aes.rs:10:41:10:50 | &key_bytes | semmle.label | &key_bytes |
+| test_aes.rs:10:41:10:50 | &key_bytes | semmle.label | &key_bytes |
+| test_aes.rs:10:41:10:50 | &key_bytes [&ref] | semmle.label | &key_bytes [&ref] |
+| test_aes.rs:10:42:10:50 | key_bytes | semmle.label | key_bytes |
+| test_aes_gcm.rs:5:9:5:11 | key | semmle.label | key |
+| test_aes_gcm.rs:5:15:5:44 | ...::generate_key(...) | semmle.label | ...::generate_key(...) |
+| test_aes_gcm.rs:6:14:6:52 | MacroExpr | semmle.label | MacroExpr |
+| test_aes_gcm.rs:6:37:6:52 | ...::encode(...) | semmle.label | ...::encode(...) |
+| test_aes_gcm.rs:6:49:6:51 | key | semmle.label | key |
+| test_aes_gcm.rs:7:33:7:36 | &key | semmle.label | &key |
+| test_aes_gcm.rs:7:33:7:36 | &key | semmle.label | &key |
+| test_aes_gcm.rs:7:33:7:36 | &key [&ref] | semmle.label | &key [&ref] |
+| test_aes_gcm.rs:7:34:7:36 | key | semmle.label | key |
+| test_aes_gcm.rs:15:9:15:11 | key | semmle.label | key |
+| test_aes_gcm.rs:15:15:15:44 | ...::generate_key(...) | semmle.label | ...::generate_key(...) |
+| test_aes_gcm.rs:16:33:16:36 | &key | semmle.label | &key |
+| test_aes_gcm.rs:16:33:16:36 | &key | semmle.label | &key |
+| test_aes_gcm.rs:16:33:16:36 | &key [&ref] | semmle.label | &key [&ref] |
+| test_aes_gcm.rs:16:34:16:36 | key | semmle.label | key |
+| test_ring.rs:22:20:22:28 | [post] key_bytes | semmle.label | [post] key_bytes |
+| test_ring.rs:23:14:23:54 | MacroExpr | semmle.label | MacroExpr |
+| test_ring.rs:23:32:23:54 | ...::encode(...) | semmle.label | ...::encode(...) |
+| test_ring.rs:23:44:23:53 | &key_bytes | semmle.label | &key_bytes |
+| test_ring.rs:23:44:23:53 | &key_bytes [&ref] | semmle.label | &key_bytes [&ref] |
+| test_ring.rs:23:45:23:53 | key_bytes | semmle.label | key_bytes |
+| test_ring.rs:25:53:25:62 | &key_bytes | semmle.label | &key_bytes |
+| test_ring.rs:25:54:25:62 | key_bytes | semmle.label | key_bytes |
+| test_ring.rs:37:20:37:28 | [post] key_bytes | semmle.label | [post] key_bytes |
+| test_ring.rs:40:54:40:63 | &key_bytes | semmle.label | &key_bytes |
+| test_ring.rs:40:55:40:63 | key_bytes | semmle.label | key_bytes |
+| test_ring.rs:47:20:47:29 | [post] request_id | semmle.label | [post] request_id |
+| test_ring.rs:49:14:49:55 | MacroExpr | semmle.label | MacroExpr |
+| test_ring.rs:49:33:49:55 | ...::encode(...) | semmle.label | ...::encode(...) |
+| test_ring.rs:49:45:49:54 | request_id | semmle.label | request_id |
+subpaths

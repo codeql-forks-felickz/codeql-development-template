@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Output written to the console or to a log is commonly retained in shared log
+storage, and is readable by operators, log aggregation services, and anyone else
+with access to those logs. If a cryptographic key is written to such output, an
+attacker who can read the logs can recover the key and use it to decrypt or forge
+the data that it protects.
+</p>
+<p>
+This query finds key material that is generated at runtime (for example by filling a
+buffer with random bytes, or by calling <code>generate_key</code>), that is used as
+a cryptographic key, and that is also written to a log or to standard output or
+standard error, possibly after hex encoding. The standard
+<code>rust/cleartext-logging</code> query relies on variable names to recognize
+sensitive data, and does not recognize names such as <code>key_bytes</code>.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do not write cryptographic keys to logs or to the console, even in encoded form. If
+you need to identify a key in diagnostic output, log a non-secret identifier for
+the key instead.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, a freshly generated AES-256-GCM key is hex-encoded and
+printed:
+</p>
+<sample src="CleartextLoggingOfKeyMaterialBad.rs" />
+<p>
+In the following corrected example, only the key length is printed:
+</p>
+<sample src="CleartextLoggingOfKeyMaterialGood.rs" />
+</example>
+
+<references>
+<li>
+MITRE: <a href="https://cwe.mitre.org/data/definitions/532.html">CWE-532: Insertion of Sensitive Information into Log File</a>.
+</li>
+<li>
+OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">Logging Cheat Sheet</a>.
+</li>
+</references>
+
+</qhelp>

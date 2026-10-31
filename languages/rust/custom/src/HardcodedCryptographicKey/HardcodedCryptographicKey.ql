@@ -25,7 +25,9 @@ import common.CryptoKeyMaterial
  * `codeql/rust-all`.
  */
 module HardcodedCryptographicKeyConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof HardcodedCryptographicValue::Source }
+  predicate isSource(DataFlow::Node source) {
+    source instanceof HardcodedCryptographicValue::Source
+  }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CryptographicKeySink }
 
@@ -58,7 +60,9 @@ module HardcodedCryptographicKeyFlow = TaintTracking::Global<HardcodedCryptograp
  * query, used to avoid reporting results that query already reports.
  */
 module StandardHardcodedCryptographicValueConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof HardcodedCryptographicValue::Source }
+  predicate isSource(DataFlow::Node source) {
+    source instanceof HardcodedCryptographicValue::Source
+  }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof HardcodedCryptographicValue::Sink }
 

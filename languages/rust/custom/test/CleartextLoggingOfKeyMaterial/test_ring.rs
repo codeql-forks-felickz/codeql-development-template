@@ -19,8 +19,8 @@ impl NonceSequence for CounterNonceSequence {
 pub fn test_ring_bad() -> Result<(), Unspecified> {
     let rand = SystemRandom::new();
     let mut key_bytes = vec![0; AES_256_GCM.key_len()];
-    rand.fill(&mut key_bytes)?;
-    println!("key_bytes = {}", hex::encode(&key_bytes));
+    rand.fill(&mut key_bytes)?; // $ Source[rust/cleartext-logging-key-material]
+    println!("key_bytes = {}", hex::encode(&key_bytes)); // $ Alert[rust/cleartext-logging-key-material]
 
     let unbound_key = UnboundKey::new(&AES_256_GCM, &key_bytes)?;
     let mut sealing_key = SealingKey::new(unbound_key, CounterNonceSequence(1));

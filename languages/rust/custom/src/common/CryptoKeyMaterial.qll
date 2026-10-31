@@ -124,3 +124,23 @@ predicate keyMaterialConversionStep(DataFlow::Node node1, DataFlow::Node node2) 
       ])
   )
 }
+
+/**
+ * Holds if `node2` is an encoding (such as a hex string) of the key material
+ * in `node1`.
+ */
+predicate keyMaterialEncodingStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(Call call |
+    callTo(call, ["hex::encode", "hex::encode_upper"]) and
+    node1.asExpr() = call.getPositionalArgument(0) and
+    node2.asExpr() = call
+  )
+}
+
+/**
+ * Holds if `e` computes a property of a value, such as its length, that does
+ * not reveal the value itself.
+ */
+predicate isNonRevealingProperty(Expr e) {
+  e.(MethodCallExpr).getIdentifier().getText() = ["len", "is_empty", "capacity"]
+}
