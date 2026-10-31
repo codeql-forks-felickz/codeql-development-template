@@ -1,0 +1,102 @@
+#select
+| django_redirect.py:9:21:9:52 | ControlFlowNode for Attribute() | django_redirect.py:6:17:6:23 | ControlFlowNode for request | django_redirect.py:9:21:9:52 | ControlFlowNode for Attribute() | Untrusted URL redirection depends on a $@. | django_redirect.py:6:17:6:23 | ControlFlowNode for request | user-provided value |
+| flask_redirect.py:9:21:9:44 | ControlFlowNode for Attribute() | flask_redirect.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_redirect.py:9:21:9:44 | ControlFlowNode for Attribute() | Untrusted URL redirection depends on a $@. | flask_redirect.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| flask_redirect.py:30:21:30:38 | ControlFlowNode for Lambda() | flask_redirect.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_redirect.py:30:21:30:38 | ControlFlowNode for Lambda() | Untrusted URL redirection depends on a $@. | flask_redirect.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| http_server_redirect.py:15:42:15:47 | ControlFlowNode for target | http_server_redirect.py:7:16:7:19 | ControlFlowNode for self | http_server_redirect.py:15:42:15:47 | ControlFlowNode for target | Untrusted URL redirection depends on a $@. | http_server_redirect.py:7:16:7:19 | ControlFlowNode for self | user-provided value |
+| http_server_redirect.py:20:42:20:58 | ControlFlowNode for Subscript | http_server_redirect.py:7:16:7:19 | ControlFlowNode for self | http_server_redirect.py:20:42:20:58 | ControlFlowNode for Subscript | Untrusted URL redirection depends on a $@. | http_server_redirect.py:7:16:7:19 | ControlFlowNode for self | user-provided value |
+| http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | http_server_redirect.py:50:16:50:19 | ControlFlowNode for self | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | Untrusted URL redirection depends on a $@. | http_server_redirect.py:50:16:50:19 | ControlFlowNode for self | user-provided value |
+| http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | http_server_redirect.py:50:16:50:19 | ControlFlowNode for self | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | Untrusted URL redirection depends on a $@. | http_server_redirect.py:50:16:50:19 | ControlFlowNode for self | user-provided value |
+edges
+| django_redirect.py:6:17:6:23 | ControlFlowNode for request | django_redirect.py:9:21:9:31 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| django_redirect.py:9:21:9:31 | ControlFlowNode for Attribute | django_redirect.py:9:21:9:52 | ControlFlowNode for Attribute() | provenance | dict.get |
+| flask_redirect.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_redirect.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
+| flask_redirect.py:1:26:1:32 | ControlFlowNode for request | flask_redirect.py:9:21:9:27 | ControlFlowNode for request | provenance |  |
+| flask_redirect.py:1:26:1:32 | ControlFlowNode for request | flask_redirect.py:28:22:28:28 | ControlFlowNode for request | provenance |  |
+| flask_redirect.py:9:21:9:27 | ControlFlowNode for request | flask_redirect.py:9:21:9:32 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| flask_redirect.py:9:21:9:32 | ControlFlowNode for Attribute | flask_redirect.py:9:21:9:44 | ControlFlowNode for Attribute() | provenance | dict.get |
+| flask_redirect.py:28:22:28:28 | ControlFlowNode for request | flask_redirect.py:30:21:30:38 | ControlFlowNode for Lambda() | provenance | AdditionalTaintStep |
+| flask_redirect.py:28:22:28:28 | ControlFlowNode for request | flask_redirect.py:30:30:30:35 | ControlFlowNode for target | provenance | AdditionalTaintStep |
+| http_server_redirect.py:7:16:7:19 | ControlFlowNode for self | http_server_redirect.py:8:39:8:47 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| http_server_redirect.py:8:9:8:13 | ControlFlowNode for query | http_server_redirect.py:9:40:9:44 | ControlFlowNode for query | provenance |  |
+| http_server_redirect.py:8:17:8:48 | ControlFlowNode for Attribute() | http_server_redirect.py:8:9:8:13 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| http_server_redirect.py:8:39:8:47 | ControlFlowNode for Attribute | http_server_redirect.py:8:17:8:48 | ControlFlowNode for Attribute() | provenance | MaD:125 |
+| http_server_redirect.py:9:9:9:14 | ControlFlowNode for params | http_server_redirect.py:13:13:13:18 | ControlFlowNode for target | provenance |  |
+| http_server_redirect.py:9:9:9:14 | ControlFlowNode for params | http_server_redirect.py:20:42:20:58 | ControlFlowNode for Subscript | provenance |  |
+| http_server_redirect.py:9:18:9:45 | ControlFlowNode for Attribute() | http_server_redirect.py:9:9:9:14 | ControlFlowNode for params | provenance |  |
+| http_server_redirect.py:9:40:9:44 | ControlFlowNode for query | http_server_redirect.py:9:18:9:45 | ControlFlowNode for Attribute() | provenance | MaD:124 |
+| http_server_redirect.py:13:13:13:18 | ControlFlowNode for target | http_server_redirect.py:15:42:15:47 | ControlFlowNode for target | provenance |  |
+| http_server_redirect.py:46:17:46:21 | ControlFlowNode for value | http_server_redirect.py:46:24:46:75 | ControlFlowNode for Attribute() | provenance |  |
+| http_server_redirect.py:50:16:50:19 | ControlFlowNode for self | http_server_redirect.py:52:9:52:19 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| http_server_redirect.py:50:16:50:19 | ControlFlowNode for self | http_server_redirect.py:52:9:52:19 | IterableElement | provenance | AdditionalTaintStep |
+| http_server_redirect.py:50:16:50:19 | ControlFlowNode for self | http_server_redirect.py:52:15:52:19 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| http_server_redirect.py:52:9:52:19 | ControlFlowNode for Tuple | http_server_redirect.py:52:15:52:19 | ControlFlowNode for query | provenance |  |
+| http_server_redirect.py:52:9:52:19 | ControlFlowNode for Tuple [Tuple element at index 1] | http_server_redirect.py:52:15:52:19 | ControlFlowNode for query | provenance |  |
+| http_server_redirect.py:52:9:52:19 | IterableElement | http_server_redirect.py:52:9:52:19 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| http_server_redirect.py:52:15:52:19 | ControlFlowNode for query | http_server_redirect.py:54:145:54:149 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| http_server_redirect.py:53:9:53:14 | ControlFlowNode for params [Any dictionary element] | http_server_redirect.py:60:49:60:54 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server_redirect.py:53:9:53:14 | ControlFlowNode for params [Any dictionary element] | http_server_redirect.py:60:49:60:54 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server_redirect.py:53:18:56:9 | ControlFlowNode for dict() [Any dictionary element] | http_server_redirect.py:53:9:53:14 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| http_server_redirect.py:54:13:55:91 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | http_server_redirect.py:53:18:56:9 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| http_server_redirect.py:54:14:54:152 | ControlFlowNode for Tuple [Tuple element at index 1] | http_server_redirect.py:54:14:54:152 | ControlFlowNode for Yield [List element, Tuple element at index 1] | provenance |  |
+| http_server_redirect.py:54:14:54:152 | ControlFlowNode for Yield [List element, Tuple element at index 1] | http_server_redirect.py:54:13:55:91 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | provenance |  |
+| http_server_redirect.py:54:40:54:152 | ControlFlowNode for Attribute() | http_server_redirect.py:54:14:54:152 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| http_server_redirect.py:54:61:54:151 | ControlFlowNode for Attribute() | http_server_redirect.py:54:40:54:152 | ControlFlowNode for Attribute() | provenance | MaD:129 |
+| http_server_redirect.py:54:70:54:150 | ControlFlowNode for Attribute() | http_server_redirect.py:54:61:54:151 | ControlFlowNode for Attribute() | provenance | str.join |
+| http_server_redirect.py:54:70:54:150 | ControlFlowNode for Attribute() [List element] | http_server_redirect.py:54:61:54:151 | ControlFlowNode for Attribute() | provenance | str.join |
+| http_server_redirect.py:54:145:54:149 | ControlFlowNode for query | http_server_redirect.py:54:70:54:150 | ControlFlowNode for Attribute() | provenance | re.findall |
+| http_server_redirect.py:54:145:54:149 | ControlFlowNode for query | http_server_redirect.py:54:70:54:150 | ControlFlowNode for Attribute() [List element] | provenance | re.findall |
+| http_server_redirect.py:60:49:60:54 | ControlFlowNode for params [Any dictionary element] | http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | provenance |  |
+| http_server_redirect.py:60:49:60:54 | ControlFlowNode for params [Any dictionary element] | http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | provenance |  |
+| http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | http_server_redirect.py:46:17:46:21 | ControlFlowNode for value | provenance |  |
+| http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | http_server_redirect.py:46:17:46:21 | ControlFlowNode for value | provenance |  |
+| http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | provenance |  |
+| http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | provenance |  |
+nodes
+| django_redirect.py:6:17:6:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| django_redirect.py:9:21:9:31 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| django_redirect.py:9:21:9:52 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| flask_redirect.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| flask_redirect.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_redirect.py:9:21:9:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_redirect.py:9:21:9:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| flask_redirect.py:9:21:9:44 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| flask_redirect.py:28:22:28:28 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_redirect.py:30:21:30:38 | ControlFlowNode for Lambda() | semmle.label | ControlFlowNode for Lambda() |
+| flask_redirect.py:30:30:30:35 | ControlFlowNode for target | semmle.label | ControlFlowNode for target |
+| http_server_redirect.py:7:16:7:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| http_server_redirect.py:8:9:8:13 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| http_server_redirect.py:8:17:8:48 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server_redirect.py:8:39:8:47 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| http_server_redirect.py:9:9:9:14 | ControlFlowNode for params | semmle.label | ControlFlowNode for params |
+| http_server_redirect.py:9:18:9:45 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server_redirect.py:9:40:9:44 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| http_server_redirect.py:13:13:13:18 | ControlFlowNode for target | semmle.label | ControlFlowNode for target |
+| http_server_redirect.py:15:42:15:47 | ControlFlowNode for target | semmle.label | ControlFlowNode for target |
+| http_server_redirect.py:20:42:20:58 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| http_server_redirect.py:46:17:46:21 | ControlFlowNode for value | semmle.label | ControlFlowNode for value |
+| http_server_redirect.py:46:24:46:75 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server_redirect.py:50:16:50:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| http_server_redirect.py:52:9:52:19 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| http_server_redirect.py:52:9:52:19 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| http_server_redirect.py:52:9:52:19 | IterableElement | semmle.label | IterableElement |
+| http_server_redirect.py:52:15:52:19 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| http_server_redirect.py:53:9:53:14 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server_redirect.py:53:18:56:9 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| http_server_redirect.py:54:13:55:91 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| http_server_redirect.py:54:14:54:152 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| http_server_redirect.py:54:14:54:152 | ControlFlowNode for Yield [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for Yield [List element, Tuple element at index 1] |
+| http_server_redirect.py:54:40:54:152 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server_redirect.py:54:61:54:151 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server_redirect.py:54:70:54:150 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_server_redirect.py:54:70:54:150 | ControlFlowNode for Attribute() [List element] | semmle.label | ControlFlowNode for Attribute() [List element] |
+| http_server_redirect.py:54:145:54:149 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | semmle.label | ControlFlowNode for LATIN1() |
+| http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | semmle.label | ControlFlowNode for LATIN1() |
+| http_server_redirect.py:60:49:60:54 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server_redirect.py:60:49:60:54 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+subpaths
+| flask_redirect.py:28:22:28:28 | ControlFlowNode for request | flask_redirect.py:30:30:30:35 | ControlFlowNode for target | flask_redirect.py:30:30:30:35 | ControlFlowNode for target | flask_redirect.py:30:21:30:38 | ControlFlowNode for Lambda() |
+| http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | http_server_redirect.py:46:17:46:21 | ControlFlowNode for value | http_server_redirect.py:46:24:46:75 | ControlFlowNode for Attribute() | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() |
+| http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | http_server_redirect.py:46:17:46:21 | ControlFlowNode for value | http_server_redirect.py:46:24:46:75 | ControlFlowNode for Attribute() | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() |
