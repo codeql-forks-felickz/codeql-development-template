@@ -1,8 +1,8 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const { NextResponse } = require('next/server');
-const { defineConfig } = require('vite');
-const https = require('https');
+
+
 const app = express();
 const router = express.Router();
 
@@ -62,16 +62,3 @@ exports.POST = async (request) => {
   res.cookies.set('jwt', data.jwt, { path: '/', httpOnly: true });
   return res;
 };
-
-exports.proxyConfig = defineConfig({
-  server: {
-    proxy: {
-      '/unchecked': { target: 'https://localhost:7095', secure: false },
-      '/checked': { target: 'https://localhost:7095', secure: true },
-    },
-  },
-});
-
-// Control: certificate validation options recognized by the stock TLS query.
-https.request({ host: 'localhost', rejectUnauthorized: false });
-https.request({ host: 'localhost', rejectUnauthorized: true });
