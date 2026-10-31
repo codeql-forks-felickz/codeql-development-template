@@ -1,0 +1,17 @@
+| Test.cs:10:9:10:48 | ... = ... | The session timeout of '-1' minutes means sessions never or only rarely expire (CWE-613). |
+| Test.cs:16:9:16:32 | ... = ... | The session timeout of '525600' minutes means sessions never or only rarely expire (CWE-613). |
+| Test.cs:31:13:31:35 | call to method Redirect | Execution continues after this redirect without ending the request, so the following code still runs (CWE-698). |
+| Test.cs:38:9:38:38 | call to method Redirect | Execution continues after this redirect without ending the request, so the following code still runs (CWE-698). |
+| Test.cs:45:13:45:35 | call to method Redirect | Execution continues after this redirect without ending the request, so the following code still runs (CWE-698). |
+| Test.cs:82:9:82:43 | ... = ... | The password policy accepts passwords of only 2 characters, which allows easily guessed passwords (CWE-521). |
+| Test.cs:84:9:84:50 | ... = ... | Account lockout is disabled for new users, which allows unlimited password guessing (CWE-307). |
+| Test.cs:89:39:89:56 | ... = ... | The password policy accepts passwords of only 4 characters, which allows easily guessed passwords (CWE-521). |
+| Test.cs:105:13:105:34 | ... = ... | Token validation is weakened by setting 'ValidateIssuer' to false, so tokens minted for other issuers, audiences or lifetimes are accepted (CWE-287). |
+| Test.cs:106:13:106:36 | ... = ... | Token validation is weakened by setting 'ValidateAudience' to false, so tokens minted for other issuers, audiences or lifetimes are accepted (CWE-287). |
+| Test.cs:113:9:113:34 | ... = ... | Token validation is weakened by setting 'ValidateLifetime' to false, so tokens minted for other issuers, audiences or lifetimes are accepted (CWE-287). |
+| Test.cs:114:9:114:37 | ... = ... | Token validation is weakened by setting 'RequireSignedTokens' to false, so tokens minted for other issuers, audiences or lifetimes are accepted (CWE-287). |
+| Web.config:5:5:5:97 | enableViewStateMac=false | ViewState MAC validation is disabled, which allows ViewState tampering (CWE-554). |
+| Web.config:5:5:5:97 | viewStateEncryptionMode=Never | ViewState encryption is disabled, which exposes ViewState contents (CWE-554). |
+| Web.config:7:5:7:48 | timeout=-1 | The session timeout of '-1' minutes means sessions never or only rarely expire (CWE-613). |
+| Web.config:10:7:10:74 | timeout=43200 | The forms authentication ticket timeout of '43200' minutes means authentication never or only rarely expires (CWE-613). |
+| Web.config:15:9:15:148 | minRequiredPasswordLength=6 | The membership provider accepts passwords of only 6 characters, which allows easily guessed passwords (CWE-521). |
