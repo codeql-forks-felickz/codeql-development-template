@@ -1,0 +1,2 @@
+query: StackTraceExposureExtended/StackTraceExposureExtended.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
