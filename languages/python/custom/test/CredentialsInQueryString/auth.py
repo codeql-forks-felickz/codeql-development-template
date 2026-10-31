@@ -22,13 +22,13 @@ def login_and_redirect():
 @app.route("/login_subscript")
 def login_subscript():
     passwd = request.args["passwd"]  # $ Alert[py/credentials-in-query-string]
-    return passwd
+    return jsonify(passwd)
 
 
 @app.route("/login_getlist")
 def login_getlist():
     pw = request.args.getlist("user_password")  # $ Alert[py/credentials-in-query-string]
-    return str(pw)
+    return jsonify(pw)
 
 
 @app.route("/login", methods=["POST"])
@@ -44,10 +44,10 @@ def search():
     # Safe: non-credential query string parameters.
     term = request.args.get("q")
     page = request.args["page"]
-    return term + page
+    return jsonify(term + page)
 
 
 @app.route("/reset")
 def reset():
     # Safe: names that only mention passwords but are not credentials.
-    return request.args.get("password_reset_url")
+    return jsonify(request.args.get("password_reset_url"))
