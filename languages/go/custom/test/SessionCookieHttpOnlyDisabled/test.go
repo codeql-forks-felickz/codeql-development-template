@@ -54,7 +54,9 @@ func localVariableBad(w http.ResponseWriter, r *http.Request) {
 }
 
 func newCookieBad(w http.ResponseWriter) {
-	http.SetCookie(w, sessions.NewCookie("app", "v", &sessions.Options{HttpOnly: false, Secure: true})) // $ Alert
+	cookie := sessions.NewCookie("app", "v", &sessions.Options{HttpOnly: false, Secure: true}) // $ Alert
+	cookie.Secure = true
+	http.SetCookie(w, cookie)
 }
 
 func ginContribBad(session ginsessions.Session) {
