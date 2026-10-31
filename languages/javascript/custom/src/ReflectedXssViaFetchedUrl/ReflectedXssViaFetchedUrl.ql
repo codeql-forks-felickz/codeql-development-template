@@ -16,35 +16,63 @@
 
 import javascript
 import semmle.javascript.security.dataflow.ReflectedXssCustomizations
+import semmle.javascript.security.dataflow.UrlConcatenation
 private import semmle.javascript.security.dataflow.Xss::Shared as SharedXss
 
-/**
- * Gets the leftmost fragment of the URL `url`, that is, the part of the URL that
- * determines its scheme and host.
- */
-DataFlow::Node urlPrefix(DataFlow::Node url) {
-  exists(StringOps::ConcatenationRoot root | DataFlow::localFlowStep*(root, url) |
-    result = root.getFirstLeaf()
-  )
-  or
-  not exists(StringOps::ConcatenationRoot root | DataFlow::localFlowStep*(root, url)) and
-  result = url
+/** Gets the URL argument of `request`. */
+private DataFlow::Node getRequestUrl(ClientRequest request) {
+  if request = DataFlow::moduleMember("needle", "request").getACall()
+  then
+    // `needle.request(method, url, data, [options], callback)`: the library model reports the
+    // method as the URL.
+    result = request.(DataFlow::CallNode).getArgument(1)
+  else result = request.getUrl()
 }
 
-/**
- * Holds if `request` fetches a URL whose leftmost fragment is `prefix`.
- */
-predicate fetchesUrlWithPrefix(ClientRequest request, DataFlow::Node prefix) {
-  exists(DataFlow::Node url |
-    if request = DataFlow::moduleMember("needle", "request").getACall()
-    then
-      // `needle.request(method, url, data, [options], callback)`: the library model reports the
-      // method as the URL.
-      url = request.(DataFlow::CallNode).getArgument(1)
-    else url = request.getUrl()
-  |
-    prefix = urlPrefix(url)
+private predicate isUrlOriginOrHost(DataFlow::Node property, DataFlow::Node url) {
+  exists(DataFlow::PropRead read, DataFlow::NewNode parsedUrl |
+    read = property and
+    read.getPropertyName() = ["origin", "host", "hostname"] and
+    parsedUrl = read.getBase().getALocalSource() and
+    parsedUrl.getCalleeNode() = DataFlow::globalVarRef("URL") and
+    url = parsedUrl.getArgument(0)
   )
+}
+
+private predicate isUrlOriginOrHostEquality(EqualityTest test, DataFlow::Node url) {
+  exists(DataFlow::Node property, Expr constant |
+    test.hasOperands(property.asExpr(), constant) and
+    exists(constant.getStringValue()) and
+    isUrlOriginOrHost(property, url)
+  )
+}
+
+private class UrlOriginOrHostEqualityGuard extends DataFlow::ValueNode {
+  override EqualityTest astNode;
+
+  UrlOriginOrHostEqualityGuard() { isUrlOriginOrHostEquality(astNode, _) }
+
+  predicate blocksExpr(boolean outcome, Expr e, TFlowState state) {
+    state = TUrl() and
+    outcome = astNode.getPolarity() and
+    isUrlOriginOrHostEquality(astNode, e.flow())
+  }
+}
+
+private class UrlOriginOrHostAllowListGuard extends InclusionTest {
+  predicate blocksExpr(boolean outcome, Expr e, TFlowState state) {
+    state = TUrl() and
+    outcome = this.getPolarity() and
+    isUrlOriginOrHost(this.getContainedNode(), e.flow()) and
+    exists(DataFlow::ArrayCreationNode allowList |
+      this.getContainerNode().getALocalSource() = allowList and
+      allowList.getAnElement().getStringValue() != "" and
+      not exists(DataFlow::Node element |
+        element = allowList.getAnElement() and
+        not exists(element.getStringValue())
+      )
+    )
+  }
 }
 
 /**
@@ -52,8 +80,8 @@ predicate fetchesUrlWithPrefix(ClientRequest request, DataFlow::Node prefix) {
  * server cannot use to inject HTML.
  */
 predicate isResponseMetadataRead(DataFlow::PropRead read) {
-  read.getPropertyName() =
-    ["statusCode", "status", "statusMessage", "statusText", "ok", "headers", "redirected"]
+  read.getPropertyName() = ["statusCode", "status", "ok", "redirected"] and
+  exists(ClientRequest request | read.getBase().getALocalSource() = request.getAResponseDataNode())
 }
 
 /** The two phases of the flow: the request URL, and the fetched response. */
@@ -79,6 +107,19 @@ module ReflectedXssViaFetchedUrlConfig implements DataFlow::StateConfigSig {
       node instanceof ReflectedXss::Sanitizer or
       node = SharedXss::BarrierGuard::getABarrierNode()
     )
+    or
+    state = TUrl() and
+    (
+      node = HostnameSanitizerGuard::getABarrierNode() or
+      node =
+        DataFlow::MakeStateBarrierGuard<TFlowState, UrlOriginOrHostEqualityGuard>::getABarrierNode(state) or
+      node =
+        DataFlow::MakeStateBarrierGuard<TFlowState, UrlOriginOrHostAllowListGuard>::getABarrierNode(state)
+    )
+  }
+
+  predicate isBarrierOut(DataFlow::Node node, FlowState state) {
+    state = TUrl() and hostnameSanitizingPrefixEdge(node, _)
   }
 
   predicate isAdditionalFlowStep(
@@ -86,7 +127,7 @@ module ReflectedXssViaFetchedUrlConfig implements DataFlow::StateConfigSig {
   ) {
     // If the user controls the scheme and host of a fetched URL, they control the response.
     exists(ClientRequest request |
-      fetchesUrlWithPrefix(request, node1) and
+      node1 = getRequestUrl(request) and
       node2 = request.getAResponseDataNode(_, _) and
       state1 = TUrl() and
       state2 = TResponse()

@@ -5,8 +5,9 @@
 # `private readonly route = inject(ActivatedRoute)` have no type annotation, so their URL-derived
 # sources and `bypassSecurityTrust*` sinks were not recognized.
 #
-# The member names used below (`snapshot.queryParams`, `bypassSecurityTrustHtml`, ...) are specific
-# to `ActivatedRoute` and `DomSanitizer`, so the injected token does not need to be constrained.
+# These access paths cannot inspect the argument passed to `inject()`. As a result, services that
+# expose the same member paths may also be modeled; constrain the token if a concrete false positive
+# is found and a token-aware model can be integrated with the stock queries.
 extensions:
   - addsTo:
       pack: codeql/javascript-all

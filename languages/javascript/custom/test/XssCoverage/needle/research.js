@@ -56,11 +56,74 @@ app.get("/quote", (req, res) => {
   });
 });
 
+// Safe: a helper fetches a fixed origin; only the query is user-controlled.
+app.get("/helper-fixed-origin", (req, res) => {
+  fetchAndSend("https://stocks.example.com/quote?symbol=" + req.query.symbol, res);
+});
+
+// The helper must still report when the user controls the origin.
+app.get("/helper-tainted-origin", (req, res) => {
+  fetchAndSend("https://" + req.query.host + "/", res); // $ Source[js/reflected-xss-via-fetched-url]
+});
+
+function fetchAndSend(url, res) {
+  needle.get(url, (error, response, body) => {
+    res.send(body); // $ Alert[js/reflected-xss-via-fetched-url]
+  });
+}
+
+// The fixed scheme does not make a user-controlled host safe.
+app.get("/fixed-scheme-tainted-host", (req, res) => {
+  needle.get("https://" + req.query.host + "/", (error, response, body) => { // $ Source[js/reflected-xss-via-fetched-url]
+    res.send(body); // $ Alert[js/reflected-xss-via-fetched-url]
+  });
+});
+
 // Safe: the origin comes from configuration; the user only controls the path.
 app.get("/config-origin", (req, res) => {
   needle.get(process.env.STOCKS_API + "/quote/" + req.query.symbol, (error, response, body) => {
     res.send(body);
   });
+});
+
+// Safe: an exact origin check constrains the requested host.
+app.get("/validated-origin", (req, res) => {
+  const url = req.query.url;
+  if (new URL(url).origin === "https://stocks.example.com") {
+    needle.get(url, (error, response, body) => {
+      res.send(body);
+    });
+  }
+});
+
+// Safe: an exact host check constrains the requested host.
+app.get("/validated-host", (req, res) => {
+  const url = req.query.url;
+  if (new URL(url).host === "stocks.example.com") {
+    needle.get(url, (error, response, body) => {
+      res.send(body);
+    });
+  }
+});
+
+// Safe: the parsed origin must match one of the fixed allow-list entries.
+app.get("/validated-origin-allow-list", (req, res) => {
+  const url = req.query.url;
+  if (["https://stocks.example.com"].includes(new URL(url).origin)) {
+    needle.get(url, (error, response, body) => {
+      res.send(body);
+    });
+  }
+});
+
+// Unsafe: a prefix without a slash does not delimit the host.
+app.get("/unsound-prefix", (req, res) => {
+  const url = req.query.url; // $ Source[js/reflected-xss-via-fetched-url]
+  if (url.startsWith("https://stocks.example.com")) {
+    needle.get(url, (error, response, body) => {
+      res.send(body); // $ Alert[js/reflected-xss-via-fetched-url]
+    });
+  }
 });
 
 // Safe: the response is HTML-escaped before being written.
@@ -79,6 +142,12 @@ const axios = require("axios");
 app.get("/axios", async (req, res) => {
   const response = await axios.get(req.query.url); // $ Source[js/reflected-xss-via-fetched-url]
   res.send(response.data); // $ Alert[js/reflected-xss-via-fetched-url]
+});
+
+app.get("/axios-response-fields", async (req, res) => {
+  const response = await axios.get(req.query.url); // $ Source[js/reflected-xss-via-fetched-url]
+  res.send(response.data.status); // $ Alert[js/reflected-xss-via-fetched-url]
+  res.send(response.headers["x-message"]); // $ Alert[js/reflected-xss-via-fetched-url]
 });
 
 app.listen(3000);
