@@ -1,0 +1,82 @@
+#select
+| XmlUsers.aspx.cs:50:29:50:31 | access to local variable xml | XmlUsers.aspx.cs:32:39:32:57 | access to property QueryString : NameValueCollection | XmlUsers.aspx.cs:50:29:50:31 | access to local variable xml | This XML element depends on a $@. | XmlUsers.aspx.cs:32:39:32:57 | access to property QueryString | user-provided value |
+| XmlUsers.aspx.cs:50:29:50:31 | access to local variable xml | XmlUsers.aspx.cs:32:68:32:86 | access to property QueryString : NameValueCollection | XmlUsers.aspx.cs:50:29:50:31 | access to local variable xml | This XML element depends on a $@. | XmlUsers.aspx.cs:32:68:32:86 | access to property QueryString | user-provided value |
+edges
+| XmlUsers.aspx.cs:14:31:14:34 | name : String | XmlUsers.aspx.cs:16:20:16:23 | access to parameter name : String | provenance |  |
+| XmlUsers.aspx.cs:14:44:14:48 | email : String | XmlUsers.aspx.cs:17:21:17:25 | access to parameter email : String | provenance |  |
+| XmlUsers.aspx.cs:16:13:16:16 | [post] this access : XmlUser [property Name] : String | XmlUsers.aspx.cs:14:16:14:22 | this [Return] : XmlUser [property Name] : String | provenance |  |
+| XmlUsers.aspx.cs:16:20:16:23 | access to parameter name : String | XmlUsers.aspx.cs:16:13:16:16 | [post] this access : XmlUser [property Name] : String | provenance |  |
+| XmlUsers.aspx.cs:17:13:17:17 | [post] this access : XmlUser [property Email] : String | XmlUsers.aspx.cs:14:16:14:22 | this [Return] : XmlUser [property Email] : String | provenance |  |
+| XmlUsers.aspx.cs:17:21:17:25 | access to parameter email : String | XmlUsers.aspx.cs:17:13:17:17 | [post] this access : XmlUser [property Email] : String | provenance |  |
+| XmlUsers.aspx.cs:32:17:32:21 | [post] access to field users : List<T> [element, property Email] : String | XmlUsers.aspx.cs:32:17:32:21 | [post] this access : XmlUsers [field users, element, property Email] : String | provenance |  |
+| XmlUsers.aspx.cs:32:17:32:21 | [post] access to field users : List<T> [element, property Name] : String | XmlUsers.aspx.cs:32:17:32:21 | [post] this access : XmlUsers [field users, element, property Name] : String | provenance |  |
+| XmlUsers.aspx.cs:32:17:32:21 | [post] this access : XmlUsers [field users, element, property Email] : String | XmlUsers.aspx.cs:33:17:33:26 | this access : XmlUsers [field users, element, property Email] : String | provenance |  |
+| XmlUsers.aspx.cs:32:17:32:21 | [post] this access : XmlUsers [field users, element, property Name] : String | XmlUsers.aspx.cs:33:17:33:26 | this access : XmlUsers [field users, element, property Name] : String | provenance |  |
+| XmlUsers.aspx.cs:32:27:32:96 | object creation of type XmlUser : XmlUser [property Email] : String | XmlUsers.aspx.cs:32:17:32:21 | [post] access to field users : List<T> [element, property Email] : String | provenance | MaD:649 |
+| XmlUsers.aspx.cs:32:27:32:96 | object creation of type XmlUser : XmlUser [property Name] : String | XmlUsers.aspx.cs:32:17:32:21 | [post] access to field users : List<T> [element, property Name] : String | provenance | MaD:649 |
+| XmlUsers.aspx.cs:32:39:32:57 | access to property QueryString : NameValueCollection | XmlUsers.aspx.cs:32:39:32:65 | access to indexer : String | provenance |  |
+| XmlUsers.aspx.cs:32:39:32:57 | access to property QueryString : NameValueCollection | XmlUsers.aspx.cs:32:39:32:65 | access to indexer : String | provenance | MaD:12744 |
+| XmlUsers.aspx.cs:32:39:32:65 | access to indexer : String | XmlUsers.aspx.cs:14:31:14:34 | name : String | provenance |  |
+| XmlUsers.aspx.cs:32:39:32:65 | access to indexer : String | XmlUsers.aspx.cs:32:27:32:96 | object creation of type XmlUser : XmlUser [property Name] : String | provenance |  |
+| XmlUsers.aspx.cs:32:68:32:86 | access to property QueryString : NameValueCollection | XmlUsers.aspx.cs:32:68:32:95 | access to indexer : String | provenance |  |
+| XmlUsers.aspx.cs:32:68:32:86 | access to property QueryString : NameValueCollection | XmlUsers.aspx.cs:32:68:32:95 | access to indexer : String | provenance | MaD:12744 |
+| XmlUsers.aspx.cs:32:68:32:95 | access to indexer : String | XmlUsers.aspx.cs:14:44:14:48 | email : String | provenance |  |
+| XmlUsers.aspx.cs:32:68:32:95 | access to indexer : String | XmlUsers.aspx.cs:32:27:32:96 | object creation of type XmlUser : XmlUser [property Email] : String | provenance |  |
+| XmlUsers.aspx.cs:33:17:33:26 | this access : XmlUsers [field users, element, property Email] : String | XmlUsers.aspx.cs:37:22:37:29 | this : XmlUsers [field users, element, property Email] : String | provenance |  |
+| XmlUsers.aspx.cs:33:17:33:26 | this access : XmlUsers [field users, element, property Name] : String | XmlUsers.aspx.cs:37:22:37:29 | this : XmlUsers [field users, element, property Name] : String | provenance |  |
+| XmlUsers.aspx.cs:37:22:37:29 | this : XmlUsers [field users, element, property Email] : String | XmlUsers.aspx.cs:40:38:40:42 | this access : XmlUsers [field users, element, property Email] : String | provenance |  |
+| XmlUsers.aspx.cs:37:22:37:29 | this : XmlUsers [field users, element, property Name] : String | XmlUsers.aspx.cs:40:38:40:42 | this access : XmlUsers [field users, element, property Name] : String | provenance |  |
+| XmlUsers.aspx.cs:40:38:40:42 | access to field users : List<XmlUser> [element, property Email] : String | XmlUsers.aspx.cs:44:36:44:39 | access to local variable user : XmlUser [property Email] : String | provenance |  |
+| XmlUsers.aspx.cs:40:38:40:42 | access to field users : List<XmlUser> [element, property Name] : String | XmlUsers.aspx.cs:43:35:43:38 | access to local variable user : XmlUser [property Name] : String | provenance |  |
+| XmlUsers.aspx.cs:40:38:40:42 | this access : XmlUsers [field users, element, property Email] : String | XmlUsers.aspx.cs:40:38:40:42 | access to field users : List<XmlUser> [element, property Email] : String | provenance |  |
+| XmlUsers.aspx.cs:40:38:40:42 | this access : XmlUsers [field users, element, property Name] : String | XmlUsers.aspx.cs:40:38:40:42 | access to field users : List<XmlUser> [element, property Name] : String | provenance |  |
+| XmlUsers.aspx.cs:42:17:42:19 | access to local variable xml : String | XmlUsers.aspx.cs:43:17:43:19 | access to local variable xml : String | provenance |  |
+| XmlUsers.aspx.cs:43:17:43:19 | access to local variable xml : String | XmlUsers.aspx.cs:44:17:44:19 | access to local variable xml : String | provenance |  |
+| XmlUsers.aspx.cs:43:35:43:38 | access to local variable user : XmlUser [property Name] : String | XmlUsers.aspx.cs:43:35:43:43 | access to property Name : String | provenance |  |
+| XmlUsers.aspx.cs:43:35:43:43 | access to property Name : String | XmlUsers.aspx.cs:43:17:43:19 | access to local variable xml : String | provenance |  |
+| XmlUsers.aspx.cs:44:17:44:19 | access to local variable xml : String | XmlUsers.aspx.cs:45:17:45:19 | access to local variable xml : String | provenance |  |
+| XmlUsers.aspx.cs:44:36:44:39 | access to local variable user : XmlUser [property Email] : String | XmlUsers.aspx.cs:44:36:44:45 | access to property Email : String | provenance |  |
+| XmlUsers.aspx.cs:44:36:44:45 | access to property Email : String | XmlUsers.aspx.cs:44:17:44:19 | access to local variable xml : String | provenance |  |
+| XmlUsers.aspx.cs:45:17:45:19 | access to local variable xml : String | XmlUsers.aspx.cs:42:17:42:19 | access to local variable xml : String | provenance |  |
+| XmlUsers.aspx.cs:45:17:45:19 | access to local variable xml : String | XmlUsers.aspx.cs:47:13:47:15 | access to local variable xml : String | provenance |  |
+| XmlUsers.aspx.cs:47:13:47:15 | access to local variable xml : String | XmlUsers.aspx.cs:50:29:50:31 | access to local variable xml | provenance |  |
+nodes
+| XmlUsers.aspx.cs:14:16:14:22 | this [Return] : XmlUser [property Email] : String | semmle.label | this [Return] : XmlUser [property Email] : String |
+| XmlUsers.aspx.cs:14:16:14:22 | this [Return] : XmlUser [property Name] : String | semmle.label | this [Return] : XmlUser [property Name] : String |
+| XmlUsers.aspx.cs:14:31:14:34 | name : String | semmle.label | name : String |
+| XmlUsers.aspx.cs:14:44:14:48 | email : String | semmle.label | email : String |
+| XmlUsers.aspx.cs:16:13:16:16 | [post] this access : XmlUser [property Name] : String | semmle.label | [post] this access : XmlUser [property Name] : String |
+| XmlUsers.aspx.cs:16:20:16:23 | access to parameter name : String | semmle.label | access to parameter name : String |
+| XmlUsers.aspx.cs:17:13:17:17 | [post] this access : XmlUser [property Email] : String | semmle.label | [post] this access : XmlUser [property Email] : String |
+| XmlUsers.aspx.cs:17:21:17:25 | access to parameter email : String | semmle.label | access to parameter email : String |
+| XmlUsers.aspx.cs:32:17:32:21 | [post] access to field users : List<T> [element, property Email] : String | semmle.label | [post] access to field users : List<T> [element, property Email] : String |
+| XmlUsers.aspx.cs:32:17:32:21 | [post] access to field users : List<T> [element, property Name] : String | semmle.label | [post] access to field users : List<T> [element, property Name] : String |
+| XmlUsers.aspx.cs:32:17:32:21 | [post] this access : XmlUsers [field users, element, property Email] : String | semmle.label | [post] this access : XmlUsers [field users, element, property Email] : String |
+| XmlUsers.aspx.cs:32:17:32:21 | [post] this access : XmlUsers [field users, element, property Name] : String | semmle.label | [post] this access : XmlUsers [field users, element, property Name] : String |
+| XmlUsers.aspx.cs:32:27:32:96 | object creation of type XmlUser : XmlUser [property Email] : String | semmle.label | object creation of type XmlUser : XmlUser [property Email] : String |
+| XmlUsers.aspx.cs:32:27:32:96 | object creation of type XmlUser : XmlUser [property Name] : String | semmle.label | object creation of type XmlUser : XmlUser [property Name] : String |
+| XmlUsers.aspx.cs:32:39:32:57 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| XmlUsers.aspx.cs:32:39:32:65 | access to indexer : String | semmle.label | access to indexer : String |
+| XmlUsers.aspx.cs:32:68:32:86 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| XmlUsers.aspx.cs:32:68:32:95 | access to indexer : String | semmle.label | access to indexer : String |
+| XmlUsers.aspx.cs:33:17:33:26 | this access : XmlUsers [field users, element, property Email] : String | semmle.label | this access : XmlUsers [field users, element, property Email] : String |
+| XmlUsers.aspx.cs:33:17:33:26 | this access : XmlUsers [field users, element, property Name] : String | semmle.label | this access : XmlUsers [field users, element, property Name] : String |
+| XmlUsers.aspx.cs:37:22:37:29 | this : XmlUsers [field users, element, property Email] : String | semmle.label | this : XmlUsers [field users, element, property Email] : String |
+| XmlUsers.aspx.cs:37:22:37:29 | this : XmlUsers [field users, element, property Name] : String | semmle.label | this : XmlUsers [field users, element, property Name] : String |
+| XmlUsers.aspx.cs:40:38:40:42 | access to field users : List<XmlUser> [element, property Email] : String | semmle.label | access to field users : List<XmlUser> [element, property Email] : String |
+| XmlUsers.aspx.cs:40:38:40:42 | access to field users : List<XmlUser> [element, property Name] : String | semmle.label | access to field users : List<XmlUser> [element, property Name] : String |
+| XmlUsers.aspx.cs:40:38:40:42 | this access : XmlUsers [field users, element, property Email] : String | semmle.label | this access : XmlUsers [field users, element, property Email] : String |
+| XmlUsers.aspx.cs:40:38:40:42 | this access : XmlUsers [field users, element, property Name] : String | semmle.label | this access : XmlUsers [field users, element, property Name] : String |
+| XmlUsers.aspx.cs:42:17:42:19 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| XmlUsers.aspx.cs:43:17:43:19 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| XmlUsers.aspx.cs:43:35:43:38 | access to local variable user : XmlUser [property Name] : String | semmle.label | access to local variable user : XmlUser [property Name] : String |
+| XmlUsers.aspx.cs:43:35:43:43 | access to property Name : String | semmle.label | access to property Name : String |
+| XmlUsers.aspx.cs:44:17:44:19 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| XmlUsers.aspx.cs:44:36:44:39 | access to local variable user : XmlUser [property Email] : String | semmle.label | access to local variable user : XmlUser [property Email] : String |
+| XmlUsers.aspx.cs:44:36:44:45 | access to property Email : String | semmle.label | access to property Email : String |
+| XmlUsers.aspx.cs:45:17:45:19 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| XmlUsers.aspx.cs:47:13:47:15 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| XmlUsers.aspx.cs:50:29:50:31 | access to local variable xml | semmle.label | access to local variable xml |
+subpaths
+| XmlUsers.aspx.cs:32:39:32:65 | access to indexer : String | XmlUsers.aspx.cs:14:31:14:34 | name : String | XmlUsers.aspx.cs:14:16:14:22 | this [Return] : XmlUser [property Name] : String | XmlUsers.aspx.cs:32:27:32:96 | object creation of type XmlUser : XmlUser [property Name] : String |
+| XmlUsers.aspx.cs:32:68:32:95 | access to indexer : String | XmlUsers.aspx.cs:14:44:14:48 | email : String | XmlUsers.aspx.cs:14:16:14:22 | this [Return] : XmlUser [property Email] : String | XmlUsers.aspx.cs:32:27:32:96 | object creation of type XmlUser : XmlUser [property Email] : String |

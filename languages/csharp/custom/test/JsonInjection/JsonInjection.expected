@@ -1,0 +1,40 @@
+#select
+| AuthClient.cs:27:43:27:45 | access to parameter jwt | AuthClient.cs:45:23:45:37 | access to property Cookies : IRequestCookieCollection | AuthClient.cs:27:43:27:45 | access to parameter jwt | This JSON text depends on a $@. | AuthClient.cs:45:23:45:37 | access to property Cookies | user-provided value |
+| AuthClient.cs:35:78:35:81 | access to parameter user | AuthClient.cs:45:23:45:37 | access to property Cookies : IRequestCookieCollection | AuthClient.cs:35:78:35:81 | access to parameter user | This JSON text depends on a $@. | AuthClient.cs:45:23:45:37 | access to property Cookies | user-provided value |
+| AuthClient.cs:49:58:49:60 | access to local variable jwt | AuthClient.cs:45:23:45:37 | access to property Cookies : IRequestCookieCollection | AuthClient.cs:49:58:49:60 | access to local variable jwt | This JSON text depends on a $@. | AuthClient.cs:45:23:45:37 | access to property Cookies | user-provided value |
+| AuthClient.cs:53:37:53:44 | access to parameter fileName | AuthClient.cs:43:46:43:53 | fileName : String | AuthClient.cs:53:37:53:44 | access to parameter fileName | This JSON text depends on a $@. | AuthClient.cs:43:46:43:53 | fileName | user-provided value |
+| AuthClient.cs:64:53:64:55 | access to local variable jwt | AuthClient.cs:45:23:45:37 | access to property Cookies : IRequestCookieCollection | AuthClient.cs:64:53:64:55 | access to local variable jwt | This JSON text depends on a $@. | AuthClient.cs:45:23:45:37 | access to property Cookies | user-provided value |
+| AuthClient.cs:67:55:67:62 | access to parameter fileName | AuthClient.cs:43:46:43:53 | fileName : String | AuthClient.cs:67:55:67:62 | access to parameter fileName | This JSON text depends on a $@. | AuthClient.cs:43:46:43:53 | fileName | user-provided value |
+| AuthClient.cs:68:101:68:103 | access to local variable jwt | AuthClient.cs:45:23:45:37 | access to property Cookies : IRequestCookieCollection | AuthClient.cs:68:101:68:103 | access to local variable jwt | This JSON text depends on a $@. | AuthClient.cs:45:23:45:37 | access to property Cookies | user-provided value |
+| AuthClient.cs:71:98:71:100 | access to local variable jwt | AuthClient.cs:45:23:45:37 | access to property Cookies : IRequestCookieCollection | AuthClient.cs:71:98:71:100 | access to local variable jwt | This JSON text depends on a $@. | AuthClient.cs:45:23:45:37 | access to property Cookies | user-provided value |
+edges
+| AuthClient.cs:25:60:25:62 | jwt : String | AuthClient.cs:27:43:27:45 | access to parameter jwt | provenance |  |
+| AuthClient.cs:33:52:33:55 | user : String | AuthClient.cs:35:78:35:81 | access to parameter user | provenance |  |
+| AuthClient.cs:43:46:43:53 | fileName : String | AuthClient.cs:53:37:53:44 | access to parameter fileName | provenance |  |
+| AuthClient.cs:43:46:43:53 | fileName : String | AuthClient.cs:67:55:67:62 | access to parameter fileName | provenance |  |
+| AuthClient.cs:45:17:45:19 | access to local variable jwt : String | AuthClient.cs:46:43:46:45 | access to local variable jwt : String | provenance |  |
+| AuthClient.cs:45:17:45:19 | access to local variable jwt : String | AuthClient.cs:49:58:49:60 | access to local variable jwt | provenance |  |
+| AuthClient.cs:45:17:45:19 | access to local variable jwt : String | AuthClient.cs:58:51:58:53 | access to local variable jwt : String | provenance |  |
+| AuthClient.cs:45:17:45:19 | access to local variable jwt : String | AuthClient.cs:64:53:64:55 | access to local variable jwt | provenance |  |
+| AuthClient.cs:45:17:45:19 | access to local variable jwt : String | AuthClient.cs:68:101:68:103 | access to local variable jwt | provenance |  |
+| AuthClient.cs:45:17:45:19 | access to local variable jwt : String | AuthClient.cs:71:98:71:100 | access to local variable jwt | provenance |  |
+| AuthClient.cs:45:23:45:37 | access to property Cookies : IRequestCookieCollection | AuthClient.cs:45:17:45:19 | access to local variable jwt : String | provenance |  |
+| AuthClient.cs:46:43:46:45 | access to local variable jwt : String | AuthClient.cs:25:60:25:62 | jwt : String | provenance |  |
+| AuthClient.cs:58:51:58:53 | access to local variable jwt : String | AuthClient.cs:33:52:33:55 | user : String | provenance |  |
+nodes
+| AuthClient.cs:25:60:25:62 | jwt : String | semmle.label | jwt : String |
+| AuthClient.cs:27:43:27:45 | access to parameter jwt | semmle.label | access to parameter jwt |
+| AuthClient.cs:33:52:33:55 | user : String | semmle.label | user : String |
+| AuthClient.cs:35:78:35:81 | access to parameter user | semmle.label | access to parameter user |
+| AuthClient.cs:43:46:43:53 | fileName : String | semmle.label | fileName : String |
+| AuthClient.cs:45:17:45:19 | access to local variable jwt : String | semmle.label | access to local variable jwt : String |
+| AuthClient.cs:45:23:45:37 | access to property Cookies : IRequestCookieCollection | semmle.label | access to property Cookies : IRequestCookieCollection |
+| AuthClient.cs:46:43:46:45 | access to local variable jwt : String | semmle.label | access to local variable jwt : String |
+| AuthClient.cs:49:58:49:60 | access to local variable jwt | semmle.label | access to local variable jwt |
+| AuthClient.cs:53:37:53:44 | access to parameter fileName | semmle.label | access to parameter fileName |
+| AuthClient.cs:58:51:58:53 | access to local variable jwt : String | semmle.label | access to local variable jwt : String |
+| AuthClient.cs:64:53:64:55 | access to local variable jwt | semmle.label | access to local variable jwt |
+| AuthClient.cs:67:55:67:62 | access to parameter fileName | semmle.label | access to parameter fileName |
+| AuthClient.cs:68:101:68:103 | access to local variable jwt | semmle.label | access to local variable jwt |
+| AuthClient.cs:71:98:71:100 | access to local variable jwt | semmle.label | access to local variable jwt |
+subpaths

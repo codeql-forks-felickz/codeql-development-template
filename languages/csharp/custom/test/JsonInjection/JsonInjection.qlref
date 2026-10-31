@@ -1,0 +1,2 @@
+query: JsonInjection/JsonInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
