@@ -1,7 +1,7 @@
 /**
  * @name SQL query built from user-controlled sources in a JSP scriptlet
- * @description Building a SQL query from request data inside a JSP scriptlet is vulnerable
- *              to insertion of malicious SQL code by the user. JSP files are not extracted by
+ * @description Building a SQL query from request or session data inside a JSP scriptlet is
+ *              vulnerable to insertion of malicious SQL code. JSP files are not extracted by
  *              the Java extractor, so this query inspects the scriptlet text that the
  *              JavaScript extractor records for `.jsp` files.
  * Known limitations: Sink argument parsing handles at most two nested parenthesis levels.
@@ -46,10 +46,10 @@ private string statementRegex() {
       "|//[^\\n]*|/\\*(?s:.*?)\\*/|[^;{}\"'])*"
 }
 
-/** Gets a regular expression matching a read of user-controlled request data. */
+/** Gets a regular expression matching a read of request or session data. */
 private string sourceRegex() {
   result =
-    "\\brequest\\s*\\.\\s*(?:getParameter|getParameterValues|getParameterMap|getHeader|getHeaders|getQueryString|getCookies|getRequestURI|getRequestURL|getPathInfo|getInputStream|getReader)\\s*\\("
+    "\\b(?:(?:request\\s*\\.\\s*(?:getParameter|getParameterValues|getParameterMap|getHeader|getHeaders|getQueryString|getCookies|getRequestURI|getRequestURL|getPathInfo|getInputStream|getReader))|(?:session\\s*\\.\\s*getAttribute))\\s*\\("
 }
 
 /** Gets a regular expression matching a conversion that removes SQL meta-characters. */
@@ -169,5 +169,5 @@ where
   method = s.getSinkMethod(args) and
   s.mentionsTainted(args)
 select s,
-  "This JSP scriptlet passes a SQL query built from user-controlled request data to '" + method +
+  "This JSP scriptlet passes a SQL query built from user-controlled data to '" + method +
     "'."
