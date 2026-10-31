@@ -4,6 +4,8 @@
 | Allocation.cs:28:40:28:43 | access to local variable size | Allocation.cs:27:34:27:48 | access to property QueryString : NameValueCollection | Allocation.cs:28:40:28:43 | access to local variable size | This allocation size depends on a $@ without an upper bound check. | Allocation.cs:27:34:27:48 | access to property QueryString | user-provided value |
 | Allocation.cs:35:40:35:43 | access to local variable size | Allocation.cs:34:34:34:48 | access to property QueryString : NameValueCollection | Allocation.cs:35:40:35:43 | access to local variable size | This allocation size depends on a $@ without an upper bound check. | Allocation.cs:34:34:34:48 | access to property QueryString | user-provided value |
 | Allocation.cs:42:48:42:51 | access to local variable size | Allocation.cs:41:34:41:48 | access to property QueryString : NameValueCollection | Allocation.cs:42:48:42:51 | access to local variable size | This allocation size depends on a $@ without an upper bound check. | Allocation.cs:41:34:41:48 | access to property QueryString | user-provided value |
+| Allocation.cs:49:33:49:36 | access to local variable size | Allocation.cs:48:34:48:48 | access to property QueryString : NameValueCollection | Allocation.cs:49:33:49:36 | access to local variable size | This loop bound depends on a $@ without an upper bound check. | Allocation.cs:48:34:48:48 | access to property QueryString | user-provided value |
+| Allocation.cs:53:38:53:41 | access to local variable size | Allocation.cs:48:34:48:48 | access to property QueryString : NameValueCollection | Allocation.cs:53:38:53:41 | access to local variable size | This allocation size depends on a $@ without an upper bound check. | Allocation.cs:48:34:48:48 | access to property QueryString | user-provided value |
 | LoopBound.cs:21:33:21:45 | access to local variable numberOfLoops | LoopBound.cs:11:27:11:36 | access to property Params : NameValueCollection | LoopBound.cs:21:33:21:45 | access to local variable numberOfLoops | This loop bound depends on a $@ without an upper bound check. | LoopBound.cs:11:27:11:36 | access to property Params | user-provided value |
 | LoopBound.cs:31:24:31:28 | access to local variable count | LoopBound.cs:29:35:29:49 | access to property QueryString : NameValueCollection | LoopBound.cs:31:24:31:28 | access to local variable count | This loop bound depends on a $@ without an upper bound check. | LoopBound.cs:29:35:29:49 | access to property QueryString | user-provided value |
 | LoopBound.cs:41:29:41:33 | access to local variable count | LoopBound.cs:40:41:40:55 | access to property QueryString : NameValueCollection | LoopBound.cs:41:29:41:33 | access to local variable count | This loop bound depends on a $@ without an upper bound check. | LoopBound.cs:40:41:40:55 | access to property QueryString | user-provided value |
@@ -35,6 +37,12 @@ edges
 | Allocation.cs:41:34:41:48 | access to property QueryString : NameValueCollection | Allocation.cs:41:34:41:56 | access to indexer : String | provenance |  |
 | Allocation.cs:41:34:41:48 | access to property QueryString : NameValueCollection | Allocation.cs:41:34:41:56 | access to indexer : String | provenance | MaD:12744 |
 | Allocation.cs:41:34:41:56 | access to indexer : String | Allocation.cs:41:24:41:57 | call to method Parse : Int32 | provenance | MaD:2808 |
+| Allocation.cs:48:17:48:20 | access to local variable size : Int32 | Allocation.cs:49:33:49:36 | access to local variable size | provenance |  |
+| Allocation.cs:48:17:48:20 | access to local variable size : Int32 | Allocation.cs:53:38:53:41 | access to local variable size | provenance |  |
+| Allocation.cs:48:24:48:57 | call to method Parse : Int32 | Allocation.cs:48:17:48:20 | access to local variable size : Int32 | provenance |  |
+| Allocation.cs:48:34:48:48 | access to property QueryString : NameValueCollection | Allocation.cs:48:34:48:56 | access to indexer : String | provenance |  |
+| Allocation.cs:48:34:48:48 | access to property QueryString : NameValueCollection | Allocation.cs:48:34:48:56 | access to indexer : String | provenance | MaD:12744 |
+| Allocation.cs:48:34:48:56 | access to indexer : String | Allocation.cs:48:24:48:57 | call to method Parse : Int32 | provenance | MaD:2808 |
 | LoopBound.cs:11:20:11:23 | access to local variable data : String | LoopBound.cs:15:43:15:46 | access to local variable data : String | provenance |  |
 | LoopBound.cs:11:27:11:36 | access to property Params : NameValueCollection | LoopBound.cs:11:27:11:48 | call to method Get : String | provenance | MaD:12750 |
 | LoopBound.cs:11:27:11:48 | call to method Get : String | LoopBound.cs:11:20:11:23 | access to local variable data : String | provenance |  |
@@ -86,6 +94,12 @@ nodes
 | Allocation.cs:41:34:41:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | Allocation.cs:41:34:41:56 | access to indexer : String | semmle.label | access to indexer : String |
 | Allocation.cs:42:48:42:51 | access to local variable size | semmle.label | access to local variable size |
+| Allocation.cs:48:17:48:20 | access to local variable size : Int32 | semmle.label | access to local variable size : Int32 |
+| Allocation.cs:48:24:48:57 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Allocation.cs:48:34:48:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Allocation.cs:48:34:48:56 | access to indexer : String | semmle.label | access to indexer : String |
+| Allocation.cs:49:33:49:36 | access to local variable size | semmle.label | access to local variable size |
+| Allocation.cs:53:38:53:41 | access to local variable size | semmle.label | access to local variable size |
 | LoopBound.cs:11:20:11:23 | access to local variable data : String | semmle.label | access to local variable data : String |
 | LoopBound.cs:11:27:11:36 | access to property Params : NameValueCollection | semmle.label | access to property Params : NameValueCollection |
 | LoopBound.cs:11:27:11:48 | call to method Get : String | semmle.label | call to method Get : String |

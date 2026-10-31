@@ -43,6 +43,17 @@ namespace Testcases
             Console.WriteLine(items.Count);
         }
 
+        public void BadArrayAfterLoop(HttpRequest req)
+        {
+            int size = int.Parse(req.QueryString["size"]); // $ Source
+            for (int i = 0; i < size; i++) // $ Alert
+            {
+                Console.WriteLine(i);
+            }
+            byte[] buffer = new byte[size]; // $ Alert
+            Console.WriteLine(buffer.Length);
+        }
+
         // GOOD: size limited before allocation.
         public void GoodArrayChecked(HttpRequest req)
         {

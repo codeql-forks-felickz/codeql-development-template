@@ -104,11 +104,17 @@ class AllocationSizeSink extends ResourceExhaustionSink {
 /**
  * Holds if `g` checks that `e` is bounded from above when `g` evaluates to `v`, for
  * example `e <= 100` evaluating to `true` or `e > 100` evaluating to `false`.
+ *
+ * Loop conditions are excluded, since exiting `for (i = 0; i < n; i++)` does not
+ * bound `n`.
  */
 predicate upperBoundCheck(Guard g, Expr e, GuardValue v) {
-  e = g.(RelationalOperation).getLesserOperand() and v.asBooleanValue() = true
-  or
-  e = g.(RelationalOperation).getGreaterOperand() and v.asBooleanValue() = false
+  not g = any(LoopStmt loop).getCondition().getAChildExpr*() and
+  (
+    e = g.(RelationalOperation).getLesserOperand() and v.asBooleanValue() = true
+    or
+    e = g.(RelationalOperation).getGreaterOperand() and v.asBooleanValue() = false
+  )
 }
 
 /** A value that is clamped from above, for example `Math.Min(n, 100)`. */
