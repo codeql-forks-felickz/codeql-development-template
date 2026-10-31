@@ -10,8 +10,8 @@
 | Test.cs:106:13:106:36 | ... = ... | Token validation is weakened by setting 'ValidateAudience' to false, so tokens minted for other issuers, audiences or lifetimes are accepted (CWE-287). |
 | Test.cs:113:9:113:34 | ... = ... | Token validation is weakened by setting 'ValidateLifetime' to false, so tokens minted for other issuers, audiences or lifetimes are accepted (CWE-287). |
 | Test.cs:114:9:114:37 | ... = ... | Token validation is weakened by setting 'RequireSignedTokens' to false, so tokens minted for other issuers, audiences or lifetimes are accepted (CWE-287). |
-| Web.config:5:5:5:97 | enableViewStateMac=false | ViewState MAC validation is disabled, which allows ViewState tampering (CWE-554). |
-| Web.config:5:5:5:97 | viewStateEncryptionMode=Never | ViewState encryption is disabled, which exposes ViewState contents (CWE-554). |
+| Web.config:5:5:5:73 | enableViewStateMac=false | ViewState MAC validation is disabled, which allows ViewState tampering (CWE-554). |
+| Web.config:5:5:5:73 | viewStateEncryptionMode=Never | ViewState encryption is disabled, which exposes ViewState contents (CWE-554). |
 | Web.config:7:5:7:48 | timeout=-1 | The session timeout of '-1' minutes means sessions never or only rarely expire (CWE-613). |
 | Web.config:10:7:10:74 | timeout=43200 | The forms authentication ticket timeout of '43200' minutes means authentication never or only rarely expires (CWE-613). |
 | Web.config:15:9:15:148 | minRequiredPasswordLength=6 | The membership provider accepts passwords of only 6 characters, which allows easily guessed passwords (CWE-521). |
