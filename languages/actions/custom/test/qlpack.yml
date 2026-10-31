@@ -1,5 +1,6 @@
 name: languages-actions-custom-test
 version: 0.0.2
 dependencies:
+  codeql/actions-queries: "*"
   languages-actions-custom-src: ${workspace}
 extractor: actions
