@@ -1,0 +1,2 @@
+query: ClientSessionsExposedCookie/ClientSessionsExposedCookie.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
