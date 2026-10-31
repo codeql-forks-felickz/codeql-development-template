@@ -8,6 +8,8 @@
 | UnsafeReflection.cs:96:20:96:20 | access to local variable t | UnsafeReflection.cs:93:37:93:44 | typeName : String | UnsafeReflection.cs:96:20:96:20 | access to local variable t | This type or assembly selector depends on a $@, allowing an attacker to instantiate or invoke unintended types. | UnsafeReflection.cs:93:37:93:44 | typeName | user-provided value |
 | UnsafeReflection.cs:117:49:117:70 | call to method GetType | UnsafeReflection.cs:111:57:111:64 | typeName : String | UnsafeReflection.cs:117:49:117:70 | call to method GetType | This type or assembly selector depends on a $@, allowing an attacker to instantiate or invoke unintended types. | UnsafeReflection.cs:111:57:111:64 | typeName | user-provided value |
 | UnsafeReflection.cs:127:49:127:70 | call to method GetType | UnsafeReflection.cs:123:60:123:67 | typeName : String | UnsafeReflection.cs:127:49:127:70 | call to method GetType | This type or assembly selector depends on a $@, allowing an attacker to instantiate or invoke unintended types. | UnsafeReflection.cs:123:60:123:67 | typeName | user-provided value |
+| UnsafeReflection.cs:166:56:166:62 | access to local variable myClass | UnsafeReflection.cs:163:42:163:45 | args : String[] | UnsafeReflection.cs:166:56:166:62 | access to local variable myClass | This type or assembly selector depends on a $@, allowing an attacker to instantiate or invoke unintended types. | UnsafeReflection.cs:163:42:163:45 | args | user-provided value |
+| UnsafeReflection.cs:167:13:167:19 | access to local variable myClass | UnsafeReflection.cs:163:42:163:45 | args : String[] | UnsafeReflection.cs:167:13:167:19 | access to local variable myClass | This type or assembly selector depends on a $@, allowing an attacker to instantiate or invoke unintended types. | UnsafeReflection.cs:163:42:163:45 | args | user-provided value |
 edges
 | UnsafeReflection.cs:17:17:17:20 | access to local variable data : String | UnsafeReflection.cs:19:60:19:63 | access to local variable data | provenance |  |
 | UnsafeReflection.cs:17:24:17:38 | access to property QueryString : NameValueCollection | UnsafeReflection.cs:17:17:17:20 | access to local variable data : String | provenance |  |
@@ -41,6 +43,11 @@ edges
 | UnsafeReflection.cs:117:62:117:69 | access to parameter typeName : String | UnsafeReflection.cs:117:49:117:70 | call to method GetType | provenance | Config |
 | UnsafeReflection.cs:123:60:123:67 | typeName : String | UnsafeReflection.cs:127:62:127:69 | access to parameter typeName : String | provenance |  |
 | UnsafeReflection.cs:127:62:127:69 | access to parameter typeName : String | UnsafeReflection.cs:127:49:127:70 | call to method GetType | provenance | Config |
+| UnsafeReflection.cs:163:42:163:45 | args : String[] | UnsafeReflection.cs:165:41:165:47 | access to array element : String | provenance |  |
+| UnsafeReflection.cs:165:18:165:24 | access to local variable myClass : Type | UnsafeReflection.cs:166:56:166:62 | access to local variable myClass | provenance |  |
+| UnsafeReflection.cs:165:18:165:24 | access to local variable myClass : Type | UnsafeReflection.cs:167:13:167:19 | access to local variable myClass | provenance |  |
+| UnsafeReflection.cs:165:28:165:48 | call to method GetType : Type | UnsafeReflection.cs:165:18:165:24 | access to local variable myClass : Type | provenance |  |
+| UnsafeReflection.cs:165:41:165:47 | access to array element : String | UnsafeReflection.cs:165:28:165:48 | call to method GetType : Type | provenance | Config |
 nodes
 | UnsafeReflection.cs:17:17:17:20 | access to local variable data : String | semmle.label | access to local variable data : String |
 | UnsafeReflection.cs:17:24:17:38 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
@@ -81,4 +88,10 @@ nodes
 | UnsafeReflection.cs:123:60:123:67 | typeName : String | semmle.label | typeName : String |
 | UnsafeReflection.cs:127:49:127:70 | call to method GetType | semmle.label | call to method GetType |
 | UnsafeReflection.cs:127:62:127:69 | access to parameter typeName : String | semmle.label | access to parameter typeName : String |
+| UnsafeReflection.cs:163:42:163:45 | args : String[] | semmle.label | args : String[] |
+| UnsafeReflection.cs:165:18:165:24 | access to local variable myClass : Type | semmle.label | access to local variable myClass : Type |
+| UnsafeReflection.cs:165:28:165:48 | call to method GetType : Type | semmle.label | call to method GetType : Type |
+| UnsafeReflection.cs:165:41:165:47 | access to array element : String | semmle.label | access to array element : String |
+| UnsafeReflection.cs:166:56:166:62 | access to local variable myClass | semmle.label | access to local variable myClass |
+| UnsafeReflection.cs:167:13:167:19 | access to local variable myClass | semmle.label | access to local variable myClass |
 subpaths

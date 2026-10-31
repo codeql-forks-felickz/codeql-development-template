@@ -157,4 +157,32 @@ namespace UnsafeReflectionTests
             return Type.GetType(typeName)?.FullName;
         }
     }
+
+    public class CommandLineReflection
+    {
+        public static void Main(string[] args) // $ Source
+        {
+            Type myClass = Type.GetType(args[0]);
+            object myObject = Activator.CreateInstance(myClass); // $ Alert
+            myClass.InvokeMember( // $ Alert
+                "Run",
+                BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.Public,
+                null,
+                myObject,
+                new object[] { args[0] }
+            );
+        }
+
+        public static void Good()
+        {
+            Type knownType = typeof(string);
+            knownType.InvokeMember(
+                "ToString",
+                BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.Public,
+                null,
+                "",
+                new object[0]
+            );
+        }
+    }
 }
