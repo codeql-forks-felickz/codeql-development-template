@@ -1,0 +1,25 @@
+#select
+| WebViewUrlActivity.kt:25:29:25:31 | url | WebViewUrlActivity.kt:24:23:24:38 | getText(...) : Editable | WebViewUrlActivity.kt:25:29:25:31 | url | Unsafe resource fetching in Android WebView due to $@. | WebViewUrlActivity.kt:24:23:24:38 | getText(...) | user input vulnerable to cross-origin and sensitive resource disclosure attacks |
+| WebViewUrlActivity.kt:31:37:31:51 | toString(...) | WebViewUrlActivity.kt:31:25:31:40 | getText(...) : Editable | WebViewUrlActivity.kt:31:37:31:51 | toString(...) | Unsafe resource fetching in Android WebView due to $@. | WebViewUrlActivity.kt:31:25:31:40 | getText(...) | user input vulnerable to XSS attacks |
+edges
+| WebViewUrlActivity.kt:24:23:24:38 | getText(...) : Editable | WebViewUrlActivity.kt:24:35:24:38 | <implicit cast> : Editable | provenance | Src:MaD:712  |
+| WebViewUrlActivity.kt:24:35:24:38 | <implicit cast> : Editable | WebViewUrlActivity.kt:24:35:24:49 | toString(...) : String | provenance | Config |
+| WebViewUrlActivity.kt:24:35:24:49 | toString(...) : String | WebViewUrlActivity.kt:25:29:25:31 | url | provenance |  |
+| WebViewUrlActivity.kt:31:25:31:40 | getText(...) : Editable | WebViewUrlActivity.kt:31:37:31:40 | <implicit cast> : Editable | provenance | Src:MaD:712  |
+| WebViewUrlActivity.kt:31:37:31:40 | <implicit cast> : Editable | WebViewUrlActivity.kt:31:37:31:51 | toString(...) | provenance | Config |
+| WebViewUrlActivity.kt:37:25:37:30 | <implicit not null> : Intent | WebViewUrlActivity.kt:37:25:37:52 | getStringExtra(...) : String | provenance | MaD:330 |
+| WebViewUrlActivity.kt:37:25:37:30 | getIntent(...) : Intent | WebViewUrlActivity.kt:37:25:37:30 | <implicit not null> : Intent | provenance |  |
+| WebViewUrlActivity.kt:37:25:37:52 | getStringExtra(...) : String | WebViewUrlActivity.kt:37:25:37:54 | ...!! | provenance |  |
+nodes
+| WebViewUrlActivity.kt:24:23:24:38 | getText(...) : Editable | semmle.label | getText(...) : Editable |
+| WebViewUrlActivity.kt:24:35:24:38 | <implicit cast> : Editable | semmle.label | <implicit cast> : Editable |
+| WebViewUrlActivity.kt:24:35:24:49 | toString(...) : String | semmle.label | toString(...) : String |
+| WebViewUrlActivity.kt:25:29:25:31 | url | semmle.label | url |
+| WebViewUrlActivity.kt:31:25:31:40 | getText(...) : Editable | semmle.label | getText(...) : Editable |
+| WebViewUrlActivity.kt:31:37:31:40 | <implicit cast> : Editable | semmle.label | <implicit cast> : Editable |
+| WebViewUrlActivity.kt:31:37:31:51 | toString(...) | semmle.label | toString(...) |
+| WebViewUrlActivity.kt:37:25:37:30 | <implicit not null> : Intent | semmle.label | <implicit not null> : Intent |
+| WebViewUrlActivity.kt:37:25:37:30 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| WebViewUrlActivity.kt:37:25:37:52 | getStringExtra(...) : String | semmle.label | getStringExtra(...) : String |
+| WebViewUrlActivity.kt:37:25:37:54 | ...!! | semmle.label | ...!! |
+subpaths

@@ -1,0 +1,2 @@
+query: PasswordStorage/BCryptInsufficientWorkFactor.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

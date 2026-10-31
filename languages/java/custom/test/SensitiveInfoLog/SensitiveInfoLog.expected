@@ -1,0 +1,16 @@
+#select
+| LoggingActivity.kt:10:24:10:54 | "..." | LoggingActivity.kt:10:46:10:53 | password : String | LoggingActivity.kt:10:24:10:54 | "..." | This $@ is written to a log file. | LoggingActivity.kt:10:46:10:53 | password | potentially sensitive information |
+| LoggingActivity.kt:15:27:15:31 | query | LoggingActivity.kt:14:59:14:66 | password : String | LoggingActivity.kt:15:27:15:31 | query | This $@ is written to a log file. | LoggingActivity.kt:14:59:14:66 | password | potentially sensitive information |
+| LoggingActivity.kt:20:27:20:34 | password | LoggingActivity.kt:20:27:20:34 | password | LoggingActivity.kt:20:27:20:34 | password | This $@ is written to a log file. | LoggingActivity.kt:20:27:20:34 | password | potentially sensitive information |
+| LoggingActivity.kt:30:24:30:31 | password | LoggingActivity.kt:30:24:30:31 | password | LoggingActivity.kt:30:24:30:31 | password | This $@ is written to a log file. | LoggingActivity.kt:30:24:30:31 | password | potentially sensitive information |
+edges
+| LoggingActivity.kt:10:46:10:53 | password : String | LoggingActivity.kt:10:24:10:54 | "..." | provenance | Sink:MaD:701 |
+| LoggingActivity.kt:14:59:14:66 | password : String | LoggingActivity.kt:15:27:15:31 | query | provenance | Sink:MaD:701 |
+nodes
+| LoggingActivity.kt:10:24:10:54 | "..." | semmle.label | "..." |
+| LoggingActivity.kt:10:46:10:53 | password : String | semmle.label | password : String |
+| LoggingActivity.kt:14:59:14:66 | password : String | semmle.label | password : String |
+| LoggingActivity.kt:15:27:15:31 | query | semmle.label | query |
+| LoggingActivity.kt:20:27:20:34 | password | semmle.label | password |
+| LoggingActivity.kt:30:24:30:31 | password | semmle.label | password |
+subpaths

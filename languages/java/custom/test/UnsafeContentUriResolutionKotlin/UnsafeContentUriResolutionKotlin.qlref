@@ -1,0 +1,2 @@
+query: KotlinToStringTaint/UnsafeContentUriResolutionKotlin.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

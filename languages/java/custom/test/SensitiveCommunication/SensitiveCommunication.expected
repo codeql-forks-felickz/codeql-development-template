@@ -1,0 +1,15 @@
+#select
+| AboutUsActivity.kt:20:23:20:28 | intent | AboutUsActivity.kt:8:5:8:25 | this.password : String | AboutUsActivity.kt:20:23:20:28 | intent | This call may leak $@. | AboutUsActivity.kt:8:5:8:25 | this.password | sensitive information |
+| AboutUsActivity.kt:20:23:20:28 | intent | AboutUsActivity.kt:19:37:19:44 | password : String | AboutUsActivity.kt:20:23:20:28 | intent | This call may leak $@. | AboutUsActivity.kt:19:37:19:44 | password | sensitive information |
+edges
+| AboutUsActivity.kt:8:5:8:25 | this.password : String | AboutUsActivity.kt:15:24:15:37 | getPassword(...) : String | provenance |  |
+| AboutUsActivity.kt:15:24:15:37 | getPassword(...) : String | AboutUsActivity.kt:19:37:19:44 | password : String | provenance |  |
+| AboutUsActivity.kt:19:9:19:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | AboutUsActivity.kt:20:23:20:28 | intent | provenance | Sink:MaD:219 Sink:MaD:219 |
+| AboutUsActivity.kt:19:37:19:44 | password : String | AboutUsActivity.kt:19:9:19:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | provenance | MaD:338 |
+nodes
+| AboutUsActivity.kt:8:5:8:25 | this.password : String | semmle.label | this.password : String |
+| AboutUsActivity.kt:15:24:15:37 | getPassword(...) : String | semmle.label | getPassword(...) : String |
+| AboutUsActivity.kt:19:9:19:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | semmle.label | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String |
+| AboutUsActivity.kt:19:37:19:44 | password : String | semmle.label | password : String |
+| AboutUsActivity.kt:20:23:20:28 | intent | semmle.label | intent |
+subpaths

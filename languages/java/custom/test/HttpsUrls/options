@@ -1,0 +1,2 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../stubs/retrofit
+//codeql-extractor-kotlin-options: -language-version 2.2 ${testdir}/../stubs/retrofit

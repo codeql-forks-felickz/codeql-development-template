@@ -1,0 +1,1 @@
+| PreferencesActivity.java:10:9:10:22 | apply(...) | This stores the 'SharedPreferences' class $@ containing $@ which $@. | PreferencesActivity.java:8:43:8:83 | edit(...) | edit(...) | PreferencesActivity.java:9:38:9:45 | password | sensitive data | PreferencesActivity.java:9:38:9:45 | password | was set as a shared preference |
