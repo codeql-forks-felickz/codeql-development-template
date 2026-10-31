@@ -1,0 +1,12 @@
+# Models for filesystem glob patterns. A user controlled pattern can contain `../`
+# or glob metacharacters (`*`, `?`, `[`), selecting files outside the intended set.
+# https://docs.python.org/3/library/glob.html
+# https://docs.python.org/3/library/pathlib.html#pathlib.Path.glob
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      - ['glob', 'Member[glob,iglob].Argument[0,pathname:]', 'path-injection']
+      - ['glob', 'Member[glob,iglob].Argument[root_dir:]', 'path-injection']
+      - ['pathlib', 'Member[Path,PosixPath,WindowsPath].ReturnValue.Member[glob,rglob].Argument[0,pattern:]', 'path-injection']

@@ -1,0 +1,62 @@
+#select
+| api/libapi.py:12:33:12:65 | ControlFlowNode for BinaryExpr | api/libapi.py:4:26:4:32 | ControlFlowNode for ImportMember | api/libapi.py:12:33:12:65 | ControlFlowNode for BinaryExpr | This path depends on a $@. | api/libapi.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |
+| api/libapi.py:14:34:14:66 | ControlFlowNode for BinaryExpr | api/libapi.py:4:26:4:32 | ControlFlowNode for ImportMember | api/libapi.py:14:34:14:66 | ControlFlowNode for BinaryExpr | This path depends on a $@. | api/libapi.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |
+| api/libapi.py:16:27:16:64 | ControlFlowNode for BinaryExpr | api/libapi.py:4:26:4:32 | ControlFlowNode for ImportMember | api/libapi.py:16:27:16:64 | ControlFlowNode for BinaryExpr | This path depends on a $@. | api/libapi.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |
+| api/libapi.py:18:37:18:74 | ControlFlowNode for BinaryExpr | api/libapi.py:4:26:4:32 | ControlFlowNode for ImportMember | api/libapi.py:18:37:18:74 | ControlFlowNode for BinaryExpr | This path depends on a $@. | api/libapi.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |
+| backend/functions/admin/admin_get_receipts.py:12:77:12:108 | ControlFlowNode for BinaryExpr | backend/functions/admin/admin_get_receipts.py:15:20:15:24 | ControlFlowNode for event | backend/functions/admin/admin_get_receipts.py:12:77:12:108 | ControlFlowNode for BinaryExpr | This path depends on a $@. | backend/functions/admin/admin_get_receipts.py:15:20:15:24 | ControlFlowNode for event | user-provided value |
+| backend/functions/admin/admin_get_receipts.py:23:26:23:43 | ControlFlowNode for BinaryExpr | backend/functions/admin/admin_get_receipts.py:15:20:15:24 | ControlFlowNode for event | backend/functions/admin/admin_get_receipts.py:23:26:23:43 | ControlFlowNode for BinaryExpr | This path depends on a $@. | backend/functions/admin/admin_get_receipts.py:15:20:15:24 | ControlFlowNode for event | user-provided value |
+| backend/functions/admin/admin_get_receipts.py:25:24:25:41 | ControlFlowNode for BinaryExpr | backend/functions/admin/admin_get_receipts.py:15:20:15:24 | ControlFlowNode for event | backend/functions/admin/admin_get_receipts.py:25:24:25:41 | ControlFlowNode for BinaryExpr | This path depends on a $@. | backend/functions/admin/admin_get_receipts.py:15:20:15:24 | ControlFlowNode for event | user-provided value |
+edges
+| api/libapi.py:4:26:4:32 | ControlFlowNode for ImportMember | api/libapi.py:4:26:4:32 | ControlFlowNode for request | provenance |  |
+| api/libapi.py:4:26:4:32 | ControlFlowNode for request | api/libapi.py:11:16:11:22 | ControlFlowNode for request | provenance |  |
+| api/libapi.py:11:5:11:12 | ControlFlowNode for username | api/libapi.py:12:33:12:65 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:7 |
+| api/libapi.py:11:5:11:12 | ControlFlowNode for username | api/libapi.py:14:34:14:66 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:7 |
+| api/libapi.py:11:5:11:12 | ControlFlowNode for username | api/libapi.py:16:27:16:64 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:5 |
+| api/libapi.py:11:5:11:12 | ControlFlowNode for username | api/libapi.py:18:37:18:74 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:5 |
+| api/libapi.py:11:16:11:22 | ControlFlowNode for request | api/libapi.py:11:5:11:12 | ControlFlowNode for username | provenance | AdditionalTaintStep |
+| backend/functions/admin/admin_get_receipts.py:7:36:7:39 | ControlFlowNode for dist | backend/functions/admin/admin_get_receipts.py:9:75:9:78 | ControlFlowNode for dist | provenance |  |
+| backend/functions/admin/admin_get_receipts.py:9:9:9:14 | ControlFlowNode for result | backend/functions/admin/admin_get_receipts.py:11:25:11:30 | ControlFlowNode for result | provenance |  |
+| backend/functions/admin/admin_get_receipts.py:9:19:9:79 | ControlFlowNode for Attribute() | backend/functions/admin/admin_get_receipts.py:9:9:9:14 | ControlFlowNode for result | provenance |  |
+| backend/functions/admin/admin_get_receipts.py:9:75:9:78 | ControlFlowNode for dist | backend/functions/admin/admin_get_receipts.py:9:19:9:79 | ControlFlowNode for Attribute() | provenance | MaD:4 |
+| backend/functions/admin/admin_get_receipts.py:11:17:11:20 | ControlFlowNode for file | backend/functions/admin/admin_get_receipts.py:12:94:12:97 | ControlFlowNode for file | provenance |  |
+| backend/functions/admin/admin_get_receipts.py:11:25:11:30 | ControlFlowNode for result | backend/functions/admin/admin_get_receipts.py:11:25:11:46 | ControlFlowNode for Attribute() | provenance | dict.get |
+| backend/functions/admin/admin_get_receipts.py:11:25:11:46 | ControlFlowNode for Attribute() | backend/functions/admin/admin_get_receipts.py:11:17:11:20 | ControlFlowNode for file | provenance |  |
+| backend/functions/admin/admin_get_receipts.py:12:94:12:97 | ControlFlowNode for file | backend/functions/admin/admin_get_receipts.py:12:94:12:108 | ControlFlowNode for Attribute() | provenance | dict.get |
+| backend/functions/admin/admin_get_receipts.py:12:94:12:108 | ControlFlowNode for Attribute() | backend/functions/admin/admin_get_receipts.py:12:77:12:108 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:2 |
+| backend/functions/admin/admin_get_receipts.py:15:20:15:24 | ControlFlowNode for event | backend/functions/admin/admin_get_receipts.py:18:5:18:5 | ControlFlowNode for y | provenance |  |
+| backend/functions/admin/admin_get_receipts.py:15:20:15:24 | ControlFlowNode for event | backend/functions/admin/admin_get_receipts.py:19:5:19:5 | ControlFlowNode for m | provenance |  |
+| backend/functions/admin/admin_get_receipts.py:18:5:18:5 | ControlFlowNode for y | backend/functions/admin/admin_get_receipts.py:20:5:20:10 | ControlFlowNode for prefix | provenance |  |
+| backend/functions/admin/admin_get_receipts.py:19:5:19:5 | ControlFlowNode for m | backend/functions/admin/admin_get_receipts.py:20:5:20:10 | ControlFlowNode for prefix | provenance |  |
+| backend/functions/admin/admin_get_receipts.py:20:5:20:10 | ControlFlowNode for prefix | backend/functions/admin/admin_get_receipts.py:21:36:21:41 | ControlFlowNode for prefix | provenance |  |
+| backend/functions/admin/admin_get_receipts.py:20:5:20:10 | ControlFlowNode for prefix | backend/functions/admin/admin_get_receipts.py:22:5:22:12 | ControlFlowNode for zip_file | provenance |  |
+| backend/functions/admin/admin_get_receipts.py:21:36:21:41 | ControlFlowNode for prefix | backend/functions/admin/admin_get_receipts.py:7:36:7:39 | ControlFlowNode for dist | provenance |  |
+| backend/functions/admin/admin_get_receipts.py:22:5:22:12 | ControlFlowNode for zip_file | backend/functions/admin/admin_get_receipts.py:23:26:23:43 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:8 |
+| backend/functions/admin/admin_get_receipts.py:22:5:22:12 | ControlFlowNode for zip_file | backend/functions/admin/admin_get_receipts.py:25:24:25:41 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:1 |
+nodes
+| api/libapi.py:4:26:4:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| api/libapi.py:4:26:4:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| api/libapi.py:11:5:11:12 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| api/libapi.py:11:16:11:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| api/libapi.py:12:33:12:65 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| api/libapi.py:14:34:14:66 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| api/libapi.py:16:27:16:64 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| api/libapi.py:18:37:18:74 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| backend/functions/admin/admin_get_receipts.py:7:36:7:39 | ControlFlowNode for dist | semmle.label | ControlFlowNode for dist |
+| backend/functions/admin/admin_get_receipts.py:9:9:9:14 | ControlFlowNode for result | semmle.label | ControlFlowNode for result |
+| backend/functions/admin/admin_get_receipts.py:9:19:9:79 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| backend/functions/admin/admin_get_receipts.py:9:75:9:78 | ControlFlowNode for dist | semmle.label | ControlFlowNode for dist |
+| backend/functions/admin/admin_get_receipts.py:11:17:11:20 | ControlFlowNode for file | semmle.label | ControlFlowNode for file |
+| backend/functions/admin/admin_get_receipts.py:11:25:11:30 | ControlFlowNode for result | semmle.label | ControlFlowNode for result |
+| backend/functions/admin/admin_get_receipts.py:11:25:11:46 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| backend/functions/admin/admin_get_receipts.py:12:77:12:108 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| backend/functions/admin/admin_get_receipts.py:12:94:12:97 | ControlFlowNode for file | semmle.label | ControlFlowNode for file |
+| backend/functions/admin/admin_get_receipts.py:12:94:12:108 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| backend/functions/admin/admin_get_receipts.py:15:20:15:24 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| backend/functions/admin/admin_get_receipts.py:18:5:18:5 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| backend/functions/admin/admin_get_receipts.py:19:5:19:5 | ControlFlowNode for m | semmle.label | ControlFlowNode for m |
+| backend/functions/admin/admin_get_receipts.py:20:5:20:10 | ControlFlowNode for prefix | semmle.label | ControlFlowNode for prefix |
+| backend/functions/admin/admin_get_receipts.py:21:36:21:41 | ControlFlowNode for prefix | semmle.label | ControlFlowNode for prefix |
+| backend/functions/admin/admin_get_receipts.py:22:5:22:12 | ControlFlowNode for zip_file | semmle.label | ControlFlowNode for zip_file |
+| backend/functions/admin/admin_get_receipts.py:23:26:23:43 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| backend/functions/admin/admin_get_receipts.py:25:24:25:41 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths

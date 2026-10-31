@@ -1,5 +1,7 @@
 name: languages-python-custom-test
 version: 0.0.2
 dependencies:
+  codeql/python-queries: "*"
+  languages-python-custom-models: ${workspace}
   languages-python-custom-src: ${workspace}
 extractor: python

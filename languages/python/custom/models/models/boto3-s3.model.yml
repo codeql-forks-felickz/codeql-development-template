@@ -1,0 +1,23 @@
+# Models for the local file paths used by the boto3 S3 client transfer helpers.
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/client/download_file.html
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/client/upload_file.html
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      # client.download_file(Bucket, Key, Filename): Filename is a local path that is written.
+      - ['boto3', 'Member[client].ReturnValue.Member[download_file].Argument[2,Filename:]', 'path-injection']
+      # client.upload_file(Filename, Bucket, Key): Filename is a local path that is read.
+      - ['boto3', 'Member[client].ReturnValue.Member[upload_file].Argument[0,Filename:]', 'path-injection']
+      # resource.meta.client exposes the same low-level client methods.
+      - ['boto3', 'Member[resource].ReturnValue.Member[meta].Member[client].Member[download_file].Argument[2,Filename:]', 'path-injection']
+      - ['boto3', 'Member[resource].ReturnValue.Member[meta].Member[client].Member[upload_file].Argument[0,Filename:]', 'path-injection']
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: summaryModel
+    data:
+      # Every object key returned by a list_objects(_v2) paginator starts with the requested Prefix,
+      # so an attacker controlled Prefix taints the returned keys.
+      - ['boto3', 'Member[client].ReturnValue.Member[get_paginator].ReturnValue.Member[paginate]', 'Argument[Prefix:]', 'ReturnValue', 'taint']

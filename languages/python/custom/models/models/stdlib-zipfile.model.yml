@@ -1,0 +1,8 @@
+# Models for the archive path opened by `zipfile.ZipFile`.
+# https://docs.python.org/3/library/zipfile.html#zipfile.ZipFile
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      - ['zipfile', 'Member[ZipFile].Argument[0,file:]', 'path-injection']

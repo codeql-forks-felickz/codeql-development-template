@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  AdminGetReceiptFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: admin_get_receipts.lambda_handler
+      Runtime: python3.8
+      CodeUri: backend/functions/admin/
+  SafeGetReceiptFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: safe_get_receipts.lambda_handler
+      Runtime: python3.8
+      CodeUri: backend/functions/admin/
