@@ -1,5 +1,6 @@
 package com.example.auth;
 
+import javax.crypto.spec.PBEKeySpec;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
@@ -58,6 +59,24 @@ public class AccountService {
     HashedUserAccount account = new HashedUserAccount();
     account.setPassword(rawPassword);
     return account;
+  }
+
+  public PBEKeySpec deriveWeakKey(String password) { // $ Source
+    return new PBEKeySpec(password.toCharArray(), new byte[16], 1, 128); // $ Alert
+  }
+
+  public PBEKeySpec deriveStrongKey(String password) {
+    return new PBEKeySpec(password.toCharArray(), new byte[16], 600000, 128);
+  }
+
+  public boolean verifyWithWeakBcrypt(String password, String hash) { // $ Source
+    BCryptPasswordEncoder weakEncoder = new BCryptPasswordEncoder(4);
+    return weakEncoder.matches(password, hash); // $ Alert
+  }
+
+  public boolean verifyWithStrongBcrypt(String password, String hash) {
+    BCryptPasswordEncoder strongEncoder = new BCryptPasswordEncoder(10);
+    return strongEncoder.matches(password, hash);
   }
 
   private String decryptPassword(String password) {

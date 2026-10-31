@@ -35,6 +35,18 @@ public class AuthLoginService {
     return password != null && passwordEncoder.matches(password, user.getPassword());
   }
 
+  public String echoChallengePassword(String password) { // $ Source
+    String challengePassword = findPasswordByLevelName("level-1");
+    if (password.equals(challengePassword)) { // $ Alert
+      return "Correct! " + challengePassword;
+    }
+    return "Incorrect";
+  }
+
+  private String findPasswordByLevelName(String level) {
+    return null;
+  }
+
   public boolean confirmMatches(String password, String confirmPassword) {
     // GOOD: two user-supplied values are compared, nothing is read from storage.
     return password.equals(confirmPassword);

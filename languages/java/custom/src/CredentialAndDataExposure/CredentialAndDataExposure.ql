@@ -1,9 +1,9 @@
 /**
- * @name Password stored or checked in cleartext or with a fast hash
+ * @name Password stored or checked in cleartext or with weak hashing
  * @description Storing a password in cleartext, comparing a submitted password directly
  *              against a stored password, or hashing a password with a fast message
- *              digest (such as MD5 or SHA-1) exposes user credentials if the password
- *              store is ever read by an attacker.
+ *              digest (such as MD5 or SHA-1) or an insufficient work factor exposes
+ *              user credentials if the password store is ever read by an attacker.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.5
@@ -174,6 +174,33 @@ predicate isFastHashInput(Expr e) {
   )
 }
 
+/** Holds if `e` is used with a known insufficient password-hashing work factor. */
+predicate isWeakPasswordHashInput(Expr e) {
+  exists(ClassInstanceExpr pbe, IntegerLiteral iterations |
+    pbe.getConstructedType().hasQualifiedName("javax.crypto.spec", "PBEKeySpec") and
+    pbe.getConstructor().getNumberOfParameters() = 4 and
+    e = pbe.getArgument(0) and
+    iterations = pbe.getArgument(2) and
+    iterations.getIntValue() = 1
+  )
+  or
+  exists(MethodCall passwordCall, ClassInstanceExpr encoder, IntegerLiteral strength |
+    passwordCall
+        .getMethod()
+        .getDeclaringType()
+        .hasQualifiedName("org.springframework.security.crypto.bcrypt", "BCryptPasswordEncoder") and
+    passwordCall.getMethod().hasName(["encode", "matches"]) and
+    e = passwordCall.getArgument(0) and
+    DataFlow::localExprFlow(encoder, passwordCall.getQualifier()) and
+    encoder
+        .getConstructedType()
+        .hasQualifiedName("org.springframework.security.crypto.bcrypt", "BCryptPasswordEncoder") and
+    encoder.getConstructor().getNumberOfParameters() = 1 and
+    strength = encoder.getArgument(0) and
+    strength.getIntValue() = 4
+  )
+}
+
 /**
  * Holds if `node` is a sink where a password is used without a password-hashing
  * function, with `message` describing the problem.
@@ -235,6 +262,10 @@ predicate passwordSink(DataFlow::Node node, string message) {
   ) and
   message =
     "This $@ is compared directly with a stored password, which indicates that passwords are stored in cleartext."
+  or
+  isWeakPasswordHashInput(node.asExpr()) and
+  message =
+    "This $@ is processed with a password-hashing function configured with an insufficient work factor."
   or
   isFastHashInput(node.asExpr()) and
   message =
