@@ -1,2 +1,0 @@
-query: DeserializationGadgetPathInjection/DeserializationGadgetPathInjection.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
