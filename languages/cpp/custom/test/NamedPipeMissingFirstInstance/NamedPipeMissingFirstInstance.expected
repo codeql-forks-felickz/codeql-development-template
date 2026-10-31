@@ -1,0 +1,2 @@
+| test.c:29:20:29:35 | call to CreateNamedPipeA | Named pipe is created by $@ without FILE_FLAG_FIRST_PIPE_INSTANCE in its open mode, so it may be squatted by a pre-existing instance. | test.c:20:8:20:23 | CreateNamedPipeA | CreateNamedPipeA |
+| test.c:37:20:37:35 | call to CreateNamedPipeW | Named pipe is created by $@ without FILE_FLAG_FIRST_PIPE_INSTANCE in its open mode, so it may be squatted by a pre-existing instance. | test.c:23:8:23:23 | CreateNamedPipeW | CreateNamedPipeW |

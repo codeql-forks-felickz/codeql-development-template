@@ -1,0 +1,44 @@
+extensions:
+  # Functions that change the privileges (security context) of the calling thread or
+  # process. Their return value must be checked: if the call fails, execution continues
+  # with the original (possibly more privileged) security context. (CWE-273)
+  - addsTo:
+      pack: languages-cpp-custom-src
+      extensible: privilegeChangeFunctionModel
+    data:
+      # Win32 impersonation / token APIs (return non-zero on success)
+      - ["", "ImpersonateNamedPipeClient"]
+      - ["", "ImpersonateLoggedOnUser"]
+      - ["", "ImpersonateSelf"]
+      - ["", "ImpersonateAnonymousToken"]
+      - ["", "ImpersonateDdeClientWindow"]
+      - ["", "DdeImpersonateClient"]
+      - ["", "SetThreadToken"]
+      - ["", "RevertToSelf"]
+      # RPC / COM impersonation (return RPC_STATUS / HRESULT)
+      - ["", "RpcImpersonateClient"]
+      - ["", "RpcRevertToSelf"]
+      - ["", "RpcRevertToSelfEx"]
+      - ["", "CoImpersonateClient"]
+      - ["", "CoRevertToSelf"]
+      # POSIX privilege dropping (return 0 on success)
+      - ["", "setuid"]
+      - ["", "setgid"]
+      - ["", "seteuid"]
+      - ["", "setegid"]
+      - ["", "setreuid"]
+      - ["", "setregid"]
+      - ["", "setresuid"]
+      - ["", "setresgid"]
+      - ["", "setgroups"]
+      - ["", "initgroups"]
+
+  # Functions that create a named pipe server instance; the column is the index of the
+  # `dwOpenMode` argument, which should include FILE_FLAG_FIRST_PIPE_INSTANCE. (CWE-284)
+  - addsTo:
+      pack: languages-cpp-custom-src
+      extensible: namedPipeCreationFunctionModel
+    data:
+      - ["", "CreateNamedPipeA", 1]
+      - ["", "CreateNamedPipeW", 1]
+      - ["", "CreateNamedPipe", 1]
