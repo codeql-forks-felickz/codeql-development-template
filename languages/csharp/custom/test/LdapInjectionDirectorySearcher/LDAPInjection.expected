@@ -1,0 +1,8 @@
+#select
+| LDAP.cs:15:31:15:102 | ... + ... | LDAP.cs:11:37:11:40 | user : String | LDAP.cs:15:31:15:102 | ... + ... | This LDAP query depends on a $@. | LDAP.cs:11:37:11:40 | user | user-provided value |
+edges
+| LDAP.cs:11:37:11:40 | user : String | LDAP.cs:15:31:15:102 | ... + ... | provenance |  |
+nodes
+| LDAP.cs:11:37:11:40 | user : String | semmle.label | user : String |
+| LDAP.cs:15:31:15:102 | ... + ... | semmle.label | ... + ... |
+subpaths
