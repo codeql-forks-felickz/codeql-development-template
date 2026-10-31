@@ -1,6 +1,7 @@
 package org.example;
 
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import javax.crypto.Cipher;
@@ -79,5 +80,9 @@ public class EncryptionUtils {
 
     public static KeySpec configuredIterations(char[] password, int iterations) {
         return new PBEKeySpec(password, salt, iterations, 256);
+    }
+
+    public static byte[] md5PinDigest(char[] pin) throws Exception {
+        return MessageDigest.getInstance("MD5").digest(new String(pin).getBytes(StandardCharsets.UTF_8));
     }
 }

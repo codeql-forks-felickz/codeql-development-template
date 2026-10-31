@@ -8,6 +8,10 @@ This query reports `PBEKeySpec` and `PBEParameterSpec` constructions whose itera
 
 Use a large iteration count. OWASP currently recommends at least 600,000 iterations for PBKDF2-HMAC-SHA256 and 210,000 for PBKDF2-HMAC-SHA512. Prefer a memory-hard function such as Argon2 or scrypt when available.
 
+## Known limitations
+
+This query only checks iteration counts supplied to `PBEKeySpec` and `PBEParameterSpec`. It does not report standalone fast-digest uses, such as storing a PIN as an unsalted MD5 digest; those are outside this query's PBE iteration-count scope.
+
 ## Example
 
 The following example derives an AES key with a single PBKDF2 iteration:
