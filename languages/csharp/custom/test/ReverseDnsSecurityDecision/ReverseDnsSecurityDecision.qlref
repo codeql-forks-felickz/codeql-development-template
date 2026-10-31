@@ -1,0 +1,2 @@
+query: ReverseDnsSecurityDecision/ReverseDnsSecurityDecision.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

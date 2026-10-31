@@ -1,0 +1,2 @@
+query: WeakCryptographicHash/WeakCryptographicHash.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

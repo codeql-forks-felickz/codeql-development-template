@@ -1,0 +1,20 @@
+#select
+| WeakCryptographicHash.cs:18:33:18:60 | call to method ToBase64String | WeakCryptographicHash.cs:17:31:17:76 | call to method ComputeHash : Byte[] | WeakCryptographicHash.cs:18:33:18:60 | call to method ToBase64String | This security-sensitive hash uses a weak algorithm or hashes a password without a salt. |
+| WeakCryptographicHash.cs:26:35:26:62 | call to method ToBase64String | WeakCryptographicHash.cs:25:27:25:75 | call to method HashData : Byte[] | WeakCryptographicHash.cs:26:35:26:62 | call to method ToBase64String | This security-sensitive hash uses a weak algorithm or hashes a password without a salt. |
+edges
+| WeakCryptographicHash.cs:17:24:17:27 | access to local variable hash : Byte[] | WeakCryptographicHash.cs:18:56:18:59 | access to local variable hash : Byte[] | provenance |  |
+| WeakCryptographicHash.cs:17:31:17:76 | call to method ComputeHash : Byte[] | WeakCryptographicHash.cs:17:24:17:27 | access to local variable hash : Byte[] | provenance |  |
+| WeakCryptographicHash.cs:18:56:18:59 | access to local variable hash : Byte[] | WeakCryptographicHash.cs:18:33:18:60 | call to method ToBase64String | provenance | MaD:2494 |
+| WeakCryptographicHash.cs:25:20:25:23 | access to local variable hash : Byte[] | WeakCryptographicHash.cs:26:58:26:61 | access to local variable hash : Byte[] | provenance |  |
+| WeakCryptographicHash.cs:25:27:25:75 | call to method HashData : Byte[] | WeakCryptographicHash.cs:25:20:25:23 | access to local variable hash : Byte[] | provenance |  |
+| WeakCryptographicHash.cs:26:58:26:61 | access to local variable hash : Byte[] | WeakCryptographicHash.cs:26:35:26:62 | call to method ToBase64String | provenance | MaD:2494 |
+nodes
+| WeakCryptographicHash.cs:17:24:17:27 | access to local variable hash : Byte[] | semmle.label | access to local variable hash : Byte[] |
+| WeakCryptographicHash.cs:17:31:17:76 | call to method ComputeHash : Byte[] | semmle.label | call to method ComputeHash : Byte[] |
+| WeakCryptographicHash.cs:18:33:18:60 | call to method ToBase64String | semmle.label | call to method ToBase64String |
+| WeakCryptographicHash.cs:18:56:18:59 | access to local variable hash : Byte[] | semmle.label | access to local variable hash : Byte[] |
+| WeakCryptographicHash.cs:25:20:25:23 | access to local variable hash : Byte[] | semmle.label | access to local variable hash : Byte[] |
+| WeakCryptographicHash.cs:25:27:25:75 | call to method HashData : Byte[] | semmle.label | call to method HashData : Byte[] |
+| WeakCryptographicHash.cs:26:35:26:62 | call to method ToBase64String | semmle.label | call to method ToBase64String |
+| WeakCryptographicHash.cs:26:58:26:61 | access to local variable hash : Byte[] | semmle.label | access to local variable hash : Byte[] |
+subpaths

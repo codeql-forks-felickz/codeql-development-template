@@ -1,0 +1,82 @@
+#select
+| ReverseDnsSecurityDecision.cs:24:17:24:33 | access to property HostName | ReverseDnsSecurityDecision.cs:23:36:23:66 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:24:17:24:33 | access to property HostName | This security decision depends on a host name from a $@, which can be spoofed. | ReverseDnsSecurityDecision.cs:23:36:23:66 | call to method GetHostEntry | reverse DNS lookup |
+| ReverseDnsSecurityDecision.cs:33:20:33:23 | access to local variable name | ReverseDnsSecurityDecision.cs:32:27:32:50 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:33:20:33:23 | access to local variable name | This security decision depends on a host name from a $@, which can be spoofed. | ReverseDnsSecurityDecision.cs:32:27:32:50 | call to method GetHostEntry | reverse DNS lookup |
+| ReverseDnsSecurityDecision.cs:39:39:39:52 | access to property HostName | ReverseDnsSecurityDecision.cs:38:25:38:52 | call to method GetHostByAddress : IPHostEntry | ReverseDnsSecurityDecision.cs:39:39:39:52 | access to property HostName | This security decision depends on a host name from a $@, which can be spoofed. | ReverseDnsSecurityDecision.cs:38:25:38:52 | call to method GetHostByAddress | reverse DNS lookup |
+| ReverseDnsSecurityDecision.cs:48:17:48:30 | access to property HostName | ReverseDnsSecurityDecision.cs:47:39:47:67 | call to method GetHostEntryAsync : Task<IPHostEntry> | ReverseDnsSecurityDecision.cs:48:17:48:30 | access to property HostName | This security decision depends on a host name from a $@, which can be spoofed. | ReverseDnsSecurityDecision.cs:47:39:47:67 | call to method GetHostEntryAsync | reverse DNS lookup |
+| ReverseDnsSecurityDecision.cs:58:21:58:25 | access to local variable alias | ReverseDnsSecurityDecision.cs:56:38:56:61 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:58:21:58:25 | access to local variable alias | This security decision depends on a host name from a $@, which can be spoofed. | ReverseDnsSecurityDecision.cs:56:38:56:61 | call to method GetHostEntry | reverse DNS lookup |
+| ReverseDnsSecurityDecision.cs:77:28:77:41 | access to property HostName | ReverseDnsSecurityDecision.cs:76:25:76:48 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:77:28:77:41 | access to property HostName | This security decision depends on a host name from a $@, which can be spoofed. | ReverseDnsSecurityDecision.cs:76:25:76:48 | call to method GetHostEntry | reverse DNS lookup |
+| ReverseDnsSecurityDecision.cs:87:28:87:41 | access to property HostName | ReverseDnsSecurityDecision.cs:86:25:86:48 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:87:28:87:41 | access to property HostName | This security decision depends on a host name from a $@, which can be spoofed. | ReverseDnsSecurityDecision.cs:86:25:86:48 | call to method GetHostEntry | reverse DNS lookup |
+| ReverseDnsSecurityDecision.cs:94:28:94:41 | access to property HostName | ReverseDnsSecurityDecision.cs:93:25:93:48 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:94:28:94:41 | access to property HostName | This security decision depends on a host name from a $@, which can be spoofed. | ReverseDnsSecurityDecision.cs:93:25:93:48 | call to method GetHostEntry | reverse DNS lookup |
+| ReverseDnsSecurityDecision.cs:101:28:101:41 | access to property HostName | ReverseDnsSecurityDecision.cs:100:25:100:48 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:101:28:101:41 | access to property HostName | This security decision depends on a host name from a $@, which can be spoofed. | ReverseDnsSecurityDecision.cs:100:25:100:48 | call to method GetHostEntry | reverse DNS lookup |
+| ReverseDnsSecurityDecision.cs:137:17:137:30 | access to property HostName | ReverseDnsSecurityDecision.cs:136:25:136:48 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:137:17:137:30 | access to property HostName | This security decision depends on a host name from a $@, which can be spoofed. | ReverseDnsSecurityDecision.cs:136:25:136:48 | call to method GetHostEntry | reverse DNS lookup |
+edges
+| ReverseDnsSecurityDecision.cs:23:25:23:32 | access to local variable hostInfo : IPHostEntry | ReverseDnsSecurityDecision.cs:24:17:24:24 | access to local variable hostInfo : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:23:36:23:66 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:23:25:23:32 | access to local variable hostInfo : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:24:17:24:24 | access to local variable hostInfo : IPHostEntry | ReverseDnsSecurityDecision.cs:24:17:24:33 | access to property HostName | provenance | MaD:1892 |
+| ReverseDnsSecurityDecision.cs:32:20:32:23 | access to local variable name : String | ReverseDnsSecurityDecision.cs:33:20:33:23 | access to local variable name | provenance |  |
+| ReverseDnsSecurityDecision.cs:32:27:32:50 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:32:27:32:59 | access to property HostName : String | provenance | MaD:1892 |
+| ReverseDnsSecurityDecision.cs:32:27:32:59 | access to property HostName : String | ReverseDnsSecurityDecision.cs:32:20:32:23 | access to local variable name : String | provenance |  |
+| ReverseDnsSecurityDecision.cs:38:17:38:21 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:39:39:39:43 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:38:25:38:52 | call to method GetHostByAddress : IPHostEntry | ReverseDnsSecurityDecision.cs:38:17:38:21 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:39:39:39:43 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:39:39:39:52 | access to property HostName | provenance | MaD:1892 |
+| ReverseDnsSecurityDecision.cs:47:25:47:29 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:48:17:48:21 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:47:39:47:67 | call to method GetHostEntryAsync : Task<IPHostEntry> | ReverseDnsSecurityDecision.cs:47:25:47:29 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:48:17:48:21 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:48:17:48:30 | access to property HostName | provenance | MaD:1892 |
+| ReverseDnsSecurityDecision.cs:56:38:56:61 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:56:38:56:69 | access to property Aliases : String[] | provenance | MaD:1891 |
+| ReverseDnsSecurityDecision.cs:56:38:56:69 | access to property Aliases : String[] | ReverseDnsSecurityDecision.cs:58:21:58:25 | access to local variable alias | provenance |  |
+| ReverseDnsSecurityDecision.cs:76:17:76:21 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:77:28:77:32 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:76:25:76:48 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:76:17:76:21 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:77:28:77:32 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:77:28:77:41 | access to property HostName | provenance | MaD:1892 |
+| ReverseDnsSecurityDecision.cs:86:17:86:21 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:87:28:87:32 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:86:25:86:48 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:86:17:86:21 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:87:28:87:32 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:87:28:87:41 | access to property HostName | provenance | MaD:1892 |
+| ReverseDnsSecurityDecision.cs:93:17:93:21 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:94:28:94:32 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:93:25:93:48 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:93:17:93:21 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:94:28:94:32 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:94:28:94:41 | access to property HostName | provenance | MaD:1892 |
+| ReverseDnsSecurityDecision.cs:100:17:100:21 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:101:28:101:32 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:100:25:100:48 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:100:17:100:21 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:101:28:101:32 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:101:28:101:41 | access to property HostName | provenance | MaD:1892 |
+| ReverseDnsSecurityDecision.cs:136:17:136:21 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:137:17:137:21 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:136:25:136:48 | call to method GetHostEntry : IPHostEntry | ReverseDnsSecurityDecision.cs:136:17:136:21 | access to local variable entry : IPHostEntry | provenance |  |
+| ReverseDnsSecurityDecision.cs:137:17:137:21 | access to local variable entry : IPHostEntry | ReverseDnsSecurityDecision.cs:137:17:137:30 | access to property HostName | provenance | MaD:1892 |
+nodes
+| ReverseDnsSecurityDecision.cs:23:25:23:32 | access to local variable hostInfo : IPHostEntry | semmle.label | access to local variable hostInfo : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:23:36:23:66 | call to method GetHostEntry : IPHostEntry | semmle.label | call to method GetHostEntry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:24:17:24:24 | access to local variable hostInfo : IPHostEntry | semmle.label | access to local variable hostInfo : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:24:17:24:33 | access to property HostName | semmle.label | access to property HostName |
+| ReverseDnsSecurityDecision.cs:32:20:32:23 | access to local variable name : String | semmle.label | access to local variable name : String |
+| ReverseDnsSecurityDecision.cs:32:27:32:50 | call to method GetHostEntry : IPHostEntry | semmle.label | call to method GetHostEntry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:32:27:32:59 | access to property HostName : String | semmle.label | access to property HostName : String |
+| ReverseDnsSecurityDecision.cs:33:20:33:23 | access to local variable name | semmle.label | access to local variable name |
+| ReverseDnsSecurityDecision.cs:38:17:38:21 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:38:25:38:52 | call to method GetHostByAddress : IPHostEntry | semmle.label | call to method GetHostByAddress : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:39:39:39:43 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:39:39:39:52 | access to property HostName | semmle.label | access to property HostName |
+| ReverseDnsSecurityDecision.cs:47:25:47:29 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:47:39:47:67 | call to method GetHostEntryAsync : Task<IPHostEntry> | semmle.label | call to method GetHostEntryAsync : Task<IPHostEntry> |
+| ReverseDnsSecurityDecision.cs:48:17:48:21 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:48:17:48:30 | access to property HostName | semmle.label | access to property HostName |
+| ReverseDnsSecurityDecision.cs:56:38:56:61 | call to method GetHostEntry : IPHostEntry | semmle.label | call to method GetHostEntry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:56:38:56:69 | access to property Aliases : String[] | semmle.label | access to property Aliases : String[] |
+| ReverseDnsSecurityDecision.cs:58:21:58:25 | access to local variable alias | semmle.label | access to local variable alias |
+| ReverseDnsSecurityDecision.cs:76:17:76:21 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:76:25:76:48 | call to method GetHostEntry : IPHostEntry | semmle.label | call to method GetHostEntry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:77:28:77:32 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:77:28:77:41 | access to property HostName | semmle.label | access to property HostName |
+| ReverseDnsSecurityDecision.cs:86:17:86:21 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:86:25:86:48 | call to method GetHostEntry : IPHostEntry | semmle.label | call to method GetHostEntry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:87:28:87:32 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:87:28:87:41 | access to property HostName | semmle.label | access to property HostName |
+| ReverseDnsSecurityDecision.cs:93:17:93:21 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:93:25:93:48 | call to method GetHostEntry : IPHostEntry | semmle.label | call to method GetHostEntry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:94:28:94:32 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:94:28:94:41 | access to property HostName | semmle.label | access to property HostName |
+| ReverseDnsSecurityDecision.cs:100:17:100:21 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:100:25:100:48 | call to method GetHostEntry : IPHostEntry | semmle.label | call to method GetHostEntry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:101:28:101:32 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:101:28:101:41 | access to property HostName | semmle.label | access to property HostName |
+| ReverseDnsSecurityDecision.cs:136:17:136:21 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:136:25:136:48 | call to method GetHostEntry : IPHostEntry | semmle.label | call to method GetHostEntry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:137:17:137:21 | access to local variable entry : IPHostEntry | semmle.label | access to local variable entry : IPHostEntry |
+| ReverseDnsSecurityDecision.cs:137:17:137:30 | access to property HostName | semmle.label | access to property HostName |
+subpaths
