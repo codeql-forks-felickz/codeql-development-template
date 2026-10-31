@@ -12,3 +12,10 @@ category: newQuery
   (`parseBase64Binary` and `parseHexBinary`). This lets `java/unsafe-deserialization` (and other
   taint-tracking queries) follow user input that is Base64-decoded with these APIs, for example
   into `ObjectInputStream.readObject`.
+
+## Known limitations
+
+- The existing `java/unsafe-deserialization` query can report file-backed deserialization when the
+  `file` threat model is enabled. It does not identify dangerous behavior inside custom
+  `Serializable.readObject` callbacks, such as writing deserialized fields to files; that requires a
+  separate gadget-side-effect analysis and is outside this query update.

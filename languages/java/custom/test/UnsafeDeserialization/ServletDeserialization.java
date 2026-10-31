@@ -44,4 +44,12 @@ public class ServletDeserialization extends HttpServlet {
     byte[] trusted = Base64.getDecoder().decode("rO0ABXQABWhlbGxv");
     new ObjectInputStream(new ByteArrayInputStream(trusted)).readObject();
   }
+
+  public Object deserializeFile(String filename) throws Exception {
+    // BAD: local file contents are an unsafe-deserialization source when the file threat model is
+    // enabled.
+    ObjectInputStream fileStream =
+        new ObjectInputStream(new java.io.FileInputStream(filename));
+    return fileStream.readObject();
+  }
 }
