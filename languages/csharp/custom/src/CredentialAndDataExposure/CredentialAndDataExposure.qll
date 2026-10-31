@@ -63,6 +63,23 @@ class CredentialProperty extends Property {
   CredentialProperty() { isCredentialName(this.getName()) and isSecretType(this.getType()) }
 }
 
+/** A property that holds a full payment-card number. */
+private class CardNumberProperty extends Property {
+  CardNumberProperty() {
+    (
+      this.getType() instanceof StringType or
+      this.getType() instanceof LongType or
+      this.getType() instanceof DecimalType
+    ) and
+    (
+      isCardNumberName(this.getName())
+      or
+      this.getName() = "Number" and
+      this.getDeclaringType().getName().regexpMatch("(?i).*card.*")
+    )
+  }
+}
+
 /** An expression that likely evaluates to a password. */
 class CredentialExpr extends Expr {
   CredentialExpr() {
@@ -120,6 +137,49 @@ private predicate isEfEntity(Class entity) {
   )
 }
 
+/** Holds if `sink` renders a full payment-card number property into a Razor view. */
+private predicate razorCardNumberRender(Expr sink, CardNumberProperty p) {
+  exists(MethodCall write |
+    write.getTarget().hasName("Write") and
+    write
+        .getTarget()
+        .getDeclaringType()
+        .getABaseType*()
+        .hasFullyQualifiedName(["Microsoft.AspNetCore.Mvc.Razor", "System.Web.WebPages"],
+          ["RazorPageBase", "WebPageExecutingBase"]) and
+    sink = write and
+    p = write.getArgument(0).(PropertyAccess).getTarget().getUnboundDeclaration()
+  )
+  or
+  exists(MethodCall mc, LambdaExpr l, string name |
+    name = mc.getTarget().getUndecoratedName() and
+    name =
+      [
+        "DisplayFor", "DisplayTextFor", "EditorFor", "TextBoxFor", "TextAreaFor", "HiddenFor",
+        "ValueFor"
+      ] and
+    mc.getTarget()
+        .getDeclaringType()
+        .getNamespace()
+        .hasFullyQualifiedName(["Microsoft.AspNetCore.Mvc", "System.Web.Mvc"], ["Rendering", "Html"]) and
+    l = mc.getAnArgument() and
+    p = l.getExpressionBody().(PropertyAccess).getTarget().getUnboundDeclaration() and
+    sink = mc
+  )
+  or
+  exists(ExprStmt s, string helper |
+    tagHelperForAssignment(s, helper, _) and
+    helper = "InputTagHelper" and
+    exists(AssignExpr a, PropertyAccess pa, LambdaExpr l |
+      a = s.getExpr() and
+      pa = a.getLeftOperand() and
+      l = a.getRightOperand().(Call).getAnArgument() and
+      p = l.getExpressionBody().(PropertyAccess).getTarget().getUnboundDeclaration()
+    ) and
+    sink = s.getExpr()
+  )
+}
+
 /** Holds if `e` is the value written to property `p`. */
 private predicate propertyWrite(Expr e, Property p) {
   exists(AssignExpr a |
@@ -145,8 +205,20 @@ private class PasswordInputLiteral extends StringLiteral {
   }
 }
 
+/** A string literal opening a form that submits fields through the URL. */
+private class GetFormLiteral extends StringLiteral {
+  GetFormLiteral() {
+    this.getValue().regexpMatch("(?is).*<form\\b[^>]*\\bmethod\\s*=\\s*['\"]?get\\b.*")
+  }
+}
+
 /** Holds if `form` is an HTML login form that posts credentials over unencrypted HTTP. */
 predicate credentialFormOverHttp(HttpFormLiteral form) {
+  exists(PasswordInputLiteral pw | pw.getEnclosingCallable() = form.getEnclosingCallable())
+}
+
+/** Holds if `form` submits a password field using the GET method. */
+private predicate credentialFormOverGet(GetFormLiteral form) {
   exists(PasswordInputLiteral pw | pw.getEnclosingCallable() = form.getEnclosingCallable())
 }
 
@@ -801,6 +873,12 @@ private predicate logSink(DataFlow::Node sink) {
   or
   sink instanceof TraceMessageSink
   or
+  exists(MethodCall mc |
+    mc.getTarget().getDeclaringType().hasFullyQualifiedName("System", "Console") and
+    mc.getTarget().getName() in ["Write", "WriteLine"] and
+    sink.asExpr() = mc.getAnArgument()
+  )
+  or
   // log4net, NLog and Serilog loggers that do not derive from an `ILogger` type
   exists(MethodCall mc, Type t |
     t = [mc.getQualifier().getType(), mc.getTarget().getDeclaringType()] and
@@ -815,6 +893,101 @@ private predicate logSink(DataFlow::Node sink) {
     sink.asExpr() = mc.getAnArgument()
   )
 }
+
+/** A literal HTML comment that contains a password or pwd assignment. */
+private class HtmlCommentCredentialLiteral extends StringLiteral {
+  HtmlCommentCredentialLiteral() {
+    this.getValue().regexpMatch("(?is).*<!--.*\\b(password|pwd)\\s*=\\s*[^;\\s>]+.*-->.*")
+  }
+}
+
+/** Holds if `e` is data written into an HTTP response or generated Razor output. */
+private predicate clientResponseWrite(Expr e) {
+  exists(MethodCall mc |
+    mc.getTarget().getName() in ["Write", "WriteLiteral"] and
+    mc.getTarget()
+        .getDeclaringType()
+        .getABaseType*()
+        .hasFullyQualifiedName(["System.Web", "Microsoft.AspNetCore.Mvc.Razor"],
+          ["HttpResponse", "RazorPageBase", "WebPageExecutingBase"]) and
+    e = mc.getArgument(0)
+  )
+}
+
+/** Holds if `write` outputs a credential literal or expression inside an HTML comment. */
+private predicate htmlCommentCredentialWrite(Expr write, Expr source) {
+  exists(MethodCall mc, InterpolatedStringExpr interpolated, StringLiteral text, Expr credential |
+    interpolated = mc.getArgument(0) and
+    clientResponseWrite(interpolated) and
+    text = interpolated.getAText() and
+    text.getValue().regexpMatch("(?is).*<!--.*") and
+    credential = interpolated.getAnInsert() and
+    credential instanceof CredentialExpr and
+    write = mc and
+    source = credential
+  )
+  or
+  exists(MethodCall mc, HtmlCommentCredentialLiteral literal |
+    mc.getArgument(0) = literal and
+    clientResponseWrite(literal) and
+    write = mc and
+    source = literal
+  )
+}
+
+/** Holds if `call` enables Entity Framework sensitive-data logging. */
+private predicate enablesSensitiveDataLogging(MethodCall call) {
+  call.getTarget().hasName("EnableSensitiveDataLogging") and
+  call.getTarget().getDeclaringType().getNamespace().getFullName() = "Microsoft.EntityFrameworkCore" and
+  not exists(BoolLiteral disabled |
+    disabled = call.getArgument(0) and
+    disabled.getValue() = "false"
+  )
+}
+
+/** Holds if `call` hashes data with MD5. */
+private predicate md5HashCall(MethodCall call) {
+  call.getTarget().getName() in ["ComputeHash", "HashData"] and
+  (
+    call.getTarget()
+        .getDeclaringType()
+        .hasFullyQualifiedName("System.Security.Cryptography", ["MD5", "MD5CryptoServiceProvider"])
+    or
+    call.getQualifier()
+        .getType()
+        .(RefType)
+        .getABaseType*()
+        .hasFullyQualifiedName("System.Security.Cryptography", ["MD5", "MD5CryptoServiceProvider"])
+    or
+    call.getQualifier().getType().getName().regexpMatch("(?i).*MD5.*")
+  )
+}
+
+private module WeakPasswordHashConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall call |
+      md5HashCall(call) and
+      sink.asExpr() = call.getArgument(0)
+    )
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(MethodCall getBytes |
+      getBytes.getTarget().hasName("GetBytes") and
+      getBytes.getTarget().getDeclaringType().hasFullyQualifiedName("System.Text", "Encoding") and
+      node1.asExpr() = getBytes.getArgument(0) and
+      node2.asExpr() = getBytes
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    isProtectionBarrier(node) and not md5HashCall(node.asExpr().(MethodCall))
+  }
+}
+
+private module WeakPasswordHashFlow = DataFlow::Global<WeakPasswordHashConfig>;
 
 /** A string literal for a connection string that embeds a non-empty `Password` or `Pwd` value. */
 private class PasswordConnectionString extends StringLiteral {
@@ -1019,6 +1192,15 @@ predicate credentialAndDataExposure(
   related = alert and
   relatedText = "an http:// URL"
   or
+  // CWE-598
+  exists(GetFormLiteral form |
+    credentialFormOverGet(form) and
+    alert = form and
+    message = "This HTML form submits a password using GET, exposing it in the request URL." and
+    related = form and
+    relatedText = "this form"
+  )
+  or
   // CWE-200 (Web Forms)
   exists(DataFlow::Node source, DataFlow::Node sink |
     CredentialToWebControlFlow::flow(source, sink) and
@@ -1032,6 +1214,13 @@ predicate credentialAndDataExposure(
   exists(CredentialProperty p |
     razorCredentialRender(alert, p) and
     message = "The credential property $@ is rendered into the HTTP response by this view." and
+    related = p and
+    relatedText = p.getName()
+  )
+  or
+  exists(CardNumberProperty p |
+    razorCardNumberRender(alert, p) and
+    message = "The payment-card property $@ is rendered into the HTTP response by this view." and
     related = p and
     relatedText = p.getName()
   )
@@ -1130,6 +1319,36 @@ predicate credentialAndDataExposure(
     message = "This log entry includes $@, which contains a password." and
     related = source.asExpr() and
     relatedText = "this value"
+  )
+  or
+  // CWE-532 (sensitive data logging enabled for Entity Framework)
+  exists(MethodCall call |
+    enablesSensitiveDataLogging(call) and
+    alert = call and
+    message =
+      "Entity Framework sensitive-data logging is enabled, which may write credentials and other sensitive values to logs." and
+    related = call and
+    relatedText = "this call"
+  )
+  or
+  // CWE-615 (credentials included in an HTML comment)
+  exists(Expr source, Expr sink |
+    htmlCommentCredentialWrite(sink, source) and
+    alert = sink and
+    message = "This HTTP response includes a password in an HTML comment." and
+    related = source and
+    relatedText = "this comment"
+  )
+  or
+  // CWE-916 (password hashed with MD5)
+  exists(DataFlow::Node source, DataFlow::Node sink, MethodCall call |
+    WeakPasswordHashFlow::flow(source, sink) and
+    md5HashCall(call) and
+    sink.asExpr() = call.getArgument(0) and
+    alert = call and
+    message = "The password from $@ is hashed with MD5, a fast and unsuitable password hash." and
+    related = source.asExpr() and
+    relatedText = "this expression"
   )
   or
   // CWE-319

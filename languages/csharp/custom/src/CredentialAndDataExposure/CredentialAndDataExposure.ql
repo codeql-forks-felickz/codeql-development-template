@@ -16,7 +16,11 @@
  *       external/cwe/cwe-319
  *       external/cwe/cwe-523
  *       external/cwe/cwe-532
+ *       external/cwe/cwe-535
+ *       external/cwe/cwe-598
+ *       external/cwe/cwe-615
  *       external/cwe/cwe-798
+ *       external/cwe/cwe-916
  */
 
 import csharp

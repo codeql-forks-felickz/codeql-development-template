@@ -67,5 +67,42 @@ namespace Cwe532Direct
             string dbConnectionString = "Data Source=(local);Integrated Security=true";
             logger.Log(NLog.LogLevel.Warn, "Connecting with " + dbConnectionString, null);
         }
+
+        public void BadConsole()
+        {
+            string pwd = "example";
+            Console.WriteLine("Database connection failed: " + pwd); // $ Alert
+        }
+
+        public void GoodConsole()
+        {
+            Console.WriteLine("Connection failed");
+        }
+
+        public void BadHtmlComment(System.Web.HttpResponse response)
+        {
+            string pwd = "example";
+            response.Write($"<!-- Database connection: {pwd} -->"); // $ Alert
+        }
+
+        public void GoodHtmlComment(System.Web.HttpResponse response)
+        {
+            response.Write("<!-- Database connection failed -->");
+        }
+
+        public void BadSensitiveDataLogging()
+        {
+            new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder().EnableSensitiveDataLogging(); // $ Alert
+        }
+
+        public void GoodDetailedErrorsOnly()
+        {
+            new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder().EnableDetailedErrors();
+        }
+
+        public void GoodSensitiveDataLoggingDisabled()
+        {
+            new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder().EnableSensitiveDataLogging(false);
+        }
     }
 }

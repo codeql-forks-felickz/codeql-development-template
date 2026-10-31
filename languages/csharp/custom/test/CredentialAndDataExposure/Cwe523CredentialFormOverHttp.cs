@@ -41,5 +41,21 @@ namespace Cwe523
             resp.Write("<input type='text' name='q'>");
             resp.Write("</form>");
         }
+
+        // CWE-598: GET places the password field in the request URL.
+        public void BadGetPassword(HttpResponse resp)
+        {
+            resp.Write("<form action='/login' method='get'>"); // $ Alert
+            resp.Write("<input type='password' name='password'>");
+            resp.Write("</form>");
+        }
+
+        // Safe: a password field is submitted using POST, not GET.
+        public void GoodPostPassword(HttpResponse resp)
+        {
+            resp.Write("<form action='/login' method='post'>");
+            resp.Write("<input type='password' name='password'>");
+            resp.Write("</form>");
+        }
     }
 }

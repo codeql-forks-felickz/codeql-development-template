@@ -22,6 +22,12 @@ namespace Cwe200.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }
+
+    public class CreditCard
+    {
+        public string Number { get; set; }
+        public string MaskedNumber { get; set; }
+    }
 }
 
 namespace AspNetCoreGeneratedDocument
@@ -124,6 +130,24 @@ namespace AspNetCoreGeneratedDocument
 
             __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = new InputTagHelper();
             __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvider.CreateModelExpression(ViewData, __model => __model.Password);
+        }
+    }
+
+    internal sealed class Views_Checkout_EditPayment : RazorPage<Cwe200.Models.CreditCard>
+    {
+        private InputTagHelper __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper;
+
+        public IModelExpressionProvider ModelExpressionProvider { get; private set; }
+
+        public override async System.Threading.Tasks.Task ExecuteAsync()
+        {
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = new InputTagHelper();
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvider.CreateModelExpression(ViewData, __model => __model.Number); // $ Alert
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.InputTypeName = "text";
+
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = new InputTagHelper();
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvider.CreateModelExpression(ViewData, __model => __model.MaskedNumber);
+            __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.InputTypeName = "text";
         }
     }
 }

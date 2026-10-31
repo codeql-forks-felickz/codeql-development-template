@@ -10,18 +10,21 @@ transmitted, rendered, logged or stored. This query reports several patterns tha
 | CWE | Pattern |
 | --- | --- |
 | CWE-523 | Generated HTML containing a password input in a form whose `action` is an `http://` URL. |
+| CWE-598 | Generated HTML containing a password input in a form submitted with `method="get"`. |
 | CWE-200 | A stored credential written to the `Text`/`Value` of a Web Forms control that is not in password mode. |
-| CWE-200 | A Razor view that renders a credential property with `@Model.Password`, `Html.DisplayFor`, `Html.TextBoxFor`, `Html.EditorFor` or `<input asp-for="Password">` without `type="password"`. |
+| CWE-200 | A Razor view that renders a credential or payment-card property with `@Model.Password`, `Html.DisplayFor`, `Html.TextBoxFor`, `Html.EditorFor` or `<input asp-for="Password">` without `type="password"`. |
 | CWE-256 | A model-bound entity whose password property is persisted through Entity Framework (`Add`/`Update`/`Attach`) without first being replaced, for example by a hash. |
 | CWE-256 | A plaintext password (or a hard-coded literal) bound to the password parameter of an `INSERT`/`UPDATE` command. |
 | CWE-256 | A connection password read from a plaintext file (`File.ReadAll*` and similar) and used in a connection string or `NetworkCredential`. |
 | CWE-256, CWE-315 | A password that is only Base64- or otherwise reversibly encoded before being stored in a database, file or cookie. |
 | CWE-257 | A password encrypted with a reversible cipher (`CryptoStream`, `ICryptoTransform`, `SymmetricAlgorithm.Encrypt*`) instead of being hashed. |
 | CWE-257 | A password column read from a `DataRow`/data reader that is Base64-decoded or decrypted back to plaintext. |
-| CWE-532 | A password, a connection string containing a password, or an object whose `ToString()` includes a password property, written to a log (`ILogger`, `Trace`, log4net, NLog, Serilog). |
+| CWE-532, CWE-535 | A password, a connection string containing a password, or an object whose `ToString()` includes a password property, written to a log (`ILogger`, `Trace`, `Console`, log4net, NLog, Serilog); also reports Entity Framework sensitive-data logging when enabled. |
+| CWE-615 | A password included in an HTML comment written to an HTTP response. |
 | CWE-798 | A hard-coded string or byte array used as the key of a `SymmetricSecurityKey` that signs tokens. |
 | CWE-312 | A payment-card number persisted unencrypted in an Entity Framework entity or an XML file. |
 | CWE-319 | A password sent over a raw `TcpClient`/`NetworkStream` (directly or through a `StreamWriter`/`BinaryWriter`) or `Socket.Send` without TLS (`SslStream`). |
+| CWE-916 | A password hashed using MD5. |
 
 ## Recommendation
 
@@ -32,6 +35,7 @@ transmitted, rendered, logged or stored. This query reports several patterns tha
 * Only submit credentials to `https://` endpoints.
 * Load signing keys from a secret store or configuration, not from source code.
 * Encrypt or tokenize payment-card data and store only a masked number where possible.
+* Use a salted, adaptive password hash rather than MD5.
 
 ## Example
 
@@ -78,6 +82,11 @@ available in databases created with `--build-mode=none` or from a build that run
 generator. Names are matched heuristically (for example `Password`, `Pwd`, `CreditCardNumber`),
 so credentials stored under unusual names are not detected.
 
+The query does not infer that an ASP.NET application lacks HTTPS enforcement based only on
+missing middleware, since TLS may be enforced by a reverse proxy or hosting platform. It does not
+classify arbitrary request data as sensitive for generic file or Windows registry writes, and it
+does not report disclosure of non-credential environment variables such as `PATH`.
+
 ## References
 
 * OWASP: [Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html).
@@ -87,6 +96,11 @@ so credentials stored under unusual names are not detected.
   [CWE-257](https://cwe.mitre.org/data/definitions/257.html),
   [CWE-312](https://cwe.mitre.org/data/definitions/312.html),
   [CWE-315](https://cwe.mitre.org/data/definitions/315.html),
+  [CWE-319](https://cwe.mitre.org/data/definitions/319.html),
   [CWE-523](https://cwe.mitre.org/data/definitions/523.html),
+  [CWE-535](https://cwe.mitre.org/data/definitions/535.html),
   [CWE-532](https://cwe.mitre.org/data/definitions/532.html),
-  [CWE-798](https://cwe.mitre.org/data/definitions/798.html).
+  [CWE-598](https://cwe.mitre.org/data/definitions/598.html),
+  [CWE-615](https://cwe.mitre.org/data/definitions/615.html),
+  [CWE-798](https://cwe.mitre.org/data/definitions/798.html),
+  [CWE-916](https://cwe.mitre.org/data/definitions/916.html).

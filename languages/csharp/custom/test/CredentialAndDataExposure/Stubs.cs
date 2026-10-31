@@ -74,6 +74,12 @@ namespace Microsoft.Extensions.Logging
 
 namespace Microsoft.EntityFrameworkCore
 {
+    public class DbContextOptionsBuilder
+    {
+        public DbContextOptionsBuilder EnableSensitiveDataLogging(bool enabled = true) { return this; }
+        public DbContextOptionsBuilder EnableDetailedErrors() { return this; }
+    }
+
     public class DbContext
     {
         public virtual object Add<TEntity>(TEntity entity) where TEntity : class { return null; }
