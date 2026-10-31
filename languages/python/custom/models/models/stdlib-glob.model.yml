@@ -7,6 +7,10 @@ extensions:
       pack: codeql/python-all
       extensible: sinkModel
     data:
-      - ['glob', 'Member[glob,iglob].Argument[0,pathname:]', 'path-injection']
-      - ['glob', 'Member[glob,iglob].Argument[root_dir:]', 'path-injection']
-      - ['pathlib', 'Member[Path,PosixPath,WindowsPath].ReturnValue.Member[glob,rglob].Argument[0,pattern:]', 'path-injection']
+      - ["glob", "Member[glob,iglob].Argument[0,pathname:]", "path-injection"]
+      - ["glob", "Member[glob,iglob].Argument[root_dir:]", "path-injection"]
+      - [
+          "pathlib",
+          "Member[Path,PosixPath,WindowsPath].ReturnValue.Member[glob,rglob].Argument[0,pattern:]",
+          "path-injection"
+        ]

@@ -5,4 +5,4 @@ extensions:
       pack: codeql/python-all
       extensible: sinkModel
     data:
-      - ['zipfile', 'Member[ZipFile].Argument[0,file:]', 'path-injection']
+      - ["zipfile", "Member[ZipFile].Argument[0,file:]", "path-injection"]
