@@ -1,0 +1,2 @@
+query: WcfStateChangeOverGet/WcfStateChangeOverGet.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

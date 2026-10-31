@@ -1,0 +1,2 @@
+query: MissingServiceOperationAccessControl/MissingServiceOperationAccessControl.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

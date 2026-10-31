@@ -1,0 +1,1 @@
+| Web.config:4:5:4:33 | compilation | Compilation debug mode is enabled in Web.config and should be disabled before deployment. |

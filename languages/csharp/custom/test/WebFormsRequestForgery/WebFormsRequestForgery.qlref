@@ -1,0 +1,2 @@
+query: WebFormsRequestForgery/WebFormsRequestForgery.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

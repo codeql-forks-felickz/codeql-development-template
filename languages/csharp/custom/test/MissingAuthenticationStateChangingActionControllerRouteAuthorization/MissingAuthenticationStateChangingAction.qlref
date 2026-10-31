@@ -1,0 +1,2 @@
+query: MissingAuthenticationStateChangingAction/MissingAuthenticationStateChangingAction.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

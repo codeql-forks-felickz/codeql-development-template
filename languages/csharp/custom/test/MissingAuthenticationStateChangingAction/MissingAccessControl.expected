@@ -1,0 +1,6 @@
+| BlogEntriesController.cs:47:42:47:45 | Edit | This action is missing an authorization check. |
+| BlogEntriesController.cs:68:42:68:56 | DeleteConfirmed | This action is missing an authorization check. |
+| CommentsController.cs:45:30:45:33 | Edit | This action is missing an authorization check. |
+| CommentsController.cs:58:30:58:44 | DeleteConfirmed | This action is missing an authorization check. |
+| UsersController.cs:39:30:39:33 | Edit | This action is missing an authorization check. |
+| UsersController.cs:50:30:50:44 | DeleteConfirmed | This action is missing an authorization check. |

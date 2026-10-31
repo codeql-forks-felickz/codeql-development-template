@@ -1,0 +1,2 @@
+query: InsecureDirectObjectReferenceAuthorizeOnly/InsecureDirectObjectReferenceAuthorizeOnly.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

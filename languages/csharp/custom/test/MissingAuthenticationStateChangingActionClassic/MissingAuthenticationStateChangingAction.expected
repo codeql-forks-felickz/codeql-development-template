@@ -1,0 +1,3 @@
+| Controllers.cs:17:21:17:26 | Create | This state-changing action can be invoked without authentication. |
+| Controllers.cs:33:21:33:26 | Create | This state-changing action can be invoked without authentication. |
+| Controllers.cs:48:21:48:26 | Delete | This state-changing action can be invoked without authentication. |

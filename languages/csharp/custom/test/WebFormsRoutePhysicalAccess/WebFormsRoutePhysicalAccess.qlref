@@ -1,0 +1,2 @@
+query: WebFormsRoutePhysicalAccess/WebFormsRoutePhysicalAccess.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,2 @@
+query: WebConfigAuthorizationAllowsAll/WebConfigAuthorizationAllowsAll.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
