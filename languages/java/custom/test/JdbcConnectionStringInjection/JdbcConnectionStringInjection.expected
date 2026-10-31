@@ -1,0 +1,29 @@
+#select
+| Test.java:18:40:18:42 | url | Test.java:17:47:17:80 | getParameter(...) : String | Test.java:18:40:18:42 | url | This JDBC connection URL depends on a $@. | Test.java:17:47:17:80 | getParameter(...) | user-provided value |
+| Test.java:24:40:24:84 | ... + ... | Test.java:23:19:23:46 | getParameter(...) : String | Test.java:24:40:24:84 | ... + ... | This JDBC connection URL depends on a $@. | Test.java:23:19:23:46 | getParameter(...) | user-provided value |
+| Test.java:31:40:31:52 | toString(...) | Test.java:30:15:30:40 | getParameter(...) : String | Test.java:31:40:31:52 | toString(...) | This JDBC connection URL depends on a $@. | Test.java:30:15:30:40 | getParameter(...) | user-provided value |
+| Test.java:37:40:37:42 | url | Test.java:36:62:36:87 | getParameter(...) : String | Test.java:37:40:37:42 | url | This JDBC connection URL depends on a $@. | Test.java:36:62:36:87 | getParameter(...) | user-provided value |
+edges
+| Test.java:17:47:17:80 | getParameter(...) : String | Test.java:18:40:18:42 | url | provenance | Src:MaD:48669 Sink:MaD:47146 |
+| Test.java:23:19:23:46 | getParameter(...) : String | Test.java:24:40:24:84 | ... + ... | provenance | Src:MaD:48669 Sink:MaD:47144 |
+| Test.java:30:5:30:6 | sb [post update] : StringBuilder | Test.java:31:40:31:41 | sb : StringBuilder | provenance |  |
+| Test.java:30:15:30:40 | getParameter(...) : String | Test.java:30:5:30:6 | sb [post update] : StringBuilder | provenance | Src:MaD:48669 MaD:46615 |
+| Test.java:31:40:31:41 | sb : StringBuilder | Test.java:31:40:31:52 | toString(...) | provenance | MaD:46630 Sink:MaD:47145 |
+| Test.java:36:18:36:88 | format(...) : String | Test.java:37:40:37:42 | url | provenance | Sink:MaD:47144 |
+| Test.java:36:18:36:88 | new ..[] { .. } : Object[] [[]] : String | Test.java:36:18:36:88 | format(...) : String | provenance | MaD:46655 |
+| Test.java:36:62:36:87 | getParameter(...) : String | Test.java:36:18:36:88 | new ..[] { .. } : Object[] [[]] : String | provenance | Src:MaD:48669  |
+nodes
+| Test.java:17:47:17:80 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| Test.java:18:40:18:42 | url | semmle.label | url |
+| Test.java:23:19:23:46 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| Test.java:24:40:24:84 | ... + ... | semmle.label | ... + ... |
+| Test.java:30:5:30:6 | sb [post update] : StringBuilder | semmle.label | sb [post update] : StringBuilder |
+| Test.java:30:15:30:40 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| Test.java:31:40:31:41 | sb : StringBuilder | semmle.label | sb : StringBuilder |
+| Test.java:31:40:31:52 | toString(...) | semmle.label | toString(...) |
+| Test.java:36:18:36:88 | format(...) : String | semmle.label | format(...) : String |
+| Test.java:36:18:36:88 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
+| Test.java:36:62:36:87 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| Test.java:37:40:37:42 | url | semmle.label | url |
+| Test.java:43:40:43:66 | getParameter(...) | semmle.label | getParameter(...) |
+subpaths
