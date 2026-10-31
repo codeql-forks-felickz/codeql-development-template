@@ -1,0 +1,12 @@
+#select
+| example/ResetLinkController.java:9:19:9:69 | format(...) | example/ResetLinkController.java:7:19:7:53 | getHeader(...) : String | example/ResetLinkController.java:9:19:9:69 | format(...) | This email content depends on the incoming Host header, which may poison a password reset link. |
+edges
+| example/ResetLinkController.java:7:19:7:53 | getHeader(...) : String | example/ResetLinkController.java:9:56:9:59 | host : String | provenance | Src:MaD:46238  |
+| example/ResetLinkController.java:9:19:9:69 | new ..[] { .. } : Object[] [[]] : String | example/ResetLinkController.java:9:19:9:69 | format(...) | provenance | MaD:46655 |
+| example/ResetLinkController.java:9:56:9:59 | host : String | example/ResetLinkController.java:9:19:9:69 | new ..[] { .. } : Object[] [[]] : String | provenance |  |
+nodes
+| example/ResetLinkController.java:7:19:7:53 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| example/ResetLinkController.java:9:19:9:69 | format(...) | semmle.label | format(...) |
+| example/ResetLinkController.java:9:19:9:69 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
+| example/ResetLinkController.java:9:56:9:59 | host : String | semmle.label | host : String |
+subpaths
