@@ -78,6 +78,51 @@ private class RedirectLocationSink extends HttpResponseSplittingSink {
   }
 }
 
+/** The URL argument of `HttpResponse.Redirect`. */
+private class RedirectSink extends HttpResponseSplittingSink {
+  RedirectSink() {
+    exists(MethodCall mc |
+      mc.getTarget().hasName("Redirect") and
+      mc.getTarget().getDeclaringType() instanceof SystemWebResponseType and
+      this.getExpr() = mc.getArgument(0)
+    )
+  }
+}
+
+/** An access to the `Cookies` collection of a `System.Web` response. */
+private class ResponseCookiesAccess extends PropertyAccess {
+  ResponseCookiesAccess() {
+    this.getTarget().hasName("Cookies") and
+    this.getTarget().getDeclaringType() instanceof SystemWebResponseType
+  }
+}
+
+/** The value assigned to a cookie in a `System.Web` response's cookie collection. */
+private class ResponseCookieValueSink extends HttpResponseSplittingSink {
+  ResponseCookieValueSink() {
+    exists(AssignExpr ae, PropertyAccess value, IndexerAccess cookie |
+      value = ae.getLValue() and
+      value.getTarget().hasName("Value") and
+      value.getTarget().getDeclaringType().hasFullyQualifiedName("System.Web", "HttpCookie") and
+      cookie = value.getQualifier() and
+      exists(ResponseCookiesAccess cookies |
+        DataFlow::localExprFlow(cookies, cookie.getQualifier())
+      ) and
+      this.getExpr() = ae.getRValue()
+    )
+    or
+    exists(MethodCall add, ObjectCreation cookie |
+      add.getTarget().hasName("Add") and
+      exists(ResponseCookiesAccess cookies |
+        DataFlow::localExprFlow(cookies, add.getQualifier())
+      ) and
+      DataFlow::localExprFlow(cookie, add.getArgument(0)) and
+      cookie.getType().hasFullyQualifiedName("System.Web", "HttpCookie") and
+      this.getExpr() = cookie.getArgument(1)
+    )
+  }
+}
+
 /** A sanitizer for HTTP response splitting vulnerabilities. */
 abstract class HttpResponseSplittingSanitizer extends DataFlow::ExprNode { }
 

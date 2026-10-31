@@ -60,4 +60,18 @@ namespace WebFox.Controllers
             await ControllerContext.HttpContext.Response.WriteAsync("<body>" + WebUtility.HtmlEncode(userInfo) + "</body>");
         }
     }
+
+    namespace CookieXss
+    {
+        public class CookieOutput
+        {
+            public void Render(HttpRequest request, System.Web.UI.WebControls.Label label)
+            {
+                var cookies = request.Cookies; // $ Source[cs/web/xss]
+                string value = cookies["displayName"].Value;
+                label.Text = value; // $ Alert[cs/web/xss]
+                label.Text = HttpUtility.HtmlEncode(value);
+            }
+        }
+    }
 }

@@ -18,6 +18,17 @@ namespace System.Web
     public class HttpRequest
     {
         public NameValueCollection QueryString => null;
+        public HttpCookieCollection Cookies => null;
+    }
+
+    public class HttpCookie
+    {
+        public string Value => null;
+    }
+
+    public class HttpCookieCollection
+    {
+        public HttpCookie this[string name] => null;
     }
 
     public class HttpResponse
@@ -35,6 +46,14 @@ namespace System.Web
     public sealed class HttpUtility
     {
         public static string HtmlEncode(string s) => null;
+    }
+}
+
+namespace System.Web.UI.WebControls
+{
+    public class Label
+    {
+        public string Text { get; set; }
     }
 }
 

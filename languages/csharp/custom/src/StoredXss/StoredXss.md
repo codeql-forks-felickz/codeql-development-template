@@ -4,6 +4,10 @@ Data that an application reads back from its database was often originally suppl
 
 The standard `cs/web/xss` query only reports stored XSS when the `database` threat model is enabled. This query always treats database reads as sources, including Entity Framework mapped properties, `DbDataReader` results, and (through the `languages-csharp-custom-models` pack) values read from a `DataRow`. It reuses the sinks and sanitizers of `cs/web/xss`, so it follows values through helper methods (for example `ToSummaryHtml()`) into `Html.Raw`, `Label.Text`, `Literal.Text`, `InnerHtml`, and similar sinks.
 
+## Known limitations
+
+This query tracks database reads, not arbitrary uploaded-file contents or values read from `Session` and `Application` collections. Treating every local file or state-collection value as attacker-controlled would broaden the source scope beyond this query.
+
 ## Recommendation
 
 HTML-encode stored values when writing them to a page, for example with `HttpUtility.HtmlEncode`, or use controls and Razor expressions that encode automatically instead of `Html.Raw`, `Literal`, `Label`, or `InnerHtml`.

@@ -133,4 +133,20 @@ namespace Test
             response.Headers.Add("X-Value", v); // $ Alert[cs/web/http-response-splitting]
         }
     }
+
+    public class ResponseRedirectAndCookie
+    {
+        protected void Write(HttpRequest request, HttpResponseBase response)
+        {
+            string v = request.QueryString["v"]; // $ Source[cs/web/http-response-splitting]
+            response.Redirect("/next?v=" + v); // $ Alert[cs/web/http-response-splitting]
+            response.Cookies["lang"].Value = v; // $ Alert[cs/web/http-response-splitting]
+            var cookie = new System.Web.HttpCookie("lang", v); // $ Alert[cs/web/http-response-splitting]
+            response.Cookies.Add(cookie);
+
+            response.Redirect("/next?v=" + HttpUtility.UrlEncode(v));
+            response.Cookies["safe"].Value = "constant";
+            response.Cookies.Add(new System.Web.HttpCookie("safe", "constant"));
+        }
+    }
 }
