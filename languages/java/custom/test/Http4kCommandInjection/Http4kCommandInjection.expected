@@ -1,0 +1,66 @@
+#select
+| CommandInjectionRoutes.kt:13:31:13:46 | "..." | CommandInjectionRoutes.kt:12:19:12:45 | header(...) : String | CommandInjectionRoutes.kt:13:31:13:46 | "..." | This command line depends on a $@. | CommandInjectionRoutes.kt:12:19:12:45 | header(...) | user-provided value |
+| CommandInjectionRoutes.kt:18:31:18:46 | "..." | CommandInjectionRoutes.kt:17:19:17:51 | headerValues(...) : List | CommandInjectionRoutes.kt:18:31:18:46 | "..." | This command line depends on a $@. | CommandInjectionRoutes.kt:17:19:17:51 | headerValues(...) | user-provided value |
+| CommandInjectionRoutes.kt:22:31:22:50 | bodyString(...) | CommandInjectionRoutes.kt:22:31:22:50 | bodyString(...) | CommandInjectionRoutes.kt:22:31:22:50 | bodyString(...) | This command line depends on a $@. | CommandInjectionRoutes.kt:22:31:22:50 | bodyString(...) | user-provided value |
+| CommandInjectionRoutes.kt:27:31:27:46 | "..." | CommandInjectionRoutes.kt:26:19:26:38 | query(...) : String | CommandInjectionRoutes.kt:27:31:27:46 | "..." | This command line depends on a $@. | CommandInjectionRoutes.kt:26:19:26:38 | query(...) | user-provided value |
+| CommandInjectionRoutes.kt:32:31:32:46 | "..." | CommandInjectionRoutes.kt:31:19:31:40 | queries(...) : List | CommandInjectionRoutes.kt:32:31:32:46 | "..." | This command line depends on a $@. | CommandInjectionRoutes.kt:31:19:31:40 | queries(...) | user-provided value |
+| CommandInjectionRoutes.kt:37:31:37:58 | new String[] | CommandInjectionRoutes.kt:36:19:36:37 | path(...) : String | CommandInjectionRoutes.kt:37:31:37:58 | new String[] | This command line depends on a $@. | CommandInjectionRoutes.kt:36:19:36:37 | path(...) | user-provided value |
+| CommandInjectionRoutes.kt:42:31:42:58 | new String[] | CommandInjectionRoutes.kt:41:19:41:37 | form(...) : String | CommandInjectionRoutes.kt:42:31:42:58 | new String[] | This command line depends on a $@. | CommandInjectionRoutes.kt:41:19:41:37 | form(...) | user-provided value |
+| CommandInjectionRoutes.kt:48:31:48:58 | new String[] | CommandInjectionRoutes.kt:47:19:47:34 | invoke(...) : Void | CommandInjectionRoutes.kt:48:31:48:58 | new String[] | This command line depends on a $@. | CommandInjectionRoutes.kt:47:19:47:34 | invoke(...) | user-provided value |
+| CommandInjectionRoutes.kt:54:31:54:58 | new String[] | CommandInjectionRoutes.kt:53:19:53:38 | get(...) : Void | CommandInjectionRoutes.kt:54:31:54:58 | new String[] | This command line depends on a $@. | CommandInjectionRoutes.kt:53:19:53:38 | get(...) | user-provided value |
+| CommandInjectionRoutes.kt:59:31:59:58 | new String[] | CommandInjectionRoutes.kt:58:19:58:63 | extract(...) : Void | CommandInjectionRoutes.kt:59:31:59:58 | new String[] | This command line depends on a $@. | CommandInjectionRoutes.kt:58:19:58:63 | extract(...) | user-provided value |
+edges
+| CommandInjectionRoutes.kt:12:19:12:45 | header(...) : String | CommandInjectionRoutes.kt:13:31:13:46 | "..." | provenance | Src:MaD:1 Sink:MaD:46598 |
+| CommandInjectionRoutes.kt:17:19:17:51 | headerValues(...) : List | CommandInjectionRoutes.kt:17:19:17:59 | first(...) : String | provenance | Src:MaD:2 MaD:28724 |
+| CommandInjectionRoutes.kt:17:19:17:59 | first(...) : String | CommandInjectionRoutes.kt:18:31:18:46 | "..." | provenance | Sink:MaD:46598 |
+| CommandInjectionRoutes.kt:26:19:26:38 | query(...) : String | CommandInjectionRoutes.kt:27:31:27:46 | "..." | provenance | Src:MaD:4 Sink:MaD:46598 |
+| CommandInjectionRoutes.kt:31:19:31:40 | queries(...) : List | CommandInjectionRoutes.kt:31:19:31:48 | first(...) : String | provenance | Src:MaD:3 MaD:28724 |
+| CommandInjectionRoutes.kt:31:19:31:48 | first(...) : String | CommandInjectionRoutes.kt:32:31:32:46 | "..." | provenance | Sink:MaD:46598 |
+| CommandInjectionRoutes.kt:36:19:36:37 | path(...) : String | CommandInjectionRoutes.kt:37:51:37:57 | command : String | provenance | Src:MaD:9  |
+| CommandInjectionRoutes.kt:37:31:37:58 | {...} : String[] [[]] : String | CommandInjectionRoutes.kt:37:31:37:58 | new String[] | provenance | Sink:MaD:46599 |
+| CommandInjectionRoutes.kt:37:51:37:57 | command : String | CommandInjectionRoutes.kt:37:31:37:58 | {...} : String[] [[]] : String | provenance |  |
+| CommandInjectionRoutes.kt:41:19:41:37 | form(...) : String | CommandInjectionRoutes.kt:42:51:42:57 | command : String | provenance | Src:MaD:5  |
+| CommandInjectionRoutes.kt:42:31:42:58 | {...} : String[] [[]] : String | CommandInjectionRoutes.kt:42:31:42:58 | new String[] | provenance | Sink:MaD:46599 |
+| CommandInjectionRoutes.kt:42:51:42:57 | command : String | CommandInjectionRoutes.kt:42:31:42:58 | {...} : String[] [[]] : String | provenance |  |
+| CommandInjectionRoutes.kt:47:19:47:34 | invoke(...) : Void | CommandInjectionRoutes.kt:48:51:48:57 | command : Void | provenance | Src:MaD:8  |
+| CommandInjectionRoutes.kt:48:31:48:58 | {...} : String[] [[]] : Void | CommandInjectionRoutes.kt:48:31:48:58 | new String[] | provenance | Sink:MaD:46599 |
+| CommandInjectionRoutes.kt:48:51:48:57 | command : Void | CommandInjectionRoutes.kt:48:31:48:58 | {...} : String[] [[]] : Void | provenance |  |
+| CommandInjectionRoutes.kt:53:19:53:38 | get(...) : Void | CommandInjectionRoutes.kt:54:51:54:57 | command : Void | provenance | Src:MaD:7  |
+| CommandInjectionRoutes.kt:54:31:54:58 | {...} : String[] [[]] : Void | CommandInjectionRoutes.kt:54:31:54:58 | new String[] | provenance | Sink:MaD:46599 |
+| CommandInjectionRoutes.kt:54:51:54:57 | command : Void | CommandInjectionRoutes.kt:54:31:54:58 | {...} : String[] [[]] : Void | provenance |  |
+| CommandInjectionRoutes.kt:58:19:58:63 | extract(...) : Void | CommandInjectionRoutes.kt:59:51:59:57 | command : Void | provenance | Src:MaD:6  |
+| CommandInjectionRoutes.kt:59:31:59:58 | {...} : String[] [[]] : Void | CommandInjectionRoutes.kt:59:31:59:58 | new String[] | provenance | Sink:MaD:46599 |
+| CommandInjectionRoutes.kt:59:51:59:57 | command : Void | CommandInjectionRoutes.kt:59:31:59:58 | {...} : String[] [[]] : Void | provenance |  |
+nodes
+| CommandInjectionRoutes.kt:12:19:12:45 | header(...) : String | semmle.label | header(...) : String |
+| CommandInjectionRoutes.kt:13:31:13:46 | "..." | semmle.label | "..." |
+| CommandInjectionRoutes.kt:17:19:17:51 | headerValues(...) : List | semmle.label | headerValues(...) : List |
+| CommandInjectionRoutes.kt:17:19:17:59 | first(...) : String | semmle.label | first(...) : String |
+| CommandInjectionRoutes.kt:18:31:18:46 | "..." | semmle.label | "..." |
+| CommandInjectionRoutes.kt:22:31:22:50 | bodyString(...) | semmle.label | bodyString(...) |
+| CommandInjectionRoutes.kt:26:19:26:38 | query(...) : String | semmle.label | query(...) : String |
+| CommandInjectionRoutes.kt:27:31:27:46 | "..." | semmle.label | "..." |
+| CommandInjectionRoutes.kt:31:19:31:40 | queries(...) : List | semmle.label | queries(...) : List |
+| CommandInjectionRoutes.kt:31:19:31:48 | first(...) : String | semmle.label | first(...) : String |
+| CommandInjectionRoutes.kt:32:31:32:46 | "..." | semmle.label | "..." |
+| CommandInjectionRoutes.kt:36:19:36:37 | path(...) : String | semmle.label | path(...) : String |
+| CommandInjectionRoutes.kt:37:31:37:58 | new String[] | semmle.label | new String[] |
+| CommandInjectionRoutes.kt:37:31:37:58 | {...} : String[] [[]] : String | semmle.label | {...} : String[] [[]] : String |
+| CommandInjectionRoutes.kt:37:51:37:57 | command : String | semmle.label | command : String |
+| CommandInjectionRoutes.kt:41:19:41:37 | form(...) : String | semmle.label | form(...) : String |
+| CommandInjectionRoutes.kt:42:31:42:58 | new String[] | semmle.label | new String[] |
+| CommandInjectionRoutes.kt:42:31:42:58 | {...} : String[] [[]] : String | semmle.label | {...} : String[] [[]] : String |
+| CommandInjectionRoutes.kt:42:51:42:57 | command : String | semmle.label | command : String |
+| CommandInjectionRoutes.kt:47:19:47:34 | invoke(...) : Void | semmle.label | invoke(...) : Void |
+| CommandInjectionRoutes.kt:48:31:48:58 | new String[] | semmle.label | new String[] |
+| CommandInjectionRoutes.kt:48:31:48:58 | {...} : String[] [[]] : Void | semmle.label | {...} : String[] [[]] : Void |
+| CommandInjectionRoutes.kt:48:51:48:57 | command : Void | semmle.label | command : Void |
+| CommandInjectionRoutes.kt:53:19:53:38 | get(...) : Void | semmle.label | get(...) : Void |
+| CommandInjectionRoutes.kt:54:31:54:58 | new String[] | semmle.label | new String[] |
+| CommandInjectionRoutes.kt:54:31:54:58 | {...} : String[] [[]] : Void | semmle.label | {...} : String[] [[]] : Void |
+| CommandInjectionRoutes.kt:54:51:54:57 | command : Void | semmle.label | command : Void |
+| CommandInjectionRoutes.kt:58:19:58:63 | extract(...) : Void | semmle.label | extract(...) : Void |
+| CommandInjectionRoutes.kt:59:31:59:58 | new String[] | semmle.label | new String[] |
+| CommandInjectionRoutes.kt:59:31:59:58 | {...} : String[] [[]] : Void | semmle.label | {...} : String[] [[]] : Void |
+| CommandInjectionRoutes.kt:59:51:59:57 | command : Void | semmle.label | command : Void |
+subpaths
