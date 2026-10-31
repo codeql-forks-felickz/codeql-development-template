@@ -107,6 +107,21 @@ namespace Bookstore.Controllers
         }
     }
 
+    public class UnrelatedTextControl
+    {
+        public string Text { get; set; }
+    }
+
+    // GOOD: an unrelated control's Text property is not remote input.
+    public class BookRepositoryWithTextProperty
+    {
+        public void Find(UnrelatedTextControl control)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.SelectSingleNode("//book[author='" + control.Text + "']");
+        }
+    }
+
     // GOOD: the controller base type is on a different partial declaration.
     public partial class PartialBookSearch : ControllerBase { }
 

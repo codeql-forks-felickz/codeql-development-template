@@ -33,6 +33,7 @@ public class XPath : ControllerBase
 
 * Only a direct unresolved base type named `ControllerBase` or `Controller` is recognized. Controllers identified only by an unresolved `[ApiController]` or `[Controller]` attribute, or through an unresolved type alias, are not.
 * Unresolved `[NonAction]` attributes are not extracted, so such methods are still treated as action methods.
+* This query does not infer ASP.NET Web Forms controls when their generated control declarations and framework types are unavailable. The standard XPath-injection query already models `System.Web.UI.WebControls.TextBox` when its type resolves; treating arbitrary unresolved `Text` properties as remote input would be too broad.
 
 ## References
 
