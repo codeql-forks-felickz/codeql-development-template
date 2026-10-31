@@ -1,0 +1,20 @@
+#select
+| VulnerableTaskHolder.java:19:33:19:42 | taskAction | VulnerableTaskHolder.java:19:33:19:42 | taskAction | VulnerableTaskHolder.java:19:33:19:42 | taskAction | This command line depends on a $@. | VulnerableTaskHolder.java:19:33:19:42 | taskAction | deserialized field |
+| VulnerableTaskHolder.java:21:31:21:85 | new String[] | VulnerableTaskHolder.java:21:72:21:84 | this.taskName : String | VulnerableTaskHolder.java:21:31:21:85 | new String[] | This command line depends on a $@. | VulnerableTaskHolder.java:21:72:21:84 | this.taskName | deserialized field |
+edges
+| EditableJava.java:6:41:6:52 | getText(...) : Editable | EditableJava.java:6:31:6:63 | ... + ... | provenance | Src:MaD:712 AdditionalTaintStep Sink:MaD:46588 |
+| EditableJava.java:6:41:6:52 | getText(...) : Editable | EditableJava.java:6:41:6:63 | toString(...) : String | provenance | Src:MaD:712 MaD:46630 |
+| EditableJava.java:6:41:6:63 | toString(...) : String | EditableJava.java:6:31:6:63 | ... + ... | provenance | Sink:MaD:46588 |
+| VulnerableTaskHolder.java:21:31:21:85 | {...} : String[] [[]] : String | VulnerableTaskHolder.java:21:31:21:85 | new String[] | provenance | Sink:MaD:46589 |
+| VulnerableTaskHolder.java:21:62:21:84 | ... + ... : String | VulnerableTaskHolder.java:21:31:21:85 | {...} : String[] [[]] : String | provenance |  |
+| VulnerableTaskHolder.java:21:72:21:84 | this.taskName : String | VulnerableTaskHolder.java:21:62:21:84 | ... + ... : String | provenance |  |
+nodes
+| EditableJava.java:6:31:6:63 | ... + ... | semmle.label | ... + ... |
+| EditableJava.java:6:41:6:52 | getText(...) : Editable | semmle.label | getText(...) : Editable |
+| EditableJava.java:6:41:6:63 | toString(...) : String | semmle.label | toString(...) : String |
+| VulnerableTaskHolder.java:19:33:19:42 | taskAction | semmle.label | taskAction |
+| VulnerableTaskHolder.java:21:31:21:85 | new String[] | semmle.label | new String[] |
+| VulnerableTaskHolder.java:21:31:21:85 | {...} : String[] [[]] : String | semmle.label | {...} : String[] [[]] : String |
+| VulnerableTaskHolder.java:21:62:21:84 | ... + ... : String | semmle.label | ... + ... : String |
+| VulnerableTaskHolder.java:21:72:21:84 | this.taskName : String | semmle.label | this.taskName : String |
+subpaths
