@@ -1,0 +1,8 @@
+#select
+| GreetingController.java:12:23:12:26 | name | GreetingController.java:11:26:11:58 | name : String | GreetingController.java:12:23:12:26 | name | Cross-site scripting vulnerability due to a $@ rendered by a JSP view through a Spring MVC model attribute. | GreetingController.java:11:26:11:58 | name | user-provided value |
+edges
+| GreetingController.java:11:26:11:58 | name : String | GreetingController.java:12:23:12:26 | name | provenance |  |
+nodes
+| GreetingController.java:11:26:11:58 | name : String | semmle.label | name : String |
+| GreetingController.java:12:23:12:26 | name | semmle.label | name |
+subpaths

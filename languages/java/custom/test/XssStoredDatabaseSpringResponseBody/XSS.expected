@@ -1,0 +1,19 @@
+#select
+| FeedController.java:34:12:34:25 | toString(...) | FeedController.java:32:42:32:61 | getString(...) : String | FeedController.java:34:12:34:25 | toString(...) | Cross-site scripting vulnerability due to a $@. | FeedController.java:32:42:32:61 | getString(...) | user-provided value |
+| FeedController.java:34:12:34:25 | toString(...) | FeedController.java:32:64:32:83 | getString(...) : String | FeedController.java:34:12:34:25 | toString(...) | Cross-site scripting vulnerability due to a $@. | FeedController.java:32:64:32:83 | getString(...) | user-provided value |
+edges
+| FeedController.java:32:7:32:9 | ret [post update] : StringBuilder | FeedController.java:34:12:34:14 | ret : StringBuilder | provenance |  |
+| FeedController.java:32:18:32:84 | format(...) : String | FeedController.java:32:7:32:9 | ret [post update] : StringBuilder | provenance | MaD:46615 |
+| FeedController.java:32:18:32:84 | new ..[] { .. } : Object[] [[]] : String | FeedController.java:32:18:32:84 | format(...) : String | provenance | MaD:46655 |
+| FeedController.java:32:42:32:61 | getString(...) : String | FeedController.java:32:18:32:84 | new ..[] { .. } : Object[] [[]] : String | provenance | Src:MaD:47171  |
+| FeedController.java:32:64:32:83 | getString(...) : String | FeedController.java:32:18:32:84 | new ..[] { .. } : Object[] [[]] : String | provenance | Src:MaD:47171  |
+| FeedController.java:34:12:34:14 | ret : StringBuilder | FeedController.java:34:12:34:25 | toString(...) | provenance | MaD:46630 |
+nodes
+| FeedController.java:32:7:32:9 | ret [post update] : StringBuilder | semmle.label | ret [post update] : StringBuilder |
+| FeedController.java:32:18:32:84 | format(...) : String | semmle.label | format(...) : String |
+| FeedController.java:32:18:32:84 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
+| FeedController.java:32:42:32:61 | getString(...) : String | semmle.label | getString(...) : String |
+| FeedController.java:32:64:32:83 | getString(...) : String | semmle.label | getString(...) : String |
+| FeedController.java:34:12:34:14 | ret : StringBuilder | semmle.label | ret : StringBuilder |
+| FeedController.java:34:12:34:25 | toString(...) | semmle.label | toString(...) |
+subpaths
