@@ -140,13 +140,18 @@ namespace Test
         {
             string v = request.QueryString["v"]; // $ Source[cs/web/http-response-splitting]
             response.Redirect("/next?v=" + v); // $ Alert[cs/web/http-response-splitting]
+            response.Cookies["lang"].Secure = true;
             response.Cookies["lang"].Value = v; // $ Alert[cs/web/http-response-splitting]
             var cookie = new System.Web.HttpCookie("lang", v); // $ Alert[cs/web/http-response-splitting]
+            cookie.Secure = true;
             response.Cookies.Add(cookie);
 
             response.Redirect("/next?v=" + HttpUtility.UrlEncode(v));
+            response.Cookies["safe"].Secure = true;
             response.Cookies["safe"].Value = "constant";
-            response.Cookies.Add(new System.Web.HttpCookie("safe", "constant"));
+            var safeCookie = new System.Web.HttpCookie("safe", "constant");
+            safeCookie.Secure = true;
+            response.Cookies.Add(safeCookie);
         }
     }
 }

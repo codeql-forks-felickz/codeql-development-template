@@ -47,6 +47,7 @@ namespace System.Web
     public class HttpCookie
     {
         public HttpCookie(string name, string value) { }
+        public bool Secure { get; set; }
         public string Value { get; set; }
     }
 
