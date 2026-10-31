@@ -1,0 +1,2 @@
+query: InsecureTemporaryFile/InsecureTemporaryFile.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
