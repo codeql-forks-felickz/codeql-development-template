@@ -20,6 +20,8 @@ Most database connector libraries offer a way of safely embedding untrusted data
 
 Django fallback routing currently models named URL captures only. Positional regex captures are not modeled.
 
+This query covers SQL injection only. It does not extend XPath-injection analysis, and it does not track user-controlled values written to and later read from persistent stores (second-order injection), such as item identifiers returned by DynamoDB.
+
 ## Example
 
 In the following `http.server` handler, `query` is defined by iterable unpacking and then read inside a generator expression. The SQL statement is built by string concatenation and is vulnerable to SQL injection:

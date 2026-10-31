@@ -25,3 +25,19 @@ def login_safe():
     password = request.form.get("password")
     query = "SELECT id, username, access_level FROM user WHERE username = ? AND password = ?"
     return jsonify(query_db(query, (username, password), True))
+
+
+@bp.route("/create_user", methods=["POST"])
+def create_user():
+    username = request.form.get("username")
+    password = request.form.get("password")
+    query = "INSERT INTO user (username, password) VALUES ('%s', '%s')" % (username, password)
+    return jsonify(query_db(query, [], False, True))
+
+
+@bp.route("/create_user_safe", methods=["POST"])
+def create_user_safe():
+    username = request.form.get("username")
+    password = request.form.get("password")
+    query = "INSERT INTO user (username, password) VALUES (?, ?)"
+    return jsonify(query_db(query, (username, password), False, True))
