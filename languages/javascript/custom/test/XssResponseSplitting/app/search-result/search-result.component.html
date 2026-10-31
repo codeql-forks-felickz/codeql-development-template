@@ -1,0 +1,6 @@
+<main>
+  @for (item of tableData; track item.id) {
+    <div [innerHTML]="item.description"></div>
+  }
+  <span [innerHTML]="trustedDescription"></span>
+</main>
