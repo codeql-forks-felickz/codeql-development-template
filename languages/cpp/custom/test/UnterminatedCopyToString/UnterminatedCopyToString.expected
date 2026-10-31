@@ -1,1 +1,1 @@
-// not implemented 
+| UnterminatedCopyToString.cpp:11:5:11:10 | call to printf | This string use may read past a character array whose copied contents are not explicitly terminated. |

@@ -1,1 +1,6 @@
-// not implemented 
+#select
+| OdbcConnectionStringInjection.cpp:10:36:10:42 | access to array | OdbcConnectionStringInjection.cpp:10:19:10:42 | access to array | OdbcConnectionStringInjection.cpp:10:19:10:42 | access to array | This ODBC data source name comes from $@ and may alter the connection target. | OdbcConnectionStringInjection.cpp:10:36:10:42 | access to array | a command-line argument |
+edges
+nodes
+| OdbcConnectionStringInjection.cpp:10:19:10:42 | access to array | semmle.label | access to array |
+subpaths

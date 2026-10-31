@@ -1,3 +1,0 @@
-#select
-testFailures
-| UnterminatedCopyToString.cpp:11:32:11:41 | // $ Alert | Missing result: Alert |

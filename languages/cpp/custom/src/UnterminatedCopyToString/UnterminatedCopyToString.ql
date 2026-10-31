@@ -14,29 +14,30 @@ import cpp
 import semmle.code.cpp.commons.NullTermination
 
 from
-  FunctionCall copy, LocalVariable destination, ArrayType destinationType,
-  FunctionCall stringUse, int argumentIndex, VariableAccess destinationAccess,
+  FunctionCall copy, LocalVariable destination, ArrayType destinationType, FunctionCall stringUse,
+  int argumentIndex, VariableAccess copyDestinationAccess, VariableAccess stringDestinationAccess,
   int copyLength
 where
   copy.getTarget().hasGlobalName(["memcpy", "memmove"]) and
-  copy.getArgument(0).getAChild*() = destinationAccess and
-  destination = destinationAccess.getTarget() and
+  copy.getArgument(0).getAChild*() = copyDestinationAccess and
+  destination = copyDestinationAccess.getTarget() and
   not destination.hasInitializer() and
   destinationType = destination.getUnspecifiedType() and
   destinationType.getBaseType().getUnspecifiedType() instanceof CharType and
   copyLength = copy.getArgument(2).getFullyConverted().getValue().toInt() and
   copyLength >= destinationType.getArraySize() - 1 and
   stringUse.getTarget().hasGlobalName(["printf", "fprintf", "sprintf", "snprintf"]) and
-  stringUse.getArgument(argumentIndex).getAChild*() = destinationAccess and
-  variableMustBeNullTerminated(destinationAccess) and
+  stringUse.getArgument(argumentIndex).getAChild*() = stringDestinationAccess and
+  stringDestinationAccess.getTarget() = destination and
+  variableMustBeNullTerminated(stringDestinationAccess) and
   not exists(AssignExpr terminator, ArrayExpr element |
     terminator.getLValue() = element and
-    element.getArrayBase().getAChild*() = destinationAccess and
+    element.getArrayBase().getAChild*().(VariableAccess).getTarget() = destination and
     terminator.getRValue().getFullyConverted().getValue().toInt() = 0
   ) and
   not exists(FunctionCall clear |
     clear.getTarget().hasGlobalName("memset") and
-    clear.getArgument(0).getAChild*() = destinationAccess and
+    clear.getArgument(0).getAChild*().(VariableAccess).getTarget() = destination and
     clear.getArgument(1).getFullyConverted().getValue().toInt() = 0
   )
 select stringUse,

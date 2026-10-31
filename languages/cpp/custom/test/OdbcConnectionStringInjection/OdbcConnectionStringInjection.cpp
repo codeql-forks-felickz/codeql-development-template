@@ -7,8 +7,8 @@ int SQLConnect(void *connection, const SQLCHAR *serverName, SQLSMALLINT serverNa
 #define SQL_NTS -3
 
 int main(int argc, char **argv) {
-    SQLConnect(0, (const SQLCHAR *)argv[0], SQL_NTS, (const SQLCHAR *)"", SQL_NTS,
-               (const SQLCHAR *)"", SQL_NTS); // $ Alert
+    SQLConnect(0, (const SQLCHAR *)argv[0], SQL_NTS, (const SQLCHAR *)"", SQL_NTS, // $ Alert
+               (const SQLCHAR *)"", SQL_NTS);
     return argc;
 }
 

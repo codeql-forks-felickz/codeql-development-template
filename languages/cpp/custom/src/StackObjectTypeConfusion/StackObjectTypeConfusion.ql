@@ -1,6 +1,6 @@
 /**
- * @name Dereference of a wider type through an expired stack object
- * @description Reading a wider pointer type after the pointed-to stack object leaves scope can read out of bounds.
+ * @name Dereference through a wider pointer type
+ * @description Reading a wider pointer type through a pointer to a smaller local object can read beyond the object's storage.
  * @kind problem
  * @precision medium
  * @problem.severity warning
@@ -13,10 +13,8 @@
 import cpp
 
 from
-  CStyleCast cast, PointerDereferenceExpr dereference, LocalVariable pointer,
-  LocalVariable object, AssignExpr assignment, AddressOfExpr address,
-  VariableAccess objectAccess, DeclStmt declaration, BlockStmt objectScope,
-  Type targetType
+  CStyleCast cast, PointerDereferenceExpr dereference, LocalVariable pointer, LocalVariable object,
+  AssignExpr assignment, AddressOfExpr address, VariableAccess objectAccess, Type targetType
 where
   cast.getExpr() = pointer.getAnAccess() and
   pointer.getUnspecifiedType().(PointerType).getBaseType().getUnspecifiedType() instanceof VoidType and
@@ -24,15 +22,12 @@ where
   assignment.getRValue().getAChild*() = address and
   objectAccess = address.getOperand() and
   objectAccess.getTarget() = object and
-  declaration.getADeclaration() = object and
-  objectScope = address.getEnclosingBlock() and
-  objectScope.getEnclosingBlock() = cast.getEnclosingBlock() and
   object.getFunction() = cast.getEnclosingFunction() and
   pointer.getFunction() = cast.getEnclosingFunction() and
   targetType = cast.getExplicitlyConverted().getUnspecifiedType().(PointerType).getBaseType() and
   targetType.getSize() > object.getUnspecifiedType().getSize() and
-  dereference.getOperand() = cast and
+  dereference.getOperand() = cast.getExpr() and
   dereference.getEnclosingFunction() = cast.getEnclosingFunction() and
   not exists(AssignExpr write | write.getLValue() = dereference)
 select dereference,
-  "This dereference reads a larger type through a pointer to a stack object whose scope has ended."
+  "This dereference reads a larger type through a pointer to a smaller local object."

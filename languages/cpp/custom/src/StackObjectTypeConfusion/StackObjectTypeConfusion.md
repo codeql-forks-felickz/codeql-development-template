@@ -1,6 +1,6 @@
-# Dereference of a wider type through an expired stack object
+# Dereference through a wider pointer type
 
-Casting a pointer to a smaller local object through `void *` and dereferencing it as a wider type after the local object's scope ends can read beyond the object's storage.
+Casting a pointer to a smaller local object through `void *` and dereferencing it as a wider type can read beyond the object's storage.
 
 ## Recommendation
 
@@ -8,4 +8,4 @@ Keep the pointed-to object alive for the entire use and ensure the pointer's tar
 
 ## Known limitations
 
-The query handles a direct assignment of a nested-scope local object's address to a `void *` local and a subsequent wider C-style pointer dereference. It does not attempt to distinguish intentional type punning or track other pointer aliases.
+The query handles a direct assignment of a local object's address to a `void *` local and a subsequent wider C-style pointer dereference. It does not attempt to distinguish intentional type punning or track other pointer aliases.

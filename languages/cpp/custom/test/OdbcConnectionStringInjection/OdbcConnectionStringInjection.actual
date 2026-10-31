@@ -1,2 +1,0 @@
-ERROR: unexpected input 'select' expecting one of: 'any', 'avg', 'boolean', 'count', 'date', 'exists', 'false', 'float', 'forall', 'forex', 'if', 'int', 'max', 'min', 'not', 'none', 'rank', 'result', 'strictcount', 'strictsum', 'strictconcat', 'concat', 'string', 'sum', 'super', 'this', 'true', '-', '(', '[', '+', Lowerid, Upperid, Atlowerid, Integer, Float, String (OdbcConnectionStringInjection.ql:45,1-7)
-== Cannot postprocess query that fails compilation ==

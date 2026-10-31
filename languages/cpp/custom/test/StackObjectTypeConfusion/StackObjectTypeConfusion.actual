@@ -1,3 +1,0 @@
-#select
-testFailures
-| StackObjectTypeConfusion.cpp:9:35:9:44 | // $ Alert | Missing result: Alert |
