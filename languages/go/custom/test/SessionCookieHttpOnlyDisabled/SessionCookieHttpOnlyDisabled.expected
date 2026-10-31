@@ -1,0 +1,12 @@
+| test.go:25:13:25:17 | false | This sensitive cookie does not set the 'HttpOnly' attribute, exposing its value to client-side scripts. |
+| test.go:33:60:33:64 | false | This sensitive cookie does not set the 'HttpOnly' attribute, exposing its value to client-side scripts. |
+| test.go:38:27:38:31 | false | This sensitive cookie does not set the 'HttpOnly' attribute, exposing its value to client-side scripts. |
+| test.go:43:59:43:72 | cookieHttpOnly | This sensitive cookie does not set the 'HttpOnly' attribute, exposing its value to client-side scripts. |
+| test.go:50:18:50:25 | httpOnly | This sensitive cookie does not set the 'HttpOnly' attribute, exposing its value to client-side scripts. |
+| test.go:57:71:57:75 | false | This sensitive cookie does not set the 'HttpOnly' attribute, exposing its value to client-side scripts. |
+| test.go:63:73:63:77 | false | This sensitive cookie does not set the 'HttpOnly' attribute, exposing its value to client-side scripts. |
+| test.go:68:42:68:46 | false | This sensitive cookie does not set the 'HttpOnly' attribute, exposing its value to client-side scripts. |
+| test.go:78:2:78:27 | call to SetCookie | This sensitive cookie does not set the 'HttpOnly' attribute, exposing its value to client-side scripts. |
+| test.go:86:2:86:20 | call to SetCookie | This sensitive cookie does not set the 'HttpOnly' attribute, exposing its value to client-side scripts. |
+| test.go:92:2:92:20 | call to SetCookie | This sensitive cookie does not set the 'HttpOnly' attribute, exposing its value to client-side scripts. |
+| test.go:104:2:104:93 | call to SetCookie | This sensitive cookie does not set the 'HttpOnly' attribute, exposing its value to client-side scripts. |
