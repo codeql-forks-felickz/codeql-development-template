@@ -1,0 +1,18 @@
+#select
+| send_receipt_email.py:19:15:19:56 | ControlFlowNode for BinaryExpr | send_receipt_email.py:8:20:8:24 | ControlFlowNode for event | send_receipt_email.py:19:15:19:56 | ControlFlowNode for BinaryExpr | This command line depends on a $@. | send_receipt_email.py:8:20:8:24 | ControlFlowNode for event | user-provided value |
+edges
+| send_receipt_email.py:8:20:8:24 | ControlFlowNode for event | send_receipt_email.py:9:5:9:7 | ControlFlowNode for key | provenance |  |
+| send_receipt_email.py:9:5:9:7 | ControlFlowNode for key | send_receipt_email.py:10:58:10:60 | ControlFlowNode for key | provenance |  |
+| send_receipt_email.py:10:5:10:7 | ControlFlowNode for key | send_receipt_email.py:19:15:19:56 | ControlFlowNode for BinaryExpr | provenance |  |
+| send_receipt_email.py:10:11:10:62 | ControlFlowNode for Attribute() | send_receipt_email.py:10:5:10:7 | ControlFlowNode for key | provenance |  |
+| send_receipt_email.py:10:37:10:61 | ControlFlowNode for Attribute() | send_receipt_email.py:10:11:10:62 | ControlFlowNode for Attribute() | provenance | MaD:130 |
+| send_receipt_email.py:10:58:10:60 | ControlFlowNode for key | send_receipt_email.py:10:37:10:61 | ControlFlowNode for Attribute() | provenance | MaD:129 |
+nodes
+| send_receipt_email.py:8:20:8:24 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| send_receipt_email.py:9:5:9:7 | ControlFlowNode for key | semmle.label | ControlFlowNode for key |
+| send_receipt_email.py:10:5:10:7 | ControlFlowNode for key | semmle.label | ControlFlowNode for key |
+| send_receipt_email.py:10:11:10:62 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| send_receipt_email.py:10:37:10:61 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| send_receipt_email.py:10:58:10:60 | ControlFlowNode for key | semmle.label | ControlFlowNode for key |
+| send_receipt_email.py:19:15:19:56 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths
