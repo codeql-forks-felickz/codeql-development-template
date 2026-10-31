@@ -15,6 +15,7 @@
 
 import python
 import semmle.python.ApiGraphs
+import LegacyPointsTo
 private import codeql.concepts.internal.SensitiveDataHeuristics
 
 /** Holds if the field name `name` indicates sensitive data that should not be readable. */
@@ -58,21 +59,26 @@ class ModelSerializerClass extends Class {
     )
   }
 
-  /** Holds if `field` is declared write-only on this serializer. */
-  predicate isWriteOnly(string field) {
-    // Meta.extra_kwargs = {"password": {"write_only": True}}
-    exists(KeyValuePair outer, KeyValuePair inner |
-      outer = this.getMetaValue("extra_kwargs").(Dict).getAnItem() and
-      outer.getKey().(StringLiteral).getText() = field and
-      inner = outer.getValue().(Dict).getAnItem() and
-      inner.getKey().(StringLiteral).getText() = "write_only" and
-      inner.getValue().(True).booleanValue() = true
+  /** Gets a class in this serializer's inheritance hierarchy. */
+  Class getAClassInHierarchy() {
+    result = this
+    or
+    result = this.(ClassWithPointsTo).getClassObject().getASuperType().getPyClass()
+  }
+
+  /** Gets the nearest class in the serializer hierarchy that declares `field`. */
+  Class getFieldDeclaration(string field) {
+    result = this.getAClassInHierarchy() and
+    declaresSerializerField(result, field) and
+    not exists(Class closer |
+      closer = this.getAClassInHierarchy() and
+      declaresSerializerField(closer, field) and
+      result = closer.(ClassWithPointsTo).getClassObject().getASuperType().getPyClass()
     )
-    or
-    // Meta.write_only_fields = ("password",)
-    field = this.getMetaValue("write_only_fields").getASubExpression().(StringLiteral).getText()
-    or
-    // password = serializers.CharField(write_only=True)
+  }
+
+  /** Holds if the declared serializer field is write-only. */
+  predicate declaredFieldIsWriteOnly(string field) {
     exists(AssignStmt a, Keyword kw |
       a.getScope() = this and
       a.getATarget().(Name).getId() = field and
@@ -82,13 +88,72 @@ class ModelSerializerClass extends Class {
     )
   }
 
+  /** Holds if `field` is declared write-only on this serializer. */
+  predicate isWriteOnly(string field) {
+    exists(Class declaration |
+      declaration = this.getFieldDeclaration(field) and
+      declaration.(ModelSerializerClass).declaredFieldIsWriteOnly(field)
+    )
+    or
+    // Meta.extra_kwargs applies only to automatically generated fields.
+    not exists(this.getFieldDeclaration(field)) and
+    exists(KeyValuePair outer, KeyValuePair inner |
+      outer = this.getMetaValue("extra_kwargs").(Dict).getAnItem() and
+      outer.getKey().(StringLiteral).getText() = field and
+      inner = outer.getValue().(Dict).getAnItem() and
+      inner.getKey().(StringLiteral).getText() = "write_only" and
+      inner.getValue().(True).booleanValue() = true
+    )
+  }
+
   /** Holds if `field` is excluded via `Meta.exclude`. */
   predicate isExcluded(string field) {
     field = this.getMetaValue("exclude").getASubExpression().(StringLiteral).getText()
   }
 
-  /** Gets the model class named by `Meta.model`, if it is defined in the analyzed code. */
-  Class getModel() { result.getName() = this.getMetaValue("model").(Name).getId() }
+  /** Gets the model class referenced by `Meta.model`, if it is defined in the analyzed code. */
+  Class getModel() {
+    exists(Import imp, Alias alias, ImportMember member |
+      imp.getAName() = alias and
+      imp.getScope() = this.getEnclosingModule() and
+      member = alias.getValue().(ImportMember) and
+      (
+        exists(Name modelName |
+          modelName = this.getMetaValue("model") and
+          result.getName() = member.getName() and
+          alias.getAsname().(Name).getId() = modelName.getId() and
+          member.getModule().(ImportExpr).getImportedModuleName() = result.getEnclosingModule().getName()
+        )
+        or
+        exists(Attribute modelAttribute |
+          modelAttribute = this.getMetaValue("model") and
+          modelAttribute.getName() = result.getName() and
+          alias.getAsname().(Name).getId() = modelAttribute.getObject().(Name).getId() and
+          member.getImportedModuleName() = result.getEnclosingModule().getName()
+        )
+      )
+    )
+    or
+    exists(Import imp, Alias alias, ImportExpr moduleExpr |
+      imp.getAName() = alias and
+      imp.getScope() = this.getEnclosingModule() and
+      moduleExpr = alias.getValue().(ImportExpr) and
+      exists(Attribute modelAttribute |
+        modelAttribute = this.getMetaValue("model") and
+        modelAttribute.getName() = result.getName() and
+        alias.getAsname().(Name).getId() = modelAttribute.getObject().(Name).getId() and
+        moduleExpr.getImportedModuleName() = result.getEnclosingModule().getName()
+      )
+    )
+  }
+}
+
+/** Holds if class `cls` declares a field named `field`. */
+predicate declaresSerializerField(Class cls, string field) {
+  exists(AssignStmt a |
+    a.getScope() = cls and
+    a.getATarget().(Name).getId() = field
+  )
 }
 
 /** Gets the name of a model field (`x = models.SomeField(...)`) declared on `model`. */
@@ -102,13 +167,19 @@ string modelField(Class model) {
 
 /** Gets a sensitive readable field of `ser`, with `fields` the `Meta.fields` value. */
 string exposedSensitiveField(ModelSerializerClass ser, Expr fields) {
-  fields = ser.getMetaValue("fields") and
   (
-    result = fields.(List).getAnElt().(StringLiteral).getText()
+    fields = ser.getMetaValue("fields") and
+    (
+      result = fields.(List).getAnElt().(StringLiteral).getText()
+      or
+      result = fields.(Tuple).getAnElt().(StringLiteral).getText()
+      or
+      fields.(StringLiteral).getText() = "__all__" and result = modelField(ser.getModel())
+    )
     or
-    result = fields.(Tuple).getAnElt().(StringLiteral).getText()
-    or
-    fields.(StringLiteral).getText() = "__all__" and result = modelField(ser.getModel())
+    fields = ser.getMetaValue("exclude") and
+    not exists(ser.getMetaValue("fields")) and
+    result = modelField(ser.getModel())
   ) and
   isSensitiveFieldName(result) and
   not ser.isWriteOnly(result) and

@@ -1,5 +1,7 @@
 import sqlite3
 
+from flask import request
+
 
 def db_init_users():
     users = [
@@ -51,4 +53,32 @@ def seed_names():
 def seed_hashed(conn):
     conn.execute(
         "INSERT INTO users (username, password) VALUES ('carol', '$2b$12$abcdefghijklmnopqrstuv')"
+    )
+
+
+def insert_with_quoted_comma(password):  # $ Source
+    conn = sqlite3.connect("db_users.sqlite")
+    conn.execute(
+        "INSERT INTO users (username, password) VALUES ('Doe, John', '%s')" % password  # $ Alert
+    )
+
+
+def insert_with_parenthesized_value(password):  # $ Source
+    conn = sqlite3.connect("db_users.sqlite")
+    conn.execute(
+        "INSERT INTO users (username, password) VALUES (lower('Doe, John'), ?)",
+        (password,),  # $ Alert
+    )
+
+
+def insert_named_mapping():
+    password = request.form.get("password")  # $ Source
+    conn = sqlite3.connect("db_users.sqlite")
+    conn.execute("INSERT INTO users (username, password) VALUES ('alice', '%(password)s')" % {"password": password})  # $ Alert
+
+
+def insert_hashed_with_quoted_comma(conn):
+    conn.execute(
+        "INSERT INTO users (username, role, password) VALUES "
+        "('Doe, John', 'admin', '$2b$12$abcdefghijklmnopqrstuv')"
     )

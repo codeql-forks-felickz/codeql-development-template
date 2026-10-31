@@ -2,7 +2,7 @@
 
 A Django REST framework `ModelSerializer` (or `HyperlinkedModelSerializer`) returns every field listed in `Meta.fields` (or every model field when `fields = "__all__"`) in API responses, unless the field is write-only. If those fields include sensitive data such as passwords or password hashes, password-reset or API tokens, social security numbers, or dates of birth, any client that can read the resource learns that data. Exposing an active password-reset token can also lead to account takeover.
 
-This query reports model serializers whose readable fields include names that indicate such sensitive data. Fields that are excluded with `Meta.exclude`, marked write-only through `extra_kwargs`, `write_only_fields`, or a declared field with `write_only=True` are not reported.
+This query reports model serializers whose readable fields include names that indicate such sensitive data. Fields that are excluded with `Meta.exclude`, marked write-only through `extra_kwargs` for automatically generated fields, or declared with `write_only=True` are not reported.
 
 ## Recommendation
 

@@ -40,7 +40,10 @@ class UnencryptedPrivateKeySerialization extends DataFlow::CallCfgNode {
     )
     or
     this = API::moduleImport("OpenSSL").getMember("crypto").getMember("dump_privatekey").getACall() and
-    not exists([this.getArg(2), this.getArgByName("cipher")])
+    not exists(DataFlow::Node cipher |
+      cipher = [this.getArg(2), this.getArgByName("cipher")] and
+      not cipher.asExpr() instanceof None
+    )
   }
 }
 

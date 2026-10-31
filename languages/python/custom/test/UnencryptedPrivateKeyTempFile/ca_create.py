@@ -25,6 +25,12 @@ pkey.generate_key(crypto.TYPE_RSA, 2048)
 with open("/var/tmp/service.pem", "w") as f:
     f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey).decode())  # $ Alert
 
+with open("/tmp/ca-positional-none.key", "wb") as f:
+    f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey, None))  # $ Alert
+
+with open("/tmp/ca-keyword-none.key", "wb") as f:
+    f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey, cipher=None))  # $ Alert
+
 
 # --- Safe cases ---
 

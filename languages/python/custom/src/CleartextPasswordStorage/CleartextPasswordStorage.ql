@@ -42,6 +42,89 @@ predicate isHardcodedItem(string item) {
   not looksLikePasswordHash(item.trim().regexpCapture("['\"](.*)['\"]", 1))
 }
 
+/** Holds if `pos` is inside a quoted SQL string in `s`. */
+bindingset[s, pos]
+predicate isInQuotedSqlString(string s, int pos) {
+  exists(string quoted, int start, int occurrence |
+    quoted = s.regexpFind("'([^']|'')*'|\"([^\"]|\"\")*\"", occurrence, start) and
+    start < pos and pos < start + quoted.length()
+  )
+}
+
+/** Holds if `pos` is a comma outside quoted strings and balanced parentheses in `s`. */
+bindingset[s, pos]
+predicate isTopLevelSqlComma(string s, int pos) {
+  exists(string comma, int opening, int closing, int occurrence |
+    comma = s.regexpFind(",", occurrence, pos) and
+    not isInQuotedSqlString(s, pos) and
+    opening =
+      count(int p |
+        p in [0 .. s.length()] and
+        exists(string open, int matchIndex | open = s.regexpFind("\\(", matchIndex, p)) and
+        p < pos and not isInQuotedSqlString(s, p)
+      ) and
+    closing =
+      count(int p |
+        p in [0 .. s.length()] and
+        exists(string close, int matchIndex | close = s.regexpFind("\\)", matchIndex, p)) and
+        p < pos and not isInQuotedSqlString(s, p)
+      ) and
+    opening = closing
+  )
+}
+
+/** Gets the `index`th SQL value item, keeping quoted strings and parenthesized expressions intact. */
+bindingset[values, index]
+predicate sqlValueItem(string values, string item, int index) {
+  exists(int start, int end |
+    start in [0 .. values.length()] and
+    end in [0 .. values.length()] and
+    (
+      index = 0 and start = 0
+      or
+      exists(int p |
+        p in [0 .. values.length()] and
+        isTopLevelSqlComma(values, p) and
+        count(int before |
+          before in [0 .. values.length()] and
+          isTopLevelSqlComma(values, before) and before < p
+        ) = index - 1 and
+        start = p + 1
+      )
+    ) and
+    (
+      exists(int p |
+        p in [0 .. values.length()] and
+        isTopLevelSqlComma(values, p) and
+        count(int before |
+          before in [0 .. values.length()] and
+          isTopLevelSqlComma(values, before) and before < p
+        ) = index and
+        end = p
+      )
+      or
+      not exists(int p |
+        p in [0 .. values.length()] and
+        isTopLevelSqlComma(values, p) and
+        count(int before |
+          before in [0 .. values.length()] and
+          isTopLevelSqlComma(values, before) and before < p
+        ) = index
+      ) and
+      end = values.length()
+    ) and
+    item = values.prefix(end).suffix(start)
+  )
+}
+
+/** Gets the number of placeholders in an SQL value item. */
+bindingset[values, index]
+int sqlValueItemPlaceholderCount(string values, int index) {
+  exists(string item | sqlValueItem(values, item, index) |
+    result = placeholderCount(item)
+  )
+}
+
 /**
  * Holds if `s` looks like an already hashed password, such as a hex digest or a
  * modular crypt / Django encoded hash, rather than a clear-text password.
@@ -67,8 +150,8 @@ predicate passwordValueInSql(string sql, string item, int ord) {
       cols = sql.regexpCapture(insertRegex(), 3) and
       vals = sql.regexpCapture(insertRegex(), 4) and
       cols.splitAt(",", i).trim().regexpMatch(passwordName()) and
-      item = vals.splitAt(",", i) and
-      ord = sum(int j | j in [0 .. i - 1] | placeholderCount(vals.splitAt(",", j)))
+      sqlValueItem(vals, item, i) and
+      ord = sum(int j | j in [0 .. i - 1] | sqlValueItemPlaceholderCount(vals, j))
     )
     or
     // UPDATE t SET ..., password = v, ... [WHERE ...]
@@ -153,11 +236,20 @@ string sqlTemplate(Expr e) {
 }
 
 /** Gets the `n`th value interpolated into the SQL template `template`. */
-Expr templateArgument(Expr template, int n) {
+bindingset[template, item, n]
+Expr templateArgument(Expr template, string item, int n) {
   exists(BinaryExpr fmt | fmt.getOp() instanceof Mod and template = fmt.getLeft() |
+    exists(KeyValuePair kv |
+      kv = fmt.getRight().(Dict).getAnItem() and
+      kv.getKey().(StringLiteral).getText() =
+        item.regexpCapture(".*%\\(([A-Za-z_]\\w*)\\)s.*", 1) and
+      result = kv.getValue()
+    )
+    or
     result = fmt.getRight().(Tuple).getElt(n)
     or
-    not fmt.getRight() instanceof Tuple and n = 0 and result = fmt.getRight()
+    not fmt.getRight() instanceof Tuple and not fmt.getRight() instanceof Dict and
+    n = 0 and result = fmt.getRight()
   )
   or
   exists(Call fmt |
@@ -195,7 +287,7 @@ class SqlPasswordValue extends DataFlow::Node {
       sql = sqlTemplate(template) and
       passwordValueInSql(sql, item, ord) and
       isPlaceholderItem(item) and
-      this.asExpr() = templateArgument(template, ord)
+      this.asExpr() = templateArgument(template, item, ord)
     )
   }
 }
