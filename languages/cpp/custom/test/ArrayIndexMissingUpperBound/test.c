@@ -127,3 +127,14 @@ void bad_heap_fgets() {
     free(buffer);
   }
 }
+
+/* A previous value's bounds check does not apply after reassignment. */
+void reassigned_bad(int s) {
+  int buffer[10] = {0};
+  int data = readIndex(s);
+  if (data >= 0 && data < 10) {
+    data = readIndex(s);
+    if (data >= 0)
+      buffer[data] = 1;
+  }
+}

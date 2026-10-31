@@ -13,14 +13,20 @@
  */
 
 import cpp
+import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.dataflow.new.DataFlow
 import semmle.code.cpp.ir.IR
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /**
  * Holds if `pai` computes a pointer that is offset from a pointer that was
  * returned by `alloc` in the same function.
  */
 predicate offsetFromAllocation(PointerArithmeticInstruction pai, AllocationExpr alloc) {
+  not exists(ConstantInstruction zero |
+    pai.getRight() = zero and
+    zero.getValue().toInt() = 0
+  ) and
   exists(DataFlow::Node allocNode, DataFlow::Node base |
     allocNode.asExpr() = alloc and
     base.asInstruction() = pai.getLeft() and
@@ -28,10 +34,32 @@ predicate offsetFromAllocation(PointerArithmeticInstruction pai, AllocationExpr 
   )
 }
 
+/** Holds if a dominating guard proves that the freed pointer equals the allocation base. */
+predicate freesOriginalPointer(DeallocationExpr dealloc) {
+  exists(GuardCondition g, Expr checked, Expr compared, PointerAddExpr add, AllocationExpr alloc |
+    DataFlow::localExprFlow(alloc, add.getLeftOperand()) and
+    globalValueNumber(checked) = globalValueNumber(dealloc.getFreedExpr()) and
+    globalValueNumber(compared) = globalValueNumber(add.getLeftOperand()) and
+    g.ensuresEq(checked, compared, 0, dealloc.getBasicBlock(), true)
+  )
+}
+
 module FreeNotAtStartOfBufferConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { offsetFromAllocation(source.asInstruction(), _) }
 
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(DeallocationExpr d).getFreedExpr() }
+  predicate isSink(DataFlow::Node sink) {
+    exists(DeallocationExpr dealloc |
+      sink.asExpr() = dealloc.getFreedExpr() and
+      not freesOriginalPointer(dealloc)
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    exists(DeallocationExpr dealloc |
+      node.asExpr() = dealloc.getFreedExpr() and
+      freesOriginalPointer(dealloc)
+    )
+  }
 
   predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
 

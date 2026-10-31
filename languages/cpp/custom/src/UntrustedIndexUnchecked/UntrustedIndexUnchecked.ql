@@ -20,15 +20,19 @@ import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.dataflow.new.TaintTracking
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.security.FlowSources as FS
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /** Holds if a guard compares `v` with any bound in `bb`. */
-predicate hasBoundCheck(Variable v, BasicBlock bb) {
-  exists(GuardCondition g, VariableAccess checked | checked = v.getAnAccess() |
-    g.ensuresLt(checked, _, bb, _)
-    or
-    g.ensuresLt(checked, _, _, bb, _)
-    or
-    g.ensuresLt(_, checked, _, bb, _)
+predicate hasBoundCheck(Expr index, BasicBlock bb) {
+  exists(GuardCondition g, Expr checked |
+    globalValueNumber(checked) = globalValueNumber(index) and
+    (
+      g.ensuresLt(checked, _, bb, _)
+      or
+      g.ensuresLt(checked, _, _, bb, _)
+      or
+      g.ensuresLt(_, checked, _, bb, _)
+    )
   )
 }
 
@@ -41,10 +45,13 @@ predicate isUncheckedIndex(Expr index, ArrayExpr ae, int size) {
   index = ae.getArrayOffset() and
   size = ae.getArrayBase().getUnspecifiedType().(ArrayType).getArraySize() and
   not exists(index.getValue()) and
-  upperBound(index.getFullyConverted()) >= size and
+  (
+    upperBound(index.getFullyConverted()) >= size
+    or lowerBound(index.getFullyConverted()) < 0
+  ) and
   not exists(VariableAccess va |
     va.getParent*() = index and
-    hasBoundCheck(va.getTarget(), ae.getBasicBlock())
+    hasBoundCheck(index, ae.getBasicBlock())
   )
 }
 
@@ -52,11 +59,6 @@ module UntrustedIndexUncheckedConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof FS::FlowSource }
 
   predicate isSink(DataFlow::Node sink) { isUncheckedIndex(sink.asExpr(), _, _) }
-
-  predicate isBarrier(DataFlow::Node node) {
-    // Values that range analysis bounds are not a concern on their own.
-    exists(Expr e | e = node.asExpr() and upperBound(e) < 65536 and lowerBound(e) >= 0)
-  }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     // A field read from a structure whose contents are tainted, for example

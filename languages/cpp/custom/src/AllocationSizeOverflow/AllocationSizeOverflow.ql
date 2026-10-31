@@ -21,15 +21,19 @@ import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.dataflow.new.TaintTracking
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.security.FlowSources as FS
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /** Holds if a guard ensures that `v` is bounded from above (for example `v < 100`) in `bb`. */
-predicate hasUpperBoundCheck(Variable v, BasicBlock bb) {
-  exists(GuardCondition g, VariableAccess checked | checked = v.getAnAccess() |
-    g.ensuresLt(checked, _, bb, true)
-    or
-    g.ensuresLt(checked, _, _, bb, true)
-    or
-    g.ensuresLt(_, checked, _, bb, false)
+predicate hasUpperBoundCheck(Expr operand, BasicBlock bb) {
+  exists(GuardCondition g, Expr checked |
+    globalValueNumber(checked) = globalValueNumber(operand) and
+    (
+      g.ensuresLt(checked, _, bb, true)
+      or
+      g.ensuresLt(checked, _, _, bb, true)
+      or
+      g.ensuresLt(_, checked, _, bb, false)
+    )
   )
 }
 
@@ -42,7 +46,7 @@ predicate isUnboundedFactor(AllocationExpr alloc, MulExpr mul, VariableAccess op
   mul = alloc.getAChild+() and
   operand = mul.getAnOperand().getUnconverted() and
   not exists(operand.getValue()) and
-  not hasUpperBoundCheck(operand.getTarget(), alloc.getBasicBlock()) and
+  not hasUpperBoundCheck(operand, alloc.getBasicBlock()) and
   (
     exists(Expr other, IntegralType resultType |
       other = mul.getAnOperand() and other != operand.getFullyConverted() and

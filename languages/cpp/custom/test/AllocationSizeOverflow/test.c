@@ -80,3 +80,13 @@ void no_multiplication(int s) {
   char *p = (char *)malloc(data);
   free(p);
 }
+
+/* A check on an earlier value does not bound the reassigned factor. */
+void reassigned_bad(int s) {
+  int data = readSocket(s);
+  if (data < 1000) {
+    data = readSocket(s);
+    int *p = (int *)malloc(data * 100000); // $ Alert
+    free(p);
+  }
+}

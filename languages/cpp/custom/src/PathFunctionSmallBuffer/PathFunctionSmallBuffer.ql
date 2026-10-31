@@ -39,7 +39,20 @@ predicate pathFunction(string name, int arg, int required) {
   required = 260
   or
   // POSIX `realpath` writes up to `PATH_MAX` bytes to its second argument.
-  name = "realpath" and arg = 1 and required = 4096
+  name = "realpath" and arg = 1 and required = pathMax()
+}
+
+/** Gets `PATH_MAX` from the analyzed target, using the conservative POSIX value if unavailable. */
+int pathMax() {
+  exists(MacroInvocation mi |
+    mi.getMacro().hasName("PATH_MAX") and
+    result = mi.getExpr().getValue().toInt()
+  )
+  or
+  not exists(MacroInvocation mi |
+    mi.getMacro().hasName("PATH_MAX") and exists(mi.getExpr().getValue())
+  ) and
+  result = 4096
 }
 
 from FunctionCall call, string name, int arg, int required, Expr buffer, ArrayType t

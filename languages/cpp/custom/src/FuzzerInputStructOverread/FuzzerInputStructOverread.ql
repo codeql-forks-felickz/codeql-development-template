@@ -55,7 +55,21 @@ where
   // The input buffer is reinterpreted as a pointer to a structure.
   not f.getDataParameter().getUnspecifiedType().(PointerType).getBaseType().getUnspecifiedType() = s and
   not fa.getParent+() instanceof SizeofOperator and
-  needed = fld.getByteOffset() + fld.getType().getSize() and
+  (
+    exists(ArrayExpr ae |
+      ae.getArrayBase() = fa and
+      exists(int index |
+        index = ae.getArrayOffset().getValue().toInt() and
+        needed = fld.getByteOffset() + (index + 1) * ae.getUnspecifiedType().getSize()
+      )
+    )
+    or
+    not exists(ArrayExpr ae |
+      ae.getArrayBase() = fa and
+      exists(ae.getArrayOffset().getValue())
+    ) and
+    needed = fld.getByteOffset() + fld.getType().getSize()
+  ) and
   available = guaranteedInputSize(f, fa.getBasicBlock()) and
   available < needed and
   if available = 0

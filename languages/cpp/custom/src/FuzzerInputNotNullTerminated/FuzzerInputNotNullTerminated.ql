@@ -18,7 +18,9 @@ import cpp
 import semmle.code.cpp.dataflow.new.DataFlow
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.commons.Printf
+import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /**
  * A pointer to a fuzzer-provided test case buffer, which carries an explicit
@@ -37,6 +39,17 @@ class FuzzerInputBuffer extends DataFlow::Node {
     or
     this.asExpr().(VariableAccess).getTarget().hasGlobalName("__afl_fuzz_ptr")
   }
+}
+
+/** A libFuzzer entry point: `int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)`. */
+class FuzzerEntryPoint extends Function {
+  FuzzerEntryPoint() {
+    this.hasGlobalName("LLVMFuzzerTestOneInput") and
+    this.getNumberOfParameters() = 2
+  }
+
+  Parameter getDataParameter() { result = this.getParameter(0) }
+  Parameter getSizeParameter() { result = this.getParameter(1) }
 }
 
 /**
@@ -87,6 +100,23 @@ module FuzzerInputNotNullTerminatedConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof FuzzerInputBuffer }
 
   predicate isSink(DataFlow::Node sink) { isNullTerminatedStringArgument(_, sink.asExpr()) }
+
+  predicate isBarrier(DataFlow::Node node) {
+    exists(
+      FuzzerEntryPoint f, ArrayExpr ae, SubExpr sub, GuardCondition g, GuardCondition nonempty,
+      BasicBlock bb
+    |
+      ae.getArrayBase().getUnconverted().(VariableAccess).getTarget() = f.getDataParameter() and
+      f.getSizeParameter().getUnspecifiedType().(IntegralType).isUnsigned() and
+      sub = ae.getArrayOffset() and
+      sub.getLeftOperand().(VariableAccess).getTarget() = f.getSizeParameter() and
+      sub.getRightOperand().getValue().toInt() = 1 and
+      g.ensuresEq(ae, 0, bb, true) and
+      nonempty.ensuresEq(f.getSizeParameter().getAnAccess(), 0, bb, false) and
+      bb = node.asExpr().getBasicBlock() and
+      globalValueNumber(node.asExpr()) = globalValueNumber(ae.getArrayBase())
+    )
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     // Pointer arithmetic into the input buffer, for example `data + 4`.

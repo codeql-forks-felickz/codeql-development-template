@@ -37,6 +37,41 @@ void masked(FILE *fp) {
   buf[i % 16] = 'c';
 }
 
+/* An untrusted range can exceed the actual array size. */
+void masked_too_wide(FILE *fp) {
+  unsigned int i;
+  fread(&i, sizeof(i), 1, fp); // $ Source
+  char buf[16];
+  buf[i % 32] = 'c'; // $ Alert
+}
+
+/* A tainted unsigned byte can be larger than a small array. */
+void unsigned_char_index(FILE *fp) {
+  unsigned char i;
+  fread(&i, sizeof(i), 1, fp); // $ Source
+  char buf[16];
+  buf[i] = 'c'; // $ Alert
+}
+
+/* Negative values remain possible through signed modulo. */
+void signed_masked(FILE *fp) {
+  int i;
+  fread(&i, sizeof(i), 1, fp); // $ Source
+  char buf[16];
+  buf[i % 16] = 'c'; // $ Alert
+}
+
+/* A previous value's check does not apply after reassignment. */
+void reassigned_bad(FILE *fp) {
+  unsigned int i;
+  fread(&i, sizeof(i), 1, fp); // $ Source
+  char buf[16];
+  if (i < 16) {
+    fread(&i, sizeof(i), 1, fp); // $ Source
+    buf[i] = 'c'; // $ Alert
+  }
+}
+
 /* Safe: the index is not untrusted. */
 void constant_loop(void) {
   char buf[10];

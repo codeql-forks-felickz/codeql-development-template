@@ -21,26 +21,33 @@ import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.dataflow.new.TaintTracking
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.security.FlowSources as FS
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /** Holds if a guard ensures that `v` is bounded from below (for example `v >= 0`) in `bb`. */
-predicate hasLowerBoundCheck(Variable v, BasicBlock bb) {
-  exists(GuardCondition g, VariableAccess checked | checked = v.getAnAccess() |
-    g.ensuresLt(checked, _, bb, false)
-    or
-    g.ensuresLt(checked, _, _, bb, false)
-    or
-    g.ensuresLt(_, checked, _, bb, true)
+predicate hasLowerBoundCheck(Expr index, BasicBlock bb) {
+  exists(GuardCondition g, Expr checked |
+    globalValueNumber(checked) = globalValueNumber(index) and
+    (
+      g.ensuresLt(checked, _, bb, false)
+      or
+      g.ensuresLt(checked, _, _, bb, false)
+      or
+      g.ensuresLt(_, checked, _, bb, true)
+    )
   )
 }
 
 /** Holds if a guard ensures that `v` is bounded from above (for example `v < 10`) in `bb`. */
-predicate hasUpperBoundCheck(Variable v, BasicBlock bb) {
-  exists(GuardCondition g, VariableAccess checked | checked = v.getAnAccess() |
-    g.ensuresLt(checked, _, bb, true)
-    or
-    g.ensuresLt(checked, _, _, bb, true)
-    or
-    g.ensuresLt(_, checked, _, bb, false)
+predicate hasUpperBoundCheck(Expr index, BasicBlock bb) {
+  exists(GuardCondition g, Expr checked |
+    globalValueNumber(checked) = globalValueNumber(index) and
+    (
+      g.ensuresLt(checked, _, bb, true)
+      or
+      g.ensuresLt(checked, _, _, bb, true)
+      or
+      g.ensuresLt(_, checked, _, bb, false)
+    )
   )
 }
 
@@ -54,8 +61,8 @@ predicate isIndexWithOnlyLowerBoundCheck(ArrayExpr ae, Variable v) {
     idx = ae.getArrayOffset() and
     v = idx.getTarget() and
     bb = ae.getBasicBlock() and
-    hasLowerBoundCheck(v, bb) and
-    not hasUpperBoundCheck(v, bb) and
+    hasLowerBoundCheck(idx, bb) and
+    not hasUpperBoundCheck(idx, bb) and
     not exists(ArrayType at | at = ae.getArrayBase().getUnspecifiedType() |
       upperBound(idx.getFullyConverted()) < at.getArraySize()
     )

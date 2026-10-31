@@ -2,6 +2,7 @@ typedef unsigned long size_t;
 typedef struct FILE FILE;
 size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
 void *malloc(size_t size);
+void *calloc(size_t count, size_t size);
 void free(void *ptr);
 void *memcpy(void *dest, const void *src, size_t n);
 void *memset(void *s, int c, size_t n);
@@ -99,5 +100,35 @@ void checked_index(FILE *fp) {
     return;
   char *buf = (char *)malloc(n);
   buf[100] = 'c';
+  free(buf);
+}
+
+/* The byte multiplier makes this allocation large enough for element 3. */
+void factored_multiplier_good(FILE *fp) {
+  unsigned int n;
+  fread(&n, sizeof(n), 1, fp);
+  if (n < 4 || n > 7)
+    return;
+  int *buf = (int *)malloc(n * sizeof(int));
+  buf[3] = 0;
+  free(buf);
+}
+
+/* Without a lower bound, the factored byte size may be too small. */
+void factored_multiplier_bad(FILE *fp) {
+  unsigned int n;
+  fread(&n, sizeof(n), 1, fp); // $ Source
+  int *buf = (int *)malloc(n * sizeof(int)); // $ Sink
+  buf[3] = 0; // $ Alert
+  free(buf);
+}
+
+/* An unmodeled non-constant calloc multiplier is treated as one. */
+void unmodeled_calloc_multiplier(FILE *fp) {
+  unsigned int n, count;
+  fread(&n, sizeof(n), 1, fp);
+  fread(&count, sizeof(count), 1, fp); // $ Source
+  int *buf = (int *)calloc(n, count); // $ Sink
+  buf[3] = 0; // $ Alert
   free(buf);
 }

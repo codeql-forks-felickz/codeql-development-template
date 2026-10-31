@@ -66,13 +66,20 @@ string describeAccess(Expr access, int n) {
   access instanceof ArrayExpr and result = "This array access reaches byte " + n + " of"
 }
 
+/** Gets the byte multiplier for `alloc`, or 1 when no multiplier is modeled. */
+int allocationSizeMultiplier(AllocationExpr alloc) {
+  result = alloc.getSizeMult()
+  or
+  not exists(alloc.getSizeMult()) and result = 1
+}
+
 /** Holds if a guard ensures that `size` is at least `n` in `bb`. */
 bindingset[n]
-predicate guardedAtLeast(Expr size, int n, BasicBlock bb) {
+predicate guardedAtLeast(AllocationExpr alloc, Expr size, int n, BasicBlock bb) {
   exists(GuardCondition g, Expr checked, int k |
     globalValueNumber(checked) = globalValueNumber(size) and
     g.ensuresLt(checked, k, bb, false) and
-    k >= n
+    k * allocationSizeMultiplier(alloc) >= n
   )
 }
 
@@ -87,9 +94,9 @@ predicate copyMayExceedAllocation(AllocationExpr alloc, Expr size, Expr fc, int 
     not exists(size.getValue()) and
     fixedSizeAccess(fc, dest, n) and
     DataFlow::localExprFlow(alloc, dest) and
-    lowerBound(size.getFullyConverted()) < n and
-    not guardedAtLeast(size, n, alloc.getBasicBlock()) and
-    not guardedAtLeast(size, n, fc.getBasicBlock())
+    lowerBound(size.getFullyConverted()) * allocationSizeMultiplier(alloc) < n and
+    not guardedAtLeast(alloc, size, n, alloc.getBasicBlock()) and
+    not guardedAtLeast(alloc, size, n, fc.getBasicBlock())
   )
 }
 

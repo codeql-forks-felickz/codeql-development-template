@@ -55,3 +55,20 @@ void reassigned_good() {
   p = (char *)malloc(16);
   free(p);
 }
+
+/* A zero offset leaves the allocation pointer unchanged. */
+void zero_offset_good() {
+  char *p = (char *)malloc(16);
+  p += 0;
+  free(p);
+}
+
+/* Freeing on the branch that proves the pointer unchanged is safe. */
+void equality_guard_good(int offset) {
+  char *p = (char *)malloc(16);
+  char *q = p + (offset & 1);
+  if (q == p)
+    free(q);
+  else
+    free(p);
+}

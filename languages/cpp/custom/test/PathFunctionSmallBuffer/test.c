@@ -38,6 +38,11 @@ void realpath_bad(const char *p) {
   realpath(p, resolved); // $ Alert
 }
 
+void realpath_under_path_max(const char *p) {
+  char resolved[2048];
+  realpath(p, resolved); // $ Alert
+}
+
 /* Safe: the buffer has MAX_PATH elements. */
 void cwe785_good() {
   char path[MAX_PATH];

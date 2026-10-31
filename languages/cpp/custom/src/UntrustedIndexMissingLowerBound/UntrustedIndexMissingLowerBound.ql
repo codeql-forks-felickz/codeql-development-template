@@ -24,26 +24,33 @@ import semmle.code.cpp.dataflow.new.TaintTracking
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.security.FlowSources as FS
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /** Holds if a guard ensures that `v` is bounded from below (for example `v >= 0`) in `bb`. */
-predicate hasLowerBoundCheck(Variable v, BasicBlock bb) {
-  exists(GuardCondition g, VariableAccess checked | checked = v.getAnAccess() |
-    g.ensuresLt(checked, _, bb, false)
-    or
-    g.ensuresLt(checked, _, _, bb, false)
-    or
-    g.ensuresLt(_, checked, _, bb, true)
+predicate hasLowerBoundCheck(Expr index, BasicBlock bb) {
+  exists(GuardCondition g, Expr checked |
+    globalValueNumber(checked) = globalValueNumber(index) and
+    (
+      g.ensuresLt(checked, _, bb, false)
+      or
+      g.ensuresLt(checked, _, _, bb, false)
+      or
+      g.ensuresLt(_, checked, _, bb, true)
+    )
   )
 }
 
 /** Holds if a guard ensures that `v` is bounded from above (for example `v < 10`) in `bb`. */
-predicate hasUpperBoundCheck(Variable v, BasicBlock bb) {
-  exists(GuardCondition g, VariableAccess checked | checked = v.getAnAccess() |
-    g.ensuresLt(checked, _, bb, true)
-    or
-    g.ensuresLt(checked, _, _, bb, true)
-    or
-    g.ensuresLt(_, checked, _, bb, false)
+predicate hasUpperBoundCheck(Expr index, BasicBlock bb) {
+  exists(GuardCondition g, Expr checked |
+    globalValueNumber(checked) = globalValueNumber(index) and
+    (
+      g.ensuresLt(checked, _, bb, true)
+      or
+      g.ensuresLt(checked, _, _, bb, true)
+      or
+      g.ensuresLt(_, checked, _, bb, false)
+    )
   )
 }
 
@@ -56,8 +63,8 @@ predicate hasUpperBoundCheck(Variable v, BasicBlock bb) {
 predicate isUseWithOnlyUpperBoundCheck(VariableAccess use, Variable v, string kind) {
   v = use.getTarget() and
   use.getUnspecifiedType().(IntegralType).isSigned() and
-  hasUpperBoundCheck(v, use.getBasicBlock()) and
-  not hasLowerBoundCheck(v, use.getBasicBlock()) and
+  hasUpperBoundCheck(use, use.getBasicBlock()) and
+  not hasLowerBoundCheck(use, use.getBasicBlock()) and
   lowerBound(use) < 0 and
   (
     use = any(ArrayExpr ae).getArrayOffset() and kind = "array index"

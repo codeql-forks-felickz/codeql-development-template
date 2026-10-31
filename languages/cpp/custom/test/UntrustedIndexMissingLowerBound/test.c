@@ -106,3 +106,15 @@ void no_check(int s) {
   int buffer[10] = {0};
   buffer[data] = 1;
 }
+
+/* A previous value's upper-bound check does not apply after reassignment. */
+void reassigned_bad(int s) {
+  int data = readIndexSocket(s);
+  if (data < 10) {
+    data = readIndexSocket(s);
+    if (data < 10) {
+      int buffer[10] = {0};
+      buffer[data] = 1; // $ Alert
+    }
+  }
+}

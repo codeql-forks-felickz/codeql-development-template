@@ -10,6 +10,8 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   int size1 = img->width + img->height; // GOOD: bytes 4..12 are within the checked 13 bytes
   char *buff1 = (char *)malloc(size1);
   memcpy(buff1, img->data, sizeof(img->data)); // BAD: data spans bytes 12..22
+  char first = img->data[0]; // GOOD: reaches byte 13
+  char last = img->data[9]; // BAD: reaches byte 22
   free(buff1);
   return 0;
 }
