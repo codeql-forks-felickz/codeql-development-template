@@ -5,7 +5,7 @@
 Browsers enforce the same-origin policy and, when configured, a Content-Security-Policy (CSP). Both can be weakened by response headers or middleware configuration:
 
 - `Access-Control-Allow-Origin: *` (or `null`) lets scripts on any website read the response. This exposes data from unauthenticated endpoints, and from deployments that are only reachable from a victim's browser or an internal network (CWE-942).
-- A CORS middleware such as Starlette/FastAPI `CORSMiddleware` with `allow_credentials=True` and an origin pattern that is too broad lets attacker-controlled origins send credentialed cross-origin requests and read the responses. Examples are `allow_origins=["*"]`, `allow_origin_regex=".*"`, a regex with unescaped dots (`restaurant.com` also matches `restaurantXcom`), or an unbounded wildcard directly before the domain (`.*example\.com` also matches `evilexample.com`) (CWE-942).
+- A CORS middleware such as Starlette/FastAPI `CORSMiddleware` with `allow_credentials=True` and an origin pattern that is too broad lets attacker-controlled origins send credentialed cross-origin requests and read the responses. Examples are `allow_origins=["*"]`, `allow_origin_regex=".*"`, a regex with unescaped dots (`restaurant.com` also matches `restaurantXcom`), an unbounded wildcard directly before the domain (`.*example\.com` also matches `evilexample.com`), or an unbounded wildcard after the domain (`example\.com.*` also matches `example.com.evil.com`) (CWE-942).
 - A CSP whose `script-src` (or `default-src` when no `script-src` is present) contains `'unsafe-inline'` without a nonce or hash allows injected inline scripts to run, which negates the CSP's protection against cross-site scripting (CWE-693).
 
 This query reports:

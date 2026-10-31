@@ -60,3 +60,43 @@ app.add_middleware(
     allow_origin_regex=".*",
     allow_credentials=False,
 )
+
+# Catch-all host after a scheme.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https://.*",  # $ Alert
+    allow_credentials=True,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"^https?://[^/]+$",  # $ Alert
+    allow_credentials=True,
+)
+
+# Catch-all top-level alternative.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https://trusted\.example\.com|.*",  # $ Alert
+    allow_credentials=True,
+)
+
+# Unbounded wildcard after the domain: matches https://trusted.example.com.evil.com
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https://trusted\.example\.com.*",  # $ Alert
+    allow_credentials=True,
+)
+
+# Safe: alternation of escaped sub-domains, optional port and a dot inside a character class.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https://(foo|bar)\.example\.com(:[0-9]+)?",
+    allow_credentials=True,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https://[.a-z0-9-]+\.example\.com",
+    allow_credentials=True,
+)

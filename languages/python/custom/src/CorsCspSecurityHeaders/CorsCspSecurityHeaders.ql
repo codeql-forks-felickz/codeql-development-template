@@ -59,53 +59,96 @@ predicate headerWrite(Http::Server::ResponseHeaderWrite write, string name, stri
   value = constantString(write.getValueArg())
 }
 
-/** Gets a directive (trimmed, lower-cased) of the Content-Security-Policy value `csp`. */
-bindingset[csp]
-string cspDirective(string csp) { result = csp.splitAt(";").trim().toLowerCase() and result != "" }
+/** Gets the `i`th directive (trimmed, lower-cased) of the single CSP policy `policy`. */
+bindingset[policy]
+string cspDirective(string policy, int i) {
+  result = policy.splitAt(";", i).trim().toLowerCase() and result != ""
+}
 
 /** Gets the name of the CSP directive `directive`. */
 bindingset[directive]
 string cspDirectiveName(string directive) { result = directive.regexpCapture("([a-z-]+).*", 1) }
 
 /**
+ * Gets the effective directive named `name` in the CSP policy `policy`. Browsers
+ * ignore all but the first occurrence of a directive.
+ */
+bindingset[policy]
+string cspEffectiveDirective(string policy, string name) {
+  exists(int i |
+    result = cspDirective(policy, i) and
+    name = cspDirectiveName(result) and
+    not exists(int j | j < i and cspDirectiveName(cspDirective(policy, j)) = name)
+  )
+}
+
+/**
  * Holds if the CSP `directive` allows inline scripts, that is, it contains
- * `'unsafe-inline'` and no nonce or hash source (which would make browsers ignore it).
+ * `'unsafe-inline'` and no well-formed nonce or hash source (which would make
+ * browsers ignore `'unsafe-inline'`).
  */
 bindingset[directive]
 predicate directiveAllowsInlineScript(string directive) {
-  directive.matches("%'unsafe-inline'%") and
-  not directive.regexpMatch(".*'(nonce|sha256|sha384|sha512)-.*")
+  directive.regexpMatch("(.*\\s)?'unsafe-inline'(\\s.*)?") and
+  not directive.regexpMatch("(.*\\s)?'(nonce|sha256|sha384|sha512)-[a-z0-9+/_-]+=*'(\\s.*)?")
 }
 
-/** Holds if the Content-Security-Policy value `csp` allows inline scripts. */
+/** Holds if the single CSP policy `policy` allows inline scripts. */
+bindingset[policy]
+predicate policyAllowsInlineScript(string policy) {
+  directiveAllowsInlineScript(cspEffectiveDirective(policy,
+      ["script-src", "script-src-elem", "script-src-attr"]))
+  or
+  // `default-src` only applies to scripts when no `script-src` directive is present.
+  directiveAllowsInlineScript(cspEffectiveDirective(policy, "default-src")) and
+  not exists(cspEffectiveDirective(policy, "script-src"))
+}
+
+/**
+ * Holds if the Content-Security-Policy value `csp` allows inline scripts. A
+ * comma-separated value contains several policies that must all allow it.
+ */
 bindingset[csp]
 predicate cspAllowsInlineScript(string csp) {
-  exists(string directive | directive = cspDirective(csp) |
-    cspDirectiveName(directive) = ["script-src", "script-src-elem", "script-src-attr"] and
-    directiveAllowsInlineScript(directive)
-    or
-    // `default-src` only applies to scripts when no `script-src` directive is present.
-    cspDirectiveName(directive) = "default-src" and
-    directiveAllowsInlineScript(directive) and
-    not cspDirectiveName(cspDirective(csp)) = "script-src"
+  exists(string policy | policy = csp.splitAt(",") and policy.trim() != "") and
+  forall(string policy | policy = csp.splitAt(",") and policy.trim() != "" |
+    policyAllowsInlineScript(policy)
   )
+}
+
+/**
+ * Holds if `s` is a regular expression (fragment) that matches any origin, such as
+ * `.*`, `^.+$`, `https://.*` or `https?://[^/]+`.
+ */
+bindingset[s]
+predicate isCatchAllOriginRegex(string s) {
+  s.regexpMatch("\\(?\\^?([a-z()|?]*://)?(\\.|\\[\\^[^\\].]*\\])[*+]\\??\\$?\\)?")
 }
 
 /**
  * Holds if the CORS origin regular expression `regex` accepts origins that are
  * likely not intended, such as any origin, or attacker-registrable domains due to
- * unescaped dots or an unbounded wildcard directly preceding the domain name.
+ * unescaped dots, an unbounded wildcard directly preceding the domain name, or an
+ * unbounded wildcard after the domain name.
  */
 bindingset[regex]
 predicate isPermissiveOriginRegex(string regex) {
-  // Matches any origin, e.g. `.*` or `^.+$`.
-  regex.regexpMatch("\\^?\\.[*+]\\$?")
+  // A top-level alternative matches any origin, e.g. `.*` or `https://a\.com|https://.*`.
+  isCatchAllOriginRegex(regex.splitAt("|"))
   or
-  // An unescaped `.` used as a domain separator, e.g. `restaurant.com`.
-  regex.regexpMatch("(.*[^\\\\])?\\.[a-zA-Z0-9].*")
-  or
-  // An unbounded wildcard directly followed by a domain name, e.g. `.*example\.com`.
-  regex.regexpMatch("(.*[^\\\\])?\\.[*+]\\??[a-zA-Z0-9(].*")
+  exists(string r |
+    // Ignore the contents of character classes, e.g. the `.` in `[a-z.]`.
+    r = regex.regexpReplaceAll("\\[(\\\\.|[^\\]\\\\])*\\]", "#")
+  |
+    // An unescaped `.` used as a domain separator, e.g. `restaurant.com`.
+    r.regexpMatch("(.*[^\\\\])?\\.[a-zA-Z0-9].*")
+    or
+    // An unbounded wildcard directly followed by a domain name, e.g. `.*example\.com`.
+    r.regexpMatch("(.*[^\\\\])?\\.[*+]\\??[a-zA-Z0-9(].*")
+    or
+    // An unbounded wildcard after the domain name, e.g. `example\.com.*`.
+    r.regexpMatch(".*[^\\\\:]\\.[*+]\\??\\$?\\)?")
+  )
 }
 
 /** Gets the value of the keyword argument `name` of the CORS middleware `mw`. */
@@ -123,10 +166,15 @@ from DataFlow::Node node, string message
 where
   exists(string value |
     headerWrite(node, "access-control-allow-origin", value) and
-    value.trim() = ["*", "null"] and
-    message =
-      "The Access-Control-Allow-Origin header is set to '" + value.trim() +
-        "', allowing any website to read this response."
+    (
+      value.trim() = "*" and
+      message =
+        "The Access-Control-Allow-Origin header is set to '*', allowing any website to read this response."
+      or
+      value.trim() = "null" and
+      message =
+        "The Access-Control-Allow-Origin header is set to 'null', allowing sandboxed or opaque origins to read this response."
+    )
   )
   or
   exists(string value |

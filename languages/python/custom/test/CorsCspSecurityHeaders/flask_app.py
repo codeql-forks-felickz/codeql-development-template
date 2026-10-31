@@ -23,6 +23,16 @@ def bulk():
     return make_response("ok", 200, {"Access-Control-Allow-Origin": "*"})  # $ Alert
 
 
+@app.route("/malformed-nonce")
+def malformed_nonce():
+    resp = Response("ok")
+    # An empty nonce does not disable 'unsafe-inline'.
+    resp.headers["Content-Security-Policy"] = "script-src 'unsafe-inline' 'nonce-'"  # $ Alert
+    # Every policy allows inline scripts.
+    resp.headers["Content-Security-Policy"] = "script-src 'unsafe-inline', default-src 'unsafe-inline'"  # $ Alert
+    return resp
+
+
 @app.route("/safe")
 def safe():
     resp = Response("ok")
@@ -34,6 +44,10 @@ def safe():
     resp.headers["Content-Security-Policy"] = "default-src 'self'; style-src 'self' 'unsafe-inline'"
     # script-src overrides default-src for scripts: not flagged.
     resp.headers["Content-Security-Policy"] = "default-src 'unsafe-inline'; script-src 'self'"
+    # Duplicate directive: browsers only use the first one, not flagged.
+    resp.headers["Content-Security-Policy"] = "script-src 'self'; script-src 'unsafe-inline'"
+    # Multiple policies are intersected: inline scripts stay blocked, not flagged.
+    resp.headers["Content-Security-Policy"] = "script-src 'unsafe-inline', script-src 'none'"
     # Unrelated header: not flagged.
     resp.headers["X-Content-Type-Options"] = "nosniff"
     return resp
