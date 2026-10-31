@@ -1,0 +1,9 @@
+| test.c:41:25:41:25 | n | This loop bound depends on $@ without an upper limit, which can exhaust resources. | test.c:39:15:39:18 | data | string read by fgets |
+| test.c:59:16:59:16 | n | This loop bound depends on $@ without an upper limit, which can exhaust resources. | test.c:53:28:53:30 | buf | buffer read by recv |
+| test.c:76:17:76:17 | n | This loop bound depends on $@ without an upper limit, which can exhaust resources. | test.c:71:28:71:30 | buf | buffer read by recv |
+| test.c:160:12:160:15 | data | This assertion depends on $@, so an attacker can make it fail and abort the process. | test.c:154:28:154:30 | buf | buffer read by recv |
+| test.c:176:9:176:23 | call to stack_operation | This call makes $@ recurse infinitely, which exhausts the stack. | test.c:171:6:171:20 | stack_operation | stack_operation |
+| test.c:182:5:182:23 | call to infinite_helper_bad | This call makes $@ recurse infinitely, which exhausts the stack. | test.c:180:13:180:31 | infinite_helper_bad | infinite_helper_bad |
+| test.c:196:5:196:24 | call to unbounded_helper_bad | This call sets the recursion depth of $@ to 4294967295 without an upper limit, which can exhaust the stack. | test.c:185:13:185:32 | unbounded_helper_bad | unbounded_helper_bad |
+| test.c:206:26:206:29 | call to atoi | This recursion depth depends on $@ without an upper limit, which can exhaust resources. | test.c:202:28:202:30 | buf | buffer read by recv |
+| test.c:265:5:265:22 | call to pthread_mutex_lock | The lock $@ is acquired here but never released, which can deadlock other threads. | test.c:263:28:263:34 | badLock | badLock |
