@@ -1,0 +1,12 @@
+| fetch.go:19:12:19:36 | call to ReadAll | This reads the entire body of a response fetched with the default HTTP client, which has no timeout, without limiting its size. |
+| fetch.go:25:10:25:30 | call to ReadAll | This reads the entire body of a response fetched with the default HTTP client, which has no timeout, without limiting its size. |
+| fetch.go:31:10:31:30 | call to ReadAll | This reads the entire body of a response fetched with the default HTTP client, which has no timeout, without limiting its size. |
+| fetch.go:38:10:38:25 | call to ReadAll | This reads the entire body of a response fetched with the default HTTP client, which has no timeout, without limiting its size. |
+| servers.go:11:2:11:29 | call to ListenAndServe | This call serves HTTP with a default server that has no ReadHeaderTimeout, ReadTimeout or IdleTimeout, allowing slow clients to exhaust server resources. |
+| servers.go:15:2:15:57 | call to ListenAndServeTLS | This call serves HTTP with a default server that has no ReadHeaderTimeout, ReadTimeout or IdleTimeout, allowing slow clients to exhaust server resources. |
+| servers.go:19:2:19:19 | call to Serve | This call serves HTTP with a default server that has no ReadHeaderTimeout, ReadTimeout or IdleTimeout, allowing slow clients to exhaust server resources. |
+| servers.go:23:2:23:45 | call to ServeTLS | This call serves HTTP with a default server that has no ReadHeaderTimeout, ReadTimeout or IdleTimeout, allowing slow clients to exhaust server resources. |
+| servers.go:28:7:28:17 | selection of Server | This HTTP server is started without ReadHeaderTimeout or ReadTimeout, allowing slow clients to exhaust server resources. |
+| servers.go:36:8:36:18 | selection of Server | This HTTP server is started without ReadHeaderTimeout or ReadTimeout, allowing slow clients to exhaust server resources. |
+| servers.go:41:8:41:18 | selection of Server | This HTTP server is started without ReadHeaderTimeout or ReadTimeout, allowing slow clients to exhaust server resources. |
+| servers.go:46:10:46:20 | selection of Server | This HTTP server is started without ReadHeaderTimeout or ReadTimeout, allowing slow clients to exhaust server resources. |

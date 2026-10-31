@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+An HTTP server started with <code>http.ListenAndServe</code>, <code>http.ListenAndServeTLS</code>,
+<code>http.Serve</code> or <code>http.ServeTLS</code> uses a default <code>http.Server</code> whose
+<code>ReadHeaderTimeout</code>, <code>ReadTimeout</code>, <code>WriteTimeout</code> and
+<code>IdleTimeout</code> are all zero. The same is true of an explicit <code>http.Server</code> that
+leaves these fields unset. A remote client can then open many connections and send request headers
+or bodies very slowly (a "Slowloris" attack), tying up goroutines and file descriptors until
+legitimate clients can no longer be served.
+</p>
+<p>
+Similarly, the default HTTP client (<code>http.Get</code>, <code>http.Post</code>,
+<code>http.DefaultClient</code>, ...) has no timeout. Reading the whole body of a response from a
+non-constant URL with <code>io.ReadAll</code> lets the remote server stream indefinitely or send a
+very large body, exhausting memory and blocking the calling goroutine.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Start servers through an explicit <code>http.Server</code> that sets at least
+<code>ReadHeaderTimeout</code> (or <code>ReadTimeout</code>), and preferably also
+<code>WriteTimeout</code> and <code>IdleTimeout</code>. Fetch remote content with an
+<code>http.Client</code> that has a <code>Timeout</code>, and bound the amount of data read, for
+example with <code>io.LimitReader</code>.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example starts a server with no timeouts, and reads an unbounded response body
+fetched with the default client:
+</p>
+<sample src="FileUploadResourceHandlingBad.go" />
+<p>
+The following example configures server timeouts, uses a client with a timeout and limits the
+size of the response body that is read:
+</p>
+<sample src="FileUploadResourceHandlingGood.go" />
+</example>
+
+<references>
+<li>MITRE: <a href="https://cwe.mitre.org/data/definitions/400.html">CWE-400: Uncontrolled Resource Consumption</a>.</li>
+<li>Go documentation: <a href="https://pkg.go.dev/net/http#Server">http.Server</a>.</li>
+<li>Cloudflare: <a href="https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/">The complete guide to Go net/http timeouts</a>.</li>
+</references>
+</qhelp>
