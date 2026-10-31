@@ -1,0 +1,2 @@
+query: JwtEmptyTokenAccepted/JwtEmptyTokenAccepted.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

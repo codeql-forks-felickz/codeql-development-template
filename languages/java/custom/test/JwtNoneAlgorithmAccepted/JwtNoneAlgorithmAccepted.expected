@@ -1,0 +1,7 @@
+| JwtValidators.java:39:17:39:72 | contentEquals(...) | This check treats a JWT as valid without verifying its signature when the $@ is 'none'. | JwtValidators.java:38:26:38:76 | getString(...) | token's 'alg' header |
+| JwtValidators.java:49:13:49:40 | equalsIgnoreCase(...) | This check treats a JWT as valid without verifying its signature when the $@ is 'none'. | JwtValidators.java:48:22:48:38 | get(...) | token's 'alg' header |
+| JwtValidators.java:54:13:54:44 | equals(...) | This check treats a JWT as valid without verifying its signature when the $@ is 'none'. | JwtValidators.java:54:13:54:29 | get(...) | token's 'alg' header |
+| JwtValidators.java:62:13:62:49 | equals(...) | This check treats a JWT as valid without verifying its signature when the $@ is 'none'. | JwtValidators.java:61:22:61:38 | get(...) | token's 'alg' header |
+| JwtValidators.java:122:13:122:30 | equals(...) | This check treats a JWT as valid without verifying its signature when the $@ is 'none'. | JwtValidators.java:121:22:121:36 | get(...) | token's 'alg' header |
+| JwtValidators.java:137:13:137:44 | equals(...) | This check treats a JWT as valid without verifying its signature when the $@ is 'none'. | JwtValidators.java:137:27:137:43 | get(...) | token's 'alg' header |
+| JwtValidators.java:147:13:147:44 | equals(...) | This check treats a JWT as valid without verifying its signature when the $@ is 'none'. | JwtValidators.java:147:27:147:43 | get(...) | token's 'alg' header |

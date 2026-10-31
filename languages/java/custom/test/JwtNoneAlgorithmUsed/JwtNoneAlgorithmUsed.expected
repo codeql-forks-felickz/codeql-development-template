@@ -1,0 +1,14 @@
+| SessionClaims.java:12:13:12:80 | equalsIgnoreCase(...) | This comparison trusts a claim from $@ without verifying the token's signature. | SessionClaims.java:10:30:10:46 | decode(...) | a decoded JWT |
+| SessionClaims.java:26:13:26:41 | equals(...) | This comparison trusts a claim from $@ without verifying the token's signature. | SessionClaims.java:19:30:19:46 | decode(...) | a decoded JWT |
+| SessionClaims.java:35:13:35:92 | equals(...) | This comparison trusts a claim from $@ without verifying the token's signature. | SessionClaims.java:33:30:33:46 | decode(...) | a decoded JWT |
+| SessionClaims.java:43:13:43:92 | equals(...) | This comparison trusts a claim from $@ without verifying the token's signature. | SessionClaims.java:42:30:42:46 | decode(...) | a decoded JWT |
+| SessionClaims.java:53:13:53:92 | equals(...) | This comparison trusts a claim from $@ without verifying the token's signature. | SessionClaims.java:51:30:51:46 | decode(...) | a decoded JWT |
+| SessionClaims.java:123:13:123:92 | equals(...) | This comparison trusts a claim from $@ without verifying the token's signature. | SessionClaims.java:121:30:121:46 | decode(...) | a decoded JWT |
+| SessionClaims.java:135:13:135:92 | equals(...) | This comparison trusts a claim from $@ without verifying the token's signature. | SessionClaims.java:130:30:130:46 | decode(...) | a decoded JWT |
+| SessionClaims.java:149:13:149:92 | equals(...) | This comparison trusts a claim from $@ without verifying the token's signature. | SessionClaims.java:146:30:146:46 | decode(...) | a decoded JWT |
+| SessionClaims.java:157:69:157:77 | algorithm | This JWT is verified with the $@, so its signature is never checked. | SessionClaims.java:156:31:156:46 | none(...) | 'none' algorithm |
+| SessionClaims.java:161:13:161:92 | equals(...) | This comparison trusts a claim from $@ without verifying the token's signature. | SessionClaims.java:160:30:160:46 | decode(...) | a decoded JWT |
+| SessionClaims.java:198:13:198:92 | equals(...) | This comparison trusts a claim from $@ without verifying the token's signature. | SessionClaims.java:197:30:197:46 | decode(...) | a decoded JWT |
+| TokenService.java:10:84:10:96 | algorithmNone | This JWT is signed with the $@, so its signature is never checked. | TokenService.java:9:35:9:50 | none(...) | 'none' algorithm |
+| TokenService.java:15:28:15:43 | none(...) | This JWT is verified with the $@, so its signature is never checked. | TokenService.java:15:28:15:43 | none(...) | 'none' algorithm |
+| TokenService.java:20:66:20:73 | NONE_ALG | This JWT is signed with the $@, so its signature is never checked. | TokenService.java:5:47:5:62 | none(...) | 'none' algorithm |
