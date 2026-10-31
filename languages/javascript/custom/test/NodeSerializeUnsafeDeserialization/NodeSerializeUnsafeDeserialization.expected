@@ -8,6 +8,7 @@ edges
 | backend/order-manager/order-manager.js:7:54:7:58 | event | backend/order-manager/order-manager.js:7:54:7:63 | event.body | provenance |  |
 | backend/order-manager/order-manager.js:8:34:8:38 | event | backend/order-manager/order-manager.js:8:34:8:65 | event.q ... rs.data | provenance |  |
 nodes
+| backend/order-manager/js-yaml.js:7:19:7:33 | req.params.data | semmle.label | req.params.data |
 | backend/order-manager/order-manager.js:4:20:4:24 | event | semmle.label | event |
 | backend/order-manager/order-manager.js:5:35:5:39 | event | semmle.label | event |
 | backend/order-manager/order-manager.js:5:35:5:44 | event.body | semmle.label | event.body |
@@ -19,6 +20,7 @@ nodes
 | backend/order-manager/order-manager.js:8:34:8:65 | event.q ... rs.data | semmle.label | event.q ... rs.data |
 subpaths
 #select
+| backend/order-manager/js-yaml.js:7:19:7:33 | req.params.data | backend/order-manager/js-yaml.js:7:19:7:33 | req.params.data | backend/order-manager/js-yaml.js:7:19:7:33 | req.params.data | Unsafe deserialization depends on a $@. | backend/order-manager/js-yaml.js:7:19:7:33 | req.params.data | user-provided value |
 | backend/order-manager/order-manager.js:5:35:5:44 | event.body | backend/order-manager/order-manager.js:4:20:4:24 | event | backend/order-manager/order-manager.js:5:35:5:44 | event.body | Unsafe deserialization depends on a $@. | backend/order-manager/order-manager.js:4:20:4:24 | event | user-provided value |
 | backend/order-manager/order-manager.js:6:39:6:51 | event.headers | backend/order-manager/order-manager.js:4:20:4:24 | event | backend/order-manager/order-manager.js:6:39:6:51 | event.headers | Unsafe deserialization depends on a $@. | backend/order-manager/order-manager.js:4:20:4:24 | event | user-provided value |
 | backend/order-manager/order-manager.js:7:54:7:63 | event.body | backend/order-manager/order-manager.js:4:20:4:24 | event | backend/order-manager/order-manager.js:7:54:7:63 | event.body | Unsafe deserialization depends on a $@. | backend/order-manager/order-manager.js:4:20:4:24 | event | user-provided value |
