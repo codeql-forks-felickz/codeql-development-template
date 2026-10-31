@@ -1,0 +1,2 @@
+query: ConcurrencySignalHandling/SignalHandlerNonAsyncSignalSafeCall.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

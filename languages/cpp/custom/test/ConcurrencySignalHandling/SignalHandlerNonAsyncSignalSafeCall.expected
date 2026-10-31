@@ -1,0 +1,6 @@
+| test.c:44:23:44:28 | call to malloc | Call to non-async-signal-safe function 'malloc' may be executed by signal handler $@. | test.c:42:13:42:24 | helperBad479 | helperBad479 |
+| test.c:46:5:46:8 | call to exit | Call to non-async-signal-safe function 'exit' may be executed by signal handler $@. | test.c:42:13:42:24 | helperBad479 | helperBad479 |
+| test.c:48:3:48:6 | call to free | Call to non-async-signal-safe function 'free' may be executed by signal handler $@. | test.c:42:13:42:24 | helperBad479 | helperBad479 |
+| test.c:72:3:72:9 | call to fprintf | Call to non-async-signal-safe function 'fprintf' may be executed by signal handler $@. | test.c:75:13:75:27 | indirectHandler | indirectHandler |
+| test.c:83:3:83:8 | call to printf | Call to non-async-signal-safe function 'printf' may be executed by signal handler $@. | test.c:81:13:81:28 | sigactionHandler | sigactionHandler |
+| test.c:89:3:89:6 | call to free | Call to non-async-signal-safe function 'free' may be executed by signal handler $@. | test.c:87:13:87:32 | sigactionInfoHandler | sigactionInfoHandler |
