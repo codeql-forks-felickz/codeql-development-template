@@ -1,0 +1,2 @@
+query: ContentResultXss/ContentResultXss.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

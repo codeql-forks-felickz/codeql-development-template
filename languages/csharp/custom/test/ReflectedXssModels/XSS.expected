@@ -1,0 +1,30 @@
+#select
+| Test.cs:22:42:22:87 | ... + ... | Test.cs:17:24:17:38 | access to property QueryString : NameValueCollection | Test.cs:22:42:22:87 | ... + ... | $@ flows to here and is written to HTML or JavaScript. | Test.cs:17:24:17:38 | access to property QueryString : NameValueCollection | User-provided value |
+| Test.cs:50:47:50:77 | ... + ... | Test.cs:47:38:47:45 | userInfo : String | Test.cs:50:47:50:77 | ... + ... | $@ flows to here and is written to HTML or JavaScript. | Test.cs:47:38:47:45 | userInfo : String | User-provided value |
+| Test.cs:55:69:55:93 | ... + ... | Test.cs:53:46:53:53 | userInfo : String | Test.cs:55:69:55:93 | ... + ... | $@ flows to here and is written to HTML or JavaScript. | Test.cs:53:46:53:53 | userInfo : String | User-provided value |
+| Test.cs:72:30:72:34 | access to local variable value | Test.cs:70:31:70:45 | access to property Cookies : HttpCookieCollection | Test.cs:72:30:72:34 | access to local variable value | $@ flows to here and is written to HTML or JavaScript. | Test.cs:70:31:70:45 | access to property Cookies : HttpCookieCollection | User-provided value |
+edges
+| Test.cs:17:17:17:20 | access to local variable data : String | Test.cs:22:42:22:87 | ... + ... | provenance | Sink:MaD:8 |
+| Test.cs:17:24:17:38 | access to property QueryString : NameValueCollection | Test.cs:17:17:17:20 | access to local variable data : String | provenance |  |
+| Test.cs:47:38:47:45 | userInfo : String | Test.cs:50:47:50:77 | ... + ... | provenance | Sink:MaD:0 |
+| Test.cs:53:46:53:53 | userInfo : String | Test.cs:55:69:55:93 | ... + ... | provenance | Sink:MaD:1 |
+| Test.cs:70:21:70:27 | access to local variable cookies : HttpCookieCollection | Test.cs:71:32:71:53 | access to indexer : HttpCookie | provenance |  |
+| Test.cs:70:31:70:45 | access to property Cookies : HttpCookieCollection | Test.cs:70:21:70:27 | access to local variable cookies : HttpCookieCollection | provenance |  |
+| Test.cs:71:24:71:28 | access to local variable value : String | Test.cs:72:30:72:34 | access to local variable value | provenance |  |
+| Test.cs:71:32:71:53 | access to indexer : HttpCookie | Test.cs:71:32:71:59 | access to property Value : String | provenance | MaD:2267 |
+| Test.cs:71:32:71:59 | access to property Value : String | Test.cs:71:24:71:28 | access to local variable value : String | provenance |  |
+nodes
+| Test.cs:17:17:17:20 | access to local variable data : String | semmle.label | access to local variable data : String |
+| Test.cs:17:24:17:38 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Test.cs:22:42:22:87 | ... + ... | semmle.label | ... + ... |
+| Test.cs:47:38:47:45 | userInfo : String | semmle.label | userInfo : String |
+| Test.cs:50:47:50:77 | ... + ... | semmle.label | ... + ... |
+| Test.cs:53:46:53:53 | userInfo : String | semmle.label | userInfo : String |
+| Test.cs:55:69:55:93 | ... + ... | semmle.label | ... + ... |
+| Test.cs:70:21:70:27 | access to local variable cookies : HttpCookieCollection | semmle.label | access to local variable cookies : HttpCookieCollection |
+| Test.cs:70:31:70:45 | access to property Cookies : HttpCookieCollection | semmle.label | access to property Cookies : HttpCookieCollection |
+| Test.cs:71:24:71:28 | access to local variable value : String | semmle.label | access to local variable value : String |
+| Test.cs:71:32:71:53 | access to indexer : HttpCookie | semmle.label | access to indexer : HttpCookie |
+| Test.cs:71:32:71:59 | access to property Value : String | semmle.label | access to property Value : String |
+| Test.cs:72:30:72:34 | access to local variable value | semmle.label | access to local variable value |
+subpaths

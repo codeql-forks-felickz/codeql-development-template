@@ -1,0 +1,2 @@
+query: StoredXss/StoredXss.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
