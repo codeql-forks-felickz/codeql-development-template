@@ -1,0 +1,53 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - [
+          "javax.xml.bind",
+          "DatatypeConverter",
+          False,
+          "parseBase64Binary",
+          "(String)",
+          "",
+          "Argument[0]",
+          "ReturnValue",
+          "taint",
+          "manual"
+        ]
+      - [
+          "javax.xml.bind",
+          "DatatypeConverter",
+          False,
+          "parseHexBinary",
+          "(String)",
+          "",
+          "Argument[0]",
+          "ReturnValue",
+          "taint",
+          "manual"
+        ]
+      - [
+          "jakarta.xml.bind",
+          "DatatypeConverter",
+          False,
+          "parseBase64Binary",
+          "(String)",
+          "",
+          "Argument[0]",
+          "ReturnValue",
+          "taint",
+          "manual"
+        ]
+      - [
+          "jakarta.xml.bind",
+          "DatatypeConverter",
+          False,
+          "parseHexBinary",
+          "(String)",
+          "",
+          "Argument[0]",
+          "ReturnValue",
+          "taint",
+          "manual"
+        ]
