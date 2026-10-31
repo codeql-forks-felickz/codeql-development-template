@@ -1,0 +1,1 @@
+| app.py:5:7:5:69 | ControlFlowNode for Application() | This aiohttp application enables session middleware without adding CSRF middleware and registers an unsafe route. |

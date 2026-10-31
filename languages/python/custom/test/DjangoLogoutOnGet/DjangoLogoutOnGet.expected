@@ -1,0 +1,1 @@
+| urls.py:5:5:5:38 | ControlFlowNode for path() | This route exposes Django's logout_then_login view to cross-site GET requests. |

@@ -1,0 +1,2 @@
+query: FlaskCsrfProtectionDisabled/FlaskCsrfProtectionDisabled.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
