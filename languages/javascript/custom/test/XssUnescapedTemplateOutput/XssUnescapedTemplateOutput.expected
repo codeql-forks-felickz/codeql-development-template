@@ -1,0 +1,21 @@
+edges
+| server.js:11:18:11:25 | req.body | server.js:11:18:11:30 | req.body.name | provenance |  |
+| server.js:11:18:11:30 | req.body.name | templates/profile.html:1:7:1:17 | profileName | provenance |  |
+| server.js:17:9:17:15 | profile | server.js:19:18:19:24 | profile | provenance |  |
+| server.js:17:19:17:81 | await d ... s.id }) | server.js:17:9:17:15 | profile | provenance |  |
+| server.js:19:18:19:24 | profile | server.js:19:18:19:34 | profile.firstName | provenance |  |
+| server.js:19:18:19:34 | profile.firstName | templates/profile.html:1:7:1:17 | profileName | provenance |  |
+| templates/profile.html:1:7:1:17 | profileName | templates/profile.html:1:4:1:20 | {{ profileName }} | provenance |  |
+nodes
+| server.js:11:18:11:25 | req.body | semmle.label | req.body |
+| server.js:11:18:11:30 | req.body.name | semmle.label | req.body.name |
+| server.js:17:9:17:15 | profile | semmle.label | profile |
+| server.js:17:19:17:81 | await d ... s.id }) | semmle.label | await d ... s.id }) |
+| server.js:19:18:19:24 | profile | semmle.label | profile |
+| server.js:19:18:19:34 | profile.firstName | semmle.label | profile.firstName |
+| templates/profile.html:1:4:1:20 | {{ profileName }} | semmle.label | {{ profileName }} |
+| templates/profile.html:1:7:1:17 | profileName | semmle.label | profileName |
+subpaths
+#select
+| templates/profile.html:1:4:1:20 | {{ profileName }} | server.js:11:18:11:25 | req.body | templates/profile.html:1:4:1:20 | {{ profileName }} | Unescaped template output depends on $@. | server.js:11:18:11:25 | req.body | user-controlled data |
+| templates/profile.html:1:4:1:20 | {{ profileName }} | server.js:17:19:17:81 | await d ... s.id }) | templates/profile.html:1:4:1:20 | {{ profileName }} | Unescaped template output depends on $@. | server.js:17:19:17:81 | await d ... s.id }) | user-controlled data |
