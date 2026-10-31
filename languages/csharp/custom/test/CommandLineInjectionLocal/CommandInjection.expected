@@ -1,0 +1,10 @@
+#select
+| Program.cs:14:43:14:59 | $"..." | Program.cs:11:32:11:63 | call to method GetCommandLineArgs : String[] | Program.cs:14:43:14:59 | $"..." | This command line depends on a $@. | Program.cs:11:32:11:63 | call to method GetCommandLineArgs | user-provided value |
+edges
+| Program.cs:11:20:11:28 | access to local variable parameter : String | Program.cs:14:43:14:59 | $"..." | provenance |  |
+| Program.cs:11:32:11:63 | call to method GetCommandLineArgs : String[] | Program.cs:11:20:11:28 | access to local variable parameter : String | provenance | Src:MaD:2455  |
+nodes
+| Program.cs:11:20:11:28 | access to local variable parameter : String | semmle.label | access to local variable parameter : String |
+| Program.cs:11:32:11:63 | call to method GetCommandLineArgs : String[] | semmle.label | call to method GetCommandLineArgs : String[] |
+| Program.cs:14:43:14:59 | $"..." | semmle.label | $"..." |
+subpaths

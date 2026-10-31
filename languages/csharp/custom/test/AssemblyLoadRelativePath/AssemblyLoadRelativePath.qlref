@@ -1,0 +1,2 @@
+query: AssemblyLoadRelativePath/AssemblyLoadRelativePath.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
