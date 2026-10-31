@@ -1,0 +1,52 @@
+#select
+| routes/accounts.js:10:31:10:38 | req.body | routes/accounts.js:10:31:10:38 | req.body | routes/accounts.js:10:31:10:38 | req.body | This user-controlled object from a $@ is used in an ORM model or query, which may allow mass assignment of model attributes or manipulation of the query. | routes/accounts.js:10:31:10:38 | req.body | user-provided value |
+| routes/accounts.js:16:24:16:31 | req.body | routes/accounts.js:16:24:16:31 | req.body | routes/accounts.js:16:24:16:31 | req.body | This user-controlled object from a $@ is used in an ORM model or query, which may allow mass assignment of model attributes or manipulation of the query. | routes/accounts.js:16:24:16:31 | req.body | user-provided value |
+| routes/accounts.js:22:28:22:40 | data.accounts | routes/accounts.js:21:16:21:23 | req.body | routes/accounts.js:22:28:22:40 | data.accounts | This user-controlled object from a $@ is used in an ORM model or query, which may allow mass assignment of model attributes or manipulation of the query. | routes/accounts.js:21:16:21:23 | req.body | user-provided value |
+| routes/accounts.js:28:24:28:30 | profile | routes/accounts.js:27:30:27:46 | req.query.profile | routes/accounts.js:28:24:28:30 | profile | This user-controlled object from a $@ is used in an ORM model or query, which may allow mass assignment of model attributes or manipulation of the query. | routes/accounts.js:27:30:27:46 | req.query.profile | user-provided value |
+| routes/accounts.js:48:15:48:22 | req.body | routes/accounts.js:48:15:48:22 | req.body | routes/accounts.js:48:15:48:22 | req.body | This user-controlled object from a $@ is used in an ORM model or query, which may allow mass assignment of model attributes or manipulation of the query. | routes/accounts.js:48:15:48:22 | req.body | user-provided value |
+| routes/define.js:14:27:14:34 | req.body | routes/define.js:14:27:14:34 | req.body | routes/define.js:14:27:14:34 | req.body | This user-controlled object from a $@ is used in an ORM model or query, which may allow mass assignment of model attributes or manipulation of the query. | routes/define.js:14:27:14:34 | req.body | user-provided value |
+| routes/define.js:20:21:20:28 | req.body | routes/define.js:20:21:20:28 | req.body | routes/define.js:20:21:20:28 | req.body | This user-controlled object from a $@ is used in an ORM model or query, which may allow mass assignment of model attributes or manipulation of the query. | routes/define.js:20:21:20:28 | req.body | user-provided value |
+| routes/define.js:25:57:25:86 | JSON.pa ... ername) | routes/define.js:25:68:25:85 | req.query.username | routes/define.js:25:57:25:86 | JSON.pa ... ername) | This user-controlled object from a $@ is used in an ORM model or query, which may allow mass assignment of model attributes or manipulation of the query. | routes/define.js:25:68:25:85 | req.query.username | user-provided value |
+| routes/recycles.ts:7:11:7:35 | JSON.pa ... ams.id) | routes/recycles.ts:7:22:7:34 | req.params.id | routes/recycles.ts:7:11:7:35 | JSON.pa ... ams.id) | This user-controlled object from a $@ is used in an ORM model or query, which may allow mass assignment of model attributes or manipulation of the query. | routes/recycles.ts:7:22:7:34 | req.params.id | user-provided value |
+| routes/recycles.ts:16:33:16:38 | filter | routes/recycles.ts:15:29:15:44 | req.query.filter | routes/recycles.ts:16:33:16:38 | filter | This user-controlled object from a $@ is used in an ORM model or query, which may allow mass assignment of model attributes or manipulation of the query. | routes/recycles.ts:15:29:15:44 | req.query.filter | user-provided value |
+| routes/recycles.ts:22:23:22:30 | req.body | routes/recycles.ts:22:23:22:30 | req.body | routes/recycles.ts:22:23:22:30 | req.body | This user-controlled object from a $@ is used in an ORM model or query, which may allow mass assignment of model attributes or manipulation of the query. | routes/recycles.ts:22:23:22:30 | req.body | user-provided value |
+| routes/recycles.ts:29:24:29:31 | req.body | routes/recycles.ts:29:24:29:31 | req.body | routes/recycles.ts:29:24:29:31 | req.body | This user-controlled object from a $@ is used in an ORM model or query, which may allow mass assignment of model attributes or manipulation of the query. | routes/recycles.ts:29:24:29:31 | req.body | user-provided value |
+edges
+| routes/accounts.js:21:9:21:12 | data | routes/accounts.js:22:28:22:31 | data | provenance |  |
+| routes/accounts.js:21:16:21:23 | req.body | routes/accounts.js:21:9:21:12 | data | provenance |  |
+| routes/accounts.js:22:28:22:31 | data | routes/accounts.js:22:28:22:40 | data.accounts | provenance | Config |
+| routes/accounts.js:27:9:27:15 | profile | routes/accounts.js:28:24:28:30 | profile | provenance |  |
+| routes/accounts.js:27:19:27:47 | JSON.pa ... rofile) | routes/accounts.js:27:9:27:15 | profile | provenance |  |
+| routes/accounts.js:27:30:27:46 | req.query.profile | routes/accounts.js:27:19:27:47 | JSON.pa ... rofile) | provenance | Config |
+| routes/define.js:25:68:25:85 | req.query.username | routes/define.js:25:57:25:86 | JSON.pa ... ername) | provenance | Config |
+| routes/recycles.ts:7:22:7:34 | req.params.id | routes/recycles.ts:7:11:7:35 | JSON.pa ... ams.id) | provenance | Config |
+| routes/recycles.ts:15:9:15:14 | filter | routes/recycles.ts:16:33:16:38 | filter | provenance |  |
+| routes/recycles.ts:15:18:15:55 | JSON.pa ... string) | routes/recycles.ts:15:9:15:14 | filter | provenance |  |
+| routes/recycles.ts:15:29:15:44 | req.query.filter | routes/recycles.ts:15:29:15:54 | req.que ...  string | provenance |  |
+| routes/recycles.ts:15:29:15:54 | req.que ...  string | routes/recycles.ts:15:18:15:55 | JSON.pa ... string) | provenance | Config |
+nodes
+| routes/accounts.js:10:31:10:38 | req.body | semmle.label | req.body |
+| routes/accounts.js:16:24:16:31 | req.body | semmle.label | req.body |
+| routes/accounts.js:21:9:21:12 | data | semmle.label | data |
+| routes/accounts.js:21:16:21:23 | req.body | semmle.label | req.body |
+| routes/accounts.js:22:28:22:31 | data | semmle.label | data |
+| routes/accounts.js:22:28:22:40 | data.accounts | semmle.label | data.accounts |
+| routes/accounts.js:27:9:27:15 | profile | semmle.label | profile |
+| routes/accounts.js:27:19:27:47 | JSON.pa ... rofile) | semmle.label | JSON.pa ... rofile) |
+| routes/accounts.js:27:30:27:46 | req.query.profile | semmle.label | req.query.profile |
+| routes/accounts.js:28:24:28:30 | profile | semmle.label | profile |
+| routes/accounts.js:48:15:48:22 | req.body | semmle.label | req.body |
+| routes/define.js:14:27:14:34 | req.body | semmle.label | req.body |
+| routes/define.js:20:21:20:28 | req.body | semmle.label | req.body |
+| routes/define.js:25:57:25:86 | JSON.pa ... ername) | semmle.label | JSON.pa ... ername) |
+| routes/define.js:25:68:25:85 | req.query.username | semmle.label | req.query.username |
+| routes/recycles.ts:7:11:7:35 | JSON.pa ... ams.id) | semmle.label | JSON.pa ... ams.id) |
+| routes/recycles.ts:7:22:7:34 | req.params.id | semmle.label | req.params.id |
+| routes/recycles.ts:15:9:15:14 | filter | semmle.label | filter |
+| routes/recycles.ts:15:18:15:55 | JSON.pa ... string) | semmle.label | JSON.pa ... string) |
+| routes/recycles.ts:15:29:15:44 | req.query.filter | semmle.label | req.query.filter |
+| routes/recycles.ts:15:29:15:54 | req.que ...  string | semmle.label | req.que ...  string |
+| routes/recycles.ts:16:33:16:38 | filter | semmle.label | filter |
+| routes/recycles.ts:22:23:22:30 | req.body | semmle.label | req.body |
+| routes/recycles.ts:29:24:29:31 | req.body | semmle.label | req.body |
+subpaths

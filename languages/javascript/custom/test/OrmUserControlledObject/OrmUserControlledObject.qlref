@@ -1,0 +1,2 @@
+query: OrmUserControlledObject/OrmUserControlledObject.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
