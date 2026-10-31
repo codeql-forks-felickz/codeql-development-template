@@ -1,0 +1,2 @@
+query: IncompleteUrlAllowlistSubstringSanitization/IncompleteUrlAllowlistSubstringSanitization.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
