@@ -10,6 +10,15 @@ Request data (query string, form fields, headers, action parameters, or the clie
 
 In addition to the standard library models, taint is propagated through `LinkedList<T>.First`/`Last`, `LinkedListNode<T>.Value`, and a `BinaryFormatter.Serialize`/`Deserialize` round trip, so values handed between methods in these containers are still tracked.
 
+## Known limitations
+
+- Extension checks are treated as guards on either branch. A deny-list check (for example, only blocking `.aspx`) may therefore suppress an upload alert.
+- Upload checks cover client-controlled file names saved under the web root, not unbounded reads or line-by-line processing of uploaded content, such as concatenating every line into a response.
+- Archive extraction and archive contents are not analyzed. A filename suffix check such as `.zip` does not validate extracted entries, but may suppress a filename-based upload alert.
+- Request-controlled `Thread.Sleep` durations are not modeled.
+- Count-down loops such as `for (i = count; i > 0; i--)` are not detected.
+- Other search-path mutations, such as `ProcessStartInfo.Environment["PATH"]`, are not modelled.
+
 ## Recommendation
 
 - Build connection strings with `SqlConnectionStringBuilder` (or the provider-specific builder) from fixed configuration, and never let the request select the account or catalog.

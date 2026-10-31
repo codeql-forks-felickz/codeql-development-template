@@ -184,6 +184,21 @@ namespace Testcases
             }
         }
 
+        public void BadParams(HttpRequest req, HttpResponse resp)
+        {
+            int capacity = int.Parse(req.Params["name"]); // $ Source
+            var list = new ArrayList(capacity); // $ Alert
+        }
+
+        public void GoodParams(HttpRequest req, HttpResponse resp)
+        {
+            int capacity = int.Parse(req.Params["name"]);
+            if (capacity > 0 && capacity <= 100)
+            {
+                var list = new ArrayList(capacity);
+            }
+        }
+
         public void BadMinRequestBound(HttpRequest req, HttpResponse resp)
         {
             int count = Math.Min(
