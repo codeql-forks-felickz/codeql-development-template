@@ -1,0 +1,120 @@
+# Reduced from an API key store that persists keys as files in /tmp (CWE-377).
+import hashlib
+import os
+import random
+import tempfile
+from pathlib import Path
+
+
+def keygen(username):
+    key = hashlib.sha256(str(random.getrandbits(2048)).encode()).hexdigest()
+    keyfile = '/tmp/vulpy.apikey.{}.{}'.format(username, key)
+    Path(keyfile).touch()  # $ Alert[py/file-upload-resource-handling]
+    return key
+
+
+def authenticate(request):
+    key = request.headers['X-APIKEY']
+    for f in Path('/tmp/').glob('vulpy.apikey.*.' + key):  # $ Alert[py/file-upload-resource-handling]
+        return f.name.split('.')[2]
+    return None
+
+
+def save_upload(filename, data):
+    with open("/tmp/upload_" + filename, "wb") as f:  # $ Alert[py/file-upload-resource-handling]
+        f.write(data)
+
+
+def save_upload_fstring(filename, data):
+    path = f"/var/tmp/{filename}.bin"
+    Path(path).write_bytes(data)  # $ Alert[py/file-upload-resource-handling]
+
+
+def save_upload_join(filename, data):
+    fd = os.open(os.path.join("/tmp", filename), os.O_WRONLY | os.O_CREAT)  # $ Alert[py/file-upload-resource-handling]
+    os.write(fd, data)
+
+
+def save_upload_alias(filename, data):
+    base = "/tmp/"
+    with open(base + filename, "wb") as f:  # $ Alert[py/file-upload-resource-handling]
+        f.write(data)
+
+
+def save_upload_alias_join(filename, data):
+    base = "/tmp"
+    fd = os.open(os.path.join(base, filename), os.O_WRONLY | os.O_CREAT)  # $ Alert[py/file-upload-resource-handling]
+    os.write(fd, data)
+
+
+def save_upload_alias_path(filename, data):
+    base = "/tmp"
+    Path(base, filename).touch()  # $ Alert[py/file-upload-resource-handling]
+
+
+def save_upload_with_separator(filename, data):
+    with open("/tmp" + "/" + filename, "wb") as f:  # $ Alert[py/file-upload-resource-handling]
+        f.write(data)
+
+
+def save_upload_dynamic_component(filename, data):
+    path = "/tmp" + filename
+    with open(path, "wb") as f:  # $ Alert[py/file-upload-resource-handling]
+        f.write(data)
+
+
+def save_fixed_private_key(key_bytes):
+    with open("/tmp/acme.key", "wb") as f:  # $ Alert[py/file-upload-resource-handling]
+        f.write(key_bytes)
+
+
+def save_private_key_safely(key_bytes):
+    with tempfile.NamedTemporaryFile() as f:
+        f.write(key_bytes)
+
+
+def not_tmp_uploads(filename, data):
+    with open("/tmp" + "_uploads/" + filename, "wb") as f:
+        f.write(data)
+
+
+def not_tmp_fstring(suffix, data):
+    path = f"/tmp{suffix}"
+    Path(path).write_bytes(data)
+
+
+# Safe: tempfile creates an unpredictable, owner-only file.
+def save_upload_safe(data):
+    fd, path = tempfile.mkstemp(prefix="upload_")
+    with os.fdopen(fd, "wb") as f:
+        f.write(data)
+    return path
+
+
+def save_upload_tempdir_safe(filename, data):
+    with tempfile.TemporaryDirectory() as d:
+        Path(d, filename).write_bytes(data)
+
+
+# Safe: application-owned directory, not a shared world-writable one.
+def save_upload_app_dir(filename, data):
+    with open("/srv/app/uploads/" + filename, "wb") as f:
+        f.write(data)
+
+
+# Safe: the alias still names an application-owned directory.
+def save_upload_app_dir_alias(filename, data):
+    base = "/srv/app/uploads/"
+    with open(base + filename, "wb") as f:
+        f.write(data)
+
+
+# Safe: a path that merely starts with "/tmpfoo" is not the shared /tmp dir.
+def not_tmp(data):
+    with open("/tmpdata/report.txt", "wb") as f:
+        f.write(data)
+
+
+# Safe: inspecting the shared directory itself does not use a predictable entry name.
+def tmp_is_available():
+    return Path("/tmp").is_dir() and os.path.exists("/tmp/")
