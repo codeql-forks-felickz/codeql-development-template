@@ -1,0 +1,22 @@
+#select
+| test.c:49:69:49:74 | filter | test.c:42:9:42:22 | fgets output argument | test.c:49:69:49:74 | filter | This LDAP query depends on $@. | test.c:42:9:42:22 | fgets output argument | user input (string read by fgets) |
+| test.c:65:70:65:75 | filter | test.c:58:10:58:13 | fgetws output argument | test.c:65:70:65:75 | filter | This LDAP query depends on $@. | test.c:58:10:58:13 | fgetws output argument | user input (string read by fgetws) |
+| test.c:74:21:74:24 | base | test.c:73:16:73:21 | *call to getenv | test.c:74:21:74:24 | base | This LDAP query depends on $@. | test.c:73:16:73:21 | *call to getenv | user input (an environment variable) |
+| test.c:81:61:81:63 | buf | test.c:80:14:80:16 | recv output argument | test.c:81:61:81:63 | buf | This LDAP query depends on $@. | test.c:80:14:80:16 | recv output argument | user input (buffer read by recv) |
+edges
+| test.c:42:9:42:22 | fgets output argument | test.c:49:69:49:74 | filter | provenance | TaintFunction Sink:MaD:15 |
+| test.c:58:10:58:13 | fgetws output argument | test.c:65:70:65:75 | filter | provenance | TaintFunction Sink:MaD:17 |
+| test.c:73:16:73:21 | *call to getenv | test.c:73:16:73:21 | *call to getenv | provenance |  |
+| test.c:73:16:73:21 | *call to getenv | test.c:74:21:74:24 | base | provenance | Sink:MaD:24 |
+| test.c:80:14:80:16 | recv output argument | test.c:81:61:81:63 | buf | provenance | Sink:MaD:3 |
+nodes
+| test.c:42:9:42:22 | fgets output argument | semmle.label | fgets output argument |
+| test.c:49:69:49:74 | filter | semmle.label | filter |
+| test.c:58:10:58:13 | fgetws output argument | semmle.label | fgetws output argument |
+| test.c:65:70:65:75 | filter | semmle.label | filter |
+| test.c:73:16:73:21 | *call to getenv | semmle.label | *call to getenv |
+| test.c:73:16:73:21 | *call to getenv | semmle.label | *call to getenv |
+| test.c:74:21:74:24 | base | semmle.label | base |
+| test.c:80:14:80:16 | recv output argument | semmle.label | recv output argument |
+| test.c:81:61:81:63 | buf | semmle.label | buf |
+subpaths

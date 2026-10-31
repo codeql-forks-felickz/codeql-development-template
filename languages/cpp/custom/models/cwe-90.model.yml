@@ -1,0 +1,45 @@
+# LDAP injection (CWE-90) sinks for the Win32 LDAP API (Wldap32 / winldap.h) and
+# the OpenLDAP C API (ldap.h). All modeled search functions share the layout
+# (ld, base, scope, filter, ...): `Argument[*1]` is the base distinguished name and
+# `Argument[*3]` is the search filter.
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sinkModel
+    data:
+      - ["", "", False, "ldap_search", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_searchA", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_searchA", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_searchW", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_searchW", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_ext", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_ext", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_extA", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_extA", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_extW", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_extW", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_ext_s", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_ext_s", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_ext_sA", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_ext_sA", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_ext_sW", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_ext_sW", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_init_page", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_init_page", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_init_pageA", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_init_pageA", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_init_pageW", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_init_pageW", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_s", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_s", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_sA", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_sA", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_sW", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_sW", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_st", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_st", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_stA", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_stA", "", "", "Argument[*3]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_stW", "", "", "Argument[*1]", "ldap-injection", "manual"]
+      - ["", "", False, "ldap_search_stW", "", "", "Argument[*3]", "ldap-injection", "manual"]
