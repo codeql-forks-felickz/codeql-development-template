@@ -4,7 +4,8 @@
  *              This variant also recognizes writes to Core Data objects created with
  *              `NSEntityDescription.insertNewObject(forEntityName:into:)` when the managed object class
  *              cannot be resolved, writes to Objective-C Realm (`RLMObject`) objects, and hard-coded values
- *              written to properties with sensitive names.
+ *              written to properties with sensitive names. It also recognizes values stored in
+ *              `UserDefaults` under the `token` or `PIN` keys.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5
@@ -12,6 +13,7 @@
  * @id swift/custom/cleartext-storage-database
  * @tags security
  *       external/cwe/cwe-312
+ *       external/cwe/cwe-922
  */
 
 import swift

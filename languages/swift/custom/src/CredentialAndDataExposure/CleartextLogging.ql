@@ -3,7 +3,8 @@
  * @description Logging sensitive information in plaintext can expose it to an attacker.
  *              This variant also treats user interface inputs with abbreviated or undelimited
  *              sensitive names (such as `ccNoTextField`, `cvvTextField` or `pinTextField`) as
- *              sensitive.
+ *              sensitive, and treats parameters and decoded strings in encryption/decryption
+ *              functions as plaintext sources.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.5

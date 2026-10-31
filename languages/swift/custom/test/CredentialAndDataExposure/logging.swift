@@ -19,3 +19,17 @@ class DeviceLogsViewController: UIViewController {
     NSLog("pinned: %@", pinnedTextField.text ?? "")
   }
 }
+
+func decryptString(_ toDecrypt: String) -> String {
+  // GOOD: the ciphertext is not sensitive plaintext
+  NSLog("Decrypting \(toDecrypt)")
+  let plaintext = String(data: Data([UInt8]()), encoding: .utf8)!
+  NSLog("Decrypted value: \(plaintext)") // $ cleartextLogging
+  return plaintext
+}
+
+func logCredentials(username: String, password: String, displayName: String) {
+  NSLog("Login \(username):\(password)") // $ cleartextLogging
+  // GOOD: a non-sensitive display name
+  NSLog("Display name: \(displayName)")
+}

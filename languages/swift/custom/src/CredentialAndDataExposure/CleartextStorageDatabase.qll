@@ -14,10 +14,13 @@ import CredentialAndDataExposure
 module ExtendedCleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     CleartextStorageDatabaseConfig::isSource(node) or
-    node instanceof HardcodedSensitivePropertyValue
+    node instanceof HardcodedSensitivePropertyValue or
+    node instanceof SensitiveUserDefaultsValue
   }
 
-  predicate isSink(DataFlow::Node node) { CleartextStorageDatabaseConfig::isSink(node) }
+  predicate isSink(DataFlow::Node node) {
+    CleartextStorageDatabaseConfig::isSink(node) or node instanceof UserDefaultsStore
+  }
 
   predicate isBarrier(DataFlow::Node node) { CleartextStorageDatabaseConfig::isBarrier(node) }
 

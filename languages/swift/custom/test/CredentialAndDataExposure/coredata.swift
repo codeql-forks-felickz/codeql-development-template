@@ -44,6 +44,25 @@ func configureDefault() -> LoginConfiguration {
   return config
 }
 
+// CWE-922: credentials stored in UserDefaults, including a token with a
+// non-sensitive local name.
+
+private let tokenPreferenceKey = "token"
+
+func storeTokenInUserDefaults(_ token: String) {
+  UserDefaults.standard.set(token, forKey: tokenPreferenceKey) // $ cleartextStorage
+}
+
+class PinSettingsViewController: UIViewController {
+  var pinField = UITextField()
+
+  func savePin() {
+    UserDefaults.standard.set(pinField.text, forKey: "PIN") // $ cleartextStorage
+    // GOOD: a non-sensitive preference
+    UserDefaults.standard.set(false, forKey: "usePin")
+  }
+}
+
 // CWE-922: payment card data written to an Objective-C Realm object.
 
 class RCreditInfo: RLMObject {

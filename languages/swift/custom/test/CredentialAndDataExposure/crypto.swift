@@ -63,6 +63,7 @@ func cryptWithProvidedKey(key: Data, iv: Data, data: Data) {
 func encryptString(_ toEncrypt: String) -> String {
   let plainText = toEncrypt.data(using: .utf8)!
   let ret = plainText.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0)) // $ base64AsEncryption
+  NSLog("Encrypting \(toEncrypt)") // $ cleartextLogging
   return ret
 }
 

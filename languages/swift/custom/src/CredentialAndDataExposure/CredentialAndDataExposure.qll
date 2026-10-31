@@ -379,6 +379,30 @@ class RealmObjcObjectWrite extends CleartextStorageDatabaseSink {
 }
 
 /**
+ * A `UserDefaults.set` value stored under a key explicitly naming a token or PIN.
+ */
+class SensitiveUserDefaultsValue extends DataFlow::Node {
+  SensitiveUserDefaultsValue() {
+    exists(CallExpr call, Expr origin |
+      call.getStaticTarget().(Method).hasQualifiedName("UserDefaults", "set(_:forKey:)") and
+      isHardcodedValue(stripWrappers(call.getArgumentWithLabel("forKey").getExpr()), origin) and
+      origin.(StringLiteralExpr).getValue() = ["token", "PIN"] and
+      this.asExpr() = call.getArgument(0).getExpr()
+    )
+  }
+}
+
+/** A value written to a `UserDefaults` preference. */
+class UserDefaultsStore extends CleartextStorageDatabaseSink {
+  UserDefaultsStore() {
+    exists(CallExpr call |
+      call.getStaticTarget().(Method).hasQualifiedName("UserDefaults", "set(_:forKey:)") and
+      this.asExpr() = call.getArgument(0).getExpr()
+    )
+  }
+}
+
+/**
  * A hard-coded value that is assigned to a property with a sensitive name, for
  * example `"secret"` in `user.password = "secret"`. Such a value is sensitive even
  * though it is not read from a variable with a sensitive name.
@@ -389,6 +413,33 @@ class HardcodedSensitivePropertyValue extends DataFlow::Node {
       assign.getDest() instanceof SensitiveExpr and
       this.asExpr() = assign.getSource() and
       isHardcodedValue(stripWrappers(assign.getSource()), _)
+    )
+  }
+}
+
+/**
+ * A value passed as plaintext to a source-declared encryption function.
+ */
+class EncryptionPlaintextExpr extends Expr {
+  EncryptionPlaintextExpr() {
+    exists(ParamDecl param, Function function |
+      param.getEnclosingCallable() = function and
+      function.getShortName().regexpMatch("(?i).*(encrypt|encipher).*") and
+      refersTo(this, param)
+    )
+  }
+}
+
+/**
+ * A string decoded as plaintext inside a source-declared decryption function.
+ */
+class DecryptionPlaintextExpr extends Expr {
+  DecryptionPlaintextExpr() {
+    exists(CallExpr call, Function function |
+      call.getEnclosingFunction() = function and
+      function.getShortName().regexpMatch("(?i).*decrypt.*") and
+      call.getStaticTarget().(Initializer).hasQualifiedName("String", "init(data:encoding:)") and
+      this = call
     )
   }
 }

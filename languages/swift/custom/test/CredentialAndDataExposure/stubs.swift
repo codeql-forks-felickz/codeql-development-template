@@ -87,6 +87,12 @@ struct URLRequest {
   mutating func setValue(_ value: String?, forHTTPHeaderField field: String) {}
 }
 
+class UserDefaults {
+  static let standard = UserDefaults()
+
+  func set(_ value: Any?, forKey defaultName: String) {}
+}
+
 class UIApplication {
   struct LaunchOptionsKey: Hashable {
     static let url = LaunchOptionsKey()

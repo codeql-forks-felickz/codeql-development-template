@@ -13,7 +13,9 @@ import CredentialAndDataExposure
 module ExtendedCleartextLoggingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     CleartextLoggingConfig::isSource(node) or
-    node.asExpr() instanceof SensitiveUiInputExpr
+    node.asExpr() instanceof SensitiveUiInputExpr or
+    node.asExpr() instanceof EncryptionPlaintextExpr or
+    node.asExpr() instanceof DecryptionPlaintextExpr
   }
 
   predicate isSink(DataFlow::Node node) { CleartextLoggingConfig::isSink(node) }
