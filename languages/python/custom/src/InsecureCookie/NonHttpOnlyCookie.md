@@ -4,6 +4,8 @@ Cookies without the `HttpOnly` flag set are accessible to JavaScript running in 
 
 In addition to explicit cookie writes (such as `set_cookie`), this query reports framework settings that explicitly disable the `HttpOnly` flag of session cookies managed by the framework itself:
 
+Explicit cookie writes are also treated as sensitive when their names indicate an authentication token or a session cookie, such as `my_session` or `sessionid`.
+
 - Flask: `SESSION_COOKIE_HTTPONLY` set to `False` through `app.config[...]`, `app.config.update(...)` or `app.config.from_mapping(...)`.
 - Django settings modules and Flask configuration objects: module-level or class-level `SESSION_COOKIE_HTTPONLY = False`.
 - `aiohttp-session` storages: `httponly=False` passed to a storage constructor such as `RedisStorage`.

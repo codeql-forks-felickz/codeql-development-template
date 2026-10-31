@@ -184,12 +184,12 @@ private class AiohttpSessionStorageCookieSetting extends FrameworkCookieSetting 
 }
 
 /**
- * Gets a regular expression matching cookie names that indicate an authentication token,
- * such as `access_token`, `refresh_token`, or `jwt`, which are not recognized by the standard
- * sensitive data heuristics.
+ * Gets a regular expression matching cookie names that indicate an authentication token or a
+ * session cookie, which are not recognized by the standard sensitive data heuristics.
  */
-private string tokenCookieNameRegexp() {
-  result = "(?is).*((access|refresh|id|auth|bearer|session)[_.-]?tok(en)?|jwt).*"
+private string sensitiveCookieNameRegexp() {
+  result =
+    "(?is).*((access|refresh|id|auth|bearer)[_.-]?tok(en)?|jwt|(^|[_.-])session(id)?($|[_.-])).*"
 }
 
 /**
@@ -204,6 +204,6 @@ predicate isSensitiveCookie(Http::Server::CookieWrite cookie) {
   or
   exists(StringLiteral name |
     DataFlow::localFlow(DataFlow::exprNode(name), cookie.getNameArg()) and
-    name.getText().regexpMatch(tokenCookieNameRegexp())
+    name.getText().regexpMatch(sensitiveCookieNameRegexp())
   )
 }
