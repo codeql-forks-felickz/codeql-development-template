@@ -1,0 +1,26 @@
+extensions:
+  # Log4j 2 Thread Context (MDC/NDC): values written here are rendered into
+  # log lines by layout patterns such as `%X`, `%X{key}` and `%x`, so
+  # unsanitized CR/LF characters can forge log entries (CWE-117).
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.logging.log4j", "ThreadContext", False, "put", "(String,String)", "", "Argument[1]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "ThreadContext", False, "putIfNull", "(String,String)", "", "Argument[1]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "ThreadContext", False, "putAll", "(Map)", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "ThreadContext", False, "push", "(String)", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "ThreadContext", False, "push", "(String,Object[])", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "ThreadContext", False, "push", "(String,Object[])", "", "Argument[1]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "CloseableThreadContext", False, "put", "(String,String)", "", "Argument[1]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "CloseableThreadContext", False, "putAll", "(Map)", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "CloseableThreadContext", False, "push", "(String)", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "CloseableThreadContext", False, "push", "(String,Object[])", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "CloseableThreadContext", False, "push", "(String,Object[])", "", "Argument[1]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "CloseableThreadContext", False, "pushAll", "(List)", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "CloseableThreadContext$Instance", False, "put", "(String,String)", "", "Argument[1]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "CloseableThreadContext$Instance", False, "putAll", "(Map)", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "CloseableThreadContext$Instance", False, "push", "(String)", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "CloseableThreadContext$Instance", False, "push", "(String,Object[])", "", "Argument[0]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "CloseableThreadContext$Instance", False, "push", "(String,Object[])", "", "Argument[1]", "log-injection", "manual"]
+      - ["org.apache.logging.log4j", "CloseableThreadContext$Instance", False, "pushAll", "(List)", "", "Argument[0]", "log-injection", "manual"]
