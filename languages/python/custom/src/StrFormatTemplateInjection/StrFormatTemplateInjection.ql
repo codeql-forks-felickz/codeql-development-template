@@ -23,13 +23,28 @@ import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.BarrierGuards
 import Shared.CapturedUnpackedVariableFlow
 
-/** Holds if `arg` is a literal that offers nothing to traverse, such as `1` or `"x"`. */
+/**
+ * Holds if `arg` is a literal that offers nothing to traverse, such as `1`, `"x"`, `()` or
+ * `{"name": "x"}`.
+ */
 private predicate isLiteralArgument(Expr arg) {
-  arg instanceof StringLiteral or
-  arg instanceof Num or
-  arg instanceof None or
-  arg instanceof True or
+  arg instanceof StringLiteral
+  or
+  arg instanceof Num
+  or
+  arg instanceof None
+  or
+  arg instanceof True
+  or
   arg instanceof False
+  or
+  (arg instanceof Tuple or arg instanceof List or arg instanceof Set) and
+  forall(Expr elt | elt = arg.getASubExpression() | isLiteralArgument(elt))
+  or
+  isLiteralArgument(arg.(Starred).getValue())
+  or
+  arg instanceof Dict and
+  forall(Expr e | e = arg.(Dict).getAKey() or e = arg.(Dict).getAValue() | isLiteralArgument(e))
 }
 
 /**
@@ -42,6 +57,8 @@ private predicate hasNonLiteralFormatArgument(DataFlow::CallCfgNode call, int sk
     exists(int i | i >= skip and arg = call.getNode().getNode().(Call).getPositionalArg(i))
     or
     arg = call.getNode().getNode().(Call).getANamedArg().(Keyword).getValue()
+    or
+    arg = call.getNode().getNode().(Call).getANamedArg().(DictUnpacking).getValue()
     or
     arg = call.getNode().getNode().(Call).getStarArg()
     or

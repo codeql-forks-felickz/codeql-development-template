@@ -33,6 +33,10 @@ def safe():
     # Safe: nothing to traverse.
     out.append(tmpl.format())
     out.append(tmpl.format("literal", 1))
+    out.append(tmpl.format_map({}))
+    out.append(tmpl.format_map({"name": "x"}))
+    out.append(tmpl.format(*[], **{}))
+    out.append(string.Formatter().vformat(tmpl, (), {}))
     # Safe: compared against a constant.
     if tmpl == "{0.name}":
         out.append(tmpl.format(Config()))
