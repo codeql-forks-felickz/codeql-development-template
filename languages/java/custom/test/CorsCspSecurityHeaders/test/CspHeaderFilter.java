@@ -64,9 +64,30 @@ public class CspHeaderFilter implements Filter {
         "Content-Security-Policy", "script-src 'sha256-abc123=' 'unsafe-inline'");
   }
 
+  public void goodFirstDirectiveWins(HttpServletResponse response) {
+    // GOOD: browsers ignore the second, duplicate script-src directive.
+    response.setHeader(
+        "Content-Security-Policy", "script-src 'self'; script-src 'unsafe-inline' 'unsafe-eval'");
+  }
+
+  public void badFirstDirectiveWins(HttpServletResponse response) {
+    // BAD: the first script-src directive is the one that applies.
+    response.setHeader(
+        "Content-Security-Policy", "script-src 'unsafe-inline'; script-src 'self'"); // $ Alert
+  }
+
+  public void goodUnrelatedHeaderApi(MailMessage message) {
+    // GOOD: not an HTTP response.
+    message.setHeader("Content-Security-Policy", "script-src 'unsafe-inline'");
+  }
+
   public void goodReportOnly(HttpServletResponse response) {
     // GOOD: report-only policies are not enforced and are typically used while tightening a policy.
     response.setHeader(
         "Content-Security-Policy-Report-Only", "default-src 'unsafe-inline' 'unsafe-eval'");
   }
+}
+
+class MailMessage {
+  void setHeader(String name, String value) {}
 }

@@ -35,7 +35,12 @@ private class HeaderWrite extends MethodCall {
     this.getNumArgument() >= 2 and
     this.getArgument(0).getType() instanceof TypeString and
     (
-      this.getMethod().hasName(["setHeader", "addHeader", "header"])
+      this.getMethod().hasName(["setHeader", "addHeader", "header"]) and
+      this.getMethod()
+          .getDeclaringType()
+          .getSourceDeclaration()
+          .getName()
+          .matches(["%Response%", "%Header%"])
       or
       this.getMethod().hasName(["add", "set"]) and
       this.getMethod()
@@ -69,13 +74,22 @@ private predicate cspPolicy(MethodCall c, string policy) {
   policy = constantString(c.getArgument(0))
 }
 
-/** Gets the lower-case source list of the `directive` directive of the CSP `policy`. */
+/** Gets the lower-case name of the `i`th directive of the CSP `policy`. */
+bindingset[policy]
+private string directiveName(string policy, int i) {
+  result = policy.splitAt(";", i).trim().regexpCapture("([A-Za-z-]+)(\\s.*)?", 1).toLowerCase()
+}
+
+/**
+ * Gets the lower-case source list of the `directive` directive of the CSP `policy`. As in
+ * browsers, only the first occurrence of a directive is used.
+ */
 bindingset[policy]
 private string directiveSources(string policy, string directive) {
-  exists(string d |
-    d = policy.splitAt(";").trim() and
-    directive = d.regexpCapture("([A-Za-z-]+)(\\s.*)?", 1).toLowerCase() and
-    result = d.suffix(directive.length()).trim().toLowerCase()
+  exists(int i |
+    directive = directiveName(policy, i) and
+    i = min(int j | directiveName(policy, j) = directive) and
+    result = policy.splitAt(";", i).trim().suffix(directive.length()).trim().toLowerCase()
   )
 }
 
@@ -152,10 +166,16 @@ private string frameAncestors(MethodCall c) {
   )
 }
 
-/** Holds if the `frame-ancestors` source list `sources` allows any site to frame the page. */
+/**
+ * Holds if the `frame-ancestors` source list `sources` allows any site to frame the page, through
+ * a wildcard such as `*` or `https://*`, or a bare scheme such as `https:`.
+ */
 bindingset[sources]
 private predicate permissiveFrameAncestors(string sources) {
-  hasSource(sources, ["*", "http:", "https:"])
+  exists(string t | hasSource(sources, t) |
+    t.regexpMatch("([a-z][a-z0-9+.-]*://)?\\*(:\\*)?/?") or
+    t.regexpMatch("[a-z][a-z0-9+.-]*:")
+  )
 }
 
 /** Holds if `c` writes an `X-Frame-Options` header or a CSP with a `frame-ancestors` directive. */
@@ -192,13 +212,29 @@ private class RequestPathCall extends MethodCall {
   }
 }
 
-/** Holds if framing protection written by `c` is only applied for some request paths. */
-private predicate pathConditionalFraming(MethodCall c, string msg) {
-  framingProtection(c) and
-  exists(ConditionBlock cb, Expr sub |
-    cb.controls(c.getBasicBlock(), _) and
+/** Holds if `cb` tests a condition that depends on the path of the current request. */
+private predicate requestPathCondition(ConditionBlock cb) {
+  exists(Expr sub |
     sub.getParent*() = cb.getCondition() and
     TaintTracking::localExprTaint(any(RequestPathCall p), sub)
+  )
+}
+
+/**
+ * Holds if framing protection written by `c` is only applied for some request paths: `c` is
+ * controlled by a request-path condition, and no other framing protection in the same method is
+ * applied outside that branch (for example unconditionally, or in the `else` branch).
+ */
+private predicate pathConditionalFraming(MethodCall c, string msg) {
+  framingProtection(c) and
+  exists(ConditionBlock cb, boolean branch |
+    requestPathCondition(cb) and
+    cb.controls(c.getBasicBlock(), branch) and
+    not exists(MethodCall other |
+      framingProtection(other) and
+      other.getEnclosingCallable() = c.getEnclosingCallable() and
+      not cb.controls(other.getBasicBlock(), branch)
+    )
   ) and
   msg =
     "Framing protection is only applied when a request-path condition holds, so responses for the excluded paths can be framed by any site (clickjacking)."
@@ -257,11 +293,40 @@ private predicate handlerWritesFramingHeader(Method m, MethodCall c) {
 }
 
 /**
+ * Holds if the code base shows evidence of framing protection that applies to every response, so
+ * that handlers without their own framing header are presumably protected:
+ * - a filter or interceptor writes framing protection outside any request-path condition, or
+ * - Spring Security is configured (it sends `X-Frame-Options: DENY` by default) and its frame
+ *   options are not disabled anywhere.
+ */
+private predicate globalFramingProtection() {
+  exists(MethodCall c |
+    framingProtection(c) and
+    c.getEnclosingCallable()
+        .hasName(["doFilter", "doFilterInternal", "preHandle", "postHandle", "filter"]) and
+    not pathConditionalFraming(c, _)
+  )
+  or
+  exists(Parameter p |
+    p.getType()
+        .(RefType)
+        .getSourceDeclaration()
+        .hasQualifiedName([
+            "org.springframework.security.config.annotation.web.builders",
+            "org.springframework.security.config.web.server"
+          ], ["HttpSecurity", "ServerHttpSecurity"])
+  ) and
+  not springFramingDisabled(_, _)
+}
+
+/**
  * Holds if request handler `m` writes no framing header although `sibling`, another handler in the
- * same class, protects its response against framing.
+ * same class, protects its response against framing, and there is no evidence of global framing
+ * protection.
  */
 private predicate inconsistentFraming(Method m, string msg) {
   isRequestHandler(m) and
+  not globalFramingProtection() and
   not handlerWritesFramingHeader(m, _) and
   exists(string sibling |
     sibling =
@@ -316,6 +381,20 @@ private predicate originConfig(AddCorsMapping add, MethodCall c) {
   c.getMethod().hasName(["allowedOrigins", "allowedOriginPatterns"])
 }
 
+/**
+ * Holds if the CORS registration created by `add` escapes the method that creates it, so that it
+ * may be configured elsewhere.
+ */
+private predicate registrationEscapes(AddCorsMapping add) {
+  exists(Expr r | r = registrationRef(add) |
+    r = any(Call call).getAnArgument()
+    or
+    r = any(ReturnStmt ret).getExpr()
+    or
+    exists(AssignExpr a | a.getRhs() = r and a.getDest() instanceof FieldAccess)
+  )
+}
+
 /** Holds if `add` registers a CORS mapping that accepts requests from any origin. */
 private predicate permissiveCorsMapping(AddCorsMapping add, string msg) {
   exists(string mapping, string reason |
@@ -329,6 +408,7 @@ private predicate permissiveCorsMapping(AddCorsMapping add, string msg) {
       reason = "allows every origin ('*')"
       or
       not originConfig(add, _) and
+      not registrationEscapes(add) and
       reason = "leaves its allowed origins at the permissive default ('*')"
     ) and
     msg =
@@ -337,14 +417,28 @@ private predicate permissiveCorsMapping(AddCorsMapping add, string msg) {
   )
 }
 
+/** Holds if `e` is a collection such as `List.of("*")` that contains `"*"`. */
+private predicate wildcardCollection(Expr e) {
+  exists(MethodCall factory |
+    DataFlow::localExprFlow(factory, e) and
+    factory.getMethod().hasName(["asList", "of", "singletonList", "singleton"]) and
+    constantString(factory.getAnArgument()) = "*"
+  )
+}
+
 /** Holds if `c` allows every origin on a programmatic Spring `CorsConfiguration`. */
 private predicate permissiveCorsConfiguration(MethodCall c, string msg) {
-  c.getMethod().hasName(["addAllowedOrigin", "addAllowedOriginPattern"]) and
   c.getMethod()
       .getDeclaringType()
       .getSourceDeclaration()
       .hasQualifiedName("org.springframework.web.cors", "CorsConfiguration") and
-  constantString(c.getArgument(0)) = "*" and
+  (
+    c.getMethod().hasName(["addAllowedOrigin", "addAllowedOriginPattern"]) and
+    constantString(c.getArgument(0)) = "*"
+    or
+    c.getMethod().hasName(["setAllowedOrigins", "setAllowedOriginPatterns"]) and
+    wildcardCollection(c.getArgument(0))
+  ) and
   msg =
     "This CORS configuration allows every origin ('*'), so any website can make cross-origin requests and read the responses."
 }

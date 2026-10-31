@@ -1,5 +1,6 @@
 package test;
 
+import java.util.Arrays;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -41,6 +42,24 @@ public class WebConfiguration implements WebMvcConfigurer {
   public void goodConfiguredOrigins(CorsRegistry registry, String[] trustedOrigins) {
     // GOOD: origins come from configuration.
     registry.addMapping("/**").allowedOrigins(trustedOrigins);
+  }
+
+  public void goodConfiguredByHelper(CorsRegistry registry) {
+    // GOOD: the registration is configured elsewhere.
+    configureOrigins(registry.addMapping("/api/**"));
+  }
+
+  private void configureOrigins(CorsRegistration registration) {
+    registration.allowedOrigins("https://app.example.com");
+  }
+
+  public CorsConfiguration listConfiguration() {
+    CorsConfiguration config = new CorsConfiguration();
+    // BAD: every origin allowed.
+    config.setAllowedOrigins(Arrays.asList("*")); // $ Alert
+    // GOOD: specific origin pattern.
+    config.setAllowedOriginPatterns(Arrays.asList("https://*.example.com"));
+    return config;
   }
 
   public CorsConfiguration corsConfiguration() {

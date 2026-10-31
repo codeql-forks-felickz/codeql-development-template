@@ -49,6 +49,28 @@ public class SecurityFilter implements Filter {
     response.setHeader("Content-Security-Policy", "default-src 'self'; frame-ancestors *"); // $ Alert
   }
 
+  public void badSchemeWildcardFrameAncestors(HttpServletResponse response) {
+    // BAD: any HTTPS site may frame the page.
+    response.setHeader("Content-Security-Policy", "frame-ancestors https://*"); // $ Alert
+  }
+
+  public void goodStricterForOnePath(HttpServletRequest request, HttpServletResponse response) {
+    // GOOD: every path is protected; one path gets a stricter value.
+    response.setHeader("X-Frame-Options", "SAMEORIGIN");
+    if (request.getRequestURI().startsWith("/admin")) {
+      response.setHeader("X-Frame-Options", "DENY");
+    }
+  }
+
+  public void goodBothBranches(HttpServletRequest request, HttpServletResponse response) {
+    // GOOD: both branches set framing protection.
+    if (request.getRequestURI().startsWith("/embed")) {
+      response.setHeader("Content-Security-Policy", "frame-ancestors 'self' https://partner.example.com");
+    } else {
+      response.setHeader("X-Frame-Options", "DENY");
+    }
+  }
+
   public void goodUnconditional(HttpServletRequest request, HttpServletResponse response) {
     // GOOD: framing protection applied regardless of the path.
     response.setHeader("X-Frame-Options", "sameorigin");

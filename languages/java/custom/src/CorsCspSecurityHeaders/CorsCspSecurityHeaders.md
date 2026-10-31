@@ -8,13 +8,13 @@ Browsers rely on response headers to limit what other sites can do with a page:
 
 This query reports:
 
-- an enforced CSP (a raw response header, or Spring Security `contentSecurityPolicy`/`policyDirectives`) whose effective script directive (`script-src`, otherwise `default-src`) contains `'unsafe-eval'`, or contains `'unsafe-inline'` without a nonce, hash or `'strict-dynamic'` (when one of these is present, browsers ignore `'unsafe-inline'`);
+- an enforced CSP (a raw response header, or Spring Security `contentSecurityPolicy`/`policyDirectives`) whose effective script directive (the first `script-src`, otherwise the first `default-src`) contains `'unsafe-eval'`, or contains `'unsafe-inline'` without a nonce, hash or `'strict-dynamic'` (when one of these is present, browsers ignore `'unsafe-inline'`);
 - `X-Frame-Options` set to a value other than `DENY` or `SAMEORIGIN`, such as `ALLOWALL` or the obsolete `ALLOW-FROM`, which modern browsers ignore;
-- a CSP `frame-ancestors` directive that allows `*`, `http:` or `https:`;
-- framing protection that is applied only when a condition on the request path (`getRequestURI`, `getRequestURL`, `getServletPath` or `getPathInfo`) holds, so that some paths are left unprotected;
+- a CSP `frame-ancestors` directive that allows a wildcard such as `*` or `https://*`, or a bare scheme such as `https:`;
+- framing protection that is applied only when a condition on the request path (`getRequestURI`, `getRequestURL`, `getServletPath` or `getPathInfo`) holds, when no other framing protection in the same method is applied outside that branch;
 - Spring Security configuration that disables `frameOptions()` or all `headers()`;
-- a public request handler (a method annotated with a `*Mapping` annotation, or JAX-RS `@GET`/`@POST`/...) that sets no framing header while another handler in the same class does set effective framing protection;
-- a Spring `CorsRegistry.addMapping` registration that never restricts its allowed origins (Spring defaults them to `*`) or allows `*` explicitly, and `CorsConfiguration.addAllowedOrigin("*")`/`addAllowedOriginPattern("*")`.
+- a public request handler (a method annotated with a `*Mapping` annotation, or JAX-RS `@GET`/`@POST`/...) that sets no framing header while another handler in the same class does set effective framing protection. This check is skipped when there is evidence of global framing protection: a filter or interceptor (`doFilter`, `doFilterInternal`, `preHandle`, `postHandle` or `filter`) that sets it without a request-path condition, or a Spring Security configuration (which sends `X-Frame-Options: DENY` by default) that does not disable frame options;
+- a Spring `CorsRegistry.addMapping` registration that never restricts its allowed origins (Spring defaults them to `*`) or allows `*` explicitly (registrations passed to another method, returned or stored in a field are not reported as unconfigured), and `CorsConfiguration` calls that allow `*` through `addAllowedOrigin`, `addAllowedOriginPattern`, `setAllowedOrigins` or `setAllowedOriginPatterns`.
 
 Only header names and values that are compile-time constants (possibly through a local variable) are considered. `Content-Security-Policy-Report-Only` is ignored because it is not enforced.
 

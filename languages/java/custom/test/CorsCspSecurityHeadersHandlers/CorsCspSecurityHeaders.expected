@@ -1,0 +1,2 @@
+| test/ClickjackingController.java:13:33:13:51 | noFramingProtection | Request handler 'noFramingProtection' sets no X-Frame-Options or CSP frame-ancestors header, unlike handler 'cspFrameAncestorsNone' in the same class, so its response can be framed by any site (clickjacking). |
+| test/ClickjackingController.java:21:5:21:46 | add(...) | X-Frame-Options is set to 'ALLOWALL', which browsers do not enforce, so the page can be framed by any site (clickjacking). |
