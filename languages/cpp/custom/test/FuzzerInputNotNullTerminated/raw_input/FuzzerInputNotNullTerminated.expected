@@ -1,0 +1,19 @@
+edges
+| raw_input.c:16:9:16:14 | fread output argument | raw_input.c:17:19:17:23 | *image | provenance |  |
+| raw_input.c:17:19:17:23 | *image | raw_input.c:17:19:17:30 | header | provenance | Config |
+| raw_input.c:17:19:17:23 | *image | raw_input.c:17:33:17:37 | *image | provenance |  |
+| raw_input.c:17:33:17:37 | *image | raw_input.c:17:33:17:42 | data | provenance | Config |
+| raw_input.c:23:12:23:17 | buffer | raw_input.c:24:16:24:21 | buffer | provenance |  |
+nodes
+| raw_input.c:16:9:16:14 | fread output argument | semmle.label | fread output argument |
+| raw_input.c:17:19:17:23 | *image | semmle.label | *image |
+| raw_input.c:17:19:17:30 | header | semmle.label | header |
+| raw_input.c:17:33:17:37 | *image | semmle.label | *image |
+| raw_input.c:17:33:17:42 | data | semmle.label | data |
+| raw_input.c:23:12:23:17 | buffer | semmle.label | buffer |
+| raw_input.c:24:16:24:21 | buffer | semmle.label | buffer |
+subpaths
+#select
+| raw_input.c:17:19:17:30 | header | raw_input.c:16:9:16:14 | fread output argument | raw_input.c:17:19:17:30 | header | $@ is read as a null-terminated string by $@, but it is not null-terminated. | raw_input.c:16:9:16:14 | fread output argument | Input buffer | raw_input.c:17:3:17:8 | call to printf | call to printf |
+| raw_input.c:17:33:17:42 | data | raw_input.c:16:9:16:14 | fread output argument | raw_input.c:17:33:17:42 | data | $@ is read as a null-terminated string by $@, but it is not null-terminated. | raw_input.c:16:9:16:14 | fread output argument | Input buffer | raw_input.c:17:3:17:8 | call to printf | call to printf |
+| raw_input.c:24:16:24:21 | buffer | raw_input.c:23:12:23:17 | buffer | raw_input.c:24:16:24:21 | buffer | $@ is read as a null-terminated string by $@, but it is not null-terminated. | raw_input.c:23:12:23:17 | buffer | Input buffer | raw_input.c:24:3:24:8 | call to printf | call to printf |

@@ -1,0 +1,2 @@
+query: PathFunctionSmallBuffer/PathFunctionSmallBuffer.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

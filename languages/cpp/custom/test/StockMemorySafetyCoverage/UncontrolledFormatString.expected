@@ -1,0 +1,18 @@
+edges
+| test.c:20:23:20:46 | recv output argument | test.c:22:5:22:28 | ... = ... | provenance |  |
+| test.c:20:23:20:46 | recv output argument | test.c:23:10:23:13 | *data | provenance |  |
+| test.c:22:5:22:28 | ... = ... | test.c:23:10:23:13 | *data | provenance |  |
+| test.c:59:15:59:28 | fgets output argument | test.c:62:9:62:32 | ... = ... | provenance |  |
+| test.c:59:15:59:28 | fgets output argument | test.c:65:10:65:13 | *data | provenance |  |
+| test.c:62:9:62:32 | ... = ... | test.c:65:10:65:13 | *data | provenance |  |
+nodes
+| test.c:20:23:20:46 | recv output argument | semmle.label | recv output argument |
+| test.c:22:5:22:28 | ... = ... | semmle.label | ... = ... |
+| test.c:23:10:23:13 | *data | semmle.label | *data |
+| test.c:59:15:59:28 | fgets output argument | semmle.label | fgets output argument |
+| test.c:62:9:62:32 | ... = ... | semmle.label | ... = ... |
+| test.c:65:10:65:13 | *data | semmle.label | *data |
+subpaths
+#select
+| test.c:23:10:23:13 | *data | test.c:20:23:20:46 | recv output argument | test.c:23:10:23:13 | *data | The value of this argument may come from $@ and is being used as a formatting argument to printf((unnamed parameter 0)). | test.c:20:23:20:46 | recv output argument | buffer read by recv |
+| test.c:65:10:65:13 | *data | test.c:59:15:59:28 | fgets output argument | test.c:65:10:65:13 | *data | The value of this argument may come from $@ and is being used as a formatting argument to printf((unnamed parameter 0)). | test.c:59:15:59:28 | fgets output argument | string read by fgets |

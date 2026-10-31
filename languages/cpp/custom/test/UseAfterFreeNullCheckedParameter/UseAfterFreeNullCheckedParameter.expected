@@ -1,0 +1,12 @@
+edges
+| test.c:46:8:46:11 | pointer to free output argument | test.c:47:13:47:16 | data | provenance |  |
+| test.c:54:8:54:11 | pointer to free output argument | test.c:55:13:55:16 | data | provenance |  |
+nodes
+| test.c:46:8:46:11 | pointer to free output argument | semmle.label | pointer to free output argument |
+| test.c:47:13:47:16 | data | semmle.label | data |
+| test.c:54:8:54:11 | pointer to free output argument | semmle.label | pointer to free output argument |
+| test.c:55:13:55:16 | data | semmle.label | data |
+subpaths
+#select
+| test.c:47:13:47:16 | data | test.c:46:8:46:11 | pointer to free output argument | test.c:47:13:47:16 | data | Memory may have been previously freed by $@ and is dereferenced by $@ when non-null. | test.c:46:3:46:6 | call to free | call to free | test.c:10:6:10:14 | printLine | printLine |
+| test.c:55:13:55:16 | data | test.c:54:8:54:11 | pointer to free output argument | test.c:55:13:55:16 | data | Memory may have been previously freed by $@ and is dereferenced by $@ when non-null. | test.c:54:3:54:6 | call to free | call to free | test.c:17:6:17:14 | firstChar | firstChar |

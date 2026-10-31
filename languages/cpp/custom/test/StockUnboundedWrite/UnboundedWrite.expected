@@ -1,0 +1,16 @@
+edges
+| test.c:12:18:12:21 | **argv | test.c:14:22:14:28 | *access to array | provenance |  |
+| test.c:41:27:41:30 | **argv | test.c:42:8:42:11 | **argv | provenance |  |
+| test.c:42:8:42:11 | **argv | test.c:12:18:12:21 | **argv | provenance |  |
+nodes
+| test.c:12:18:12:21 | **argv | semmle.label | **argv |
+| test.c:14:22:14:28 | *access to array | semmle.label | *access to array |
+| test.c:20:15:20:18 | scanf output argument | semmle.label | scanf output argument |
+| test.c:27:16:27:29 | *call to getenv | semmle.label | *call to getenv |
+| test.c:41:27:41:30 | **argv | semmle.label | **argv |
+| test.c:42:8:42:11 | **argv | semmle.label | **argv |
+subpaths
+#select
+| test.c:14:3:14:9 | call to sprintf | test.c:41:27:41:30 | **argv | test.c:14:22:14:28 | *access to array | This 'call to sprintf' with input from $@ may overflow the destination. | test.c:41:27:41:30 | **argv | a command-line argument |
+| test.c:20:15:20:18 | name | test.c:20:15:20:18 | scanf output argument | test.c:20:15:20:18 | scanf output argument | This 'scanf string argument' with input from $@ may overflow the destination. | test.c:20:15:20:18 | scanf output argument | value read by scanf |
+| test.c:27:3:27:8 | call to strcat | test.c:27:16:27:29 | *call to getenv | test.c:27:16:27:29 | *call to getenv | This 'call to strcat' with input from $@ may overflow the destination. | test.c:27:16:27:29 | *call to getenv | an environment variable |

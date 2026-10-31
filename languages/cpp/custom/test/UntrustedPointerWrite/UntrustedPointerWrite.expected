@@ -1,0 +1,50 @@
+#select
+| test.c:32:19:32:22 | next | test.c:28:13:28:25 | fgets output argument | test.c:32:3:32:16 | linkedListPrev | This write goes through a pointer that is read from $@. | test.c:28:13:28:25 | fgets output argument | string read by fgets |
+| test.c:33:19:33:22 | prev | test.c:28:13:28:25 | fgets output argument | test.c:33:3:33:16 | linkedListNext | This write goes through a pointer that is read from $@. | test.c:28:13:28:25 | fgets output argument | string read by fgets |
+| test.c:46:19:46:22 | next | test.c:44:15:44:27 | recv output argument | test.c:46:13:46:16 | prev | This write goes through a pointer that is read from $@. | test.c:44:15:44:27 | recv output argument | buffer read by recv |
+| test.c:47:19:47:22 | prev | test.c:44:15:44:27 | recv output argument | test.c:47:13:47:16 | next | This write goes through a pointer that is read from $@. | test.c:44:15:44:27 | recv output argument | buffer read by recv |
+| test.c:55:3:55:4 | * ... | test.c:53:15:53:24 | recv output argument | test.c:55:3:55:4 | * ... | This write goes through a pointer that is read from $@. | test.c:53:15:53:24 | recv output argument | buffer read by recv |
+edges
+| test.c:28:13:28:25 | fgets output argument | test.c:30:20:30:23 | *data | provenance |  |
+| test.c:30:3:30:33 | ... = ... | test.c:32:3:32:16 | linkedListPrev | provenance |  |
+| test.c:30:20:30:23 | *data | test.c:30:25:30:28 | *list | provenance | Config |
+| test.c:30:20:30:23 | *data | test.c:31:20:31:23 | *data | provenance |  |
+| test.c:30:25:30:28 | *list | test.c:30:30:30:33 | prev | provenance | Config |
+| test.c:30:30:30:33 | prev | test.c:30:3:30:33 | ... = ... | provenance |  |
+| test.c:31:3:31:33 | ... = ... | test.c:33:3:33:16 | linkedListNext | provenance |  |
+| test.c:31:20:31:23 | *data | test.c:31:25:31:28 | *list | provenance | Config |
+| test.c:31:25:31:28 | *list | test.c:31:30:31:33 | next | provenance | Config |
+| test.c:31:30:31:33 | next | test.c:31:3:31:33 | ... = ... | provenance |  |
+| test.c:44:15:44:27 | recv output argument | test.c:46:26:46:29 | *data | provenance |  |
+| test.c:46:3:46:6 | *data | test.c:46:8:46:11 | *list | provenance | Config |
+| test.c:46:3:46:6 | *data | test.c:47:26:47:29 | *data | provenance |  |
+| test.c:46:8:46:11 | *list | test.c:46:13:46:16 | prev | provenance | Config |
+| test.c:46:26:46:29 | *data | test.c:46:3:46:6 | *data | provenance |  |
+| test.c:47:3:47:6 | *data | test.c:47:8:47:11 | *list | provenance | Config |
+| test.c:47:8:47:11 | *list | test.c:47:13:47:16 | next | provenance | Config |
+| test.c:47:26:47:29 | *data | test.c:47:3:47:6 | *data | provenance |  |
+| test.c:53:15:53:24 | recv output argument | test.c:55:3:55:4 | * ... | provenance |  |
+nodes
+| test.c:28:13:28:25 | fgets output argument | semmle.label | fgets output argument |
+| test.c:30:3:30:33 | ... = ... | semmle.label | ... = ... |
+| test.c:30:20:30:23 | *data | semmle.label | *data |
+| test.c:30:25:30:28 | *list | semmle.label | *list |
+| test.c:30:30:30:33 | prev | semmle.label | prev |
+| test.c:31:3:31:33 | ... = ... | semmle.label | ... = ... |
+| test.c:31:20:31:23 | *data | semmle.label | *data |
+| test.c:31:25:31:28 | *list | semmle.label | *list |
+| test.c:31:30:31:33 | next | semmle.label | next |
+| test.c:32:3:32:16 | linkedListPrev | semmle.label | linkedListPrev |
+| test.c:33:3:33:16 | linkedListNext | semmle.label | linkedListNext |
+| test.c:44:15:44:27 | recv output argument | semmle.label | recv output argument |
+| test.c:46:3:46:6 | *data | semmle.label | *data |
+| test.c:46:8:46:11 | *list | semmle.label | *list |
+| test.c:46:13:46:16 | prev | semmle.label | prev |
+| test.c:46:26:46:29 | *data | semmle.label | *data |
+| test.c:47:3:47:6 | *data | semmle.label | *data |
+| test.c:47:8:47:11 | *list | semmle.label | *list |
+| test.c:47:13:47:16 | next | semmle.label | next |
+| test.c:47:26:47:29 | *data | semmle.label | *data |
+| test.c:53:15:53:24 | recv output argument | semmle.label | recv output argument |
+| test.c:55:3:55:4 | * ... | semmle.label | * ... |
+subpaths

@@ -1,0 +1,10 @@
+typedef unsigned long size_t;
+typedef unsigned char uint8_t;
+void *malloc(size_t);
+void free(void *);
+void *memcpy(void *, const void *, size_t);
+int printf(const char *, ...);
+size_t strlen(const char *);
+size_t strnlen(const char *, size_t);
+char *strcpy(char *, const char *);
+int atoi(const char *);

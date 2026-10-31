@@ -1,0 +1,1 @@
+| test.c:9:3:9:6 | call to gets | 'gets' does not guard against buffer overflow. |

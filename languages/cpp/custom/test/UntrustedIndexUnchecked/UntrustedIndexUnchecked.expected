@@ -1,0 +1,37 @@
+#select
+| test.c:18:3:18:20 | access to array | test.c:15:9:15:12 | fread output argument | test.c:18:9:18:19 | ... + ... | This index into an array of 10 elements depends on $@ and is not bounds checked. | test.c:15:9:15:12 | fread output argument | string read by fread |
+| test.c:19:3:19:14 | access to array | test.c:15:9:15:12 | fread output argument | test.c:19:9:19:13 | size3 | This index into an array of 10 elements depends on $@ and is not bounds checked. | test.c:15:9:15:12 | fread output argument | string read by fread |
+| test.c:45:3:45:13 | access to array | test.c:43:9:43:10 | fread output argument | test.c:45:7:45:12 | ... % ... | This index into an array of 16 elements depends on $@ and is not bounds checked. | test.c:43:9:43:10 | fread output argument | string read by fread |
+| test.c:53:3:53:8 | access to array | test.c:51:9:51:10 | fread output argument | test.c:53:7:53:7 | i | This index into an array of 16 elements depends on $@ and is not bounds checked. | test.c:51:9:51:10 | fread output argument | string read by fread |
+| test.c:61:3:61:13 | access to array | test.c:59:9:59:10 | fread output argument | test.c:61:7:61:12 | ... % ... | This index into an array of 16 elements depends on $@ and is not bounds checked. | test.c:59:9:59:10 | fread output argument | string read by fread |
+| test.c:71:5:71:10 | access to array | test.c:67:9:67:10 | fread output argument | test.c:71:9:71:9 | i | This index into an array of 16 elements depends on $@ and is not bounds checked. | test.c:67:9:67:10 | fread output argument | string read by fread |
+| test.c:71:5:71:10 | access to array | test.c:70:11:70:12 | fread output argument | test.c:71:9:71:9 | i | This index into an array of 16 elements depends on $@ and is not bounds checked. | test.c:70:11:70:12 | fread output argument | string read by fread |
+edges
+| test.c:15:9:15:12 | fread output argument | test.c:16:15:16:17 | *img | provenance |  |
+| test.c:16:15:16:17 | *img | test.c:16:15:16:36 | ... / ... | provenance | Config |
+| test.c:16:15:16:17 | *img | test.c:16:27:16:29 | *img | provenance |  |
+| test.c:16:15:16:36 | ... / ... | test.c:18:9:18:19 | ... + ... | provenance |  |
+| test.c:16:15:16:36 | ... / ... | test.c:19:9:19:13 | size3 | provenance |  |
+| test.c:16:27:16:29 | *img | test.c:16:15:16:36 | ... / ... | provenance | Config |
+| test.c:43:9:43:10 | fread output argument | test.c:45:7:45:12 | ... % ... | provenance |  |
+| test.c:51:9:51:10 | fread output argument | test.c:53:7:53:7 | i | provenance |  |
+| test.c:59:9:59:10 | fread output argument | test.c:61:7:61:12 | ... % ... | provenance |  |
+| test.c:67:9:67:10 | fread output argument | test.c:71:9:71:9 | i | provenance |  |
+| test.c:70:11:70:12 | fread output argument | test.c:71:9:71:9 | i | provenance |  |
+nodes
+| test.c:15:9:15:12 | fread output argument | semmle.label | fread output argument |
+| test.c:16:15:16:17 | *img | semmle.label | *img |
+| test.c:16:15:16:36 | ... / ... | semmle.label | ... / ... |
+| test.c:16:27:16:29 | *img | semmle.label | *img |
+| test.c:18:9:18:19 | ... + ... | semmle.label | ... + ... |
+| test.c:19:9:19:13 | size3 | semmle.label | size3 |
+| test.c:43:9:43:10 | fread output argument | semmle.label | fread output argument |
+| test.c:45:7:45:12 | ... % ... | semmle.label | ... % ... |
+| test.c:51:9:51:10 | fread output argument | semmle.label | fread output argument |
+| test.c:53:7:53:7 | i | semmle.label | i |
+| test.c:59:9:59:10 | fread output argument | semmle.label | fread output argument |
+| test.c:61:7:61:12 | ... % ... | semmle.label | ... % ... |
+| test.c:67:9:67:10 | fread output argument | semmle.label | fread output argument |
+| test.c:70:11:70:12 | fread output argument | semmle.label | fread output argument |
+| test.c:71:9:71:9 | i | semmle.label | i |
+subpaths

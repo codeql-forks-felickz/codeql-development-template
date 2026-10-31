@@ -1,0 +1,22 @@
+edges
+| test.c:12:18:12:21 | **argv | test.c:12:18:12:21 | **argv | provenance |  |
+| test.c:37:27:37:30 | **argv | test.c:38:10:38:16 | *access to array | provenance |  |
+| test.c:41:27:41:30 | **argv | test.c:42:8:42:11 | **argv | provenance |  |
+| test.c:41:27:41:30 | **argv | test.c:46:17:46:20 | **argv | provenance |  |
+| test.c:42:8:42:11 | **argv | test.c:12:18:12:21 | **argv | provenance |  |
+| test.c:42:8:42:11 | **argv | test.c:42:8:42:11 | bof1 output argument | provenance |  |
+| test.c:42:8:42:11 | bof1 output argument | test.c:46:17:46:20 | **argv | provenance |  |
+| test.c:46:17:46:20 | **argv | test.c:37:27:37:30 | **argv | provenance |  |
+nodes
+| test.c:12:18:12:21 | **argv | semmle.label | **argv |
+| test.c:12:18:12:21 | **argv | semmle.label | **argv |
+| test.c:37:27:37:30 | **argv | semmle.label | **argv |
+| test.c:38:10:38:16 | *access to array | semmle.label | *access to array |
+| test.c:41:27:41:30 | **argv | semmle.label | **argv |
+| test.c:42:8:42:11 | **argv | semmle.label | **argv |
+| test.c:42:8:42:11 | bof1 output argument | semmle.label | bof1 output argument |
+| test.c:46:17:46:20 | **argv | semmle.label | **argv |
+subpaths
+| test.c:42:8:42:11 | **argv | test.c:12:18:12:21 | **argv | test.c:12:18:12:21 | **argv | test.c:42:8:42:11 | bof1 output argument |
+#select
+| test.c:38:10:38:16 | *access to array | test.c:41:27:41:30 | **argv | test.c:38:10:38:16 | *access to array | The value of this argument may come from $@ and is being used as a formatting argument to printf((unnamed parameter 0)). | test.c:41:27:41:30 | **argv | a command-line argument |
