@@ -46,6 +46,54 @@ function authenticateProjected(email, pass, res) {
   });
 }
 
+// Safe: the projection excludes the password field using a boolean value.
+function authenticateProjectedFalse(email, pass, res) {
+  MongoClient.connect('mongodb://db:27017/app', function (err, db) {
+    db.collection('users').findOne(
+      { email: email, password: pass },
+      { projection: { password: false } },
+      function (err, result) {
+        if (result !== null) {
+          const token = jwt.sign({ user: result }, SESSION_SECRET);
+          res.json({ token: token });
+        }
+      },
+    );
+  });
+}
+
+// Safe: an inclusion projection returns only the listed non-credential fields.
+function authenticateIncludedOnly(email, pass, res) {
+  MongoClient.connect('mongodb://db:27017/app', function (err, db) {
+    db.collection('users').findOne(
+      { email: email, password: pass },
+      { fields: { email: 1 } },
+      function (err, result) {
+        if (result !== null) {
+          const token = jwt.sign({ user: result }, SESSION_SECRET);
+          res.json({ token: token });
+        }
+      },
+    );
+  });
+}
+
+// Unsafe: an exclusion projection for another field retains the password.
+function authenticateExcludingOtherField(email, pass, res) {
+  MongoClient.connect('mongodb://db:27017/app', function (err, db) {
+    db.collection('users').findOne(
+      { email: email, password: pass },
+      { projection: { email: 0 } },
+      function (err, result) { // $ Source
+        if (result !== null) {
+          const token = jwt.sign({ user: result }, SESSION_SECRET); // $ Alert
+          res.json({ token: token });
+        }
+      },
+    );
+  });
+}
+
 // Safe: there is no indication that a `posts` document contains credentials.
 function sharePost(slug, res) {
   MongoClient.connect('mongodb://db:27017/app', function (err, db) {
@@ -55,4 +103,12 @@ function sharePost(slug, res) {
   });
 }
 
-module.exports = { authenticate, authenticateSafe, authenticateProjected, sharePost };
+module.exports = {
+  authenticate,
+  authenticateSafe,
+  authenticateProjected,
+  authenticateProjectedFalse,
+  authenticateIncludedOnly,
+  authenticateExcludingOtherField,
+  sharePost,
+};

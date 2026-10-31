@@ -41,21 +41,72 @@ DataFlow::Node databaseResult(DatabaseAccess access) {
   )
 }
 
-/** Holds if `prop` is excluded by an explicit MongoDB projection. */
+/** Holds if `prop` is excluded by a MongoDB projection object. */
+bindingset[projection, prop]
+predicate isExcludedByProjectionObject(DataFlow::ObjectLiteralNode projection, string prop) {
+  exists(DataFlow::Node projectedValue |
+    projection.hasPropertyWrite(prop, projectedValue) and
+    (
+      projectedValue.getIntValue() = 0
+      or
+      projectedValue.asExpr().(BooleanLiteral).getValue() = "false"
+    )
+  )
+  or
+  not exists(projection.getAPropertyWrite(prop)) and
+  exists(string includedProp, DataFlow::Node includedValue |
+    projection.hasPropertyWrite(includedProp, includedValue) and
+    (
+      includedValue.getIntValue() = 1
+      or
+      includedValue.asExpr().(BooleanLiteral).getValue() = "true"
+    )
+  ) and
+  not exists(string excludedProp, DataFlow::Node excludedValue |
+    projection.hasPropertyWrite(excludedProp, excludedValue) and
+    excludedProp != "_id" and
+    (
+      excludedValue.getIntValue() = 0
+      or
+      excludedValue.asExpr().(BooleanLiteral).getValue() = "false"
+    )
+  )
+}
+
+/** Holds if `prop` is excluded by an explicit projection or Mongoose selection. */
+bindingset[access, prop]
 predicate isExcludedByProjection(DatabaseAccess access, string prop) {
   exists(
-    DataFlow::CallNode call, DataFlow::Node projectionValue, DataFlow::ObjectLiteralNode projection,
-    DataFlow::Node projectedValue
+    DataFlow::CallNode call, DataFlow::Node projectionValue, DataFlow::ObjectLiteralNode projection
   |
     call = access and
     (
-      projectionValue = call.getOptionArgument(_, "projection")
+      projectionValue = call.getOptionArgument(_, ["projection", "fields"])
       or
       projectionValue = call.getArgument(1)
     ) and
     projection = projectionValue.getALocalSource() and
-    projection.hasPropertyWrite(prop, projectedValue) and
-    projectedValue.getIntValue() = 0
+    isExcludedByProjectionObject(projection, prop)
+  )
+  or
+  exists(DataFlow::CallNode selectCall, DataFlow::Node selection |
+    selectCall.getCalleeName() = "select" and
+    selection = selectCall.getArgument(0) and
+    selection.getStringValue() = "-" + prop and
+    exists(AwaitExpr await |
+      access.getAResult().getAstNode() = await and
+      await.getOperand() = selectCall.getInvokeExpr()
+    )
+  )
+}
+
+/** Holds if `node` is a Mongoose selection string, rather than a secret value. */
+predicate isMongooseCredentialExclusion(DataFlow::Node node) {
+  exists(DataFlow::MethodCallNode selectCall, string prop |
+    node = selectCall and
+    selectCall.getMethodName() = "select" and
+    isCredentialName(prop) and
+    selectCall.getArgument(0).getStringValue() = "-" + prop
   )
 }
 
@@ -105,7 +156,8 @@ module SensitiveDataInJwtPayloadConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof CredentialRecord
     or
-    source.(SensitiveNode).getClassification() = SensitiveDataClassification::password()
+    source.(SensitiveNode).getClassification() = SensitiveDataClassification::password() and
+    not isMongooseCredentialExclusion(source)
   }
 
   predicate isSink(DataFlow::Node sink) { sink = jwtPayload() }

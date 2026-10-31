@@ -74,6 +74,18 @@ async function loginWithoutNestedPassword(req, res) {
   res.json({ token: jwt.sign({ profile }, JWT_SECRET) });
 }
 
+// Safe: the Mongoose selection excludes the password field from the returned record.
+async function loginWithPasswordSelection(req, res) {
+  const user = await User.findOne({
+    email: req.body.email,
+    password: req.body.password,
+  }).select('-password');
+  if (!user) {
+    return res.sendStatus(401);
+  }
+  res.json({ token: jwt.sign({ user }, JWT_SECRET) });
+}
+
 // A credential read remains sensitive when it is accessed through a benign wrapper property.
 function signWrappedPassword(req, res) {
   const box = { value: req.body.password }; // $ Source
@@ -110,6 +122,7 @@ module.exports = {
   loginSafe,
   loginWithoutPassword,
   loginWithoutNestedPassword,
+  loginWithPasswordSelection,
   signWrappedPassword,
   signWrappedRecord,
   signRetainedPassword,

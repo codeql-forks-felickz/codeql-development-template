@@ -1,13 +1,14 @@
 #select
 | mongodb_callback.js:13:32:13:38 | payload | mongodb_callback.js:9:85:9:90 | result | mongodb_callback.js:13:32:13:38 | payload | This JWT payload includes $@, which is readable by anyone holding the token. | mongodb_callback.js:9:85:9:90 | result | sensitive data |
+| mongodb_callback.js:89:34:89:49 | { user: result } | mongodb_callback.js:87:22:87:27 | result | mongodb_callback.js:89:34:89:49 | { user: result } | This JWT payload includes $@, which is readable by anyone holding the token. | mongodb_callback.js:87:22:87:27 | result | sensitive data |
 | mongoose_await.js:16:30:16:37 | { user } | mongoose_await.js:12:16:12:60 | await U ... mail }) | mongoose_await.js:16:30:16:37 | { user } | This JWT payload includes $@, which is readable by anyone holding the token. | mongoose_await.js:12:16:12:60 | await U ... mail }) | sensitive data |
 | mongoose_await.js:24:38:24:48 | { account } | mongoose_await.js:20:19:20:63 | await U ... mail }) | mongoose_await.js:24:38:24:48 | { account } | This JWT payload includes $@, which is readable by anyone holding the token. | mongoose_await.js:20:19:20:63 | await U ... mail }) | sensitive data |
 | mongoose_await.js:32:35:32:42 | { user } | mongoose_await.js:28:16:28:60 | await U ... mail }) | mongoose_await.js:32:35:32:42 | { user } | This JWT payload includes $@, which is readable by anyone holding the token. | mongoose_await.js:28:16:28:60 | await U ... mail }) | sensitive data |
 | mongoose_await.js:41:26:41:60 | { email ... sword } | mongoose_await.js:40:20:40:36 | req.body.password | mongoose_await.js:41:26:41:60 | { email ... sword } | This JWT payload includes $@, which is readable by anyone holding the token. | mongoose_await.js:40:20:40:36 | req.body.password | sensitive data |
 | mongoose_await.js:41:26:41:60 | { email ... sword } | mongoose_await.js:41:51:41:58 | password | mongoose_await.js:41:26:41:60 | { email ... sword } | This JWT payload includes $@, which is readable by anyone holding the token. | mongoose_await.js:41:51:41:58 | password | sensitive data |
-| mongoose_await.js:80:30:80:49 | { claim: box.value } | mongoose_await.js:79:24:79:40 | req.body.password | mongoose_await.js:80:30:80:49 | { claim: box.value } | This JWT payload includes $@, which is readable by anyone holding the token. | mongoose_await.js:79:24:79:40 | req.body.password | sensitive data |
-| mongoose_await.js:90:30:90:49 | { claim: box.value } | mongoose_await.js:85:16:85:60 | await U ... mail }) | mongoose_await.js:90:30:90:49 | { claim: box.value } | This JWT payload includes $@, which is readable by anyone holding the token. | mongoose_await.js:85:16:85:60 | await U ... mail }) | sensitive data |
-| mongoose_await.js:97:30:97:36 | profile | mongoose_await.js:95:55:95:71 | req.body.password | mongoose_await.js:97:30:97:36 | profile | This JWT payload includes $@, which is readable by anyone holding the token. | mongoose_await.js:95:55:95:71 | req.body.password | sensitive data |
+| mongoose_await.js:92:30:92:49 | { claim: box.value } | mongoose_await.js:91:24:91:40 | req.body.password | mongoose_await.js:92:30:92:49 | { claim: box.value } | This JWT payload includes $@, which is readable by anyone holding the token. | mongoose_await.js:91:24:91:40 | req.body.password | sensitive data |
+| mongoose_await.js:102:30:102:49 | { claim: box.value } | mongoose_await.js:97:16:97:60 | await U ... mail }) | mongoose_await.js:102:30:102:49 | { claim: box.value } | This JWT payload includes $@, which is readable by anyone holding the token. | mongoose_await.js:97:16:97:60 | await U ... mail }) | sensitive data |
+| mongoose_await.js:109:30:109:36 | profile | mongoose_await.js:107:55:107:71 | req.body.password | mongoose_await.js:109:30:109:36 | profile | This JWT payload includes $@, which is readable by anyone holding the token. | mongoose_await.js:107:55:107:71 | req.body.password | sensitive data |
 edges
 | mongodb_callback.js:9:85:9:90 | result | mongodb_callback.js:11:22:11:27 | result | provenance |  |
 | mongodb_callback.js:11:15:11:18 | user | mongodb_callback.js:12:27:12:30 | user | provenance |  |
@@ -15,6 +16,8 @@ edges
 | mongodb_callback.js:12:15:12:21 | payload [user] | mongodb_callback.js:13:32:13:38 | payload | provenance |  |
 | mongodb_callback.js:12:25:12:32 | { user } [user] | mongodb_callback.js:12:15:12:21 | payload [user] | provenance |  |
 | mongodb_callback.js:12:27:12:30 | user | mongodb_callback.js:12:25:12:32 | { user } [user] | provenance |  |
+| mongodb_callback.js:87:22:87:27 | result | mongodb_callback.js:89:42:89:47 | result | provenance |  |
+| mongodb_callback.js:89:42:89:47 | result | mongodb_callback.js:89:34:89:49 | { user: result } | provenance |  |
 | mongoose_await.js:12:9:12:12 | user | mongoose_await.js:16:32:16:35 | user | provenance |  |
 | mongoose_await.js:12:16:12:60 | await U ... mail }) | mongoose_await.js:12:9:12:12 | user | provenance |  |
 | mongoose_await.js:16:32:16:35 | user | mongoose_await.js:16:30:16:37 | { user } | provenance |  |
@@ -27,20 +30,20 @@ edges
 | mongoose_await.js:40:9:40:16 | password | mongoose_await.js:41:51:41:58 | password | provenance |  |
 | mongoose_await.js:40:20:40:36 | req.body.password | mongoose_await.js:40:9:40:16 | password | provenance |  |
 | mongoose_await.js:41:51:41:58 | password | mongoose_await.js:41:26:41:60 | { email ... sword } | provenance |  |
-| mongoose_await.js:79:9:79:11 | box [value] | mongoose_await.js:80:39:80:41 | box [value] | provenance |  |
-| mongoose_await.js:79:15:79:42 | { value ... sword } [value] | mongoose_await.js:79:9:79:11 | box [value] | provenance |  |
-| mongoose_await.js:79:24:79:40 | req.body.password | mongoose_await.js:79:15:79:42 | { value ... sword } [value] | provenance |  |
-| mongoose_await.js:80:39:80:41 | box [value] | mongoose_await.js:80:39:80:47 | box.value | provenance |  |
-| mongoose_await.js:80:39:80:47 | box.value | mongoose_await.js:80:30:80:49 | { claim: box.value } | provenance |  |
-| mongoose_await.js:85:9:85:12 | user | mongoose_await.js:89:24:89:27 | user | provenance |  |
-| mongoose_await.js:85:16:85:60 | await U ... mail }) | mongoose_await.js:85:9:85:12 | user | provenance |  |
-| mongoose_await.js:89:9:89:11 | box [value] | mongoose_await.js:90:39:90:41 | box [value] | provenance |  |
-| mongoose_await.js:89:15:89:29 | { value: user } [value] | mongoose_await.js:89:9:89:11 | box [value] | provenance |  |
-| mongoose_await.js:89:24:89:27 | user | mongoose_await.js:89:15:89:29 | { value: user } [value] | provenance |  |
-| mongoose_await.js:90:39:90:41 | box [value] | mongoose_await.js:90:39:90:47 | box.value | provenance |  |
-| mongoose_await.js:90:39:90:47 | box.value | mongoose_await.js:90:30:90:49 | { claim: box.value } | provenance |  |
-| mongoose_await.js:95:55:95:71 | req.body.password | mongoose_await.js:96:24:96:30 | profile | provenance | Config |
-| mongoose_await.js:96:24:96:30 | profile | mongoose_await.js:97:30:97:36 | profile | provenance |  |
+| mongoose_await.js:91:9:91:11 | box [value] | mongoose_await.js:92:39:92:41 | box [value] | provenance |  |
+| mongoose_await.js:91:15:91:42 | { value ... sword } [value] | mongoose_await.js:91:9:91:11 | box [value] | provenance |  |
+| mongoose_await.js:91:24:91:40 | req.body.password | mongoose_await.js:91:15:91:42 | { value ... sword } [value] | provenance |  |
+| mongoose_await.js:92:39:92:41 | box [value] | mongoose_await.js:92:39:92:47 | box.value | provenance |  |
+| mongoose_await.js:92:39:92:47 | box.value | mongoose_await.js:92:30:92:49 | { claim: box.value } | provenance |  |
+| mongoose_await.js:97:9:97:12 | user | mongoose_await.js:101:24:101:27 | user | provenance |  |
+| mongoose_await.js:97:16:97:60 | await U ... mail }) | mongoose_await.js:97:9:97:12 | user | provenance |  |
+| mongoose_await.js:101:9:101:11 | box [value] | mongoose_await.js:102:39:102:41 | box [value] | provenance |  |
+| mongoose_await.js:101:15:101:29 | { value: user } [value] | mongoose_await.js:101:9:101:11 | box [value] | provenance |  |
+| mongoose_await.js:101:24:101:27 | user | mongoose_await.js:101:15:101:29 | { value: user } [value] | provenance |  |
+| mongoose_await.js:102:39:102:41 | box [value] | mongoose_await.js:102:39:102:47 | box.value | provenance |  |
+| mongoose_await.js:102:39:102:47 | box.value | mongoose_await.js:102:30:102:49 | { claim: box.value } | provenance |  |
+| mongoose_await.js:107:55:107:71 | req.body.password | mongoose_await.js:108:24:108:30 | profile | provenance | Config |
+| mongoose_await.js:108:24:108:30 | profile | mongoose_await.js:109:30:109:36 | profile | provenance |  |
 nodes
 | mongodb_callback.js:9:85:9:90 | result | semmle.label | result |
 | mongodb_callback.js:11:15:11:18 | user | semmle.label | user |
@@ -49,6 +52,9 @@ nodes
 | mongodb_callback.js:12:25:12:32 | { user } [user] | semmle.label | { user } [user] |
 | mongodb_callback.js:12:27:12:30 | user | semmle.label | user |
 | mongodb_callback.js:13:32:13:38 | payload | semmle.label | payload |
+| mongodb_callback.js:87:22:87:27 | result | semmle.label | result |
+| mongodb_callback.js:89:34:89:49 | { user: result } | semmle.label | { user: result } |
+| mongodb_callback.js:89:42:89:47 | result | semmle.label | result |
 | mongoose_await.js:12:9:12:12 | user | semmle.label | user |
 | mongoose_await.js:12:16:12:60 | await U ... mail }) | semmle.label | await U ... mail }) |
 | mongoose_await.js:16:30:16:37 | { user } | semmle.label | { user } |
@@ -65,21 +71,21 @@ nodes
 | mongoose_await.js:40:20:40:36 | req.body.password | semmle.label | req.body.password |
 | mongoose_await.js:41:26:41:60 | { email ... sword } | semmle.label | { email ... sword } |
 | mongoose_await.js:41:51:41:58 | password | semmle.label | password |
-| mongoose_await.js:79:9:79:11 | box [value] | semmle.label | box [value] |
-| mongoose_await.js:79:15:79:42 | { value ... sword } [value] | semmle.label | { value ... sword } [value] |
-| mongoose_await.js:79:24:79:40 | req.body.password | semmle.label | req.body.password |
-| mongoose_await.js:80:30:80:49 | { claim: box.value } | semmle.label | { claim: box.value } |
-| mongoose_await.js:80:39:80:41 | box [value] | semmle.label | box [value] |
-| mongoose_await.js:80:39:80:47 | box.value | semmle.label | box.value |
-| mongoose_await.js:85:9:85:12 | user | semmle.label | user |
-| mongoose_await.js:85:16:85:60 | await U ... mail }) | semmle.label | await U ... mail }) |
-| mongoose_await.js:89:9:89:11 | box [value] | semmle.label | box [value] |
-| mongoose_await.js:89:15:89:29 | { value: user } [value] | semmle.label | { value: user } [value] |
-| mongoose_await.js:89:24:89:27 | user | semmle.label | user |
-| mongoose_await.js:90:30:90:49 | { claim: box.value } | semmle.label | { claim: box.value } |
-| mongoose_await.js:90:39:90:41 | box [value] | semmle.label | box [value] |
-| mongoose_await.js:90:39:90:47 | box.value | semmle.label | box.value |
-| mongoose_await.js:95:55:95:71 | req.body.password | semmle.label | req.body.password |
-| mongoose_await.js:96:24:96:30 | profile | semmle.label | profile |
-| mongoose_await.js:97:30:97:36 | profile | semmle.label | profile |
+| mongoose_await.js:91:9:91:11 | box [value] | semmle.label | box [value] |
+| mongoose_await.js:91:15:91:42 | { value ... sword } [value] | semmle.label | { value ... sword } [value] |
+| mongoose_await.js:91:24:91:40 | req.body.password | semmle.label | req.body.password |
+| mongoose_await.js:92:30:92:49 | { claim: box.value } | semmle.label | { claim: box.value } |
+| mongoose_await.js:92:39:92:41 | box [value] | semmle.label | box [value] |
+| mongoose_await.js:92:39:92:47 | box.value | semmle.label | box.value |
+| mongoose_await.js:97:9:97:12 | user | semmle.label | user |
+| mongoose_await.js:97:16:97:60 | await U ... mail }) | semmle.label | await U ... mail }) |
+| mongoose_await.js:101:9:101:11 | box [value] | semmle.label | box [value] |
+| mongoose_await.js:101:15:101:29 | { value: user } [value] | semmle.label | { value: user } [value] |
+| mongoose_await.js:101:24:101:27 | user | semmle.label | user |
+| mongoose_await.js:102:30:102:49 | { claim: box.value } | semmle.label | { claim: box.value } |
+| mongoose_await.js:102:39:102:41 | box [value] | semmle.label | box [value] |
+| mongoose_await.js:102:39:102:47 | box.value | semmle.label | box.value |
+| mongoose_await.js:107:55:107:71 | req.body.password | semmle.label | req.body.password |
+| mongoose_await.js:108:24:108:30 | profile | semmle.label | profile |
+| mongoose_await.js:109:30:109:36 | profile | semmle.label | profile |
 subpaths
