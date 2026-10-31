@@ -1,0 +1,2 @@
+query: HardcodedInitializationVector/HardcodedInitializationVector.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

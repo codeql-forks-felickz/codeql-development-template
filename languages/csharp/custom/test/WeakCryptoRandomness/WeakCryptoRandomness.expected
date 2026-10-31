@@ -1,80 +1,88 @@
 #select
-| WeakCryptoRandomness.cs:49:35:49:150 | ... + ... | WeakCryptoRandomness.cs:49:35:49:46 | access to property Now : DateTime | WeakCryptoRandomness.cs:49:35:49:150 | ... + ... | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:49:35:49:46 | access to property Now | the system clock |
-| WeakCryptoRandomness.cs:49:35:49:150 | ... + ... | WeakCryptoRandomness.cs:49:66:49:77 | access to property Now : DateTime | WeakCryptoRandomness.cs:49:35:49:150 | ... + ... | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:49:66:49:77 | access to property Now | the system clock |
-| WeakCryptoRandomness.cs:49:35:49:150 | ... + ... | WeakCryptoRandomness.cs:49:99:49:110 | access to property Now : DateTime | WeakCryptoRandomness.cs:49:35:49:150 | ... + ... | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:49:99:49:110 | access to property Now | the system clock |
-| WeakCryptoRandomness.cs:55:48:55:68 | call to method ToString | WeakCryptoRandomness.cs:55:48:55:57 | call to method Next : Int32 | WeakCryptoRandomness.cs:55:48:55:68 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:55:48:55:57 | call to method Next | System.Random |
-| WeakCryptoRandomness.cs:61:46:61:50 | access to local variable value | WeakCryptoRandomness.cs:60:28:60:42 | access to property UtcNow : DateTime | WeakCryptoRandomness.cs:61:46:61:50 | access to local variable value | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:60:28:60:42 | access to property UtcNow | the system clock |
-| WeakCryptoRandomness.cs:66:30:66:60 | call to method ToString | WeakCryptoRandomness.cs:66:30:66:49 | call to method Next : Int32 | WeakCryptoRandomness.cs:66:30:66:60 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:66:30:66:49 | call to method Next | System.Random |
-| WeakCryptoRandomness.cs:73:35:73:69 | call to method ToString | WeakCryptoRandomness.cs:73:35:73:55 | access to property TickCount : Int32 | WeakCryptoRandomness.cs:73:35:73:69 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:73:35:73:55 | access to property TickCount | the system clock |
-| WeakCryptoRandomness.cs:80:33:80:44 | ... + ... | WeakCryptoRandomness.cs:79:24:79:35 | access to property Now : DateTime | WeakCryptoRandomness.cs:80:33:80:44 | ... + ... | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:79:24:79:35 | access to property Now | the system clock |
-| WeakCryptoRandomness.cs:88:19:88:43 | call to method ToString | WeakCryptoRandomness.cs:88:19:88:32 | call to method NextDouble : Double | WeakCryptoRandomness.cs:88:19:88:43 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:88:19:88:32 | call to method NextDouble | System.Random |
-| WeakCryptoRandomness.cs:132:33:132:121 | ... ? ... : ... | WeakCryptoRandomness.cs:131:42:131:56 | access to property UtcNow : DateTime | WeakCryptoRandomness.cs:132:33:132:121 | ... ? ... : ... | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:131:42:131:56 | access to property UtcNow | the system clock |
-| WeakCryptoRandomness.cs:137:36:137:56 | call to method ToString | WeakCryptoRandomness.cs:137:36:137:45 | call to method Next : Int32 | WeakCryptoRandomness.cs:137:36:137:56 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:137:36:137:45 | call to method Next | System.Random |
-| WeakCryptoRandomness.cs:138:35:138:55 | call to method ToString | WeakCryptoRandomness.cs:138:35:138:44 | call to method Next : Int32 | WeakCryptoRandomness.cs:138:35:138:55 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:138:35:138:44 | call to method Next | System.Random |
+| WeakCryptoRandomness.cs:50:35:50:150 | ... + ... | WeakCryptoRandomness.cs:50:35:50:46 | access to property Now : DateTime | WeakCryptoRandomness.cs:50:35:50:150 | ... + ... | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:50:35:50:46 | access to property Now | the system clock |
+| WeakCryptoRandomness.cs:50:35:50:150 | ... + ... | WeakCryptoRandomness.cs:50:66:50:77 | access to property Now : DateTime | WeakCryptoRandomness.cs:50:35:50:150 | ... + ... | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:50:66:50:77 | access to property Now | the system clock |
+| WeakCryptoRandomness.cs:50:35:50:150 | ... + ... | WeakCryptoRandomness.cs:50:99:50:110 | access to property Now : DateTime | WeakCryptoRandomness.cs:50:35:50:150 | ... + ... | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:50:99:50:110 | access to property Now | the system clock |
+| WeakCryptoRandomness.cs:56:48:56:68 | call to method ToString | WeakCryptoRandomness.cs:56:48:56:57 | call to method Next : Int32 | WeakCryptoRandomness.cs:56:48:56:68 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:56:48:56:57 | call to method Next | System.Random |
+| WeakCryptoRandomness.cs:62:46:62:50 | access to local variable value | WeakCryptoRandomness.cs:61:28:61:42 | access to property UtcNow : DateTime | WeakCryptoRandomness.cs:62:46:62:50 | access to local variable value | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:61:28:61:42 | access to property UtcNow | the system clock |
+| WeakCryptoRandomness.cs:67:30:67:60 | call to method ToString | WeakCryptoRandomness.cs:67:30:67:49 | call to method Next : Int32 | WeakCryptoRandomness.cs:67:30:67:60 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:67:30:67:49 | call to method Next | System.Random |
+| WeakCryptoRandomness.cs:74:35:74:69 | call to method ToString | WeakCryptoRandomness.cs:74:35:74:55 | access to property TickCount : Int32 | WeakCryptoRandomness.cs:74:35:74:69 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:74:35:74:55 | access to property TickCount | the system clock |
+| WeakCryptoRandomness.cs:81:33:81:44 | ... + ... | WeakCryptoRandomness.cs:80:24:80:35 | access to property Now : DateTime | WeakCryptoRandomness.cs:81:33:81:44 | ... + ... | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:80:24:80:35 | access to property Now | the system clock |
+| WeakCryptoRandomness.cs:89:19:89:43 | call to method ToString | WeakCryptoRandomness.cs:89:19:89:32 | call to method NextDouble : Double | WeakCryptoRandomness.cs:89:19:89:43 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:89:19:89:32 | call to method NextDouble | System.Random |
+| WeakCryptoRandomness.cs:133:33:133:121 | ... ? ... : ... | WeakCryptoRandomness.cs:132:42:132:56 | access to property UtcNow : DateTime | WeakCryptoRandomness.cs:133:33:133:121 | ... ? ... : ... | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:132:42:132:56 | access to property UtcNow | the system clock |
+| WeakCryptoRandomness.cs:138:36:138:56 | call to method ToString | WeakCryptoRandomness.cs:138:36:138:45 | call to method Next : Int32 | WeakCryptoRandomness.cs:138:36:138:56 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:138:36:138:45 | call to method Next | System.Random |
+| WeakCryptoRandomness.cs:139:35:139:55 | call to method ToString | WeakCryptoRandomness.cs:139:35:139:44 | call to method Next : Int32 | WeakCryptoRandomness.cs:139:35:139:55 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:139:35:139:44 | call to method Next | System.Random |
+| WeakCryptoRandomness.cs:145:33:145:56 | call to method ToString | WeakCryptoRandomness.cs:145:33:145:45 | call to method Next : Int32 | WeakCryptoRandomness.cs:145:33:145:56 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:145:33:145:45 | call to method Next | System.Random |
+| WeakCryptoRandomness.cs:146:35:146:58 | call to method ToString | WeakCryptoRandomness.cs:146:35:146:47 | call to method Next : Int32 | WeakCryptoRandomness.cs:146:35:146:58 | call to method ToString | This security-sensitive value is derived from a predictable value from $@. | WeakCryptoRandomness.cs:146:35:146:47 | call to method Next | System.Random |
 edges
-| WeakCryptoRandomness.cs:49:35:49:46 | access to property Now : DateTime | WeakCryptoRandomness.cs:49:35:49:51 | access to property Hour : Int32 | provenance | Config |
-| WeakCryptoRandomness.cs:49:35:49:51 | access to property Hour : Int32 | WeakCryptoRandomness.cs:49:35:49:62 | call to method ToString : String | provenance | Config |
-| WeakCryptoRandomness.cs:49:35:49:62 | call to method ToString : String | WeakCryptoRandomness.cs:49:35:49:150 | ... + ... | provenance |  |
-| WeakCryptoRandomness.cs:49:66:49:77 | access to property Now : DateTime | WeakCryptoRandomness.cs:49:66:49:84 | access to property Minute : Int32 | provenance | Config |
-| WeakCryptoRandomness.cs:49:66:49:84 | access to property Minute : Int32 | WeakCryptoRandomness.cs:49:66:49:95 | call to method ToString : String | provenance | Config |
-| WeakCryptoRandomness.cs:49:66:49:95 | call to method ToString : String | WeakCryptoRandomness.cs:49:35:49:150 | ... + ... | provenance |  |
-| WeakCryptoRandomness.cs:49:99:49:110 | access to property Now : DateTime | WeakCryptoRandomness.cs:49:99:49:117 | access to property Second : Int32 | provenance | Config |
-| WeakCryptoRandomness.cs:49:99:49:117 | access to property Second : Int32 | WeakCryptoRandomness.cs:49:99:49:128 | call to method ToString : String | provenance | Config |
-| WeakCryptoRandomness.cs:49:99:49:128 | call to method ToString : String | WeakCryptoRandomness.cs:49:35:49:150 | ... + ... | provenance |  |
-| WeakCryptoRandomness.cs:55:48:55:57 | call to method Next : Int32 | WeakCryptoRandomness.cs:55:48:55:68 | call to method ToString | provenance | Config |
-| WeakCryptoRandomness.cs:60:20:60:24 | access to local variable value : String | WeakCryptoRandomness.cs:61:46:61:50 | access to local variable value | provenance |  |
-| WeakCryptoRandomness.cs:60:28:60:42 | access to property UtcNow : DateTime | WeakCryptoRandomness.cs:60:28:60:48 | access to property Ticks : Int64 | provenance | Config |
-| WeakCryptoRandomness.cs:60:28:60:48 | access to property Ticks : Int64 | WeakCryptoRandomness.cs:60:28:60:59 | call to method ToString : String | provenance | Config |
-| WeakCryptoRandomness.cs:60:28:60:59 | call to method ToString : String | WeakCryptoRandomness.cs:60:20:60:24 | access to local variable value : String | provenance |  |
-| WeakCryptoRandomness.cs:66:30:66:49 | call to method Next : Int32 | WeakCryptoRandomness.cs:66:30:66:60 | call to method ToString | provenance | Config |
-| WeakCryptoRandomness.cs:73:35:73:55 | access to property TickCount : Int32 | WeakCryptoRandomness.cs:73:35:73:69 | call to method ToString | provenance | Config |
-| WeakCryptoRandomness.cs:79:17:79:20 | access to local variable seed : Int32 | WeakCryptoRandomness.cs:80:41:80:44 | (...) ... : Int32 | provenance |  |
-| WeakCryptoRandomness.cs:79:24:79:35 | access to property Now : DateTime | WeakCryptoRandomness.cs:79:24:79:47 | access to property Millisecond : Int32 | provenance | Config |
-| WeakCryptoRandomness.cs:79:24:79:47 | access to property Millisecond : Int32 | WeakCryptoRandomness.cs:79:17:79:20 | access to local variable seed : Int32 | provenance |  |
-| WeakCryptoRandomness.cs:80:41:80:44 | (...) ... : Int32 | WeakCryptoRandomness.cs:80:33:80:44 | ... + ... | provenance |  |
-| WeakCryptoRandomness.cs:88:19:88:32 | call to method NextDouble : Double | WeakCryptoRandomness.cs:88:19:88:43 | call to method ToString | provenance | Config |
-| WeakCryptoRandomness.cs:131:20:131:38 | access to local variable predictableFallback : String | WeakCryptoRandomness.cs:132:33:132:121 | ... ? ... : ... | provenance |  |
-| WeakCryptoRandomness.cs:131:42:131:56 | access to property UtcNow : DateTime | WeakCryptoRandomness.cs:131:42:131:62 | access to property Ticks : Int64 | provenance | Config |
-| WeakCryptoRandomness.cs:131:42:131:62 | access to property Ticks : Int64 | WeakCryptoRandomness.cs:131:42:131:73 | call to method ToString : String | provenance | Config |
-| WeakCryptoRandomness.cs:131:42:131:73 | call to method ToString : String | WeakCryptoRandomness.cs:131:20:131:38 | access to local variable predictableFallback : String | provenance |  |
-| WeakCryptoRandomness.cs:137:36:137:45 | call to method Next : Int32 | WeakCryptoRandomness.cs:137:36:137:56 | call to method ToString | provenance | Config |
-| WeakCryptoRandomness.cs:138:35:138:44 | call to method Next : Int32 | WeakCryptoRandomness.cs:138:35:138:55 | call to method ToString | provenance | Config |
+| WeakCryptoRandomness.cs:50:35:50:46 | access to property Now : DateTime | WeakCryptoRandomness.cs:50:35:50:51 | access to property Hour : Int32 | provenance | Config |
+| WeakCryptoRandomness.cs:50:35:50:51 | access to property Hour : Int32 | WeakCryptoRandomness.cs:50:35:50:62 | call to method ToString : String | provenance | Config |
+| WeakCryptoRandomness.cs:50:35:50:62 | call to method ToString : String | WeakCryptoRandomness.cs:50:35:50:150 | ... + ... | provenance |  |
+| WeakCryptoRandomness.cs:50:66:50:77 | access to property Now : DateTime | WeakCryptoRandomness.cs:50:66:50:84 | access to property Minute : Int32 | provenance | Config |
+| WeakCryptoRandomness.cs:50:66:50:84 | access to property Minute : Int32 | WeakCryptoRandomness.cs:50:66:50:95 | call to method ToString : String | provenance | Config |
+| WeakCryptoRandomness.cs:50:66:50:95 | call to method ToString : String | WeakCryptoRandomness.cs:50:35:50:150 | ... + ... | provenance |  |
+| WeakCryptoRandomness.cs:50:99:50:110 | access to property Now : DateTime | WeakCryptoRandomness.cs:50:99:50:117 | access to property Second : Int32 | provenance | Config |
+| WeakCryptoRandomness.cs:50:99:50:117 | access to property Second : Int32 | WeakCryptoRandomness.cs:50:99:50:128 | call to method ToString : String | provenance | Config |
+| WeakCryptoRandomness.cs:50:99:50:128 | call to method ToString : String | WeakCryptoRandomness.cs:50:35:50:150 | ... + ... | provenance |  |
+| WeakCryptoRandomness.cs:56:48:56:57 | call to method Next : Int32 | WeakCryptoRandomness.cs:56:48:56:68 | call to method ToString | provenance | Config |
+| WeakCryptoRandomness.cs:61:20:61:24 | access to local variable value : String | WeakCryptoRandomness.cs:62:46:62:50 | access to local variable value | provenance |  |
+| WeakCryptoRandomness.cs:61:28:61:42 | access to property UtcNow : DateTime | WeakCryptoRandomness.cs:61:28:61:48 | access to property Ticks : Int64 | provenance | Config |
+| WeakCryptoRandomness.cs:61:28:61:48 | access to property Ticks : Int64 | WeakCryptoRandomness.cs:61:28:61:59 | call to method ToString : String | provenance | Config |
+| WeakCryptoRandomness.cs:61:28:61:59 | call to method ToString : String | WeakCryptoRandomness.cs:61:20:61:24 | access to local variable value : String | provenance |  |
+| WeakCryptoRandomness.cs:67:30:67:49 | call to method Next : Int32 | WeakCryptoRandomness.cs:67:30:67:60 | call to method ToString | provenance | Config |
+| WeakCryptoRandomness.cs:74:35:74:55 | access to property TickCount : Int32 | WeakCryptoRandomness.cs:74:35:74:69 | call to method ToString | provenance | Config |
+| WeakCryptoRandomness.cs:80:17:80:20 | access to local variable seed : Int32 | WeakCryptoRandomness.cs:81:41:81:44 | (...) ... : Int32 | provenance |  |
+| WeakCryptoRandomness.cs:80:24:80:35 | access to property Now : DateTime | WeakCryptoRandomness.cs:80:24:80:47 | access to property Millisecond : Int32 | provenance | Config |
+| WeakCryptoRandomness.cs:80:24:80:47 | access to property Millisecond : Int32 | WeakCryptoRandomness.cs:80:17:80:20 | access to local variable seed : Int32 | provenance |  |
+| WeakCryptoRandomness.cs:81:41:81:44 | (...) ... : Int32 | WeakCryptoRandomness.cs:81:33:81:44 | ... + ... | provenance |  |
+| WeakCryptoRandomness.cs:89:19:89:32 | call to method NextDouble : Double | WeakCryptoRandomness.cs:89:19:89:43 | call to method ToString | provenance | Config |
+| WeakCryptoRandomness.cs:132:20:132:38 | access to local variable predictableFallback : String | WeakCryptoRandomness.cs:133:33:133:121 | ... ? ... : ... | provenance |  |
+| WeakCryptoRandomness.cs:132:42:132:56 | access to property UtcNow : DateTime | WeakCryptoRandomness.cs:132:42:132:62 | access to property Ticks : Int64 | provenance | Config |
+| WeakCryptoRandomness.cs:132:42:132:62 | access to property Ticks : Int64 | WeakCryptoRandomness.cs:132:42:132:73 | call to method ToString : String | provenance | Config |
+| WeakCryptoRandomness.cs:132:42:132:73 | call to method ToString : String | WeakCryptoRandomness.cs:132:20:132:38 | access to local variable predictableFallback : String | provenance |  |
+| WeakCryptoRandomness.cs:138:36:138:45 | call to method Next : Int32 | WeakCryptoRandomness.cs:138:36:138:56 | call to method ToString | provenance | Config |
+| WeakCryptoRandomness.cs:139:35:139:44 | call to method Next : Int32 | WeakCryptoRandomness.cs:139:35:139:55 | call to method ToString | provenance | Config |
+| WeakCryptoRandomness.cs:145:33:145:45 | call to method Next : Int32 | WeakCryptoRandomness.cs:145:33:145:56 | call to method ToString | provenance | Config |
+| WeakCryptoRandomness.cs:146:35:146:47 | call to method Next : Int32 | WeakCryptoRandomness.cs:146:35:146:58 | call to method ToString | provenance | Config |
 nodes
-| WeakCryptoRandomness.cs:49:35:49:46 | access to property Now : DateTime | semmle.label | access to property Now : DateTime |
-| WeakCryptoRandomness.cs:49:35:49:51 | access to property Hour : Int32 | semmle.label | access to property Hour : Int32 |
-| WeakCryptoRandomness.cs:49:35:49:62 | call to method ToString : String | semmle.label | call to method ToString : String |
-| WeakCryptoRandomness.cs:49:35:49:150 | ... + ... | semmle.label | ... + ... |
-| WeakCryptoRandomness.cs:49:66:49:77 | access to property Now : DateTime | semmle.label | access to property Now : DateTime |
-| WeakCryptoRandomness.cs:49:66:49:84 | access to property Minute : Int32 | semmle.label | access to property Minute : Int32 |
-| WeakCryptoRandomness.cs:49:66:49:95 | call to method ToString : String | semmle.label | call to method ToString : String |
-| WeakCryptoRandomness.cs:49:99:49:110 | access to property Now : DateTime | semmle.label | access to property Now : DateTime |
-| WeakCryptoRandomness.cs:49:99:49:117 | access to property Second : Int32 | semmle.label | access to property Second : Int32 |
-| WeakCryptoRandomness.cs:49:99:49:128 | call to method ToString : String | semmle.label | call to method ToString : String |
-| WeakCryptoRandomness.cs:55:48:55:57 | call to method Next : Int32 | semmle.label | call to method Next : Int32 |
-| WeakCryptoRandomness.cs:55:48:55:68 | call to method ToString | semmle.label | call to method ToString |
-| WeakCryptoRandomness.cs:60:20:60:24 | access to local variable value : String | semmle.label | access to local variable value : String |
-| WeakCryptoRandomness.cs:60:28:60:42 | access to property UtcNow : DateTime | semmle.label | access to property UtcNow : DateTime |
-| WeakCryptoRandomness.cs:60:28:60:48 | access to property Ticks : Int64 | semmle.label | access to property Ticks : Int64 |
-| WeakCryptoRandomness.cs:60:28:60:59 | call to method ToString : String | semmle.label | call to method ToString : String |
-| WeakCryptoRandomness.cs:61:46:61:50 | access to local variable value | semmle.label | access to local variable value |
-| WeakCryptoRandomness.cs:66:30:66:49 | call to method Next : Int32 | semmle.label | call to method Next : Int32 |
-| WeakCryptoRandomness.cs:66:30:66:60 | call to method ToString | semmle.label | call to method ToString |
-| WeakCryptoRandomness.cs:73:35:73:55 | access to property TickCount : Int32 | semmle.label | access to property TickCount : Int32 |
-| WeakCryptoRandomness.cs:73:35:73:69 | call to method ToString | semmle.label | call to method ToString |
-| WeakCryptoRandomness.cs:79:17:79:20 | access to local variable seed : Int32 | semmle.label | access to local variable seed : Int32 |
-| WeakCryptoRandomness.cs:79:24:79:35 | access to property Now : DateTime | semmle.label | access to property Now : DateTime |
-| WeakCryptoRandomness.cs:79:24:79:47 | access to property Millisecond : Int32 | semmle.label | access to property Millisecond : Int32 |
-| WeakCryptoRandomness.cs:80:33:80:44 | ... + ... | semmle.label | ... + ... |
-| WeakCryptoRandomness.cs:80:41:80:44 | (...) ... : Int32 | semmle.label | (...) ... : Int32 |
-| WeakCryptoRandomness.cs:88:19:88:32 | call to method NextDouble : Double | semmle.label | call to method NextDouble : Double |
-| WeakCryptoRandomness.cs:88:19:88:43 | call to method ToString | semmle.label | call to method ToString |
-| WeakCryptoRandomness.cs:131:20:131:38 | access to local variable predictableFallback : String | semmle.label | access to local variable predictableFallback : String |
-| WeakCryptoRandomness.cs:131:42:131:56 | access to property UtcNow : DateTime | semmle.label | access to property UtcNow : DateTime |
-| WeakCryptoRandomness.cs:131:42:131:62 | access to property Ticks : Int64 | semmle.label | access to property Ticks : Int64 |
-| WeakCryptoRandomness.cs:131:42:131:73 | call to method ToString : String | semmle.label | call to method ToString : String |
-| WeakCryptoRandomness.cs:132:33:132:121 | ... ? ... : ... | semmle.label | ... ? ... : ... |
-| WeakCryptoRandomness.cs:137:36:137:45 | call to method Next : Int32 | semmle.label | call to method Next : Int32 |
-| WeakCryptoRandomness.cs:137:36:137:56 | call to method ToString | semmle.label | call to method ToString |
-| WeakCryptoRandomness.cs:138:35:138:44 | call to method Next : Int32 | semmle.label | call to method Next : Int32 |
-| WeakCryptoRandomness.cs:138:35:138:55 | call to method ToString | semmle.label | call to method ToString |
+| WeakCryptoRandomness.cs:50:35:50:46 | access to property Now : DateTime | semmle.label | access to property Now : DateTime |
+| WeakCryptoRandomness.cs:50:35:50:51 | access to property Hour : Int32 | semmle.label | access to property Hour : Int32 |
+| WeakCryptoRandomness.cs:50:35:50:62 | call to method ToString : String | semmle.label | call to method ToString : String |
+| WeakCryptoRandomness.cs:50:35:50:150 | ... + ... | semmle.label | ... + ... |
+| WeakCryptoRandomness.cs:50:66:50:77 | access to property Now : DateTime | semmle.label | access to property Now : DateTime |
+| WeakCryptoRandomness.cs:50:66:50:84 | access to property Minute : Int32 | semmle.label | access to property Minute : Int32 |
+| WeakCryptoRandomness.cs:50:66:50:95 | call to method ToString : String | semmle.label | call to method ToString : String |
+| WeakCryptoRandomness.cs:50:99:50:110 | access to property Now : DateTime | semmle.label | access to property Now : DateTime |
+| WeakCryptoRandomness.cs:50:99:50:117 | access to property Second : Int32 | semmle.label | access to property Second : Int32 |
+| WeakCryptoRandomness.cs:50:99:50:128 | call to method ToString : String | semmle.label | call to method ToString : String |
+| WeakCryptoRandomness.cs:56:48:56:57 | call to method Next : Int32 | semmle.label | call to method Next : Int32 |
+| WeakCryptoRandomness.cs:56:48:56:68 | call to method ToString | semmle.label | call to method ToString |
+| WeakCryptoRandomness.cs:61:20:61:24 | access to local variable value : String | semmle.label | access to local variable value : String |
+| WeakCryptoRandomness.cs:61:28:61:42 | access to property UtcNow : DateTime | semmle.label | access to property UtcNow : DateTime |
+| WeakCryptoRandomness.cs:61:28:61:48 | access to property Ticks : Int64 | semmle.label | access to property Ticks : Int64 |
+| WeakCryptoRandomness.cs:61:28:61:59 | call to method ToString : String | semmle.label | call to method ToString : String |
+| WeakCryptoRandomness.cs:62:46:62:50 | access to local variable value | semmle.label | access to local variable value |
+| WeakCryptoRandomness.cs:67:30:67:49 | call to method Next : Int32 | semmle.label | call to method Next : Int32 |
+| WeakCryptoRandomness.cs:67:30:67:60 | call to method ToString | semmle.label | call to method ToString |
+| WeakCryptoRandomness.cs:74:35:74:55 | access to property TickCount : Int32 | semmle.label | access to property TickCount : Int32 |
+| WeakCryptoRandomness.cs:74:35:74:69 | call to method ToString | semmle.label | call to method ToString |
+| WeakCryptoRandomness.cs:80:17:80:20 | access to local variable seed : Int32 | semmle.label | access to local variable seed : Int32 |
+| WeakCryptoRandomness.cs:80:24:80:35 | access to property Now : DateTime | semmle.label | access to property Now : DateTime |
+| WeakCryptoRandomness.cs:80:24:80:47 | access to property Millisecond : Int32 | semmle.label | access to property Millisecond : Int32 |
+| WeakCryptoRandomness.cs:81:33:81:44 | ... + ... | semmle.label | ... + ... |
+| WeakCryptoRandomness.cs:81:41:81:44 | (...) ... : Int32 | semmle.label | (...) ... : Int32 |
+| WeakCryptoRandomness.cs:89:19:89:32 | call to method NextDouble : Double | semmle.label | call to method NextDouble : Double |
+| WeakCryptoRandomness.cs:89:19:89:43 | call to method ToString | semmle.label | call to method ToString |
+| WeakCryptoRandomness.cs:132:20:132:38 | access to local variable predictableFallback : String | semmle.label | access to local variable predictableFallback : String |
+| WeakCryptoRandomness.cs:132:42:132:56 | access to property UtcNow : DateTime | semmle.label | access to property UtcNow : DateTime |
+| WeakCryptoRandomness.cs:132:42:132:62 | access to property Ticks : Int64 | semmle.label | access to property Ticks : Int64 |
+| WeakCryptoRandomness.cs:132:42:132:73 | call to method ToString : String | semmle.label | call to method ToString : String |
+| WeakCryptoRandomness.cs:133:33:133:121 | ... ? ... : ... | semmle.label | ... ? ... : ... |
+| WeakCryptoRandomness.cs:138:36:138:45 | call to method Next : Int32 | semmle.label | call to method Next : Int32 |
+| WeakCryptoRandomness.cs:138:36:138:56 | call to method ToString | semmle.label | call to method ToString |
+| WeakCryptoRandomness.cs:139:35:139:44 | call to method Next : Int32 | semmle.label | call to method Next : Int32 |
+| WeakCryptoRandomness.cs:139:35:139:55 | call to method ToString | semmle.label | call to method ToString |
+| WeakCryptoRandomness.cs:145:33:145:45 | call to method Next : Int32 | semmle.label | call to method Next : Int32 |
+| WeakCryptoRandomness.cs:145:33:145:56 | call to method ToString | semmle.label | call to method ToString |
+| WeakCryptoRandomness.cs:146:35:146:47 | call to method Next : Int32 | semmle.label | call to method Next : Int32 |
+| WeakCryptoRandomness.cs:146:35:146:58 | call to method ToString | semmle.label | call to method ToString |
 subpaths

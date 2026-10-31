@@ -32,6 +32,7 @@ namespace WeakCryptoRandomnessTests
         public string ResetToken { get; set; }
         public string SecurityToken { get; set; }
         public string SecurityCode { get; set; }
+        public string PasswordSalt { get; set; }
         public string TokenUri { get; set; }
         public DateTime TokenExpiry { get; set; }
     }
@@ -136,6 +137,24 @@ namespace WeakCryptoRandomnessTests
         {
             ticket.SecurityToken = rnd.Next().ToString(); // $ Alert
             ticket.SecurityCode = rnd.Next().ToString(); // $ Alert
+        }
+
+        public void SeededRandomAndSalt(Ticket ticket)
+        {
+            var seeded = new Random(12345);
+            ticket.ResetToken = seeded.Next().ToString(); // $ Alert
+            ticket.PasswordSalt = seeded.Next().ToString(); // $ Alert
+        }
+
+        public void NonSecurityRandom(Ticket ticket)
+        {
+            var seeded = new Random(12345);
+            int displayOrder = seeded.Next();
+        }
+
+        public void SecurePasswordSalt(Ticket ticket)
+        {
+            ticket.PasswordSalt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
         }
 
         public HttpCookie LastVisitCookie()
