@@ -9,3 +9,7 @@ category: newQuery
 ## Known limitations
 
 The Angular `inject()` models use member access paths and cannot constrain the token passed to `inject()`. A custom service exposing the same members may therefore also be modeled. No such false positive is covered by the current fixtures; add token-aware modeling if one is observed and the model can be integrated with the stock queries.
+
+The `response` threat-model tests cover API values rendered directly and values decoded from a JWT. They do not follow responses through application service methods obtained with `inject()` when the request is hidden in another service. The query also does not model an uploaded SVG written to a public assets directory and served in a later request; this crosses a filesystem and request boundary.
+
+HTML escaping alone does not neutralize a `javascript:` URL. The stock `js/xss` query suppresses the tested flow when an HTML-escaped value is assigned to an `href`, so that URL-context case remains unsupported rather than being broadened with a context-insensitive model.

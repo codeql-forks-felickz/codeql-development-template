@@ -1,6 +1,10 @@
 #select
 | angular/play.component.ts:22:26:22:46 | message ... sername | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | angular/play.component.ts:22:26:22:46 | message ... sername | Cross-site scripting vulnerability due to $@. | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | user-provided value |
 | angular/play.component.ts:24:29:24:43 | message.content | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | angular/play.component.ts:24:29:24:43 | message.content | Cross-site scripting vulnerability due to $@. | angular/play.component.ts:9:12:9:54 | this.ht ... sages') | user-provided value |
+| angular/trust-bypass-inputs.component.ts:21:56:21:74 | account.lastLoginIp | angular/trust-bypass-inputs.component.ts:20:55:20:62 | response | angular/trust-bypass-inputs.component.ts:21:56:21:74 | account.lastLoginIp | Cross-site scripting vulnerability due to $@. | angular/trust-bypass-inputs.component.ts:20:55:20:62 | response | user-provided value |
+| angular/trust-bypass-inputs.component.ts:22:56:22:91 | jwtDeco ... LoginIp | angular/trust-bypass-inputs.component.ts:20:55:20:62 | response | angular/trust-bypass-inputs.component.ts:22:56:22:91 | jwtDeco ... LoginIp | Cross-site scripting vulnerability due to $@. | angular/trust-bypass-inputs.component.ts:20:55:20:62 | response | user-provided value |
+| angular/trust-bypass-inputs.component.ts:25:37:25:51 | account.website | angular/trust-bypass-inputs.component.ts:20:55:20:62 | response | angular/trust-bypass-inputs.component.ts:25:37:25:51 | account.website | Cross-site scripting vulnerability due to $@. | angular/trust-bypass-inputs.component.ts:20:55:20:62 | response | user-provided value |
+| jquery/autocomplete.js:4:30:4:97 | '<li ti ... '</li>' | jquery/autocomplete.js:2:37:2:47 | suggestions | jquery/autocomplete.js:4:30:4:97 | '<li ti ... '</li>' | Cross-site scripting vulnerability due to $@. | jquery/autocomplete.js:2:37:2:47 | suggestions | user-provided value |
 | jquery/stored-comments.js:11:27:11:33 | comment | jquery/stored-comments.js:7:60:7:65 | result | jquery/stored-comments.js:11:27:11:33 | comment | Cross-site scripting vulnerability due to $@. | jquery/stored-comments.js:7:60:7:65 | result | user-provided value |
 | react-query/ProfileHeader.tsx:25:47:25:60 | bio ? bio : "" | react-query/ProfileHeader.tsx:5:15:5:54 | await f ... }/bio`) | react-query/ProfileHeader.tsx:25:47:25:60 | bio ? bio : "" | Cross-site scripting vulnerability due to $@. | react-query/ProfileHeader.tsx:5:15:5:54 | await f ... }/bio`) | user-provided value |
 | react/MessageView.jsx:27:49:27:124 | base64. ... cript") | react/MessageView.jsx:14:23:14:30 | response | react/MessageView.jsx:27:49:27:124 | base64. ... cript") | Cross-site scripting vulnerability due to $@. | react/MessageView.jsx:14:23:14:30 | response | user-provided value |
@@ -15,6 +19,25 @@ edges
 | angular/play.component.ts:20:36:20:42 | message | angular/play.component.ts:24:29:24:35 | message | provenance |  |
 | angular/play.component.ts:22:26:22:32 | message | angular/play.component.ts:22:26:22:46 | message ... sername | provenance |  |
 | angular/play.component.ts:24:29:24:35 | message | angular/play.component.ts:24:29:24:43 | message.content | provenance |  |
+| angular/trust-bypass-inputs.component.ts:20:11:20:17 | account | angular/trust-bypass-inputs.component.ts:21:56:21:62 | account | provenance |  |
+| angular/trust-bypass-inputs.component.ts:20:11:20:17 | account | angular/trust-bypass-inputs.component.ts:22:66:22:72 | account | provenance |  |
+| angular/trust-bypass-inputs.component.ts:20:11:20:17 | account | angular/trust-bypass-inputs.component.ts:25:37:25:43 | account | provenance |  |
+| angular/trust-bypass-inputs.component.ts:20:21:20:83 | await f ... json()) | angular/trust-bypass-inputs.component.ts:20:11:20:17 | account | provenance |  |
+| angular/trust-bypass-inputs.component.ts:20:27:20:83 | fetch(' ... json()) [PromiseValue] | angular/trust-bypass-inputs.component.ts:20:21:20:83 | await f ... json()) | provenance |  |
+| angular/trust-bypass-inputs.component.ts:20:55:20:62 | response | angular/trust-bypass-inputs.component.ts:20:68:20:75 | response | provenance |  |
+| angular/trust-bypass-inputs.component.ts:20:68:20:75 | response | angular/trust-bypass-inputs.component.ts:20:68:20:82 | response.json() | provenance |  |
+| angular/trust-bypass-inputs.component.ts:20:68:20:82 | response.json() | angular/trust-bypass-inputs.component.ts:20:27:20:83 | fetch(' ... json()) [PromiseValue] | provenance |  |
+| angular/trust-bypass-inputs.component.ts:21:56:21:62 | account | angular/trust-bypass-inputs.component.ts:21:56:21:74 | account.lastLoginIp | provenance |  |
+| angular/trust-bypass-inputs.component.ts:22:56:22:79 | jwtDeco ... .token) | angular/trust-bypass-inputs.component.ts:22:56:22:91 | jwtDeco ... LoginIp | provenance |  |
+| angular/trust-bypass-inputs.component.ts:22:66:22:72 | account | angular/trust-bypass-inputs.component.ts:22:56:22:79 | jwtDeco ... .token) | provenance |  |
+| angular/trust-bypass-inputs.component.ts:25:37:25:43 | account | angular/trust-bypass-inputs.component.ts:25:37:25:51 | account.website | provenance |  |
+| jquery/autocomplete.js:2:37:2:47 | suggestions | jquery/autocomplete.js:3:3:3:13 | suggestions | provenance |  |
+| jquery/autocomplete.js:3:3:3:13 | suggestions | jquery/autocomplete.js:3:33:3:42 | suggestion | provenance |  |
+| jquery/autocomplete.js:3:33:3:42 | suggestion | jquery/autocomplete.js:4:46:4:55 | suggestion | provenance |  |
+| jquery/autocomplete.js:3:33:3:42 | suggestion | jquery/autocomplete.js:4:72:4:81 | suggestion | provenance |  |
+| jquery/autocomplete.js:4:46:4:55 | suggestion | jquery/autocomplete.js:4:46:4:61 | suggestion.label | provenance |  |
+| jquery/autocomplete.js:4:46:4:61 | suggestion.label | jquery/autocomplete.js:4:30:4:97 | '<li ti ... '</li>' | provenance |  |
+| jquery/autocomplete.js:4:72:4:81 | suggestion | jquery/autocomplete.js:4:30:4:97 | '<li ti ... '</li>' | provenance |  |
 | jquery/stored-comments.js:7:60:7:65 | result | jquery/stored-comments.js:9:44:9:49 | result | provenance |  |
 | jquery/stored-comments.js:7:60:7:65 | result | jquery/stored-comments.js:10:46:10:51 | result | provenance |  |
 | jquery/stored-comments.js:9:13:9:19 | comment | jquery/stored-comments.js:10:19:10:25 | comment | provenance |  |
@@ -57,6 +80,26 @@ nodes
 | angular/play.component.ts:22:26:22:46 | message ... sername | semmle.label | message ... sername |
 | angular/play.component.ts:24:29:24:35 | message | semmle.label | message |
 | angular/play.component.ts:24:29:24:43 | message.content | semmle.label | message.content |
+| angular/trust-bypass-inputs.component.ts:20:11:20:17 | account | semmle.label | account |
+| angular/trust-bypass-inputs.component.ts:20:21:20:83 | await f ... json()) | semmle.label | await f ... json()) |
+| angular/trust-bypass-inputs.component.ts:20:27:20:83 | fetch(' ... json()) [PromiseValue] | semmle.label | fetch(' ... json()) [PromiseValue] |
+| angular/trust-bypass-inputs.component.ts:20:55:20:62 | response | semmle.label | response |
+| angular/trust-bypass-inputs.component.ts:20:68:20:75 | response | semmle.label | response |
+| angular/trust-bypass-inputs.component.ts:20:68:20:82 | response.json() | semmle.label | response.json() |
+| angular/trust-bypass-inputs.component.ts:21:56:21:62 | account | semmle.label | account |
+| angular/trust-bypass-inputs.component.ts:21:56:21:74 | account.lastLoginIp | semmle.label | account.lastLoginIp |
+| angular/trust-bypass-inputs.component.ts:22:56:22:79 | jwtDeco ... .token) | semmle.label | jwtDeco ... .token) |
+| angular/trust-bypass-inputs.component.ts:22:56:22:91 | jwtDeco ... LoginIp | semmle.label | jwtDeco ... LoginIp |
+| angular/trust-bypass-inputs.component.ts:22:66:22:72 | account | semmle.label | account |
+| angular/trust-bypass-inputs.component.ts:25:37:25:43 | account | semmle.label | account |
+| angular/trust-bypass-inputs.component.ts:25:37:25:51 | account.website | semmle.label | account.website |
+| jquery/autocomplete.js:2:37:2:47 | suggestions | semmle.label | suggestions |
+| jquery/autocomplete.js:3:3:3:13 | suggestions | semmle.label | suggestions |
+| jquery/autocomplete.js:3:33:3:42 | suggestion | semmle.label | suggestion |
+| jquery/autocomplete.js:4:30:4:97 | '<li ti ... '</li>' | semmle.label | '<li ti ... '</li>' |
+| jquery/autocomplete.js:4:46:4:55 | suggestion | semmle.label | suggestion |
+| jquery/autocomplete.js:4:46:4:61 | suggestion.label | semmle.label | suggestion.label |
+| jquery/autocomplete.js:4:72:4:81 | suggestion | semmle.label | suggestion |
 | jquery/stored-comments.js:7:60:7:65 | result | semmle.label | result |
 | jquery/stored-comments.js:9:13:9:19 | comment | semmle.label | comment |
 | jquery/stored-comments.js:9:23:9:58 | html.re ... ].user) | semmle.label | html.re ... ].user) |
