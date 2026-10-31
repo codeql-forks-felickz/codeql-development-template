@@ -18,7 +18,6 @@ import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
 import codeql.swift.controlflow.BasicBlocks
 import codeql.swift.controlflow.ControlFlowGraph
-private import codeql.swift.generated.ParentChild
 import UnvalidatedUrlSchemeParameterFlow::PathGraph
 
 /**
@@ -119,37 +118,44 @@ private Expr stripped(Expr e) {
 }
 
 /**
- * Holds if `check` is a call or comparison, appearing in a branch condition,
- * that directly inspects the value of `v` (for example `isValid(v)`,
- * `allowed.contains(v)`, `v.allSatisfy(...)` or `v == "expected"`).
+ * Holds if `check` is a `Bool`-valued call or an equality comparison that
+ * directly inspects the value of `v` (for example `isValid(v)`,
+ * `allowed.contains(v)`, `v.allSatisfy(...)` or `v == "expected"`), and `v` has
+ * passed the check when `check` evaluates to `passing`.
  */
-private predicate validatesVariable(Expr check, VarDecl v) {
-  exists(Expr operand |
-    operand.(DeclRefExpr).getDecl() = v and
+private predicate validatesVariable(Expr check, VarDecl v, boolean passing) {
+  exists(Expr operand | operand.(DeclRefExpr).getDecl() = v |
+    check.getType().getName() = "Bool" and
     (
       operand = stripped(check.(CallExpr).getAnArgument().getExpr())
       or
       operand = stripped(check.(CallExpr).getQualifier())
+    ) and
+    passing = true
+    or
+    operand = stripped(check.(BinaryExpr).getAnOperand()) and
+    (
+      check.(BinaryExpr).getStaticTarget().getName() = ["==(_:_:)", "~=(_:_:)"] and
+      passing = true
       or
-      operand = stripped(check.(BinaryExpr).getAnOperand()) and
-      check.(BinaryExpr).getStaticTarget().getName() = ["==(_:_:)", "!=(_:_:)", "~=(_:_:)"]
+      check.(BinaryExpr).getStaticTarget().getName() = "!=(_:_:)" and
+      passing = false
     )
   )
 }
 
 /**
- * A read of a variable whose value has been validated by an enclosing
- * `if`/`guard`/`while` condition.
+ * A read of a variable that is only reachable after the variable has passed a
+ * validation check in an `if`/`guard`/`while` condition.
  */
 class ValidatedVariableBarrier extends DataFlow::Node {
   ValidatedVariableBarrier() {
-    exists(ConditionBlock bb, Expr cond, Expr check, VarDecl v, boolean branch |
-      cond = bb.getLastNode().getNode().asAstNode() and
-      cond = getImmediateParent*(check) and
-      validatesVariable(check, v) and
+    exists(ConditionBlock bb, Expr check, VarDecl v, boolean passing |
+      check = bb.getLastNode().getNode().asAstNode() and
+      validatesVariable(check, v, passing) and
       this.asExpr().(DeclRefExpr).getDecl() = v and
       bb.edgeDominates(this.getCfgNode().getBasicBlock(),
-        any(BooleanSuccessor s | s.getValue() = branch))
+        any(BooleanSuccessor s | s.getValue() = passing))
     )
   }
 }

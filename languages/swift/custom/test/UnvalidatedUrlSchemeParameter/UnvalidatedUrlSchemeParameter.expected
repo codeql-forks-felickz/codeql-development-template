@@ -6,6 +6,8 @@
 | UnvalidatedUrlSchemeParameter/test.swift:187:27:187:27 | body | UnvalidatedUrlSchemeParameter/test.swift:180:42:180:52 | url | UnvalidatedUrlSchemeParameter/test.swift:187:27:187:27 | body | This value from a $@ reaches a mail composer without being validated. | UnvalidatedUrlSchemeParameter/test.swift:180:42:180:52 | url | custom URL scheme parameter |
 | UnvalidatedUrlSchemeParameter/test.swift:198:53:198:53 | query | UnvalidatedUrlSchemeParameter/test.swift:195:32:195:81 | URLContexts | UnvalidatedUrlSchemeParameter/test.swift:198:53:198:53 | query | This value from a $@ reaches an alert without being validated. | UnvalidatedUrlSchemeParameter/test.swift:195:32:195:81 | URLContexts | custom URL scheme parameter |
 | UnvalidatedUrlSchemeParameter/test.swift:205:33:205:41 | .url | UnvalidatedUrlSchemeParameter/test.swift:203:71:203:106 | connectionOptions | UnvalidatedUrlSchemeParameter/test.swift:205:33:205:41 | .url | This value from a $@ reaches a URL opened by the app without being validated. | UnvalidatedUrlSchemeParameter/test.swift:203:71:203:106 | connectionOptions | custom URL scheme parameter |
+| UnvalidatedUrlSchemeParameter/test.swift:218:63:218:63 | number | UnvalidatedUrlSchemeParameter/test.swift:212:42:212:52 | url | UnvalidatedUrlSchemeParameter/test.swift:218:63:218:63 | number | This value from a $@ reaches an alert without being validated. | UnvalidatedUrlSchemeParameter/test.swift:212:42:212:52 | url | custom URL scheme parameter |
+| UnvalidatedUrlSchemeParameter/test.swift:222:33:222:33 | url | UnvalidatedUrlSchemeParameter/test.swift:212:42:212:52 | url | UnvalidatedUrlSchemeParameter/test.swift:222:33:222:33 | url | This value from a $@ reaches a URL opened by the app without being validated. | UnvalidatedUrlSchemeParameter/test.swift:212:42:212:52 | url | custom URL scheme parameter |
 edges
 | UnvalidatedUrlSchemeParameter/test.swift:13:7:13:7 | self | file://:0:0:0:0 | self | provenance |  |
 | UnvalidatedUrlSchemeParameter/test.swift:95:43:95:52 | message | UnvalidatedUrlSchemeParameter/test.swift:96:68:96:68 | message | provenance |  |
@@ -41,6 +43,19 @@ edges
 | UnvalidatedUrlSchemeParameter/test.swift:196:9:196:9 | context | UnvalidatedUrlSchemeParameter/test.swift:198:53:198:53 | query | provenance |  |
 | UnvalidatedUrlSchemeParameter/test.swift:196:20:196:20 | URLContexts | UnvalidatedUrlSchemeParameter/test.swift:196:9:196:9 | context | provenance | Config |
 | UnvalidatedUrlSchemeParameter/test.swift:203:71:203:106 | connectionOptions | UnvalidatedUrlSchemeParameter/test.swift:205:33:205:41 | .url | provenance |  |
+| UnvalidatedUrlSchemeParameter/test.swift:212:42:212:52 | url | UnvalidatedUrlSchemeParameter/test.swift:213:42:213:42 | url | provenance |  |
+| UnvalidatedUrlSchemeParameter/test.swift:213:11:213:15 | let ...? [some:0] | UnvalidatedUrlSchemeParameter/test.swift:213:15:213:15 | comps | provenance |  |
+| UnvalidatedUrlSchemeParameter/test.swift:213:15:213:15 | comps | UnvalidatedUrlSchemeParameter/test.swift:216:18:216:18 | comps | provenance |  |
+| UnvalidatedUrlSchemeParameter/test.swift:213:23:213:77 | call to URLComponents.init(url:resolvingAgainstBaseURL:) | UnvalidatedUrlSchemeParameter/test.swift:213:23:213:77 | call to URLComponents.init(url:resolvingAgainstBaseURL:) [some:0] | provenance |  |
+| UnvalidatedUrlSchemeParameter/test.swift:213:23:213:77 | call to URLComponents.init(url:resolvingAgainstBaseURL:) | UnvalidatedUrlSchemeParameter/test.swift:216:18:216:18 | comps | provenance |  |
+| UnvalidatedUrlSchemeParameter/test.swift:213:23:213:77 | call to URLComponents.init(url:resolvingAgainstBaseURL:) [some:0] | UnvalidatedUrlSchemeParameter/test.swift:213:11:213:15 | let ...? [some:0] | provenance |  |
+| UnvalidatedUrlSchemeParameter/test.swift:213:42:213:42 | url | UnvalidatedUrlSchemeParameter/test.swift:213:23:213:77 | call to URLComponents.init(url:resolvingAgainstBaseURL:) | provenance | Config |
+| UnvalidatedUrlSchemeParameter/test.swift:213:42:213:42 | url | UnvalidatedUrlSchemeParameter/test.swift:222:33:222:33 | url | provenance |  |
+| UnvalidatedUrlSchemeParameter/test.swift:216:18:216:18 | comps | UnvalidatedUrlSchemeParameter/test.swift:216:18:216:24 | .queryItems | provenance | Config |
+| UnvalidatedUrlSchemeParameter/test.swift:216:18:216:24 | .queryItems | UnvalidatedUrlSchemeParameter/test.swift:216:18:216:41 | ...? | provenance |  |
+| UnvalidatedUrlSchemeParameter/test.swift:216:18:216:41 | ...? | UnvalidatedUrlSchemeParameter/test.swift:13:7:13:7 | self | provenance |  |
+| UnvalidatedUrlSchemeParameter/test.swift:216:18:216:41 | ...? | UnvalidatedUrlSchemeParameter/test.swift:216:18:216:43 | .value | provenance | Config |
+| UnvalidatedUrlSchemeParameter/test.swift:216:18:216:43 | .value | UnvalidatedUrlSchemeParameter/test.swift:218:63:218:63 | number | provenance |  |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | .value | provenance | Config |
 nodes
 | UnvalidatedUrlSchemeParameter/test.swift:13:7:13:7 | self | semmle.label | self |
@@ -79,9 +94,22 @@ nodes
 | UnvalidatedUrlSchemeParameter/test.swift:198:53:198:53 | query | semmle.label | query |
 | UnvalidatedUrlSchemeParameter/test.swift:203:71:203:106 | connectionOptions | semmle.label | connectionOptions |
 | UnvalidatedUrlSchemeParameter/test.swift:205:33:205:41 | .url | semmle.label | .url |
+| UnvalidatedUrlSchemeParameter/test.swift:212:42:212:52 | url | semmle.label | url |
+| UnvalidatedUrlSchemeParameter/test.swift:213:11:213:15 | let ...? [some:0] | semmle.label | let ...? [some:0] |
+| UnvalidatedUrlSchemeParameter/test.swift:213:15:213:15 | comps | semmle.label | comps |
+| UnvalidatedUrlSchemeParameter/test.swift:213:23:213:77 | call to URLComponents.init(url:resolvingAgainstBaseURL:) | semmle.label | call to URLComponents.init(url:resolvingAgainstBaseURL:) |
+| UnvalidatedUrlSchemeParameter/test.swift:213:23:213:77 | call to URLComponents.init(url:resolvingAgainstBaseURL:) [some:0] | semmle.label | call to URLComponents.init(url:resolvingAgainstBaseURL:) [some:0] |
+| UnvalidatedUrlSchemeParameter/test.swift:213:42:213:42 | url | semmle.label | url |
+| UnvalidatedUrlSchemeParameter/test.swift:216:18:216:18 | comps | semmle.label | comps |
+| UnvalidatedUrlSchemeParameter/test.swift:216:18:216:24 | .queryItems | semmle.label | .queryItems |
+| UnvalidatedUrlSchemeParameter/test.swift:216:18:216:41 | ...? | semmle.label | ...? |
+| UnvalidatedUrlSchemeParameter/test.swift:216:18:216:43 | .value | semmle.label | .value |
+| UnvalidatedUrlSchemeParameter/test.swift:218:63:218:63 | number | semmle.label | number |
+| UnvalidatedUrlSchemeParameter/test.swift:222:33:222:33 | url | semmle.label | url |
 | file://:0:0:0:0 | .value | semmle.label | .value |
 | file://:0:0:0:0 | self | semmle.label | self |
 subpaths
 | UnvalidatedUrlSchemeParameter/test.swift:128:18:128:29 | ...? | UnvalidatedUrlSchemeParameter/test.swift:13:7:13:7 | self | file://:0:0:0:0 | .value | UnvalidatedUrlSchemeParameter/test.swift:128:18:128:31 | .value |
 | UnvalidatedUrlSchemeParameter/test.swift:129:16:129:26 | ...? | UnvalidatedUrlSchemeParameter/test.swift:13:7:13:7 | self | file://:0:0:0:0 | .value | UnvalidatedUrlSchemeParameter/test.swift:129:16:129:28 | .value |
 | UnvalidatedUrlSchemeParameter/test.swift:183:16:183:26 | ...? | UnvalidatedUrlSchemeParameter/test.swift:13:7:13:7 | self | file://:0:0:0:0 | .value | UnvalidatedUrlSchemeParameter/test.swift:183:16:183:28 | .value |
+| UnvalidatedUrlSchemeParameter/test.swift:216:18:216:41 | ...? | UnvalidatedUrlSchemeParameter/test.swift:13:7:13:7 | self | file://:0:0:0:0 | .value | UnvalidatedUrlSchemeParameter/test.swift:216:18:216:43 | .value |

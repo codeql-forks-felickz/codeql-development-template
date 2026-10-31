@@ -206,3 +206,23 @@ class SceneDelegate1 : UIResponder, UISceneDelegate {
     }
   }
 }
+
+class AppDelegate6 : UIResponder, UIApplicationDelegate {
+  // BAD: parsing the URL is not validation, and the failed-validation branch uses the value.
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool { // $ Source
+    guard let comps = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+      return false
+    }
+    let number = comps.queryItems?.first?.value ?? ""
+    guard isValidPhoneNumber(number) else {
+      _ = UIAlertController(title: "Invalid number", message: number, preferredStyle: .alert) // $ Alert
+      return false
+    }
+    if number != "112" {
+      UIApplication.shared.open(url) // $ Alert
+    } else {
+      _ = UIAlertController(title: "Calling", message: number, preferredStyle: .alert)
+    }
+    return true
+  }
+}
