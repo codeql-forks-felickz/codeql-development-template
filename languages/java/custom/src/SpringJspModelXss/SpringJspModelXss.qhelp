@@ -25,7 +25,13 @@ example with <code>&lt;c:out&gt;</code> or <code>fn:escapeXml</code>).
 <code>redirect:</code> view name or directly returns a <code>ModelAndView</code> with that
 view name. Response-body helper writes are excluded when the helper's model parameter is
 passed directly from every calling response-body handler. Computed view names and model
-forwarding through aliases or indirect helper chains are not inferred.
+forwarding through aliases or indirect helper chains are not inferred. This query is limited
+to Spring MVC model attributes rendered by JSP views; it does not analyze direct JSP
+references to servlet request values, arbitrary HTML response bodies, client-side DOM or
+WebView rendering, or logging and HTTP response-header sinks. Use the applicable query for
+those sinks. For example, <code>java/xss</code> models supported raw HTML response sinks,
+with stored-data flows depending on the enabled threat model. Custom response wrappers,
+XML DOM source propagation, and Android QR/WebView sources are also outside this query.
 </p>
 </overview>
 
