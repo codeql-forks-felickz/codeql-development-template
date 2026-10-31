@@ -1,0 +1,2 @@
+query: UnprotectedDynamicBroadcastReceiver/UnprotectedDynamicBroadcastReceiver.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

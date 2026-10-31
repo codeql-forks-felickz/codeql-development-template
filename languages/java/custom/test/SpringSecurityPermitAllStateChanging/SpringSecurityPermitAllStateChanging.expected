@@ -1,0 +1,2 @@
+| WebSecurityConfig.java:12:51:12:57 | "/mail" | Unauthenticated POST requests to '/mail' are permitted by $@. | WebSecurityConfig.java:8:13:13:28 | permitAll(...) | permitAll() |
+| WebSecurityConfig.java:14:49:14:63 | "/api/users/**" | Unauthenticated DELETE requests to '/api/users/**' are permitted by $@. | WebSecurityConfig.java:8:13:15:28 | permitAll(...) | permitAll() |

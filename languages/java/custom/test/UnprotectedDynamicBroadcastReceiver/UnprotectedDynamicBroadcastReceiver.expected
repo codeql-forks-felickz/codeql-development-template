@@ -1,0 +1,5 @@
+| ProductListActivity.kt:9:9:9:62 | registerReceiver(...) | This broadcast receiver is registered for action 'com.example.action.PRODUCT_DETAIL' without a broadcast permission or RECEIVER_NOT_EXPORTED, so any application can send it intents. |
+| Receivers.java:18:5:18:38 | registerReceiver(...) | This broadcast receiver is registered for action 'com.example.action.PRODUCT_DETAIL' without a broadcast permission or RECEIVER_NOT_EXPORTED, so any application can send it intents. |
+| Receivers.java:25:5:25:65 | registerReceiver(...) | This broadcast receiver is registered for action 'com.example.action.REFRESH' without a broadcast permission or RECEIVER_NOT_EXPORTED, so any application can send it intents. |
+| Receivers.java:29:5:29:87 | registerReceiver(...) | This broadcast receiver is registered for action 'com.example.action.SYNC' without a broadcast permission or RECEIVER_NOT_EXPORTED, so any application can send it intents. |
+| Receivers.java:33:5:33:127 | registerReceiver(...) | This broadcast receiver is registered for action 'com.example.action.SYNC' without a broadcast permission or RECEIVER_NOT_EXPORTED, so any application can send it intents. |
