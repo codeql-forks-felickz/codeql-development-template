@@ -1,0 +1,19 @@
+#select
+| app/controllers/legacy_controller.rb:5:17:5:45 | call to update | app/controllers/legacy_controller.rb:5:17:5:22 | call to params | app/controllers/legacy_controller.rb:5:17:5:45 | call to update | Untrusted URL redirection depends on a $@. | app/controllers/legacy_controller.rb:5:17:5:22 | call to params | user-provided value |
+| app/controllers/sessions_controller.rb:13:19:13:22 | path | app/controllers/sessions_controller.rb:9:36:9:47 | ...[...] | app/controllers/sessions_controller.rb:13:19:13:22 | path | Untrusted URL redirection depends on a $@. | app/controllers/sessions_controller.rb:9:36:9:47 | ...[...] | user-provided value |
+| app/controllers/sessions_controller.rb:21:17:21:40 | call to fetch | app/controllers/sessions_controller.rb:21:17:21:40 | call to fetch | app/controllers/sessions_controller.rb:21:17:21:40 | call to fetch | Untrusted URL redirection depends on a $@. | app/controllers/sessions_controller.rb:21:17:21:40 | call to fetch | user-provided value |
+edges
+| app/controllers/accounts_controller.rb:25:17:25:22 | call to params | app/controllers/accounts_controller.rb:25:17:25:28 | ...[...] | provenance |  |
+| app/controllers/legacy_controller.rb:5:17:5:22 | call to params | app/controllers/legacy_controller.rb:5:17:5:45 | call to update | provenance | Config |
+| app/controllers/sessions_controller.rb:9:5:9:8 | path | app/controllers/sessions_controller.rb:13:19:13:22 | path | provenance |  |
+| app/controllers/sessions_controller.rb:9:36:9:47 | ...[...] | app/controllers/sessions_controller.rb:9:5:9:8 | path | provenance |  |
+nodes
+| app/controllers/accounts_controller.rb:25:17:25:22 | call to params | semmle.label | call to params |
+| app/controllers/accounts_controller.rb:25:17:25:28 | ...[...] | semmle.label | ...[...] |
+| app/controllers/legacy_controller.rb:5:17:5:22 | call to params | semmle.label | call to params |
+| app/controllers/legacy_controller.rb:5:17:5:45 | call to update | semmle.label | call to update |
+| app/controllers/sessions_controller.rb:9:5:9:8 | path | semmle.label | path |
+| app/controllers/sessions_controller.rb:9:36:9:47 | ...[...] | semmle.label | ...[...] |
+| app/controllers/sessions_controller.rb:13:19:13:22 | path | semmle.label | path |
+| app/controllers/sessions_controller.rb:21:17:21:40 | call to fetch | semmle.label | call to fetch |
+subpaths

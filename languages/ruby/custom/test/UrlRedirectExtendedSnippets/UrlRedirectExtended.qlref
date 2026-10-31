@@ -1,0 +1,2 @@
+query: UrlRedirectExtended/UrlRedirectExtended.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
