@@ -1,0 +1,8 @@
+{
+  "name": "declared-unversioned",
+  "private": true,
+  "type": "commonjs",
+  "dependencies": {
+    "lodash": "*"
+  }
+}

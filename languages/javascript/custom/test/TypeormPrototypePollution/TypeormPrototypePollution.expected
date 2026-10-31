@@ -1,0 +1,29 @@
+#select
+| vulnerable/users.js:17:19:17:22 | user | vulnerable/users.js:15:15:15:22 | req.body | vulnerable/users.js:17:19:17:22 | user | Prototype pollution caused by saving a $@ using a vulnerable version of $@. | vulnerable/users.js:15:15:15:22 | req.body | user-controlled value | vulnerable/package.json:8:16:8:23 | "0.2.24" | typeorm |
+| vulnerable/users.js:17:19:17:22 | user | vulnerable/users.js:16:18:16:25 | req.body | vulnerable/users.js:17:19:17:22 | user | Prototype pollution caused by saving a $@ using a vulnerable version of $@. | vulnerable/users.js:16:18:16:25 | req.body | user-controlled value | vulnerable/package.json:8:16:8:23 | "0.2.24" | typeorm |
+| vulnerable/users.js:23:19:23:26 | req.body | vulnerable/users.js:23:19:23:26 | req.body | vulnerable/users.js:23:19:23:26 | req.body | Prototype pollution caused by saving a $@ using a vulnerable version of $@. | vulnerable/users.js:23:19:23:26 | req.body | user-controlled value | vulnerable/package.json:8:16:8:23 | "0.2.24" | typeorm |
+| vulnerable/users.js:29:31:29:38 | req.body | vulnerable/users.js:29:31:29:38 | req.body | vulnerable/users.js:29:31:29:38 | req.body | Prototype pollution caused by saving a $@ using a vulnerable version of $@. | vulnerable/users.js:29:31:29:38 | req.body | user-controlled value | vulnerable/package.json:8:16:8:23 | "0.2.24" | typeorm |
+| vulnerable/users.js:35:42:35:49 | req.body | vulnerable/users.js:35:42:35:49 | req.body | vulnerable/users.js:35:42:35:49 | req.body | Prototype pollution caused by saving a $@ using a vulnerable version of $@. | vulnerable/users.js:35:42:35:49 | req.body | user-controlled value | vulnerable/package.json:8:16:8:23 | "0.2.24" | typeorm |
+| vulnerable/users.js:41:47:41:54 | req.body | vulnerable/users.js:41:47:41:54 | req.body | vulnerable/users.js:41:47:41:54 | req.body | Prototype pollution caused by saving a $@ using a vulnerable version of $@. | vulnerable/users.js:41:47:41:54 | req.body | user-controlled value | vulnerable/package.json:8:16:8:23 | "0.2.24" | typeorm |
+edges
+| vulnerable/users.js:15:3:15:6 | [post update] user [name] | vulnerable/users.js:17:19:17:22 | user | provenance |  |
+| vulnerable/users.js:15:15:15:22 | req.body | vulnerable/users.js:15:15:15:27 | req.body.name | provenance |  |
+| vulnerable/users.js:15:15:15:22 | req.body | vulnerable/users.js:15:15:15:27 | req.body.name | provenance | Config |
+| vulnerable/users.js:15:15:15:27 | req.body.name | vulnerable/users.js:15:3:15:6 | [post update] user [name] | provenance |  |
+| vulnerable/users.js:16:3:16:6 | [post update] user [address] | vulnerable/users.js:17:19:17:22 | user | provenance |  |
+| vulnerable/users.js:16:18:16:25 | req.body | vulnerable/users.js:16:18:16:33 | req.body.address | provenance |  |
+| vulnerable/users.js:16:18:16:25 | req.body | vulnerable/users.js:16:18:16:33 | req.body.address | provenance | Config |
+| vulnerable/users.js:16:18:16:33 | req.body.address | vulnerable/users.js:16:3:16:6 | [post update] user [address] | provenance |  |
+nodes
+| vulnerable/users.js:15:3:15:6 | [post update] user [name] | semmle.label | [post update] user [name] |
+| vulnerable/users.js:15:15:15:22 | req.body | semmle.label | req.body |
+| vulnerable/users.js:15:15:15:27 | req.body.name | semmle.label | req.body.name |
+| vulnerable/users.js:16:3:16:6 | [post update] user [address] | semmle.label | [post update] user [address] |
+| vulnerable/users.js:16:18:16:25 | req.body | semmle.label | req.body |
+| vulnerable/users.js:16:18:16:33 | req.body.address | semmle.label | req.body.address |
+| vulnerable/users.js:17:19:17:22 | user | semmle.label | user |
+| vulnerable/users.js:23:19:23:26 | req.body | semmle.label | req.body |
+| vulnerable/users.js:29:31:29:38 | req.body | semmle.label | req.body |
+| vulnerable/users.js:35:42:35:49 | req.body | semmle.label | req.body |
+| vulnerable/users.js:41:47:41:54 | req.body | semmle.label | req.body |
+subpaths
