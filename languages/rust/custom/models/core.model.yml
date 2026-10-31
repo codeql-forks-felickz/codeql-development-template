@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      # Also taint the returned value so format! retains taint from a trimmed string.
+      # The upstream summary only taints ReturnValue.Reference.
+      - ["<core::str>::trim", "Argument[self].Reference", "ReturnValue", "taint", "manual"]

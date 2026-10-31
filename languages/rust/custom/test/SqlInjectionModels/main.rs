@@ -63,9 +63,9 @@ fn diesel_file() {
         .select(some_table::id)
         .load::<i32>(&mut conn);
     let _ = conn.batch_execute(&format!("DELETE FROM some_table WHERE key = '{}'", db_key)); // $ Alert[rust/sql-injection]=diesel
-    // A `&str` produced by `trim()` does not propagate taint through `format!`; this is a
-    // standard library dataflow gap independent of the Diesel sink model.
-    let _ = diesel::sql_query(format!("SELECT * FROM some_table WHERE key = '{}'", db_key.trim())) // $ MISSING: Alert[rust/sql-injection]=diesel
+    // Trimming whitespace does not sanitize SQL syntax. The summary preserves taint
+    // when the resulting string is formatted into raw SQL.
+    let _ = diesel::sql_query(format!("SELECT * FROM some_table WHERE key = '{}'", db_key.trim())) // $ Alert[rust/sql-injection]=diesel
         .load::<DbItem>(&mut conn);
     // GOOD: bound parameters / static SQL
     let _ = diesel::sql_query("SELECT * FROM some_table WHERE key = ?")
@@ -105,6 +105,26 @@ async fn main() {
 async fn sqlx_file_bound(pool: &sqlx::SqlitePool) {
     let db_key = fs::read_to_string("/var/tmp/tainted_file.txt").unwrap();
     let _ = sqlx::query("SELECT * FROM someTable WHERE key = $1")
+        .bind(db_key.trim())
+        .fetch_one(pool)
+        .await;
+}
+
+// Binding a value does not sanitize SQL text that already contains untrusted input.
+async fn sqlx_file_interpolated_then_bound(pool: &sqlx::SqlitePool) {
+    let db_key = fs::read_to_string("/var/tmp/tainted_file.txt").unwrap(); // $ Source=sqlx
+    let unsafe_query = format!("SELECT * FROM some_table WHERE key = '{}' AND id = ?", db_key);
+    let _ = sqlx::query(&unsafe_query) // $ Alert[rust/sql-injection]=sqlx
+        .bind(db_key.trim())
+        .fetch_one(pool)
+        .await;
+    let trimmed_query = format!("SELECT * FROM some_table WHERE key = '{}'", db_key.trim());
+    let _ = sqlx::query(&trimmed_query) // $ Alert[rust/sql-injection]=sqlx
+        .bind(db_key.trim())
+        .fetch_one(pool)
+        .await;
+    // GOOD: the untrusted value appears only in a bound parameter, not in the SQL text.
+    let _ = sqlx::query("SELECT * FROM some_table WHERE key = ?")
         .bind(db_key.trim())
         .fetch_one(pool)
         .await;
