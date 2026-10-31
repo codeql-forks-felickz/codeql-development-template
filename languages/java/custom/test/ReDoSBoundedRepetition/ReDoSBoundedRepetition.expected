@@ -1,0 +1,4 @@
+| Test.java:6:31:6:39 | [a-z0-9]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
+| Test.java:11:28:11:36 | [a-z0-9]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
+| Test.java:16:30:16:33 | \\w+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| Test.java:21:27:21:37 | (a\|a){1,64} | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |

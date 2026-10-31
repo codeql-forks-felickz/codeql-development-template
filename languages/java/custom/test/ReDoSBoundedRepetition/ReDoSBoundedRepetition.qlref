@@ -1,0 +1,2 @@
+query: ReDoSBoundedRepetition/ReDoSBoundedRepetition.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

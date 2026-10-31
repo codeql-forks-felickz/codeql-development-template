@@ -1,0 +1,2 @@
+query: ServletDispatchLoop/ServletDispatchLoop.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
