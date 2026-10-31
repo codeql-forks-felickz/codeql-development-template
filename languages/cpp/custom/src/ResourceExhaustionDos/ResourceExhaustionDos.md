@@ -2,9 +2,11 @@
 
 ## Overview
 
-An attacker can deny service by making a program use up CPU, stack, or threads. This query reports these C/C++ patterns:
+An attacker can deny service by making a program use up CPU, memory, stack, or threads. This query reports these C/C++ patterns:
 
 - **Unchecked loop bound (CWE-606):** untrusted input sets the upper bound of a loop, and the code never checks it against an upper limit.
+- **Untrusted sleep duration (CWE-400):** untrusted input sets the argument of `sleep`, `usleep`, `Sleep`, or `SleepEx` with no upper limit, so an attacker can stall the thread for as long as they like.
+- **Uncontrolled allocation size (CWE-789):** untrusted input sets the size of a heap allocation, and the size variable is only compared against a lower limit (for example `if (n > strlen(s))`). `cpp/uncontrolled-allocation-size` treats any comparison as a sanitizer, so it misses this case. Allocations with no comparison at all are left to that query.
 - **Reachable assertion (CWE-617):** untrusted input reaches an `assert`, so an attacker can make the assertion fail and abort the process.
 - **Uncontrolled recursion (CWE-674):**
   - a function calls itself on every path, so it never returns;
@@ -15,7 +17,7 @@ The query does not report memory or file handle leaks (CWE-401, CWE-775). The ex
 
 ## Recommendation
 
-Check untrusted values against a sensible upper limit before using them as loop bounds or recursion depths. Validate input with error handling, not `assert`. Make sure every recursive function has a reachable base case. Release every lock you acquire on all paths, or use RAII types such as `std::lock_guard`.
+Check untrusted values against a sensible upper limit before using them as loop bounds, recursion depths, sleep durations, or allocation sizes. Validate input with error handling, not `assert`. Make sure every recursive function has a reachable base case. Release every lock you acquire on all paths, or use RAII types such as `std::lock_guard`.
 
 ## Example
 
@@ -45,3 +47,4 @@ for (i = 0; i < n; i++)
 - [CWE-617: Reachable Assertion](https://cwe.mitre.org/data/definitions/617.html)
 - [CWE-667: Improper Locking](https://cwe.mitre.org/data/definitions/667.html)
 - [CWE-674: Uncontrolled Recursion](https://cwe.mitre.org/data/definitions/674.html)
+- [CWE-789: Memory Allocation with Excessive Size Value](https://cwe.mitre.org/data/definitions/789.html)

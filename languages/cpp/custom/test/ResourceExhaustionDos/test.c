@@ -11,6 +11,10 @@ char *fgets(char *s, int n, FILE *fp);
 int sscanf(const char *s, const char *fmt, ...);
 int atoi(const char *s);
 size_t strlen(const char *s);
+unsigned long strtoul(const char *s, char **end, int base);
+int fscanf(FILE *fp, const char *fmt, ...);
+unsigned int sleep(unsigned int seconds);
+void printLine(const char *s);
 void *malloc(size_t size);
 void free(void *ptr);
 void exit(int status);
@@ -143,6 +147,145 @@ void loop_over_input_length_good(int sock)
         count += buf[i];
     }
     sink(count);
+}
+
+/* CWE-400: the bound is cast before the comparison. */
+void loop_bound_cast_bad(int sock)
+{
+    char buf[32];
+    int count = -1;
+    size_t i;
+    ssize_t r = recv(sock, buf, sizeof(buf) - 1, 0);
+    if (r > 0)
+    {
+        buf[r] = '\0';
+        count = atoi(buf);
+    }
+    for (i = 0; i < (size_t)count; i++) // $ Alert
+    {
+        printLine("Hello");
+    }
+}
+
+void loop_bound_cast_good(int sock)
+{
+    char buf[32];
+    int count = -1;
+    size_t i;
+    ssize_t r = recv(sock, buf, sizeof(buf) - 1, 0);
+    if (r > 0)
+    {
+        buf[r] = '\0';
+        count = atoi(buf);
+    }
+    if (count > 0 && count <= 20)
+    {
+        for (i = 0; i < (size_t)count; i++)
+        {
+            printLine("Hello");
+        }
+    }
+}
+
+/* ---------- CWE-400: untrusted sleep duration ---------- */
+
+void sleep_duration_bad(void)
+{
+    char inLine[64];
+    int i;
+    if (fgets(inLine, 64, stdin) == 0)
+        return;
+    i = atoi(inLine);
+    sleep(i); // $ Alert
+}
+
+void sleep_duration_good(void)
+{
+    char inLine[64];
+    int i;
+    if (fgets(inLine, 64, stdin) == 0)
+        return;
+    i = atoi(inLine);
+    if (i > 10)
+        return;
+    sleep(i);
+}
+
+/* ---------- CWE-789: uncontrolled allocation size ---------- */
+
+void alloc_size_socket_bad(int sock)
+{
+    char buf[32];
+    size_t data = 0;
+    char *myString;
+    ssize_t r = recv(sock, buf, sizeof(buf) - 1, 0);
+    if (r > 0)
+    {
+        buf[r] = '\0';
+        data = strtoul(buf, 0, 0);
+    }
+    if (data > strlen("hello"))
+    {
+        myString = (char *)malloc(data * sizeof(char)); // $ Alert
+        if (myString == 0)
+            exit(-1);
+        free(myString);
+    }
+}
+
+void alloc_size_fscanf_bad(void)
+{
+    size_t data = 0;
+    char *myString;
+    fscanf(stdin, "%zu", &data);
+    if (data > strlen("hello"))
+    {
+        myString = (char *)malloc(data * sizeof(char)); // $ Alert
+        if (myString == 0)
+            exit(-1);
+        free(myString);
+    }
+}
+
+void alloc_size_checked_good(int sock)
+{
+    char buf[32];
+    size_t data = 0;
+    char *myString;
+    ssize_t r = recv(sock, buf, sizeof(buf) - 1, 0);
+    if (r > 0)
+    {
+        buf[r] = '\0';
+        data = strtoul(buf, 0, 0);
+    }
+    if (data > strlen("hello") && data < 100)
+    {
+        myString = (char *)malloc(data * sizeof(char));
+        if (myString == 0)
+            exit(-1);
+        free(myString);
+    }
+}
+
+/* No comparison at all: reported by cpp/uncontrolled-allocation-size, not by this query. */
+void alloc_size_unchecked_other_query(int sock)
+{
+    char buf[32];
+    size_t data = 0;
+    ssize_t r = recv(sock, buf, sizeof(buf) - 1, 0);
+    if (r > 0)
+    {
+        buf[r] = '\0';
+        data = strtoul(buf, 0, 0);
+    }
+    free(malloc(data));
+}
+
+void alloc_size_constant_good(void)
+{
+    size_t data = 20;
+    char *myString = (char *)malloc(data * sizeof(char));
+    free(myString);
 }
 
 /* ---------- CWE-617: reachable assertion ---------- */

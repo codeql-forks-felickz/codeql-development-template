@@ -1,9 +1,10 @@
 /**
  * @name Resource exhaustion and denial of service
- * @description Untrusted values that control loop bounds, assertions or recursion
- *              depth, unbounded or infinite recursion, and locks that are never
- *              released can let an attacker exhaust CPU, stack or threads and
- *              deny service.
+ * @description Untrusted values that control loop bounds, assertions, recursion
+ *              depth, sleep durations or allocation sizes, unbounded or
+ *              infinite recursion, and locks that are never released can let
+ *              an attacker exhaust CPU, memory, stack or threads and deny
+ *              service.
  * @kind problem
  * @problem.severity warning
  * @security-severity 5.3
@@ -15,6 +16,7 @@
  *       external/cwe/cwe-617
  *       external/cwe/cwe-667
  *       external/cwe/cwe-674
+ *       external/cwe/cwe-789
  */
 
 import cpp
@@ -106,6 +108,32 @@ predicate isUpperBounded(Expr e) {
   )
 }
 
+/** Holds if `e` is the duration argument of a call that suspends the current thread. */
+predicate sleepDuration(Expr e) {
+  exists(FunctionCall call |
+    call.getTarget().hasGlobalName(["sleep", "usleep", "Sleep", "SleepEx"]) and
+    e = call.getArgument(0)
+  )
+}
+
+/**
+ * Holds if `e` is the size of a heap allocation and reads a variable that is
+ * compared with a relational operator somewhere, but not against an upper
+ * limit. `cpp/uncontrolled-allocation-size` treats any such comparison
+ * (for example the lower-bound check `n > strlen(s)`) as a sanitizer, so this
+ * query reports only those allocations and leaves the rest to that query.
+ */
+predicate allocationSize(Expr e) {
+  exists(AllocationExpr alloc, Variable v |
+    e = alloc.getSizeExpr() and
+    e.(VariableAccess).getTarget() = v and
+    exists(RelationalOperation cmp |
+      cmp.getAnOperand().(VariableAccess).getTarget() = v and
+      not cmp.getAnOperand().getValue() = "0"
+    )
+  )
+}
+
 /** The kinds of untrusted-input sinks that this query reports. */
 predicate taintSink(Expr e, string kind) {
   loopBound(_, _, e) and kind = "loop bound"
@@ -113,6 +141,10 @@ predicate taintSink(Expr e, string kind) {
   assertedExpr(e) and kind = "assertion"
   or
   unboundedRecursionDepth(_, e, _) and kind = "recursion depth"
+  or
+  sleepDuration(e) and kind = "sleep duration"
+  or
+  allocationSize(e) and kind = "allocation size"
 }
 
 module UntrustedResourceConfig implements DataFlow::ConfigSig {
