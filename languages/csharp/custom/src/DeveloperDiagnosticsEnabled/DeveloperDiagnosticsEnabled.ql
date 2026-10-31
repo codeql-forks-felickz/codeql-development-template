@@ -14,39 +14,79 @@
  */
 
 import csharp
+import semmle.code.csharp.controlflow.Guards
+
+/** Holds if `name` is a constant hosting environment name other than a production one. */
+bindingset[name]
+predicate isNonProductionEnvironmentName(string name) {
+  not name.toLowerCase() = ["production", "staging"]
+}
 
 /**
- * Gets the condition of an `if` statement or conditional expression that controls whether `e`
- * is evaluated, either by enclosing `e` or by exiting the callable early before `e`.
+ * Holds if `g` evaluating to `v` implies that the application runs in a non-production hosting
+ * environment, for example `env.IsDevelopment()` being `true` or `env.IsProduction()` being
+ * `false`.
  */
-Expr getAGuardingCondition(Expr e) {
-  exists(IfStmt s | result = s.getCondition() |
-    [s.getThen(), s.getElse()].getAChildStmt*() = e.getEnclosingStmt()
+predicate isNonProductionEnvironmentGuard(Guard g, boolean v) {
+  exists(MethodCall mc | mc = g |
+    mc.getTarget().hasName("IsDevelopment") and v = true
     or
-    // An early exit, such as `if (!env.IsDevelopment()) return;`, before `e`.
-    s.getEnclosingCallable() = e.getEnclosingCallable() and
-    s.getThen().getAChildStmt*() instanceof JumpStmt and
-    s.getLocation().getEndLine() < e.getLocation().getStartLine() and
-    not s.getAChildStmt*() = e.getEnclosingStmt()
+    mc.getTarget().hasName(["IsProduction", "IsStaging"]) and v = false
+    or
+    mc.getTarget().hasName("IsEnvironment") and
+    exists(string name | name = mc.getArgument(mc.getNumberOfArguments() - 1).getValue() |
+      isNonProductionEnvironmentName(name) and v = true
+      or
+      not isNonProductionEnvironmentName(name) and v = false
+    )
   )
   or
-  exists(ConditionalExpr c | result = c.getCondition() |
-    [c.getThen(), c.getElse()].getAChildExpr*() = e
-  )
-}
-
-/** Holds if `cond` checks the hosting environment, for example `env.IsDevelopment()`. */
-predicate isEnvironmentCheck(Expr cond) {
-  exists(Expr sub | sub = cond.getAChildExpr*() |
-    sub.(Call).getTarget().hasName(["IsDevelopment", "IsEnvironment", "IsStaging", "IsProduction"])
+  exists(EqualityOperation eq, PropertyAccess pa, string name |
+    eq = g and
+    pa = eq.getAnOperand() and
+    pa.getTarget().hasName("EnvironmentName") and
+    name = eq.getAnOperand().getValue()
+  |
+    eq instanceof EQExpr and
+    (
+      isNonProductionEnvironmentName(name) and v = true
+      or
+      not isNonProductionEnvironmentName(name) and v = false
+    )
     or
-    sub.(PropertyAccess).getTarget().hasName("EnvironmentName")
+    eq instanceof NEExpr and
+    (
+      isNonProductionEnvironmentName(name) and v = false
+      or
+      not isNonProductionEnvironmentName(name) and v = true
+    )
   )
 }
 
-/** Holds if `cond` checks that the request comes from the local machine (`Request.IsLocal`). */
-predicate isLocalRequestCheck(Expr cond) {
-  cond.getAChildExpr*().(PropertyAccess).getTarget().hasName("IsLocal")
+/** Holds if `e` is only evaluated in a non-production hosting environment. */
+predicate isNonProductionOnly(Expr e) {
+  exists(Guard g, GuardValue v |
+    isNonProductionEnvironmentGuard(g, v.asBooleanValue()) and
+    g.controlsNode(e.getControlFlowNode(), v)
+  )
+  or
+  // Environment-specific startup conventions, which ASP.NET Core only invokes in the
+  // `Development` environment.
+  e.getEnclosingCallable().getName().toLowerCase() = "configuredevelopment"
+  or
+  e.getEnclosingCallable().getDeclaringType().getName().toLowerCase() = "startupdevelopment"
+}
+
+/** Holds if `e` is a check that the request comes from the local machine (`Request.IsLocal`). */
+predicate isLocalRequestCheck(Expr e) { e.(PropertyAccess).getTarget().hasName("IsLocal") }
+
+/** Holds if `e` is only evaluated for requests from the local machine. */
+predicate isLocalRequestOnly(Expr e) {
+  exists(Guard g, GuardValue v |
+    isLocalRequestCheck(g) and
+    v.asBooleanValue() = true and
+    g.controlsNode(e.getControlFlowNode(), v)
+  )
 }
 
 from Expr e, string msg
@@ -54,7 +94,7 @@ where
   exists(MethodCall mc | mc = e |
     mc.getTarget().hasName(["UseDeveloperExceptionPage", "UseDatabaseErrorPage"]) and
     mc.getTarget().getDeclaringType().getNamespace().getFullName() = "Microsoft.AspNetCore.Builder" and
-    not isEnvironmentCheck(getAGuardingCondition(mc)) and
+    not isNonProductionOnly(mc) and
     msg =
       "'" + mc.getTarget().getName() +
         "' is enabled without checking the hosting environment, so detailed exception information is exposed to remote users in production."
@@ -65,7 +105,8 @@ where
     p.hasName("IsEnabled") and
     p.getDeclaringType().hasFullyQualifiedName("System.Web", "TraceContext") and
     not a.getRightOperand().getValue() = "false" and
-    not isLocalRequestCheck(getAGuardingCondition(a)) and
+    not isLocalRequestCheck(a.getRightOperand()) and
+    not isLocalRequestOnly(a) and
     msg =
       "ASP.NET page tracing is enabled at runtime, exposing request headers, cookies, session state and server variables to remote users."
   )

@@ -44,4 +44,22 @@ namespace WebGoat
             Trace.IsEnabled = false;
         }
     }
+
+    public class LocalOnlyAssignmentTracePage : Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            // GOOD: tracing is only enabled for requests from the local machine.
+            Trace.IsEnabled = Request.IsLocal;
+        }
+    }
+
+    public class QueryStringAssignmentTracePage : Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            // BAD: any visitor can turn on tracing with `?trace=true`.
+            Trace.IsEnabled = Request["trace"] == "true"; // $ Alert
+        }
+    }
 }

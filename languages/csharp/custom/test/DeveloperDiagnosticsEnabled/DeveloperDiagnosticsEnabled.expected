@@ -1,5 +1,9 @@
 | Startup.cs:12:13:12:43 | call to method UseDeveloperExceptionPage | 'UseDeveloperExceptionPage' is enabled without checking the hosting environment, so detailed exception information is exposed to remote users in production. |
 | Startup.cs:13:13:13:38 | call to method UseDatabaseErrorPage | 'UseDatabaseErrorPage' is enabled without checking the hosting environment, so detailed exception information is exposed to remote users in production. |
 | Startup.cs:75:17:75:47 | call to method UseDeveloperExceptionPage | 'UseDeveloperExceptionPage' is enabled without checking the hosting environment, so detailed exception information is exposed to remote users in production. |
+| Startup.cs:87:17:87:47 | call to method UseDeveloperExceptionPage | 'UseDeveloperExceptionPage' is enabled without checking the hosting environment, so detailed exception information is exposed to remote users in production. |
+| Startup.cs:98:13:98:43 | call to method UseDeveloperExceptionPage | 'UseDeveloperExceptionPage' is enabled without checking the hosting environment, so detailed exception information is exposed to remote users in production. |
+| Startup.cs:112:13:112:43 | call to method UseDeveloperExceptionPage | 'UseDeveloperExceptionPage' is enabled without checking the hosting environment, so detailed exception information is exposed to remote users in production. |
 | TracePage.cs:13:17:13:38 | ... = ... | ASP.NET page tracing is enabled at runtime, exposing request headers, cookies, session state and server variables to remote users. |
 | TracePage.cs:23:13:23:34 | ... = ... | ASP.NET page tracing is enabled at runtime, exposing request headers, cookies, session state and server variables to remote users. |
+| TracePage.cs:62:13:62:56 | ... = ... | ASP.NET page tracing is enabled at runtime, exposing request headers, cookies, session state and server variables to remote users. |
