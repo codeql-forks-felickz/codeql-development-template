@@ -1,17 +1,17 @@
 #select
-| app.rb:16:23:16:36 | call to message_params | app.rb:62:5:62:79 | call to permit | app.rb:16:23:16:36 | call to message_params | This mass assignment can set the ownership or privilege attribute(s) 'creator_id' from $@, allowing a user to act as another user or escalate privileges. | app.rb:62:5:62:79 | call to permit | a user-controlled parameter allowlist |
-| app.rb:23:17:23:67 | call to permit | app.rb:23:17:23:67 | call to permit | app.rb:23:17:23:67 | call to permit | This mass assignment can set the ownership or privilege attribute(s) 'user_id' from $@, allowing a user to act as another user or escalate privileges. | app.rb:23:17:23:67 | call to permit | a user-controlled parameter allowlist |
-| app.rb:29:20:29:33 | call to message_params | app.rb:62:5:62:79 | call to permit | app.rb:29:20:29:33 | call to message_params | This mass assignment can set the ownership or privilege attribute(s) 'creator_id' from $@, allowing a user to act as another user or escalate privileges. | app.rb:62:5:62:79 | call to permit | a user-controlled parameter allowlist |
-| app.rb:74:17:74:60 | call to permit | app.rb:74:17:74:60 | call to permit | app.rb:74:17:74:60 | call to permit | This mass assignment can set the ownership or privilege attribute(s) 'admin' from $@, allowing a user to act as another user or escalate privileges. | app.rb:74:17:74:60 | call to permit | a user-controlled parameter allowlist |
+| app.rb:17:23:17:36 | call to message_params | app.rb:63:5:63:79 | call to permit | app.rb:17:23:17:36 | call to message_params | This mass assignment can set the ownership or privilege attribute(s) 'creator_id' from $@, allowing a user to act as another user or escalate privileges. | app.rb:63:5:63:79 | call to permit | a user-controlled parameter allowlist |
+| app.rb:24:17:24:67 | call to permit | app.rb:24:17:24:67 | call to permit | app.rb:24:17:24:67 | call to permit | This mass assignment can set the ownership or privilege attribute(s) 'user_id' from $@, allowing a user to act as another user or escalate privileges. | app.rb:24:17:24:67 | call to permit | a user-controlled parameter allowlist |
+| app.rb:30:20:30:33 | call to message_params | app.rb:63:5:63:79 | call to permit | app.rb:30:20:30:33 | call to message_params | This mass assignment can set the ownership or privilege attribute(s) 'creator_id' from $@, allowing a user to act as another user or escalate privileges. | app.rb:63:5:63:79 | call to permit | a user-controlled parameter allowlist |
+| app.rb:75:17:75:60 | call to permit | app.rb:75:17:75:60 | call to permit | app.rb:75:17:75:60 | call to permit | This mass assignment can set the ownership or privilege attribute(s) 'admin' from $@, allowing a user to act as another user or escalate privileges. | app.rb:75:17:75:60 | call to permit | a user-controlled parameter allowlist |
 edges
-| app.rb:62:5:62:79 | call to permit | app.rb:16:23:16:36 | call to message_params | provenance |  |
-| app.rb:62:5:62:79 | call to permit | app.rb:29:20:29:33 | call to message_params | provenance |  |
-| app.rb:62:5:62:79 | call to permit | app.rb:39:27:39:40 | call to message_params | provenance |  |
+| app.rb:63:5:63:79 | call to permit | app.rb:17:23:17:36 | call to message_params | provenance |  |
+| app.rb:63:5:63:79 | call to permit | app.rb:30:20:30:33 | call to message_params | provenance |  |
+| app.rb:63:5:63:79 | call to permit | app.rb:40:27:40:40 | call to message_params | provenance |  |
 nodes
-| app.rb:16:23:16:36 | call to message_params | semmle.label | call to message_params |
-| app.rb:23:17:23:67 | call to permit | semmle.label | call to permit |
-| app.rb:29:20:29:33 | call to message_params | semmle.label | call to message_params |
-| app.rb:39:27:39:40 | call to message_params | semmle.label | call to message_params |
-| app.rb:62:5:62:79 | call to permit | semmle.label | call to permit |
-| app.rb:74:17:74:60 | call to permit | semmle.label | call to permit |
+| app.rb:17:23:17:36 | call to message_params | semmle.label | call to message_params |
+| app.rb:24:17:24:67 | call to permit | semmle.label | call to permit |
+| app.rb:30:20:30:33 | call to message_params | semmle.label | call to message_params |
+| app.rb:40:27:40:40 | call to message_params | semmle.label | call to message_params |
+| app.rb:63:5:63:79 | call to permit | semmle.label | call to permit |
+| app.rb:75:17:75:60 | call to permit | semmle.label | call to permit |
 subpaths
