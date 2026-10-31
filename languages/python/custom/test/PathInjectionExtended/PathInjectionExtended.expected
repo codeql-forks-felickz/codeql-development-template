@@ -4,6 +4,7 @@
 | captured_variable.py:26:14:26:22 | ControlFlowNode for Subscript | captured_variable.py:23:34:23:37 | ControlFlowNode for self | captured_variable.py:26:14:26:22 | ControlFlowNode for Subscript | This path depends on a $@. | captured_variable.py:23:34:23:37 | ControlFlowNode for self | user-provided value |
 | captured_variable.py:30:29:30:33 | ControlFlowNode for query | captured_variable.py:28:32:28:35 | ControlFlowNode for self | captured_variable.py:30:29:30:33 | ControlFlowNode for query | This path depends on a $@. | captured_variable.py:28:32:28:35 | ControlFlowNode for self | user-provided value |
 | captured_variable.py:36:18:36:26 | ControlFlowNode for Subscript | captured_variable.py:33:29:33:32 | ControlFlowNode for self | captured_variable.py:36:18:36:26 | ControlFlowNode for Subscript | This path depends on a $@. | captured_variable.py:33:29:33:32 | ControlFlowNode for self | user-provided value |
+| django_template.py:6:28:6:72 | ControlFlowNode for Fstring | django_template.py:5:29:5:35 | ControlFlowNode for blog_id | django_template.py:6:28:6:72 | ControlFlowNode for Fstring | This path depends on a $@. | django_template.py:5:29:5:35 | ControlFlowNode for blog_id | user-provided value |
 | shell_file_command.py:19:10:19:14 | ControlFlowNode for title | shell_file_command.py:85:12:85:18 | ControlFlowNode for request | shell_file_command.py:19:10:19:14 | ControlFlowNode for title | This path depends on a $@. | shell_file_command.py:85:12:85:18 | ControlFlowNode for request | user-provided value |
 | shell_file_command.py:25:75:25:118 | ControlFlowNode for Attribute() | shell_file_command.py:85:12:85:18 | ControlFlowNode for request | shell_file_command.py:25:75:25:118 | ControlFlowNode for Attribute() | This path depends on a $@. | shell_file_command.py:85:12:85:18 | ControlFlowNode for request | user-provided value |
 | shell_file_command.py:30:65:30:95 | ControlFlowNode for Attribute() | shell_file_command.py:85:12:85:18 | ControlFlowNode for request | shell_file_command.py:30:65:30:95 | ControlFlowNode for Attribute() | This path depends on a $@. | shell_file_command.py:85:12:85:18 | ControlFlowNode for request | user-provided value |
@@ -88,6 +89,7 @@ edges
 | captured_variable.py:47:9:47:16 | ControlFlowNode for Tuple [Tuple element at index 1] | captured_variable.py:47:12:47:16 | ControlFlowNode for query | provenance |  |
 | captured_variable.py:47:9:47:16 | IterableElement | captured_variable.py:47:9:47:16 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
 | captured_variable.py:47:12:47:16 | ControlFlowNode for query | captured_variable.py:48:14:48:18 | ControlFlowNode for query | provenance |  |
+| django_template.py:5:29:5:35 | ControlFlowNode for blog_id | django_template.py:6:28:6:72 | ControlFlowNode for Fstring | provenance |  |
 | shell_file_command.py:11:25:11:29 | ControlFlowNode for title | shell_file_command.py:19:10:19:14 | ControlFlowNode for title | provenance |  |
 | shell_file_command.py:23:18:23:22 | ControlFlowNode for title | shell_file_command.py:25:87:25:117 | ControlFlowNode for Attribute() | provenance | AdditionalTaintStep |
 | shell_file_command.py:25:87:25:117 | ControlFlowNode for Attribute() | shell_file_command.py:25:75:25:118 | ControlFlowNode for Attribute() | provenance | MaD:104 |
@@ -192,6 +194,8 @@ nodes
 | captured_variable.py:47:9:47:16 | IterableElement | semmle.label | IterableElement |
 | captured_variable.py:47:12:47:16 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
 | captured_variable.py:48:14:48:18 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| django_template.py:5:29:5:35 | ControlFlowNode for blog_id | semmle.label | ControlFlowNode for blog_id |
+| django_template.py:6:28:6:72 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
 | shell_file_command.py:11:25:11:29 | ControlFlowNode for title | semmle.label | ControlFlowNode for title |
 | shell_file_command.py:19:10:19:14 | ControlFlowNode for title | semmle.label | ControlFlowNode for title |
 | shell_file_command.py:23:18:23:22 | ControlFlowNode for title | semmle.label | ControlFlowNode for title |

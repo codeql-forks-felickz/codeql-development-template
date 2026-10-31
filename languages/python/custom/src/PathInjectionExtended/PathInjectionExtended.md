@@ -1,9 +1,10 @@
 Accessing files using paths constructed from user-controlled data can allow an attacker to access unexpected resources, such as files outside an intended directory (CWE-22).
 
-This query extends the standard `py/path-injection` query in two ways:
+This query extends the standard `py/path-injection` query in three ways:
 
 * `py/path-injection` loses track of user input when it is assigned to a local variable by tuple unpacking or by a `for` loop and that variable is then read inside a comprehension, generator expression, lambda or nested function. This query follows that flow.
 * `py/path-injection` only considers file system APIs such as `open` or `shutil.move`. This query also considers file paths passed to operating system file commands such as `mv`, `cp` or `cat`, whether in a shell command string or in an argument list. Quoting the command (for example with `shlex.quote`) prevents command injection but not path traversal.
+* This query considers user-controlled template names passed to `django.shortcuts.render`, which can select a template outside the intended directory.
 
 Results that `py/path-injection` already reports are not repeated.
 
@@ -12,6 +13,8 @@ Results that `py/path-injection` already reports are not repeated.
 Shell command strings are analyzed only when path substitutions can be identified as concatenation operands or simple `%s` formatting arguments in the first command segment. Other shell-string construction and formatting forms are not parsed.
 
 Comprehension capture flow may retain taint when every branch reassigns an unpacked variable and those definitions merge before the comprehension.
+
+Taint is not tracked across values persisted with raw SQL and later loaded through the Django ORM. A filename stored in one request and used in a later request can therefore be missed.
 
 ## Recommendation
 

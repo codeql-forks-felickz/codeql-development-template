@@ -4,8 +4,9 @@
  *              unexpected resources. This query extends `py/path-injection` with
  *              flow through variables that are defined by tuple unpacking or `for`
  *              loops and then captured by a comprehension, generator expression,
- *              lambda or nested function, and with file paths passed to operating
- *              system file commands such as `mv` or `cp`. Only results not already
+ *              lambda or nested function, with file paths passed to operating
+ *              system file commands such as `mv` or `cp`, and with Django template
+ *              names passed to `django.shortcuts.render`. Only results not already
  *              reported by `py/path-injection` are reported.
  * @kind path-problem
  * @problem.severity error
@@ -23,8 +24,10 @@
  */
 
 import python
+import semmle.python.ApiGraphs
 import semmle.python.security.dataflow.PathInjectionQuery
 import CapturedVariableFlow as CapturedVariableFlow
+import DjangoTemplateSinks as DjangoTemplateSinks
 import ShellFileCommandSinks as ShellFileCommandSinks
 
 module PathInjectionExtendedConfig implements DataFlow::StateConfigSig {
@@ -34,6 +37,12 @@ module PathInjectionExtendedConfig implements DataFlow::StateConfigSig {
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
     PathInjectionConfig::isSink(sink, state)
+    or
+    DjangoTemplateSinks::isDjangoTemplateNameSink(sink) and
+    (
+      state instanceof NotNormalized or
+      state instanceof NormalizedUnchecked
+    )
     or
     ShellFileCommandSinks::isShellFileCommandPathSink(sink) and
     (
