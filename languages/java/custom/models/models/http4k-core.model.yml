@@ -2,6 +2,9 @@
 # http4k is a Kotlin HTTP toolkit; request data accessed through the `Request`/`HttpMessage`
 # accessors, the routing/form extension functions, or lenses (`Query`, `Header`, `Path`,
 # `FormField`, ...) is attacker controlled.
+# Note: models-as-data cannot restrict the `LensExtractor` rows to lenses built from request
+# specs, so values read through other lenses (for example `RequestContextKey`) are also
+# treated as remote sources.
 extensions:
   - addsTo:
       pack: codeql/java-all
