@@ -4,8 +4,8 @@ If JSON text is built by concatenating, interpolating or formatting user-provide
 
 This query reports user-provided values that are inserted into JSON-like text (a string with a quoted member name followed by `:`) when that text is later:
 
-* sent as the content of a `System.Net.Http.StringContent` with a JSON media type, or
-* parsed or deserialized with `System.Text.Json` (`JsonDocument.Parse`, `JsonNode.Parse`, `JsonSerializer.Deserialize`) or Newtonsoft.Json (`JsonConvert.DeserializeObject`, `JsonConvert.PopulateObject`, `JToken.Parse`, `JObject.Parse`, `JArray.Parse`).
+- sent as the content of a `System.Net.Http.StringContent` with a JSON media type, or
+- parsed or deserialized with `System.Text.Json` (`JsonDocument.Parse`, `JsonNode.Parse`, `JsonSerializer.Deserialize`) or Newtonsoft.Json (`JsonConvert.DeserializeObject`, `JsonConvert.PopulateObject`, `JToken.Parse`, `JObject.Parse`, `JArray.Parse`).
 
 ## Recommendation
 
@@ -33,12 +33,13 @@ await httpClient.PostAsync(authServiceUri, content);
 
 ## Known limitations
 
-* Only JSON text sent with `StringContent` and a JSON media type, or passed to the listed parsers, is considered. JSON text written to a response, a file or a log is not reported.
-* The media type must be given to the `StringContent` constructor. Setting `Content-Type` later through `content.Headers.ContentType` is not recognized.
+- Only JSON text sent with `StringContent` and a JSON media type, or passed to the listed parsers, is considered. JSON text written to a response, a file or a log is not reported.
+- The media type must be given to the `StringContent` constructor. Setting `Content-Type` later through `content.Headers.ContentType` is not recognized.
+- `cs/web/xss` models the first `StringContent` constructor argument as a `js-injection` sink, so a flow into a JSON `StringContent` can be reported by both queries. This query reports the inserted value, and `cs/web/xss` reports the `StringContent` argument. Flows into JSON parsers are only reported by this query.
 
 ## References
 
-* OWASP: [Injection Theory](https://owasp.org/www-community/Injection_Theory).
-* Microsoft Learn: [How to serialize JSON in C#](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/how-to).
-* Common Weakness Enumeration: [CWE-74](https://cwe.mitre.org/data/definitions/74.html).
-* Common Weakness Enumeration: [CWE-116](https://cwe.mitre.org/data/definitions/116.html).
+- OWASP: [Injection Theory](https://owasp.org/www-community/Injection_Theory).
+- Microsoft Learn: [How to serialize JSON in C#](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/how-to).
+- Common Weakness Enumeration: [CWE-74](https://cwe.mitre.org/data/definitions/74.html).
+- Common Weakness Enumeration: [CWE-116](https://cwe.mitre.org/data/definitions/116.html).
