@@ -1,0 +1,10 @@
+extensions:
+  # ASP.NET Web Forms `CreateUserWizard` redirects the browser to
+  # `ContinueDestinationPageUrl` when the user clicks the Continue button after
+  # an account is created, so assigning a user-controlled value to this property
+  # is an open redirect (CWE-601, `cs/web/unvalidated-url-redirection`).
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - ["System.Web.UI.WebControls", "CreateUserWizard", True, "set_ContinueDestinationPageUrl", "(System.String)", "", "Argument[0]", "url-redirection", "manual"]
