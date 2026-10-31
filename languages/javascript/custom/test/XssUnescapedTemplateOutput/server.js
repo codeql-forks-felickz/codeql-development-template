@@ -6,6 +6,8 @@ const db = new MongoClient('mongodb://localhost').db()
 
 swig.setDefaults({ autoescape: false })
 
+const storedProfile = db.collection('profiles').findOne({ _id: 'profile' })
+
 app.get('/profile', (req, res) => {
   res.render('profile', {
     profileName: req.body.name,
@@ -14,7 +16,7 @@ app.get('/profile', (req, res) => {
 })
 
 app.get('/stored-profile', async (req, res) => {
-  const profile = await db.collection('profiles').findOne({ _id: req.params.id })
+  const profile = await storedProfile
   res.render('profile', {
     profileName: profile.firstName,
     title: 'Profile'
