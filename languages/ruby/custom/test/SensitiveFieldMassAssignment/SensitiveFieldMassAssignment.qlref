@@ -1,0 +1,2 @@
+query: SensitiveFieldMassAssignment/SensitiveFieldMassAssignment.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
