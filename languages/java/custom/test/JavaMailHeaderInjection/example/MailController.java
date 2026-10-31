@@ -2,7 +2,6 @@ package example;
 
 import javax.mail.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 class MailController {
   void submit(HttpServletRequest request) {
@@ -26,7 +25,4 @@ class MailController {
     message.setSubject("Password reset");
   }
 
-  void responseHeader(HttpServletRequest request, HttpServletResponse response) {
-    response.setHeader("X-Subject", request.getParameter("subject"));
-  }
 }
