@@ -1,0 +1,24 @@
+#select
+| OsCommandInjectionActivity.kt:8:39:8:41 | ip1 | OsCommandInjectionActivity.kt:7:33:7:39 | getText(...) : Editable | OsCommandInjectionActivity.kt:8:39:8:41 | ip1 | This command line depends on a $@. | OsCommandInjectionActivity.kt:7:33:7:39 | getText(...) | user-provided value |
+| OsCommandInjectionActivity.kt:13:35:13:88 | new String[] | OsCommandInjectionActivity.kt:13:70:13:76 | getText(...) : Editable | OsCommandInjectionActivity.kt:13:35:13:88 | new String[] | This command line depends on a $@. | OsCommandInjectionActivity.kt:13:70:13:76 | getText(...) | user-provided value |
+edges
+| OsCommandInjectionActivity.kt:7:33:7:39 | getText(...) : Editable | OsCommandInjectionActivity.kt:7:36:7:39 | <implicit cast> : Editable | provenance | Src:MaD:712  |
+| OsCommandInjectionActivity.kt:7:36:7:39 | <implicit cast> : Editable | OsCommandInjectionActivity.kt:7:36:7:50 | toString(...) : String | provenance | Config |
+| OsCommandInjectionActivity.kt:7:36:7:50 | toString(...) : String | OsCommandInjectionActivity.kt:8:39:8:41 | ip1 | provenance | Sink:MaD:46588 |
+| OsCommandInjectionActivity.kt:13:35:13:88 | {...} : String[] [[]] : String | OsCommandInjectionActivity.kt:13:35:13:88 | new String[] | provenance | Sink:MaD:46589 |
+| OsCommandInjectionActivity.kt:13:60:13:87 | ... + ... : String | OsCommandInjectionActivity.kt:13:35:13:88 | {...} : String[] [[]] : String | provenance |  |
+| OsCommandInjectionActivity.kt:13:70:13:76 | getText(...) : Editable | OsCommandInjectionActivity.kt:13:73:13:76 | <implicit cast> : Editable | provenance | Src:MaD:712  |
+| OsCommandInjectionActivity.kt:13:73:13:76 | <implicit cast> : Editable | OsCommandInjectionActivity.kt:13:73:13:87 | toString(...) : String | provenance | Config |
+| OsCommandInjectionActivity.kt:13:73:13:87 | toString(...) : String | OsCommandInjectionActivity.kt:13:60:13:87 | ... + ... : String | provenance |  |
+nodes
+| OsCommandInjectionActivity.kt:7:33:7:39 | getText(...) : Editable | semmle.label | getText(...) : Editable |
+| OsCommandInjectionActivity.kt:7:36:7:39 | <implicit cast> : Editable | semmle.label | <implicit cast> : Editable |
+| OsCommandInjectionActivity.kt:7:36:7:50 | toString(...) : String | semmle.label | toString(...) : String |
+| OsCommandInjectionActivity.kt:8:39:8:41 | ip1 | semmle.label | ip1 |
+| OsCommandInjectionActivity.kt:13:35:13:88 | new String[] | semmle.label | new String[] |
+| OsCommandInjectionActivity.kt:13:35:13:88 | {...} : String[] [[]] : String | semmle.label | {...} : String[] [[]] : String |
+| OsCommandInjectionActivity.kt:13:60:13:87 | ... + ... : String | semmle.label | ... + ... : String |
+| OsCommandInjectionActivity.kt:13:70:13:76 | getText(...) : Editable | semmle.label | getText(...) : Editable |
+| OsCommandInjectionActivity.kt:13:73:13:76 | <implicit cast> : Editable | semmle.label | <implicit cast> : Editable |
+| OsCommandInjectionActivity.kt:13:73:13:87 | toString(...) : String | semmle.label | toString(...) : String |
+subpaths
