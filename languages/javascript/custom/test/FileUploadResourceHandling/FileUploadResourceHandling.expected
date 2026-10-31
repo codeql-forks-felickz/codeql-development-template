@@ -1,0 +1,12 @@
+| archive.ts:10:27:10:54 | unzippe ... buffer) | This archive is extracted without a limit on the expanded size of its entries. |
+| archive.ts:34:11:34:26 | unzipper.Parse() | This archive is extracted without a limit on the expanded size of its entries. |
+| archive.ts:61:38:61:85 | unzippe ... nts' }) | This archive is extracted without a limit on the expanded size of its entries. |
+| download.ts:18:20:18:74 | Readabl ... Stream) | The response from a user-controlled URL is written to a file without a size limit. |
+| download.ts:25:3:27:53 | request ... .jpg')) | The response from a user-controlled URL is written to a file without a size limit. |
+| graphql.ts:14:20:14:37 | [ depthLimit(10) ] | These GraphQL validation rules do not limit query cost, complexity or aliases. |
+| graphql.ts:26:20:26:36 | [ depthLimit(5) ] | These GraphQL validation rules do not limit query cost, complexity or aliases. |
+| multer.js:8:14:8:41 | multer( ... ds/' }) | This multer upload handler accepts files without file type validation (fileFilter) or file size limit (limits.fileSize). |
+| multer.js:11:20:11:27 | multer() | This multer upload handler accepts files without file type validation (fileFilter) or file size limit (limits.fileSize). |
+| multer.js:14:16:14:78 | multer( ... 24 } }) | This multer upload handler accepts files without file type validation (fileFilter). |
+| multer.js:17:14:17:103 | multer( ... lter }) | This multer upload handler accepts files without file size limit (limits.fileSize). |
+| session.js:9:9:13:2 | session ... /' }\\n}) | This session middleware uses the default in-memory store, which has no capacity limit. |
