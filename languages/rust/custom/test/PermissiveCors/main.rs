@@ -192,6 +192,25 @@ mod tower_http_cors {
         headers.insert(header::ACCESS_CONTROL_ALLOW_METHODS, HeaderValue::from_static("*"));
         (headers, "Hello")
     }
+
+    pub async fn bad_raw_header_name_constructor() -> impl IntoResponse {
+        let mut headers = HeaderMap::new();
+        headers.insert(
+            header::HeaderName::from_static("access-control-allow-origin"),
+            HeaderValue::from_static("*"),
+        ); // $ Alert
+        (headers, "Hello")
+    }
+
+    fn check(value: Option<&HeaderValue>, expected: &str) -> bool {
+        value.map_or(false, |v| v == expected)
+    }
+
+    // Reading (rather than setting) the header must not be reported.
+    pub fn good_read_header(headers: &HeaderMap) {
+        assert_eq!(headers.get(header::ACCESS_CONTROL_ALLOW_ORIGIN).unwrap(), "*");
+        assert!(check(headers.get(header::ACCESS_CONTROL_ALLOW_ORIGIN), "*"));
+    }
 }
 
 mod actix_cors_example {

@@ -80,13 +80,21 @@ private predicate isWildcardOriginValue(Expr e) {
   isWildcardOriginValue(getAnInnerExpr(e))
 }
 
-/** Holds if `e` names (or is derived from a name of) the `Access-Control-Allow-Origin` header. */
+/**
+ * Holds if `e` names the `Access-Control-Allow-Origin` header, either directly
+ * or via a header-name constructor such as `HeaderName::from_static(...)`.
+ */
 private predicate isAllowOriginHeaderName(Expr e) {
   e.(StringLiteralExpr).getTextValue().toLowerCase() = "\"access-control-allow-origin\""
   or
   pathEndsWith(e.(PathExpr).getPath(), "ACCESS_CONTROL_ALLOW_ORIGIN")
   or
-  isAllowOriginHeaderName(getAnInnerExpr(e))
+  isAllowOriginHeaderName([e.(ParenExpr).getExpr(), e.(RefExpr).getExpr()])
+  or
+  exists(CallExpr c | c = e |
+    isPathCall(c, "HeaderName", ["from_static", "from_lowercase", "from_bytes", "from_str"]) and
+    isAllowOriginHeaderName(c.getArgList().getArg(0))
+  )
 }
 
 /**
