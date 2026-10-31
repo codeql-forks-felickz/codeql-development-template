@@ -1,0 +1,2 @@
+| LogoutController.cs:11:42:11:47 | Logout | This logout action lacks anti-forgery protection against cross-site requests. |
+| LogoutController.cs:18:42:18:55 | PostOnlyLogout | This logout action lacks anti-forgery protection against cross-site requests. |

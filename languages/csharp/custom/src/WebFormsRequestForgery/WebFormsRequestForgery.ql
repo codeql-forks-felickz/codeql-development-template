@@ -44,7 +44,7 @@ class StateChangingCall extends Call {
   StateChangingCall() {
     this.getTarget().fromSource() and
     splitWords(this.getTarget().getName())
-        .regexpMatch("(transfer|withdraw|deposit|pay|purchase|buy|charge|place|update|delete|remove|insert|create|save|change|edit|modify|approve|cancel|send|submit|reset)(_.*)?")
+        .regexpMatch("(transfer|withdraw|deposit|pay|purchase|buy|charge|place|update|delete|remove|insert|create|save|change|edit|modify|approve|cancel|send|submit|reset|upload|rebuild)(_.*)?")
     or
     this.getTarget().hasName(["ExecuteNonQuery", "ExecuteNonQueryAsync"])
   }

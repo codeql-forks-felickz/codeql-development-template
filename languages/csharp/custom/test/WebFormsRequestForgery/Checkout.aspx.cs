@@ -135,4 +135,38 @@ namespace Shop.Checkout
 
         private void UpdateOrder(string value) { }
     }
+
+    public class CmsPage : Page
+    {
+        protected void btnChangePassword_Click(object sender, EventArgs e) // $ Alert[cs/web/webforms-request-forgery]
+        {
+            ChangePassword();
+        }
+
+        protected void btnCreateComment_Click(object sender, EventArgs e) // $ Alert[cs/web/webforms-request-forgery]
+        {
+            CreateComment();
+        }
+
+        protected void btnUploadFile_Click(object sender, EventArgs e) // $ Alert[cs/web/webforms-request-forgery]
+        {
+            UploadFile();
+        }
+
+        protected void btnRebuildDatabase_Click(object sender, EventArgs e) // $ Alert[cs/web/webforms-request-forgery]
+        {
+            RebuildDatabase();
+        }
+
+        protected void btnValidatedUpload_Click(object sender, EventArgs e)
+        {
+            AntiForgery.Validate();
+            UploadFile();
+        }
+
+        private void ChangePassword() { }
+        private void CreateComment() { }
+        private void UploadFile() { }
+        private void RebuildDatabase() { }
+    }
 }

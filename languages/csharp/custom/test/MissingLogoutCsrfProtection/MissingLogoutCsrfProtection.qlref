@@ -1,0 +1,2 @@
+query: MissingLogoutCsrfProtection/MissingLogoutCsrfProtection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
