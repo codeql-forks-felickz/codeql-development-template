@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Version-pinned packages from public CDNs without an integrity check -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script> <!-- $ Alert -->
+    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js" crossorigin="anonymous"></script> <!-- $ Alert -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script> <!-- $ Alert -->
+    <script src="HTTPS://STACKPATH.BOOTSTRAPCDN.COM/bootstrap/4.5.2/js/bootstrap.min.js"></script> <!-- $ Alert -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js" integrity=""></script> <!-- $ Alert -->
+    <!-- Version-pinned static asset on an arbitrary third-party host -->
+    <script src="https://static.example-cdn.net/libs/chart-2.9.4.min.js"></script> <!-- $ Alert -->
+    <script src="https://assets.example.org/widgets/v1.2/widget.js?build=7"></script> <!-- $ Alert -->
+
+    <!-- OK: integrity check present -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+    <!-- OK: same-origin scripts -->
+    <script src="/assets/application.js"></script>
+    <script src="vendor/jquery-3.6.0.min.js"></script>
+    <script src="http://localhost:3000/packs/app-1.0.0.js"></script>
+    <!-- OK: unversioned, dynamically served third-party scripts where SRI is not applicable -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
+    <!-- OK: inline script -->
+    <script>console.log("inline");</script>
+    <!-- OK here: already reported by js/functionality-from-untrusted-source -->
+    <script src="http://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
+  </head>
+  <body></body>
+</html>
