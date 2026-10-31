@@ -1,0 +1,2 @@
+query: ExceptionInformationExposure/ExceptionInformationExposure.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
