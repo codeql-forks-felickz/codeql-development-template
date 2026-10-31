@@ -5,8 +5,8 @@ Directly incorporating user input into a URL redirect request without validating
 This query extends the standard `java/unvalidated-url-redirection` query. In addition to the servlet and other sinks recognized by that query, it reports remote input that controls:
 
 - the target of a Spring MVC redirect view name, for example `return "redirect:" + url;` or `new ModelAndView("redirect:" + url)`;
-- a Spring `Location` response header, for example `headers.add("Location", url)`, `headers.get("Location").add(url)`, `headers.setLocation(uri)` or `ResponseEntity.status(FOUND).location(uri)`;
-- a redirect target that only prepends `"/"`, for example `response.sendRedirect("/" + input)`. An input that starts with `/` produces a scheme-relative URL such as `//evil.example`, which browsers treat as an external host.
+- a `Location` header on a Spring `HttpHeaders` object (also when held in a `MultiValueMap` variable) or `ResponseEntity` builder, for example `headers.add("Location", url)`, `headers.get("Location").add(url)`, `headers.setLocation(uri)` or `ResponseEntity.status(FOUND).location(uri)`;
+- a redirect target that only prepends `"/"`, for example `response.sendRedirect("/" + input)` or `new StringBuilder("/").append(input)`. An input that starts with `/` produces a scheme-relative URL such as `//evil.example`, which browsers treat as an external host.
 
 ## Recommendation
 

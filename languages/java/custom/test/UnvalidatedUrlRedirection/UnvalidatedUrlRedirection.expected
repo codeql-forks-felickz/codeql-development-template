@@ -2,6 +2,7 @@
 | ServletRedirect.java:13:31:13:37 | content | ServletRedirect.java:10:22:10:52 | getParameter(...) : String | ServletRedirect.java:13:31:13:37 | content | Untrusted URL redirection depends on a $@. | ServletRedirect.java:10:22:10:52 | getParameter(...) | user-provided value |
 | ServletRedirect.java:21:36:21:43 | returnTo | ServletRedirect.java:20:23:20:54 | getParameter(...) : String | ServletRedirect.java:21:36:21:43 | returnTo | Untrusted URL redirection depends on a $@. | ServletRedirect.java:20:23:20:54 | getParameter(...) | user-provided value |
 | ServletSchemeRelative.java:24:29:24:54 | ... + ... | ServletSchemeRelative.java:16:24:16:56 | getParameter(...) : String | ServletSchemeRelative.java:24:29:24:54 | ... + ... | Untrusted URL redirection depends on a $@. | ServletSchemeRelative.java:16:24:16:56 | getParameter(...) | user-provided value |
+| ServletSchemeRelative.java:35:27:35:39 | toString(...) | ServletSchemeRelative.java:31:24:31:56 | getParameter(...) : String | ServletSchemeRelative.java:35:27:35:39 | toString(...) | Untrusted URL redirection depends on a $@. | ServletSchemeRelative.java:31:24:31:56 | getParameter(...) | user-provided value |
 | SpringLocationHeader.java:23:46:23:58 | urlToRedirect | SpringLocationHeader.java:28:35:28:80 | urlToRedirect : String | SpringLocationHeader.java:23:46:23:58 | urlToRedirect | Untrusted URL redirection depends on a $@. | SpringLocationHeader.java:28:35:28:80 | urlToRedirect | user-provided value |
 | SpringLocationHeader.java:35:29:35:31 | url | SpringLocationHeader.java:33:32:33:67 | url : String | SpringLocationHeader.java:35:29:35:31 | url | Untrusted URL redirection depends on a $@. | SpringLocationHeader.java:33:32:33:67 | url | user-provided value |
 | SpringLocationHeader.java:42:39:42:41 | url | SpringLocationHeader.java:40:32:40:67 | url : String | SpringLocationHeader.java:42:39:42:41 | url | Untrusted URL redirection depends on a $@. | SpringLocationHeader.java:40:32:40:67 | url | user-provided value |
@@ -19,6 +20,10 @@ edges
 | ServletRedirect.java:10:22:10:52 | getParameter(...) : String | ServletRedirect.java:13:31:13:37 | content | provenance | Src:MaD:48695  |
 | ServletRedirect.java:20:23:20:54 | getParameter(...) : String | ServletRedirect.java:21:36:21:43 | returnTo | provenance | Src:MaD:48695 Sink:MaD:48689 |
 | ServletSchemeRelative.java:16:24:16:56 | getParameter(...) : String | ServletSchemeRelative.java:24:29:24:54 | ... + ... | provenance | Src:MaD:48695  |
+| ServletSchemeRelative.java:31:24:31:56 | getParameter(...) : String | ServletSchemeRelative.java:33:15:33:23 | loginType : String | provenance | Src:MaD:48695  |
+| ServletSchemeRelative.java:33:5:33:6 | sb [post update] : StringBuilder | ServletSchemeRelative.java:35:27:35:28 | sb : StringBuilder | provenance |  |
+| ServletSchemeRelative.java:33:15:33:23 | loginType : String | ServletSchemeRelative.java:33:5:33:6 | sb [post update] : StringBuilder | provenance | MaD:46615 |
+| ServletSchemeRelative.java:35:27:35:28 | sb : StringBuilder | ServletSchemeRelative.java:35:27:35:39 | toString(...) | provenance | MaD:46630 |
 | SpringLocationHeader.java:20:40:20:59 | urlToRedirect : String | SpringLocationHeader.java:23:46:23:58 | urlToRedirect | provenance |  |
 | SpringLocationHeader.java:28:35:28:80 | urlToRedirect : String | SpringLocationHeader.java:29:28:29:40 | urlToRedirect : String | provenance |  |
 | SpringLocationHeader.java:29:28:29:40 | urlToRedirect : String | SpringLocationHeader.java:20:40:20:59 | urlToRedirect : String | provenance |  |
@@ -46,6 +51,11 @@ nodes
 | ServletRedirect.java:21:36:21:43 | returnTo | semmle.label | returnTo |
 | ServletSchemeRelative.java:16:24:16:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | ServletSchemeRelative.java:24:29:24:54 | ... + ... | semmle.label | ... + ... |
+| ServletSchemeRelative.java:31:24:31:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ServletSchemeRelative.java:33:5:33:6 | sb [post update] : StringBuilder | semmle.label | sb [post update] : StringBuilder |
+| ServletSchemeRelative.java:33:15:33:23 | loginType : String | semmle.label | loginType : String |
+| ServletSchemeRelative.java:35:27:35:28 | sb : StringBuilder | semmle.label | sb : StringBuilder |
+| ServletSchemeRelative.java:35:27:35:39 | toString(...) | semmle.label | toString(...) |
 | SpringLocationHeader.java:20:40:20:59 | urlToRedirect : String | semmle.label | urlToRedirect : String |
 | SpringLocationHeader.java:23:46:23:58 | urlToRedirect | semmle.label | urlToRedirect |
 | SpringLocationHeader.java:28:35:28:80 | urlToRedirect : String | semmle.label | urlToRedirect : String |

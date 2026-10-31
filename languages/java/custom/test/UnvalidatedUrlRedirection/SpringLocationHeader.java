@@ -76,6 +76,19 @@ public class SpringLocationHeader {
     return ResponseEntity.status(HttpStatus.OK).header("X-Return-To", url).build();
   }
 
+  private MultiValueMap<String, String> newForm() {
+    return null;
+  }
+
+  // GOOD: a "location" entry in a form or query parameter map is not a response header.
+  @GetMapping("/form")
+  public String form(@RequestParam("location") String location) {
+    MultiValueMap<String, String> form = newForm();
+    form.add("location", location);
+    form.get("location").add(location);
+    return "form";
+  }
+
   // GOOD: the destination is checked against an allowlist.
   @GetMapping("/allowlisted")
   public ResponseEntity<?> allowlisted(@RequestParam("returnTo") String url) {

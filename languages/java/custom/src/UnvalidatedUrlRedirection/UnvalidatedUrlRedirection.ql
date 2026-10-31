@@ -29,12 +29,22 @@ private predicate isLocationHeaderName(Expr e) {
   e.(CompileTimeConstantExpr).getStringValue().toLowerCase() = "location"
 }
 
-/** Holds if `t` is Spring's `MultiValueMap` (for example `HttpHeaders`) or a subtype of it. */
-private predicate isSpringMultiValueMap(Type t) {
-  t.(RefType)
-      .getSourceDeclaration()
-      .getASourceSupertype*()
-      .hasQualifiedName("org.springframework.util", "MultiValueMap")
+/** Holds if `t` is Spring's `HttpHeaders` or a subtype of it. */
+private predicate isSpringHttpHeadersType(Type t) {
+  t.(RefType).getASourceSupertype*().hasQualifiedName("org.springframework.http", "HttpHeaders")
+}
+
+/**
+ * Holds if `e` is a Spring `HttpHeaders` object, including one that is held in a variable
+ * declared as a `MultiValueMap`.
+ */
+private predicate isSpringHttpHeaders(Expr e) {
+  isSpringHttpHeadersType(e.getType())
+  or
+  exists(ClassInstanceExpr cie |
+    isSpringHttpHeadersType(cie.getConstructedType()) and
+    DataFlow::localExprFlow(cie, e)
+  )
 }
 
 /**
@@ -82,7 +92,7 @@ private class SpringLocationHeaderSink extends UrlRedirectSink {
   SpringLocationHeaderSink() {
     exists(MethodCall ma | this.asExpr() = ma.getArgument(1) |
       // headers.add("Location", url), headers.set("Location", url), headers.put("Location", urls)
-      isSpringMultiValueMap(ma.getQualifier().getType()) and
+      isSpringHttpHeaders(ma.getQualifier()) and
       ma.getMethod().hasName(["add", "set", "put"]) and
       isLocationHeaderName(ma.getArgument(0))
       or
@@ -101,7 +111,7 @@ private class SpringLocationHeaderSink extends UrlRedirectSink {
       add.getMethod().hasName(["add", "set"]) and
       this.asExpr() = add.getArgument(add.getNumArgument() - 1) and
       get.getMethod().hasName("get") and
-      isSpringMultiValueMap(get.getQualifier().getType()) and
+      isSpringHttpHeaders(get.getQualifier()) and
       isLocationHeaderName(get.getArgument(0))
     )
     or
@@ -120,7 +130,8 @@ private class SpringLocationHeaderSink extends UrlRedirectSink {
 }
 
 /**
- * Holds if `node` is appended directly to the constant `"/"`, as in `"/" + input`.
+ * Holds if `node` is appended after the constant `"/"`, as in `"/" + input` or
+ * `new StringBuilder("/").append(input)`.
  *
  * The standard `HostnameSanitizingPrefix` treats a bare `"/"` prefix as fixing the host, which is
  * true for request URLs but not for redirect targets: `"/" + "/evil.example"` is the
@@ -128,10 +139,8 @@ private class SpringLocationHeaderSink extends UrlRedirectSink {
  * prefix (for example `"/app/"`) are not affected.
  */
 private predicate isSchemeRelativeRedirectTarget(DataFlow::Node node) {
-  exists(AddExpr add |
-    add.getLeftOperand().(CompileTimeConstantExpr).getStringValue() = "/" and
-    add.getRightOperand() = node.asExpr()
-  ) and
+  node.asExpr() =
+    any(HostnameSanitizingPrefix p | p.getStringValue() = "/").getAnAppendedExpression() and
   not node.asExpr() =
     any(HostnameSanitizingPrefix p | p.getStringValue() != "/").getAnAppendedExpression()
 }

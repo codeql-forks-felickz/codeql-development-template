@@ -26,6 +26,15 @@ public class ServletSchemeRelative implements Filter {
     chain.doFilter(req, res);
   }
 
+  public void builder(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
+    String loginType = request.getParameter("logintype"); // $ Source
+    StringBuilder sb = new StringBuilder("/");
+    sb.append(loginType);
+    sb.append("/login");
+    response.sendRedirect(sb.toString()); // $ Alert
+  }
+
   public void safe(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String loginType = request.getParameter("logintype");
     // GOOD: a non-empty path segment fixes the host.
