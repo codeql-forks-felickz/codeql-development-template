@@ -1,0 +1,24 @@
+#select
+| BookstoreController.cs:24:17:24:78 | ... + ... | BookstoreController.cs:15:37:15:42 | author : String | BookstoreController.cs:24:17:24:78 | ... + ... | This XPath expression depends on a $@. | BookstoreController.cs:15:37:15:42 | author | user-provided value |
+| BookstoreController.cs:32:49:32:79 | ... + ... | BookstoreController.cs:28:36:28:40 | title : String | BookstoreController.cs:32:49:32:79 | ... + ... | This XPath expression depends on a $@. | BookstoreController.cs:28:36:28:40 | title | user-provided value |
+| BookstoreController.cs:74:29:74:67 | ... + ... | BookstoreController.cs:71:36:71:43 | reviewer : String | BookstoreController.cs:74:29:74:67 | ... + ... | This XPath expression depends on a $@. | BookstoreController.cs:71:36:71:43 | reviewer | user-provided value |
+| BookstoreController.cs:131:30:131:62 | ... + ... | BookstoreController.cs:128:80:128:85 | author : String | BookstoreController.cs:131:30:131:62 | ... + ... | This XPath expression depends on a $@. | BookstoreController.cs:128:80:128:85 | author | user-provided value |
+| PartialBookSearch.Actions.cs:10:34:10:66 | ... + ... | PartialBookSearch.Actions.cs:7:33:7:38 | author : String | PartialBookSearch.Actions.cs:10:34:10:66 | ... + ... | This XPath expression depends on a $@. | PartialBookSearch.Actions.cs:7:33:7:38 | author | user-provided value |
+edges
+| BookstoreController.cs:15:37:15:42 | author : String | BookstoreController.cs:24:17:24:78 | ... + ... | provenance |  |
+| BookstoreController.cs:28:36:28:40 | title : String | BookstoreController.cs:32:49:32:79 | ... + ... | provenance |  |
+| BookstoreController.cs:71:36:71:43 | reviewer : String | BookstoreController.cs:74:29:74:67 | ... + ... | provenance |  |
+| BookstoreController.cs:128:80:128:85 | author : String | BookstoreController.cs:131:30:131:62 | ... + ... | provenance |  |
+| PartialBookSearch.Actions.cs:7:33:7:38 | author : String | PartialBookSearch.Actions.cs:10:34:10:66 | ... + ... | provenance |  |
+nodes
+| BookstoreController.cs:15:37:15:42 | author : String | semmle.label | author : String |
+| BookstoreController.cs:24:17:24:78 | ... + ... | semmle.label | ... + ... |
+| BookstoreController.cs:28:36:28:40 | title : String | semmle.label | title : String |
+| BookstoreController.cs:32:49:32:79 | ... + ... | semmle.label | ... + ... |
+| BookstoreController.cs:71:36:71:43 | reviewer : String | semmle.label | reviewer : String |
+| BookstoreController.cs:74:29:74:67 | ... + ... | semmle.label | ... + ... |
+| BookstoreController.cs:128:80:128:85 | author : String | semmle.label | author : String |
+| BookstoreController.cs:131:30:131:62 | ... + ... | semmle.label | ... + ... |
+| PartialBookSearch.Actions.cs:7:33:7:38 | author : String | semmle.label | author : String |
+| PartialBookSearch.Actions.cs:10:34:10:66 | ... + ... | semmle.label | ... + ... |
+subpaths
