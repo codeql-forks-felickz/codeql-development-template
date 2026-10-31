@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Personal data such as social security numbers, dates of birth and salaries, as well as
+passwords, should not be stored in a database in cleartext. Anyone who can read the database,
+a backup of it, or the result of an injection attack against it can then read the data directly.
+</p>
+<p>
+This query reports SQL <code>INSERT</code>, <code>UPDATE</code>, <code>REPLACE</code>,
+<code>UPSERT</code> and <code>MERGE</code> statements executed through <code>database/sql</code>
+(or another modeled SQL library) whose query text or bind parameters contain data whose name
+suggests it is sensitive, unless the data was first passed through a hashing or encryption function.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Hash passwords with a password-specific adaptive hash function such as Argon2id, bcrypt or scrypt.
+Encrypt other sensitive data that must be recoverable, for example with an authenticated cipher
+such as AES-GCM and a key that is not stored alongside the data. Avoid storing sensitive data at
+all if the application does not need it.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, the social security number of a user is written to the database in
+cleartext (BAD), and in the second function it is encrypted before it is stored (GOOD).
+</p>
+<sample language="go">
+func storeUser(db *sql.DB, user User) {
+	// BAD: the SSN is stored in cleartext
+	db.Exec("INSERT INTO users (name, ssn) VALUES (?, ?)", user.Name, user.SSN)
+}
+
+func storeUserSafely(db *sql.DB, user User) {
+	// GOOD: the SSN is encrypted before it is stored
+	db.Exec("INSERT INTO users (name, ssn) VALUES (?, ?)", user.Name, encrypt(user.SSN))
+}
+</sample>
+</example>
+
+<references>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html">Cryptographic Storage Cheat Sheet</a>.</li>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">Password Storage Cheat Sheet</a>.</li>
+</references>
+</qhelp>

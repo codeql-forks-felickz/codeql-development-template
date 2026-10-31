@@ -1,0 +1,2 @@
+query: DatabaseErrorExposure/DatabaseErrorExposure.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
