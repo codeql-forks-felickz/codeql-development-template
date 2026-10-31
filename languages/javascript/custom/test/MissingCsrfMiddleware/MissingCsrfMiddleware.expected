@@ -1,3 +1,8 @@
 | client_sessions.js:6:9:6:71 | session ... ret' }) | This cookie middleware is serving a $@ without CSRF protection. | client_sessions.js:8:21:11:1 | functio ... 204);\\n} | request handler |
+| session_auth_findings.js:7:11:7:24 | cookieParser() | This cookie middleware is serving a $@ without CSRF protection. | session_auth_findings.js:17:5:17:14 | isLoggedIn | request handler |
+| session_auth_findings.js:7:11:7:24 | cookieParser() | This cookie middleware is serving a $@ without CSRF protection. | session_auth_findings.js:18:5:21:5 | functio ... ;\\n    } | request handler |
+| session_auth_findings.js:33:11:33:57 | session ... CRET }) | This cookie middleware is serving a $@ without CSRF protection. | session_auth_findings.js:53:7:53:16 | isLoggedIn | request handler |
+| session_auth_findings.js:33:11:33:57 | session ... CRET }) | This cookie middleware is serving a $@ without CSRF protection. | session_auth_findings.js:54:7:54:40 | profile ... eUpdate | request handler |
+| session_auth_findings.js:66:11:66:24 | cookieParser() | This cookie middleware is serving a $@ without CSRF protection. | session_auth_findings.js:77:24:77:42 | updateUserProfile() | request handler |
 | session_guard_plain.js:6:9:6:22 | cookieParser() | This cookie middleware is serving a $@ without CSRF protection. | session_guard_plain.js:16:23:19:1 | functio ... 204);\\n} | request handler |
 | session_guard_unless.js:10:9:10:22 | cookieParser() | This cookie middleware is serving a $@ without CSRF protection. | session_guard_unless.js:23:26:26:1 | functio ... e });\\n} | request handler |
