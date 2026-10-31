@@ -1,0 +1,18 @@
+#select
+| js/goatApp/templates/admin_panel.html:9:88:9:129 | <%= (user.username \|\| '').toLowerCase() %> | js/goatApp/view/AdminView.js:24:38:24:61 | this.co ... oJSON() | js/goatApp/templates/admin_panel.html:9:88:9:129 | <%= (user.username \|\| '').toLowerCase() %> | Cross-site scripting vulnerability: $@ is interpolated without escaping by an Underscore template. | js/goatApp/view/AdminView.js:24:38:24:61 | this.co ... oJSON() | this value |
+| js/goatApp/templates/profile.html:1:5:1:22 | <%= displayName %> | js/goatApp/view/ProfileView.js:9:41:9:59 | this.model.toJSON() | js/goatApp/templates/profile.html:1:5:1:22 | <%= displayName %> | Cross-site scripting vulnerability: $@ is interpolated without escaping by an Underscore template. | js/goatApp/view/ProfileView.js:9:41:9:59 | this.model.toJSON() | this value |
+edges
+| js/goatApp/templates/admin_panel.html:9:92:9:126 | (user.u ... rCase() | js/goatApp/templates/admin_panel.html:9:88:9:129 | <%= (user.username \|\| '').toLowerCase() %> | provenance |  |
+| js/goatApp/templates/admin_panel.html:9:93:9:96 | user | js/goatApp/templates/admin_panel.html:9:92:9:126 | (user.u ... rCase() | provenance |  |
+| js/goatApp/templates/profile.html:1:9:1:19 | displayName | js/goatApp/templates/profile.html:1:5:1:22 | <%= displayName %> | provenance |  |
+| js/goatApp/view/AdminView.js:24:38:24:61 | this.co ... oJSON() | js/goatApp/templates/admin_panel.html:9:93:9:96 | user | provenance | Config |
+| js/goatApp/view/ProfileView.js:9:41:9:59 | this.model.toJSON() | js/goatApp/templates/profile.html:1:9:1:19 | displayName | provenance | Config |
+nodes
+| js/goatApp/templates/admin_panel.html:9:88:9:129 | <%= (user.username \|\| '').toLowerCase() %> | semmle.label | <%= (user.username \|\| '').toLowerCase() %> |
+| js/goatApp/templates/admin_panel.html:9:92:9:126 | (user.u ... rCase() | semmle.label | (user.u ... rCase() |
+| js/goatApp/templates/admin_panel.html:9:93:9:96 | user | semmle.label | user |
+| js/goatApp/templates/profile.html:1:5:1:22 | <%= displayName %> | semmle.label | <%= displayName %> |
+| js/goatApp/templates/profile.html:1:9:1:19 | displayName | semmle.label | displayName |
+| js/goatApp/view/AdminView.js:24:38:24:61 | this.co ... oJSON() | semmle.label | this.co ... oJSON() |
+| js/goatApp/view/ProfileView.js:9:41:9:59 | this.model.toJSON() | semmle.label | this.model.toJSON() |
+subpaths

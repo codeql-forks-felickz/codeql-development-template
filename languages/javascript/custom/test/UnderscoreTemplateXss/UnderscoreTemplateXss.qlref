@@ -1,0 +1,2 @@
+query: UnderscoreTemplateXss/UnderscoreTemplateXss.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

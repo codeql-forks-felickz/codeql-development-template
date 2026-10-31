@@ -1,0 +1,2 @@
+query: SwigDisabledAutoescapeXss/SwigDisabledAutoescapeXss.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

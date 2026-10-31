@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="angular.js"></script>
+  <script src="angular-sanitize.js"></script>
+</head>
+<body ng-app="pixi" ng-controller="pixiController">
+  <!-- SCE is enabled (the default), so ng-bind-html sanitizes these values: no alerts. -->
+  <b ng-bind-html="search_response"></b>
+  <div ng-bind-html="location_message"></div>
+
+  <script>
+    var app = angular.module('pixi', ['ngSanitize']).
+    config(function($sceProvider) {
+      $sceProvider.enabled(true)
+    }).
+    controller('pixiController', function($scope, $http, $location) {
+      $scope.search = function(query) {
+        $http.get('/search/?query=' + query)
+          .then(function success(response) {
+            $scope.pictures = response.data;
+          }, function error(response) {
+            $scope.search_response = response.data; // OK - SCE enabled
+          });
+      };
+
+      $scope.location_message = $location.search().msg; // OK - SCE enabled
+    });
+  </script>
+</body>
+</html>

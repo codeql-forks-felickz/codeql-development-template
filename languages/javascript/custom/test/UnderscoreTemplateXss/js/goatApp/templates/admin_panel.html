@@ -1,0 +1,17 @@
+<table class="table" id="admin-user-table">
+    <tbody>
+    <% _(users).each(function(user) {
+        var pct = user.totalLessons > 0
+            ? Math.round((user.lessonsSolved / user.totalLessons) * 100)
+            : 0;
+    %>
+    <tr>
+        <td><a href="#" class="admin-detail-link" data-username="<%- user.username %>"><%= (user.username || '').toLowerCase() %></a></td> <!-- $ Alert[js/underscore-template-xss] -->
+        <td><%= user.role === 'WEBGOAT_ADMIN' ? '<span class="label label-danger">Admin</span>' : '<span class="label label-default">User</span>' %></td>
+        <td><%- user.email %></td>
+        <td><%= _.escape(user.displayName) %></td>
+        <td><%= pct %>%</td>
+    </tr>
+    <% }); %>
+    </tbody>
+</table>
