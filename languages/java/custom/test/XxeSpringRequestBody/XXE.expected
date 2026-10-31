@@ -1,0 +1,27 @@
+#select
+| com/example/xxe/CommentsCache.java:20:38:20:58 | new StringReader(...) | com/example/xxe/ContentTypeAssignment.java:16:7:16:36 | commentStr : String | com/example/xxe/CommentsCache.java:20:38:20:58 | new StringReader(...) | XML parsing depends on a $@ without guarding against external entity expansion. | com/example/xxe/ContentTypeAssignment.java:16:7:16:36 | commentStr | user-provided value |
+| com/example/xxe/CommentsCache.java:20:38:20:58 | new StringReader(...) | com/example/xxe/SimpleXXE.java:14:34:14:63 | commentStr : String | com/example/xxe/CommentsCache.java:20:38:20:58 | new StringReader(...) | XML parsing depends on a $@ without guarding against external entity expansion. | com/example/xxe/SimpleXXE.java:14:34:14:63 | commentStr | user-provided value |
+| com/example/xxe/EntityExpansionLimit.java:19:18:19:55 | new InputSource(...) | com/example/xxe/EntityExpansionLimit.java:16:30:16:52 | xml : String | com/example/xxe/EntityExpansionLimit.java:19:18:19:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | com/example/xxe/EntityExpansionLimit.java:16:30:16:52 | xml | user-provided value |
+edges
+| com/example/xxe/CommentsCache.java:13:38:13:47 | xml : String | com/example/xxe/CommentsCache.java:20:55:20:57 | xml : String | provenance |  |
+| com/example/xxe/CommentsCache.java:20:55:20:57 | xml : String | com/example/xxe/CommentsCache.java:20:38:20:58 | new StringReader(...) | provenance | MaD:46546 |
+| com/example/xxe/ContentTypeAssignment.java:16:7:16:36 | commentStr : String | com/example/xxe/ContentTypeAssignment.java:20:32:20:41 | commentStr : String | provenance |  |
+| com/example/xxe/ContentTypeAssignment.java:20:32:20:41 | commentStr : String | com/example/xxe/CommentsCache.java:13:38:13:47 | xml : String | provenance |  |
+| com/example/xxe/EntityExpansionLimit.java:16:30:16:52 | xml : String | com/example/xxe/EntityExpansionLimit.java:19:51:19:53 | xml : String | provenance |  |
+| com/example/xxe/EntityExpansionLimit.java:19:34:19:54 | new StringReader(...) : StringReader | com/example/xxe/EntityExpansionLimit.java:19:18:19:55 | new InputSource(...) | provenance | MaD:53986 |
+| com/example/xxe/EntityExpansionLimit.java:19:51:19:53 | xml : String | com/example/xxe/EntityExpansionLimit.java:19:34:19:54 | new StringReader(...) : StringReader | provenance | MaD:46546 |
+| com/example/xxe/SimpleXXE.java:14:34:14:63 | commentStr : String | com/example/xxe/SimpleXXE.java:15:30:15:39 | commentStr : String | provenance |  |
+| com/example/xxe/SimpleXXE.java:15:30:15:39 | commentStr : String | com/example/xxe/CommentsCache.java:13:38:13:47 | xml : String | provenance |  |
+nodes
+| com/example/xxe/CommentsCache.java:13:38:13:47 | xml : String | semmle.label | xml : String |
+| com/example/xxe/CommentsCache.java:20:38:20:58 | new StringReader(...) | semmle.label | new StringReader(...) |
+| com/example/xxe/CommentsCache.java:20:55:20:57 | xml : String | semmle.label | xml : String |
+| com/example/xxe/ContentTypeAssignment.java:16:7:16:36 | commentStr : String | semmle.label | commentStr : String |
+| com/example/xxe/ContentTypeAssignment.java:20:32:20:41 | commentStr : String | semmle.label | commentStr : String |
+| com/example/xxe/EntityExpansionLimit.java:16:30:16:52 | xml : String | semmle.label | xml : String |
+| com/example/xxe/EntityExpansionLimit.java:19:18:19:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| com/example/xxe/EntityExpansionLimit.java:19:34:19:54 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| com/example/xxe/EntityExpansionLimit.java:19:51:19:53 | xml : String | semmle.label | xml : String |
+| com/example/xxe/SimpleXXE.java:14:34:14:63 | commentStr : String | semmle.label | commentStr : String |
+| com/example/xxe/SimpleXXE.java:15:30:15:39 | commentStr : String | semmle.label | commentStr : String |
+subpaths
