@@ -1,0 +1,44 @@
+#select
+| ShepherdLogManager.java:15:42:15:94 | ... + ... | ShepherdLogManager.java:23:24:23:59 | getHeader(...) : String | ShepherdLogManager.java:15:42:15:94 | ... + ... | This log entry depends on a $@. | ShepherdLogManager.java:23:24:23:59 | getHeader(...) | user-provided value |
+| ShepherdLogManager.java:29:35:29:43 | forwarded | ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:29:35:29:43 | forwarded | This log entry depends on a $@. | ShepherdLogManager.java:28:24:28:59 | getHeader(...) | user-provided value |
+| ShepherdLogManager.java:30:24:30:32 | forwarded | ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:30:24:30:32 | forwarded | This log entry depends on a $@. | ShepherdLogManager.java:28:24:28:59 | getHeader(...) | user-provided value |
+| ShepherdLogManager.java:31:5:31:42 | new ..[] { .. } | ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:31:5:31:42 | new ..[] { .. } | This log entry depends on a $@. | ShepherdLogManager.java:28:24:28:59 | getHeader(...) | user-provided value |
+| ShepherdLogManager.java:34:26:34:28 | ctx | ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:34:26:34:28 | ctx | This log entry depends on a $@. | ShepherdLogManager.java:28:24:28:59 | getHeader(...) | user-provided value |
+| ShepherdLogManager.java:35:79:35:87 | forwarded | ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:35:79:35:87 | forwarded | This log entry depends on a $@. | ShepherdLogManager.java:28:24:28:59 | getHeader(...) | user-provided value |
+| ShepherdLogManager.java:36:20:36:28 | forwarded | ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:36:20:36:28 | forwarded | This log entry depends on a $@. | ShepherdLogManager.java:28:24:28:59 | getHeader(...) | user-provided value |
+| ShepherdLogManager.java:40:36:40:43 | messages | ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:40:36:40:43 | messages | This log entry depends on a $@. | ShepherdLogManager.java:28:24:28:59 | getHeader(...) | user-provided value |
+edges
+| ShepherdLogManager.java:13:49:13:69 | theForwardedIp : String | ShepherdLogManager.java:15:42:15:94 | ... + ... | provenance | Sink:MaD:0 |
+| ShepherdLogManager.java:23:24:23:59 | getHeader(...) : String | ShepherdLogManager.java:24:43:24:51 | forwarded : String | provenance | Src:MaD:48684  |
+| ShepherdLogManager.java:24:43:24:51 | forwarded : String | ShepherdLogManager.java:13:49:13:69 | theForwardedIp : String | provenance |  |
+| ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:29:35:29:43 | forwarded | provenance | Src:MaD:48684 Sink:MaD:1 |
+| ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:30:24:30:32 | forwarded | provenance | Src:MaD:48684 Sink:MaD:3 |
+| ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:31:33:31:41 | forwarded : String | provenance | Src:MaD:48684  |
+| ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:33:19:33:27 | forwarded : String | provenance | Src:MaD:48684  |
+| ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:35:79:35:87 | forwarded | provenance | Src:MaD:48684 Sink:MaD:6 |
+| ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:36:20:36:28 | forwarded | provenance | Src:MaD:48684 Sink:MaD:12 |
+| ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | ShepherdLogManager.java:39:18:39:26 | forwarded : String | provenance | Src:MaD:48684  |
+| ShepherdLogManager.java:31:33:31:41 | forwarded : String | ShepherdLogManager.java:31:5:31:42 | new ..[] { .. } | provenance | Sink:MaD:5 |
+| ShepherdLogManager.java:33:5:33:7 | ctx [post update] : HashMap [<map.value>] : String | ShepherdLogManager.java:34:26:34:28 | ctx | provenance | Sink:MaD:2 |
+| ShepherdLogManager.java:33:19:33:27 | forwarded : String | ShepherdLogManager.java:33:5:33:7 | ctx [post update] : HashMap [<map.value>] : String | provenance | MaD:47877 |
+| ShepherdLogManager.java:39:5:39:12 | messages [post update] : ArrayList [<element>] : String | ShepherdLogManager.java:40:36:40:43 | messages | provenance | Sink:MaD:11 |
+| ShepherdLogManager.java:39:18:39:26 | forwarded : String | ShepherdLogManager.java:39:5:39:12 | messages [post update] : ArrayList [<element>] : String | provenance | MaD:47710 |
+nodes
+| ShepherdLogManager.java:13:49:13:69 | theForwardedIp : String | semmle.label | theForwardedIp : String |
+| ShepherdLogManager.java:15:42:15:94 | ... + ... | semmle.label | ... + ... |
+| ShepherdLogManager.java:23:24:23:59 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| ShepherdLogManager.java:24:43:24:51 | forwarded : String | semmle.label | forwarded : String |
+| ShepherdLogManager.java:28:24:28:59 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| ShepherdLogManager.java:29:35:29:43 | forwarded | semmle.label | forwarded |
+| ShepherdLogManager.java:30:24:30:32 | forwarded | semmle.label | forwarded |
+| ShepherdLogManager.java:31:5:31:42 | new ..[] { .. } | semmle.label | new ..[] { .. } |
+| ShepherdLogManager.java:31:33:31:41 | forwarded : String | semmle.label | forwarded : String |
+| ShepherdLogManager.java:33:5:33:7 | ctx [post update] : HashMap [<map.value>] : String | semmle.label | ctx [post update] : HashMap [<map.value>] : String |
+| ShepherdLogManager.java:33:19:33:27 | forwarded : String | semmle.label | forwarded : String |
+| ShepherdLogManager.java:34:26:34:28 | ctx | semmle.label | ctx |
+| ShepherdLogManager.java:35:79:35:87 | forwarded | semmle.label | forwarded |
+| ShepherdLogManager.java:36:20:36:28 | forwarded | semmle.label | forwarded |
+| ShepherdLogManager.java:39:5:39:12 | messages [post update] : ArrayList [<element>] : String | semmle.label | messages [post update] : ArrayList [<element>] : String |
+| ShepherdLogManager.java:39:18:39:26 | forwarded : String | semmle.label | forwarded : String |
+| ShepherdLogManager.java:40:36:40:43 | messages | semmle.label | messages |
+subpaths
