@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+A JSON Web Token (JWT) is a bearer credential: anyone who holds a validly signed token is
+accepted by every service that trusts the signing key. If the token has no expiration
+(<code>exp</code>) claim, it remains valid forever. Logging out, rotating a password, or
+revoking a role then has no effect on tokens that were already issued, and a token that leaks
+(for example through logs, browser storage, or a compromised device) can be replayed
+indefinitely. This is an instance of insufficient session expiration (CWE-613).
+</p>
+<p>
+This query flags calls that sign a JWT whose payload is an object literal without an
+<code>exp</code> property, when no expiration is configured in any other way. It recognizes:
+</p>
+<ul>
+<li><code>encode</code> from <code>jwt-simple</code>, which has no expiration option;</li>
+<li><code>sign</code> from <code>jsonwebtoken</code> without an <code>expiresIn</code> option;</li>
+<li><code>SignJWT</code> builders from <code>jose</code> on which <code>setExpirationTime</code> is never called.</li>
+</ul>
+</overview>
+
+<recommendation>
+<p>
+Always give issued tokens a short lifetime. Either add an <code>exp</code> claim to the payload,
+or use the library option that sets it (<code>expiresIn</code> for <code>jsonwebtoken</code>,
+<code>setExpirationTime</code> for <code>jose</code>). Pair short-lived access tokens with
+refresh tokens or server-side revocation if longer sessions are required.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example issues an access token with no expiration:
+</p>
+<sample src="examples/JwtMissingExpirationBad.js" />
+<p>
+The token can be used for as long as the signing key is trusted. The fixed version sets a
+15 minute lifetime with the <code>expiresIn</code> option:
+</p>
+<sample src="examples/JwtMissingExpirationGood.js" />
+</example>
+
+<references>
+<li>MITRE: <a href="https://cwe.mitre.org/data/definitions/613.html">CWE-613: Insufficient Session Expiration</a>.</li>
+<li>IETF: <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.4">RFC 7519, section 4.1.4: "exp" (Expiration Time) Claim</a>.</li>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html">JSON Web Token Cheat Sheet</a>.</li>
+<li>jsonwebtoken: <a href="https://github.com/auth0/node-jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback">jwt.sign options</a>.</li>
+<li>jose: <a href="https://github.com/panva/jose/blob/main/docs/jwt/sign/classes/SignJWT.md">SignJWT</a>.</li>
+</references>
+</qhelp>
