@@ -1,0 +1,89 @@
+#select
+| Test.cs:18:32:18:35 | access to local variable data | Test.cs:12:35:12:44 | access to property Params : NameValueCollection | Test.cs:18:32:18:35 | access to local variable data | This arithmetic operand depends on a $@ and is not range checked, which may cause an integer overflow. | Test.cs:12:35:12:44 | access to property Params | user-provided value |
+| Test.cs:25:13:25:16 | access to local variable data | Test.cs:24:36:24:50 | access to property QueryString : NameValueCollection | Test.cs:25:13:25:16 | access to local variable data | This arithmetic operand depends on a $@ and is not range checked, which may cause an integer overflow. | Test.cs:24:36:24:50 | access to property QueryString | user-provided value |
+| Test.cs:32:26:32:29 | access to local variable data | Test.cs:31:34:31:41 | access to property Form : NameValueCollection | Test.cs:32:26:32:29 | access to local variable data | This arithmetic operand depends on a $@ and is not range checked, which may cause an integer overflow. | Test.cs:31:34:31:41 | access to property Form | user-provided value |
+| Test.cs:40:30:40:33 | access to local variable data | Test.cs:38:30:38:44 | access to property QueryString : NameValueCollection | Test.cs:40:30:40:33 | access to local variable data | This arithmetic operand depends on a $@ and is not range checked, which may cause an integer overflow. | Test.cs:38:30:38:44 | access to property QueryString | user-provided value |
+| Test.cs:131:60:131:63 | access to local variable data | Test.cs:127:38:127:52 | access to property QueryString : NameValueCollection | Test.cs:131:60:131:63 | access to local variable data | This divisor depends on a $@ and is not checked for zero, which may cause a DivideByZeroException. | Test.cs:127:38:127:52 | access to property QueryString | user-provided value |
+| Test.cs:137:60:137:63 | access to local variable data | Test.cs:136:34:136:43 | access to property Params : NameValueCollection | Test.cs:137:60:137:63 | access to local variable data | This divisor depends on a $@ and is not checked for zero, which may cause a DivideByZeroException. | Test.cs:136:34:136:43 | access to property Params | user-provided value |
+| Test.cs:144:22:144:25 | access to local variable data | Test.cs:143:34:143:48 | access to property QueryString : NameValueCollection | Test.cs:144:22:144:25 | access to local variable data | This divisor depends on a $@ and is not checked for zero, which may cause a DivideByZeroException. | Test.cs:143:34:143:48 | access to property QueryString | user-provided value |
+edges
+| Test.cs:12:20:12:31 | access to local variable stringNumber : String | Test.cs:15:34:15:45 | access to local variable stringNumber : String | provenance |  |
+| Test.cs:12:35:12:44 | access to property Params : NameValueCollection | Test.cs:12:35:12:56 | call to method Get : String | provenance | MaD:12750 |
+| Test.cs:12:35:12:56 | call to method Get : String | Test.cs:12:20:12:31 | access to local variable stringNumber : String | provenance |  |
+| Test.cs:15:17:15:20 | access to local variable data : Int32 | Test.cs:18:32:18:35 | access to local variable data | provenance |  |
+| Test.cs:15:24:15:53 | call to method Parse : Int32 | Test.cs:15:17:15:20 | access to local variable data : Int32 | provenance |  |
+| Test.cs:15:34:15:45 | access to local variable stringNumber : String | Test.cs:15:34:15:52 | call to method Trim : String | provenance | MaD:2982 |
+| Test.cs:15:34:15:52 | call to method Trim : String | Test.cs:15:24:15:53 | call to method Parse : Int32 | provenance | Config |
+| Test.cs:15:34:15:52 | call to method Trim : String | Test.cs:15:24:15:53 | call to method Parse : Int32 | provenance | MaD:2808 |
+| Test.cs:24:18:24:21 | access to local variable data : Int64 | Test.cs:25:13:25:16 | access to local variable data | provenance |  |
+| Test.cs:24:25:24:60 | call to method Parse : Int64 | Test.cs:24:18:24:21 | access to local variable data : Int64 | provenance |  |
+| Test.cs:24:36:24:50 | access to property QueryString : NameValueCollection | Test.cs:24:36:24:59 | access to indexer : String | provenance |  |
+| Test.cs:24:36:24:50 | access to property QueryString : NameValueCollection | Test.cs:24:36:24:59 | access to indexer : String | provenance | MaD:12744 |
+| Test.cs:24:36:24:59 | access to indexer : String | Test.cs:24:25:24:60 | call to method Parse : Int64 | provenance | Config |
+| Test.cs:31:17:31:20 | access to local variable data : Int32 | Test.cs:32:26:32:29 | access to local variable data | provenance |  |
+| Test.cs:31:24:31:52 | call to method Parse : Int32 | Test.cs:31:17:31:20 | access to local variable data : Int32 | provenance |  |
+| Test.cs:31:34:31:41 | access to property Form : NameValueCollection | Test.cs:31:34:31:51 | access to indexer : String | provenance |  |
+| Test.cs:31:34:31:41 | access to property Form : NameValueCollection | Test.cs:31:34:31:51 | access to indexer : String | provenance | MaD:12744 |
+| Test.cs:31:34:31:51 | access to indexer : String | Test.cs:31:24:31:52 | call to method Parse : Int32 | provenance | Config |
+| Test.cs:31:34:31:51 | access to indexer : String | Test.cs:31:24:31:52 | call to method Parse : Int32 | provenance | MaD:2808 |
+| Test.cs:38:30:38:44 | access to property QueryString : NameValueCollection | Test.cs:38:30:38:52 | access to indexer : String | provenance |  |
+| Test.cs:38:30:38:44 | access to property QueryString : NameValueCollection | Test.cs:38:30:38:52 | access to indexer : String | provenance | MaD:12744 |
+| Test.cs:38:30:38:52 | access to indexer : String | Test.cs:38:63:38:66 | Int32 data : Int32 | provenance | Config |
+| Test.cs:38:30:38:52 | access to indexer : String | Test.cs:38:63:38:66 | Int32 data : Int32 | provenance | MaD:2818 |
+| Test.cs:38:63:38:66 | Int32 data : Int32 | Test.cs:40:30:40:33 | access to local variable data | provenance |  |
+| Test.cs:127:21:127:24 | access to local variable data : Int32 | Test.cs:131:60:131:63 | access to local variable data | provenance |  |
+| Test.cs:127:28:127:59 | call to method Parse : Int32 | Test.cs:127:21:127:24 | access to local variable data : Int32 | provenance |  |
+| Test.cs:127:38:127:52 | access to property QueryString : NameValueCollection | Test.cs:127:38:127:58 | access to indexer : String | provenance |  |
+| Test.cs:127:38:127:52 | access to property QueryString : NameValueCollection | Test.cs:127:38:127:58 | access to indexer : String | provenance | MaD:12744 |
+| Test.cs:127:38:127:58 | access to indexer : String | Test.cs:127:28:127:59 | call to method Parse : Int32 | provenance | Config |
+| Test.cs:127:38:127:58 | access to indexer : String | Test.cs:127:28:127:59 | call to method Parse : Int32 | provenance | MaD:2808 |
+| Test.cs:136:17:136:20 | access to local variable data : Int32 | Test.cs:137:60:137:63 | access to local variable data | provenance |  |
+| Test.cs:136:24:136:56 | call to method Parse : Int32 | Test.cs:136:17:136:20 | access to local variable data : Int32 | provenance |  |
+| Test.cs:136:34:136:43 | access to property Params : NameValueCollection | Test.cs:136:34:136:55 | call to method Get : String | provenance | MaD:12750 |
+| Test.cs:136:34:136:55 | call to method Get : String | Test.cs:136:24:136:56 | call to method Parse : Int32 | provenance | Config |
+| Test.cs:136:34:136:55 | call to method Get : String | Test.cs:136:24:136:56 | call to method Parse : Int32 | provenance | MaD:2808 |
+| Test.cs:143:17:143:20 | access to local variable data : Int32 | Test.cs:144:22:144:25 | access to local variable data | provenance |  |
+| Test.cs:143:24:143:58 | call to method Parse : Int32 | Test.cs:143:17:143:20 | access to local variable data : Int32 | provenance |  |
+| Test.cs:143:34:143:48 | access to property QueryString : NameValueCollection | Test.cs:143:34:143:57 | access to indexer : String | provenance |  |
+| Test.cs:143:34:143:48 | access to property QueryString : NameValueCollection | Test.cs:143:34:143:57 | access to indexer : String | provenance | MaD:12744 |
+| Test.cs:143:34:143:57 | access to indexer : String | Test.cs:143:24:143:58 | call to method Parse : Int32 | provenance | Config |
+| Test.cs:143:34:143:57 | access to indexer : String | Test.cs:143:24:143:58 | call to method Parse : Int32 | provenance | MaD:2808 |
+nodes
+| Test.cs:12:20:12:31 | access to local variable stringNumber : String | semmle.label | access to local variable stringNumber : String |
+| Test.cs:12:35:12:44 | access to property Params : NameValueCollection | semmle.label | access to property Params : NameValueCollection |
+| Test.cs:12:35:12:56 | call to method Get : String | semmle.label | call to method Get : String |
+| Test.cs:15:17:15:20 | access to local variable data : Int32 | semmle.label | access to local variable data : Int32 |
+| Test.cs:15:24:15:53 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Test.cs:15:34:15:45 | access to local variable stringNumber : String | semmle.label | access to local variable stringNumber : String |
+| Test.cs:15:34:15:52 | call to method Trim : String | semmle.label | call to method Trim : String |
+| Test.cs:18:32:18:35 | access to local variable data | semmle.label | access to local variable data |
+| Test.cs:24:18:24:21 | access to local variable data : Int64 | semmle.label | access to local variable data : Int64 |
+| Test.cs:24:25:24:60 | call to method Parse : Int64 | semmle.label | call to method Parse : Int64 |
+| Test.cs:24:36:24:50 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Test.cs:24:36:24:59 | access to indexer : String | semmle.label | access to indexer : String |
+| Test.cs:25:13:25:16 | access to local variable data | semmle.label | access to local variable data |
+| Test.cs:31:17:31:20 | access to local variable data : Int32 | semmle.label | access to local variable data : Int32 |
+| Test.cs:31:24:31:52 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Test.cs:31:34:31:41 | access to property Form : NameValueCollection | semmle.label | access to property Form : NameValueCollection |
+| Test.cs:31:34:31:51 | access to indexer : String | semmle.label | access to indexer : String |
+| Test.cs:32:26:32:29 | access to local variable data | semmle.label | access to local variable data |
+| Test.cs:38:30:38:44 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Test.cs:38:30:38:52 | access to indexer : String | semmle.label | access to indexer : String |
+| Test.cs:38:63:38:66 | Int32 data : Int32 | semmle.label | Int32 data : Int32 |
+| Test.cs:40:30:40:33 | access to local variable data | semmle.label | access to local variable data |
+| Test.cs:127:21:127:24 | access to local variable data : Int32 | semmle.label | access to local variable data : Int32 |
+| Test.cs:127:28:127:59 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Test.cs:127:38:127:52 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Test.cs:127:38:127:58 | access to indexer : String | semmle.label | access to indexer : String |
+| Test.cs:131:60:131:63 | access to local variable data | semmle.label | access to local variable data |
+| Test.cs:136:17:136:20 | access to local variable data : Int32 | semmle.label | access to local variable data : Int32 |
+| Test.cs:136:24:136:56 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Test.cs:136:34:136:43 | access to property Params : NameValueCollection | semmle.label | access to property Params : NameValueCollection |
+| Test.cs:136:34:136:55 | call to method Get : String | semmle.label | call to method Get : String |
+| Test.cs:137:60:137:63 | access to local variable data | semmle.label | access to local variable data |
+| Test.cs:143:17:143:20 | access to local variable data : Int32 | semmle.label | access to local variable data : Int32 |
+| Test.cs:143:24:143:58 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Test.cs:143:34:143:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Test.cs:143:34:143:57 | access to indexer : String | semmle.label | access to indexer : String |
+| Test.cs:144:22:144:25 | access to local variable data | semmle.label | access to local variable data |
+subpaths

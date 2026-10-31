@@ -1,0 +1,2 @@
+query: InputValidationNullNumeric/InputValidationNullNumeric.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
