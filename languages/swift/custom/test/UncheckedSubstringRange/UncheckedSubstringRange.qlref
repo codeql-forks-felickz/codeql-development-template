@@ -1,0 +1,2 @@
+query: UncheckedSubstringRange/UncheckedSubstringRange.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

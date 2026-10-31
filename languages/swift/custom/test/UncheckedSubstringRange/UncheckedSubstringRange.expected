@@ -1,0 +1,5 @@
+| UncheckedSubstringRange/test.swift:35:35:35:67 | call to range(of:) | This search result is used to compute a substring range without checking that the text was found. |
+| UncheckedSubstringRange/test.swift:36:33:36:67 | call to range(of:) | This search result is used to compute a substring range without checking that the text was found. |
+| UncheckedSubstringRange/test.swift:43:11:43:26 | call to range(of:) | This search result is used to compute a substring range without checking that the text was found. |
+| UncheckedSubstringRange/test.swift:49:15:49:42 | call to range(of:options:) | This search result is used to compute a substring range without checking that the text was found. |
+| UncheckedSubstringRange/test.swift:55:26:55:41 | call to range(of:) | This search result is used to compute a substring range without checking that the text was found. |
