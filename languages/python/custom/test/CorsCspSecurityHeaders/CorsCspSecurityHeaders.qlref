@@ -1,0 +1,2 @@
+query: CorsCspSecurityHeaders/CorsCspSecurityHeaders.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,14 @@
+| django_views.py:6:5:6:43 | ControlFlowNode for Subscript | The Access-Control-Allow-Origin header is set to '*', allowing any website to read this response. |
+| django_views.py:7:5:7:47 | ControlFlowNode for Subscript | This Content-Security-Policy allows inline scripts via 'unsafe-inline', which negates its protection against script injection. |
+| fastapi_app.py:9:24:9:64 | ControlFlowNode for StringLiteral | This CORS middleware allows credentialed requests from origins matching the overly permissive regular expression '.*.(restaurant.com\|deliveryservice.com)'. |
+| fastapi_app.py:18:24:18:48 | ControlFlowNode for StringLiteral | This CORS middleware allows credentialed requests from origins matching the overly permissive regular expression 'https://.*example\\.com'. |
+| fastapi_app.py:25:24:25:27 | ControlFlowNode for StringLiteral | This CORS middleware allows credentialed requests from origins matching the overly permissive regular expression '.*'. |
+| fastapi_app.py:32:19:32:23 | ControlFlowNode for List | This CORS middleware allows credentialed requests from any origin. |
+| flask_app.py:8:5:8:51 | ControlFlowNode for Subscript | The Access-Control-Allow-Origin header is set to '*', allowing any website to read this response. |
+| flask_app.py:9:5:9:47 | ControlFlowNode for Subscript | This Content-Security-Policy allows inline scripts via 'unsafe-inline', which negates its protection against script injection. |
+| flask_app.py:16:5:16:43 | ControlFlowNode for Subscript | This Content-Security-Policy allows inline scripts via 'unsafe-inline', which negates its protection against script injection. |
+| flask_app.py:17:5:17:59 | ControlFlowNode for Attribute() | The Access-Control-Allow-Origin header is set to 'null', allowing any website to read this response. |
+| flask_app.py:23:12:23:73 | ControlFlowNode for make_response() | The Access-Control-Allow-Origin header is set to '*', allowing any website to read this response. |
+| run.py:10:5:10:51 | ControlFlowNode for Subscript | The Access-Control-Allow-Origin header is set to '*', allowing any website to read this response. |
+| run.py:11:5:11:47 | ControlFlowNode for Subscript | This Content-Security-Policy allows inline scripts via 'unsafe-inline', which negates its protection against script injection. |
+| run.py:17:5:17:60 | ControlFlowNode for Attribute() | The Access-Control-Allow-Origin header is set to '*', allowing any website to read this response. |
