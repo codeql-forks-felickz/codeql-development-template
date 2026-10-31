@@ -1,8 +1,7 @@
 /**
- * @name Clear-text password stored in a database or user store
- * @description Writing a password to a database password column, or to an application's
- *              user store, without first hashing it with a password hashing function
- *              exposes every account if the store is read by an attacker.
+ * @name Clear-text sensitive data stored in a database or user store
+ * @description Writing sensitive data to a database or an application's user store
+ *              without protecting it exposes the data if the store is read by an attacker.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.5
@@ -18,6 +17,7 @@ import semmle.python.Concepts
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.SensitiveDataSources
+import semmle.python.ApiGraphs
 
 /** Gets a regular expression matching a password column or key name. */
 string passwordName() { result = "(?i)[\"'`\\[]?pass(word|wd)?[\"'`\\]]?" }
@@ -170,6 +170,21 @@ predicate passwordValueInSql(string sql, string item, int ord) {
       item = rest.regexpCapture("(?s)('[^']*'|\"[^\"]*\"|[^\\s,]+).*", 1) and
       ord = placeholderCount(sql.prefix(offset))
     )
+  )
+}
+
+/** Holds if `call` is a Django model manager's `create` method. */
+predicate isDjangoModelCreate(API::CallNode call) {
+  exists(API::Node modelClass |
+    modelClass =
+      API::moduleImport("django").getMember("db").getMember("models").getMember("Model")
+        .getASubclass*()
+    or
+    modelClass =
+      API::moduleImport("django").getMember("db").getMember("models").getMember("base")
+        .getMember("Model").getASubclass*()
+  |
+    call = modelClass.getMember("objects").getMember("create").getACall()
   )
 }
 
@@ -361,6 +376,16 @@ class UserStorePasswordValue extends DataFlow::Node {
   }
 }
 
+/** A value passed to `create` on a Django model manager. */
+class DjangoModelCreateValue extends DataFlow::Node {
+  DjangoModelCreateValue() {
+    exists(API::CallNode create |
+      isDjangoModelCreate(create) and
+      this.asExpr() = create.asExpr().(Call).getAKeyword().getValue()
+    )
+  }
+}
+
 /** Holds if `call` calls a function whose name suggests that it hashes or encrypts its input. */
 predicate isHashingCall(DataFlow::CallCfgNode call) {
   exists(string name |
@@ -378,16 +403,18 @@ predicate isHashingBarrier(DataFlow::Node node) {
   node = any(Cryptography::CryptographicOperation op).(DataFlow::Node)
 }
 
-/** Tracks values whose name indicates a password to a password store. */
-module SensitivePasswordConfig implements DataFlow::ConfigSig {
+/** Tracks sensitive values flowing to recognized clear-text storage sinks. */
+module SensitiveDataConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.(SensitiveDataSource).getClassification() = SensitiveDataClassification::password()
+    source.(SensitiveDataSource).getClassification() =
+      [SensitiveDataClassification::password(), SensitiveDataClassification::private()]
   }
 
   predicate isSink(DataFlow::Node sink) {
     sink instanceof SqlPasswordValue or
     sink instanceof SqlPasswordParameters or
-    sink instanceof UserStorePasswordValue
+    sink instanceof UserStorePasswordValue or
+    sink instanceof DjangoModelCreateValue
   }
 
   predicate isBarrier(DataFlow::Node node) { isHashingBarrier(node) }
@@ -418,13 +445,13 @@ module HardcodedPasswordConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-module SensitivePasswordFlow = TaintTracking::Global<SensitivePasswordConfig>;
+module SensitiveDataFlow = TaintTracking::Global<SensitiveDataConfig>;
 
 module HardcodedPasswordFlow = DataFlow::Global<HardcodedPasswordConfig>;
 
 module CleartextPasswordStorageFlow =
-  DataFlow::MergePathGraph<SensitivePasswordFlow::PathNode, HardcodedPasswordFlow::PathNode,
-    SensitivePasswordFlow::PathGraph, HardcodedPasswordFlow::PathGraph>;
+  DataFlow::MergePathGraph<SensitiveDataFlow::PathNode, HardcodedPasswordFlow::PathNode,
+    SensitiveDataFlow::PathGraph, HardcodedPasswordFlow::PathGraph>;
 
 import CleartextPasswordStorageFlow::PathGraph
 
@@ -432,10 +459,10 @@ from
   CleartextPasswordStorageFlow::PathNode source, CleartextPasswordStorageFlow::PathNode sink,
   string label
 where
-  SensitivePasswordFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
-  label = "password"
+  SensitiveDataFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
+  label = "sensitive data"
   or
   HardcodedPasswordFlow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
   label = "hard-coded password"
-select sink.getNode(), source, sink, "This stores a $@ in clear text without hashing it.",
+select sink.getNode(), source, sink, "This stores $@ in clear text without protecting it.",
   source.getNode(), label
