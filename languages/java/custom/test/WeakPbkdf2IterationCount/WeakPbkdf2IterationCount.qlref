@@ -1,0 +1,2 @@
+query: WeakPbkdf2IterationCount/WeakPbkdf2IterationCount.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

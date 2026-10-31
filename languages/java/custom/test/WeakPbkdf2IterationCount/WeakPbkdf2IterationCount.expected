@@ -1,0 +1,5 @@
+| org/example/EncryptionUtils.java:27:24:27:75 | new PBEKeySpec(...) | Password-based key derivation uses only 1 iteration(s); use at least 1000 (NIST SP 800-132 minimum); follow current OWASP guidance for the PRF in use. |
+| org/example/EncryptionUtils.java:39:16:39:66 | new PBEKeySpec(...) | Password-based key derivation uses only 10 iteration(s); use at least 1000 (NIST SP 800-132 minimum); follow current OWASP guidance for the PRF in use. |
+| org/example/EncryptionUtils.java:44:16:44:57 | new PBEKeySpec(...) | Password-based key derivation uses only 999 iteration(s); use at least 1000 (NIST SP 800-132 minimum); follow current OWASP guidance for the PRF in use. |
+| org/example/EncryptionUtils.java:52:16:52:62 | new PBEKeySpec(...) | Password-based key derivation uses only 100 iteration(s); use at least 1000 (NIST SP 800-132 minimum); follow current OWASP guidance for the PRF in use. |
+| org/example/EncryptionUtils.java:56:16:56:44 | new PBEParameterSpec(...) | Password-based key derivation uses only 5 iteration(s); use at least 1000 (NIST SP 800-132 minimum); follow current OWASP guidance for the PRF in use. |
