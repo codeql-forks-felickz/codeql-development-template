@@ -1,0 +1,26 @@
+#select
+| app/controllers/dashboard_controller.rb:6:14:6:27 | ...[...] | app/controllers/dashboard_controller.rb:6:14:6:19 | call to params | app/controllers/dashboard_controller.rb:6:14:6:27 | ...[...] | This code execution depends on a $@. | app/controllers/dashboard_controller.rb:6:14:6:19 | call to params | user-provided value |
+| app/controllers/dashboard_controller.rb:17:10:17:23 | ...[...] | app/controllers/dashboard_controller.rb:17:10:17:15 | call to params | app/controllers/dashboard_controller.rb:17:10:17:23 | ...[...] | This code execution depends on a $@. | app/controllers/dashboard_controller.rb:17:10:17:15 | call to params | user-provided value |
+| app/controllers/dashboard_controller.rb:23:10:23:13 | name | app/controllers/dashboard_controller.rb:22:12:22:17 | call to params | app/controllers/dashboard_controller.rb:23:10:23:13 | name | This code execution depends on a $@. | app/controllers/dashboard_controller.rb:22:12:22:17 | call to params | user-provided value |
+| app/controllers/dashboard_controller.rb:24:17:24:20 | name | app/controllers/dashboard_controller.rb:22:12:22:17 | call to params | app/controllers/dashboard_controller.rb:24:17:24:20 | name | This code execution depends on a $@. | app/controllers/dashboard_controller.rb:22:12:22:17 | call to params | user-provided value |
+| app/controllers/dashboard_controller.rb:25:14:25:17 | name | app/controllers/dashboard_controller.rb:22:12:22:17 | call to params | app/controllers/dashboard_controller.rb:25:14:25:17 | name | This code execution depends on a $@. | app/controllers/dashboard_controller.rb:22:12:22:17 | call to params | user-provided value |
+edges
+| app/controllers/dashboard_controller.rb:6:14:6:19 | call to params | app/controllers/dashboard_controller.rb:6:14:6:27 | ...[...] | provenance |  |
+| app/controllers/dashboard_controller.rb:17:10:17:15 | call to params | app/controllers/dashboard_controller.rb:17:10:17:23 | ...[...] | provenance |  |
+| app/controllers/dashboard_controller.rb:22:5:22:8 | name | app/controllers/dashboard_controller.rb:23:10:23:13 | name | provenance |  |
+| app/controllers/dashboard_controller.rb:22:5:22:8 | name | app/controllers/dashboard_controller.rb:24:17:24:20 | name | provenance |  |
+| app/controllers/dashboard_controller.rb:22:5:22:8 | name | app/controllers/dashboard_controller.rb:25:14:25:17 | name | provenance |  |
+| app/controllers/dashboard_controller.rb:22:12:22:17 | call to params | app/controllers/dashboard_controller.rb:22:12:22:25 | ...[...] | provenance |  |
+| app/controllers/dashboard_controller.rb:22:12:22:25 | ...[...] | app/controllers/dashboard_controller.rb:22:5:22:8 | name | provenance |  |
+nodes
+| app/controllers/dashboard_controller.rb:6:14:6:19 | call to params | semmle.label | call to params |
+| app/controllers/dashboard_controller.rb:6:14:6:27 | ...[...] | semmle.label | ...[...] |
+| app/controllers/dashboard_controller.rb:17:10:17:15 | call to params | semmle.label | call to params |
+| app/controllers/dashboard_controller.rb:17:10:17:23 | ...[...] | semmle.label | ...[...] |
+| app/controllers/dashboard_controller.rb:22:5:22:8 | name | semmle.label | name |
+| app/controllers/dashboard_controller.rb:22:12:22:17 | call to params | semmle.label | call to params |
+| app/controllers/dashboard_controller.rb:22:12:22:25 | ...[...] | semmle.label | ...[...] |
+| app/controllers/dashboard_controller.rb:23:10:23:13 | name | semmle.label | name |
+| app/controllers/dashboard_controller.rb:24:17:24:20 | name | semmle.label | name |
+| app/controllers/dashboard_controller.rb:25:14:25:17 | name | semmle.label | name |
+subpaths
