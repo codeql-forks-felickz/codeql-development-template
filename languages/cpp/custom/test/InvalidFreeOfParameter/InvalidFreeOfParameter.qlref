@@ -1,0 +1,2 @@
+query: InvalidFreeOfParameter/InvalidFreeOfParameter.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
