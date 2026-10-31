@@ -1,0 +1,55 @@
+#select
+| test.c:41:28:41:33 | call to malloc | test.c:31:37:31:47 | recv output argument | test.c:41:35:41:38 | data | This allocation size is computed by a multiplication that may overflow, using $@. | test.c:31:37:31:47 | recv output argument | untrusted data (buffer read by recv) |
+| test.c:55:28:55:33 | call to malloc | test.c:17:33:17:43 | recv output argument | test.c:55:35:55:39 | count | This allocation size is computed by a multiplication that may overflow, using $@. | test.c:17:33:17:43 | recv output argument | untrusted data (buffer read by recv) |
+| test.c:61:29:61:34 | call to malloc | test.c:17:33:17:43 | recv output argument | test.c:61:36:61:40 | count | This allocation size is computed by a multiplication that may overflow, using $@. | test.c:17:33:17:43 | recv output argument | untrusted data (buffer read by recv) |
+| test.c:67:25:67:31 | call to realloc | test.c:17:33:17:43 | recv output argument | test.c:67:52:67:56 | count | This allocation size is computed by a multiplication that may overflow, using $@. | test.c:17:33:17:43 | recv output argument | untrusted data (buffer read by recv) |
+| test.c:78:25:78:30 | call to malloc | test.c:74:16:74:26 | recv output argument | test.c:78:32:78:36 | count | This allocation size is computed by a multiplication that may overflow, using $@. | test.c:74:16:74:26 | recv output argument | untrusted data (buffer read by recv) |
+| test.c:151:23:151:28 | call to malloc | test.c:17:33:17:43 | recv output argument | test.c:151:46:151:50 | count | This allocation size is computed by a multiplication that may overflow, using $@. | test.c:17:33:17:43 | recv output argument | untrusted data (buffer read by recv) |
+edges
+| test.c:15:12:15:20 | *readCount | test.c:54:17:54:25 | call to readCount | provenance |  |
+| test.c:15:12:15:20 | *readCount | test.c:60:17:60:25 | call to readCount | provenance |  |
+| test.c:15:12:15:20 | *readCount | test.c:66:17:66:25 | call to readCount | provenance |  |
+| test.c:15:12:15:20 | *readCount | test.c:150:20:150:42 | call to readCount | provenance |  |
+| test.c:17:33:17:43 | recv output argument | test.c:21:5:21:34 | ... = ... | provenance |  |
+| test.c:21:5:21:34 | ... = ... | test.c:22:12:22:15 | call to atoi | provenance | TaintFunction |
+| test.c:22:12:22:15 | call to atoi | test.c:15:12:15:20 | *readCount | provenance |  |
+| test.c:31:37:31:47 | recv output argument | test.c:35:9:35:38 | ... = ... | provenance |  |
+| test.c:35:9:35:38 | ... = ... | test.c:36:9:36:32 | ... = ... | provenance | TaintFunction |
+| test.c:36:9:36:32 | ... = ... | test.c:41:35:41:38 | data | provenance |  |
+| test.c:54:17:54:25 | call to readCount | test.c:54:17:54:25 | call to readCount | provenance |  |
+| test.c:54:17:54:25 | call to readCount | test.c:55:35:55:39 | count | provenance |  |
+| test.c:60:17:60:25 | call to readCount | test.c:60:17:60:25 | call to readCount | provenance |  |
+| test.c:60:17:60:25 | call to readCount | test.c:61:36:61:40 | count | provenance |  |
+| test.c:66:17:66:25 | call to readCount | test.c:66:17:66:25 | call to readCount | provenance |  |
+| test.c:66:17:66:25 | call to readCount | test.c:67:52:67:56 | count | provenance |  |
+| test.c:74:16:74:26 | recv output argument | test.c:75:5:75:26 | ... = ... | provenance |  |
+| test.c:75:5:75:26 | ... = ... | test.c:76:20:76:26 | call to strtoul | provenance | TaintFunction |
+| test.c:76:20:76:26 | call to strtoul | test.c:78:32:78:36 | count | provenance |  |
+| test.c:150:20:150:42 | call to readCount | test.c:150:20:150:42 | call to readCount | provenance |  |
+| test.c:150:20:150:42 | call to readCount | test.c:151:46:151:50 | count | provenance |  |
+nodes
+| test.c:15:12:15:20 | *readCount | semmle.label | *readCount |
+| test.c:17:33:17:43 | recv output argument | semmle.label | recv output argument |
+| test.c:21:5:21:34 | ... = ... | semmle.label | ... = ... |
+| test.c:22:12:22:15 | call to atoi | semmle.label | call to atoi |
+| test.c:31:37:31:47 | recv output argument | semmle.label | recv output argument |
+| test.c:35:9:35:38 | ... = ... | semmle.label | ... = ... |
+| test.c:36:9:36:32 | ... = ... | semmle.label | ... = ... |
+| test.c:41:35:41:38 | data | semmle.label | data |
+| test.c:54:17:54:25 | call to readCount | semmle.label | call to readCount |
+| test.c:54:17:54:25 | call to readCount | semmle.label | call to readCount |
+| test.c:55:35:55:39 | count | semmle.label | count |
+| test.c:60:17:60:25 | call to readCount | semmle.label | call to readCount |
+| test.c:60:17:60:25 | call to readCount | semmle.label | call to readCount |
+| test.c:61:36:61:40 | count | semmle.label | count |
+| test.c:66:17:66:25 | call to readCount | semmle.label | call to readCount |
+| test.c:66:17:66:25 | call to readCount | semmle.label | call to readCount |
+| test.c:67:52:67:56 | count | semmle.label | count |
+| test.c:74:16:74:26 | recv output argument | semmle.label | recv output argument |
+| test.c:75:5:75:26 | ... = ... | semmle.label | ... = ... |
+| test.c:76:20:76:26 | call to strtoul | semmle.label | call to strtoul |
+| test.c:78:32:78:36 | count | semmle.label | count |
+| test.c:150:20:150:42 | call to readCount | semmle.label | call to readCount |
+| test.c:150:20:150:42 | call to readCount | semmle.label | call to readCount |
+| test.c:151:46:151:50 | count | semmle.label | count |
+subpaths

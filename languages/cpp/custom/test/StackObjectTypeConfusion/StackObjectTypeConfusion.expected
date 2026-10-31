@@ -1,0 +1,1 @@
+| StackObjectTypeConfusion.cpp:7:18:7:31 | * ... | This dereference reads a larger type through a pointer to a smaller local object. |
