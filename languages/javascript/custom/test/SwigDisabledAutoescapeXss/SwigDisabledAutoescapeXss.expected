@@ -1,0 +1,12 @@
+#select
+| views/login.html:1:15:1:26 | {{username}} | app.js:8:35:8:42 | req.body | views/login.html:1:15:1:26 | {{username}} | Cross-site scripting vulnerability: $@ is rendered without escaping by a Swig template. | app.js:8:35:8:42 | req.body | this value |
+edges
+| app.js:8:35:8:42 | req.body | app.js:8:35:8:51 | req.body.username | provenance |  |
+| app.js:8:35:8:51 | req.body.username | views/login.html:1:17:1:24 | username | provenance |  |
+| views/login.html:1:17:1:24 | username | views/login.html:1:15:1:26 | {{username}} | provenance |  |
+nodes
+| app.js:8:35:8:42 | req.body | semmle.label | req.body |
+| app.js:8:35:8:51 | req.body.username | semmle.label | req.body.username |
+| views/login.html:1:15:1:26 | {{username}} | semmle.label | {{username}} |
+| views/login.html:1:17:1:24 | username | semmle.label | username |
+subpaths
