@@ -53,3 +53,11 @@ const HiddenUser = mongoose.model(
 async function hidden(email) {
   console.log(await HiddenUser.findOne({ email }));
 }
+
+function logServiceUrls(appEnv) {
+  const mongoServiceUrl = appEnv.getServiceURL("goof-mongo"); // $ Source
+  console.log("Using Mongo URI " + mongoServiceUrl); // $ Alert
+
+  const publicServiceUrl = appEnv.getServiceURL("public-api");
+  console.log("Using public API URI " + publicServiceUrl);
+}

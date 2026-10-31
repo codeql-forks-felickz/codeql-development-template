@@ -1,8 +1,8 @@
-# Clear-text logging of a database record with sensitive fields
+# Clear-text logging of sensitive database data
 
-Logging a whole database record, such as a user document returned by a query, writes every field of that record to the application logs. If the model declares a password or private field, such as a Social Security number, that value ends up in the logs as well. Logs are usually kept longer, protected less carefully and read by more people and systems than the database itself.
+Logging a whole database record, such as a user document returned by a query, writes every field of that record to the application logs. If the model declares a password or private field, such as a Social Security number, that value ends up in the logs as well. Logging a MongoDB service URL can also expose database credentials embedded in the URL. Logs are usually kept longer, protected less carefully and read by more people and systems than the database itself.
 
-This query complements `js/clear-text-logging`, which reports values whose own name suggests sensitive data, such as `password`. It does not recognize a record like `users` as sensitive. This query reports records that are read through a Mongoose or Sequelize model whose schema declares a password or private field, and that then flow to a logging call such as `console.log`.
+This query complements `js/clear-text-logging`, which reports values whose own name suggests sensitive data, such as `password`. It does not recognize a record like `users` as sensitive. This query reports records that are read through a Mongoose or Sequelize model whose schema declares a password or private field, and MongoDB service URLs returned by `getServiceURL` for a MongoDB service, when they flow to a logging call such as `console.log`.
 
 A record is not reported when:
 
@@ -10,10 +10,11 @@ A record is not reported when:
 - the sensitive Mongoose path is declared with `select: false`, so that it is excluded from query results by default;
 - the Sequelize model declares a `defaultScope`;
 - only a non-sensitive property of the record is logged, such as `user.username`.
+- the service URL is for a non-MongoDB service.
 
 ## Recommendation
 
-Do not log whole database records. Log only the fields you need, such as an identifier, or exclude sensitive fields from the query results. With Mongoose, declare sensitive paths with `select: false` so that they are only loaded when explicitly requested.
+Do not log whole database records. Log only the fields you need, such as an identifier, or exclude sensitive fields from the query results. With Mongoose, declare sensitive paths with `select: false` so that they are only loaded when explicitly requested. Do not log database connection URLs, since they may contain credentials.
 
 ## Example
 

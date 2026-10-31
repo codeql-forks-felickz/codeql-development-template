@@ -7,6 +7,7 @@
 | mongoose-db.js:35:15:35:25 | withOptions | mongoose-db.js:34:23:34:73 | await U ... true }) | mongoose-db.js:35:15:35:25 | withOptions | This logs $@, which includes the sensitive field 'password', as clear text. | mongoose-db.js:34:23:34:73 | await U ... true }) | a database record |
 | mongoose-db.js:37:48:37:48 | u | mongoose-db.js:37:30:37:30 | u | mongoose-db.js:37:48:37:48 | u | This logs $@, which includes the sensitive field 'password', as clear text. | mongoose-db.js:37:30:37:30 | u | a database record |
 | mongoose-db.js:38:51:38:51 | u | mongoose-db.js:38:33:38:33 | u | mongoose-db.js:38:51:38:51 | u | This logs $@, which includes the sensitive field 'password', as clear text. | mongoose-db.js:38:33:38:33 | u | a database record |
+| mongoose-db.js:59:15:59:50 | "Using  ... viceUrl | mongoose-db.js:58:27:58:60 | appEnv. ... mongo") | mongoose-db.js:59:15:59:50 | "Using  ... viceUrl | This logs $@, which may contain database credentials, as clear text. | mongoose-db.js:58:27:58:60 | appEnv. ... mongo") | a MongoDB service URL |
 | sequelize-db.js:12:26:12:31 | logins | sequelize-db.js:11:18:11:38 | await L ... ndAll() | sequelize-db.js:12:26:12:31 | logins | This logs $@, which includes the sensitive field 'password', as clear text. | sequelize-db.js:11:18:11:38 | await L ... ndAll() | a database record |
 edges
 | mongoose-db.js:12:66:12:70 | users | mongoose-db.js:13:15:13:19 | users | provenance |  |
@@ -23,6 +24,9 @@ edges
 | mongoose-db.js:34:23:34:73 | await U ... true }) | mongoose-db.js:34:9:34:19 | withOptions | provenance |  |
 | mongoose-db.js:37:30:37:30 | u | mongoose-db.js:37:48:37:48 | u | provenance |  |
 | mongoose-db.js:38:33:38:33 | u | mongoose-db.js:38:51:38:51 | u | provenance |  |
+| mongoose-db.js:58:9:58:23 | mongoServiceUrl | mongoose-db.js:59:36:59:50 | mongoServiceUrl | provenance |  |
+| mongoose-db.js:58:27:58:60 | appEnv. ... mongo") | mongoose-db.js:58:9:58:23 | mongoServiceUrl | provenance |  |
+| mongoose-db.js:59:36:59:50 | mongoServiceUrl | mongoose-db.js:59:15:59:50 | "Using  ... viceUrl | provenance |  |
 | sequelize-db.js:11:9:11:14 | logins | sequelize-db.js:12:26:12:31 | logins | provenance |  |
 | sequelize-db.js:11:18:11:38 | await L ... ndAll() | sequelize-db.js:11:9:11:14 | logins | provenance |  |
 nodes
@@ -45,6 +49,10 @@ nodes
 | mongoose-db.js:37:48:37:48 | u | semmle.label | u |
 | mongoose-db.js:38:33:38:33 | u | semmle.label | u |
 | mongoose-db.js:38:51:38:51 | u | semmle.label | u |
+| mongoose-db.js:58:9:58:23 | mongoServiceUrl | semmle.label | mongoServiceUrl |
+| mongoose-db.js:58:27:58:60 | appEnv. ... mongo") | semmle.label | appEnv. ... mongo") |
+| mongoose-db.js:59:15:59:50 | "Using  ... viceUrl | semmle.label | "Using  ... viceUrl |
+| mongoose-db.js:59:36:59:50 | mongoServiceUrl | semmle.label | mongoServiceUrl |
 | sequelize-db.js:11:9:11:14 | logins | semmle.label | logins |
 | sequelize-db.js:11:18:11:38 | await L ... ndAll() | semmle.label | await L ... ndAll() |
 | sequelize-db.js:12:26:12:31 | logins | semmle.label | logins |
