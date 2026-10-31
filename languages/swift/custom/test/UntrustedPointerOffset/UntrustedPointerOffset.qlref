@@ -1,0 +1,2 @@
+query: UntrustedPointerOffset/UntrustedPointerOffset.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
