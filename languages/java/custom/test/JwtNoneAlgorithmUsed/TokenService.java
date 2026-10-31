@@ -11,7 +11,7 @@ public class TokenService {
     }
 
     // A verifier that requires the none algorithm accepts unsigned tokens.
-    public JWT.Verification verifierAcceptsNone() {
+    public com.auth0.jwt.interfaces.Verification verifierAcceptsNone() {
         return JWT.require(Algorithm.none()); // $ Alert
     }
 
