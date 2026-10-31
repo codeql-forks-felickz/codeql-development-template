@@ -58,12 +58,13 @@ private string clientIpHeader() {
 }
 
 /**
- * Holds if the application trusts any number of proxies (`app.enable('trust proxy')` or
- * `app.set('trust proxy', true)`), so that `req.ip` and `req.ips` are taken from the
- * client-supplied `X-Forwarded-For` header.
+ * Holds if the Express application `app` trusts any number of proxies
+ * (`app.enable('trust proxy')` or `app.set('trust proxy', true)`), so that `req.ip` and
+ * `req.ips` are taken from the client-supplied `X-Forwarded-For` header.
  */
-private predicate trustsAllProxies() {
+private predicate trustsAllProxies(Express::RouterDefinition app) {
   exists(DataFlow::MethodCallNode call |
+    app.ref().flowsTo(call.getReceiver()) and
     call.getArgument(0).getStringValue() = "trust proxy" and
     (
       call.getMethodName() = "enable" and call.getNumArgument() = 1
@@ -74,17 +75,47 @@ private predicate trustsAllProxies() {
   )
 }
 
+/** Gets a reference to the rate-limiting middleware created by `limiter`. */
+private DataFlow::SourceNode limiterRef(RateLimiterCreation limiter, DataFlow::TypeTracker t) {
+  t.start() and
+  result = limiter
+  or
+  exists(DataFlow::TypeTracker t2 | result = limiterRef(limiter, t2).track(t2, t))
+}
+
+/** Holds if `limiter` is installed on `router`, which is `app` or one of its sub-routers. */
+private predicate installedIn(RateLimiterCreation limiter, Express::RouterDefinition app) {
+  exists(Express::RouteSetup setup |
+    limiterRef(limiter, DataFlow::TypeTracker::end()).flowsTo(setup.getAnArgument()) and
+    setup.getRouter() = app.getASubRouter*()
+  )
+}
+
+/**
+ * Holds if `req.ip` and `req.ips` may be chosen by the client for requests that pass through
+ * `limiter`, that is, `limiter` is installed in an application that trusts all proxies or, if
+ * it cannot be linked to an application, some application trusts all proxies.
+ */
+private predicate usesSpoofableIp(RateLimiterCreation limiter) {
+  exists(Express::RouterDefinition app | trustsAllProxies(app) |
+    installedIn(limiter, app)
+    or
+    not installedIn(limiter, _)
+  )
+}
+
 /** A client-controlled value read from the request passed to a rate-limiter key generator. */
 class SpoofableClientAddress extends DataFlow::Node {
   string description;
 
   SpoofableClientAddress() {
-    exists(DataFlow::SourceNode req | req = keyGeneratorRequest(_) |
+    exists(RateLimiterCreation limiter, DataFlow::SourceNode req |
+      req = keyGeneratorRequest(limiter.getKeyGenerator())
+    |
       exists(string header | header = clientIpHeader() |
         (
-          this =
-            req.getAPropertyRead("headers")
-                .getAPropertyRead(any(string h | h.toLowerCase() = header))
+          // Node.js lower-cases the keys of `req.headers`, so only lower-case names can be set by the client.
+          this = req.getAPropertyRead("headers").getAPropertyRead(header)
           or
           this = req.getAMethodCall(["get", "header"]) and
           this.(DataFlow::MethodCallNode).getArgument(0).getStringValue().toLowerCase() = header
@@ -92,7 +123,7 @@ class SpoofableClientAddress extends DataFlow::Node {
         description = "the client-supplied '" + header + "' header"
       )
       or
-      trustsAllProxies() and
+      usesSpoofableIp(limiter) and
       this = req.getAPropertyRead(["ip", "ips"]) and
       description =
         "the client address, which is taken from the client-supplied 'X-Forwarded-For' header because all proxies are trusted"

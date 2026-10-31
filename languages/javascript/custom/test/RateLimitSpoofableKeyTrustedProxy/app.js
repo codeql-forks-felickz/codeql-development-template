@@ -17,3 +17,9 @@ app.use('/login', rateLimit({
 app.use('/reset', rateLimit({
   keyGenerator: (req) => req.headers['x-forwarded-for'] || req.ip // $ Alert
 }));
+
+// GOOD: Node.js lower-cases header names, so `req.headers['X-Real-IP']` is always undefined
+// and the key is `req.ip`.
+app.use('/verify', rateLimit({
+  keyGenerator: (req) => req.headers['X-Real-IP'] || req.ip
+}));

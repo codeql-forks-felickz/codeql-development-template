@@ -16,7 +16,10 @@ password-reset answers.
 The same applies to <code>req.ip</code> and <code>req.ips</code> when the Express application
 trusts all proxies (<code>app.enable('trust proxy')</code> or
 <code>app.set('trust proxy', true)</code>), because Express then takes the client address from the
-left-most, client-supplied, entry of the <code>X-Forwarded-For</code> header.
+left-most, client-supplied, entry of the <code>X-Forwarded-For</code> header. Note that Node.js
+lower-cases the names of request headers, so a lookup such as
+<code>req.headers['X-Forwarded-For']</code> is always <code>undefined</code>; a key such as
+<code>req.headers['X-Forwarded-For'] ?? req.ip</code> therefore depends only on <code>req.ip</code>.
 </p>
 </overview>
 

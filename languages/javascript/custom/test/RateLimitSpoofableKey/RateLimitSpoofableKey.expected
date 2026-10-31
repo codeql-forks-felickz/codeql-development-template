@@ -2,8 +2,8 @@
 | limiters.js:10:26:10:45 | req.get('X-Real-IP') | limiters.js:10:26:10:45 | req.get('X-Real-IP') | limiters.js:10:26:10:45 | req.get('X-Real-IP') | This rate-limiting key depends on $@, so a client can evade the $@ by changing it. | limiters.js:10:26:10:45 | req.get('X-Real-IP') | the client-supplied 'x-real-ip' header | limiters.js:7:23:11:2 | RateLim ... lert\\n}) | rate limiter |
 | limiters.js:22:12:22:27 | getClientIp(req) | limiters.js:14:21:14:50 | req.hea ... d-for'] | limiters.js:22:12:22:27 | getClientIp(req) | This rate-limiting key depends on $@, so a client can evade the $@ by changing it. | limiters.js:14:21:14:50 | req.hea ... d-for'] | the client-supplied 'x-forwarded-for' header | limiters.js:25:33:25:54 | new Rat ... ptions) | rate limiter |
 | limiters.js:30:26:30:55 | req.hea ... ng-ip') | limiters.js:30:26:30:55 | req.hea ... ng-ip') | limiters.js:30:26:30:55 | req.hea ... ng-ip') | This rate-limiting key depends on $@, so a client can evade the $@ by changing it. | limiters.js:30:26:30:55 | req.hea ... ng-ip') | the client-supplied 'cf-connecting-ip' header | limiters.js:27:21:31:2 | slowDow ... lert\\n}) | rate limiter |
-| server.ts:12:70:12:101 | headers ... ] ?? ip | server.ts:12:28:12:29 | ip | server.ts:12:70:12:101 | headers ... ] ?? ip | This rate-limiting key depends on $@, so a client can evade the $@ by changing it. | server.ts:12:28:12:29 | ip | the client address, which is taken from the client-supplied 'X-Forwarded-For' header because all proxies are trusted | server.ts:9:38:13:2 | rateLim ... lert\\n}) | rate limiter |
-| server.ts:12:70:12:101 | headers ... ] ?? ip | server.ts:12:70:12:95 | headers ... d-For'] | server.ts:12:70:12:101 | headers ... ] ?? ip | This rate-limiting key depends on $@, so a client can evade the $@ by changing it. | server.ts:12:70:12:95 | headers ... d-For'] | the client-supplied 'x-forwarded-for' header | server.ts:9:38:13:2 | rateLim ... lert\\n}) | rate limiter |
+| server.ts:15:72:15:103 | headers ... ] ?? ip | server.ts:15:30:15:31 | ip | server.ts:15:72:15:103 | headers ... ] ?? ip | This rate-limiting key depends on $@, so a client can evade the $@ by changing it. | server.ts:15:30:15:31 | ip | the client address, which is taken from the client-supplied 'X-Forwarded-For' header because all proxies are trusted | server.ts:12:40:16:4 | rateLim ... rt\\n  }) | rate limiter |
+| server.ts:30:33:30:42 | req.ips[0] | server.ts:30:33:30:39 | req.ips | server.ts:30:33:30:42 | req.ips[0] | This rate-limiting key depends on $@, so a client can evade the $@ by changing it. | server.ts:30:33:30:39 | req.ips | the client address, which is taken from the client-supplied 'X-Forwarded-For' header because all proxies are trusted | server.ts:27:27:31:4 | rateLim ... rt\\n  }) | rate limiter |
 edges
 | limiters.js:14:9:14:17 | forwarded | limiters.js:15:22:15:30 | forwarded | provenance |  |
 | limiters.js:14:21:14:50 | req.hea ... d-for'] | limiters.js:14:9:14:17 | forwarded | provenance |  |
@@ -12,10 +12,10 @@ edges
 | limiters.js:15:22:15:41 | forwarded.split(',') [ArrayElement] | limiters.js:15:22:15:44 | forward ... ',')[0] | provenance |  |
 | limiters.js:15:22:15:44 | forward ... ',')[0] | limiters.js:15:22:15:51 | forward ... .trim() | provenance |  |
 | limiters.js:15:22:15:51 | forward ... .trim() | limiters.js:15:10:15:78 | forward ... Address | provenance |  |
-| server.ts:12:28:12:29 | ip | server.ts:12:28:12:29 | ip | provenance |  |
-| server.ts:12:28:12:29 | ip | server.ts:12:100:12:101 | ip | provenance |  |
-| server.ts:12:70:12:95 | headers ... d-For'] | server.ts:12:70:12:101 | headers ... ] ?? ip | provenance |  |
-| server.ts:12:100:12:101 | ip | server.ts:12:70:12:101 | headers ... ] ?? ip | provenance |  |
+| server.ts:15:30:15:31 | ip | server.ts:15:30:15:31 | ip | provenance |  |
+| server.ts:15:30:15:31 | ip | server.ts:15:102:15:103 | ip | provenance |  |
+| server.ts:15:102:15:103 | ip | server.ts:15:72:15:103 | headers ... ] ?? ip | provenance |  |
+| server.ts:30:33:30:39 | req.ips | server.ts:30:33:30:42 | req.ips[0] | provenance |  |
 nodes
 | limiters.js:10:26:10:45 | req.get('X-Real-IP') | semmle.label | req.get('X-Real-IP') |
 | limiters.js:14:9:14:17 | forwarded | semmle.label | forwarded |
@@ -27,9 +27,10 @@ nodes
 | limiters.js:15:22:15:51 | forward ... .trim() | semmle.label | forward ... .trim() |
 | limiters.js:22:12:22:27 | getClientIp(req) | semmle.label | getClientIp(req) |
 | limiters.js:30:26:30:55 | req.hea ... ng-ip') | semmle.label | req.hea ... ng-ip') |
-| server.ts:12:28:12:29 | ip | semmle.label | ip |
-| server.ts:12:28:12:29 | ip | semmle.label | ip |
-| server.ts:12:70:12:95 | headers ... d-For'] | semmle.label | headers ... d-For'] |
-| server.ts:12:70:12:101 | headers ... ] ?? ip | semmle.label | headers ... ] ?? ip |
-| server.ts:12:100:12:101 | ip | semmle.label | ip |
+| server.ts:15:30:15:31 | ip | semmle.label | ip |
+| server.ts:15:30:15:31 | ip | semmle.label | ip |
+| server.ts:15:72:15:103 | headers ... ] ?? ip | semmle.label | headers ... ] ?? ip |
+| server.ts:15:102:15:103 | ip | semmle.label | ip |
+| server.ts:30:33:30:39 | req.ips | semmle.label | req.ips |
+| server.ts:30:33:30:42 | req.ips[0] | semmle.label | req.ips[0] |
 subpaths
