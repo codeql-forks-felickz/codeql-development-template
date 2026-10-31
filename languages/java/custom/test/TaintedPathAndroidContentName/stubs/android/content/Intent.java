@@ -15,6 +15,10 @@ public class Intent {
         return null;
     }
 
+    public String getStringExtra(String name) {
+        return null;
+    }
+
     public Uri getData() {
         return null;
     }

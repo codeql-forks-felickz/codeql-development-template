@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.taglibs.standard.tag.common.core", "ImportSupport", True, "setUrl", "(String)", "", "Argument[0]", "path-injection[read]", "manual"]
+      - ["org.apache.taglibs.standard.tag.rt.core", "ImportTag", True, "setUrl", "(String)", "", "Argument[0]", "path-injection[read]", "manual"]
