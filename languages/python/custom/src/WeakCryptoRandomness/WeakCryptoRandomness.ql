@@ -33,8 +33,8 @@ string prngFunctionName() {
 bindingset[name]
 predicate isSensitiveName(string name) {
   name.regexpMatch("(?i).*(api_?key|secret|token|passw(or)?d|passwd|pwd|nonce|salt|session_?(id|key)|"
-      + "otp|csrf|xsrf|auth_?(key|code)|reset_?(code|key)|verification_?code|private_?key|" +
-      "signing_?key|encryption_?key|access_?key).*") and
+      + "otp|csrf|xsrf|auth_?(key|code)|reset_?(code|key)|verification_?code|referral_?code|" +
+      "ticket_?(id|code|number)|private_?key|" + "signing_?key|encryption_?key|access_?key).*") and
   not name.regexpMatch("(?i).*(secretar|tokeniz|keypoint).*") and
   not isNonSecretSuffix(name)
 }
@@ -78,6 +78,16 @@ predicate isSensitiveAssignmentValue(Expr target, Expr value, Expr sensitiveValu
   )
 }
 
+/** Holds if `assignment` builds the value of a session cookie. */
+predicate isSessionCookieAssignment(AssignStmt assignment) {
+  exists(Name target, StringLiteral cookieName |
+    target = assignment.getATarget() and
+    target.getId() = "cookie" and
+    assignment.getValue().getASubExpression*() = cookieName and
+    cookieName.getText().regexpMatch("(?i).*sessionid\\s*=.*")
+  )
+}
+
 /** A call to a `random` PRNG function that is not cryptographically secure. */
 class WeakRandomSource extends DataFlow::CallCfgNode {
   WeakRandomSource() {
@@ -102,6 +112,12 @@ class SecuritySensitiveSink extends DataFlow::Node {
     exists(AssignStmt a, Expr target |
       target = a.getATarget() and
       isSensitiveAssignmentValue(target, a.getValue(), this.asExpr())
+    )
+    or
+    // value assigned to a session cookie string
+    exists(AssignStmt a |
+      isSessionCookieAssignment(a) and
+      this.asExpr() = a.getValue()
     )
     or
     // value assigned to a sensitive string key in a dictionary literal

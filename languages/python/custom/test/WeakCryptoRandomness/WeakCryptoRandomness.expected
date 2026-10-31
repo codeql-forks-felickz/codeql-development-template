@@ -18,6 +18,11 @@
 | libapi.py:142:15:142:24 | ControlFlowNode for weak_value | libapi.py:141:18:141:40 | ControlFlowNode for Attribute() | libapi.py:142:15:142:24 | ControlFlowNode for weak_value | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:141:18:141:40 | ControlFlowNode for Attribute() | weak pseudo-random value |
 | libapi.py:151:12:151:32 | ControlFlowNode for shared_random_value() | libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | libapi.py:151:12:151:32 | ControlFlowNode for shared_random_value() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | weak pseudo-random value |
 | libapi.py:155:12:155:32 | ControlFlowNode for shared_random_value() | libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | libapi.py:155:12:155:32 | ControlFlowNode for shared_random_value() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:159:14:159:105 | ControlFlowNode for BinaryExpr | libapi.py:159:47:159:104 | ControlFlowNode for Attribute() | libapi.py:159:14:159:105 | ControlFlowNode for BinaryExpr | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:159:47:159:104 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:170:26:170:49 | ControlFlowNode for generate_referral_code() | libapi.py:166:20:166:72 | ControlFlowNode for Attribute() | libapi.py:170:26:170:49 | ControlFlowNode for generate_referral_code() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:166:20:166:72 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:175:12:175:80 | ControlFlowNode for Attribute() | libapi.py:175:20:175:79 | ControlFlowNode for Attribute() | libapi.py:175:12:175:80 | ControlFlowNode for Attribute() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:175:20:175:79 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:187:19:187:27 | ControlFlowNode for gentckt() | libapi.py:183:20:183:88 | ControlFlowNode for Attribute() | libapi.py:187:19:187:27 | ControlFlowNode for gentckt() | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:183:20:183:88 | ControlFlowNode for Attribute() | weak pseudo-random value |
+| libapi.py:194:31:194:33 | ControlFlowNode for key | libapi.py:193:15:193:38 | ControlFlowNode for Attribute() | libapi.py:194:31:194:33 | ControlFlowNode for key | This security-sensitive value depends on a $@, which is not cryptographically secure; use the 'secrets' module or 'os.urandom' instead. | libapi.py:193:15:193:38 | ControlFlowNode for Attribute() | weak pseudo-random value |
 edges
 | libapi.py:11:26:11:54 | ControlFlowNode for str() | libapi.py:11:26:11:63 | ControlFlowNode for Attribute() | provenance |  |
 | libapi.py:11:26:11:54 | ControlFlowNode for str() | libapi.py:11:26:11:63 | ControlFlowNode for Attribute() | provenance | Config |
@@ -34,6 +39,20 @@ edges
 | libapi.py:141:18:141:40 | ControlFlowNode for Attribute() | libapi.py:141:5:141:14 | ControlFlowNode for weak_value | provenance |  |
 | libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | libapi.py:151:12:151:32 | ControlFlowNode for shared_random_value() | provenance |  |
 | libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | libapi.py:155:12:155:32 | ControlFlowNode for shared_random_value() | provenance |  |
+| libapi.py:159:39:159:105 | ControlFlowNode for Attribute() | libapi.py:159:14:159:105 | ControlFlowNode for BinaryExpr | provenance |  |
+| libapi.py:159:47:159:104 | ControlFlowNode for Attribute() | libapi.py:159:39:159:105 | ControlFlowNode for Attribute() | provenance | str.join |
+| libapi.py:166:12:166:91 | ControlFlowNode for Attribute() | libapi.py:170:26:170:49 | ControlFlowNode for generate_referral_code() | provenance |  |
+| libapi.py:166:20:166:72 | ControlFlowNode for Attribute() | libapi.py:166:20:166:72 | ControlFlowNode for Yield [List element] | provenance |  |
+| libapi.py:166:20:166:72 | ControlFlowNode for Yield [List element] | libapi.py:166:20:166:90 | ControlFlowNode for GeneratorExp [List element] | provenance |  |
+| libapi.py:166:20:166:90 | ControlFlowNode for GeneratorExp [List element] | libapi.py:166:12:166:91 | ControlFlowNode for Attribute() | provenance | str.join |
+| libapi.py:175:20:175:79 | ControlFlowNode for Attribute() | libapi.py:175:12:175:80 | ControlFlowNode for Attribute() | provenance | str.join |
+| libapi.py:183:12:183:89 | ControlFlowNode for Attribute() | libapi.py:187:19:187:27 | ControlFlowNode for gentckt() | provenance |  |
+| libapi.py:183:20:183:88 | ControlFlowNode for Attribute() | libapi.py:183:12:183:89 | ControlFlowNode for Attribute() | provenance | str.join |
+| libapi.py:193:5:193:7 | ControlFlowNode for key | libapi.py:194:31:194:33 | ControlFlowNode for key | provenance |  |
+| libapi.py:193:11:193:39 | ControlFlowNode for str() | libapi.py:193:11:193:48 | ControlFlowNode for Attribute() | provenance |  |
+| libapi.py:193:11:193:39 | ControlFlowNode for str() | libapi.py:193:11:193:48 | ControlFlowNode for Attribute() | provenance | Config |
+| libapi.py:193:11:193:48 | ControlFlowNode for Attribute() | libapi.py:193:5:193:7 | ControlFlowNode for key | provenance |  |
+| libapi.py:193:15:193:38 | ControlFlowNode for Attribute() | libapi.py:193:11:193:39 | ControlFlowNode for str() | provenance |  |
 nodes
 | libapi.py:11:26:11:54 | ControlFlowNode for str() | semmle.label | ControlFlowNode for str() |
 | libapi.py:11:26:11:63 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
@@ -67,4 +86,22 @@ nodes
 | libapi.py:147:12:147:34 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | libapi.py:151:12:151:32 | ControlFlowNode for shared_random_value() | semmle.label | ControlFlowNode for shared_random_value() |
 | libapi.py:155:12:155:32 | ControlFlowNode for shared_random_value() | semmle.label | ControlFlowNode for shared_random_value() |
+| libapi.py:159:14:159:105 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| libapi.py:159:39:159:105 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:159:47:159:104 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:166:12:166:91 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:166:20:166:72 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:166:20:166:72 | ControlFlowNode for Yield [List element] | semmle.label | ControlFlowNode for Yield [List element] |
+| libapi.py:166:20:166:90 | ControlFlowNode for GeneratorExp [List element] | semmle.label | ControlFlowNode for GeneratorExp [List element] |
+| libapi.py:170:26:170:49 | ControlFlowNode for generate_referral_code() | semmle.label | ControlFlowNode for generate_referral_code() |
+| libapi.py:175:12:175:80 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:175:20:175:79 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:183:12:183:89 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:183:20:183:88 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:187:19:187:27 | ControlFlowNode for gentckt() | semmle.label | ControlFlowNode for gentckt() |
+| libapi.py:193:5:193:7 | ControlFlowNode for key | semmle.label | ControlFlowNode for key |
+| libapi.py:193:11:193:39 | ControlFlowNode for str() | semmle.label | ControlFlowNode for str() |
+| libapi.py:193:11:193:48 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:193:15:193:38 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libapi.py:194:31:194:33 | ControlFlowNode for key | semmle.label | ControlFlowNode for key |
 subpaths

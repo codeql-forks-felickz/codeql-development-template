@@ -153,3 +153,44 @@ def generate_api_key_from_shared_value():
 
 def generate_password_from_shared_value():
     return shared_random_value()  # $ Alert[py/custom/weak-crypto-randomness]
+
+
+def dsvw_session_cookie():
+    cookie = "SESSIONID=%s; path=/" % "".join(random.choices(string.ascii_letters + string.digits, k=20))  # $ Alert[py/custom/weak-crypto-randomness]
+    send_header("Set-Cookie", cookie)
+    ordinary_cookie = "theme=%s; path=/" % "".join(random.choices(string.ascii_letters + string.digits, k=20))
+    send_header("Set-Cookie", ordinary_cookie)
+
+
+def generate_referral_code():
+    return "".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))  # $ Source[py/custom/weak-crypto-randomness]
+
+
+def store_referral_code(user):
+    user.referral_code = generate_referral_code()  # $ Alert[py/custom/weak-crypto-randomness]
+    user.discount_code = generate_referral_code()
+
+
+def generate_api_key_from_choices():
+    return "".join(random.choices(string.ascii_lowercase + string.digits, k=16))  # $ Alert[py/custom/weak-crypto-randomness]
+
+
+def generate_display_name_from_choices():
+    return "".join(random.choices(string.ascii_lowercase + string.digits, k=16))
+
+
+def gentckt():
+    return "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10))  # $ Source[py/custom/weak-crypto-randomness]
+
+
+def issue_ticket():
+    ticket_code = gentckt()  # $ Alert[py/custom/weak-crypto-randomness]
+    display_code = generate_display_name_from_choices()
+    return ticket_code, display_code
+
+
+def skey_seed():
+    key = str(random.getrandbits(2048)).encode()  # $ Source[py/custom/weak-crypto-randomness]
+    otp = hashlib.new("sha1", key).hexdigest()  # $ Alert[py/custom/weak-crypto-randomness]
+    secure_otp = hashlib.new("sha1", secrets.token_bytes(32)).hexdigest()
+    return otp, secure_otp
