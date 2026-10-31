@@ -1,0 +1,48 @@
+#select
+| main.rs:10:36:10:43 | response | main.rs:59:15:59:25 | bad_handler | main.rs:10:36:10:43 | response | Cross-site scripting vulnerability due to a $@. | main.rs:59:15:59:25 | bad_handler | user-provided value |
+| main.rs:54:40:54:47 | response | main.rs:65:15:65:36 | ...::handler | main.rs:54:40:54:47 | response | Cross-site scripting vulnerability due to a $@. | main.rs:65:15:65:36 | ...::handler | user-provided value |
+edges
+| main.rs:6:16:6:32 | ...: ... | main.rs:7:15:7:21 | req.url | provenance |  |
+| main.rs:7:9:7:11 | res | main.rs:9:28:9:68 | MacroExpr | provenance |  |
+| main.rs:7:15:7:21 | req.url | main.rs:7:15:7:28 | ... .path() | provenance | MaD:4 |
+| main.rs:7:15:7:28 | ... .path() | main.rs:7:9:7:11 | res | provenance |  |
+| main.rs:9:9:9:16 | response | main.rs:10:36:10:43 | response | provenance |  |
+| main.rs:9:28:9:68 | ...::format(...) | main.rs:9:28:9:68 | { ... } | provenance |  |
+| main.rs:9:28:9:68 | ...::must_use(...) | main.rs:9:9:9:16 | response | provenance |  |
+| main.rs:9:28:9:68 | MacroExpr | main.rs:9:28:9:68 | ...::format(...) | provenance | MaD:351 |
+| main.rs:9:28:9:68 | { ... } | main.rs:9:28:9:68 | ...::must_use(...) | provenance | MaD:13301 |
+| main.rs:50:20:50:36 | ...: ... | main.rs:51:19:51:25 | req.url | provenance |  |
+| main.rs:51:13:51:15 | res | main.rs:52:32:52:72 | MacroExpr | provenance |  |
+| main.rs:51:19:51:25 | req.url | main.rs:51:19:51:32 | ... .path() | provenance | MaD:4 |
+| main.rs:51:19:51:32 | ... .path() | main.rs:51:13:51:15 | res | provenance |  |
+| main.rs:52:13:52:20 | response | main.rs:54:40:54:47 | response | provenance |  |
+| main.rs:52:32:52:72 | ...::format(...) | main.rs:52:32:52:72 | { ... } | provenance |  |
+| main.rs:52:32:52:72 | ...::must_use(...) | main.rs:52:13:52:20 | response | provenance |  |
+| main.rs:52:32:52:72 | MacroExpr | main.rs:52:32:52:72 | ...::format(...) | provenance | MaD:351 |
+| main.rs:52:32:52:72 | { ... } | main.rs:52:32:52:72 | ...::must_use(...) | provenance | MaD:13301 |
+| main.rs:59:15:59:25 | bad_handler | main.rs:6:16:6:32 | ...: ... | provenance | Src:MaD:1  |
+| main.rs:65:15:65:36 | ...::handler | main.rs:50:20:50:36 | ...: ... | provenance | Src:MaD:1  |
+nodes
+| main.rs:6:16:6:32 | ...: ... | semmle.label | ...: ... |
+| main.rs:7:9:7:11 | res | semmle.label | res |
+| main.rs:7:15:7:21 | req.url | semmle.label | req.url |
+| main.rs:7:15:7:28 | ... .path() | semmle.label | ... .path() |
+| main.rs:9:9:9:16 | response | semmle.label | response |
+| main.rs:9:28:9:68 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:9:28:9:68 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:9:28:9:68 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:9:28:9:68 | { ... } | semmle.label | { ... } |
+| main.rs:10:36:10:43 | response | semmle.label | response |
+| main.rs:50:20:50:36 | ...: ... | semmle.label | ...: ... |
+| main.rs:51:13:51:15 | res | semmle.label | res |
+| main.rs:51:19:51:25 | req.url | semmle.label | req.url |
+| main.rs:51:19:51:32 | ... .path() | semmle.label | ... .path() |
+| main.rs:52:13:52:20 | response | semmle.label | response |
+| main.rs:52:32:52:72 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:52:32:52:72 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:52:32:52:72 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:52:32:52:72 | { ... } | semmle.label | { ... } |
+| main.rs:54:40:54:47 | response | semmle.label | response |
+| main.rs:59:15:59:25 | bad_handler | semmle.label | bad_handler |
+| main.rs:65:15:65:36 | ...::handler | semmle.label | ...::handler |
+subpaths

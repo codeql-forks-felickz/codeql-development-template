@@ -1,0 +1,6 @@
+name: languages-rust-custom-src
+version: 0.0.1
+library: false
+dependencies:
+  codeql/rust-all: "*"
+  languages-rust-custom-models: ${workspace}

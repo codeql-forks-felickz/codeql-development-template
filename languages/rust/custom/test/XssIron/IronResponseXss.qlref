@@ -1,0 +1,3 @@
+query: IronResponseXss/IronResponseXss.ql
+postprocess:
+  - utils/test/InlineExpectationsTestQuery.ql
