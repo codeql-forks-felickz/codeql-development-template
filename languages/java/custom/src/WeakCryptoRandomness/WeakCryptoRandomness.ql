@@ -1,9 +1,9 @@
 /**
  * @name Insecure randomness used for one-time password or security token
  * @description Using a non-cryptographic pseudo-random number generator, such as
- *              `java.util.Random` or `Math.random()`, to generate a one-time password,
- *              verification code or security token allows an attacker to predict
- *              the generated value.
+ *              `java.util.Random`, Kotlin's default collection shuffle or `Math.random()`,
+ *              to generate a one-time password, verification code or security token allows
+ *              an attacker to predict the generated value.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
@@ -51,6 +51,11 @@ private predicate isOneTimeSecretName(string name) {
   )
 }
 
+bindingset[name]
+private predicate isPasswordResetMethodName(string name) {
+  exists(string n | n = normalizeName(name) | n.regexpMatch(".*_password_resets?_.*"))
+}
+
 /**
  * A value that is used as a one-time password, verification code or security token:
  * a value assigned to a suitably named variable, passed to a suitably named
@@ -73,7 +78,26 @@ class OneTimeSecretSink extends DataFlow::Node {
     or
     exists(ReturnStmt ret |
       this.asExpr() = ret.getResult() and
-      isOneTimeSecretName(ret.getEnclosingCallable().getName())
+      (
+        isOneTimeSecretName(ret.getEnclosingCallable().getName())
+        or
+        isPasswordResetMethodName(ret.getEnclosingCallable().getName())
+      )
+    )
+  }
+}
+
+/**
+ * The first element of a Kotlin collection shuffled with the default random source.
+ */
+private class KotlinShuffledFirstSource extends DataFlow::Node {
+  KotlinShuffledFirstSource() {
+    exists(MethodCall first, MethodCall shuffled |
+      this.asExpr() = first and
+      first.getMethod().hasQualifiedName("kotlin.collections", "CollectionsKt", "first") and
+      first.getArgument(0) = shuffled and
+      shuffled.getMethod().hasQualifiedName("kotlin.collections", "CollectionsKt", "shuffled") and
+      shuffled.getNumArgument() = 1
     )
   }
 }
@@ -84,7 +108,10 @@ class OneTimeSecretSink extends DataFlow::Node {
  * with `java/insecure-randomness`.
  */
 module WeakCryptoRandomnessConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof InsecureRandomnessSource }
+  predicate isSource(DataFlow::Node src) {
+    src instanceof InsecureRandomnessSource or
+    src instanceof KotlinShuffledFirstSource
+  }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof OneTimeSecretSink }
 
@@ -94,6 +121,14 @@ module WeakCryptoRandomnessConfig implements DataFlow::ConfigSig {
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     InsecureRandomnessConfig::isAdditionalFlowStep(n1, n2)
+    or
+    // A random array index influences the character read when constructing a token by permutation.
+    exists(AssignExpr assignment, ArrayAccess access |
+      assignment.getLeftOperand() = access and
+      access.getType().hasName("char") and
+      DataFlow::localFlow(n1, DataFlow::exprNode(access.getIndexExpr())) and
+      n2.asExpr() = access.getArray()
+    )
     or
     // `String.valueOf(<primitive>)` is modeled as a neutral (numeric) summary, but numeric
     // random values commonly become OTPs this way.

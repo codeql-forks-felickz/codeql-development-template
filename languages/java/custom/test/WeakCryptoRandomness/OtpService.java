@@ -1,6 +1,10 @@
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import kotlin.collections.CollectionsKt;
 
 public class OtpService {
 
@@ -20,6 +24,27 @@ public class OtpService {
 
   static String randomCode() {
     return Integer.toString(new Random().nextInt()); // $ Source
+  }
+
+  static String makeRandomString() {
+    byte[] bytes = new byte[7];
+    new Random().nextBytes(bytes); // $ Source
+    return new String(bytes, StandardCharsets.UTF_8);
+  }
+
+  static String makeSecureRandomString() {
+    byte[] bytes = new byte[7];
+    new SecureRandom().nextBytes(bytes);
+    return new String(bytes, StandardCharsets.UTF_8);
+  }
+
+  static String scramble(Random random, String input) {
+    char[] chars = input.toCharArray();
+    int index = random.nextInt(chars.length); // $ Source
+    char temp = chars[0];
+    chars[0] = chars[index];
+    chars[index] = temp;
+    return new String(chars);
   }
 
   // BAD: 4-digit OTP generated with an unseeded java.util.Random (reported pattern).
@@ -106,5 +131,40 @@ public class OtpService {
     String otp = randomCode(); // $ Alert
     store(email, password);
     store(email, otp);
+  }
+
+  public String createApiToken() {
+    String apiToken = makeRandomString(); // $ Alert
+    return apiToken;
+  }
+
+  public String createSecureApiToken() {
+    String apiToken = makeSecureRandomString();
+    return apiToken;
+  }
+
+  public String createPasswordReset(String key) {
+    return scramble(new Random(), key); // $ Alert
+  }
+
+  public String createSecurePasswordReset(String key) {
+    char[] chars = key.toCharArray();
+    int index = new SecureRandom().nextInt(chars.length);
+    char temp = chars[0];
+    chars[0] = chars[index];
+    chars[index] = temp;
+    return new String(chars);
+  }
+
+  public int createKotlinStyleOtp() {
+    List<Integer> values = Arrays.asList(1000, 1001, 1002, 1003);
+    int otp = CollectionsKt.first(CollectionsKt.shuffled(values)); // $ Alert
+    return otp;
+  }
+
+  public int createSecureKotlinStyleOtp() {
+    List<Integer> values = Arrays.asList(1000, 1001, 1002, 1003);
+    int otp = CollectionsKt.first(CollectionsKt.shuffled(values, new SecureRandom()));
+    return otp;
   }
 }
