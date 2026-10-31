@@ -1,0 +1,1 @@
+| app.py:6:2:6:39 | ControlFlowNode for Attribute() | This route accepts an unsafe HTTP method and uses the cookie-backed session without registered CSRF protection. |

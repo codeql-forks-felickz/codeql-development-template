@@ -1,0 +1,2 @@
+query: DjangoCsrfMiddlewareTuple/DjangoCsrfMiddlewareTuple.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
