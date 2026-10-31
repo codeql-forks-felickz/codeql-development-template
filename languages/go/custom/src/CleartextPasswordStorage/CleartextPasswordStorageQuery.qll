@@ -292,6 +292,93 @@ module CleartextPasswordStorage {
 
   private string sqlLeadingTrivia() { result = "(?:\\s|/\\*.*?\\*/|--[^\\r\\n]*(?:\\r?\\n|$))*" }
 
+  /**
+   * Maps password columns in a strict, single-row INSERT to bound arguments.
+   * Only unquoted identifiers and homogeneous placeholders are recognized.
+   * Numbered placeholders must be a permutation of 1 through the column count.
+   */
+  bindingset[query]
+  private predicate insertPasswordArgument(string query, string name, int offset, int arity) {
+    exists(
+      string identifier, string placeholder, string grammar, string columns, string values,
+      int position, string value
+    |
+      identifier = "(?i:[a-z_][a-z0-9_]*)" and
+      placeholder = ["\\?", "\\$[1-9][0-9]*"] and
+      grammar =
+        "(?is)" + sqlLeadingTrivia() + "insert\\s+into\\s+" + identifier + "(?:\\." + identifier +
+          ")*\\s*\\(\\s*(" + identifier + "(?:\\s*,\\s*" + identifier +
+          ")*)\\s*\\)\\s*values\\s*\\(\\s*(" + placeholder + "(?:\\s*,\\s*" + placeholder +
+          ")*)\\s*\\)\\s*;?\\s*" and
+      columns = query.regexpCapture(grammar, 1) and
+      values = query.regexpCapture(grammar, 2) and
+      arity = count(int i | exists(columns.regexpFind(identifier, i, _))) and
+      arity = count(int i | exists(values.regexpFind(placeholder, i, _))) and
+      name = columns.regexpFind(identifier, position, _) and
+      isPasswordName(name) and
+      value = values.regexpFind(placeholder, position, _) and
+      (
+        placeholder = "\\?" and offset = position
+        or
+        placeholder = "\\$[1-9][0-9]*" and
+        // Reject out-of-range or repeated numbering rather than guess bindings.
+        forall(string p | p = values.regexpFind(placeholder, _, _) |
+          p.regexpCapture("\\$([1-9][0-9]*)", 1).toInt() in [1 .. arity]
+        ) and
+        arity = count(string p | p = values.regexpFind(placeholder, _, _)) and
+        offset = value.regexpCapture("\\$([1-9][0-9]*)", 1).toInt() - 1
+      )
+    )
+  }
+
+  /** Whole-value protection for INSERT inference, including protected field reads. */
+  private predicate isProtectedInsertValue(DataFlow::Node node) {
+    node instanceof NonCleartextPassword
+    or
+    exists(DataFlow::FieldReadNode read |
+      hasProtectedWrite(read) and protectedLocalFlow(read, node)
+    )
+    or
+    exists(AddExpr addition |
+      protectedLocalFlow(DataFlow::exprNode(addition), node) and
+      forall(Expr operand | operand = addition.getAnOperand() |
+        exists(DataFlow::exprNode(operand).getStringValue()) or
+        isProtectedInsertValue(DataFlow::exprNode(operand))
+      )
+    )
+  }
+
+  /** A previously unnamed clear-text value bound to a password INSERT column. */
+  private class SqlInsertPasswordSource extends Source {
+    string name;
+
+    SqlInsertPasswordSource() {
+      this instanceof SqlWriteArgumentSink and
+      isStringLike(this.getType()) and
+      not isProtectedInsertValue(this) and
+      exists(DataFlow::MethodCallNode c, int firstArg, int offset, int arity |
+        (
+          c.getTarget().hasQualifiedName("database/sql", ["DB", "Tx"], "Exec") and firstArg = 1
+          or
+          c.getTarget().hasQualifiedName("database/sql", ["DB", "Tx", "Conn"], "ExecContext") and
+          firstArg = 2
+        ) and
+        insertPasswordArgument(c.getSyntacticArgument(firstArg - 1).getStringValue(), name, offset,
+          arity) and
+        this = c.getSyntacticArgument(firstArg + offset) and
+        arity = count(int i | i >= firstArg and exists(c.getSyntacticArgument(i)))
+      ) and
+      // Preserve original paths: an inferred source is also an incoming barrier.
+      not exists(DataFlow::Node original |
+        original instanceof PasswordReadSource or original instanceof PasswordFieldWriteSource
+      |
+        TaintTracking::localTaint(original, this)
+      )
+    }
+
+    override string describe() { result = "a value bound to SQL column " + name }
+  }
+
   /** Scalars in the small UPDATE grammar; other syntax deliberately uses the fallback. */
   private string sqlScalar() {
     result = "(?:\\?|\\$[1-9][0-9]*|'(?:[^'\\\\]|'')*'|-?[0-9]+(?:\\.[0-9]+)?|[a-z_][a-z0-9_.]*)"
@@ -374,6 +461,9 @@ module CleartextPasswordStorage {
     predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
 
     predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
+    // Column inference describes this binding, not other uses of the same value.
+    predicate isBarrierOut(DataFlow::Node node) { node instanceof SqlInsertPasswordSource }
 
     predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       NoSql::isAdditionalMongoTaintStep(pred, succ)
