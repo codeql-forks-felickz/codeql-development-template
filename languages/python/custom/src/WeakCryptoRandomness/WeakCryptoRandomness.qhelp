@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Python's <code>random</code> module (including <code>random.Random</code> instances) uses the
+Mersenne Twister pseudo-random number generator. It is not cryptographically secure: an attacker
+who observes enough outputs can recover its internal state and predict past and future values.
+Using it to generate API keys, session identifiers, tokens, passwords, nonces, salts or keys
+allows an attacker to guess those secrets.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use the <code>secrets</code> module (for example <code>secrets.token_hex</code>,
+<code>secrets.token_urlsafe</code> or <code>secrets.choice</code>), <code>os.urandom</code>, or
+<code>random.SystemRandom</code> for any security-sensitive value.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example an API key is derived from <code>random.getrandbits</code>. Hashing the
+value does not help, because the hash input is predictable:
+</p>
+<sample src="WeakCryptoRandomnessBad.py" />
+<p>
+The fix is to use the <code>secrets</code> module:
+</p>
+<sample src="WeakCryptoRandomnessGood.py" />
+</example>
+
+<references>
+<li>Python documentation: <a href="https://docs.python.org/3/library/random.html">random</a> (warning on security use) and <a href="https://docs.python.org/3/library/secrets.html">secrets</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-community/vulnerabilities/Insecure_Randomness">Insecure Randomness</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/330.html">CWE-330</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/338.html">CWE-338</a>.</li>
+</references>
+</qhelp>
