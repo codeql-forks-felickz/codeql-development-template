@@ -1,7 +1,7 @@
 /**
- * @name Sensitive Spring ResponseCookie without the HttpOnly flag set
- * @description A sensitive cookie created with Spring's `ResponseCookie` builder without the
- *              'HttpOnly' flag set may be vulnerable to an XSS attack.
+ * @name Sensitive Spring cookie without the HttpOnly flag set
+ * @description A sensitive Spring cookie without the 'HttpOnly' flag set may be vulnerable to an
+ *              XSS attack.
  * @kind problem
  * @problem.severity warning
  * @precision high
@@ -13,10 +13,10 @@
 
 /*
  * Complements the upstream `java/sensitive-cookie-not-httponly` query, which only models servlet
- * `Cookie` objects and raw servlet `Set-Cookie` headers. This query tracks cookie names that
- * appear to be sensitive into `ResponseCookie.from(name, ...)`, through the builder, to a
- * `Set-Cookie` header or a WebFlux `addCookie` call, and reports it if the builder never calls
- * `.httpOnly(true)`.
+ * `Cookie` objects and raw servlet `Set-Cookie` headers. This query tracks sensitive names into
+ * Spring `ResponseCookie` builders and raw `Set-Cookie` values written with `HttpHeaders.put`.
+ * It reports a cookie if the builder never calls `.httpOnly(true)` or a raw value lacks the
+ * `HttpOnly` attribute.
  */
 
 import java
@@ -50,13 +50,17 @@ predicate isSensitiveCookieNameExpr(Expr expr) {
 }
 
 /**
- * A taint-tracking configuration for sensitive cookie names that are used to create a
- * `ResponseCookie` that is written to an HTTP response.
+ * A taint-tracking configuration for sensitive names used to create a `ResponseCookie` or a raw
+ * `Set-Cookie` value that is written to an HTTP response.
  */
 module SensitiveResponseCookieConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSensitiveCookieNameExpr(source.asExpr()) }
 
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CookieResponseSink }
+  predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() instanceof CookieResponseSink
+    or
+    sink.asExpr() instanceof SpringHttpHeadersPutSetCookieValue
+  }
 
   predicate isBarrier(DataFlow::Node node) { isCsrfCookieNameExpr(node.asExpr()) }
 
@@ -72,10 +76,39 @@ module SensitiveResponseCookieConfig implements DataFlow::ConfigSig {
 
 module SensitiveResponseCookieFlow = TaintTracking::Global<SensitiveResponseCookieConfig>;
 
-from CookieResponseSink sink
+/** A taint-tracking configuration for string constants containing the `HttpOnly` attribute. */
+private module RawHttpOnlyAttributeConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source.asExpr()
+        .(CompileTimeConstantExpr)
+        .getStringValue()
+        .regexpMatch("(?is).*(?:^|;)\\s*httponly\\s*(?:;|$).*")
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() instanceof SpringHttpHeadersPutSetCookieValue
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively
+  }
+}
+
+private module RawHttpOnlyAttributeFlow = TaintTracking::Global<RawHttpOnlyAttributeConfig>;
+
+from MethodCall call
 where
-  SensitiveResponseCookieFlow::flowToExpr(sink) and
-  ResponseCookieToResponseFlow::flowToExpr(sink) and
-  not HttpOnlyResponseCookie::flowsTo(sink)
-select sink.getCall(),
+  exists(CookieResponseSink sink |
+    SensitiveResponseCookieFlow::flowToExpr(sink) and
+    ResponseCookieToResponseFlow::flowToExpr(sink) and
+    not HttpOnlyResponseCookie::flowsTo(sink) and
+    call = sink.getCall()
+  )
+  or
+  exists(SpringHttpHeadersPutSetCookieValue value |
+    SensitiveResponseCookieFlow::flowToExpr(value) and
+    not RawHttpOnlyAttributeFlow::flowToExpr(value) and
+    call = value.getCall()
+  )
+select call,
   "Sensitive cookie is added to response without the 'HttpOnly' flag being set."

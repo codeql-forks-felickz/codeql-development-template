@@ -1,4 +1,5 @@
 import java.time.Duration;
+import java.util.Arrays;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -6,6 +7,18 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 
 public class SpringCookies {
   private static final String COOKIE_PATH = "/app";
+  private static final String LEVEL1_COOKIE = "SESSION_LEVEL1";
+
+  public ResponseEntity<String> badConstantCookieName(String sessionId, String content) {
+    ResponseCookie cookie = ResponseCookie.from(LEVEL1_COOKIE, sessionId).path(COOKIE_PATH).build();
+    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(content); // BAD
+  }
+
+  public ResponseEntity<String> goodConstantCookieName(String sessionId, String content) {
+    ResponseCookie cookie =
+        ResponseCookie.from(LEVEL1_COOKIE, sessionId).secure(true).build();
+    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(content); // GOOD
+  }
 
   public ResponseEntity<String> badPathOnly(String sessionId, String content) {
     ResponseCookie cookie = ResponseCookie.from("SESSION", sessionId).path(COOKIE_PATH).build();
@@ -98,6 +111,18 @@ public class SpringCookies {
 
   public void goodReactive(ServerHttpResponse response, String sessionId) {
     response.addCookie(ResponseCookie.from("SESSION", sessionId).secure(true).build()); // GOOD
+  }
+
+  public void badRawHeaderPut(HttpHeaders headers, String token) {
+    headers.put(HttpHeaders.SET_COOKIE, Arrays.asList("AUTH_TOKEN=" + token)); // BAD
+  }
+
+  public void goodRawHeaderPut(HttpHeaders headers, String token) {
+    headers.put(HttpHeaders.SET_COOKIE, Arrays.asList("AUTH_TOKEN=" + token + "; Secure")); // GOOD
+  }
+
+  public void goodOtherHeaderPut(HttpHeaders headers, String token) {
+    headers.put("X-Custom", Arrays.asList("AUTH_TOKEN=" + token)); // GOOD
   }
 
   private static ResponseCookie buildHttpOnlySessionCookie(String cookieName, String sessionId) {

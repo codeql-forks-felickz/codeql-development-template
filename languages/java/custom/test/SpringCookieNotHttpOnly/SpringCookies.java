@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,19 @@ public class SpringCookies {
   private static final String AUTH_PREFIX = "AUTH-";
   private static final String CSRF_PREFIX = "XSRF-";
   private static final String COOKIE_PATH = "/app";
+  private static final String AUTH_COOKIE_PREFIX = "AUTH_TOKEN=";
+
+  public void badRawHeaderPut(HttpHeaders headers, String token) {
+    headers.put(HttpHeaders.SET_COOKIE, Arrays.asList(AUTH_COOKIE_PREFIX + token)); // BAD
+  }
+
+  public void goodRawHeaderPut(HttpHeaders headers, String token) {
+    headers.put(HttpHeaders.SET_COOKIE, Arrays.asList(AUTH_COOKIE_PREFIX + token + "; HttpOnly")); // GOOD
+  }
+
+  public void goodNonSensitiveRawHeaderPut(HttpHeaders headers, String value) {
+    headers.put(HttpHeaders.SET_COOKIE, Arrays.asList("theme=" + value)); // GOOD
+  }
 
   public ResponseEntity<String> badPathOnly(String sessionId, String content) {
     ResponseCookie cookie = ResponseCookie.from(LEVEL1_COOKIE, sessionId).path(COOKIE_PATH).build();

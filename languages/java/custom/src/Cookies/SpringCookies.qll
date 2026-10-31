@@ -117,7 +117,7 @@ class SetCookieHeaderValue extends Expr {
       m.getDeclaringType()
           .getAnAncestor()
           .hasQualifiedName("org.springframework.http", "HttpHeaders") and
-      m.hasName(["add", "set"]) and
+      m.hasName(["add", "set", "put"]) and
       this = call.getArgument(1)
       or
       m.getDeclaringType()
@@ -130,6 +130,19 @@ class SetCookieHeaderValue extends Expr {
 
   /** Gets the call that adds the `Set-Cookie` header. */
   MethodCall getCall() { result = call }
+}
+
+/** A `Set-Cookie` value passed to `HttpHeaders.put`. */
+class SpringHttpHeadersPutSetCookieValue extends SetCookieHeaderValue {
+  SpringHttpHeadersPutSetCookieValue() {
+    exists(Method m |
+      m = this.getCall().getMethod().getSourceDeclaration() and
+      m.hasName("put") and
+      m.getDeclaringType()
+          .getAnAncestor()
+          .hasQualifiedName("org.springframework.http", "HttpHeaders")
+    )
+  }
 }
 
 /**

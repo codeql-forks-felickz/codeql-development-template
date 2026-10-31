@@ -15,7 +15,11 @@
 import java
 import semmle.code.configfiles.ConfigFiles
 
-/** A Spring Boot `application.properties` (or profile-specific `application-*.properties`) file. */
+/**
+ * A Spring Boot `application.properties` (or profile-specific `application-*.properties`) file.
+ * Known limitation: only active properties explicitly set to `false` are reported. This query
+ * does not infer insecurity from properties that are absent or commented out.
+ */
 class SpringBootApplicationPropertiesFile extends PropertiesFile {
   SpringBootApplicationPropertiesFile() {
     this.getBaseName().regexpMatch("application(-.+)?\\.properties")
