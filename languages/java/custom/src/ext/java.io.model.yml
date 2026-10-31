@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["java.io", "Console", False, "readLine", "()", "", "ReturnValue", "stdin", "manual"]
