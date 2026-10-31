@@ -28,4 +28,6 @@ func NewCookieStore(keyPairs ...[]byte) *CookieStore { return nil }
 
 func (s *CookieStore) Get(r *http.Request, name string) (*Session, error) { return nil, nil }
 
-func NewCookie(name, value string, options *Options) *http.Cookie { return nil }
+func NewCookie(name, value string, options *Options) *http.Cookie {
+	return &http.Cookie{Secure: options.Secure, HttpOnly: options.HttpOnly}
+}

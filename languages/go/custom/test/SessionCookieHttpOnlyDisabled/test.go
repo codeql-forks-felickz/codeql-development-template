@@ -99,7 +99,7 @@ func httpOnlyCookieGood(w http.ResponseWriter) {
 }
 
 func explicitFalseCookieBad(w http.ResponseWriter) {
-	http.SetCookie(w, &http.Cookie{Name: "sessionToken", Value: "jwt", HttpOnly: false, Secure: true}) // $ Alert
+	http.SetCookie(w, &http.Cookie{Name: "Level", Value: "high", HttpOnly: false, Secure: true}) // $ Alert
 }
 
 func echoHttpOnlyCookieGood(c echo.Context) {
