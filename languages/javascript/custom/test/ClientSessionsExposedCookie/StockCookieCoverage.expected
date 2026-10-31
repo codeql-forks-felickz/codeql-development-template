@@ -1,0 +1,10 @@
+| frameworks.js:14:7:14:32 | res.coo ...  token) | public | exposed |
+| frameworks.js:15:7:15:52 | res.coo ... true }) | public | httpOnly |
+| frameworks.js:25:3:25:35 | res.coo ...  token) | public | exposed |
+| frameworks.js:26:3:26:55 | res.coo ... true }) | public | httpOnly |
+| frameworks.js:34:7:34:43 | res.coo ...  token) | public | exposed |
+| frameworks.js:35:7:35:63 | res.coo ... true }) | public | httpOnly |
+| frameworks.js:44:3:44:28 | res.coo ...  token) | public | exposed |
+| frameworks.js:45:3:45:48 | res.coo ... true }) | public | httpOnly |
+| frameworks.js:53:3:53:32 | res.coo ...  token) | sensitive | exposed |
+| frameworks.js:54:3:54:52 | res.coo ... true }) | sensitive | httpOnly |
