@@ -1,14 +1,21 @@
 #select
+| django_redirect.py:9:21:9:52 | ControlFlowNode for Attribute() | django_redirect.py:6:17:6:23 | ControlFlowNode for request | django_redirect.py:9:21:9:52 | ControlFlowNode for Attribute() | Untrusted URL redirection depends on a $@. | django_redirect.py:6:17:6:23 | ControlFlowNode for request | user-provided value |
 | flask_redirect.py:9:21:9:44 | ControlFlowNode for Attribute() | flask_redirect.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_redirect.py:9:21:9:44 | ControlFlowNode for Attribute() | Untrusted URL redirection depends on a $@. | flask_redirect.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| flask_redirect.py:30:21:30:38 | ControlFlowNode for Lambda() | flask_redirect.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_redirect.py:30:21:30:38 | ControlFlowNode for Lambda() | Untrusted URL redirection depends on a $@. | flask_redirect.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | http_server_redirect.py:15:42:15:47 | ControlFlowNode for target | http_server_redirect.py:7:16:7:19 | ControlFlowNode for self | http_server_redirect.py:15:42:15:47 | ControlFlowNode for target | Untrusted URL redirection depends on a $@. | http_server_redirect.py:7:16:7:19 | ControlFlowNode for self | user-provided value |
 | http_server_redirect.py:20:42:20:58 | ControlFlowNode for Subscript | http_server_redirect.py:7:16:7:19 | ControlFlowNode for self | http_server_redirect.py:20:42:20:58 | ControlFlowNode for Subscript | Untrusted URL redirection depends on a $@. | http_server_redirect.py:7:16:7:19 | ControlFlowNode for self | user-provided value |
 | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | http_server_redirect.py:50:16:50:19 | ControlFlowNode for self | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | Untrusted URL redirection depends on a $@. | http_server_redirect.py:50:16:50:19 | ControlFlowNode for self | user-provided value |
 | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | http_server_redirect.py:50:16:50:19 | ControlFlowNode for self | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | Untrusted URL redirection depends on a $@. | http_server_redirect.py:50:16:50:19 | ControlFlowNode for self | user-provided value |
 edges
+| django_redirect.py:6:17:6:23 | ControlFlowNode for request | django_redirect.py:9:21:9:31 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| django_redirect.py:9:21:9:31 | ControlFlowNode for Attribute | django_redirect.py:9:21:9:52 | ControlFlowNode for Attribute() | provenance | dict.get |
 | flask_redirect.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_redirect.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
 | flask_redirect.py:1:26:1:32 | ControlFlowNode for request | flask_redirect.py:9:21:9:27 | ControlFlowNode for request | provenance |  |
+| flask_redirect.py:1:26:1:32 | ControlFlowNode for request | flask_redirect.py:28:22:28:28 | ControlFlowNode for request | provenance |  |
 | flask_redirect.py:9:21:9:27 | ControlFlowNode for request | flask_redirect.py:9:21:9:32 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
 | flask_redirect.py:9:21:9:32 | ControlFlowNode for Attribute | flask_redirect.py:9:21:9:44 | ControlFlowNode for Attribute() | provenance | dict.get |
+| flask_redirect.py:28:22:28:28 | ControlFlowNode for request | flask_redirect.py:30:21:30:38 | ControlFlowNode for Lambda() | provenance | AdditionalTaintStep |
+| flask_redirect.py:28:22:28:28 | ControlFlowNode for request | flask_redirect.py:30:30:30:35 | ControlFlowNode for target | provenance | AdditionalTaintStep |
 | http_server_redirect.py:7:16:7:19 | ControlFlowNode for self | http_server_redirect.py:8:39:8:47 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
 | http_server_redirect.py:8:9:8:13 | ControlFlowNode for query | http_server_redirect.py:9:40:9:44 | ControlFlowNode for query | provenance |  |
 | http_server_redirect.py:8:17:8:48 | ControlFlowNode for Attribute() | http_server_redirect.py:8:9:8:13 | ControlFlowNode for query | provenance | AdditionalTaintStep |
@@ -45,11 +52,17 @@ edges
 | http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | provenance |  |
 | http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() | provenance |  |
 nodes
+| django_redirect.py:6:17:6:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| django_redirect.py:9:21:9:31 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| django_redirect.py:9:21:9:52 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | flask_redirect.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | flask_redirect.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | flask_redirect.py:9:21:9:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | flask_redirect.py:9:21:9:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | flask_redirect.py:9:21:9:44 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| flask_redirect.py:28:22:28:28 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_redirect.py:30:21:30:38 | ControlFlowNode for Lambda() | semmle.label | ControlFlowNode for Lambda() |
+| flask_redirect.py:30:30:30:35 | ControlFlowNode for target | semmle.label | ControlFlowNode for target |
 | http_server_redirect.py:7:16:7:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
 | http_server_redirect.py:8:9:8:13 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
 | http_server_redirect.py:8:17:8:48 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
@@ -84,5 +97,6 @@ nodes
 | http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 subpaths
+| flask_redirect.py:28:22:28:28 | ControlFlowNode for request | flask_redirect.py:30:30:30:35 | ControlFlowNode for target | flask_redirect.py:30:30:30:35 | ControlFlowNode for target | flask_redirect.py:30:21:30:38 | ControlFlowNode for Lambda() |
 | http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | http_server_redirect.py:46:17:46:21 | ControlFlowNode for value | http_server_redirect.py:46:24:46:75 | ControlFlowNode for Attribute() | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() |
 | http_server_redirect.py:60:49:60:63 | ControlFlowNode for Subscript | http_server_redirect.py:46:17:46:21 | ControlFlowNode for value | http_server_redirect.py:46:24:46:75 | ControlFlowNode for Attribute() | http_server_redirect.py:60:42:60:64 | ControlFlowNode for LATIN1() |

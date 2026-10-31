@@ -20,13 +20,17 @@ private import semmle.python.dataflow.new.TaintTracking
 
 /**
  * Holds if `def` is an unpacking target that defines the local variable `v`
- * and `use` reads `v` from a scope nested inside the scope of `v`.
+ * and `use` reads `v` from a scope nested inside the scope of `v`. Variables
+ * with more than one write are excluded, since the unpacked value may have been
+ * overwritten before the nested read.
  */
 private predicate unpackedVariableCapturedRead(NameNode def, NameNode use) {
   exists(LocalVariable v |
     def.defines(v) and
     not exists(def.(DefinitionNode).getValue()) and
     def.getNode().getParentNode*() = any(Assign a).getATarget() and
+    // `def` is the only write to `v`, so no later write can overwrite the unpacked value
+    not exists(NameNode other | other.defines(v) and other != def) and
     use.uses(v) and
     use.getScope().getScope+() = v.getScope()
   )
