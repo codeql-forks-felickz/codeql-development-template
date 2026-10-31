@@ -68,6 +68,26 @@ namespace WeakCryptoRandomnessTests
             return captcha;
         }
 
+        public string GenerateSecurityToken()
+        {
+            return rnd.Next().ToString(); // $ Alert
+        }
+
+        public string GetCaptchaValue()
+        {
+            return rnd.Next(100000, 999999).ToString(); // $ Alert
+        }
+
+        public string GetApprovalCode()
+        {
+            return rnd.Next().ToString(); // $ Alert
+        }
+
+        public string GetNextTrackingNumber()
+        {
+            return rnd.Next().ToString(); // $ Alert
+        }
+
         public Ticket Approve()
         {
             var ticket = new Ticket();
@@ -150,6 +170,11 @@ namespace WeakCryptoRandomnessTests
         {
             var seeded = new Random(12345);
             int displayOrder = seeded.Next();
+        }
+
+        public string GetRandomDisplayValue()
+        {
+            return rnd.Next().ToString();
         }
 
         public void SecurePasswordSalt(Ticket ticket)

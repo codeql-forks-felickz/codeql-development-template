@@ -23,7 +23,7 @@ import semmle.code.csharp.dataflow.TaintTracking
 bindingset[name]
 predicate isSensitiveTokenName(string name) {
   exists(string n | n = name.toLowerCase() |
-    n.regexpMatch(".*(session_?(id|key|token)|sessid|token|nonce|captcha|csrf|xsrf|secret|salt|" +
+    n.regexpMatch(".*(session_?(id|key|token)|sessid|token|nonce|captcha|tracking_?number|csrf|xsrf|secret|salt|" +
         "(verification|verify|approval|confirm|confirmation|reset|activation|auth|access|security|pin|recovery|otp)_?code).*")
     or
     n.regexpMatch("otp.*|.*otp")
@@ -135,6 +135,13 @@ class SensitiveTokenSink extends DataFlow::ExprNode {
         exists(AssignOperation ao |
           ao.getRightOperand() = e and ao.getLeftOperand() = a.getAnAccess()
         )
+      )
+      or
+      // Return value from a sensitively named generator, such as `GenerateToken`.
+      exists(ReturnStmt rs, Callable c |
+        rs.getExpr() = e and
+        c = rs.getEnclosingCallable() and
+        isSensitiveTokenName(c.getName())
       )
       or
       // Argument to a sensitively named parameter
