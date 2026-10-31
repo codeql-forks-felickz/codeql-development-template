@@ -1,5 +1,9 @@
 name: languages-csharp-custom-test
 version: 0.0.2
 dependencies:
+  # Provides the standard queries (e.g. `Security Features/CWE-601/UrlRedirect.ql`)
+  # that the tests in this pack exercise together with the custom models.
+  codeql/csharp-queries: "*"
+  languages-csharp-custom-models: ${workspace}
   languages-csharp-custom-src: ${workspace}
 extractor: csharp

@@ -1,0 +1,105 @@
+#select
+| CheckoutController.cs:10:29:10:80 | call to method GetPackageTrackingUrl | CheckoutController.cs:8:57:8:63 | carrier : String | CheckoutController.cs:10:29:10:80 | call to method GetPackageTrackingUrl | Untrusted URL redirection due to $@. | CheckoutController.cs:8:57:8:63 | carrier | user-provided value |
+| CheckoutController.cs:10:29:10:80 | call to method GetPackageTrackingUrl | CheckoutController.cs:8:73:8:86 | trackingNumber : String | CheckoutController.cs:10:29:10:80 | call to method GetPackageTrackingUrl | Untrusted URL redirection due to $@. | CheckoutController.cs:8:73:8:86 | trackingNumber | user-provided value |
+| PackageTracking.aspx.cs:22:39:22:92 | call to method GetPackageTrackingUrl | PackageTracking.aspx.cs:18:28:18:46 | access to property QueryString : NameValueCollection | PackageTracking.aspx.cs:22:39:22:92 | call to method GetPackageTrackingUrl | Untrusted URL redirection due to $@. | PackageTracking.aspx.cs:18:28:18:46 | access to property QueryString | user-provided value |
+| PackageTracking.aspx.cs:22:39:22:92 | call to method GetPackageTrackingUrl | PackageTracking.aspx.cs:19:35:19:53 | access to property QueryString : NameValueCollection | PackageTracking.aspx.cs:22:39:22:92 | call to method GetPackageTrackingUrl | Untrusted URL redirection due to $@. | PackageTracking.aspx.cs:19:35:19:53 | access to property QueryString | user-provided value |
+| PackageTracking.aspx.cs:31:31:31:84 | call to method GetPackageTrackingUrl | PackageTracking.aspx.cs:28:24:28:33 | access to field txtCarrier : TextBox | PackageTracking.aspx.cs:31:31:31:84 | call to method GetPackageTrackingUrl | Untrusted URL redirection due to $@. | PackageTracking.aspx.cs:28:24:28:33 | access to field txtCarrier | user-provided value |
+| PackageTracking.aspx.cs:31:31:31:84 | call to method GetPackageTrackingUrl | PackageTracking.aspx.cs:29:31:29:47 | access to field txtTrackingNumber : TextBox | PackageTracking.aspx.cs:31:31:31:84 | call to method GetPackageTrackingUrl | Untrusted URL redirection due to $@. | PackageTracking.aspx.cs:29:31:29:47 | access to field txtTrackingNumber | user-provided value |
+| Register.aspx.cs:12:55:12:86 | access to indexer | Register.aspx.cs:12:55:12:73 | access to property QueryString : NameValueCollection | Register.aspx.cs:12:55:12:86 | access to indexer | Untrusted URL redirection due to $@. | Register.aspx.cs:12:55:12:73 | access to property QueryString | user-provided value |
+edges
+| CheckoutController.cs:8:57:8:63 | carrier : String | CheckoutController.cs:10:57:10:63 | access to parameter carrier : String | provenance |  |
+| CheckoutController.cs:8:73:8:86 | trackingNumber : String | CheckoutController.cs:10:66:10:79 | access to parameter trackingNumber : String | provenance |  |
+| CheckoutController.cs:10:57:10:63 | access to parameter carrier : String | CheckoutController.cs:10:29:10:80 | call to method GetPackageTrackingUrl | provenance | MaD:2975 |
+| CheckoutController.cs:10:57:10:63 | access to parameter carrier : String | Order.cs:6:59:6:65 | Carrier : String | provenance |  |
+| CheckoutController.cs:10:66:10:79 | access to parameter trackingNumber : String | CheckoutController.cs:10:29:10:80 | call to method GetPackageTrackingUrl | provenance | MaD:2909 |
+| CheckoutController.cs:10:66:10:79 | access to parameter trackingNumber : String | Order.cs:6:75:6:88 | TrackingNumber : String | provenance |  |
+| Order.cs:6:59:6:65 | Carrier : String | Order.cs:9:23:9:29 | access to parameter Carrier : String | provenance |  |
+| Order.cs:6:75:6:88 | TrackingNumber : String | Order.cs:19:91:19:104 | access to parameter TrackingNumber : String | provenance |  |
+| Order.cs:9:13:9:19 | access to parameter Carrier : String | Order.cs:19:82:19:88 | access to parameter Carrier : String | provenance |  |
+| Order.cs:9:23:9:29 | access to parameter Carrier : String | Order.cs:9:23:9:39 | call to method ToLower : String | provenance | MaD:2975 |
+| Order.cs:9:23:9:39 | call to method ToLower : String | Order.cs:9:13:9:19 | access to parameter Carrier : String | provenance |  |
+| Order.cs:19:21:19:31 | access to local variable trackingUrl : String | Order.cs:22:20:22:30 | access to local variable trackingUrl : String | provenance |  |
+| Order.cs:19:21:19:31 | access to local variable trackingUrl : String | Order.cs:22:20:22:30 | access to local variable trackingUrl : String | provenance |  |
+| Order.cs:19:35:19:105 | call to method Format : String | Order.cs:19:21:19:31 | access to local variable trackingUrl : String | provenance |  |
+| Order.cs:19:35:19:105 | call to method Format : String | Order.cs:19:21:19:31 | access to local variable trackingUrl : String | provenance |  |
+| Order.cs:19:82:19:88 | access to parameter Carrier : String | Order.cs:19:35:19:105 | call to method Format : String | provenance | MaD:2908 |
+| Order.cs:19:91:19:104 | access to parameter TrackingNumber : String | Order.cs:19:35:19:105 | call to method Format : String | provenance | MaD:2909 |
+| PackageTracking.aspx.cs:18:17:18:24 | [post] this access : PackageTracking [field _carrier] : String | PackageTracking.aspx.cs:19:17:19:31 | this access : PackageTracking [field _carrier] : String | provenance |  |
+| PackageTracking.aspx.cs:18:28:18:46 | access to property QueryString : NameValueCollection | PackageTracking.aspx.cs:18:28:18:57 | access to indexer : String | provenance |  |
+| PackageTracking.aspx.cs:18:28:18:57 | access to indexer : String | PackageTracking.aspx.cs:18:17:18:24 | [post] this access : PackageTracking [field _carrier] : String | provenance |  |
+| PackageTracking.aspx.cs:19:17:19:31 | [post] this access : PackageTracking [field _trackingNumber] : String | PackageTracking.aspx.cs:22:77:22:91 | this access : PackageTracking [field _trackingNumber] : String | provenance |  |
+| PackageTracking.aspx.cs:19:17:19:31 | this access : PackageTracking [field _carrier] : String | PackageTracking.aspx.cs:22:67:22:74 | this access : PackageTracking [field _carrier] : String | provenance |  |
+| PackageTracking.aspx.cs:19:35:19:53 | access to property QueryString : NameValueCollection | PackageTracking.aspx.cs:19:35:19:71 | access to indexer : String | provenance |  |
+| PackageTracking.aspx.cs:19:35:19:71 | access to indexer : String | PackageTracking.aspx.cs:19:17:19:31 | [post] this access : PackageTracking [field _trackingNumber] : String | provenance |  |
+| PackageTracking.aspx.cs:22:67:22:74 | access to field _carrier : String | Order.cs:6:59:6:65 | Carrier : String | provenance |  |
+| PackageTracking.aspx.cs:22:67:22:74 | access to field _carrier : String | PackageTracking.aspx.cs:22:39:22:92 | call to method GetPackageTrackingUrl | provenance | MaD:2975 |
+| PackageTracking.aspx.cs:22:67:22:74 | this access : PackageTracking [field _carrier] : String | PackageTracking.aspx.cs:22:67:22:74 | access to field _carrier : String | provenance |  |
+| PackageTracking.aspx.cs:22:77:22:91 | access to field _trackingNumber : String | Order.cs:6:75:6:88 | TrackingNumber : String | provenance |  |
+| PackageTracking.aspx.cs:22:77:22:91 | access to field _trackingNumber : String | PackageTracking.aspx.cs:22:39:22:92 | call to method GetPackageTrackingUrl | provenance | MaD:2909 |
+| PackageTracking.aspx.cs:22:77:22:91 | this access : PackageTracking [field _trackingNumber] : String | PackageTracking.aspx.cs:22:77:22:91 | access to field _trackingNumber : String | provenance |  |
+| PackageTracking.aspx.cs:28:13:28:20 | [post] this access : PackageTracking [field _carrier] : String | PackageTracking.aspx.cs:29:13:29:27 | this access : PackageTracking [field _carrier] : String | provenance |  |
+| PackageTracking.aspx.cs:28:24:28:33 | access to field txtCarrier : TextBox | PackageTracking.aspx.cs:28:24:28:38 | access to property Text : String | provenance | MaD:2253 |
+| PackageTracking.aspx.cs:28:24:28:38 | access to property Text : String | PackageTracking.aspx.cs:28:13:28:20 | [post] this access : PackageTracking [field _carrier] : String | provenance |  |
+| PackageTracking.aspx.cs:29:13:29:27 | [post] this access : PackageTracking [field _trackingNumber] : String | PackageTracking.aspx.cs:31:69:31:83 | this access : PackageTracking [field _trackingNumber] : String | provenance |  |
+| PackageTracking.aspx.cs:29:13:29:27 | this access : PackageTracking [field _carrier] : String | PackageTracking.aspx.cs:31:59:31:66 | this access : PackageTracking [field _carrier] : String | provenance |  |
+| PackageTracking.aspx.cs:29:31:29:47 | access to field txtTrackingNumber : TextBox | PackageTracking.aspx.cs:29:31:29:52 | access to property Text : String | provenance | MaD:2253 |
+| PackageTracking.aspx.cs:29:31:29:52 | access to property Text : String | PackageTracking.aspx.cs:29:13:29:27 | [post] this access : PackageTracking [field _trackingNumber] : String | provenance |  |
+| PackageTracking.aspx.cs:31:59:31:66 | access to field _carrier : String | Order.cs:6:59:6:65 | Carrier : String | provenance |  |
+| PackageTracking.aspx.cs:31:59:31:66 | access to field _carrier : String | PackageTracking.aspx.cs:31:31:31:84 | call to method GetPackageTrackingUrl | provenance | MaD:2975 |
+| PackageTracking.aspx.cs:31:59:31:66 | this access : PackageTracking [field _carrier] : String | PackageTracking.aspx.cs:31:59:31:66 | access to field _carrier : String | provenance |  |
+| PackageTracking.aspx.cs:31:69:31:83 | access to field _trackingNumber : String | Order.cs:6:75:6:88 | TrackingNumber : String | provenance |  |
+| PackageTracking.aspx.cs:31:69:31:83 | access to field _trackingNumber : String | PackageTracking.aspx.cs:31:31:31:84 | call to method GetPackageTrackingUrl | provenance | MaD:2909 |
+| PackageTracking.aspx.cs:31:69:31:83 | this access : PackageTracking [field _trackingNumber] : String | PackageTracking.aspx.cs:31:69:31:83 | access to field _trackingNumber : String | provenance |  |
+| Register.aspx.cs:12:55:12:73 | access to property QueryString : NameValueCollection | Register.aspx.cs:12:55:12:86 | access to indexer | provenance | Sink:MaD:0 |
+nodes
+| CheckoutController.cs:8:57:8:63 | carrier : String | semmle.label | carrier : String |
+| CheckoutController.cs:8:73:8:86 | trackingNumber : String | semmle.label | trackingNumber : String |
+| CheckoutController.cs:10:29:10:80 | call to method GetPackageTrackingUrl | semmle.label | call to method GetPackageTrackingUrl |
+| CheckoutController.cs:10:57:10:63 | access to parameter carrier : String | semmle.label | access to parameter carrier : String |
+| CheckoutController.cs:10:66:10:79 | access to parameter trackingNumber : String | semmle.label | access to parameter trackingNumber : String |
+| Order.cs:6:59:6:65 | Carrier : String | semmle.label | Carrier : String |
+| Order.cs:6:75:6:88 | TrackingNumber : String | semmle.label | TrackingNumber : String |
+| Order.cs:9:13:9:19 | access to parameter Carrier : String | semmle.label | access to parameter Carrier : String |
+| Order.cs:9:23:9:29 | access to parameter Carrier : String | semmle.label | access to parameter Carrier : String |
+| Order.cs:9:23:9:39 | call to method ToLower : String | semmle.label | call to method ToLower : String |
+| Order.cs:19:21:19:31 | access to local variable trackingUrl : String | semmle.label | access to local variable trackingUrl : String |
+| Order.cs:19:21:19:31 | access to local variable trackingUrl : String | semmle.label | access to local variable trackingUrl : String |
+| Order.cs:19:35:19:105 | call to method Format : String | semmle.label | call to method Format : String |
+| Order.cs:19:35:19:105 | call to method Format : String | semmle.label | call to method Format : String |
+| Order.cs:19:82:19:88 | access to parameter Carrier : String | semmle.label | access to parameter Carrier : String |
+| Order.cs:19:91:19:104 | access to parameter TrackingNumber : String | semmle.label | access to parameter TrackingNumber : String |
+| Order.cs:22:20:22:30 | access to local variable trackingUrl : String | semmle.label | access to local variable trackingUrl : String |
+| Order.cs:22:20:22:30 | access to local variable trackingUrl : String | semmle.label | access to local variable trackingUrl : String |
+| PackageTracking.aspx.cs:18:17:18:24 | [post] this access : PackageTracking [field _carrier] : String | semmle.label | [post] this access : PackageTracking [field _carrier] : String |
+| PackageTracking.aspx.cs:18:28:18:46 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| PackageTracking.aspx.cs:18:28:18:57 | access to indexer : String | semmle.label | access to indexer : String |
+| PackageTracking.aspx.cs:19:17:19:31 | [post] this access : PackageTracking [field _trackingNumber] : String | semmle.label | [post] this access : PackageTracking [field _trackingNumber] : String |
+| PackageTracking.aspx.cs:19:17:19:31 | this access : PackageTracking [field _carrier] : String | semmle.label | this access : PackageTracking [field _carrier] : String |
+| PackageTracking.aspx.cs:19:35:19:53 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| PackageTracking.aspx.cs:19:35:19:71 | access to indexer : String | semmle.label | access to indexer : String |
+| PackageTracking.aspx.cs:22:39:22:92 | call to method GetPackageTrackingUrl | semmle.label | call to method GetPackageTrackingUrl |
+| PackageTracking.aspx.cs:22:67:22:74 | access to field _carrier : String | semmle.label | access to field _carrier : String |
+| PackageTracking.aspx.cs:22:67:22:74 | this access : PackageTracking [field _carrier] : String | semmle.label | this access : PackageTracking [field _carrier] : String |
+| PackageTracking.aspx.cs:22:77:22:91 | access to field _trackingNumber : String | semmle.label | access to field _trackingNumber : String |
+| PackageTracking.aspx.cs:22:77:22:91 | this access : PackageTracking [field _trackingNumber] : String | semmle.label | this access : PackageTracking [field _trackingNumber] : String |
+| PackageTracking.aspx.cs:28:13:28:20 | [post] this access : PackageTracking [field _carrier] : String | semmle.label | [post] this access : PackageTracking [field _carrier] : String |
+| PackageTracking.aspx.cs:28:24:28:33 | access to field txtCarrier : TextBox | semmle.label | access to field txtCarrier : TextBox |
+| PackageTracking.aspx.cs:28:24:28:38 | access to property Text : String | semmle.label | access to property Text : String |
+| PackageTracking.aspx.cs:29:13:29:27 | [post] this access : PackageTracking [field _trackingNumber] : String | semmle.label | [post] this access : PackageTracking [field _trackingNumber] : String |
+| PackageTracking.aspx.cs:29:13:29:27 | this access : PackageTracking [field _carrier] : String | semmle.label | this access : PackageTracking [field _carrier] : String |
+| PackageTracking.aspx.cs:29:31:29:47 | access to field txtTrackingNumber : TextBox | semmle.label | access to field txtTrackingNumber : TextBox |
+| PackageTracking.aspx.cs:29:31:29:52 | access to property Text : String | semmle.label | access to property Text : String |
+| PackageTracking.aspx.cs:31:31:31:84 | call to method GetPackageTrackingUrl | semmle.label | call to method GetPackageTrackingUrl |
+| PackageTracking.aspx.cs:31:59:31:66 | access to field _carrier : String | semmle.label | access to field _carrier : String |
+| PackageTracking.aspx.cs:31:59:31:66 | this access : PackageTracking [field _carrier] : String | semmle.label | this access : PackageTracking [field _carrier] : String |
+| PackageTracking.aspx.cs:31:69:31:83 | access to field _trackingNumber : String | semmle.label | access to field _trackingNumber : String |
+| PackageTracking.aspx.cs:31:69:31:83 | this access : PackageTracking [field _trackingNumber] : String | semmle.label | this access : PackageTracking [field _trackingNumber] : String |
+| Register.aspx.cs:12:55:12:73 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Register.aspx.cs:12:55:12:86 | access to indexer | semmle.label | access to indexer |
+subpaths
+| CheckoutController.cs:10:57:10:63 | access to parameter carrier : String | Order.cs:6:59:6:65 | Carrier : String | Order.cs:22:20:22:30 | access to local variable trackingUrl : String | CheckoutController.cs:10:29:10:80 | call to method GetPackageTrackingUrl |
+| CheckoutController.cs:10:66:10:79 | access to parameter trackingNumber : String | Order.cs:6:75:6:88 | TrackingNumber : String | Order.cs:22:20:22:30 | access to local variable trackingUrl : String | CheckoutController.cs:10:29:10:80 | call to method GetPackageTrackingUrl |
+| PackageTracking.aspx.cs:22:67:22:74 | access to field _carrier : String | Order.cs:6:59:6:65 | Carrier : String | Order.cs:22:20:22:30 | access to local variable trackingUrl : String | PackageTracking.aspx.cs:22:39:22:92 | call to method GetPackageTrackingUrl |
+| PackageTracking.aspx.cs:22:77:22:91 | access to field _trackingNumber : String | Order.cs:6:75:6:88 | TrackingNumber : String | Order.cs:22:20:22:30 | access to local variable trackingUrl : String | PackageTracking.aspx.cs:22:39:22:92 | call to method GetPackageTrackingUrl |
+| PackageTracking.aspx.cs:31:59:31:66 | access to field _carrier : String | Order.cs:6:59:6:65 | Carrier : String | Order.cs:22:20:22:30 | access to local variable trackingUrl : String | PackageTracking.aspx.cs:31:31:31:84 | call to method GetPackageTrackingUrl |
+| PackageTracking.aspx.cs:31:69:31:83 | access to field _trackingNumber : String | Order.cs:6:75:6:88 | TrackingNumber : String | Order.cs:22:20:22:30 | access to local variable trackingUrl : String | PackageTracking.aspx.cs:31:31:31:84 | call to method GetPackageTrackingUrl |
