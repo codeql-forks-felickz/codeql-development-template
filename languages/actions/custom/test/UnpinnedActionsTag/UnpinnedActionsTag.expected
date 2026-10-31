@@ -1,0 +1,2 @@
+| .github/workflows/create-issue.yml:10:15:10:46 | JasonEtco/create-an-issue@v2.3.1 | Unpinned 3rd party Action 'Create issue' step $@ uses 'JasonEtco/create-an-issue' with ref 'v2.3.1', not a pinned commit hash | .github/workflows/create-issue.yml:10:9:16:6 | Uses Step | Uses Step |
+| .github/workflows/scan.yml:10:15:10:39 | snyk/actions/setup@master | Unpinned 3rd party Action 'Scan' step $@ uses 'snyk/actions/setup' with ref 'master', not a pinned commit hash | .github/workflows/scan.yml:10:9:12:6 | Uses Step | Uses Step |

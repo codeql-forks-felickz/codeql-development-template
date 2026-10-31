@@ -1,0 +1,20 @@
+name: Scan
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # GOOD: trusted owner (actions/*)
+      - uses: actions/checkout@v4
+      # BAD: third-party action by mutable branch, followed by a step using a secret
+      - uses: snyk/actions/setup@master
+      # GOOD: third-party action pinned to a full commit SHA
+      - uses: snyk/actions/setup@b98d498629f1c368650224d6d212bf7dfa89e4bf
+      - name: Scan
+        run: snyk test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      # GOOD: trusted owner (github/*)
+      - uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
