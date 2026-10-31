@@ -1,0 +1,3 @@
+| goatlin/routes/accounts.js:7:43:7:46 | auth | This route handler performs $@, but is not rate-limited. | goatlin/middleware/auth.js:12:25:12:67 | Account ... .exec() | a database access |
+| goof/app.js:9:20:9:38 | routes.loginHandler | This route handler performs $@, but is not rate-limited. | goof/routes.js:7:3:13:4 | User.fi ... );\\n  }) | a database access |
+| nodegoat/routes/index.js:9:22:9:54 | session ... Request | This route handler performs $@, but is not rate-limited. | nodegoat/routes/session.js:12:5:16:6 | userDAO ... \\n    }) | authorization |

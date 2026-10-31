@@ -1,0 +1,8 @@
+#select
+| app.js:18:26:18:65 | req.hea ...  req.ip | app.js:18:26:18:55 | req.hea ... d-for'] | app.js:18:26:18:65 | req.hea ...  req.ip | This rate-limiting key depends on $@, so a client can evade the $@ by changing it. | app.js:18:26:18:55 | req.hea ... d-for'] | the client-supplied 'x-forwarded-for' header | app.js:17:19:19:2 | rateLim ... lert\\n}) | rate limiter |
+edges
+| app.js:18:26:18:55 | req.hea ... d-for'] | app.js:18:26:18:65 | req.hea ...  req.ip | provenance |  |
+nodes
+| app.js:18:26:18:55 | req.hea ... d-for'] | semmle.label | req.hea ... d-for'] |
+| app.js:18:26:18:65 | req.hea ...  req.ip | semmle.label | req.hea ...  req.ip |
+subpaths
