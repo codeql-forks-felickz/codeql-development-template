@@ -16,24 +16,24 @@ BOOL CryptDecrypt(HCRYPTKEY key, HCRYPTHASH hash, BOOL final, DWORD flags,
 
 void bad_socket_password(int socket)
 {
-    char password[64];
-    recv(socket, password, sizeof(password), 0); // $ Source
-    LogonUserA("user", "domain", password, 3, 0, 0); // $ Alert
+    char data[64];
+    recv(socket, data, sizeof(data), 0); // $ Source
+    LogonUserA("user", "domain", data, 3, 0, 0); // $ Alert
 }
 
 void good_socket_username(int socket)
 {
     char username[64];
-    char password[] = "local";
+    char data[] = "local";
     recvfrom(socket, username, sizeof(username), 0, 0, 0);
-    LogonUserA(username, "domain", password, 3, 0, 0);
+    LogonUserA(username, "domain", data, 3, 0, 0);
 }
 
 void good_encrypted_socket_password(int socket)
 {
-    char password[64];
-    DWORD dataLength = sizeof(password);
-    recv(socket, password, sizeof(password), 0);
-    CryptDecrypt(0, 0, 1, 0, (BYTE *)password, &dataLength);
-    LogonUserA("user", "domain", password, 3, 0, 0);
+    char data[64];
+    DWORD dataLength = sizeof(data);
+    recv(socket, data, sizeof(data), 0);
+    CryptDecrypt(0, 0, 1, 0, (BYTE *)data, &dataLength);
+    LogonUserA("user", "domain", data, 3, 0, 0);
 }

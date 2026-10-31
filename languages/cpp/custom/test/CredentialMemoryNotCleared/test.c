@@ -12,32 +12,32 @@ char *fgets(char *buffer, int count, void *stream);
 
 void bad_stack_password(void *stream)
 {
-    char password[64];
-    fgets(password, 64, stream);
-    LogonUserA("user", "domain", password, 3, 0, 0); // $ Alert
+    char data[64];
+    fgets(data, 64, stream);
+    LogonUserA("user", "domain", data, 3, 0, 0); // $ Alert
 }
 
 void good_stack_password(void *stream)
 {
-    char password[64];
-    fgets(password, 64, stream);
-    LogonUserA("user", "domain", password, 3, 0, 0);
-    SecureZeroMemory(password, sizeof(password));
+    char data[64];
+    fgets(data, 64, stream);
+    LogonUserA("user", "domain", data, 3, 0, 0);
+    SecureZeroMemory(data, sizeof(data));
 }
 
 void bad_heap_password(void *stream)
 {
-    char *password = (char *)malloc(64);
-    fgets(password, 64, stream);
-    LogonUserA("user", "domain", password, 3, 0, 0);
-    free(password); // $ Alert
+    char *data = (char *)malloc(64);
+    fgets(data, 64, stream);
+    LogonUserA("user", "domain", data, 3, 0, 0);
+    free(data); // $ Alert
 }
 
 void good_heap_password(void *stream)
 {
-    char *password = (char *)malloc(64);
-    fgets(password, 64, stream);
-    LogonUserA("user", "domain", password, 3, 0, 0);
-    SecureZeroMemory(password, 64);
-    free(password);
+    char *data = (char *)malloc(64);
+    fgets(data, 64, stream);
+    LogonUserA("user", "domain", data, 3, 0, 0);
+    SecureZeroMemory(data, 64);
+    free(data);
 }
