@@ -72,8 +72,21 @@ function verify(token) {
   return jwt.verify(token, SECRET);
 }
 
+// Mirrors the payload-variable pattern from the reported application.
+function payloadWithoutExpiration(user) {
+  const payload = { user };
+  return jwt.sign(payload, SECRET); // $ Alert
+}
+
+function payloadWithExpiration(user) {
+  const payload = { user, exp: Math.floor(Date.now() / 1000) + 3600 };
+  return jwt.sign(payload, SECRET);
+}
+
 module.exports = {
   noOptions,
+  payloadWithoutExpiration,
+  payloadWithExpiration,
   optionsWithoutExpiresIn,
   callbackOnly,
   nullishOptions,
