@@ -1,0 +1,54 @@
+#select
+| CustomerLogin.cs:25:22:25:82 | ... + ... | CustomerLogin.cs:22:28:22:38 | access to field txtUserName : TextBox | CustomerLogin.cs:25:22:25:82 | ... + ... | This log entry depends on a $@. | CustomerLogin.cs:22:28:22:38 | access to field txtUserName | user-provided value |
+| CustomerLogin.cs:25:22:25:82 | ... + ... | CustomerLogin.cs:23:26:23:36 | access to field txtPassword : TextBox | CustomerLogin.cs:25:22:25:82 | ... + ... | This log entry depends on a $@. | CustomerLogin.cs:23:26:23:36 | access to field txtPassword | user-provided value |
+| CustomerLogin.cs:27:23:27:37 | ... + ... | CustomerLogin.cs:22:28:22:38 | access to field txtUserName : TextBox | CustomerLogin.cs:27:23:27:37 | ... + ... | This log entry depends on a $@. | CustomerLogin.cs:22:28:22:38 | access to field txtUserName | user-provided value |
+| CustomerLogin.cs:28:22:28:36 | ... + ... | CustomerLogin.cs:22:28:22:38 | access to field txtUserName : TextBox | CustomerLogin.cs:28:22:28:36 | ... + ... | This log entry depends on a $@. | CustomerLogin.cs:22:28:22:38 | access to field txtUserName | user-provided value |
+| CustomerLogin.cs:29:23:29:37 | ... + ... | CustomerLogin.cs:22:28:22:38 | access to field txtUserName : TextBox | CustomerLogin.cs:29:23:29:37 | ... + ... | This log entry depends on a $@. | CustomerLogin.cs:22:28:22:38 | access to field txtUserName | user-provided value |
+| CustomerLogin.cs:30:23:30:49 | ... + ... | CustomerLogin.cs:22:28:22:38 | access to field txtUserName : TextBox | CustomerLogin.cs:30:23:30:49 | ... + ... | This log entry depends on a $@. | CustomerLogin.cs:22:28:22:38 | access to field txtUserName | user-provided value |
+| CustomerLogin.cs:32:60:32:64 | access to local variable email | CustomerLogin.cs:22:28:22:38 | access to field txtUserName : TextBox | CustomerLogin.cs:32:60:32:64 | access to local variable email | This log entry depends on a $@. | CustomerLogin.cs:22:28:22:38 | access to field txtUserName | user-provided value |
+| CustomerLogin.cs:33:45:33:49 | access to local variable email | CustomerLogin.cs:22:28:22:38 | access to field txtUserName : TextBox | CustomerLogin.cs:33:45:33:49 | access to local variable email | This log entry depends on a $@. | CustomerLogin.cs:22:28:22:38 | access to field txtUserName | user-provided value |
+| CustomerLogin.cs:34:58:34:62 | access to local variable email | CustomerLogin.cs:22:28:22:38 | access to field txtUserName : TextBox | CustomerLogin.cs:34:58:34:62 | access to local variable email | This log entry depends on a $@. | CustomerLogin.cs:22:28:22:38 | access to field txtUserName | user-provided value |
+| CustomerLogin.cs:35:29:35:64 | ... + ... | CustomerLogin.cs:22:28:22:38 | access to field txtUserName : TextBox | CustomerLogin.cs:35:29:35:64 | ... + ... | This log entry depends on a $@. | CustomerLogin.cs:22:28:22:38 | access to field txtUserName | user-provided value |
+| CustomerLogin.cs:36:59:36:82 | ... + ... | CustomerLogin.cs:22:28:22:38 | access to field txtUserName : TextBox | CustomerLogin.cs:36:59:36:82 | ... + ... | This log entry depends on a $@. | CustomerLogin.cs:22:28:22:38 | access to field txtUserName | user-provided value |
+| stubs/MicrosoftExtensionsLogging.cs:20:40:20:46 | access to parameter message | LogInjectionController.cs:24:38:24:45 | userInfo : String | stubs/MicrosoftExtensionsLogging.cs:20:40:20:46 | access to parameter message | This log entry depends on a $@. | LogInjectionController.cs:24:38:24:45 | userInfo | user-provided value |
+edges
+| CustomerLogin.cs:22:20:22:24 | access to local variable email : String | CustomerLogin.cs:25:22:25:82 | ... + ... | provenance | Sink:MaD:7 |
+| CustomerLogin.cs:22:20:22:24 | access to local variable email : String | CustomerLogin.cs:27:23:27:37 | ... + ... | provenance | Sink:MaD:0 |
+| CustomerLogin.cs:22:20:22:24 | access to local variable email : String | CustomerLogin.cs:28:22:28:36 | ... + ... | provenance | Sink:MaD:14 |
+| CustomerLogin.cs:22:20:22:24 | access to local variable email : String | CustomerLogin.cs:29:23:29:37 | ... + ... | provenance | Sink:MaD:28 |
+| CustomerLogin.cs:22:20:22:24 | access to local variable email : String | CustomerLogin.cs:30:23:30:49 | ... + ... | provenance | Sink:MaD:22 |
+| CustomerLogin.cs:22:20:22:24 | access to local variable email : String | CustomerLogin.cs:32:60:32:64 | access to local variable email | provenance | Sink:MaD:9 |
+| CustomerLogin.cs:22:20:22:24 | access to local variable email : String | CustomerLogin.cs:33:45:33:49 | access to local variable email | provenance | Sink:MaD:24 |
+| CustomerLogin.cs:22:20:22:24 | access to local variable email : String | CustomerLogin.cs:34:58:34:62 | access to local variable email | provenance | Sink:MaD:18 |
+| CustomerLogin.cs:22:20:22:24 | access to local variable email : String | CustomerLogin.cs:35:29:35:64 | ... + ... | provenance | Sink:MaD:5 |
+| CustomerLogin.cs:22:20:22:24 | access to local variable email : String | CustomerLogin.cs:36:59:36:82 | ... + ... | provenance | Sink:MaD:34 |
+| CustomerLogin.cs:22:28:22:38 | access to field txtUserName : TextBox | CustomerLogin.cs:22:28:22:43 | access to property Text : String | provenance | MaD:2287 |
+| CustomerLogin.cs:22:28:22:43 | access to property Text : String | CustomerLogin.cs:22:20:22:24 | access to local variable email : String | provenance |  |
+| CustomerLogin.cs:23:20:23:22 | access to local variable pwd : String | CustomerLogin.cs:25:22:25:82 | ... + ... | provenance | Sink:MaD:7 |
+| CustomerLogin.cs:23:26:23:36 | access to field txtPassword : TextBox | CustomerLogin.cs:23:26:23:41 | access to property Text : String | provenance | MaD:2287 |
+| CustomerLogin.cs:23:26:23:41 | access to property Text : String | CustomerLogin.cs:23:20:23:22 | access to local variable pwd : String | provenance |  |
+| LogInjectionController.cs:24:38:24:45 | userInfo : String | LogInjectionController.cs:26:30:26:50 | ... + ... : String | provenance |  |
+| LogInjectionController.cs:26:30:26:50 | ... + ... : String | stubs/MicrosoftExtensionsLogging.cs:19:65:19:71 | message : String | provenance |  |
+| stubs/MicrosoftExtensionsLogging.cs:19:65:19:71 | message : String | stubs/MicrosoftExtensionsLogging.cs:20:40:20:46 | access to parameter message | provenance |  |
+nodes
+| CustomerLogin.cs:22:20:22:24 | access to local variable email : String | semmle.label | access to local variable email : String |
+| CustomerLogin.cs:22:28:22:38 | access to field txtUserName : TextBox | semmle.label | access to field txtUserName : TextBox |
+| CustomerLogin.cs:22:28:22:43 | access to property Text : String | semmle.label | access to property Text : String |
+| CustomerLogin.cs:23:20:23:22 | access to local variable pwd : String | semmle.label | access to local variable pwd : String |
+| CustomerLogin.cs:23:26:23:36 | access to field txtPassword : TextBox | semmle.label | access to field txtPassword : TextBox |
+| CustomerLogin.cs:23:26:23:41 | access to property Text : String | semmle.label | access to property Text : String |
+| CustomerLogin.cs:25:22:25:82 | ... + ... | semmle.label | ... + ... |
+| CustomerLogin.cs:27:23:27:37 | ... + ... | semmle.label | ... + ... |
+| CustomerLogin.cs:28:22:28:36 | ... + ... | semmle.label | ... + ... |
+| CustomerLogin.cs:29:23:29:37 | ... + ... | semmle.label | ... + ... |
+| CustomerLogin.cs:30:23:30:49 | ... + ... | semmle.label | ... + ... |
+| CustomerLogin.cs:32:60:32:64 | access to local variable email | semmle.label | access to local variable email |
+| CustomerLogin.cs:33:45:33:49 | access to local variable email | semmle.label | access to local variable email |
+| CustomerLogin.cs:34:58:34:62 | access to local variable email | semmle.label | access to local variable email |
+| CustomerLogin.cs:35:29:35:64 | ... + ... | semmle.label | ... + ... |
+| CustomerLogin.cs:36:59:36:82 | ... + ... | semmle.label | ... + ... |
+| LogInjectionController.cs:24:38:24:45 | userInfo : String | semmle.label | userInfo : String |
+| LogInjectionController.cs:26:30:26:50 | ... + ... : String | semmle.label | ... + ... : String |
+| stubs/MicrosoftExtensionsLogging.cs:19:65:19:71 | message : String | semmle.label | message : String |
+| stubs/MicrosoftExtensionsLogging.cs:20:40:20:46 | access to parameter message | semmle.label | access to parameter message |
+subpaths

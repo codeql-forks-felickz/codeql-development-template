@@ -1,0 +1,2 @@
+query: Security Features/CWE-117/LogForging.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
