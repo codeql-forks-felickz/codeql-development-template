@@ -1,0 +1,5 @@
+{
+  "name": "sensitive-data-in-jwt-payload-test",
+  "private": true,
+  "type": "commonjs"
+}

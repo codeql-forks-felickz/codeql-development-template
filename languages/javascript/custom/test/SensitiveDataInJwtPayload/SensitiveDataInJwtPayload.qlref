@@ -1,0 +1,2 @@
+query: SensitiveDataInJwtPayload/SensitiveDataInJwtPayload.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

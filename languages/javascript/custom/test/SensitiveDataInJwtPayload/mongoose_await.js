@@ -1,0 +1,130 @@
+const jwt = require('jsonwebtoken');
+const jwtSimple = require('jwt-simple');
+const { SignJWT } = require('jose');
+const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
+
+const User = mongoose.model('User', new mongoose.Schema({ email: String, password: String }));
+const JWT_SECRET = process.env.JWT_SECRET;
+
+// The user document is known to hold a password hash, which is signed into the token.
+async function login(req, res) {
+  const user = await User.findOne({ email: req.body.email }); // $ Source
+  if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+    return res.sendStatus(401);
+  }
+  res.json({ token: jwt.sign({ user }, JWT_SECRET) }); // $ Alert
+}
+
+async function loginJwtSimple(req, res) {
+  const account = await User.findOne({ email: req.body.email }); // $ Source
+  if (!account || !(await bcrypt.compare(req.body.password, account.password))) {
+    return res.sendStatus(401);
+  }
+  res.json({ token: jwtSimple.encode({ account }, JWT_SECRET) }); // $ Alert
+}
+
+async function loginJose(req, res) {
+  const user = await User.findOne({ email: req.body.email }); // $ Source
+  if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+    return res.sendStatus(401);
+  }
+  const token = await new SignJWT({ user }) // $ Alert
+    .setProtectedHeader({ alg: 'HS256' })
+    .sign(new TextEncoder().encode(JWT_SECRET));
+  res.json({ token });
+}
+
+// A password-like value is placed directly in the payload.
+function register(req, res) {
+  const password = req.body.password; // $ Source
+  const token = jwt.sign({ email: req.body.email, password }, JWT_SECRET); // $ Alert
+  res.json({ token });
+}
+
+// Safe: only identifiers are signed.
+async function loginSafe(req, res) {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+    return res.sendStatus(401);
+  }
+  res.json({ token: jwt.sign({ sub: user.id, email: user.email }, JWT_SECRET) });
+}
+
+// Safe: the password field is stripped from the record before signing.
+async function loginWithoutPassword(req, res) {
+  const user = await User.findOne({ email: req.body.email }).lean();
+  if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+    return res.sendStatus(401);
+  }
+  const { password, ...profile } = user;
+  res.json({ token: jwt.sign({ profile }, JWT_SECRET) });
+}
+
+// Safe: removing a nested credential-containing field also removes it from the rest object.
+async function loginWithoutNestedPassword(req, res) {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user || !(await bcrypt.compare(req.body.password, user.auth.password))) {
+    return res.sendStatus(401);
+  }
+  const {
+    auth: { password },
+    ...profile
+  } = user;
+  res.json({ token: jwt.sign({ profile }, JWT_SECRET) });
+}
+
+// Safe: the Mongoose selection excludes the password field from the returned record.
+async function loginWithPasswordSelection(req, res) {
+  const user = await User.findOne({
+    email: req.body.email,
+    password: req.body.password,
+  }).select('-password');
+  if (!user) {
+    return res.sendStatus(401);
+  }
+  res.json({ token: jwt.sign({ user }, JWT_SECRET) });
+}
+
+// A credential read remains sensitive when it is accessed through a benign wrapper property.
+function signWrappedPassword(req, res) {
+  const box = { value: req.body.password }; // $ Source
+  res.json({ token: jwt.sign({ claim: box.value }, JWT_SECRET) }); // $ Alert
+}
+
+// A credential record remains sensitive when it is accessed through a wrapper property.
+async function signWrappedRecord(req, res) {
+  const user = await User.findOne({ email: req.body.email }); // $ Source
+  if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+    return res.sendStatus(401);
+  }
+  const box = { value: user };
+  res.json({ token: jwt.sign({ claim: box.value }, JWT_SECRET) }); // $ Alert
+}
+
+// A retained credential field remains sensitive after another field is destructured out.
+function signRetainedPassword(req, res) {
+  const user = { password: req.body.password, backup: req.body.password }; // $ Source
+  const { password, ...profile } = user;
+  res.json({ token: jwt.sign(profile, JWT_SECRET) }); // $ Alert
+}
+
+// Safe: the password is only used as the signing key argument, not in the payload.
+function signWithPassword(req, res) {
+  res.json({ token: jwt.sign({ email: req.body.email }, req.body.password) });
+}
+
+module.exports = {
+  login,
+  loginJwtSimple,
+  loginJose,
+  register,
+  loginSafe,
+  loginWithoutPassword,
+  loginWithoutNestedPassword,
+  loginWithPasswordSelection,
+  signWrappedPassword,
+  signWrappedRecord,
+  signRetainedPassword,
+  signWithPassword,
+};
