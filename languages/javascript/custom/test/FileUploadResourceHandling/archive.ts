@@ -28,6 +28,18 @@ export async function extractZipBufferBounded (buffer: Buffer) {
   }
 }
 
+// GOOD: total expanded size is checked up front.
+export async function extractZipBufferTotalBounded (buffer: Buffer) {
+  const directory = await unzipper.Open.buffer(buffer)
+  const total = directory.files.reduce((sum, entry) => sum + entry.uncompressedSize, 0)
+  if (total > MAX_ENTRY_SIZE * 10) {
+    throw new Error('archive too large')
+  }
+  for (const entry of directory.files) {
+    await pipeline(entry.stream(), fs.createWriteStream('uploads/complaints/' + path.basename(entry.path)))
+  }
+}
+
 // BAD: streaming parser writes every entry with no expansion limit.
 export function extractStream (tempFile: string) {
   fs.createReadStream(tempFile)

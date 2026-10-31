@@ -1,8 +1,9 @@
 import fs from 'node:fs'
 import { Readable } from 'node:stream'
-import { finished } from 'node:stream/promises'
+import { finished, pipeline } from 'node:stream/promises'
 import express, { type Request, type Response, type NextFunction } from 'express'
 import request from 'request'
+import https from 'node:https'
 
 const app = express()
 
@@ -25,6 +26,22 @@ app.post('/profile/image/legacy', (req, res) => {
   request.get(req.body.imageUrl)
     .on('error', () => res.status(500).end())
     .pipe(fs.createWriteStream('uploads/avatar.jpg')) // $ Alert
+  res.redirect('/profile')
+})
+
+// BAD: Node.js https client response piped straight to disk.
+app.post('/profile/image/https', (req, res) => {
+  https.get(req.query.url as string, (download) => {
+    download.pipe(fs.createWriteStream('uploads/avatar.jpg')) // $ Alert
+  })
+  res.redirect('/profile')
+})
+
+// BAD: response event handler of a Node.js https request.
+app.post('/profile/image/https-event', (req, res) => {
+  https.request(req.query.url as string).on('response', (download) => {
+    pipeline(download, fs.createWriteStream('uploads/avatar.jpg')) // $ Alert
+  }).end()
   res.redirect('/profile')
 })
 

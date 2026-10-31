@@ -60,7 +60,7 @@ for (const entry of directory.files) {
 
 - Options that are not statically known (for example spread properties or values computed elsewhere) are not reported.
 - GraphQL servers without any `validationRules` are not reported.
-- A read of `uncompressedSize` anywhere in the function that expands an entry is treated as a sufficient expansion check.
+- A read of `uncompressedSize` anywhere in the function that expands an entry (including nested callbacks) is treated as a sufficient expansion check.
 - Unbounded downloads are only reported when the request URL is user-controlled.
 
 ## References

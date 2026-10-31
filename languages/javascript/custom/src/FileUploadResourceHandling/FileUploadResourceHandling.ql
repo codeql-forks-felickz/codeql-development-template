@@ -156,7 +156,7 @@ predicate expandsEntry(DataFlow::SourceNode entry, DataFlow::MethodCallNode use)
 predicate checksExpandedSize(DataFlow::Node use) {
   exists(DataFlow::PropRead size |
     size.getPropertyName() = "uncompressedSize" and
-    size.getContainer() = use.getContainer()
+    size.getContainer().getEnclosingContainer*() = use.getContainer()
   )
 }
 
@@ -234,6 +234,17 @@ module UnboundedDownloadConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     // The response object of a request.
     succ = pred.(ClientRequest).getAResponseDataNode()
+    or
+    // The response stream of a Node.js `http`/`https` request, e.g. `https.get(url, res => ...)`.
+    exists(NodeJSLib::NodeJSClientRequest req | pred = req |
+      succ = req.getLastArgument().getAFunctionValue().getParameter(0)
+      or
+      exists(DataFlow::MethodCallNode on |
+        on = req.getAMethodCall(EventEmitter::on()) and
+        on.getArgument(0).mayHaveStringValue("response") and
+        succ = on.getCallback(1).getParameter(0)
+      )
+    )
     or
     // The body stream of a response, e.g. `response.body` or `response.data`.
     succ.(DataFlow::PropRead).getBase() = pred and
