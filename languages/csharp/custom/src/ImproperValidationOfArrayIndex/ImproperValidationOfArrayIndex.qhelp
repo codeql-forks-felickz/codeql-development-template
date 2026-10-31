@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Using an externally controlled integer, such as a value parsed from an HTTP query string
+parameter, as an array index without first checking that it is within the bounds of the
+array allows an attacker to supply a negative or overly large index. In managed C# code this
+causes an <code>IndexOutOfRangeException</code>, which can result in a denial of service or
+expose error details. When the same index is used in <code>unsafe</code> code or passed to
+native code, it can lead to memory corruption.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Before using a user-provided value as an array index, check that it is greater than or equal
+to zero and less than the length of the array. For unsigned index types only the upper bound
+needs to be checked.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, an integer is parsed from the <code>id</code> query string parameter
+and used directly to write to an array:
+</p>
+<sample src="ImproperValidationOfArrayIndexBad.cs" />
+
+<p>
+The fix is to verify that the index is within <code>0</code> and
+<code>array.Length - 1</code> before using it:
+</p>
+<sample src="ImproperValidationOfArrayIndexGood.cs" />
+</example>
+
+<references>
+<li>MITRE CWE: <a href="https://cwe.mitre.org/data/definitions/129.html">CWE-129: Improper Validation of Array Index</a>.</li>
+<li>Microsoft Learn: <a href="https://learn.microsoft.com/en-us/dotnet/api/system.indexoutofrangeexception">IndexOutOfRangeException Class</a>.</li>
+</references>
+</qhelp>
