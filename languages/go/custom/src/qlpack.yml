@@ -3,3 +3,4 @@ version: 0.0.2
 library: false
 dependencies:
   codeql/go-all: "*"
+  languages-go-custom-models: ${workspace}

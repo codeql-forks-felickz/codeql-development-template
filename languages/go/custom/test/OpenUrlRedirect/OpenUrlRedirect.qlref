@@ -1,0 +1,2 @@
+query: OpenUrlRedirect/OpenUrlRedirect.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
