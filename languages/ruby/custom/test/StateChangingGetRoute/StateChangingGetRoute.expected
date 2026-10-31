@@ -1,0 +1,6 @@
+| config/routes.rb:7:3:7:71 | call to match | This route maps GET requests to the state-changing action 'todos#destroy', which is not protected by Rails' CSRF verification. |
+| config/routes.rb:10:3:10:45 | call to get | This route maps GET requests to the state-changing action 'users#destroy', which is not protected by Rails' CSRF verification. |
+| config/routes.rb:11:3:11:45 | call to get | This route maps GET requests to the state-changing action 'users#update', which is not protected by Rails' CSRF verification. |
+| config/routes.rb:12:3:12:45 | call to get | This route maps GET requests to the state-changing action 'users#create', which is not protected by Rails' CSRF verification. |
+| config/routes.rb:13:3:13:58 | call to match | This route maps GET requests to the state-changing action 'posts#destroy', which is not protected by Rails' CSRF verification. |
+| config/routes.rb:14:3:14:69 | call to get | This route maps GET requests to the state-changing action 'comments#delete', which is not protected by Rails' CSRF verification. |
