@@ -1,0 +1,2 @@
+query: UncheckedPrivilegeChange/UncheckedPrivilegeChange.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

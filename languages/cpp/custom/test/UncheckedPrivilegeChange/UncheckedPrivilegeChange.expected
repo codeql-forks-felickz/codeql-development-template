@@ -1,0 +1,5 @@
+| test.c:15:5:15:30 | call to ImpersonateNamedPipeClient | The return value of $@ is ignored, so a failed privilege change goes undetected. | test.c:5:6:5:31 | ImpersonateNamedPipeClient | ImpersonateNamedPipeClient |
+| test.c:17:5:17:16 | call to RevertToSelf | The return value of $@ is ignored, so a failed privilege change goes undetected. | test.c:7:6:7:17 | RevertToSelf | RevertToSelf |
+| test.c:22:11:22:33 | call to ImpersonateLoggedOnUser | The return value of $@ is ignored, so a failed privilege change goes undetected. | test.c:6:6:6:28 | ImpersonateLoggedOnUser | ImpersonateLoggedOnUser |
+| test.c:28:5:28:18 | call to SetThreadToken | The return value of $@ is ignored, so a failed privilege change goes undetected. | test.c:8:6:8:19 | SetThreadToken | SetThreadToken |
+| test.c:29:5:29:10 | call to setuid | The return value of $@ is ignored, so a failed privilege change goes undetected. | test.c:9:5:9:10 | setuid | setuid |
