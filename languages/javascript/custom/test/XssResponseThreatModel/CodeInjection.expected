@@ -1,0 +1,53 @@
+#select
+| comments/Comment.js:4:8:4:8 | z | comments/Http.js:2:20:2:65 | await f ... ments") | comments/Comment.js:4:8:4:8 | z | This code execution depends on a $@. | comments/Http.js:2:20:2:65 | await f ... ments") | user-provided value |
+| comments/Comment.js:4:8:4:8 | z | comments/Http.js:2:26:2:65 | fetch(" ... ments") | comments/Comment.js:4:8:4:8 | z | This code execution depends on a $@. | comments/Http.js:2:26:2:65 | fetch(" ... ments") | user-provided value |
+edges
+| comments/App.js:5:9:5:16 | response | comments/App.js:6:17:6:24 | response | provenance |  |
+| comments/App.js:5:20:5:38 | await GetComments() | comments/App.js:5:9:5:16 | response | provenance |  |
+| comments/App.js:5:26:5:38 | GetComments() [PromiseValue] | comments/App.js:5:20:5:38 | await GetComments() | provenance |  |
+| comments/App.js:6:3:6:34 | Object. ... mments) [ArrayElement] | comments/App.js:6:54:6:60 | comment | provenance |  |
+| comments/App.js:6:17:6:24 | response | comments/App.js:6:17:6:33 | response.comments | provenance |  |
+| comments/App.js:6:17:6:33 | response.comments | comments/App.js:6:3:6:34 | Object. ... mments) [ArrayElement] | provenance |  |
+| comments/App.js:6:54:6:60 | comment | comments/App.js:7:11:7:17 | comment | provenance |  |
+| comments/App.js:7:11:7:17 | comment | comments/Comment.js:1:23:1:29 | comment | provenance |  |
+| comments/Comment.js:1:23:1:29 | comment | comments/Comment.js:2:13:2:19 | comment | provenance |  |
+| comments/Comment.js:2:9:2:9 | k | comments/Comment.js:3:13:3:13 | k | provenance |  |
+| comments/Comment.js:2:13:2:19 | comment | comments/Comment.js:2:13:2:32 | comment.substring(8) | provenance |  |
+| comments/Comment.js:2:13:2:32 | comment.substring(8) | comments/Comment.js:2:9:2:9 | k | provenance |  |
+| comments/Comment.js:3:9:3:9 | z | comments/Comment.js:4:8:4:8 | z | provenance |  |
+| comments/Comment.js:3:13:3:13 | k | comments/Comment.js:3:13:3:46 | k.subst ... f("<")) | provenance |  |
+| comments/Comment.js:3:13:3:46 | k.subst ... f("<")) | comments/Comment.js:3:9:3:9 | z | provenance |  |
+| comments/Http.js:2:9:2:16 | response | comments/Http.js:3:22:3:29 | response | provenance |  |
+| comments/Http.js:2:20:2:65 | await f ... ments") | comments/Http.js:2:9:2:16 | response | provenance |  |
+| comments/Http.js:2:26:2:65 | fetch(" ... ments") | comments/Http.js:2:20:2:65 | await f ... ments") | provenance |  |
+| comments/Http.js:3:9:3:12 | body | comments/Http.js:4:10:4:13 | body | provenance |  |
+| comments/Http.js:3:16:3:36 | await r ... .json() | comments/Http.js:3:9:3:12 | body | provenance |  |
+| comments/Http.js:3:22:3:29 | response | comments/Http.js:3:22:3:36 | response.json() | provenance |  |
+| comments/Http.js:3:22:3:36 | response.json() | comments/Http.js:3:16:3:36 | await r ... .json() | provenance |  |
+| comments/Http.js:4:10:4:13 | body | comments/App.js:5:26:5:38 | GetComments() [PromiseValue] | provenance |  |
+nodes
+| comments/App.js:5:9:5:16 | response | semmle.label | response |
+| comments/App.js:5:20:5:38 | await GetComments() | semmle.label | await GetComments() |
+| comments/App.js:5:26:5:38 | GetComments() [PromiseValue] | semmle.label | GetComments() [PromiseValue] |
+| comments/App.js:6:3:6:34 | Object. ... mments) [ArrayElement] | semmle.label | Object. ... mments) [ArrayElement] |
+| comments/App.js:6:17:6:24 | response | semmle.label | response |
+| comments/App.js:6:17:6:33 | response.comments | semmle.label | response.comments |
+| comments/App.js:6:54:6:60 | comment | semmle.label | comment |
+| comments/App.js:7:11:7:17 | comment | semmle.label | comment |
+| comments/Comment.js:1:23:1:29 | comment | semmle.label | comment |
+| comments/Comment.js:2:9:2:9 | k | semmle.label | k |
+| comments/Comment.js:2:13:2:19 | comment | semmle.label | comment |
+| comments/Comment.js:2:13:2:32 | comment.substring(8) | semmle.label | comment.substring(8) |
+| comments/Comment.js:3:9:3:9 | z | semmle.label | z |
+| comments/Comment.js:3:13:3:13 | k | semmle.label | k |
+| comments/Comment.js:3:13:3:46 | k.subst ... f("<")) | semmle.label | k.subst ... f("<")) |
+| comments/Comment.js:4:8:4:8 | z | semmle.label | z |
+| comments/Http.js:2:9:2:16 | response | semmle.label | response |
+| comments/Http.js:2:20:2:65 | await f ... ments") | semmle.label | await f ... ments") |
+| comments/Http.js:2:26:2:65 | fetch(" ... ments") | semmle.label | fetch(" ... ments") |
+| comments/Http.js:3:9:3:12 | body | semmle.label | body |
+| comments/Http.js:3:16:3:36 | await r ... .json() | semmle.label | await r ... .json() |
+| comments/Http.js:3:22:3:29 | response | semmle.label | response |
+| comments/Http.js:3:22:3:36 | response.json() | semmle.label | response.json() |
+| comments/Http.js:4:10:4:13 | body | semmle.label | body |
+subpaths

@@ -1,0 +1,2 @@
+query: TemplateAutoescapeDisabled/TemplateAutoescapeDisabled.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
