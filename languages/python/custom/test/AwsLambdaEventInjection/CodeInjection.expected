@@ -1,0 +1,8 @@
+#select
+| admin_get_orders.py:18:10:18:57 | ControlFlowNode for BinaryExpr | admin_get_orders.py:4:20:4:24 | ControlFlowNode for event | admin_get_orders.py:18:10:18:57 | ControlFlowNode for BinaryExpr | This code execution depends on a $@. | admin_get_orders.py:4:20:4:24 | ControlFlowNode for event | user-provided value |
+edges
+| admin_get_orders.py:4:20:4:24 | ControlFlowNode for event | admin_get_orders.py:18:10:18:57 | ControlFlowNode for BinaryExpr | provenance |  |
+nodes
+| admin_get_orders.py:4:20:4:24 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| admin_get_orders.py:18:10:18:57 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths

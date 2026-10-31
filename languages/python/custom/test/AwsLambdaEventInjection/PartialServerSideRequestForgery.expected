@@ -1,0 +1,16 @@
+#select
+| user_inbox.py:9:11:9:34 | ControlFlowNode for Attribute() | user_inbox.py:22:20:22:24 | ControlFlowNode for event | user_inbox.py:9:31:9:33 | ControlFlowNode for url | Part of the URL of this request depends on a $@. | user_inbox.py:22:20:22:24 | ControlFlowNode for event | user-provided value |
+edges
+| user_inbox.py:7:25:7:27 | ControlFlowNode for _id | user_inbox.py:8:5:8:7 | ControlFlowNode for url | provenance |  |
+| user_inbox.py:8:5:8:7 | ControlFlowNode for url | user_inbox.py:9:31:9:33 | ControlFlowNode for url | provenance |  |
+| user_inbox.py:22:20:22:24 | ControlFlowNode for event | user_inbox.py:23:5:23:7 | ControlFlowNode for _id | provenance |  |
+| user_inbox.py:23:5:23:7 | ControlFlowNode for _id | user_inbox.py:25:39:25:41 | ControlFlowNode for _id | provenance |  |
+| user_inbox.py:25:39:25:41 | ControlFlowNode for _id | user_inbox.py:7:25:7:27 | ControlFlowNode for _id | provenance |  |
+nodes
+| user_inbox.py:7:25:7:27 | ControlFlowNode for _id | semmle.label | ControlFlowNode for _id |
+| user_inbox.py:8:5:8:7 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| user_inbox.py:9:31:9:33 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| user_inbox.py:22:20:22:24 | ControlFlowNode for event | semmle.label | ControlFlowNode for event |
+| user_inbox.py:23:5:23:7 | ControlFlowNode for _id | semmle.label | ControlFlowNode for _id |
+| user_inbox.py:25:39:25:41 | ControlFlowNode for _id | semmle.label | ControlFlowNode for _id |
+subpaths

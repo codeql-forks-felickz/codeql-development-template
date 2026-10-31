@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  SendReceiptFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: send_receipt_email.lambda_handler
+      Runtime: python3.8
+      CodeUri: ./
+  UserInboxFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: user_inbox.lambda_handler
+      Runtime: python3.8
+      CodeUri: ./
+  AdminGetOrders:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: admin_get_orders.lambda_handler
+      Runtime: python3.8
+      CodeUri: ./
+      Role: !GetAtt AdminRole.Arn
