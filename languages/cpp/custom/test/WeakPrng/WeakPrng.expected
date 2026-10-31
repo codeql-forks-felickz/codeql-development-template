@@ -1,0 +1,2 @@
+| test.c:9:14:9:17 | call to rand | Call to rand, a non-cryptographic pseudo-random number generator whose output is predictable. |
+| test.c:14:10:14:15 | call to random | Call to random, a non-cryptographic pseudo-random number generator whose output is predictable. |

@@ -1,0 +1,5 @@
+| test.c:5:3:5:16 | call to CryptDeriveKey | Call to CryptDeriveKey uses the broken or risky cipher DES (selected by $@). | test.c:5:25:5:32 | ... \| ... | CALG_DES |
+| test.c:11:3:11:13 | call to CryptGenKey | Call to CryptGenKey uses the broken or risky cipher RC4 (selected by $@). | test.c:11:22:11:29 | ... \| ... | CALG_RC4 |
+| test.c:17:3:17:13 | call to CryptGenKey | Call to CryptGenKey uses the broken or risky cipher 3DES (selected by $@). | test.c:16:16:16:24 | ... \| ... | CALG_3DES |
+| test.c:22:3:22:17 | call to CryptCreateHash | Call to CryptCreateHash uses the broken hash algorithm MD5 (selected by $@). | test.c:22:26:22:33 | ... \| ... | CALG_MD5 |
+| test.c:28:3:28:17 | call to CryptCreateHash | Call to CryptCreateHash uses the broken hash algorithm SHA-1 (selected by $@). | test.c:28:26:28:34 | ... \| ... | CALG_SHA1 |

@@ -1,0 +1,52 @@
+extensions:
+  # Windows CryptoAPI (wincrypt.h): arguments that select an `ALG_ID`.
+  - addsTo:
+      pack: languages-cpp-custom-src
+      extensible: cryptoAlgorithmArgumentModel
+    data:
+      - ["CryptCreateHash", 1]
+      - ["CryptDeriveKey", 1]
+      - ["CryptGenKey", 1]
+
+  # Windows CryptoAPI (wincrypt.h): `CALG_*` algorithm identifiers.
+  - addsTo:
+      pack: languages-cpp-custom-src
+      extensible: cryptoAlgorithmConstantModel
+    data:
+      - ["CALG_DES", "DES", "weak-cipher"]
+      - ["CALG_DESX", "DESX", "weak-cipher"]
+      - ["CALG_3DES", "3DES", "weak-cipher"]
+      - ["CALG_3DES_112", "3DES", "weak-cipher"]
+      - ["CALG_RC2", "RC2", "weak-cipher"]
+      - ["CALG_RC4", "RC4", "weak-cipher"]
+      - ["CALG_RC5", "RC5", "weak-cipher"]
+      - ["CALG_MD2", "MD2", "weak-hash"]
+      - ["CALG_MD4", "MD4", "weak-hash"]
+      - ["CALG_MD5", "MD5", "weak-hash"]
+      - ["CALG_SHA", "SHA-1", "weak-hash"]
+      - ["CALG_SHA1", "SHA-1", "weak-hash"]
+      - ["CALG_RSA_KEYX", "RSA", "rsa"]
+      - ["CALG_RSA_SIGN", "RSA", "rsa"]
+
+  # Windows CryptoAPI (wincrypt.h): `CRYPT_OAEP` (0x40) selects OAEP padding for RSA keys.
+  - addsTo:
+      pack: languages-cpp-custom-src
+      extensible: rsaPaddingFlagsModel
+    data:
+      - ["CryptEncrypt", 0, 3, 64]
+      - ["CryptDecrypt", 0, 3, 64]
+
+  # C standard library and POSIX statistical pseudo-random number generators.
+  - addsTo:
+      pack: languages-cpp-custom-src
+      extensible: weakPrngFunctionModel
+    data:
+      - ["rand"]
+      - ["rand_r"]
+      - ["random"]
+      - ["drand48"]
+      - ["erand48"]
+      - ["lrand48"]
+      - ["nrand48"]
+      - ["mrand48"]
+      - ["jrand48"]
