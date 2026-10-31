@@ -1,0 +1,2 @@
+query: UntrustedCryptoKeyLength/UntrustedCryptoKeyLength.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
