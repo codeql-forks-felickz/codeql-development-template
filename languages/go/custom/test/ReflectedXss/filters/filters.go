@@ -31,6 +31,20 @@ func blocklistAlternation(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(re.ReplaceAllString(in, ""))) // $ Alert=alternation
 }
 
+// BAD: an optional closing slash in its own group is still a blocklist.
+func blocklistOptionalGroup(w http.ResponseWriter, r *http.Request) {
+	in := r.FormValue("q") // $ Source=optionalgroup
+	re := regexp.MustCompile(`<\s*(/\s*)?script[^>]*>`)
+	w.Write([]byte(re.ReplaceAllString(in, ""))) // $ Alert=optionalgroup
+}
+
+// BAD: a whitespace character class before the tag name is still a blocklist.
+func blocklistWhitespaceClass(w http.ResponseWriter, r *http.Request) {
+	in := r.FormValue("q") // $ Source=whitespaceclass
+	re := regexp.MustCompile(`<[ \t]*script`)
+	w.Write([]byte(re.ReplaceAllString(in, ""))) // $ Alert=whitespaceclass
+}
+
 // OK: every tag is removed.
 func stripAllTags(w http.ResponseWriter, r *http.Request) {
 	in := r.FormValue("q")
@@ -70,6 +84,8 @@ func Setup() {
 	http.HandleFunc("/blocklist", blocklist)
 	http.HandleFunc("/blocklist-inline", blocklistInline)
 	http.HandleFunc("/blocklist-alternation", blocklistAlternation)
+	http.HandleFunc("/blocklist-optional-group", blocklistOptionalGroup)
+	http.HandleFunc("/blocklist-whitespace-class", blocklistWhitespaceClass)
 	http.HandleFunc("/strip-all-tags", stripAllTags)
 	http.HandleFunc("/strip-all-tags-escaped-slash", stripAllTagsEscapedSlash)
 	http.HandleFunc("/strip-word-tags", stripWordTags)

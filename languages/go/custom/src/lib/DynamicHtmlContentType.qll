@@ -32,6 +32,22 @@ private predicate stringFieldWrite(DataFlow::Node rhs, Field f) {
   (any(Write w).writesField(_, f, rhs) or initializesFieldOfElidedPointerLit(rhs, f))
 }
 
+/** Holds if `node` is a string constant that names an HTML MIME type. */
+private predicate htmlMimeConstant(DataFlow::Node node) {
+  // the same check as the standard library's `htmlTypeSpecified`
+  node.getStringValue().regexpMatch("(?i).*html.*")
+}
+
+/**
+ * Holds if `rhs` is a value written to the string-typed field `f` that may be an
+ * HTML MIME type constant by local flow. Restricting field writes this way keeps
+ * the field-based step small.
+ */
+private predicate htmlMimeFieldWrite(DataFlow::Node rhs, Field f) {
+  stringFieldWrite(rhs, f) and
+  exists(DataFlow::Node c | htmlMimeConstant(c) and DataFlow::localFlow(c, rhs))
+}
+
 /**
  * Tracks string constants that name an HTML MIME type to the content type that
  * is set for an HTTP response body.
@@ -42,15 +58,12 @@ private predicate stringFieldWrite(DataFlow::Node rhs, Field f) {
  * registration table (for example `RawMime: "text/html"`) is found.
  */
 private module HtmlContentTypeConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    // the same check as the standard library's `htmlTypeSpecified`
-    source.getStringValue().regexpMatch("(?i).*html.*")
-  }
+  predicate isSource(DataFlow::Node source) { htmlMimeConstant(source) }
 
   predicate isSink(DataFlow::Node sink) { sink = any(Http::ResponseBody b).getAContentTypeNode() }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Field f | stringFieldWrite(pred, f) and succ = f.getARead())
+    exists(Field f | htmlMimeFieldWrite(pred, f) and succ = f.getARead())
     or
     any(FunctionFieldCallTaintStep s).step(pred, succ)
   }

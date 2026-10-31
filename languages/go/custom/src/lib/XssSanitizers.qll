@@ -24,11 +24,12 @@ import semmle.go.security.Xss
 class TagNameBlocklistReplacement extends DataFlow::CallNode {
   TagNameBlocklistReplacement() {
     exists(RegexpReplaceFunction f | f = this.getCall().getTarget() |
-      // a `<` followed, possibly after a `/`, optional whitespace, a group
-      // opening or a case-insensitivity flag, by a literal tag-name letter
+      // a `<` followed, possibly after a `/`, optional whitespace, a
+      // character class, a group opening or closing or a case-insensitivity
+      // flag, by a literal tag-name letter
       f.getRegexp(this)
           .getPattern()
-          .regexpMatch("(?s).*<(/|\\?|\\(\\?:|\\(\\?i\\)|\\(|\\\\s[*+?]?|\\\\/)*[a-zA-Z].*")
+          .regexpMatch("(?s).*<(/|\\?|\\(\\?:|\\(\\?i\\)|\\(|\\)[?*]?|\\\\s[*+?]?|\\\\/|\\[[^\\]]*\\][*+?]?)*[a-zA-Z].*")
     )
   }
 }
