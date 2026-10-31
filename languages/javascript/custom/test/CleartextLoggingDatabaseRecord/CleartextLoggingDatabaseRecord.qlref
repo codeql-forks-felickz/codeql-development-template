@@ -1,0 +1,2 @@
+query: CleartextLoggingDatabaseRecord/CleartextLoggingDatabaseRecord.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
