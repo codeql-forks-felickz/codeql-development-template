@@ -19,6 +19,7 @@ import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import semmle.code.cpp.controlflow.Dominance
 import TaintedDivisorFlow::PathGraph
 
 /** Gets the divisor operand of an integer division or remainder operation `op`. */
@@ -66,18 +67,40 @@ predicate validatesValue(IRGuardCondition g, Expr e, boolean branch) {
 }
 
 /**
+ * Holds if `fa` accesses field `f` of the aggregate denoted by `base`, either
+ * directly (`s.f`, `p->f`) or through an explicit dereference (`(*p).f`).
+ */
+predicate fieldAccessOf(FieldAccess fa, VariableAccess base, Field f) {
+  f = fa.getTarget() and
+  (
+    base = fa.getQualifier()
+    or
+    base = fa.getQualifier().(PointerDereferenceExpr).getOperand()
+  )
+}
+
+/**
+ * Holds if field `f` of variable `v` is assigned by `assign`, which dominates
+ * the field read `fa`, so that `fa` no longer reads the originally written
+ * value.
+ */
+predicate overwrittenBefore(FieldAccess fa, Variable v, Field f) {
+  exists(Assignment assign, VariableAccess otherBase |
+    fieldAccessOf(assign.getLValue(), otherBase, f) and
+    otherBase.getTarget() = v and
+    dominates(assign, fa)
+  )
+}
+
+/**
  * Holds if `fieldRead` reads a field of an aggregate `base` that was written
  * as a whole (for example by `fread(&img, ...)` or `recv(s, &hdr, ...)`).
  */
 predicate aggregateToFieldStep(DataFlow::Node aggregate, DataFlow::Node fieldRead) {
-  exists(FieldAccess fa, VariableAccess base |
+  exists(FieldAccess fa, VariableAccess base, Field f |
     fieldRead.asExpr() = fa and
-    (
-      base = fa.getQualifier()
-      or
-      // `p->f` where `p` points to the aggregate.
-      base = fa.getQualifier().(PointerDereferenceExpr).getOperand()
-    ) and
+    fieldAccessOf(fa, base, f) and
+    not overwrittenBefore(fa, base.getTarget(), f) and
     (
       aggregate.asIndirectExpr() = base
       or

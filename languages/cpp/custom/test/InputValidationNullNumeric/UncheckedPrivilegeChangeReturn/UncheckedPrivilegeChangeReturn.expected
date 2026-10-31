@@ -1,0 +1,10 @@
+| test.c:22:3:22:17 | call to ImpersonateSelf | The return value of $@ is not checked, so a failure leaves the program in the wrong security context. | test.c:7:6:7:20 | ImpersonateSelf | ImpersonateSelf |
+| test.c:24:3:24:14 | call to RevertToSelf | The return value of $@ is not checked, so a failure leaves the program in the wrong security context. | test.c:10:6:10:17 | RevertToSelf | RevertToSelf |
+| test.c:28:3:28:25 | call to ImpersonateLoggedOnUser | The return value of $@ is not checked, so a failure leaves the program in the wrong security context. | test.c:8:6:8:28 | ImpersonateLoggedOnUser | ImpersonateLoggedOnUser |
+| test.c:29:3:29:28 | call to ImpersonateNamedPipeClient | The return value of $@ is not checked, so a failure leaves the program in the wrong security context. | test.c:9:6:9:31 | ImpersonateNamedPipeClient | ImpersonateNamedPipeClient |
+| test.c:30:3:30:16 | call to SetThreadToken | The return value of $@ is not checked, so a failure leaves the program in the wrong security context. | test.c:11:6:11:19 | SetThreadToken | SetThreadToken |
+| test.c:34:3:34:8 | call to setgid | The return value of $@ is not checked, so a failure leaves the program in the wrong security context. | test.c:13:5:13:10 | setgid | setgid |
+| test.c:35:3:35:8 | call to setuid | The return value of $@ is not checked, so a failure leaves the program in the wrong security context. | test.c:12:5:12:10 | setuid | setuid |
+| test.c:36:3:36:9 | call to seteuid | The return value of $@ is not checked, so a failure leaves the program in the wrong security context. | test.c:14:5:14:11 | seteuid | seteuid |
+| test.c:37:3:37:11 | call to setresuid | The return value of $@ is not checked, so a failure leaves the program in the wrong security context. | test.c:15:5:15:13 | setresuid | setresuid |
+| test.c:68:9:68:14 | call to setuid | The return value of $@ is not checked, so a failure leaves the program in the wrong security context. | test.c:12:5:12:10 | setuid | setuid |

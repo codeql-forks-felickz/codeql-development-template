@@ -1,0 +1,4 @@
+| bad_main.c:13:16:13:22 | access to array | argv[1] is read without checking that argc is greater than 1; it is NULL when the program is run with fewer arguments. |
+| bad_main.c:14:18:14:28 | * ... | argv[2] is read without checking that argc is greater than 2; it is NULL when the program is run with fewer arguments. |
+| bad_main_late_check.c:5:16:5:22 | access to array | argv[1] is read without checking that argc is greater than 1; it is NULL when the program is run with fewer arguments. |
+| bad_main_unrelated_check.c:8:18:8:24 | access to array | argv[1] is read without checking that argc is greater than 1; it is NULL when the program is run with fewer arguments. |

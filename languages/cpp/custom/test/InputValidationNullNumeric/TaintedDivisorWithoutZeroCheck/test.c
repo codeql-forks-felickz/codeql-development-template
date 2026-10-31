@@ -139,3 +139,11 @@ void socket_plus_one_good(int sock) {
   unsigned int data = (unsigned int)atoi(input) % 10u;
   printf("%u\n", 100u / (data + 1u));
 }
+
+// The field is overwritten with a constant before the division.
+int process_image_overwrite_good(FILE *fp) {
+  struct Image img;
+  fread(&img, sizeof(img), 1, fp);
+  img.height = 4;
+  return img.width / img.height;
+}
