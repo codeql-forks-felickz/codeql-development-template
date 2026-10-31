@@ -44,9 +44,13 @@ def forwarded_kwargs(url, **kwargs):
     return requests.get(url, **kwargs).content
 
 
-# Safe: constant URL is not attacker-influenced.
+# A hard-coded endpoint can still stall, so it needs a timeout.
 def fetch_constant():
-    return requests.get("https://example.com/health").status_code
+    return requests.get("https://example.com/health").status_code  # $ Alert[py/file-upload-resource-handling]
+
+
+def fetch_constant_with_timeout():
+    return requests.get("https://example.com/health", timeout=5).status_code
 
 
 def fetch_mixed_origins(user_url, use_user_url):
@@ -61,4 +65,16 @@ def fetch_literal_origins(use_alternate):
     url = "https://example.com/health"
     if use_alternate:
         url = "https://example.org/health"
-    return requests.get(url).status_code
+    return requests.get(url, timeout=5).status_code
+
+
+class OAuthApp:
+    pass
+
+
+app = OAuthApp()
+app.requests_session = requests.Session()
+
+
+def oauth_callback_without_timeout(url, data):
+    return app.requests_session.post(url, data=data).json()  # $ Alert[py/file-upload-resource-handling]

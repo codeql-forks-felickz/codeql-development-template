@@ -2,7 +2,7 @@
 
 This query reports two resource-handling weaknesses that stock CodeQL Python queries do not cover:
 
-1. **Outbound fetch without a timeout (CWE-400).** `requests` has no default timeout. A call such as `requests.get(url)` to a non-constant URL can block a worker forever if the server stalls. Reading the whole body with `response.content`, `.text` or `.json()` can also exhaust memory if the response is very large. Calls that pass `timeout=` (or `**kwargs`, which may carry one) and calls to a hard-coded URL literal are not reported.
+1. **Outbound fetch without a timeout (CWE-400).** `requests` has no default timeout. A call such as `requests.get(url)` can block a worker indefinitely if the server stalls, even when the URL is hard-coded. Reading the whole body with `response.content`, `.text` or `.json()` can also exhaust memory if the response is very large. Calls that pass `timeout=` (or `**kwargs`, which may carry one) are not reported.
 2. **Predictable files in a shared temporary directory (CWE-377).** A path built from a literal under `/tmp`, `/var/tmp` or `/dev/shm`, such as `"/tmp/app.apikey." + user`, `os.path.join("/tmp", name)` or `Path("/tmp").glob(pattern)`, has a name that other local users can predict. They can list it, read it, create it first, or replace it. `py/insecure-temporary-file` only reports `tempfile.mktemp`, `os.tempnam` and `os.tmpnam`, so it misses these cases.
 
 ## Recommendation

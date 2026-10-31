@@ -63,6 +63,16 @@ def save_upload_dynamic_component(filename, data):
         f.write(data)
 
 
+def save_fixed_private_key(key_bytes):
+    with open("/tmp/acme.key", "wb") as f:  # $ Alert[py/file-upload-resource-handling]
+        f.write(key_bytes)
+
+
+def save_private_key_safely(key_bytes):
+    with tempfile.NamedTemporaryFile() as f:
+        f.write(key_bytes)
+
+
 def not_tmp_uploads(filename, data):
     with open("/tmp" + "_uploads/" + filename, "wb") as f:
         f.write(data)

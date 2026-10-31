@@ -1,6 +1,6 @@
 /**
  * @name Unbounded outbound fetch or predictable shared temporary file
- * @description Fetching a non-constant URL with `requests` without a timeout lets a slow
+ * @description Fetching a URL with `requests` without a timeout lets a slow
  *              or malicious server hold a worker indefinitely, and storing files under a
  *              predictable name in a shared temporary directory such as `/tmp` lets other
  *              local users read, pre-create or replace them.
@@ -33,13 +33,6 @@ predicate requestWithoutTimeout(Http::Client::Request req) {
     not exists(call.getNode().getNode().(Call).getKwargs()) and
     // `Session.request(method, url, params, data, headers, cookies, files, auth, timeout, ...)`
     not exists(call.getArg(8))
-  ) and
-  // Exempt only URLs whose local origins are all literals.
-  exists(DataFlow::Node url | url = req.getAUrlPart() |
-    exists(DataFlow::Node source |
-      source = url.getALocalSource() and
-      not (source.asExpr() instanceof StringLiteral)
-    )
   )
 }
 
@@ -78,10 +71,10 @@ predicate combinedWithName(StringLiteral lit) {
       DataFlow::exprNode(lit).(DataFlow::LocalSourceNode).flowsTo(DataFlow::exprNode(b.getLeft()))
     ) and
     (
-      lit.getText().regexpMatch(".*/") or
-      exists(StringLiteral right |
-        right = b.getRight() and right.getText().regexpMatch("/.*")
-      ) or
+      lit.getText().regexpMatch(".*/")
+      or
+      exists(StringLiteral right | right = b.getRight() and right.getText().regexpMatch("/.*"))
+      or
       // A non-literal component may begin with `/`.
       not b.getRight() instanceof StringLiteral
     )
@@ -91,10 +84,9 @@ predicate combinedWithName(StringLiteral lit) {
     f.getValue(0) = lit and
     exists(f.getValue(1)) and
     (
-      lit.getText().regexpMatch(".*/") or
-      exists(StringLiteral next |
-        next = f.getValue(1) and next.getText().regexpMatch("/.*")
-      )
+      lit.getText().regexpMatch(".*/")
+      or
+      exists(StringLiteral next | next = f.getValue(1) and next.getText().regexpMatch("/.*"))
     )
   )
   or
@@ -143,7 +135,7 @@ where
   requestWithoutTimeout(alert) and
   related = alert.(Http::Client::Request).getAUrlPart() and
   message =
-    "Outbound request to a non-constant $@ has no timeout, so a slow or unbounded response can exhaust server resources." and
+    "Outbound request has no timeout, so a slow or unbounded response can exhaust server resources. The URL is $@." and
   relatedLabel = "URL"
   or
   exists(FileSystemAccess access, DataFlow::Node sink |
