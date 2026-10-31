@@ -1,0 +1,18 @@
+| main.rs:11:20:12:31 | ... .allow_any_origin() | This CORS policy allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:27:19:27:79 | ...::header(...) | This Access-Control-Allow-Origin header allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:62:27:62:55 | ...::Any | This Access-Control-Allow-Origin header allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:97:13:98:66 | ... .allow_origin(...) | This CORS policy allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:106:20:106:79 | ... .allow_origin(...) | This CORS policy allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:112:20:112:53 | ... .allow_origin(...) | This CORS policy allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:118:20:118:59 | ... .allow_origin(...) | This CORS policy allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:124:20:124:68 | ... .allow_origin(...) | This CORS policy allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:130:20:130:79 | ... .allow_origin(...) | This CORS policy allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:137:20:137:88 | ... .allow_origin(...) | This CORS policy allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:143:20:143:42 | ...::permissive(...) | This CORS policy allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:149:20:149:47 | ...::very_permissive(...) | This CORS policy allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:154:9:154:90 | headers.insert(...) | This Access-Control-Allow-Origin header allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:159:11:159:52 | TupleExpr | This Access-Control-Allow-Origin header allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:207:28:207:63 | TupleExpr | This Access-Control-Allow-Origin header allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:220:23:220:56 | ... .allow_any_origin() | This CORS policy allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:221:34:221:51 | ...::permissive(...) | This CORS policy allows any origin, so any website can read responses from this service in a victim's browser. |
+| main.rs:245:30:245:50 | ...::all(...) | This CORS policy allows any origin, so any website can read responses from this service in a victim's browser. |
