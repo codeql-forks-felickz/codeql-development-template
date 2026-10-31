@@ -1,0 +1,1 @@
+| StorageActivity.java:13:9:13:30 | close(...) | This stores the local file $@ containing $@ which was $@. | StorageActivity.java:11:43:11:76 | new FileOutputStream(...) | new FileOutputStream(...) | StorageActivity.java:12:30:12:37 | password | sensitive data | StorageActivity.java:12:30:12:48 | getBytes(...) | previously added |

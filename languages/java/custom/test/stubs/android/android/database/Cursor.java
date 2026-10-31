@@ -1,3 +1,7 @@
 package android.database;
 
-public interface Cursor {}
+public interface Cursor {
+  int getColumnIndex(String columnName);
+
+  String getString(int columnIndex);
+}
