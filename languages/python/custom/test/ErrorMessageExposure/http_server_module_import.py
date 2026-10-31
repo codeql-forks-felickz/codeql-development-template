@@ -6,7 +6,7 @@ class ReqHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         path, content = self.path, "<html>"
         try:
-            content += open(path.lstrip("/")).read()
+            content += open("data.txt").read()
         except Exception:
             content = traceback.format_exc() # $ Source[py/error-message-exposure]
         finally:

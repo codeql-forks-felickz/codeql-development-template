@@ -8,7 +8,7 @@ class ReqHandler(BaseHTTPRequestHandler):
         content = "<html>"
         code = 200
         try:
-            content += open(self.path.lstrip("/")).read()
+            content += open("data.txt").read()
         except Exception:
             content = traceback.format_exc() # $ Source[py/error-message-exposure]
             code = 500
@@ -32,7 +32,7 @@ class ReqHandler(BaseHTTPRequestHandler):
     def do_HEAD(self):
         code, content = 200, "<html>"
         try:
-            content += open(self.path.lstrip("/")).read()
+            content += open("data.txt").read()
         except Exception as ex:
             output = ex.output if hasattr(ex, "output") else None
             content, code = traceback.format_exc() if output is None else output, 500 # $ Source[py/error-message-exposure]
