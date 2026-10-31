@@ -1,0 +1,12 @@
+#select
+| example/MailController.java:14:24:14:30 | subject | example/MailController.java:8:22:8:52 | getParameter(...) : String | example/MailController.java:14:24:14:30 | subject | This email header depends on a $@, which may allow email header injection. | example/MailController.java:8:22:8:52 | getParameter(...) | user-provided value |
+edges
+| example/MailController.java:8:22:8:52 | getParameter(...) : String | example/MailController.java:9:29:9:35 | subject : String | provenance | Src:MaD:48669  |
+| example/MailController.java:9:29:9:35 | subject : String | example/MailController.java:12:40:12:53 | subject : String | provenance |  |
+| example/MailController.java:12:40:12:53 | subject : String | example/MailController.java:14:24:14:30 | subject | provenance |  |
+nodes
+| example/MailController.java:8:22:8:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| example/MailController.java:9:29:9:35 | subject : String | semmle.label | subject : String |
+| example/MailController.java:12:40:12:53 | subject : String | semmle.label | subject : String |
+| example/MailController.java:14:24:14:30 | subject | semmle.label | subject |
+subpaths
