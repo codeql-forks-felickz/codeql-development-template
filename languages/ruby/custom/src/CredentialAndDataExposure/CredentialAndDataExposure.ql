@@ -29,11 +29,16 @@ predicate isEnvironmentFile(File f, Folder root, string name) {
 predicate isProductionFile(File f, Folder root) { isEnvironmentFile(f, root, "production") }
 
 /**
- * Holds if `n` belongs to the Rails application in `root` and may affect its production
+ * Holds if `n` is in the application's own `config/`, `app/` or `lib/` code in `root`
+ * (excluding, for example, vendored gems and tests) and may affect its production
  * environment (that is, it is not in a non-production environment file).
  */
 predicate appliesToProduction(AstNode n, Folder root) {
-  n.getFile().getParentContainer+() = root and
+  exists(Folder top |
+    top.getParentContainer() = root and
+    top.getBaseName() = ["config", "app", "lib"] and
+    n.getFile().getParentContainer+() = top
+  ) and
   not exists(string env | isEnvironmentFile(n.getFile(), root, env) and env != "production")
 }
 
@@ -66,13 +71,33 @@ class AlternativeSslEnforcement extends AstNode {
     )
     or
     exists(ConstantReadAccess c | c = this |
-      c.getName() = "SSL" and
-      c.getScopeExpr().(ConstantAccess).getName() = ["Rack", "ActionDispatch"]
-      or
-      c.getName() = "SslEnforcer" and
-      c.getScopeExpr().(ConstantAccess).getName() = "Rack"
+      (
+        c.getName() = "SSL" and
+        c.getScopeExpr().(ConstantAccess).getName() = ["Rack", "ActionDispatch"]
+        or
+        c.getName() = "SslEnforcer" and
+        c.getScopeExpr().(ConstantAccess).getName() = "Rack"
+      ) and
+      isAddedMiddleware(c)
     )
   }
+}
+
+/**
+ * Holds if `e` is the middleware added by a `middleware.use`, `middleware.unshift`,
+ * `middleware.insert_before` or `middleware.insert_after` call (not, for example, the
+ * middleware removed by `middleware.delete` or the position anchor of `insert_before`).
+ */
+predicate isAddedMiddleware(Expr e) {
+  exists(MethodCall add |
+    add.getReceiver().(MethodCall).getMethodName() = "middleware" and
+    (
+      add.getMethodName() = ["use", "unshift"] and e = add.getArgument(0)
+      or
+      add.getMethodName() = ["insert", "insert_before", "insert_after"] and
+      e = add.getArgument(1)
+    )
+  )
 }
 
 /** Holds if the Rails application in `root` enforces SSL in production by some means. */

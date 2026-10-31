@@ -2,13 +2,13 @@
 
 When `config.force_ssl` is not enabled for the production environment of a Rails application, Rails does not redirect HTTP requests to HTTPS, does not send a `Strict-Transport-Security` (HSTS) header and does not mark cookies as `Secure`. If the application can be reached over plain HTTP, a network attacker can read or modify the traffic, including login credentials and the session cookie.
 
-This query reports a `config/environments/production.rb` file that either explicitly sets `config.force_ssl` to `false` (or `nil`), or does not set it at all. No alert is reported when the same application enables SSL in a way that applies to production, for example:
+This query reports a `config/environments/production.rb` file that either explicitly sets `config.force_ssl` to `false` (or `nil`), or does not set it at all. No alert is reported when the application's own `config/`, `app/` or `lib/` code enables SSL in a way that applies to production, for example:
 
 - `config.force_ssl = true` (or a non-constant value) in `config/application.rb`, an initializer, or the production environment file;
 - a controller-level `force_ssl` call;
-- a reference to an SSL-enforcing middleware (`ActionDispatch::SSL`, `Rack::SSL` or `Rack::SslEnforcer`).
+- adding an SSL-enforcing middleware (`ActionDispatch::SSL`, `Rack::SSL` or `Rack::SslEnforcer`) with `config.middleware.use`, `unshift`, `insert_before` or `insert_after`.
 
-Settings in other environment files (for example `development.rb`) do not suppress the alert.
+Settings in other environment files (for example `development.rb`), vendored gems and tests do not suppress the alert, and neither does removing the middleware (for example `config.middleware.delete ActionDispatch::SSL`).
 
 ## Recommendation
 
