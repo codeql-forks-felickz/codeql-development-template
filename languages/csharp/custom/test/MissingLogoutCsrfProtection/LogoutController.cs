@@ -14,14 +14,6 @@ namespace Accounts
             return null;
         }
 
-        [HttpPost]
-        // lgtm [cs/web/missing-token-validation]
-        public async Task<IActionResult> PostOnlyLogout() // $ Alert[cs/web/missing-logout-csrf-protection]
-        {
-            await HttpContext.SignOutAsync();
-            return null;
-        }
-
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ValidatedLogout()
         {
