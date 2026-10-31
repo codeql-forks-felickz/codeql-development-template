@@ -1,0 +1,2 @@
+query: SqliteTraceCallbackSensitiveLogging/SqliteTraceCallbackSensitiveLogging.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
