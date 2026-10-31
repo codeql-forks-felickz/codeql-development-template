@@ -153,6 +153,59 @@ def not_flask_config():
     app.run()
 
 
+# COMPLIANT: the debug setting belongs to a different Flask application.
+def debug_set_on_different_app():
+    admin = Flask("admin")
+    public = Flask("public")
+    admin.debug = True
+    public.run()
+
+
+# COMPLIANT: the DEBUG config setting belongs to a different Flask application.
+def config_set_on_different_app():
+    admin = Flask("admin")
+    public = Flask("public")
+    admin.config["DEBUG"] = True
+    public.run()
+
+
+# COMPLIANT: the config.update setting belongs to a different Flask application.
+def config_update_on_different_app():
+    admin = Flask("admin")
+    public = Flask("public")
+    admin.config.update(DEBUG=True)
+    public.run()
+
+
+# COMPLIANT: a later config write disables debug mode before run().
+def config_overwrites_attribute():
+    app.debug = True
+    app.config["DEBUG"] = False
+    app.run()
+
+
+# COMPLIANT: a later attribute write disables debug mode before run().
+def attribute_overwrites_config():
+    app.config["DEBUG"] = True
+    app.debug = False
+    app.run()
+
+
+# COMPLIANT: a later config.update disables debug mode before run().
+def update_overwrites_config():
+    app.config["DEBUG"] = True
+    app.config.update(DEBUG=False)
+    app.run()
+
+
+# NON_COMPLIANT: debug may still be enabled when the conditional overwrite is skipped.
+def conditionally_overwritten():
+    app.config["DEBUG"] = True  # $ Alert
+    if os.getenv("DISABLE_DEBUG"):
+        app.debug = False
+    app.run()
+
+
 if __name__ == "__main__":
     app.debug = os.environ.get('FLASK_DEBUG', True)  # $ Alert
     app.run(port=7000)

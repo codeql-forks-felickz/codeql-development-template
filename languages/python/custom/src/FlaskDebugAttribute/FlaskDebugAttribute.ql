@@ -62,27 +62,74 @@ predicate runWithoutDebugArgument(API::CallNode run) {
 API::Node flaskConfig() { result = Flask::FlaskApp::instance().getMember("config") }
 
 /**
- * Holds if `setting` sets the debug mode of a Flask application to `value`, through
+ * Holds if `setting` writes the debug mode of an application identified by `app`.
+ */
+predicate sameFlaskApplication(DataFlow::Node receiver, DataFlow::Node runReceiver) {
+  exists(DataFlow::LocalSourceNode app |
+    app.flowsTo(receiver) and
+    app.flowsTo(runReceiver)
+  )
+  or
+  exists(DataFlow::ModuleVariableNode app |
+    (receiver = app or receiver = app.getARead()) and
+    runReceiver = app.getARead()
+  )
+}
+
+predicate debugModeWriteForApp(ControlFlowNode setting, DataFlow::Node runReceiver) {
+  exists(DataFlow::Node value, DataFlow::Node receiver |
+    setsDebugMode(setting, value, receiver) and
+    sameFlaskApplication(receiver, runReceiver)
+  )
+}
+
+/**
+ * Holds if there is a path from `from` to `to` that does not pass through another
+ * write to the debug setting of `app`.
+ */
+predicate reachesWithoutDebugWrite(
+  ControlFlowNode start, ControlFlowNode target, DataFlow::Node runReceiver
+) {
+  start = target
+  or
+  exists(ControlFlowNode next |
+    start.getASuccessor() = next and
+    (next = target or
+      not debugModeWriteForApp(next, runReceiver) and
+      reachesWithoutDebugWrite(next, target, runReceiver)
+    )
+  )
+}
+
+/**
+ * Holds if `setting` sets the debug mode of an application to `value`, through
  * `app.debug = value`, `app.config["DEBUG"] = value` or `app.config.update(DEBUG=value)`.
  */
-predicate setsDebugMode(ControlFlowNode setting, DataFlow::Node value) {
+predicate setsDebugMode(
+  ControlFlowNode setting, DataFlow::Node value, DataFlow::Node receiver
+) {
   exists(DataFlow::AttrWrite write |
     write.getAttributeName() = "debug" and
-    write.getObject() = Flask::FlaskApp::instance().getAValueReachableFromSource() and
+    receiver = write.getObject() and
     value = write.getValue() and
     setting = write.asCfgNode()
   )
   or
-  exists(SubscriptNode sub |
+  exists(SubscriptNode sub, DataFlow::AttrRead config |
     sub.isStore() and
     sub.getIndex().getNode().(StringLiteral).getText() = "DEBUG" and
-    sub.getObject() = flaskConfig().getAValueReachableFromSource().asCfgNode() and
+    config.asCfgNode() = sub.getObject() and
+    config.getAttributeName() = "config" and
+    receiver = config.getObject() and
     value.asCfgNode() = sub.(DefinitionNode).getValue() and
     setting = sub
   )
   or
-  exists(API::CallNode update |
+  exists(API::CallNode update, DataFlow::AttrRead config |
     update = flaskConfig().getMember("update").getACall() and
+    update.(DataFlow::MethodCallNode).getObject() = config and
+    config.getAttributeName() = "config" and
+    receiver = config.getObject() and
     value = update.getArgByName("DEBUG") and
     setting = update.asCfgNode()
   )
@@ -90,10 +137,15 @@ predicate setsDebugMode(ControlFlowNode setting, DataFlow::Node value) {
 
 from ControlFlowNode setting, DataFlow::Node value, API::CallNode run
 where
-  setsDebugMode(setting, value) and
   isTruthyByDefault(value) and
   runWithoutDebugArgument(run) and
-  setting.strictlyReaches(run.asCfgNode())
+  exists(DataFlow::Node receiver |
+    setsDebugMode(setting, value, receiver) and
+    sameFlaskApplication(receiver, run.(DataFlow::MethodCallNode).getObject()) and
+    reachesWithoutDebugWrite(
+      setting, run.asCfgNode(), run.(DataFlow::MethodCallNode).getObject()
+    )
+  )
 select setting,
   "This setting enables Flask debug mode by default before the app is $@. This may allow an attacker to run arbitrary code through the debugger.",
   run, "run"
