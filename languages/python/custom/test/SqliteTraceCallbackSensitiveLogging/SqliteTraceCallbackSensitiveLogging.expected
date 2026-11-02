@@ -1,0 +1,40 @@
+#select
+| libuser.py:24:22:24:111 | ControlFlowNode for Attribute() | libuser.py:19:21:19:28 | ControlFlowNode for password | libuser.py:24:22:24:111 | ControlFlowNode for Attribute() | This SQL statement includes $@ and is written to the output of the $@ enabled on its connection. | libuser.py:19:21:19:28 | ControlFlowNode for password | sensitive data (password) | libuser.py:21:5:21:34 | ControlFlowNode for Attribute() | SQLite trace callback |
+| libuser.py:33:70:33:85 | ControlFlowNode for Tuple | libuser.py:29:14:29:34 | ControlFlowNode for Attribute() | libuser.py:33:70:33:85 | ControlFlowNode for Tuple | This SQL statement includes $@ and is written to the output of the $@ enabled on its connection. | libuser.py:29:14:29:34 | ControlFlowNode for Attribute() | sensitive data (secret) | libuser.py:31:5:31:34 | ControlFlowNode for Attribute() | SQLite trace callback |
+| libuser.py:41:70:41:89 | ControlFlowNode for List | libuser.py:38:31:38:38 | ControlFlowNode for password | libuser.py:41:70:41:89 | ControlFlowNode for List | This SQL statement includes $@ and is written to the output of the $@ enabled on its connection. | libuser.py:38:31:38:38 | ControlFlowNode for password | sensitive data (password) | libuser.py:40:5:40:62 | ControlFlowNode for Attribute() | SQLite trace callback |
+| libuser.py:107:61:107:69 | ControlFlowNode for Tuple | libuser.py:102:40:102:47 | ControlFlowNode for password | libuser.py:107:61:107:69 | ControlFlowNode for Tuple | This SQL statement includes $@ and is written to the output of the $@ enabled on its connection. | libuser.py:102:40:102:47 | ControlFlowNode for password | sensitive data (password) | libuser.py:104:5:104:34 | ControlFlowNode for Attribute() | SQLite trace callback |
+| libuser.py:115:61:115:69 | ControlFlowNode for Tuple | libuser.py:110:41:110:48 | ControlFlowNode for password | libuser.py:115:61:115:69 | ControlFlowNode for Tuple | This SQL statement includes $@ and is written to the output of the $@ enabled on its connection. | libuser.py:110:41:110:48 | ControlFlowNode for password | sensitive data (password) | libuser.py:114:5:114:34 | ControlFlowNode for Attribute() | SQLite trace callback |
+| libuser.py:121:61:121:69 | ControlFlowNode for Tuple | libuser.py:118:26:118:33 | ControlFlowNode for password | libuser.py:121:61:121:69 | ControlFlowNode for Tuple | This SQL statement includes $@ and is written to the output of the $@ enabled on its connection. | libuser.py:118:26:118:33 | ControlFlowNode for password | sensitive data (password) | libuser.py:120:5:120:43 | ControlFlowNode for Attribute() | SQLite trace callback |
+edges
+| libuser.py:19:21:19:28 | ControlFlowNode for password | libuser.py:24:22:24:111 | ControlFlowNode for Attribute() | provenance |  |
+| libuser.py:29:5:29:10 | ControlFlowNode for secret | libuser.py:33:70:33:75 | ControlFlowNode for secret | provenance |  |
+| libuser.py:29:14:29:34 | ControlFlowNode for Attribute() | libuser.py:29:5:29:10 | ControlFlowNode for secret | provenance |  |
+| libuser.py:33:70:33:75 | ControlFlowNode for secret | libuser.py:33:70:33:85 | ControlFlowNode for Tuple | provenance |  |
+| libuser.py:38:31:38:38 | ControlFlowNode for password | libuser.py:41:71:41:78 | ControlFlowNode for password | provenance |  |
+| libuser.py:41:71:41:78 | ControlFlowNode for password | libuser.py:41:70:41:89 | ControlFlowNode for List | provenance |  |
+| libuser.py:102:40:102:47 | ControlFlowNode for password | libuser.py:107:61:107:68 | ControlFlowNode for password | provenance |  |
+| libuser.py:107:61:107:68 | ControlFlowNode for password | libuser.py:107:61:107:69 | ControlFlowNode for Tuple | provenance |  |
+| libuser.py:110:41:110:48 | ControlFlowNode for password | libuser.py:115:61:115:68 | ControlFlowNode for password | provenance |  |
+| libuser.py:115:61:115:68 | ControlFlowNode for password | libuser.py:115:61:115:69 | ControlFlowNode for Tuple | provenance |  |
+| libuser.py:118:26:118:33 | ControlFlowNode for password | libuser.py:121:61:121:68 | ControlFlowNode for password | provenance |  |
+| libuser.py:121:61:121:68 | ControlFlowNode for password | libuser.py:121:61:121:69 | ControlFlowNode for Tuple | provenance |  |
+nodes
+| libuser.py:19:21:19:28 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| libuser.py:24:22:24:111 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libuser.py:29:5:29:10 | ControlFlowNode for secret | semmle.label | ControlFlowNode for secret |
+| libuser.py:29:14:29:34 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| libuser.py:33:70:33:75 | ControlFlowNode for secret | semmle.label | ControlFlowNode for secret |
+| libuser.py:33:70:33:85 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| libuser.py:38:31:38:38 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| libuser.py:41:70:41:89 | ControlFlowNode for List | semmle.label | ControlFlowNode for List |
+| libuser.py:41:71:41:78 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| libuser.py:102:40:102:47 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| libuser.py:107:61:107:68 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| libuser.py:107:61:107:69 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| libuser.py:110:41:110:48 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| libuser.py:115:61:115:68 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| libuser.py:115:61:115:69 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| libuser.py:118:26:118:33 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| libuser.py:121:61:121:68 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+| libuser.py:121:61:121:69 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+subpaths
