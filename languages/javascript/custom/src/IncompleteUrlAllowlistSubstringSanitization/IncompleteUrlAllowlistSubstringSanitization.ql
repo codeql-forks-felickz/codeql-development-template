@@ -117,7 +117,9 @@ predicate incompleteAllowlistCheck(
 ) {
   isAllowlistElementRef(check.getSubstring(), coll) and
   // constant substrings are already reported by `js/incomplete-url-substring-sanitization`
-  not check.getSubstring().mayHaveStringValue(_) and
+  not exists(string t |
+    check.getSubstring().mayHaveStringValue(t) and isIncompleteCheckFor(check, t)
+  ) and
   allowlistElement(coll, i, elem) and
   elem.mayHaveStringValue(target) and
   isIncompleteCheckFor(check, target)

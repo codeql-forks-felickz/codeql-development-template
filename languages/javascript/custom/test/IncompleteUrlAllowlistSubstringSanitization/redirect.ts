@@ -27,6 +27,11 @@ export function startsWithTrusted (url: string): boolean {
   return trustedOrigins.some(origin => url.startsWith(origin)) // $ Alert
 }
 
+// BAD: a safe literal branch does not make the allowlist branch safe
+export function startsWithTrustedOrFallback (url: string, useOrigin: boolean): boolean {
+  return trustedOrigins.some(origin => url.startsWith(useOrigin ? origin : 'https://fallback.example.com/')) // $ Alert
+}
+
 const trustedPrefixes = ['https://partner.example.com/', 'https://cdn.example.net/']
 
 // GOOD: prefix check including the trailing slash
