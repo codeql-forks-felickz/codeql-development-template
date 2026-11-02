@@ -2,4 +2,5 @@ name: languages-cpp-custom-test
 version: 0.0.2
 dependencies:
   languages-cpp-custom-src: ${workspace}
+  languages-cpp-custom-models: ${workspace}
 extractor: cpp
