@@ -4,8 +4,13 @@
 | filters/filters.go:31:10:31:44 | type conversion | filters/filters.go:29:8:29:23 | call to FormValue | filters/filters.go:31:10:31:44 | type conversion | Cross-site scripting vulnerability due to $@. | filters/filters.go:29:8:29:23 | call to FormValue | user-provided value | filters/filters.go:0:0:0:0 | filters/filters.go |  |
 | filters/filters.go:38:10:38:44 | type conversion | filters/filters.go:36:8:36:23 | call to FormValue | filters/filters.go:38:10:38:44 | type conversion | Cross-site scripting vulnerability due to $@. | filters/filters.go:36:8:36:23 | call to FormValue | user-provided value | filters/filters.go:0:0:0:0 | filters/filters.go |  |
 | filters/filters.go:45:10:45:44 | type conversion | filters/filters.go:43:8:43:23 | call to FormValue | filters/filters.go:45:10:45:44 | type conversion | Cross-site scripting vulnerability due to $@. | filters/filters.go:43:8:43:23 | call to FormValue | user-provided value | filters/filters.go:0:0:0:0 | filters/filters.go |  |
+| filters/filters.go:52:10:52:44 | type conversion | filters/filters.go:50:8:50:23 | call to FormValue | filters/filters.go:52:10:52:44 | type conversion | Cross-site scripting vulnerability due to $@. | filters/filters.go:50:8:50:23 | call to FormValue | user-provided value | filters/filters.go:0:0:0:0 | filters/filters.go |  |
+| filters/filters.go:59:10:59:44 | type conversion | filters/filters.go:57:8:57:23 | call to FormValue | filters/filters.go:59:10:59:44 | type conversion | Cross-site scripting vulnerability due to $@. | filters/filters.go:57:8:57:23 | call to FormValue | user-provided value | filters/filters.go:0:0:0:0 | filters/filters.go |  |
+| filters/filters.go:66:10:66:44 | type conversion | filters/filters.go:64:8:64:23 | call to FormValue | filters/filters.go:66:10:66:44 | type conversion | Cross-site scripting vulnerability due to $@. | filters/filters.go:64:8:64:23 | call to FormValue | user-provided value | filters/filters.go:0:0:0:0 | filters/filters.go |  |
+| filters/filters.go:94:10:94:44 | type conversion | filters/filters.go:92:8:92:23 | call to FormValue | filters/filters.go:94:10:94:44 | type conversion | Cross-site scripting vulnerability due to $@. | filters/filters.go:92:8:92:23 | call to FormValue | user-provided value | filters/filters.go:0:0:0:0 | filters/filters.go |  |
 | servestd/servestd.go:32:18:32:21 | data | common/common.go:42:10:42:14 | selection of URL | servestd/servestd.go:32:18:32:21 | data | Cross-site scripting vulnerability due to $@. | common/common.go:42:10:42:14 | selection of URL | user-provided value | servestd/servestd.go:0:0:0:0 | servestd/servestd.go |  |
 | servestd/servestd.go:32:18:32:21 | data | common/common.go:45:9:45:28 | call to FormValue | servestd/servestd.go:32:18:32:21 | data | Cross-site scripting vulnerability due to $@. | common/common.go:45:9:45:28 | call to FormValue | user-provided value | servestd/servestd.go:0:0:0:0 | servestd/servestd.go |  |
+| servestd/servestd.go:46:17:46:36 | call to FormValue | servestd/servestd.go:46:17:46:36 | call to FormValue | servestd/servestd.go:46:17:46:36 | call to FormValue | Cross-site scripting vulnerability due to $@. | servestd/servestd.go:46:17:46:36 | call to FormValue | user-provided value | servestd/servestd.go:0:0:0:0 | servestd/servestd.go |  |
 edges
 | common/common.go:42:10:42:14 | selection of URL | common/common.go:42:10:42:22 | call to Query | provenance | Src:MaD:2006 MaD:2068 |
 | common/common.go:42:10:42:22 | call to Query | common/common.go:42:10:42:35 | call to Get | provenance | MaD:2076 |
@@ -42,6 +47,18 @@ edges
 | filters/filters.go:43:8:43:23 | call to FormValue | filters/filters.go:45:37:45:38 | in | provenance | Src:MaD:1994  |
 | filters/filters.go:45:17:45:43 | call to ReplaceAllString | filters/filters.go:45:10:45:44 | type conversion | provenance |  |
 | filters/filters.go:45:37:45:38 | in | filters/filters.go:45:17:45:43 | call to ReplaceAllString | provenance | MaD:2206 |
+| filters/filters.go:50:8:50:23 | call to FormValue | filters/filters.go:52:37:52:38 | in | provenance | Src:MaD:1994  |
+| filters/filters.go:52:17:52:43 | call to ReplaceAllString | filters/filters.go:52:10:52:44 | type conversion | provenance |  |
+| filters/filters.go:52:37:52:38 | in | filters/filters.go:52:17:52:43 | call to ReplaceAllString | provenance | MaD:2206 |
+| filters/filters.go:57:8:57:23 | call to FormValue | filters/filters.go:59:37:59:38 | in | provenance | Src:MaD:1994  |
+| filters/filters.go:59:17:59:43 | call to ReplaceAllString | filters/filters.go:59:10:59:44 | type conversion | provenance |  |
+| filters/filters.go:59:37:59:38 | in | filters/filters.go:59:17:59:43 | call to ReplaceAllString | provenance | MaD:2206 |
+| filters/filters.go:64:8:64:23 | call to FormValue | filters/filters.go:66:37:66:38 | in | provenance | Src:MaD:1994  |
+| filters/filters.go:66:17:66:43 | call to ReplaceAllString | filters/filters.go:66:10:66:44 | type conversion | provenance |  |
+| filters/filters.go:66:37:66:38 | in | filters/filters.go:66:17:66:43 | call to ReplaceAllString | provenance | MaD:2206 |
+| filters/filters.go:92:8:92:23 | call to FormValue | filters/filters.go:94:37:94:38 | in | provenance | Src:MaD:1994  |
+| filters/filters.go:94:17:94:43 | call to ReplaceAllString | filters/filters.go:94:10:94:44 | type conversion | provenance |  |
+| filters/filters.go:94:37:94:38 | in | filters/filters.go:94:17:94:43 | call to ReplaceAllString | provenance | MaD:2206 |
 | servestd/servestd.go:22:10:22:31 | call to GetUserInput | servestd/servestd.go:23:51:23:52 | in | provenance |  |
 | servestd/servestd.go:23:4:23:56 | extract:0 ... := ... | servestd/servestd.go:32:18:32:21 | data | provenance |  |
 | servestd/servestd.go:23:51:23:52 | in | common/common.go:50:29:50:35 | SSA def(payload) | provenance | AdditionalTaintStep |
@@ -84,10 +101,27 @@ nodes
 | filters/filters.go:45:10:45:44 | type conversion | semmle.label | type conversion |
 | filters/filters.go:45:17:45:43 | call to ReplaceAllString | semmle.label | call to ReplaceAllString |
 | filters/filters.go:45:37:45:38 | in | semmle.label | in |
+| filters/filters.go:50:8:50:23 | call to FormValue | semmle.label | call to FormValue |
+| filters/filters.go:52:10:52:44 | type conversion | semmle.label | type conversion |
+| filters/filters.go:52:17:52:43 | call to ReplaceAllString | semmle.label | call to ReplaceAllString |
+| filters/filters.go:52:37:52:38 | in | semmle.label | in |
+| filters/filters.go:57:8:57:23 | call to FormValue | semmle.label | call to FormValue |
+| filters/filters.go:59:10:59:44 | type conversion | semmle.label | type conversion |
+| filters/filters.go:59:17:59:43 | call to ReplaceAllString | semmle.label | call to ReplaceAllString |
+| filters/filters.go:59:37:59:38 | in | semmle.label | in |
+| filters/filters.go:64:8:64:23 | call to FormValue | semmle.label | call to FormValue |
+| filters/filters.go:66:10:66:44 | type conversion | semmle.label | type conversion |
+| filters/filters.go:66:17:66:43 | call to ReplaceAllString | semmle.label | call to ReplaceAllString |
+| filters/filters.go:66:37:66:38 | in | semmle.label | in |
+| filters/filters.go:92:8:92:23 | call to FormValue | semmle.label | call to FormValue |
+| filters/filters.go:94:10:94:44 | type conversion | semmle.label | type conversion |
+| filters/filters.go:94:17:94:43 | call to ReplaceAllString | semmle.label | call to ReplaceAllString |
+| filters/filters.go:94:37:94:38 | in | semmle.label | in |
 | servestd/servestd.go:22:10:22:31 | call to GetUserInput | semmle.label | call to GetUserInput |
 | servestd/servestd.go:23:4:23:56 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
 | servestd/servestd.go:23:51:23:52 | in | semmle.label | in |
 | servestd/servestd.go:32:18:32:21 | data | semmle.label | data |
+| servestd/servestd.go:46:17:46:36 | call to FormValue | semmle.label | call to FormValue |
 | xss/xss.go:16:45:16:51 | SSA def(payload) | semmle.label | SSA def(payload) |
 | xss/xss.go:16:96:18:4 | result-read:0 block statement | semmle.label | result-read:0 block statement |
 subpaths

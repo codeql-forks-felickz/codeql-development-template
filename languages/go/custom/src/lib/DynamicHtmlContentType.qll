@@ -65,6 +65,12 @@ private module HtmlContentTypeConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Field f | htmlMimeFieldWrite(pred, f) and succ = f.getARead())
     or
+    exists(AddExpr add |
+      add.getType().getUnderlyingType() instanceof StringType and
+      pred.asExpr() = add.getAnOperand() and
+      succ.asExpr() = add
+    )
+    or
     any(FunctionFieldCallTaintStep s).step(pred, succ)
   }
 }

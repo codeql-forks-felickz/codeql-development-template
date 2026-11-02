@@ -40,4 +40,9 @@ func Setup() {
 	for _, r := range common.AllRoutes {
 		http.HandleFunc(r.Base+"/", newHandler(r))
 	}
+	http.HandleFunc("/dynamic-content-type", func(w http.ResponseWriter, r *http.Request) {
+		charset := r.FormValue("charset")
+		w.Header().Set("Content-Type", "text/html; charset="+charset)
+		fmt.Fprint(w, r.FormValue("input")) // $ Alert=htmlcontenttypeconcat
+	})
 }

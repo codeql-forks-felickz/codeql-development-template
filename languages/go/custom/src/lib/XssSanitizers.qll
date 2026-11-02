@@ -7,8 +7,8 @@ import go
 import semmle.go.security.Xss
 
 /**
- * A regular-expression replacement whose pattern matches specific HTML tag
- * names, such as `<script>`, rather than HTML meta-characters in general.
+ * A regular-expression replacement whose pattern matches tag names, such as
+ * `<script>` or `<\w+>`, rather than HTML meta-characters in general.
  *
  * The standard `SharedXss::MetacharEscapeSanitizer` treats every regexp
  * replacement whose pattern contains an HTML meta-character as a complete
@@ -24,12 +24,11 @@ import semmle.go.security.Xss
 class TagNameBlocklistReplacement extends DataFlow::CallNode {
   TagNameBlocklistReplacement() {
     exists(RegexpReplaceFunction f | f = this.getCall().getTarget() |
-      // a `<` followed, possibly after a `/`, optional whitespace, a
-      // character class, a group opening or closing or a case-insensitivity
-      // flag, by a literal tag-name letter
+      // a `<` followed by a literal letter before any `>`, allowing
+      // non-letter regex tokens before the letter
       f.getRegexp(this)
           .getPattern()
-          .regexpMatch("(?s).*<(/|\\?|\\(\\?:|\\(\\?i\\)|\\(|\\)[?*]?|\\\\s[*+?]?|\\\\/|\\[[^\\]]*\\][*+?]?)*[a-zA-Z].*")
+          .regexpMatch("(?s).*<[^a-zA-Z>]*[a-zA-Z].*")
     )
   }
 }
