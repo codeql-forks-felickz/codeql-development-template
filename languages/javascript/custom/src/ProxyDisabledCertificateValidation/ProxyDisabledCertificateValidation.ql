@@ -27,7 +27,7 @@ API::Node proxyLibraryOptions() {
     or
     result = create.getReturn().getMember("web").getParameter(2)
     or
-    result = create.getReturn().getMember("ws").getParameter(3)
+    result = create.getReturn().getMember("ws").getParameter([2, 3])
   )
   or
   exists(API::Node hpm | hpm = API::moduleImport("http-proxy-middleware") |

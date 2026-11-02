@@ -1,6 +1,8 @@
 | http-proxy-middleware.js:11:5:11:17 | secure: false | Disabling certificate validation of the proxied connection is strongly discouraged. |
 | http-proxy.js:6:3:6:15 | secure: false | Disabling certificate validation of the proxied connection is strongly discouraged. |
 | http-proxy.js:19:5:19:17 | secure: false | Disabling certificate validation of the proxied connection is strongly discouraged. |
+| http-proxy.js:27:5:27:17 | secure: false | Disabling certificate validation of the proxied connection is strongly discouraged. |
+| http-proxy.js:31:5:31:17 | secure: false | Disabling certificate validation of the proxied connection is strongly discouraged. |
 | vite-fn/vite.config.ts:5:3:5:15 | secure: false | Disabling certificate validation of the proxied connection is strongly discouraged. |
 | vite-plain/vite.config.mjs:6:9:6:21 | secure: false | Disabling certificate validation of the proxied connection is strongly discouraged. |
 | vite.config.js:10:9:10:21 | secure: false | Disabling certificate validation of the proxied connection is strongly discouraged. |

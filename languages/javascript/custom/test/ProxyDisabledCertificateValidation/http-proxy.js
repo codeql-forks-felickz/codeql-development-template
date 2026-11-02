@@ -20,6 +20,17 @@ http.createServer((req, res) => {
   });
   safe.web(req, res, { target: 'https://other.example.com' });
   insecure.web(req, res);
+
+  const head = Buffer.alloc(0);
+  server.ws(req, res, {
+    target: 'wss://backend.example.com',
+    secure: false // $ Alert
+  });
+  server.ws(req, res, head, {
+    target: 'wss://backend.example.com',
+    secure: false // $ Alert
+  });
+  server.ws(req, res, head, { target: 'wss://backend.example.com' });
 });
 
 // Unrelated object with a `secure` property is not a proxy option.
