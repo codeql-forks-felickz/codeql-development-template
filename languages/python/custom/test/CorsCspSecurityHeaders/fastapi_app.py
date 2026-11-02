@@ -100,3 +100,38 @@ app.add_middleware(
     allow_origin_regex=r"https://[.a-z0-9-]+\.example\.com",
     allow_credentials=True,
 )
+
+# Safe: top-level protocol alternatives still require the trusted domain suffix.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"(https://.*|http://.*)\.example\.com",
+    allow_credentials=True,
+)
+
+# Safe: the escaped domain boundary is grouped.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https://.*(\.example\.com)",
+    allow_credentials=True,
+)
+
+# Still unsafe: the group starts with an unbounded domain name.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https://.*(example\.com)",  # $ Alert
+    allow_credentials=True,
+)
+
+# Still unsafe: the group allows any prefix before the trusted-looking suffix.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https://.*(foo|bar)\.example\.com",  # $ Alert
+    allow_credentials=True,
+)
+
+# A catch-all nested alternative remains unsafe.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https://(foo|.*)",  # $ Alert
+    allow_credentials=True,
+)

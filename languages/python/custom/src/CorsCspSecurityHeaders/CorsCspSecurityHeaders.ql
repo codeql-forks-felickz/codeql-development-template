@@ -90,7 +90,8 @@ string cspEffectiveDirective(string policy, string name) {
 bindingset[directive]
 predicate directiveAllowsInlineScript(string directive) {
   directive.regexpMatch("(.*\\s)?'unsafe-inline'(\\s.*)?") and
-  not directive.regexpMatch("(.*\\s)?'(nonce|sha256|sha384|sha512)-[a-z0-9+/_-]+=*'(\\s.*)?")
+  not directive.regexpMatch("(.*\\s)?'(nonce|sha256|sha384|sha512)-[a-z0-9+/_-]+=*'(\\s.*)?") and
+  not directive.regexpMatch("(.*\\s)?'strict-dynamic'(\\s.*)?")
 }
 
 /** Holds if the single CSP policy `policy` allows inline scripts. */
@@ -104,15 +105,29 @@ predicate policyAllowsInlineScript(string policy) {
   not exists(cspEffectiveDirective(policy, "script-src"))
 }
 
+/** Holds if `policy` has a directive that applies to scripts. */
+bindingset[policy]
+predicate policyHasApplicableScriptDirective(string policy) {
+  exists(string name |
+    name = ["script-src", "script-src-elem", "script-src-attr", "default-src"] and
+    exists(string directive | directive = cspEffectiveDirective(policy, name))
+  )
+}
+
 /**
  * Holds if the Content-Security-Policy value `csp` allows inline scripts. A
- * comma-separated value contains several policies that must all allow it.
+ * comma-separated value contains several policies whose script directives
+ * intersect. Policies without an applicable script directive do not restrict
+ * inline scripts.
  */
 bindingset[csp]
 predicate cspAllowsInlineScript(string csp) {
   exists(string policy | policy = csp.splitAt(",") and policy.trim() != "") and
+  exists(string policy |
+    policy = csp.splitAt(",") and policy.trim() != "" and policyAllowsInlineScript(policy)
+  ) and
   forall(string policy | policy = csp.splitAt(",") and policy.trim() != "" |
-    policyAllowsInlineScript(policy)
+    policyAllowsInlineScript(policy) or not policyHasApplicableScriptDirective(policy)
   )
 }
 
@@ -125,6 +140,42 @@ predicate isCatchAllOriginRegex(string s) {
   s.regexpMatch("\\(?\\^?([a-z()|?]*://)?(\\.|\\[\\^[^\\].]*\\])[*+]\\??\\$?\\)?")
 }
 
+/** Holds if character `i` is a top-level alternative separator in `regex`. */
+bindingset[regex]
+private predicate isTopLevelRegexSeparator(string regex, int i) {
+  exists(string prefix, string unescapedPrefix, string outsideClasses, string parentheses,
+      string trailingBackslashes |
+    i >= 0 and i < regex.length() and
+    regex.charAt(i) = "|" and
+    prefix = regex.substring(0, i) and
+    trailingBackslashes = prefix.regexpCapture(".*(\\\\*)$", 1) and
+    trailingBackslashes.length() % 2 = 0 and
+    unescapedPrefix = prefix.regexpReplaceAll("\\\\.", "#") and
+    outsideClasses =
+      unescapedPrefix.regexpReplaceAll("\\[(\\\\.|[^\\]\\\\])*\\]", "#") and
+    not outsideClasses.regexpMatch(".*\\[.*") and
+    parentheses = outsideClasses.regexpReplaceAll("[^()]", "") and
+    parentheses.regexpReplaceAll("\\)", "").length() =
+      parentheses.regexpReplaceAll("\\(", "").length()
+  )
+}
+
+/** Holds if `regex` has a catch-all top-level alternative. */
+bindingset[regex]
+private predicate hasCatchAllTopLevelAlternative(string regex) {
+  exists(int start, int end |
+    start >= 0 and end >= start and end <= regex.length() and
+    (start = 0 or exists(int previous |
+      isTopLevelRegexSeparator(regex, previous) and start = previous + 1
+    )) and
+    (end = regex.length() or isTopLevelRegexSeparator(regex, end)) and
+    not exists(int separator |
+      separator >= start and separator < end and isTopLevelRegexSeparator(regex, separator)
+    ) and
+    isCatchAllOriginRegex(regex.substring(start, end))
+  )
+}
+
 /**
  * Holds if the CORS origin regular expression `regex` accepts origins that are
  * likely not intended, such as any origin, or attacker-registrable domains due to
@@ -133,8 +184,9 @@ predicate isCatchAllOriginRegex(string s) {
  */
 bindingset[regex]
 predicate isPermissiveOriginRegex(string regex) {
-  // A top-level alternative matches any origin, e.g. `.*` or `https://a\.com|https://.*`.
-  isCatchAllOriginRegex(regex.splitAt("|"))
+  // The complete expression and each top-level alternative can match any origin.
+  isCatchAllOriginRegex(regex) or
+  hasCatchAllTopLevelAlternative(regex)
   or
   exists(string r |
     // Ignore the contents of character classes, e.g. the `.` in `[a-z.]`.
@@ -144,7 +196,7 @@ predicate isPermissiveOriginRegex(string regex) {
     r.regexpMatch("(.*[^\\\\])?\\.[a-zA-Z0-9].*")
     or
     // An unbounded wildcard directly followed by a domain name, e.g. `.*example\.com`.
-    r.regexpMatch("(.*[^\\\\])?\\.[*+]\\??[a-zA-Z0-9(].*")
+    r.regexpMatch("(.*[^\\\\])?\\.[*+]\\??(?!\\((?:\\?:)?\\\\\\.)[a-zA-Z0-9(].*")
     or
     // An unbounded wildcard after the domain name, e.g. `example\.com.*`.
     r.regexpMatch(".*[^\\\\:]\\.[*+]\\??\\$?\\)?")

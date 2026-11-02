@@ -30,6 +30,8 @@ def malformed_nonce():
     resp.headers["Content-Security-Policy"] = "script-src 'unsafe-inline' 'nonce-'"  # $ Alert
     # Every policy allows inline scripts.
     resp.headers["Content-Security-Policy"] = "script-src 'unsafe-inline', default-src 'unsafe-inline'"  # $ Alert
+    # An image-only policy does not restrict scripts.
+    resp.headers["Content-Security-Policy"] = "script-src 'unsafe-inline', img-src 'self'"  # $ Alert
     return resp
 
 
@@ -40,6 +42,8 @@ def safe():
     resp.headers["Access-Control-Allow-Origin"] = "https://trusted.example.com"
     # Nonce-based script-src: 'unsafe-inline' is ignored by CSP2+ browsers, not flagged.
     resp.headers["Content-Security-Policy"] = "script-src 'self' 'nonce-r4nd0m' 'unsafe-inline'"
+    # 'strict-dynamic' also disables 'unsafe-inline' for scripts.
+    resp.headers["Content-Security-Policy"] = "script-src 'strict-dynamic' 'unsafe-inline'"
     # 'unsafe-inline' restricted to styles only: not flagged.
     resp.headers["Content-Security-Policy"] = "default-src 'self'; style-src 'self' 'unsafe-inline'"
     # script-src overrides default-src for scripts: not flagged.
