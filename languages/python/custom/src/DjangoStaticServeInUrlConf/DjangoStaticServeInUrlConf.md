@@ -4,7 +4,7 @@
 
 ## Recommendation
 
-Serve static and media files with the web server or a storage service in production. If the view is needed for local development, only add it when `DEBUG` is enabled, for example with the `django.conf.urls.static.static()` helper or an `if settings.DEBUG:` block. Serve private files through a view that enforces access control.
+Serve static and media files with the web server or a storage service in production. If the view is needed for local development, only add it when `django.conf.settings.DEBUG` is enabled, for example with the `django.conf.urls.static.static()` helper or an `if settings.DEBUG:` block. The query recognizes this Django setting through aliases, but a bare `DEBUG` name, including one imported from a project settings module, is not treated as a guard and will still be reported. Serve private files through a view that enforces access control.
 
 ## Example
 

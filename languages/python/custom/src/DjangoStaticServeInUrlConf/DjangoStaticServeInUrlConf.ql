@@ -28,18 +28,41 @@ API::CallNode urlRoute() {
     API::moduleImport("django").getMember("conf").getMember("urls").getMember("url").getACall()
 }
 
-/** Holds if `e` is a reference to a `DEBUG` setting, such as `settings.DEBUG` or `DEBUG`. */
+/** Holds if `e` refers to `django.conf.settings.DEBUG`, including aliases. */
 predicate isDebugSetting(Expr e) {
-  e.(Attribute).getName() = "DEBUG"
+  (e instanceof Attribute or e instanceof Name) and
+  e =
+    API::moduleImport("django")
+        .getMember("conf")
+        .getMember("settings")
+        .getMember("DEBUG")
+        .getAValueReachableFromSource()
+        .asExpr()
+}
+
+/** Holds if a true value for `e` implies that Django's DEBUG setting is enabled. */
+predicate isDebugEnabledCondition(Expr e) {
+  isDebugSetting(e)
   or
-  e.(Name).getId() = "DEBUG"
+  exists(BoolExpr condition |
+    condition = e and
+    condition.getOp() instanceof And and
+    isDebugSetting(condition.getAValue())
+  )
 }
 
 /** Holds if `call` only runs when the `DEBUG` setting is enabled. */
 predicate inDebugGuard(API::CallNode call) {
   exists(If i |
-    isDebugSetting(i.getTest()) and
+    isDebugEnabledCondition(i.getTest()) and
     i.getBody().getAnItem().contains(call.asExpr())
+  )
+  or
+  exists(If i, UnaryExpr test |
+    test = i.getTest() and
+    test.getOp() instanceof Not and
+    isDebugSetting(test.getOperand()) and
+    i.getOrelse().getAnItem().contains(call.asExpr())
   )
 }
 

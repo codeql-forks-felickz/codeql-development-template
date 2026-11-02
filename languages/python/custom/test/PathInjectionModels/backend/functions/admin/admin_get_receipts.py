@@ -19,8 +19,14 @@ def lambda_handler(event, context):  # $ Source[py/path-injection]
     m = event["month"] + "/"
     prefix = "{}/{}".format(y, m)
     download_dir(client, resource, prefix, "/tmp", "receipts")
-    zip_file = "{}receipts.zip".format(prefix.replace("/", "-"))
-    zf = zipfile.ZipFile("/tmp/" + zip_file, "w")  # $ Alert[py/path-injection]
+    unsafe_zip_file = "{}receipts.zip".format(prefix)
+    zf = zipfile.ZipFile("/tmp/" + unsafe_zip_file, "w")  # $ Alert[py/path-injection]
     zf.close()
-    client.upload_file("/tmp/" + zip_file, "receipts", "zip/" + zip_file)  # $ Alert[py/path-injection]
+    client.upload_file("/tmp/" + unsafe_zip_file, "receipts", "zip/" + unsafe_zip_file)  # $ Alert[py/path-injection]
+
+    # Replacing separators makes this safe on POSIX; alerts here are known false positives.
+    zip_file = "{}receipts.zip".format(prefix.replace("/", "-"))
+    zf = zipfile.ZipFile("/tmp/" + zip_file, "w")  # $ SPURIOUS: Alert[py/path-injection]
+    zf.close()
+    client.upload_file("/tmp/" + zip_file, "receipts", "zip/" + zip_file)  # $ SPURIOUS: Alert[py/path-injection]
     return {"status": "ok"}
