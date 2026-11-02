@@ -1,0 +1,2 @@
+query: MissingSubresourceIntegrity/MissingSubresourceIntegrity.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
