@@ -1,0 +1,2 @@
+query: ImproperValidationOfArrayIndex/ImproperValidationOfArrayIndex.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

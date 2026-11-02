@@ -1,0 +1,10 @@
+#select
+| Test.cs:11:41:11:44 | access to local variable data | Test.cs:8:23:8:63 | call to method GetEnvironmentVariable : String | Test.cs:11:41:11:44 | access to local variable data | This format string depends on $@. | Test.cs:8:23:8:63 | call to method GetEnvironmentVariable | thisenvironment variable |
+edges
+| Test.cs:8:16:8:19 | access to local variable data : String | Test.cs:11:41:11:44 | access to local variable data | provenance |  |
+| Test.cs:8:23:8:63 | call to method GetEnvironmentVariable : String | Test.cs:8:16:8:19 | access to local variable data : String | provenance | Src:MaD:2457  |
+nodes
+| Test.cs:8:16:8:19 | access to local variable data : String | semmle.label | access to local variable data : String |
+| Test.cs:8:23:8:63 | call to method GetEnvironmentVariable : String | semmle.label | call to method GetEnvironmentVariable : String |
+| Test.cs:11:41:11:44 | access to local variable data | semmle.label | access to local variable data |
+subpaths
