@@ -1,0 +1,2 @@
+query: DjangoStaticServeInUrlConf/DjangoStaticServeInUrlConf.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

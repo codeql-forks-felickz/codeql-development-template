@@ -1,0 +1,8 @@
+| urls.py:12:5:12:83 | ControlFlowNode for re_path() | This URL pattern routes requests to 'django.views.static.serve', which is not suitable for production and serves files without access control. |
+| urls.py:13:5:13:82 | ControlFlowNode for path() | This URL pattern routes requests to 'django.views.static.serve', which is not suitable for production and serves files without access control. |
+| urls.py:14:5:14:92 | ControlFlowNode for url() | This URL pattern routes requests to 'django.views.static.serve', which is not suitable for production and serves files without access control. |
+| urls.py:18:17:18:102 | ControlFlowNode for re_path() | This URL pattern routes requests to 'django.views.static.serve', which is not suitable for production and serves files without access control. |
+| urls.py:32:21:32:116 | ControlFlowNode for re_path() | This URL pattern routes requests to 'django.views.static.serve', which is not suitable for production and serves files without access control. |
+| urls.py:40:21:40:109 | ControlFlowNode for re_path() | This URL pattern routes requests to 'django.views.static.serve', which is not suitable for production and serves files without access control. |
+| urls.py:47:21:47:112 | ControlFlowNode for re_path() | This URL pattern routes requests to 'django.views.static.serve', which is not suitable for production and serves files without access control. |
+| urls.py:50:21:50:113 | ControlFlowNode for re_path() | This URL pattern routes requests to 'django.views.static.serve', which is not suitable for production and serves files without access control. |
