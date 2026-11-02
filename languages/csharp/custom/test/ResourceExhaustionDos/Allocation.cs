@@ -80,5 +80,37 @@ namespace Testcases
             var list = new List<string>(16);
             Console.WriteLine(list.Count);
         }
+
+        private static readonly int MaximumSize = 4096;
+
+        public void BadArrayMinWithTaintedBound(HttpRequest req)
+        {
+            int size = int.Parse(req.QueryString["size"]); // $ Source
+            byte[] buffer = new byte[Math.Min(size, size)]; // $ Alert
+            Console.WriteLine(buffer.Length);
+        }
+
+        public void BadArrayClampWithTaintedMaximum(HttpRequest req)
+        {
+            int size = int.Parse(req.QueryString["size"]); // $ Source
+            byte[] buffer = new byte[Math.Clamp(size, 0, size)]; // $ Alert
+            Console.WriteLine(buffer.Length);
+        }
+
+        // GOOD: the readonly limit is independent of the request value.
+        public void GoodArrayMinWithReadonlyBound(HttpRequest req)
+        {
+            int size = int.Parse(req.QueryString["size"]);
+            byte[] buffer = new byte[Math.Min(size, MaximumSize)];
+            Console.WriteLine(buffer.Length);
+        }
+
+        // GOOD: the readonly limit is independent of the request value.
+        public void GoodArrayClampWithReadonlyMaximum(HttpRequest req)
+        {
+            int size = int.Parse(req.QueryString["size"]);
+            byte[] buffer = new byte[Math.Clamp(size, 0, MaximumSize)];
+            Console.WriteLine(buffer.Length);
+        }
     }
 }

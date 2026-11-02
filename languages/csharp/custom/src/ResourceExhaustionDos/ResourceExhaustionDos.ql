@@ -21,10 +21,13 @@ import semmle.code.csharp.controlflow.Guards
 
 /**
  * Holds if `v` is incremented (`up = true`) or decremented (`up = false`) inside `loop`,
- * including in the update clause of a `for` loop.
+ * including in the loop condition or the update clause of a `for` loop.
  */
 predicate updatedInLoop(LocalScopeVariable v, LoopStmt loop, boolean up) {
-  exists(Expr update | update.getEnclosingStmt().getParent*() = loop |
+  exists(Expr update |
+    update.getEnclosingStmt().getParent*() = loop or
+    loop.getCondition().getAChildExpr*() = update
+  |
     update.(IncrementOperation).getOperand() = v.getAnAccess() and up = true
     or
     update.(AssignAddExpr).getLeftOperand() = v.getAnAccess() and up = true
@@ -49,18 +52,31 @@ class LoopBoundSink extends ResourceExhaustionSink {
   LoopBoundSink() {
     exists(LoopStmt loop, RelationalOperation cmp |
       cmp = loop.getCondition().getAChildExpr*() and
-      this.getExpr() = cmp.getGreaterOperand()
-    |
-      // Counting up towards the bound.
-      exists(LocalScopeVariable counter |
-        cmp.getLesserOperand() = counter.getAnAccess() and
-        updatedInLoop(counter, loop, true)
-      )
-      or
-      // Counting down from the bound.
-      exists(LocalScopeVariable counter |
-        this.getExpr() = counter.getAnAccess() and
-        updatedInLoop(counter, loop, false)
+      (
+        // Counting up towards the bound.
+        this.getExpr() = cmp.getGreaterOperand() and
+        exists(LocalScopeVariable counter |
+          (
+            cmp.getLesserOperand() = counter.getAnAccess()
+            or
+            cmp.getLesserOperand().(IncrementOperation).getOperand() = counter.getAnAccess()
+          ) and
+          updatedInLoop(counter, loop, true)
+        )
+        or
+        // Counting down from the bound.
+        exists(LocalScopeVariable counter |
+          this.getExpr() = cmp.getGreaterOperand() and
+          this.getExpr() = counter.getAnAccess() and
+          updatedInLoop(counter, loop, false)
+        )
+        or
+        exists(LocalScopeVariable counter, DecrementOperation decrement |
+          cmp.getGreaterOperand() = decrement and
+          this.getExpr() = decrement.getOperand() and
+          decrement.getOperand() = counter.getAnAccess() and
+          updatedInLoop(counter, loop, false)
+        )
       )
     )
   }
@@ -117,13 +133,43 @@ predicate upperBoundCheck(Guard g, Expr e, GuardValue v) {
   )
 }
 
+class ClampBound extends DataFlow::ExprNode {
+  ClampBound() {
+    exists(MethodCall mc |
+      mc.getTarget().hasFullyQualifiedName("System", "Math", "Min") and
+      this.getExpr() = mc.getAnArgument()
+      or
+      mc.getTarget().hasFullyQualifiedName("System", "Math", "Clamp") and
+      this.getExpr() = mc.getArgumentForName("max")
+    )
+  }
+}
+
+module ClampBoundConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof ClampBound }
+}
+
+module ClampBoundFlow = TaintTracking::Global<ClampBoundConfig>;
+
+predicate isIndependentClampBound(Expr bound) {
+  bound.hasValue() or not ClampBoundFlow::flowToExpr(bound)
+}
+
 /** A value that is clamped from above, for example `Math.Min(n, 100)`. */
 class ClampBarrier extends DataFlow::ExprNode {
   ClampBarrier() {
-    this.getExpr()
-        .(MethodCall)
-        .getTarget()
-        .hasFullyQualifiedName("System", "Math", ["Min", "Clamp"])
+    exists(MethodCall mc |
+      this.getExpr() = mc and
+      (
+        mc.getTarget().hasFullyQualifiedName("System", "Math", "Min") and
+        exists(Expr bound | bound = mc.getAnArgument() | isIndependentClampBound(bound))
+        or
+        mc.getTarget().hasFullyQualifiedName("System", "Math", "Clamp") and
+        isIndependentClampBound(mc.getArgumentForName("max"))
+      )
+    )
   }
 }
 
@@ -131,6 +177,14 @@ module ResourceExhaustionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ResourceExhaustionSink }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(MethodCall mc |
+      node1.asExpr() = mc.getAnArgument() and
+      node2.asExpr() = mc and
+      mc.getTarget().hasFullyQualifiedName("System", "Math", ["Min", "Clamp"])
+    )
+  }
 
   predicate isBarrier(DataFlow::Node node) {
     node = DataFlow::BarrierGuard<upperBoundCheck/3>::getABarrierNode() or

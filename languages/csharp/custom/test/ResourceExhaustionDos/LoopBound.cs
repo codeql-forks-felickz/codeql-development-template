@@ -141,5 +141,51 @@ namespace Testcases
                 Console.WriteLine(data[i]);
             }
         }
+
+        private static readonly int MaximumCount = 100;
+
+        public void BadIncrementInCondition(HttpRequest req)
+        {
+            int count = int.Parse(req.QueryString["count"]); // $ Source
+            int i = 0;
+            while (i++ < count) // $ Alert
+            {
+                Console.WriteLine("hello world");
+            }
+        }
+
+        public void BadDecrementInCondition(HttpRequest req)
+        {
+            int count = int.Parse(req.QueryString["count"]); // $ Source
+            while (count-- > 0) // $ Alert
+            {
+                Console.WriteLine("hello world");
+            }
+        }
+
+        // GOOD: the counter is incremented in the condition, but its bound is checked.
+        public void GoodIncrementInCondition(HttpRequest req)
+        {
+            int count = int.Parse(req.QueryString["count"]);
+            if (count > MaximumCount)
+            {
+                return;
+            }
+            int i = 0;
+            while (i++ < count)
+            {
+                Console.WriteLine("hello world");
+            }
+        }
+
+        // GOOD: the counter is decremented in the condition, but its bound is clamped.
+        public void GoodDecrementInCondition(HttpRequest req)
+        {
+            int count = Math.Min(int.Parse(req.QueryString["count"]), MaximumCount);
+            while (count-- > 0)
+            {
+                Console.WriteLine("hello world");
+            }
+        }
     }
 }
