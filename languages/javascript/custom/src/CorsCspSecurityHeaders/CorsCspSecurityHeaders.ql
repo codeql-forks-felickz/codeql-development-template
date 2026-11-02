@@ -34,6 +34,26 @@ class JsonpCall extends DataFlow::MethodCallNode {
 }
 
 /**
+ * Holds if `handler` is only registered for known non-GET request methods.
+ * Unresolved registrations and handlers that also serve GET remain included.
+ */
+predicate isRegisteredExclusivelyForNonGetMethods(StmtContainer handler) {
+  exists(Express::RouteSetup nonGetSetup |
+    nonGetSetup.getARouteHandler().(DataFlow::FunctionNode).getFunction() = handler and
+    exists(nonGetSetup.getRequestMethod()) and
+    nonGetSetup.getRequestMethod().toLowerCase() != "get"
+  ) and
+  not exists(Express::RouteSetup otherSetup |
+    otherSetup.getARouteHandler().(DataFlow::FunctionNode).getFunction() = handler and
+    (
+      otherSetup.handlesAllRequestMethods() or
+      not exists(otherSetup.getRequestMethod()) or
+      otherSetup.getRequestMethod().toLowerCase() = "get"
+    )
+  )
+}
+
+/**
  * Holds if `call` returns non-constant data as JSONP from the same function
  * that reads the credential-derived value `cred` (the first such read is chosen).
  */
@@ -42,6 +62,7 @@ predicate jsonpOfAuthenticatedData(JsonpCall call, DataFlow::Node cred) {
     not data instanceof Literal and
     not data instanceof ConstantString
   ) and
+  not isRegisteredExclusivelyForNonGetMethods(call.getContainer()) and
   cred =
     min(DataFlow::SourceNode read, Location loc |
       read = credentialRead(_) and
@@ -62,6 +83,7 @@ module PostMessageStarUserDataConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(DataFlow::MethodCallNode postMessage |
       postMessage.getMethodName() = "postMessage" and
+      not isCurrentWindow(postMessage.getReceiver()) and
       postMessage.getArgument(1).mayHaveStringValue("*") and
       sink = postMessage.getArgument(0)
     )
@@ -71,6 +93,18 @@ module PostMessageStarUserDataConfig implements DataFlow::ConfigSig {
     // Also report objects containing user-entered data, e.g. `{ comment: input.value }`.
     isSink(node) and contents = DataFlow::ContentSet::anyProperty()
   }
+}
+
+predicate isCurrentWindow(DataFlow::Node receiver) {
+  exists(DataFlow::GlobalVarRefNode global |
+    global.getName() = ["window", "self", "globalThis"] and
+    receiver = global
+  )
+  or
+  exists(DataFlow::GlobalVarRefNode window |
+    window.getName() = "window" and
+    receiver = window.getAPropertyRead("self")
+  )
 }
 
 module PostMessageStarUserDataFlow = TaintTracking::Global<PostMessageStarUserDataConfig>;

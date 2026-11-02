@@ -51,6 +51,13 @@ app.all('/all-profile', function (req, res) {
   res.jsonp({ email: req.session.email }); // $ Alert
 });
 
+function sharedPostAndGetProfile(req, res) {
+  res.jsonp({ email: req.session.email }); // $ Alert
+}
+
+app.post('/shared-profile', sharedPostAndGetProfile);
+app.get('/shared-profile', sharedPostAndGetProfile);
+
 function lookupAccount(key) {
   return { key };
 }
