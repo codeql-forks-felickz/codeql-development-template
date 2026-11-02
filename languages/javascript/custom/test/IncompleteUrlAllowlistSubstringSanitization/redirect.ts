@@ -1,9 +1,9 @@
 import * as express from 'express'
 
 export const redirectAllowlist = new Set([
-  'https://github.com/example-org/example-app', // $ RelatedLocation
+  'https://github.com/example-org/example-app',
   'https://shop.example.com/products/42',
-  'http://docs.example.org/guide'
+  'http://docs.example.org/guide' // $ RelatedLocation
 ])
 
 // BAD: the target only has to contain an allowlisted URL somewhere
@@ -30,6 +30,18 @@ export function startsWithTrusted (url: string): boolean {
 // BAD: a safe literal branch does not make the allowlist branch safe
 export function startsWithTrustedOrFallback (url: string, useOrigin: boolean): boolean {
   return trustedOrigins.some(origin => url.startsWith(useOrigin ? origin : 'https://fallback.example.com/')) // $ Alert
+}
+
+// BAD: both conditional collections contribute an unsafe substring
+export function checksConditionalOrigins (url: string, flag: boolean): boolean {
+  const list = flag ? ['https://a.com' /* $ RelatedLocation */] : ['https://b.com']
+  return list.some(entry => url.includes(entry)) // $ Alert
+}
+
+// GOOD: both conditional collections contain safe prefixes
+export function startsWithConditionalPrefixes (url: string, flag: boolean): boolean {
+  const list = flag ? ['https://a.com/'] : ['https://b.com/']
+  return list.some(prefix => url.startsWith(prefix))
 }
 
 const trustedPrefixes = ['https://partner.example.com/', 'https://cdn.example.net/']

@@ -125,12 +125,43 @@ predicate incompleteAllowlistCheck(
   isIncompleteCheckFor(check, target)
 }
 
+string allowlistElementLocationKey(DataFlow::Node elem) {
+  result =
+    elem.getLocation().getFile().getAbsolutePath() + ":" +
+    elem.getLocation().getStartLine().toString() + ":" +
+    elem.getLocation().getStartColumn().toString() + ":" +
+    elem.getLocation().getEndLine().toString() + ":" +
+    elem.getLocation().getEndColumn().toString()
+}
+
+/** Holds if this is the first incomplete allowlist check candidate for `check`. */
+predicate firstIncompleteAllowlistCheck(
+  SomeSubstringCheck check, DataFlow::SourceNode coll, int i, DataFlow::Node elem, string target
+) {
+  incompleteAllowlistCheck(check, coll, i, elem, target) and
+  target = min(string t |
+    exists(DataFlow::SourceNode c, int j, DataFlow::Node e |
+      incompleteAllowlistCheck(check, c, j, e, t)
+    )
+  | t) and
+  i = min(int j |
+    exists(DataFlow::SourceNode c, DataFlow::Node e |
+      incompleteAllowlistCheck(check, c, j, e, target)
+    )
+  | j) and
+  allowlistElementLocationKey(elem) = min(string key |
+    exists(DataFlow::SourceNode c, int j, DataFlow::Node e |
+      incompleteAllowlistCheck(check, c, j, e, target) and
+      j = i and
+      key = allowlistElementLocationKey(e)
+    )
+  | key)
+}
+
 from SomeSubstringCheck check, DataFlow::Node elem, string target, string msg
 where
   exists(DataFlow::SourceNode coll, int i |
-    incompleteAllowlistCheck(check, coll, i, elem, target) and
-    // report only the first problematic allowlist entry
-    i = min(int j | incompleteAllowlistCheck(check, coll, j, _, _))
+    firstIncompleteAllowlistCheck(check, coll, i, elem, target)
   ) and
   if check instanceof StringOps::StartsWith
   then msg = "Allowlist entry '$@' may be followed by an arbitrary host name."
