@@ -1,0 +1,5 @@
+| redirect.ts:13:26:13:49 | url.inc ... wedUrl) | Allowlist entry '$@' can be anywhere in the URL, and arbitrary hosts may come before or after it. | redirect.ts:6:3:6:33 | 'http:/ ... /guide' | http://docs.example.org/guide |
+| redirect.ts:22:40:22:65 | url.ind ...  !== -1 | Allowlist entry '$@' can be anywhere in the URL, and arbitrary hosts may come before or after it. | redirect.ts:18:56:18:80 | 'https: ... le.net' | https://cdn.example.net |
+| redirect.ts:27:40:27:61 | url.sta ... origin) | Allowlist entry '$@' may be followed by an arbitrary host name. | redirect.ts:18:56:18:80 | 'https: ... le.net' | https://cdn.example.net |
+| redirect.ts:32:40:32:107 | url.sta ... .com/') | Allowlist entry '$@' may be followed by an arbitrary host name. | redirect.ts:18:56:18:80 | 'https: ... le.net' | https://cdn.example.net |
+| redirect.ts:38:29:38:47 | url.includes(entry) | Allowlist entry '$@' can be anywhere in the URL, and arbitrary hosts may come before or after it. | redirect.ts:37:24:37:38 | 'https://a.com' | https://a.com |
