@@ -64,6 +64,11 @@ public class CspHeaderFilter implements Filter {
         "Content-Security-Policy", "script-src 'sha256-abc123=' 'unsafe-inline'");
   }
 
+  public void badEmptyNonce(HttpServletResponse response) {
+    // BAD: an empty nonce does not override 'unsafe-inline'.
+    response.setHeader("Content-Security-Policy", "script-src 'unsafe-inline' 'nonce-'"); // $ Alert
+  }
+
   public void goodFirstDirectiveWins(HttpServletResponse response) {
     // GOOD: browsers ignore the second, duplicate script-src directive.
     response.setHeader(

@@ -40,4 +40,15 @@ public class WebSecurityConfig {
         .contentSecurityPolicy("default-src 'self'")
         .policyDirectives("script-src 'self'; frame-ancestors 'none'");
   }
+
+  public void goodReportOnlyWeakCsp(HttpSecurity http) {
+    http.headers().contentSecurityPolicy("script-src 'unsafe-inline'").reportOnly();
+  }
+
+  public void goodReportOnlyFrameAncestors(HttpSecurity http) {
+    http.headers()
+        .contentSecurityPolicy("default-src 'self'")
+        .policyDirectives("frame-ancestors *")
+        .reportOnly();
+  }
 }

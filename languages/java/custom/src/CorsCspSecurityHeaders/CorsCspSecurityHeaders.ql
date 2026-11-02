@@ -71,6 +71,9 @@ private predicate cspPolicy(MethodCall c, string policy) {
       .getSourceDeclaration()
       .getQualifiedName()
       .matches("org.springframework.security.config.%") and
+  not exists(MethodCall reportOnly |
+    reportOnly.getMethod().hasName("reportOnly") and reportOnly.getQualifier() = c
+  ) and
   policy = constantString(c.getArgument(0))
 }
 
@@ -122,7 +125,7 @@ private predicate effectiveUnsafeInline(string sources) {
   hasSource(sources, "'unsafe-inline'") and
   not exists(string t |
     hasSource(sources, t) and
-    t.regexpMatch("'(nonce-|sha256-|sha384-|sha512-).*|'strict-dynamic'")
+    t.regexpMatch("'(nonce-[A-Za-z0-9+/_-]+=*|sha(256|384|512)-[A-Za-z0-9+/_-]+=*)'|'strict-dynamic'")
   )
 }
 
@@ -173,7 +176,7 @@ private string frameAncestors(MethodCall c) {
 bindingset[sources]
 private predicate permissiveFrameAncestors(string sources) {
   exists(string t | hasSource(sources, t) |
-    t.regexpMatch("([a-z][a-z0-9+.-]*://)?\\*(:\\*)?/?") or
+    t.regexpMatch("([a-z][a-z0-9+.-]*://)?\\*(:[0-9]+|:\\*)?/?") or
     t.regexpMatch("[a-z][a-z0-9+.-]*:")
   )
 }
@@ -231,9 +234,17 @@ private predicate pathConditionalFraming(MethodCall c, string msg) {
     requestPathCondition(cb) and
     cb.controls(c.getBasicBlock(), branch) and
     not exists(MethodCall other |
+      other != c and
       framingProtection(other) and
       other.getEnclosingCallable() = c.getEnclosingCallable() and
-      not cb.controls(other.getBasicBlock(), branch)
+      (
+        not exists(ConditionBlock otherCb, boolean otherBranch |
+          requestPathCondition(otherCb) and
+          otherCb.controls(other.getBasicBlock(), otherBranch)
+        )
+        or
+        cb.controls(other.getBasicBlock(), branch.booleanNot())
+      )
     )
   ) and
   msg =

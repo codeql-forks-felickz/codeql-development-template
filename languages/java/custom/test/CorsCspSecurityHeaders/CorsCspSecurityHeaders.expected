@@ -2,13 +2,16 @@
 | test/CspHeaderFilter.java:32:5:32:86 | addHeader(...) | Content-Security-Policy allows 'unsafe-inline' scripts through its script-src directive, which defeats its protection against cross-site scripting. |
 | test/CspHeaderFilter.java:37:5:38:93 | addHeader(...) | Content-Security-Policy allows 'unsafe-eval' scripts through its script-src directive, which defeats its protection against cross-site scripting. |
 | test/CspHeaderFilter.java:44:5:44:57 | setHeader(...) | Content-Security-Policy allows 'unsafe-inline' scripts through its default-src directive, which defeats its protection against cross-site scripting. |
-| test/CspHeaderFilter.java:75:5:76:83 | setHeader(...) | Content-Security-Policy allows 'unsafe-inline' scripts through its script-src directive, which defeats its protection against cross-site scripting. |
+| test/CspHeaderFilter.java:69:5:69:88 | setHeader(...) | Content-Security-Policy allows 'unsafe-inline' scripts through its script-src directive, which defeats its protection against cross-site scripting. |
+| test/CspHeaderFilter.java:80:5:81:83 | setHeader(...) | Content-Security-Policy allows 'unsafe-inline' scripts through its script-src directive, which defeats its protection against cross-site scripting. |
 | test/SecurityFilter.java:23:7:23:51 | addHeader(...) | Framing protection is only applied when a request-path condition holds, so responses for the excluded paths can be framed by any site (clickjacking). |
-| test/SecurityFilter.java:36:7:36:77 | setHeader(...) | Framing protection is only applied when a request-path condition holds, so responses for the excluded paths can be framed by any site (clickjacking). |
-| test/SecurityFilter.java:42:5:42:53 | setHeader(...) | X-Frame-Options is set to 'ALLOWALL', which browsers do not enforce, so the page can be framed by any site (clickjacking). |
-| test/SecurityFilter.java:44:5:44:83 | setHeader(...) | X-Frame-Options is set to 'ALLOW-FROM https://partner.example.com', which browsers do not enforce, so the page can be framed by any site (clickjacking). |
-| test/SecurityFilter.java:49:5:49:90 | setHeader(...) | Content-Security-Policy frame-ancestors allows any site to frame the page (clickjacking). |
-| test/SecurityFilter.java:54:5:54:78 | setHeader(...) | Content-Security-Policy frame-ancestors allows any site to frame the page (clickjacking). |
+| test/SecurityFilter.java:26:7:26:51 | addHeader(...) | Framing protection is only applied when a request-path condition holds, so responses for the excluded paths can be framed by any site (clickjacking). |
+| test/SecurityFilter.java:39:7:39:77 | setHeader(...) | Framing protection is only applied when a request-path condition holds, so responses for the excluded paths can be framed by any site (clickjacking). |
+| test/SecurityFilter.java:45:5:45:53 | setHeader(...) | X-Frame-Options is set to 'ALLOWALL', which browsers do not enforce, so the page can be framed by any site (clickjacking). |
+| test/SecurityFilter.java:47:5:47:83 | setHeader(...) | X-Frame-Options is set to 'ALLOW-FROM https://partner.example.com', which browsers do not enforce, so the page can be framed by any site (clickjacking). |
+| test/SecurityFilter.java:52:5:52:90 | setHeader(...) | Content-Security-Policy frame-ancestors allows any site to frame the page (clickjacking). |
+| test/SecurityFilter.java:57:5:57:78 | setHeader(...) | Content-Security-Policy frame-ancestors allows any site to frame the page (clickjacking). |
+| test/SecurityFilter.java:58:5:58:82 | setHeader(...) | Content-Security-Policy frame-ancestors allows any site to frame the page (clickjacking). |
 | test/WebConfiguration.java:14:5:14:30 | addMapping(...) | The CORS mapping for '/**' leaves its allowed origins at the permissive default ('*'), so any website can make cross-origin requests to these endpoints and read the responses. |
 | test/WebConfiguration.java:19:5:19:34 | addMapping(...) | The CORS mapping for '/api/**' allows every origin ('*'), so any website can make cross-origin requests to these endpoints and read the responses. |
 | test/WebConfiguration.java:24:5:25:30 | addMapping(...) | The CORS mapping for '/api/**' allows every origin ('*'), so any website can make cross-origin requests to these endpoints and read the responses. |

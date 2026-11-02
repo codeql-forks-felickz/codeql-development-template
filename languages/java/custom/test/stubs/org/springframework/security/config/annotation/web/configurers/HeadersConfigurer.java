@@ -38,5 +38,9 @@ public class HeadersConfigurer {
     public ContentSecurityPolicyConfig policyDirectives(String policyDirectives) {
       return this;
     }
+
+    public ContentSecurityPolicyConfig reportOnly() {
+      return this;
+    }
   }
 }

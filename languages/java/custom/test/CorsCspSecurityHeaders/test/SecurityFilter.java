@@ -22,6 +22,9 @@ public class SecurityFilter implements Filter {
     if (!target.startsWith("/admins/clickjacking")) {
       response.addHeader("X-FRAME-OPTIONS", "DENY"); // $ Alert
     }
+    if (!target.startsWith("/admins/embedded")) {
+      response.addHeader("X-FRAME-OPTIONS", "DENY"); // $ Alert
+    }
     response.addHeader("X-Content-Type-Options", "nosniff");
     // GOOD: X-XSS-Protection is not a framing header.
     if (!target.startsWith("/xss")) {
@@ -52,6 +55,7 @@ public class SecurityFilter implements Filter {
   public void badSchemeWildcardFrameAncestors(HttpServletResponse response) {
     // BAD: any HTTPS site may frame the page.
     response.setHeader("Content-Security-Policy", "frame-ancestors https://*"); // $ Alert
+    response.setHeader("Content-Security-Policy", "frame-ancestors https://*:443"); // $ Alert
   }
 
   public void goodStricterForOnePath(HttpServletRequest request, HttpServletResponse response) {
