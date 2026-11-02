@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Rails applications use the <code>ActionMailer</code> default URL options to build the absolute
+links that are included in generated emails, such as password reset or account confirmation
+links. If these options are set from request data, for example from the HTTP <code>Host</code>
+or <code>X-Forwarded-Host</code> header, an attacker can choose the host of the links.
+</p>
+<p>
+An attacker can, for instance, request a password reset for another user while supplying a
+hostile <code>Host</code> header. The victim then receives a genuine email containing a link to
+the attacker's server, and following the link leaks the secret reset token to the attacker.
+Because the default URL options are global, the poisoned value may also affect emails sent
+while handling other users' requests.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Configure the host, protocol and port used for links in emails statically, for example with
+<code>config.action_mailer.default_url_options</code> in the environment configuration. If the
+host must be derived from the request, validate it against a fixed allow-list of trusted hosts
+first. Configuring <code>config.hosts</code> to reject requests with unexpected
+<code>Host</code> headers provides additional protection.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, a controller callback copies the host of every request into the
+<code>ActionMailer</code> default URL options:
+</p>
+<sample src="examples/bad.rb"/>
+<p>
+Instead, the host should be configured statically:
+</p>
+<sample src="examples/good.rb"/>
+</example>
+
+<references>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html">Forgot Password Cheat Sheet</a>.</li>
+<li>PortSwigger: <a href="https://portswigger.net/web-security/host-header/exploiting/password-reset-poisoning">Password reset poisoning</a>.</li>
+<li>Rails Guides: <a href="https://guides.rubyonrails.org/action_mailer_basics.html#generating-urls-in-action-mailer-views">Generating URLs in Action Mailer Views</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/640.html">CWE-640</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/644.html">CWE-644</a>.</li>
+</references>
+</qhelp>

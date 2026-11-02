@@ -1,0 +1,2 @@
+query: HostHeaderPoisoningInEmailGeneration/HostHeaderPoisoningInEmailGeneration.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
