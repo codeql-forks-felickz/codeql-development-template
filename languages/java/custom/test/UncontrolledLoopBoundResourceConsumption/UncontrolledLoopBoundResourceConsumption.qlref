@@ -1,0 +1,2 @@
+query: UncontrolledLoopBoundResourceConsumption/UncontrolledLoopBoundResourceConsumption.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

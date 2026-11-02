@@ -1,0 +1,2 @@
+query: ServletLockOrderInversion/ServletLockOrderInversion.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

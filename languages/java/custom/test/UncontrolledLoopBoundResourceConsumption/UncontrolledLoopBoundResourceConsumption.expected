@@ -1,0 +1,26 @@
+#select
+| CreatingObjectsServlet.java:22:27:22:32 | number | CreatingObjectsServlet.java:12:36:12:61 | getParameter(...) : String | CreatingObjectsServlet.java:22:27:22:32 | number | The number of iterations of this loop depends on a $@, and each iteration $@. | CreatingObjectsServlet.java:12:36:12:61 | getParameter(...) | user-provided value | CreatingObjectsServlet.java:23:7:23:14 | ...+=... | allocates a boxed Long |
+| StringPlusServlet.java:20:25:20:30 | length | StringPlusServlet.java:16:35:16:60 | getParameter(...) : String | StringPlusServlet.java:20:25:20:30 | length | The number of iterations of this loop depends on a $@, and each iteration $@. | StringPlusServlet.java:16:35:16:60 | getParameter(...) | user-provided value | StringPlusServlet.java:21:7:21:57 | ...=... | concatenates immutable strings |
+| StringPlusServlet.java:33:16:33:20 | count | StringPlusServlet.java:30:34:30:58 | getParameter(...) : String | StringPlusServlet.java:33:16:33:20 | count | The number of iterations of this loop depends on a $@, and each iteration $@. | StringPlusServlet.java:30:34:30:58 | getParameter(...) | user-provided value | StringPlusServlet.java:34:7:34:14 | ...+=... | concatenates immutable strings |
+| StringPlusServlet.java:38:25:38:25 | n | StringPlusServlet.java:37:30:37:50 | getParameter(...) : String | StringPlusServlet.java:38:25:38:25 | n | The number of iterations of this loop depends on a $@, and each iteration $@. | StringPlusServlet.java:37:30:37:50 | getParameter(...) | user-provided value | StringPlusServlet.java:39:7:39:14 | ...+=... | concatenates immutable strings |
+edges
+| CreatingObjectsServlet.java:12:18:12:66 | toInt(...) : Number | CreatingObjectsServlet.java:14:16:14:21 | number : Number | provenance |  |
+| CreatingObjectsServlet.java:12:36:12:61 | getParameter(...) : String | CreatingObjectsServlet.java:12:18:12:66 | toInt(...) : Number | provenance | Src:MaD:48695 Config |
+| CreatingObjectsServlet.java:14:16:14:21 | number : Number | CreatingObjectsServlet.java:20:25:20:34 | number : Number | provenance |  |
+| CreatingObjectsServlet.java:20:25:20:34 | number : Number | CreatingObjectsServlet.java:22:27:22:32 | number | provenance |  |
+| StringPlusServlet.java:16:35:16:60 | getParameter(...) : String | StringPlusServlet.java:20:25:20:30 | length | provenance | Src:MaD:48695 TaintPreservingCallable |
+| StringPlusServlet.java:30:34:30:58 | getParameter(...) : String | StringPlusServlet.java:33:16:33:20 | count | provenance | Src:MaD:48695 TaintPreservingCallable |
+| StringPlusServlet.java:37:30:37:50 | getParameter(...) : String | StringPlusServlet.java:38:25:38:25 | n | provenance | Src:MaD:48695 TaintPreservingCallable |
+nodes
+| CreatingObjectsServlet.java:12:18:12:66 | toInt(...) : Number | semmle.label | toInt(...) : Number |
+| CreatingObjectsServlet.java:12:36:12:61 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| CreatingObjectsServlet.java:14:16:14:21 | number : Number | semmle.label | number : Number |
+| CreatingObjectsServlet.java:20:25:20:34 | number : Number | semmle.label | number : Number |
+| CreatingObjectsServlet.java:22:27:22:32 | number | semmle.label | number |
+| StringPlusServlet.java:16:35:16:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| StringPlusServlet.java:20:25:20:30 | length | semmle.label | length |
+| StringPlusServlet.java:30:34:30:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| StringPlusServlet.java:33:16:33:20 | count | semmle.label | count |
+| StringPlusServlet.java:37:30:37:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| StringPlusServlet.java:38:25:38:25 | n | semmle.label | n |
+subpaths
