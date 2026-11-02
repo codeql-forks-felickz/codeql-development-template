@@ -38,6 +38,7 @@ class SpringBootPropertiesFile extends PropertiesFile {
     or
     exists(JavaProperty active |
       active.getFile() instanceof SpringBootPropertiesFile and
+      not exists(active.getFile().(SpringBootPropertiesFile).getProfile()) and
       canonicalName(active.getEffectiveName()) = "spring.profiles.active" and
       this.getProfile() = active.getEffectiveValue().splitAt(",").trim()
     )

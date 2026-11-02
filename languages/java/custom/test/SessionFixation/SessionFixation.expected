@@ -1,2 +1,3 @@
 | LoginServlets.java:10:29:10:48 | getSession(...) | This session stores authentication state without renewing the session identifier, allowing session fixation. |
 | LoginServlets.java:26:7:26:30 | getSession(...) | This session stores authentication state without renewing the session identifier, allowing session fixation. |
+| LoginServlets.java:79:27:79:59 | getSession(...) | This session stores authentication state without renewing the session identifier, allowing session fixation. |

@@ -15,7 +15,7 @@
 import java
 import semmle.code.java.frameworks.Servlets
 
-/** A call to `HttpServletRequest.getSession()` or `getSession(true)`. */
+/** Any `HttpServletRequest.getSession()` call except a constant `getSession(false)`. */
 class GetOrCreateSessionCall extends MethodCall {
   GetOrCreateSessionCall() {
     this.getMethod().hasName("getSession") and

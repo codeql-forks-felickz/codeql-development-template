@@ -71,3 +71,20 @@ class SafeReadOnly extends HttpServlet {
     }
   }
 }
+
+class DynamicSessionCreation extends HttpServlet {
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    boolean createSession = request.getParameter("create") != null;
+    HttpSession session = request.getSession(createSession); // $ Alert
+    session.setAttribute("user", request.getParameter("username"));
+  }
+}
+
+class SafeGetExistingSession extends HttpServlet {
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    HttpSession session = request.getSession(false);
+    session.setAttribute("user", request.getParameter("username"));
+  }
+}
