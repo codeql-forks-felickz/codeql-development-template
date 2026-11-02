@@ -1,0 +1,2 @@
+query: DeveloperDiagnosticsEnabled/DeveloperDiagnosticsEnabled.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

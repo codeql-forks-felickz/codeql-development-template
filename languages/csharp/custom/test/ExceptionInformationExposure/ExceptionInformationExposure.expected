@@ -1,0 +1,109 @@
+#select
+| AspNetCore.cs:28:20:28:27 | call to method Ok | AspNetCore.cs:21:28:21:36 | access to property Message : String | AspNetCore.cs:28:20:28:27 | call to method Ok | This information exposed to the user depends on $@. | AspNetCore.cs:21:28:21:36 | access to property Message | exception information |
+| AspNetCore.cs:56:24:56:54 | call to method Json | AspNetCore.cs:56:43:56:51 | access to property Message : String | AspNetCore.cs:56:24:56:54 | call to method Json | This information exposed to the user depends on $@. | AspNetCore.cs:56:43:56:51 | access to property Message | exception information |
+| AspNetCore.cs:69:24:69:32 | access to property Message | AspNetCore.cs:69:24:69:32 | access to property Message | AspNetCore.cs:69:24:69:32 | access to property Message | This information exposed to the user depends on $@. | AspNetCore.cs:69:24:69:32 | access to property Message | exception information |
+| AspNetCore.cs:100:24:100:50 | call to method StatusCode | AspNetCore.cs:100:40:100:49 | access to property Message : String | AspNetCore.cs:100:24:100:50 | call to method StatusCode | This information exposed to the user depends on $@. | AspNetCore.cs:100:40:100:49 | access to property Message | exception information |
+| AspNetCore.cs:112:24:112:64 | call to method BadRequest | AspNetCore.cs:112:49:112:50 | access to local variable ex : Exception | AspNetCore.cs:112:24:112:64 | call to method BadRequest | This information exposed to the user depends on $@. | AspNetCore.cs:112:49:112:50 | access to local variable ex | exception information |
+| AspNetCore.cs:124:24:124:51 | object creation of type ObjectResult | AspNetCore.cs:124:41:124:50 | access to property Message : String | AspNetCore.cs:124:24:124:51 | object creation of type ObjectResult | This information exposed to the user depends on $@. | AspNetCore.cs:124:41:124:50 | access to property Message | exception information |
+| AspNetCore.cs:201:19:201:51 | access to property Message | AspNetCore.cs:201:19:201:51 | access to property Message | AspNetCore.cs:201:19:201:51 | access to property Message | This information exposed to the user depends on $@. | AspNetCore.cs:201:19:201:51 | access to property Message | exception information |
+| AspNetCore.cs:203:19:203:54 | access to property StackTrace | AspNetCore.cs:203:19:203:54 | access to property StackTrace | AspNetCore.cs:203:19:203:54 | access to property StackTrace | This information exposed to the user depends on $@. | AspNetCore.cs:203:19:203:54 | access to property StackTrace | exception information |
+| AspNetCore.cs:224:24:224:33 | access to property Message | AspNetCore.cs:224:24:224:33 | access to property Message | AspNetCore.cs:224:24:224:33 | access to property Message | This information exposed to the user depends on $@. | AspNetCore.cs:224:24:224:33 | access to property Message | exception information |
+| AspNetCore.cs:242:24:242:36 | call to method ToString | AspNetCore.cs:242:24:242:25 | access to local variable ex : Exception | AspNetCore.cs:242:24:242:36 | call to method ToString | This information exposed to the user depends on $@. | AspNetCore.cs:242:24:242:25 | access to local variable ex | exception information |
+| WebForms.cs:40:30:40:61 | call to method AddComment | WebForms.cs:25:26:25:35 | access to property Message : String | WebForms.cs:40:30:40:61 | call to method AddComment | This information exposed to the user depends on $@. | WebForms.cs:25:26:25:35 | access to property Message | exception information |
+| WebForms.cs:66:34:66:46 | access to property StackTrace | WebForms.cs:66:34:66:46 | access to property StackTrace | WebForms.cs:66:34:66:46 | access to property StackTrace | This information exposed to the user depends on $@. | WebForms.cs:66:34:66:46 | access to property StackTrace | exception information |
+| WebForms.cs:88:33:88:53 | call to method ToString | WebForms.cs:78:57:78:84 | access to property CurrentDirectory : String | WebForms.cs:88:33:88:53 | call to method ToString | This information exposed to the user depends on $@. | WebForms.cs:78:57:78:84 | access to property CurrentDirectory | system information |
+| WebForms.cs:88:33:88:53 | call to method ToString | WebForms.cs:80:54:80:73 | access to property UserName : String | WebForms.cs:88:33:88:53 | call to method ToString | This information exposed to the user depends on $@. | WebForms.cs:80:54:80:73 | access to property UserName | system information |
+| WebForms.cs:88:33:88:53 | call to method ToString | WebForms.cs:82:58:82:80 | access to property MachineName : String | WebForms.cs:88:33:88:53 | call to method ToString | This information exposed to the user depends on $@. | WebForms.cs:82:58:82:80 | access to property MachineName | system information |
+| WebForms.cs:88:33:88:53 | call to method ToString | WebForms.cs:84:56:84:76 | access to property OSVersion : OperatingSystem | WebForms.cs:88:33:88:53 | call to method ToString | This information exposed to the user depends on $@. | WebForms.cs:84:56:84:76 | access to property OSVersion | system information |
+| WebForms.cs:113:37:113:56 | access to property UserName | WebForms.cs:113:37:113:56 | access to property UserName | WebForms.cs:113:37:113:56 | access to property UserName | This information exposed to the user depends on $@. | WebForms.cs:113:37:113:56 | access to property UserName | system information |
+| WebForms.cs:123:39:123:58 | access to property UserName | WebForms.cs:123:39:123:58 | access to property UserName | WebForms.cs:123:39:123:58 | access to property UserName | This information exposed to the user depends on $@. | WebForms.cs:123:39:123:58 | access to property UserName | system information |
+| WebService.cs:30:20:30:29 | access to local variable myTransact | WebService.cs:28:38:28:38 | access to local variable e : Exception | WebService.cs:30:20:30:29 | access to local variable myTransact | This information exposed to the user depends on $@. | WebService.cs:28:38:28:38 | access to local variable e | exception information |
+| WebService.cs:43:24:43:32 | access to property Message | WebService.cs:43:24:43:32 | access to property Message | WebService.cs:43:24:43:32 | access to property Message | This information exposed to the user depends on $@. | WebService.cs:43:24:43:32 | access to property Message | exception information |
+edges
+| AspNetCore.cs:21:17:21:24 | access to local variable errorMsg : String | AspNetCore.cs:25:40:25:47 | access to local variable errorMsg : String | provenance |  |
+| AspNetCore.cs:21:28:21:36 | access to property Message : String | AspNetCore.cs:21:17:21:24 | access to local variable errorMsg : String | provenance |  |
+| AspNetCore.cs:24:17:24:20 | access to local variable json : JObject | AspNetCore.cs:28:23:28:26 | access to local variable json : JObject | provenance |  |
+| AspNetCore.cs:24:24:27:13 | object creation of type JObject : JObject | AspNetCore.cs:24:17:24:20 | access to local variable json : JObject | provenance |  |
+| AspNetCore.cs:25:17:25:48 | object creation of type JProperty : JProperty | AspNetCore.cs:24:24:27:13 | object creation of type JObject : JObject | provenance | Config |
+| AspNetCore.cs:25:40:25:47 | access to local variable errorMsg : String | AspNetCore.cs:25:17:25:48 | object creation of type JProperty : JProperty | provenance | Config |
+| AspNetCore.cs:28:23:28:26 | access to local variable json : JObject | AspNetCore.cs:28:20:28:27 | call to method Ok | provenance | Config |
+| AspNetCore.cs:56:29:56:53 | object creation of type <>__AnonType1<String> : <>__AnonType1<String> [property error] : String | AspNetCore.cs:56:24:56:54 | call to method Json | provenance | Config |
+| AspNetCore.cs:56:29:56:53 | { ..., ... } : <>__AnonType1<String> [property error] : String | AspNetCore.cs:56:29:56:53 | object creation of type <>__AnonType1<String> : <>__AnonType1<String> [property error] : String | provenance |  |
+| AspNetCore.cs:56:43:56:51 | access to property Message : String | AspNetCore.cs:56:29:56:53 | { ..., ... } : <>__AnonType1<String> [property error] : String | provenance |  |
+| AspNetCore.cs:100:40:100:49 | access to property Message : String | AspNetCore.cs:100:24:100:50 | call to method StatusCode | provenance | Config |
+| AspNetCore.cs:112:35:112:63 | object creation of type <>__AnonType1<String> : <>__AnonType1<String> [property error] : String | AspNetCore.cs:112:24:112:64 | call to method BadRequest | provenance | Config |
+| AspNetCore.cs:112:35:112:63 | { ..., ... } : <>__AnonType1<String> [property error] : String | AspNetCore.cs:112:35:112:63 | object creation of type <>__AnonType1<String> : <>__AnonType1<String> [property error] : String | provenance |  |
+| AspNetCore.cs:112:49:112:50 | access to local variable ex : Exception | AspNetCore.cs:112:49:112:61 | call to method ToString : String | provenance | Config |
+| AspNetCore.cs:112:49:112:50 | access to local variable ex : Exception | AspNetCore.cs:112:49:112:61 | call to method ToString : String | provenance | MaD:56414 |
+| AspNetCore.cs:112:49:112:61 | call to method ToString : String | AspNetCore.cs:112:35:112:63 | { ..., ... } : <>__AnonType1<String> [property error] : String | provenance |  |
+| AspNetCore.cs:124:41:124:50 | access to property Message : String | AspNetCore.cs:124:24:124:51 | object creation of type ObjectResult | provenance | Config |
+| AspNetCore.cs:242:24:242:25 | access to local variable ex : Exception | AspNetCore.cs:242:24:242:36 | call to method ToString | provenance | Config |
+| AspNetCore.cs:242:24:242:25 | access to local variable ex : Exception | AspNetCore.cs:242:24:242:36 | call to method ToString | provenance | MaD:56414 |
+| WebForms.cs:25:17:25:22 | access to local variable output : String | WebForms.cs:27:20:27:25 | access to local variable output : String | provenance |  |
+| WebForms.cs:25:26:25:35 | access to property Message : String | WebForms.cs:25:17:25:22 | access to local variable output : String | provenance |  |
+| WebForms.cs:27:20:27:25 | access to local variable output : String | WebForms.cs:40:30:40:61 | call to method AddComment | provenance |  |
+| WebForms.cs:78:13:78:22 | [post] access to local variable strBuilder : StringBuilder | WebForms.cs:88:33:88:42 | access to local variable strBuilder : StringBuilder | provenance |  |
+| WebForms.cs:78:57:78:84 | access to property CurrentDirectory : String | WebForms.cs:78:13:78:22 | [post] access to local variable strBuilder : StringBuilder | provenance | MaD:2022 |
+| WebForms.cs:80:13:80:22 | [post] access to local variable strBuilder : StringBuilder | WebForms.cs:88:33:88:42 | access to local variable strBuilder : StringBuilder | provenance |  |
+| WebForms.cs:80:54:80:73 | access to property UserName : String | WebForms.cs:80:13:80:22 | [post] access to local variable strBuilder : StringBuilder | provenance | MaD:2022 |
+| WebForms.cs:82:13:82:22 | [post] access to local variable strBuilder : StringBuilder | WebForms.cs:88:33:88:42 | access to local variable strBuilder : StringBuilder | provenance |  |
+| WebForms.cs:82:58:82:80 | access to property MachineName : String | WebForms.cs:82:13:82:22 | [post] access to local variable strBuilder : StringBuilder | provenance | MaD:2022 |
+| WebForms.cs:84:13:84:22 | [post] access to local variable strBuilder : StringBuilder | WebForms.cs:88:33:88:42 | access to local variable strBuilder : StringBuilder | provenance |  |
+| WebForms.cs:84:56:84:76 | access to property OSVersion : OperatingSystem | WebForms.cs:84:13:84:22 | [post] access to local variable strBuilder : StringBuilder | provenance | MaD:2022 |
+| WebForms.cs:88:33:88:42 | access to local variable strBuilder : StringBuilder | WebForms.cs:88:33:88:53 | call to method ToString | provenance | MaD:2074 |
+| WebService.cs:28:17:28:26 | [post] access to local variable myTransact : Transaction [field Message] : String | WebService.cs:30:20:30:29 | access to local variable myTransact | provenance |  |
+| WebService.cs:28:38:28:38 | access to local variable e : Exception | WebService.cs:28:38:28:49 | call to method ToString : String | provenance | Config |
+| WebService.cs:28:38:28:38 | access to local variable e : Exception | WebService.cs:28:38:28:49 | call to method ToString : String | provenance | MaD:56414 |
+| WebService.cs:28:38:28:49 | call to method ToString : String | WebService.cs:28:17:28:26 | [post] access to local variable myTransact : Transaction [field Message] : String | provenance |  |
+nodes
+| AspNetCore.cs:21:17:21:24 | access to local variable errorMsg : String | semmle.label | access to local variable errorMsg : String |
+| AspNetCore.cs:21:28:21:36 | access to property Message : String | semmle.label | access to property Message : String |
+| AspNetCore.cs:24:17:24:20 | access to local variable json : JObject | semmle.label | access to local variable json : JObject |
+| AspNetCore.cs:24:24:27:13 | object creation of type JObject : JObject | semmle.label | object creation of type JObject : JObject |
+| AspNetCore.cs:25:17:25:48 | object creation of type JProperty : JProperty | semmle.label | object creation of type JProperty : JProperty |
+| AspNetCore.cs:25:40:25:47 | access to local variable errorMsg : String | semmle.label | access to local variable errorMsg : String |
+| AspNetCore.cs:28:20:28:27 | call to method Ok | semmle.label | call to method Ok |
+| AspNetCore.cs:28:23:28:26 | access to local variable json : JObject | semmle.label | access to local variable json : JObject |
+| AspNetCore.cs:56:24:56:54 | call to method Json | semmle.label | call to method Json |
+| AspNetCore.cs:56:29:56:53 | object creation of type <>__AnonType1<String> : <>__AnonType1<String> [property error] : String | semmle.label | object creation of type <>__AnonType1<String> : <>__AnonType1<String> [property error] : String |
+| AspNetCore.cs:56:29:56:53 | { ..., ... } : <>__AnonType1<String> [property error] : String | semmle.label | { ..., ... } : <>__AnonType1<String> [property error] : String |
+| AspNetCore.cs:56:43:56:51 | access to property Message : String | semmle.label | access to property Message : String |
+| AspNetCore.cs:69:24:69:32 | access to property Message | semmle.label | access to property Message |
+| AspNetCore.cs:100:24:100:50 | call to method StatusCode | semmle.label | call to method StatusCode |
+| AspNetCore.cs:100:40:100:49 | access to property Message : String | semmle.label | access to property Message : String |
+| AspNetCore.cs:112:24:112:64 | call to method BadRequest | semmle.label | call to method BadRequest |
+| AspNetCore.cs:112:35:112:63 | object creation of type <>__AnonType1<String> : <>__AnonType1<String> [property error] : String | semmle.label | object creation of type <>__AnonType1<String> : <>__AnonType1<String> [property error] : String |
+| AspNetCore.cs:112:35:112:63 | { ..., ... } : <>__AnonType1<String> [property error] : String | semmle.label | { ..., ... } : <>__AnonType1<String> [property error] : String |
+| AspNetCore.cs:112:49:112:50 | access to local variable ex : Exception | semmle.label | access to local variable ex : Exception |
+| AspNetCore.cs:112:49:112:61 | call to method ToString : String | semmle.label | call to method ToString : String |
+| AspNetCore.cs:124:24:124:51 | object creation of type ObjectResult | semmle.label | object creation of type ObjectResult |
+| AspNetCore.cs:124:41:124:50 | access to property Message : String | semmle.label | access to property Message : String |
+| AspNetCore.cs:201:19:201:51 | access to property Message | semmle.label | access to property Message |
+| AspNetCore.cs:203:19:203:54 | access to property StackTrace | semmle.label | access to property StackTrace |
+| AspNetCore.cs:224:24:224:33 | access to property Message | semmle.label | access to property Message |
+| AspNetCore.cs:242:24:242:25 | access to local variable ex : Exception | semmle.label | access to local variable ex : Exception |
+| AspNetCore.cs:242:24:242:36 | call to method ToString | semmle.label | call to method ToString |
+| WebForms.cs:25:17:25:22 | access to local variable output : String | semmle.label | access to local variable output : String |
+| WebForms.cs:25:26:25:35 | access to property Message : String | semmle.label | access to property Message : String |
+| WebForms.cs:27:20:27:25 | access to local variable output : String | semmle.label | access to local variable output : String |
+| WebForms.cs:40:30:40:61 | call to method AddComment | semmle.label | call to method AddComment |
+| WebForms.cs:66:34:66:46 | access to property StackTrace | semmle.label | access to property StackTrace |
+| WebForms.cs:78:13:78:22 | [post] access to local variable strBuilder : StringBuilder | semmle.label | [post] access to local variable strBuilder : StringBuilder |
+| WebForms.cs:78:57:78:84 | access to property CurrentDirectory : String | semmle.label | access to property CurrentDirectory : String |
+| WebForms.cs:80:13:80:22 | [post] access to local variable strBuilder : StringBuilder | semmle.label | [post] access to local variable strBuilder : StringBuilder |
+| WebForms.cs:80:54:80:73 | access to property UserName : String | semmle.label | access to property UserName : String |
+| WebForms.cs:82:13:82:22 | [post] access to local variable strBuilder : StringBuilder | semmle.label | [post] access to local variable strBuilder : StringBuilder |
+| WebForms.cs:82:58:82:80 | access to property MachineName : String | semmle.label | access to property MachineName : String |
+| WebForms.cs:84:13:84:22 | [post] access to local variable strBuilder : StringBuilder | semmle.label | [post] access to local variable strBuilder : StringBuilder |
+| WebForms.cs:84:56:84:76 | access to property OSVersion : OperatingSystem | semmle.label | access to property OSVersion : OperatingSystem |
+| WebForms.cs:88:33:88:42 | access to local variable strBuilder : StringBuilder | semmle.label | access to local variable strBuilder : StringBuilder |
+| WebForms.cs:88:33:88:53 | call to method ToString | semmle.label | call to method ToString |
+| WebForms.cs:113:37:113:56 | access to property UserName | semmle.label | access to property UserName |
+| WebForms.cs:123:39:123:58 | access to property UserName | semmle.label | access to property UserName |
+| WebForms.cs:136:48:136:49 | access to local variable ex | semmle.label | access to local variable ex |
+| WebService.cs:28:17:28:26 | [post] access to local variable myTransact : Transaction [field Message] : String | semmle.label | [post] access to local variable myTransact : Transaction [field Message] : String |
+| WebService.cs:28:38:28:38 | access to local variable e : Exception | semmle.label | access to local variable e : Exception |
+| WebService.cs:28:38:28:49 | call to method ToString : String | semmle.label | call to method ToString : String |
+| WebService.cs:30:20:30:29 | access to local variable myTransact | semmle.label | access to local variable myTransact |
+| WebService.cs:43:24:43:32 | access to property Message | semmle.label | access to property Message |
+subpaths
