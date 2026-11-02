@@ -1,0 +1,2 @@
+| WEB-INF/web.xml:13:13:13:44 | param-value | Directory listing is enabled on the default servlet 'org.apache.catalina.servlets.DefaultServlet', exposing the names and contents of web-accessible files. |
+| WEB-INF/web.xml:36:13:36:46 | param-value | Directory listing is enabled on the default servlet 'org.eclipse.jetty.servlet.DefaultServlet', exposing the names and contents of web-accessible files. |

@@ -1,0 +1,2 @@
+query: SpringSecurityPermitAllStateChanging/SpringSecurityPermitAllStateChanging.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

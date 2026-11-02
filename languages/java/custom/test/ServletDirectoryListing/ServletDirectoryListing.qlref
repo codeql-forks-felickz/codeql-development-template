@@ -1,0 +1,2 @@
+query: ServletDirectoryListing/ServletDirectoryListing.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,9 @@
+| Permissions.java:15:5:15:58 | exec(...) | This makes a file world-writable using a 'chmod' command. |
+| Permissions.java:19:5:19:58 | exec(...) | This makes a file world-writable using a 'chmod' command. |
+| Permissions.java:23:5:23:52 | exec(...) | This makes a file world-writable using a 'chmod' command. |
+| Permissions.java:27:5:27:66 | exec(...) | This makes a file world-writable using a 'chmod' command. |
+| Permissions.java:28:5:28:50 | new ProcessBuilder(...) | This makes a file world-writable using a 'chmod' command. |
+| Permissions.java:29:5:29:60 | new ProcessBuilder(...) | This makes a file world-writable using a 'chmod' command. |
+| Permissions.java:33:5:33:30 | setWritable(...) | This makes a file world-writable using a call to 'setWritable'. |
+| Permissions.java:37:5:37:114 | setPosixFilePermissions(...) | This makes a file world-writable using a call to 'setPosixFilePermissions'. |
+| Permissions.java:41:38:41:81 | fromString(...) | This makes a file world-writable using a POSIX permission string. |

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+    <!-- Tomcat default servlet with directory listings enabled. -->
+    <servlet>
+        <servlet-name>default</servlet-name>
+        <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>0</param-value>
+        </init-param>
+        <init-param>
+            <param-name>listings</param-name>
+            <param-value>true</param-value> <!-- $ Alert -->
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- Tomcat default servlet with directory listings disabled: safe. -->
+    <servlet>
+        <servlet-name>static</servlet-name>
+        <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+        <init-param>
+            <param-name>listings</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </servlet>
+
+    <!-- Jetty default servlet with directory listings enabled. -->
+    <servlet>
+        <servlet-name>jetty-default</servlet-name>
+        <servlet-class>
+            org.eclipse.jetty.servlet.DefaultServlet
+        </servlet-class>
+        <init-param>
+            <param-name>dirAllowed</param-name>
+            <param-value> TRUE </param-value> <!-- $ Alert -->
+        </init-param>
+    </servlet>
+
+    <!-- Jetty default servlet with directory listings disabled: safe. -->
+    <servlet>
+        <servlet-name>jetty-static</servlet-name>
+        <servlet-class>org.eclipse.jetty.ee10.servlet.DefaultServlet</servlet-class>
+        <init-param>
+            <param-name>dirAllowed</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </servlet>
+
+    <!-- An application servlet that happens to use a "listings" parameter: safe. -->
+    <servlet>
+        <servlet-name>catalog</servlet-name>
+        <servlet-class>com.example.CatalogServlet</servlet-class>
+        <init-param>
+            <param-name>listings</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+</web-app>
