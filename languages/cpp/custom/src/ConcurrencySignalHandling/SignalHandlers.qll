@@ -38,23 +38,54 @@ private class SigactionHandlerField extends Field {
 }
 
 /**
- * Holds if `fa` (a reference to function `handler`) is stored into a
- * `sa_handler`/`sa_sigaction` field of the `struct sigaction` variable `v`.
+ * Holds if `handler` is the value of a `sa_handler`/`sa_sigaction` field of
+ * `v` that reaches `call` without being overwritten.
  */
-private predicate sigactionVariableHandler(Variable v, FunctionAccess fa, Function handler) {
-  fa.getTarget() = handler and
+private predicate sigactionVariableHandler(Variable v, SigactionCall call, Function handler) {
   (
-    exists(AssignExpr assign, FieldAccess field |
+    exists(AssignExpr assign, FieldAccess field, FunctionAccess fa |
       assign.getRValue().getUnconverted() = fa and
+      fa.getTarget() = handler and
       assign.getLValue() = field and
-      field.getTarget() instanceof SigactionHandlerField and
-      field.getQualifier*().(VariableAccess).getTarget() = v
+      sigactionHandlerFieldAccess(v, field) and
+      reachesSigactionCallWithoutHandlerFieldWrite(v, assign, call)
     )
     or
-    exists(ClassAggregateLiteral agg |
+    exists(ClassAggregateLiteral agg, FunctionAccess fa |
       agg.getAFieldExpr(any(SigactionHandlerField f)).getUnconverted() = fa and
-      agg.getParent*() = v.getInitializer().getExpr()
+      fa.getTarget() = handler and
+      agg.getParent*() = v.getInitializer().getExpr() and
+      reachesSigactionCallWithoutHandlerFieldWrite(v, v.getInitializer().getExpr(), call)
     )
+  )
+}
+
+private predicate sigactionHandlerFieldAccess(Variable v, FieldAccess field) {
+  field.getTarget() instanceof SigactionHandlerField and
+  field.getQualifier*().(VariableAccess).getTarget() = v
+}
+
+private predicate sigactionHandlerFieldWrite(Variable v, ControlFlowNode node) {
+  exists(AssignExpr assign, FieldAccess field |
+    node = assign and
+    assign.getLValue() = field and
+    sigactionHandlerFieldAccess(v, field)
+  )
+}
+
+/**
+ * Holds if there is a path from `node` to `call` without an intervening
+ * assignment to either handler field of `v`.
+ */
+private predicate reachesSigactionCallWithoutHandlerFieldWrite(
+  Variable v, ControlFlowNode node, SigactionCall call
+) {
+  node = call
+  or
+  exists(ControlFlowNode successor |
+    successor = node.getASuccessor() and
+    not sigactionHandlerFieldWrite(v, successor) and
+    reachesSigactionCallWithoutHandlerFieldWrite(v, successor, call)
   )
 }
 
@@ -71,10 +102,10 @@ class SignalHandlerInstallation extends FunctionCall {
     this.(SignalFunctionCall).getHandlerExpr().getUnconverted().(FunctionAccess).getTarget() =
       handler
     or
-    exists(Variable v |
-      this.(SigactionCall).getArgument(1).getUnconverted().(AddressOfExpr).getOperand() =
-        v.getAnAccess() and
-      sigactionVariableHandler(v, _, handler)
+    exists(Variable v, SigactionCall call |
+      this = call and
+      call.getArgument(1).getUnconverted().(AddressOfExpr).getOperand() = v.getAnAccess() and
+      sigactionVariableHandler(v, call, handler)
     )
   }
 
@@ -118,8 +149,10 @@ class SignalHandler extends Function {
 predicate disablesSignal(SignalHandlerInstallation install, FunctionCall call) {
   // Re-registering a disposition for the same signal (e.g. `SIG_DFL`/`SIG_IGN`).
   (
-    call instanceof SignalFunctionCall or
-    call instanceof SigactionCall
+    call instanceof SignalFunctionCall
+    or
+    call instanceof SigactionCall and
+    not call.(SigactionCall).getArgument(1).getValue() = "0"
   ) and
   call != install and
   not call.(SignalHandlerInstallation).getHandler() = install.getHandler() and

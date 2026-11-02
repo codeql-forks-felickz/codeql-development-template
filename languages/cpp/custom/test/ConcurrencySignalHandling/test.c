@@ -250,3 +250,25 @@ void cwe364_bad_other_signal_reset(void)
   free(gBad); // $ Alert[cpp/custom/signal-handler-race-condition]
   gBad = NULL;
 }
+
+// Bad: querying the disposition does not disable the installed handler.
+void cwe364_bad_sigaction_query(void)
+{
+  struct sigaction old;
+  gBad = (structSigAtomic *)malloc(sizeof(structSigAtomic));
+  signal(SIGINT, helperBad364);
+  sigaction(SIGINT, NULL, &old);
+  free(gBad); // $ Alert[cpp/custom/signal-handler-race-condition]
+}
+
+// Safe: resetting the handler through sigaction overwrites the previous value.
+void cwe364_good_sigaction_reset(void)
+{
+  struct sigaction sa;
+  gSigaction = (structSigAtomic *)malloc(sizeof(structSigAtomic));
+  sa.sa_handler = helperSigaction364;
+  sigaction(SIGINT, &sa, NULL);
+  sa.sa_handler = SIG_DFL;
+  sigaction(SIGINT, &sa, NULL);
+  free(gSigaction);
+}
