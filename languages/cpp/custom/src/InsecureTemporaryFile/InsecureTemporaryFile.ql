@@ -33,35 +33,34 @@ class TemporaryNameFunction extends Function {
   }
 }
 
-/** Holds if `e` contains an expansion of a macro named one of `names`. */
-bindingset[names]
-private predicate hasFlagMacro(Expr e, string names) {
-  exists(MacroInvocation mi |
-    mi.getMacroName() = names.splitAt(",") and
-    mi.getAnExpandedElement() = e.getAChild*()
-  )
-}
-
-/** Holds if `e` uses any `O_*` flag macro (so macro names are authoritative). */
-private predicate usesFlagMacros(Expr e) {
-  exists(MacroInvocation mi |
-    mi.getMacroName().regexpMatch("_?O_[A-Z_]+") and
-    mi.getAnExpandedElement() = e.getAChild*()
+/** Gets the numeric value of a flag macro from its definition in the database. */
+private predicate flagMacroValue(string name, int value) {
+  exists(Macro macro, MacroInvocation invocation, Expr expanded |
+    macro.getName() = name and
+    invocation.getMacro() = macro and
+    expanded = invocation.getExpr() and
+    value = expanded.getValue().toInt()
   )
 }
 
 /** Holds if the open-style `flags` expression requests creation (`O_CREAT`). */
 private predicate hasCreateFlag(Expr flags) {
-  hasFlagMacro(flags, "O_CREAT,_O_CREAT")
-  or
-  not usesFlagMacros(flags) and flags.getValue().toInt().bitAnd(64) != 0
+  exists(int flagsValue, int createValue |
+    exists(flags.getValue()) and
+    flagsValue = flags.getValue().toInt() and
+    flagMacroValue("O_CREAT", createValue) and
+    flagsValue.bitAnd(createValue) != 0
+  )
 }
 
 /** Holds if the open-style `flags` expression requests exclusive creation (`O_EXCL`). */
 private predicate hasExclusiveFlag(Expr flags) {
-  hasFlagMacro(flags, "O_EXCL,_O_EXCL")
-  or
-  not usesFlagMacros(flags) and flags.getValue().toInt().bitAnd(128) != 0
+  exists(int flagsValue, int exclusiveValue |
+    exists(flags.getValue()) and
+    flagsValue = flags.getValue().toInt() and
+    flagMacroValue("O_EXCL", exclusiveValue) and
+    flagsValue.bitAnd(exclusiveValue) != 0
+  )
 }
 
 /**
@@ -78,6 +77,7 @@ predicate nonExclusiveCreate(FunctionCall call, Expr path) {
     ) and
     path = call.getArgument(pathIdx) and
     flags = call.getArgument(flagsIdx) and
+    exists(flags.getValue()) and
     hasCreateFlag(flags) and
     not hasExclusiveFlag(flags)
   )

@@ -112,9 +112,21 @@ static void open_helper(const char *path) {
   }
 }
 
+static void open_helper_with_extra_flags(const char *path, int extra_flags) {
+  int fd = open(path, O_CREAT | extra_flags, S_IREAD | S_IWRITE);
+  if (fd != -1) {
+    close(fd);
+  }
+}
+
 void bad_tmpnam_interprocedural(void) {
   char *filename = tmpnam(NULL); // $ Source
   open_helper(filename);
+}
+
+void good_tmpnam_helper_with_extra_flags(void) {
+  char *filename = tmpnam(NULL);
+  open_helper_with_extra_flags(filename, O_RDWR | O_EXCL);
 }
 
 /* GOOD: mkstemp() creates and opens the file atomically. */
@@ -131,6 +143,22 @@ void good_mkstemp(void) {
 void good_tmpnam_excl(void) {
   char *filename = tmpnam(NULL);
   int fd = open(filename, O_RDWR | O_CREAT | O_EXCL, S_IREAD | S_IWRITE);
+  if (fd != -1) {
+    close(fd);
+  }
+}
+
+void good_tmpnam_mixed_literal_exclusive(void) {
+  char *filename = tmpnam(NULL);
+  int fd = open(filename, O_RDWR | O_CREAT | 0200, S_IREAD | S_IWRITE);
+  if (fd != -1) {
+    close(fd);
+  }
+}
+
+void bad_tmpnam_masked_excl(void) {
+  char *filename = tmpnam(NULL); // $ Source
+  int fd = open(filename, O_RDWR | O_CREAT | (O_EXCL & 0), S_IREAD | S_IWRITE); // $ Alert
   if (fd != -1) {
     close(fd);
   }
