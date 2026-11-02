@@ -38,7 +38,17 @@ predicate isStartupFunction(FuncDef f) {
 predicate isInLoop(AstNode n) {
   exists(LoopStmt loop |
     loop.getEnclosingFunction() = n.getEnclosingFunction() and
-    loop.getBody() = n.getParent+()
+    (
+      loop.getBody() = n.getParent+()
+      or
+      exists(ForStmt forStmt |
+        forStmt = loop and
+        (
+          forStmt.getCond() = n.getParent*() or
+          forStmt.getPost() = n.getParent*()
+        )
+      )
+    )
   )
 }
 
@@ -81,8 +91,16 @@ predicate isClosed(LocalVariable v) { isMethodReceiverUse(v, _, "Close") }
 predicate mayEscape(LocalVariable v) {
   exists(Ident ref |
     ref = v.getAReference() and
-    not ref.(ReferenceExpr).isLvalue() and
-    not isMethodReceiverUse(v, ref, _)
+    (
+      ref.getEnclosingFunction() != v.getDeclaringFunction()
+      or
+      not ref.(ReferenceExpr).isLvalue() and
+      not exists(SelectorExpr sel, CallExpr call |
+        sel.getBase() = ref and
+        call.getCalleeExpr() = sel and
+        call.getEnclosingFunction() = v.getDeclaringFunction()
+      )
+    )
   )
 }
 

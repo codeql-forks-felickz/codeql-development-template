@@ -16,6 +16,7 @@ type Repo struct {
 }
 
 var globalDB *sql.DB
+var pingCallback func() error
 
 // BAD: a new connection pool is opened on every call and never closed.
 // Closing only `rows` does not release the pool or its goroutine.
@@ -158,6 +159,33 @@ func pollOnce() {
 	db.Ping()
 }
 
+// BAD: this helper is called repeatedly from a loop condition.
+func pollCondition(i int) bool {
+	db, _ := sql.Open("sqlite3", "data/users.db") // $ Alert
+	db.Ping()
+	return i < 10
+}
+
+// BAD: this helper is called repeatedly from a loop post statement.
+func pollPost() {
+	db, _ := sql.Open("sqlite3", "data/users.db") // $ Alert
+	db.Ping()
+}
+
+// GOOD: the returned closure retains the pool.
+func openDBClosure() func() error {
+	db, _ := sql.Open("sqlite3", "data/users.db")
+	return func() error {
+		return db.Ping()
+	}
+}
+
+// GOOD: the stored method value retains the pool.
+func storePingMethod() {
+	db, _ := sql.Open("sqlite3", "data/users.db")
+	pingCallback = db.Ping
+}
+
 func init() {
 	// GOOD: init runs once.
 	db, _ := sql.Open("sqlite3", "data/users.db")
@@ -176,6 +204,12 @@ func main() {
 		// BAD: a new pool is opened on every loop iteration.
 		loopDB, _ := sql.Open("sqlite3", "data/users.db") // $ Alert
 		loopDB.Ping()
+	}
+
+	for i := 0; pollCondition(i); i++ {
+	}
+	for i := 0; i < 10; pollPost() {
+		i++
 	}
 
 	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {

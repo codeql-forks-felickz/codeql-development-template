@@ -1,6 +1,8 @@
-| database.go:23:13:23:48 | call to Open | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
-| database.go:43:11:43:49 | call to Open | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
-| database.go:52:8:52:20 | call to OpenDB | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
-| database.go:60:12:60:47 | call to Open | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
-| database.go:157:11:157:46 | call to Open | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
-| database.go:177:16:177:51 | call to Open | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
+| database.go:24:13:24:48 | call to Open | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
+| database.go:44:11:44:49 | call to Open | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
+| database.go:53:8:53:20 | call to OpenDB | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
+| database.go:61:12:61:47 | call to Open | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
+| database.go:158:11:158:46 | call to Open | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
+| database.go:164:11:164:46 | call to Open | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
+| database.go:171:11:171:46 | call to Open | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
+| database.go:205:16:205:51 | call to Open | This call opens a new database connection pool that is never closed. Repeated execution can exhaust connections, goroutines and file descriptors. |
