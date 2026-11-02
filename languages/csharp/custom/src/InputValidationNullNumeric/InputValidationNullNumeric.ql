@@ -17,11 +17,24 @@ import csharp
 import semmle.code.csharp.controlflow.Guards
 import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
+predicate isCheckedOrUncheckedContext(Element context) {
+  context instanceof CheckedExpr or
+  context instanceof CheckedStmt or
+  context instanceof UncheckedExpr or
+  context instanceof UncheckedStmt
+}
+
 /** Holds if `e` is evaluated in an explicit `checked` context. */
 predicate inCheckedContext(Expr e) {
-  exists(Element p | p = e.getParent+() |
-    p instanceof CheckedExpr or
-    p instanceof CheckedStmt
+  exists(Element context |
+    context = e.getParent+() and
+    isCheckedOrUncheckedContext(context) and
+    not exists(Element nearer |
+      nearer = e.getParent+() and
+      isCheckedOrUncheckedContext(nearer) and
+      context = nearer.getParent+()
+    ) and
+    (context instanceof CheckedExpr or context instanceof CheckedStmt)
   )
 }
 
@@ -59,6 +72,7 @@ predicate isUncheckedOverflowOperand(Expr e, BinaryArithmeticOperation op) {
   (op instanceof AddOperation or op instanceof SubOperation or op instanceof MulOperation) and
   e = op.getAnOperand() and
   e.getType() instanceof IntegralType and
+  e.stripImplicit().getType() = op.getType() and
   op.getType() instanceof IntegralType and
   not inCheckedContext(op) and
   not isComparedInGuard(e, "relational")
@@ -89,43 +103,130 @@ predicate integralParseStep(DataFlow::Node pred, DataFlow::Node succ) {
   )
 }
 
-module InputValidationNullNumericConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
-
-  predicate isSink(DataFlow::Node sink) {
-    isUncheckedDivisor(sink.asExpr(), _) or
-    isUncheckedOverflowOperand(sink.asExpr(), _)
-  }
-
-  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    integralParseStep(pred, succ)
-  }
-
-  predicate isBarrier(DataFlow::Node node) {
-    // Values clamped to a range are considered validated.
-    node.asExpr()
-        .(MethodCall)
-        .getTarget()
-        .hasFullyQualifiedName("System", "Math", ["Min", "Max", "Clamp"])
-  }
+predicate isMathCall(MethodCall call, string name) {
+  call.getTarget().hasFullyQualifiedName("System", "Math", name)
 }
 
-module InputValidationNullNumericFlow = TaintTracking::Global<InputValidationNullNumericConfig>;
+predicate integralMathFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(MethodCall call |
+    call.getTarget().hasFullyQualifiedName("System", "Math", ["Min", "Max", "Clamp"]) and
+    call.getType() instanceof IntegralType and
+    pred.asExpr() = call.getAnArgument() and
+    succ.asExpr() = call
+  )
+}
 
-import InputValidationNullNumericFlow::PathGraph
+predicate hasConstantAndOtherArgument(MethodCall call, Expr other, int value) {
+  exists(Expr first, Expr second |
+    first = call.getArgument(0) and
+    second = call.getArgument(1) and
+    (
+      first.getIntValue() = value and
+      other = second
+      or
+      second.getIntValue() = value and
+      other = first
+    )
+  )
+}
+
+predicate isNonZeroMathCall(Expr e) {
+  exists(MethodCall call |
+    e = call and
+    call.getType() instanceof IntegralType and
+    (
+      exists(int bound, Expr value |
+        hasConstantAndOtherArgument(call, value, bound) and
+        (
+          isMathCall(call, "Max") and bound > 0
+          or
+          isMathCall(call, "Min") and bound < 0
+        )
+      )
+      or
+      exists(int minBound, int maxBound |
+        isMathCall(call, "Clamp") and
+        call.getArgument(1).getIntValue() = minBound and
+        call.getArgument(2).getIntValue() = maxBound and
+        (minBound > 0 or maxBound < 0)
+      )
+    )
+  )
+}
+
+predicate isTwoSidedClamp(Expr e) {
+  exists(MethodCall call |
+    e = call and
+    call.getType() instanceof IntegralType and
+    (
+      isMathCall(call, "Clamp") and
+      exists(call.getArgument(1).getIntValue()) and
+      exists(call.getArgument(2).getIntValue())
+      or
+      exists(MethodCall inner, Expr value |
+        hasConstantAndOtherArgument(call, inner, _) and
+        hasConstantAndOtherArgument(inner, value, _) and
+        (
+          isMathCall(call, "Max") and isMathCall(inner, "Min")
+          or
+          isMathCall(call, "Min") and isMathCall(inner, "Max")
+        )
+      )
+    )
+  )
+}
+
+module InputValidationNullNumericDivisorConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
+
+  predicate isSink(DataFlow::Node sink) { isUncheckedDivisor(sink.asExpr(), _) }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    integralParseStep(pred, succ) or
+    integralMathFlowStep(pred, succ)
+  }
+
+  predicate isBarrier(DataFlow::Node node) { isNonZeroMathCall(node.asExpr()) }
+}
+
+module InputValidationNullNumericOverflowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
+
+  predicate isSink(DataFlow::Node sink) { isUncheckedOverflowOperand(sink.asExpr(), _) }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    integralParseStep(pred, succ) or
+    integralMathFlowStep(pred, succ)
+  }
+
+  predicate isBarrier(DataFlow::Node node) { isTwoSidedClamp(node.asExpr()) }
+}
+
+module InputValidationNullNumericDivisorFlow =
+  TaintTracking::Global<InputValidationNullNumericDivisorConfig>;
+
+module InputValidationNullNumericOverflowFlow =
+  TaintTracking::Global<InputValidationNullNumericOverflowConfig>;
+
+module InputValidationNullNumericPathGraph =
+  DataFlow::MergePathGraph<InputValidationNullNumericDivisorFlow::PathNode,
+    InputValidationNullNumericOverflowFlow::PathNode,
+    InputValidationNullNumericDivisorFlow::PathGraph,
+    InputValidationNullNumericOverflowFlow::PathGraph>;
+
+import InputValidationNullNumericPathGraph::PathGraph
 
 from
-  InputValidationNullNumericFlow::PathNode source, InputValidationNullNumericFlow::PathNode sink,
-  BinaryArithmeticOperation op, string message
+  InputValidationNullNumericPathGraph::PathNode source,
+  InputValidationNullNumericPathGraph::PathNode sink, BinaryArithmeticOperation op, string message
 where
-  InputValidationNullNumericFlow::flowPath(source, sink) and
-  (
-    isUncheckedDivisor(sink.getNode().asExpr(), op) and
-    message =
-      "This divisor depends on a $@ and is not checked for zero, which may cause a DivideByZeroException."
-    or
-    isUncheckedOverflowOperand(sink.getNode().asExpr(), op) and
-    message =
-      "This arithmetic operand depends on a $@ and is not range checked, which may cause an integer overflow."
-  )
+  InputValidationNullNumericDivisorFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
+  isUncheckedDivisor(sink.getNode().asExpr(), op) and
+  message =
+    "This divisor depends on a $@ and is not checked for zero, which may cause a DivideByZeroException."
+  or
+  InputValidationNullNumericOverflowFlow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
+  isUncheckedOverflowOperand(sink.getNode().asExpr(), op) and
+  message =
+    "This arithmetic operand depends on a $@ and is not range checked, which may cause an integer overflow."
 select sink.getNode(), source, sink, message, source.getNode(), "user-provided value"

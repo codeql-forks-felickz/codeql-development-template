@@ -89,12 +89,58 @@ namespace Test
             resp.Write("result: " + result);
         }
 
+        // An inner unchecked context overrides its enclosing checked block.
+        public void BadNestedUnchecked(HttpRequest req, HttpResponse resp)
+        {
+            int data = int.Parse(req.QueryString["n"]); // $ Source
+            checked
+            {
+                int result = unchecked(data + 1); // $ Alert
+                resp.Write("result: " + result);
+            }
+        }
+
+        // An inner checked context overrides its enclosing unchecked block.
+        public void GoodNestedChecked(HttpRequest req, HttpResponse resp)
+        {
+            int data = int.Parse(req.QueryString["n"]);
+            unchecked
+            {
+                int result = checked(data + 1);
+                resp.Write("result: " + result);
+            }
+        }
+
+        // Arithmetic promoted from byte to int cannot overflow byte's range.
+        public void GoodBytePromotion(HttpRequest req, HttpResponse resp)
+        {
+            byte data = byte.Parse(req.QueryString["n"]);
+            int result = data + 1;
+            resp.Write("result: " + result);
+        }
+
+        // Arithmetic widened from int to long cannot overflow int's range.
+        public void GoodLongWidening(HttpRequest req, HttpResponse resp)
+        {
+            int data = int.Parse(req.QueryString["n"]);
+            long result = data + 1L;
+            resp.Write("result: " + result);
+        }
+
         // Value clamped with Math.Min/Math.Max: no alert.
         public void GoodClamped(HttpRequest req, HttpResponse resp)
         {
             int data = int.Parse(req.QueryString["n"]);
             int bounded = Math.Max(0, Math.Min(data, 100));
             int result = bounded + 1;
+            resp.Write("result: " + result);
+        }
+
+        // A lower bound alone does not prevent overflow at int.MaxValue.
+        public void BadOneSidedClamp(HttpRequest req, HttpResponse resp)
+        {
+            int data = int.Parse(req.QueryString["n"]); // $ Source
+            int result = Math.Max(data, 0) + 1; // $ Alert
             resp.Write("result: " + result);
         }
 
@@ -191,6 +237,22 @@ namespace Test
             {
                 resp.Write("100/" + data + " = " + (100 / data) + "\n");
             }
+        }
+
+        // A clamp that can return zero does not make the divisor safe.
+        public void BadClampCanReturnZero(HttpRequest req, HttpResponse resp)
+        {
+            int data = int.Parse(req.QueryString["id"]); // $ Source
+            int divisor = Math.Clamp(data, 0, 100);
+            resp.Write("100/" + divisor + " = " + (100 / divisor) + "\n"); // $ Alert
+        }
+
+        // A strictly positive lower bound excludes zero.
+        public void GoodPositiveMathBound(HttpRequest req, HttpResponse resp)
+        {
+            int data = int.Parse(req.QueryString["id"]);
+            int divisor = Math.Max(data, 1);
+            resp.Write("100/" + divisor + " = " + (100 / divisor) + "\n");
         }
 
         // Tainted value as the dividend only: no alert.
