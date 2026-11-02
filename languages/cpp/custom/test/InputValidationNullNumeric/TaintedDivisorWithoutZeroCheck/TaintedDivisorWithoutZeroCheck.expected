@@ -1,0 +1,52 @@
+#select
+| test.c:25:33:25:38 | height | test.c:24:16:24:19 | fread output argument | test.c:25:33:25:38 | height | This divisor depends on $@ and is not checked against zero before the $@. | test.c:24:16:24:19 | fread output argument | string read by fread | test.c:25:17:25:38 | ... / ... | division |
+| test.c:37:24:37:29 | height | test.c:36:9:36:9 | fread output argument | test.c:37:24:37:29 | height | This divisor depends on $@ and is not checked against zero before the $@. | test.c:36:9:36:9 | fread output argument | string read by fread | test.c:37:10:37:29 | ... / ... | division |
+| test.c:44:27:44:32 | height | test.c:43:9:43:12 | fread output argument | test.c:44:27:44:32 | height | This divisor depends on $@ and is not checked against zero before the $@. | test.c:43:9:43:12 | fread output argument | string read by fread | test.c:44:11:44:32 | ... % ... | division |
+| test.c:46:12:46:17 | height | test.c:43:9:43:12 | fread output argument | test.c:46:12:46:17 | height | This divisor depends on $@ and is not checked against zero before the $@. | test.c:43:9:43:12 | fread output argument | string read by fread | test.c:46:3:46:17 | ... /= ... | division |
+| test.c:58:24:58:27 | data | test.c:55:18:55:22 | recv output argument | test.c:58:24:58:27 | data | This divisor depends on $@ and is not checked against zero before the $@. | test.c:55:18:55:22 | recv output argument | buffer read by recv | test.c:58:18:58:27 | ... / ... | division |
+| test.c:63:24:63:24 | n | test.c:62:16:62:30 | *call to getenv | test.c:63:24:63:24 | n | This divisor depends on $@ and is not checked against zero before the $@. | test.c:62:16:62:30 | *call to getenv | an environment variable | test.c:63:18:63:24 | ... % ... | division |
+| test.c:156:20:156:25 | height | test.c:155:9:155:12 | fread output argument | test.c:156:20:156:25 | height | This divisor depends on $@ and is not checked against zero before the $@. | test.c:155:9:155:12 | fread output argument | string read by fread | test.c:156:10:156:25 | ... / ... | division |
+edges
+| test.c:24:16:24:19 | fread output argument | test.c:25:17:25:19 | *img | provenance |  |
+| test.c:25:17:25:19 | *img | test.c:25:29:25:31 | *img | provenance |  |
+| test.c:25:29:25:31 | *img | test.c:25:17:25:19 | *img | provenance |  |
+| test.c:25:29:25:31 | *img | test.c:25:33:25:38 | height | provenance | Config |
+| test.c:36:9:36:9 | fread output argument | test.c:37:10:37:10 | *p | provenance |  |
+| test.c:37:10:37:10 | *p | test.c:37:21:37:21 | *p | provenance |  |
+| test.c:37:21:37:21 | *p | test.c:37:24:37:29 | height | provenance | Config |
+| test.c:43:9:43:12 | fread output argument | test.c:44:11:44:13 | *img | provenance |  |
+| test.c:44:11:44:13 | *img | test.c:44:23:44:25 | *img | provenance |  |
+| test.c:44:23:44:25 | *img | test.c:44:27:44:32 | height | provenance | Config |
+| test.c:44:23:44:25 | *img | test.c:46:8:46:10 | *img | provenance |  |
+| test.c:46:8:46:10 | *img | test.c:46:12:46:17 | height | provenance | Config |
+| test.c:55:18:55:22 | recv output argument | test.c:56:5:56:22 | ... = ... | provenance | TaintFunction |
+| test.c:56:5:56:22 | ... = ... | test.c:58:24:58:27 | data | provenance |  |
+| test.c:62:11:62:14 | call to atoi | test.c:63:24:63:24 | n | provenance |  |
+| test.c:62:16:62:30 | *call to getenv | test.c:62:11:62:14 | call to atoi | provenance | TaintFunction |
+| test.c:155:9:155:12 | fread output argument | test.c:156:16:156:18 | *img | provenance |  |
+| test.c:156:16:156:18 | *img | test.c:156:20:156:25 | height | provenance | Config |
+nodes
+| test.c:24:16:24:19 | fread output argument | semmle.label | fread output argument |
+| test.c:25:17:25:19 | *img | semmle.label | *img |
+| test.c:25:29:25:31 | *img | semmle.label | *img |
+| test.c:25:33:25:38 | height | semmle.label | height |
+| test.c:36:9:36:9 | fread output argument | semmle.label | fread output argument |
+| test.c:37:10:37:10 | *p | semmle.label | *p |
+| test.c:37:21:37:21 | *p | semmle.label | *p |
+| test.c:37:24:37:29 | height | semmle.label | height |
+| test.c:43:9:43:12 | fread output argument | semmle.label | fread output argument |
+| test.c:44:11:44:13 | *img | semmle.label | *img |
+| test.c:44:23:44:25 | *img | semmle.label | *img |
+| test.c:44:27:44:32 | height | semmle.label | height |
+| test.c:46:8:46:10 | *img | semmle.label | *img |
+| test.c:46:12:46:17 | height | semmle.label | height |
+| test.c:55:18:55:22 | recv output argument | semmle.label | recv output argument |
+| test.c:56:5:56:22 | ... = ... | semmle.label | ... = ... |
+| test.c:58:24:58:27 | data | semmle.label | data |
+| test.c:62:11:62:14 | call to atoi | semmle.label | call to atoi |
+| test.c:62:16:62:30 | *call to getenv | semmle.label | *call to getenv |
+| test.c:63:24:63:24 | n | semmle.label | n |
+| test.c:155:9:155:12 | fread output argument | semmle.label | fread output argument |
+| test.c:156:16:156:18 | *img | semmle.label | *img |
+| test.c:156:20:156:25 | height | semmle.label | height |
+subpaths

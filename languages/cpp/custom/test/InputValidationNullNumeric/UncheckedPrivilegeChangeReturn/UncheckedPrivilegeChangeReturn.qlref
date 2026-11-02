@@ -1,0 +1,2 @@
+query: InputValidationNullNumeric/UncheckedPrivilegeChangeReturn.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

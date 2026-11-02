@@ -1,0 +1,2 @@
+query: InputValidationNullNumeric/TaintedDivisorWithoutZeroCheck.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
