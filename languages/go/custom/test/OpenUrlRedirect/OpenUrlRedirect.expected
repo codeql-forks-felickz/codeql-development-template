@@ -1,0 +1,172 @@
+#select
+| results/results.go:21:23:21:28 | target | results/results.go:18:8:18:26 | call to FormValue | results/results.go:21:23:21:28 | target | This path to an untrusted URL redirection depends on a $@. | results/results.go:18:8:18:26 | call to FormValue | user-provided value |
+| results/results.go:31:26:31:31 | target | results/results.go:44:8:44:12 | selection of URL | results/results.go:31:26:31:31 | target | This path to an untrusted URL redirection depends on a $@. | results/results.go:44:8:44:12 | selection of URL | user-provided value |
+| results/results.go:35:26:35:31 | target | results/results.go:44:8:44:12 | selection of URL | results/results.go:35:26:35:31 | target | This path to an untrusted URL redirection depends on a $@. | results/results.go:44:8:44:12 | selection of URL | user-provided value |
+| servechi/servechi.go:36:24:36:30 | payload | common/common.go:58:10:58:14 | selection of URL | servechi/servechi.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | common/common.go:58:10:58:14 | selection of URL | user-provided value |
+| servechi/servechi.go:36:24:36:30 | payload | common/common.go:61:10:61:29 | call to FormValue | servechi/servechi.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | common/common.go:61:10:61:29 | call to FormValue | user-provided value |
+| servechi/servechi.go:36:24:36:30 | payload | servegin/servegin.go:28:10:28:25 | call to Query | servechi/servechi.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:28:10:28:25 | call to Query | user-provided value |
+| servechi/servechi.go:36:24:36:30 | payload | servegin/servegin.go:30:10:30:28 | call to PostForm | servechi/servechi.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:30:10:30:28 | call to PostForm | user-provided value |
+| servechi/servechi.go:36:24:36:30 | payload | servegin/servegin.go:32:10:32:29 | call to GetHeader | servechi/servechi.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:32:10:32:29 | call to GetHeader | user-provided value |
+| servechi/servechi.go:36:24:36:30 | payload | servegin/servegin.go:34:3:34:31 | extract:0 ... := ... | servechi/servechi.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:34:3:34:31 | extract:0 ... := ... | user-provided value |
+| servegin/servegin.go:20:32:20:38 | payload | common/common.go:58:10:58:14 | selection of URL | servegin/servegin.go:20:32:20:38 | payload | This path to an untrusted URL redirection depends on a $@. | common/common.go:58:10:58:14 | selection of URL | user-provided value |
+| servegin/servegin.go:20:32:20:38 | payload | common/common.go:61:10:61:29 | call to FormValue | servegin/servegin.go:20:32:20:38 | payload | This path to an untrusted URL redirection depends on a $@. | common/common.go:61:10:61:29 | call to FormValue | user-provided value |
+| servegin/servegin.go:20:32:20:38 | payload | servegin/servegin.go:28:10:28:25 | call to Query | servegin/servegin.go:20:32:20:38 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:28:10:28:25 | call to Query | user-provided value |
+| servegin/servegin.go:20:32:20:38 | payload | servegin/servegin.go:30:10:30:28 | call to PostForm | servegin/servegin.go:20:32:20:38 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:30:10:30:28 | call to PostForm | user-provided value |
+| servegin/servegin.go:20:32:20:38 | payload | servegin/servegin.go:32:10:32:29 | call to GetHeader | servegin/servegin.go:20:32:20:38 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:32:10:32:29 | call to GetHeader | user-provided value |
+| servegin/servegin.go:20:32:20:38 | payload | servegin/servegin.go:34:3:34:31 | extract:0 ... := ... | servegin/servegin.go:20:32:20:38 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:34:3:34:31 | extract:0 ... := ... | user-provided value |
+| servegin/servegin.go:72:31:72:45 | call to Query | servegin/servegin.go:72:31:72:45 | call to Query | servegin/servegin.go:72:31:72:45 | call to Query | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:72:31:72:45 | call to Query | user-provided value |
+| servejschmidt/servejschmidt.go:36:24:36:30 | payload | common/common.go:58:10:58:14 | selection of URL | servejschmidt/servejschmidt.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | common/common.go:58:10:58:14 | selection of URL | user-provided value |
+| servejschmidt/servejschmidt.go:36:24:36:30 | payload | common/common.go:61:10:61:29 | call to FormValue | servejschmidt/servejschmidt.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | common/common.go:61:10:61:29 | call to FormValue | user-provided value |
+| servejschmidt/servejschmidt.go:36:24:36:30 | payload | servegin/servegin.go:28:10:28:25 | call to Query | servejschmidt/servejschmidt.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:28:10:28:25 | call to Query | user-provided value |
+| servejschmidt/servejschmidt.go:36:24:36:30 | payload | servegin/servegin.go:30:10:30:28 | call to PostForm | servejschmidt/servejschmidt.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:30:10:30:28 | call to PostForm | user-provided value |
+| servejschmidt/servejschmidt.go:36:24:36:30 | payload | servegin/servegin.go:32:10:32:29 | call to GetHeader | servejschmidt/servejschmidt.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:32:10:32:29 | call to GetHeader | user-provided value |
+| servejschmidt/servejschmidt.go:36:24:36:30 | payload | servegin/servegin.go:34:3:34:31 | extract:0 ... := ... | servejschmidt/servejschmidt.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:34:3:34:31 | extract:0 ... := ... | user-provided value |
+| servestd/servestd.go:44:24:44:30 | payload | common/common.go:58:10:58:14 | selection of URL | servestd/servestd.go:44:24:44:30 | payload | This path to an untrusted URL redirection depends on a $@. | common/common.go:58:10:58:14 | selection of URL | user-provided value |
+| servestd/servestd.go:44:24:44:30 | payload | common/common.go:61:10:61:29 | call to FormValue | servestd/servestd.go:44:24:44:30 | payload | This path to an untrusted URL redirection depends on a $@. | common/common.go:61:10:61:29 | call to FormValue | user-provided value |
+| servestd/servestd.go:44:24:44:30 | payload | servegin/servegin.go:28:10:28:25 | call to Query | servestd/servestd.go:44:24:44:30 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:28:10:28:25 | call to Query | user-provided value |
+| servestd/servestd.go:44:24:44:30 | payload | servegin/servegin.go:30:10:30:28 | call to PostForm | servestd/servestd.go:44:24:44:30 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:30:10:30:28 | call to PostForm | user-provided value |
+| servestd/servestd.go:44:24:44:30 | payload | servegin/servegin.go:32:10:32:29 | call to GetHeader | servestd/servestd.go:44:24:44:30 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:32:10:32:29 | call to GetHeader | user-provided value |
+| servestd/servestd.go:44:24:44:30 | payload | servegin/servegin.go:34:3:34:31 | extract:0 ... := ... | servestd/servestd.go:44:24:44:30 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:34:3:34:31 | extract:0 ... := ... | user-provided value |
+| servestd/servestd.go:55:22:55:46 | call to Get | servestd/servestd.go:55:22:55:26 | selection of URL | servestd/servestd.go:55:22:55:46 | call to Get | This path to an untrusted URL redirection depends on a $@. | servestd/servestd.go:55:22:55:26 | selection of URL | user-provided value |
+edges
+| common/common.go:45:29:45:35 | SSA def(payload) | common/common.go:49:48:49:54 | payload | provenance |  |
+| common/common.go:49:48:49:54 | payload | servechi/servechi.go:30:49:30:55 | SSA def(payload) | provenance | Config |
+| common/common.go:49:48:49:54 | payload | servegin/servegin.go:15:48:15:54 | SSA def(payload) | provenance | Config |
+| common/common.go:49:48:49:54 | payload | servejschmidt/servejschmidt.go:30:49:30:55 | SSA def(payload) | provenance | Config |
+| common/common.go:49:48:49:54 | payload | servestd/servestd.go:38:49:38:55 | SSA def(payload) | provenance | Config |
+| common/common.go:58:10:58:14 | selection of URL | common/common.go:58:10:58:22 | call to Query | provenance | Src:MaD:2007 Config |
+| common/common.go:58:10:58:22 | call to Query | common/common.go:58:10:58:35 | call to Get | provenance | Config |
+| common/common.go:58:10:58:35 | call to Get | common/common.go:59:10:59:10 | v | provenance |  |
+| common/common.go:59:10:59:10 | v | servechi/servechi.go:20:10:20:31 | call to GetUserInput | provenance |  |
+| common/common.go:59:10:59:10 | v | servejschmidt/servejschmidt.go:20:10:20:31 | call to GetUserInput | provenance |  |
+| common/common.go:59:10:59:10 | v | servestd/servestd.go:28:10:28:31 | call to GetUserInput | provenance |  |
+| common/common.go:61:10:61:29 | call to FormValue | common/common.go:62:10:62:10 | v | provenance | Src:MaD:1995  |
+| common/common.go:62:10:62:10 | v | servechi/servechi.go:20:10:20:31 | call to GetUserInput | provenance |  |
+| common/common.go:62:10:62:10 | v | servejschmidt/servejschmidt.go:20:10:20:31 | call to GetUserInput | provenance |  |
+| common/common.go:62:10:62:10 | v | servestd/servestd.go:28:10:28:31 | call to GetUserInput | provenance |  |
+| common/common.go:69:9:69:27 | call to GetPathValue | servechi/servechi.go:20:10:20:31 | call to GetUserInput | provenance |  |
+| common/common.go:69:9:69:27 | call to GetPathValue | servejschmidt/servejschmidt.go:20:10:20:31 | call to GetUserInput | provenance |  |
+| common/common.go:69:9:69:27 | call to GetPathValue | servestd/servestd.go:28:10:28:31 | call to GetUserInput | provenance |  |
+| common/common.go:73:14:73:43 | call to Split | common/common.go:79:25:79:32 | splitURL | provenance |  |
+| common/common.go:73:28:73:32 | implicit-deref selection of URL | common/common.go:73:28:73:32 | selection of URL [postupdate] | provenance | Config |
+| common/common.go:73:28:73:32 | implicit-deref selection of URL | common/common.go:73:28:73:37 | selection of Path | provenance | Config |
+| common/common.go:73:28:73:32 | selection of URL | common/common.go:73:28:73:32 | implicit-deref selection of URL | provenance | Src:MaD:2007 Config |
+| common/common.go:73:28:73:32 | selection of URL | common/common.go:73:28:73:37 | selection of Path | provenance | Src:MaD:2007 Config |
+| common/common.go:73:28:73:32 | selection of URL [postupdate] | common/common.go:73:28:73:32 | implicit-deref selection of URL | provenance | Config |
+| common/common.go:73:28:73:37 | selection of Path | common/common.go:73:14:73:43 | call to Split | provenance | Config |
+| common/common.go:79:11:79:36 | []type{args} [array] | common/common.go:79:11:79:36 | call to append [array] | provenance | MaD:32 |
+| common/common.go:79:11:79:36 | call to append [array] | common/common.go:79:18:79:22 | param [array] | provenance |  |
+| common/common.go:79:11:79:36 | call to append [array] | common/common.go:81:22:81:26 | param [array] | provenance |  |
+| common/common.go:79:18:79:22 | param [array] | common/common.go:79:11:79:36 | call to append [array] | provenance | MaD:30 |
+| common/common.go:79:25:79:32 | splitURL | common/common.go:79:25:79:35 | index expression | provenance | Config |
+| common/common.go:79:25:79:35 | index expression | common/common.go:79:11:79:36 | []type{args} [array] | provenance |  |
+| common/common.go:81:9:81:32 | call to Join | common/common.go:69:9:69:27 | call to GetPathValue | provenance |  |
+| common/common.go:81:22:81:26 | param [array] | common/common.go:81:9:81:32 | call to Join | provenance | Config |
+| results/results.go:11:18:11:18 | SSA def(s) | results/results.go:12:15:12:15 | s | provenance |  |
+| results/results.go:12:9:12:15 | ...+... | results/results.go:20:3:20:30 | extract:0 ... := ... | provenance | Config |
+| results/results.go:12:15:12:15 | s | results/results.go:12:9:12:15 | ...+... | provenance | Config |
+| results/results.go:18:8:18:26 | call to FormValue | results/results.go:20:28:20:29 | in | provenance | Src:MaD:1995  |
+| results/results.go:20:3:20:30 | extract:0 ... := ... | results/results.go:21:23:21:28 | target | provenance | Sink:MaD:1969 |
+| results/results.go:20:28:20:29 | in | results/results.go:11:18:11:18 | SSA def(s) | provenance | Config |
+| results/results.go:30:36:30:41 | SSA def(target) | results/results.go:31:26:31:31 | target | provenance | Sink:MaD:1969 |
+| results/results.go:34:41:34:46 | SSA def(target) | results/results.go:35:26:35:31 | target | provenance | Sink:MaD:1969 |
+| results/results.go:44:8:44:12 | selection of URL | results/results.go:44:8:44:20 | call to Query | provenance | Src:MaD:2007 Config |
+| results/results.go:44:8:44:20 | call to Query | results/results.go:44:8:44:32 | call to Get | provenance | Config |
+| results/results.go:44:8:44:32 | call to Get | results/results.go:50:16:50:17 | in | provenance |  |
+| results/results.go:50:16:50:17 | in | results/results.go:30:36:30:41 | SSA def(target) | provenance | Config |
+| results/results.go:50:16:50:17 | in | results/results.go:51:33:51:34 | in | provenance |  |
+| results/results.go:51:33:51:34 | in | results/results.go:34:41:34:46 | SSA def(target) | provenance | Config |
+| servechi/servechi.go:20:10:20:31 | call to GetUserInput | servechi/servechi.go:21:29:21:30 | in | provenance |  |
+| servechi/servechi.go:21:29:21:30 | in | common/common.go:45:29:45:35 | SSA def(payload) | provenance | Config |
+| servechi/servechi.go:30:49:30:55 | SSA def(payload) | servechi/servechi.go:36:24:36:30 | payload | provenance | Sink:MaD:1969 |
+| servegin/servegin.go:15:48:15:54 | SSA def(payload) | servegin/servegin.go:20:32:20:38 | payload | provenance | Sink:MaD:0 |
+| servegin/servegin.go:28:10:28:25 | call to Query | servegin/servegin.go:52:16:52:38 | call to extractInput | provenance | Src:MaD:701  |
+| servegin/servegin.go:30:10:30:28 | call to PostForm | servegin/servegin.go:52:16:52:38 | call to extractInput | provenance | Src:MaD:698  |
+| servegin/servegin.go:32:10:32:29 | call to GetHeader | servegin/servegin.go:52:16:52:38 | call to extractInput | provenance | Src:MaD:682  |
+| servegin/servegin.go:34:3:34:31 | extract:0 ... := ... | servegin/servegin.go:35:10:35:14 | input | provenance | Src:MaD:678  |
+| servegin/servegin.go:35:10:35:14 | input | servegin/servegin.go:52:16:52:38 | call to extractInput | provenance |  |
+| servegin/servegin.go:52:16:52:38 | call to extractInput | servegin/servegin.go:53:40:53:46 | payload | provenance |  |
+| servegin/servegin.go:53:40:53:46 | payload | common/common.go:45:29:45:35 | SSA def(payload) | provenance | Config |
+| servejschmidt/servejschmidt.go:20:10:20:31 | call to GetUserInput | servejschmidt/servejschmidt.go:21:29:21:30 | in | provenance |  |
+| servejschmidt/servejschmidt.go:21:29:21:30 | in | common/common.go:45:29:45:35 | SSA def(payload) | provenance | Config |
+| servejschmidt/servejschmidt.go:30:49:30:55 | SSA def(payload) | servejschmidt/servejschmidt.go:36:24:36:30 | payload | provenance | Sink:MaD:1969 |
+| servestd/servestd.go:28:10:28:31 | call to GetUserInput | servestd/servestd.go:29:29:29:30 | in | provenance |  |
+| servestd/servestd.go:29:29:29:30 | in | common/common.go:45:29:45:35 | SSA def(payload) | provenance | Config |
+| servestd/servestd.go:38:49:38:55 | SSA def(payload) | servestd/servestd.go:44:24:44:30 | payload | provenance | Sink:MaD:1969 |
+| servestd/servestd.go:55:22:55:26 | selection of URL | servestd/servestd.go:55:22:55:34 | call to Query | provenance | Src:MaD:2007 Config |
+| servestd/servestd.go:55:22:55:34 | call to Query | servestd/servestd.go:55:22:55:46 | call to Get | provenance | Config Sink:MaD:1969 |
+| servestd/servestd.go:60:22:60:26 | implicit-deref selection of URL | servestd/servestd.go:60:22:60:26 | selection of URL [postupdate] | provenance | Config |
+| servestd/servestd.go:60:22:60:26 | implicit-deref selection of URL | servestd/servestd.go:60:22:60:31 | selection of Path | provenance | Config |
+| servestd/servestd.go:60:22:60:26 | selection of URL | servestd/servestd.go:60:22:60:26 | implicit-deref selection of URL | provenance | Src:MaD:2007 Config |
+| servestd/servestd.go:60:22:60:26 | selection of URL | servestd/servestd.go:60:22:60:31 | selection of Path | provenance | Src:MaD:2007 Config |
+| servestd/servestd.go:60:22:60:26 | selection of URL [postupdate] | servestd/servestd.go:60:22:60:26 | implicit-deref selection of URL | provenance | Config |
+| servestd/servestd.go:60:22:60:31 | selection of Path | servestd/servestd.go:60:22:60:35 | ...+... | provenance | Config Sink:MaD:1969 |
+nodes
+| common/common.go:45:29:45:35 | SSA def(payload) | semmle.label | SSA def(payload) |
+| common/common.go:49:48:49:54 | payload | semmle.label | payload |
+| common/common.go:58:10:58:14 | selection of URL | semmle.label | selection of URL |
+| common/common.go:58:10:58:22 | call to Query | semmle.label | call to Query |
+| common/common.go:58:10:58:35 | call to Get | semmle.label | call to Get |
+| common/common.go:59:10:59:10 | v | semmle.label | v |
+| common/common.go:61:10:61:29 | call to FormValue | semmle.label | call to FormValue |
+| common/common.go:62:10:62:10 | v | semmle.label | v |
+| common/common.go:69:9:69:27 | call to GetPathValue | semmle.label | call to GetPathValue |
+| common/common.go:73:14:73:43 | call to Split | semmle.label | call to Split |
+| common/common.go:73:28:73:32 | implicit-deref selection of URL | semmle.label | implicit-deref selection of URL |
+| common/common.go:73:28:73:32 | selection of URL | semmle.label | selection of URL |
+| common/common.go:73:28:73:32 | selection of URL [postupdate] | semmle.label | selection of URL [postupdate] |
+| common/common.go:73:28:73:37 | selection of Path | semmle.label | selection of Path |
+| common/common.go:79:11:79:36 | []type{args} [array] | semmle.label | []type{args} [array] |
+| common/common.go:79:11:79:36 | call to append [array] | semmle.label | call to append [array] |
+| common/common.go:79:18:79:22 | param [array] | semmle.label | param [array] |
+| common/common.go:79:25:79:32 | splitURL | semmle.label | splitURL |
+| common/common.go:79:25:79:35 | index expression | semmle.label | index expression |
+| common/common.go:81:9:81:32 | call to Join | semmle.label | call to Join |
+| common/common.go:81:22:81:26 | param [array] | semmle.label | param [array] |
+| results/results.go:11:18:11:18 | SSA def(s) | semmle.label | SSA def(s) |
+| results/results.go:12:9:12:15 | ...+... | semmle.label | ...+... |
+| results/results.go:12:15:12:15 | s | semmle.label | s |
+| results/results.go:18:8:18:26 | call to FormValue | semmle.label | call to FormValue |
+| results/results.go:20:3:20:30 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
+| results/results.go:20:28:20:29 | in | semmle.label | in |
+| results/results.go:21:23:21:28 | target | semmle.label | target |
+| results/results.go:30:36:30:41 | SSA def(target) | semmle.label | SSA def(target) |
+| results/results.go:31:26:31:31 | target | semmle.label | target |
+| results/results.go:34:41:34:46 | SSA def(target) | semmle.label | SSA def(target) |
+| results/results.go:35:26:35:31 | target | semmle.label | target |
+| results/results.go:44:8:44:12 | selection of URL | semmle.label | selection of URL |
+| results/results.go:44:8:44:20 | call to Query | semmle.label | call to Query |
+| results/results.go:44:8:44:32 | call to Get | semmle.label | call to Get |
+| results/results.go:50:16:50:17 | in | semmle.label | in |
+| results/results.go:51:33:51:34 | in | semmle.label | in |
+| servechi/servechi.go:20:10:20:31 | call to GetUserInput | semmle.label | call to GetUserInput |
+| servechi/servechi.go:21:29:21:30 | in | semmle.label | in |
+| servechi/servechi.go:30:49:30:55 | SSA def(payload) | semmle.label | SSA def(payload) |
+| servechi/servechi.go:36:24:36:30 | payload | semmle.label | payload |
+| servegin/servegin.go:15:48:15:54 | SSA def(payload) | semmle.label | SSA def(payload) |
+| servegin/servegin.go:20:32:20:38 | payload | semmle.label | payload |
+| servegin/servegin.go:28:10:28:25 | call to Query | semmle.label | call to Query |
+| servegin/servegin.go:30:10:30:28 | call to PostForm | semmle.label | call to PostForm |
+| servegin/servegin.go:32:10:32:29 | call to GetHeader | semmle.label | call to GetHeader |
+| servegin/servegin.go:34:3:34:31 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
+| servegin/servegin.go:35:10:35:14 | input | semmle.label | input |
+| servegin/servegin.go:52:16:52:38 | call to extractInput | semmle.label | call to extractInput |
+| servegin/servegin.go:53:40:53:46 | payload | semmle.label | payload |
+| servegin/servegin.go:72:31:72:45 | call to Query | semmle.label | call to Query |
+| servejschmidt/servejschmidt.go:20:10:20:31 | call to GetUserInput | semmle.label | call to GetUserInput |
+| servejschmidt/servejschmidt.go:21:29:21:30 | in | semmle.label | in |
+| servejschmidt/servejschmidt.go:30:49:30:55 | SSA def(payload) | semmle.label | SSA def(payload) |
+| servejschmidt/servejschmidt.go:36:24:36:30 | payload | semmle.label | payload |
+| servestd/servestd.go:28:10:28:31 | call to GetUserInput | semmle.label | call to GetUserInput |
+| servestd/servestd.go:29:29:29:30 | in | semmle.label | in |
+| servestd/servestd.go:38:49:38:55 | SSA def(payload) | semmle.label | SSA def(payload) |
+| servestd/servestd.go:44:24:44:30 | payload | semmle.label | payload |
+| servestd/servestd.go:55:22:55:26 | selection of URL | semmle.label | selection of URL |
+| servestd/servestd.go:55:22:55:34 | call to Query | semmle.label | call to Query |
+| servestd/servestd.go:55:22:55:46 | call to Get | semmle.label | call to Get |
+| servestd/servestd.go:60:22:60:26 | implicit-deref selection of URL | semmle.label | implicit-deref selection of URL |
+| servestd/servestd.go:60:22:60:26 | selection of URL | semmle.label | selection of URL |
+| servestd/servestd.go:60:22:60:26 | selection of URL [postupdate] | semmle.label | selection of URL [postupdate] |
+| servestd/servestd.go:60:22:60:31 | selection of Path | semmle.label | selection of Path |
+| servestd/servestd.go:60:22:60:35 | ...+... | semmle.label | ...+... |
+subpaths

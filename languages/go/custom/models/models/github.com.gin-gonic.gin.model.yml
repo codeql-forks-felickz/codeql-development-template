@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      # url-redirection
+      - ["github.com/gin-gonic/gin", "Context", True, "Redirect", "", "", "Argument[1]", "url-redirection", "manual"]
