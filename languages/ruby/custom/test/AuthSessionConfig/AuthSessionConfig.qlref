@@ -1,0 +1,2 @@
+query: AuthSessionConfig/AuthSessionConfig.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

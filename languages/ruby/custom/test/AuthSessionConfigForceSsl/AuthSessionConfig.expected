@@ -1,0 +1,1 @@
+| config/initializers/session_store.rb:5:1:5:90 | call to session_store | Session store cookie is insecure: the HttpOnly attribute is disabled. |
