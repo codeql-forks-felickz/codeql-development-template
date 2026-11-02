@@ -49,14 +49,25 @@ private predicate isLiteralArgument(Expr arg) {
 
 /**
  * Holds if `call` passes at least one non-literal value to be formatted, ignoring the
- * first `skip` positional arguments.
+ * first `skip` positional arguments and the named argument `ignoredKeyword`.
  */
 bindingset[skip]
 private predicate hasNonLiteralFormatArgument(DataFlow::CallCfgNode call, int skip) {
+  hasNonLiteralFormatArgument(call, skip, "")
+}
+
+bindingset[skip, ignoredKeyword]
+private predicate hasNonLiteralFormatArgument(
+  DataFlow::CallCfgNode call, int skip, string ignoredKeyword
+) {
   exists(Expr arg |
     exists(int i | i >= skip and arg = call.getNode().getNode().(Call).getPositionalArg(i))
     or
-    arg = call.getNode().getNode().(Call).getANamedArg().(Keyword).getValue()
+    exists(Keyword keyword |
+      keyword = call.getNode().getNode().(Call).getANamedArg().(Keyword) and
+      keyword.getArg() != ignoredKeyword and
+      arg = keyword.getValue()
+    )
     or
     arg = call.getNode().getNode().(Call).getANamedArg().(DictUnpacking).getValue()
     or
@@ -91,6 +102,19 @@ private class FormatStringSink extends DataFlow::Node {
             .getACall() and
       this = call.getArg(0) and
       hasNonLiteralFormatArgument(call, 1)
+    )
+    or
+    // `string.Formatter().vformat(format_string=fmt, ...)`
+    exists(DataFlow::CallCfgNode call |
+      call =
+        API::moduleImport("string")
+            .getMember("Formatter")
+            .getASubclass*()
+            .getReturn()
+            .getMember("vformat")
+            .getACall() and
+      this = call.getArgByName("format_string") and
+      hasNonLiteralFormatArgument(call, 0, "format_string")
     )
   }
 }

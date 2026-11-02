@@ -19,6 +19,7 @@ def render():
     out.append(tmpl.format_map({"env": os.environ}))  # $ Alert
     out.append(string.Formatter().format(tmpl, Config()))  # $ Alert
     out.append(string.Formatter().vformat(tmpl, (Config(),), {}))  # $ Alert
+    out.append(string.Formatter().vformat(format_string=tmpl, args=(Config(),), kwargs={}))  # $ Alert
     return "".join(out)
 
 
@@ -37,6 +38,7 @@ def safe():
     out.append(tmpl.format_map({"name": "x"}))
     out.append(tmpl.format(*[], **{}))
     out.append(string.Formatter().vformat(tmpl, (), {}))
+    out.append(string.Formatter().vformat(format_string=tmpl, args=(), kwargs={}))
     # Safe: compared against a constant.
     if tmpl == "{0.name}":
         out.append(tmpl.format(Config()))
