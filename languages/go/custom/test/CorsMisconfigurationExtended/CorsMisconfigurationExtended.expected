@@ -1,0 +1,23 @@
+WARNING: predicate 'dominates' has been deprecated and may be removed in future (CorsMisconfigurationExtended.ql:75,11-20)
+WARNING: predicate 'dominates' has been deprecated and may be removed in future (CorsMisconfigurationExtended.ql:232,9-18)
+WARNING: predicate 'dominates' has been deprecated and may be removed in future (CorsMisconfigurationExtended.ql:241,9-18)
+WARNING: predicate 'ensures' has been deprecated and may be removed in future (CorsMisconfigurationExtended.ql:73,11-18)
+WARNING: predicate 'ensures' has been deprecated and may be removed in future (CorsMisconfigurationExtended.ql:239,9-16)
+WARNING: type 'ConditionGuardNode' has been deprecated and may be removed in future (CorsMisconfigurationExtended.ql:72,12-43)
+WARNING: type 'ConditionGuardNode' has been deprecated and may be removed in future (CorsMisconfigurationExtended.ql:186,55-86)
+WARNING: type 'ConditionGuardNode' has been deprecated and may be removed in future (CorsMisconfigurationExtended.ql:229,31-62)
+WARNING: type 'ConditionGuardNode' has been deprecated and may be removed in future (CorsMisconfigurationExtended.ql:238,10-41)
+| ChiCors.go:12:19:12:51 | slice literal | access-control-allow-origin header is set to `http://*`, and state-changing methods (PUT, PATCH or DELETE) are allowed |
+| EchoV3.go:16:17:16:29 | slice literal | access-control-allow-origin header is set to `*`, and state-changing methods (PUT, PATCH or DELETE) are allowed |
+| EchoV4.go:14:21:14:33 | slice literal | access-control-allow-origin header is set to `*`, and access-control-allow-credentials is set to `true` |
+| EchoV4.go:21:39:21:59 | slice literal | access-control-allow-origin header is set to `https://*`, and access-control-allow-credentials is set to `true` |
+| GinCors.go:12:21:12:24 | true | access-control-allow-origin header is set to `*`, and access-control-allow-credentials is set to `true` |
+| GinCors.go:21:24:21:36 | slice literal | access-control-allow-origin header is set to `*`, and state-changing methods (PUT, PATCH or DELETE) are allowed |
+| GinCors.go:38:21:38:36 | slice literal | access-control-allow-origin header is set to `null`, and access-control-allow-credentials is set to `true` |
+| NetHttp.go:15:2:15:51 | call to Set | access-control-allow-origin header is set to `*`, and access-control-allow-credentials is set to `true` |
+| NetHttp.go:29:2:29:51 | call to Set | access-control-allow-origin header is set to `*`, and state-changing methods (PUT, PATCH or DELETE) are allowed |
+| NetHttp.go:35:2:35:51 | call to Add | access-control-allow-origin header is set to `*`, and state-changing methods (PUT, PATCH or DELETE) are allowed |
+| NetHttp.go:73:2:73:54 | call to Set | access-control-allow-origin header is set to `null`, and access-control-allow-credentials is set to `true` |
+| NetHttp.go:92:2:92:54 | call to Set | access-control-allow-origin header is set to a user-defined value, and access-control-allow-credentials is set to `true` |
+| RsCors.go:12:21:12:33 | slice literal | access-control-allow-origin header is set to `*`, and access-control-allow-credentials is set to `true` |
+| RsCors.go:30:27:30:39 | slice literal | access-control-allow-origin header is set to `*`, and access-control-allow-credentials is set to `true` |

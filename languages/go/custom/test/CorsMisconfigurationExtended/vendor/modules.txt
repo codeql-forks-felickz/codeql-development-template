@@ -1,0 +1,20 @@
+# github.com/gin-contrib/cors v1.4.0
+## explicit
+github.com/gin-contrib/cors
+# github.com/gin-gonic/gin v1.9.1
+## explicit
+github.com/gin-gonic/gin
+# github.com/go-chi/cors v1.2.1
+## explicit
+github.com/go-chi/cors
+# github.com/labstack/echo v3.3.10+incompatible
+## explicit
+github.com/labstack/echo
+github.com/labstack/echo/middleware
+# github.com/labstack/echo/v4 v4.11.4
+## explicit
+github.com/labstack/echo/v4
+github.com/labstack/echo/v4/middleware
+# github.com/rs/cors v1.10.1
+## explicit
+github.com/rs/cors

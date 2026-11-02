@@ -1,0 +1,2 @@
+query: CorsMisconfigurationExtended/CorsMisconfigurationExtended.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
