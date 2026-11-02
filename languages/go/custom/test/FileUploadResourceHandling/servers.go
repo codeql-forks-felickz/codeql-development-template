@@ -77,6 +77,61 @@ func serverValueTimeoutAssignedLater(addr string) {
 	s.ListenAndServe()
 }
 
+func serverLiteralZeroTimeout() {
+	s := &http.Server{ReadTimeout: 0} // $ Alert
+	s.ListenAndServe()
+}
+
+func serverLiteralZeroTimeoutExpression() {
+	s := &http.Server{ReadTimeout: 0 * time.Second} // $ Alert
+	s.ListenAndServe()
+}
+
+func serverLiteralZeroTimeoutConversion() {
+	s := &http.Server{ReadHeaderTimeout: time.Duration(0)} // $ Alert
+	s.ListenAndServe()
+}
+
+func serverLiteralNegativeTimeout() {
+	s := &http.Server{ReadTimeout: -time.Second} // $ Alert
+	s.ListenAndServe()
+}
+
+func serverAssignedZeroTimeout() {
+	s := &http.Server{Addr: ":8080"} // $ Alert
+	s.ReadTimeout = 0
+	s.ListenAndServe()
+}
+
+func serverAssignedZeroTimeoutExpression() {
+	s := &http.Server{Addr: ":8080"} // $ Alert
+	s.ReadTimeout = 0 * time.Second
+	s.ListenAndServe()
+}
+
+func serverAssignedZeroTimeoutConversion() {
+	s := &http.Server{Addr: ":8080"} // $ Alert
+	s.ReadHeaderTimeout = time.Duration(0)
+	s.ListenAndServe()
+}
+
+func serverAssignedNegativeTimeout() {
+	s := &http.Server{Addr: ":8080"} // $ Alert
+	s.ReadTimeout = -time.Second
+	s.ListenAndServe()
+}
+
+func serverLiteralDynamicTimeout(timeout time.Duration) {
+	s := &http.Server{ReadTimeout: timeout}
+	s.ListenAndServe()
+}
+
+func serverAssignedDynamicTimeout(timeout time.Duration) {
+	s := &http.Server{Addr: ":8080"}
+	s.ReadTimeout = timeout
+	s.ListenAndServe()
+}
+
 // Safe: never served, so it cannot be held open by clients.
 func serverNeverServed(addr string) *tls.Config {
 	s := &http.Server{Addr: addr}

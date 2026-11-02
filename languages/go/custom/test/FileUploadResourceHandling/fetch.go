@@ -39,6 +39,12 @@ func defaultClientUnbounded(target string) []byte {
 	return b
 }
 
+func headResponseBodyIsEmpty(target string) []byte {
+	resp, _ := http.Head(target)
+	b, _ := io.ReadAll(resp.Body)
+	return b
+}
+
 // Safe: the body is bounded with io.LimitReader.
 func fetchLimited(payload string) []byte {
 	resp, _ := http.Get(payload)

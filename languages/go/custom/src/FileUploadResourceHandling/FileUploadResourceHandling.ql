@@ -28,6 +28,14 @@ predicate isHeaderTimeoutField(Field f) {
   f.hasQualifiedName("net/http", "Server", ["ReadHeaderTimeout", "ReadTimeout"])
 }
 
+/** Holds if `value` is a constant zero or negative timeout duration. */
+predicate isDisabledTimeoutValue(Expr value) {
+  exists(string exactValue |
+    exactValue = value.getExactValue() and
+    (exactValue = "0" or exactValue.matches("-%"))
+  )
+}
+
 /**
  * An `http.Server` composite literal that does not set `ReadHeaderTimeout` or `ReadTimeout`.
  */
@@ -37,7 +45,8 @@ class ServerLitWithoutTimeouts extends StructLit {
     // Positional literals set every field, so only keyed literals are considered.
     forall(Expr e | e = this.getAnElement() | e instanceof KeyValueExpr) and
     not exists(KeyValueExpr kv | kv = this.getAnElement() |
-      kv.getKey().(Ident).getName() = ["ReadHeaderTimeout", "ReadTimeout"]
+      kv.getKey().(Ident).getName() = ["ReadHeaderTimeout", "ReadTimeout"] and
+      not isDisabledTimeoutValue(kv.getValue())
     )
   }
 
@@ -66,9 +75,13 @@ predicate isServingReceiver(DataFlow::Node recv) {
 
 /** Holds if `base` is the base of a write to a header-read timeout field of an `http.Server`. */
 predicate isTimeoutWriteBase(DataFlow::Node base) {
-  exists(DataFlow::Write w, Field f, DataFlow::Node written |
+  exists(DataFlow::Write w, Field f, DataFlow::Node written, DataFlow::Node value |
     isHeaderTimeoutField(f) and
-    w.writesField(written, f, _) and
+    w.writesField(written, f, value) and
+    exists(Expr valueExpr |
+      valueExpr = value.asExpr() and
+      not isDisabledTimeoutValue(valueExpr)
+    ) and
     base = derefOperandOrSelf([written, written.(DataFlow::PostUpdateNode).getPreUpdateNode()])
   )
 }
@@ -98,7 +111,7 @@ predicate servedWithoutTimeouts(ServerLitWithoutTimeouts lit) {
  * timeout, to a URL that is not a compile-time constant.
  */
 DataFlow::CallNode defaultClientRequest() {
-  exists(string name | name = ["Get", "Head", "Post", "PostForm"] |
+  exists(string name | name = ["Get", "Post", "PostForm"] |
     exists(Function f | f.hasQualifiedName("net/http", name) and result = f.getACall())
     or
     exists(Method m, DataFlow::ReadNode client |
