@@ -80,6 +80,8 @@ mod iron_cors {
 }
 
 mod tower_http_cors {
+    use std::str::FromStr;
+
     use axum::{
         http::{header, HeaderMap, HeaderValue, Method},
         response::IntoResponse,
@@ -135,6 +137,22 @@ mod tower_http_cors {
         Router::new()
             .route("/json", get(json))
             .layer(CorsLayer::new().allow_origin(origin.parse::<HeaderValue>().unwrap())) // $ Alert
+    }
+
+    pub fn bad_reassigned_wildcard_variable() -> Router {
+        let mut origin = "https://trusted.example.com";
+        origin = "*";
+        Router::new()
+            .route("/json", get(json))
+            .layer(CorsLayer::new().allow_origin(origin.parse::<HeaderValue>().unwrap())) // $ Alert
+    }
+
+    pub fn good_reassigned_trusted_variable() -> Router {
+        let mut origin = "*";
+        origin = "https://trusted.example.com";
+        Router::new()
+            .route("/json", get(json))
+            .layer(CorsLayer::new().allow_origin(origin.parse::<HeaderValue>().unwrap()))
     }
 
     pub fn bad_permissive() -> Router {
@@ -200,6 +218,25 @@ mod tower_http_cors {
             HeaderValue::from_static("*"),
         ); // $ Alert
         (headers, "Hello")
+    }
+
+    pub async fn bad_raw_header_name_constructor_unwrap() -> impl IntoResponse {
+        let mut headers = HeaderMap::new();
+        headers.insert(
+            header::HeaderName::from_str("access-control-allow-origin").unwrap(),
+            HeaderValue::from_static("*"),
+        ); // $ Alert
+        (headers, "Hello")
+    }
+
+    pub async fn bad_raw_header_name_constructor_try(
+    ) -> Result<impl IntoResponse, Box<dyn std::error::Error>> {
+        let mut headers = HeaderMap::new();
+        headers.insert(
+            header::HeaderName::from_str("access-control-allow-origin")?,
+            HeaderValue::from_static("*"),
+        ); // $ Alert
+        Ok((headers, "Hello"))
     }
 
     fn check(value: Option<&HeaderValue>, expected: &str) -> bool {

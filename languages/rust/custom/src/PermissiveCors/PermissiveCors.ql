@@ -12,6 +12,7 @@
  */
 
 import rust
+import codeql.rust.dataflow.DataFlow
 
 /** Holds if `e` is a string literal whose value is `value`. */
 bindingset[value]
@@ -20,9 +21,9 @@ private predicate isStringLiteral(Expr e, string value) {
 }
 
 /**
- * Gets an expression that the value of `e` is syntactically derived from: a
- * receiver or argument of a call, a parenthesized, referenced or `?`-operand
- * expression, or the initializer of a local variable read by `e`.
+ * Gets an expression that can contribute to the value of `e`: a receiver or
+ * argument of a call, a parenthesized, referenced or `?`-operand
+ * expression, or a reaching assignment to a local variable read by `e`.
  *
  * This handles wrappers such as `"*".parse::<HeaderValue>().unwrap()`,
  * `HeaderValue::from_static("*")` and `let origin = "*"; ... origin`.
@@ -40,10 +41,12 @@ private Expr getAnInnerExpr(Expr e) {
   or
   result = e.(TryExpr).getExpr()
   or
-  exists(Variable v, LetStmt let |
+  exists(Variable v, DataFlow::ExprNode source, DataFlow::ExprNode target |
     e = v.getAnAccess() and
-    let.getPat() = v.getPat() and
-    result = let.getInitializer()
+    target.asExpr() = e and
+    source.asExpr() = result and
+    source.asExpr() != e and
+    DataFlow::localFlow(source, target)
   )
 }
 
@@ -95,6 +98,14 @@ private predicate isAllowOriginHeaderName(Expr e) {
     isPathCall(c, "HeaderName", ["from_static", "from_lowercase", "from_bytes", "from_str"]) and
     isAllowOriginHeaderName(c.getArgList().getArg(0))
   )
+  or
+  exists(MethodCallExpr c |
+    c = e and
+    c.getIdentifier().getText() in ["unwrap", "expect"] and
+    isAllowOriginHeaderName(c.getReceiver())
+  )
+  or
+  isAllowOriginHeaderName(e.(TryExpr).getExpr())
 }
 
 /**
