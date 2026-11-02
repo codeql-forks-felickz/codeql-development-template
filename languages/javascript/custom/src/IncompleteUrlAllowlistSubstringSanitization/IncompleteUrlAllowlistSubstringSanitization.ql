@@ -53,6 +53,7 @@ predicate isAllowlistElementRef(DataFlow::Node nd, DataFlow::SourceNode coll) {
   exists(ForOfStmt loop |
     loop.getIterationDomain().flow() = allowlistRef(coll) and
     nd.asExpr() = loop.getAnIterationVariable().getAnAccess() and
+    loop.getBody().getAChild*() = nd.asExpr() and
     count(loop.getAnIterationVariable().getAnAssignedExpr()) = 0
   )
   or

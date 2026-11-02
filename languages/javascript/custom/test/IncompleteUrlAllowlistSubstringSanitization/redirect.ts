@@ -45,6 +45,15 @@ export const isRedirectAllowedLoopExact = (url: string) => {
   return false
 }
 
+// GOOD: a reused `var` belongs to the second loop's safe allowlist
+export function reusesVarAcrossLoops (url: string): boolean {
+  for (var prefix of ['https://partner.example.com']) {}
+  for (var prefix of ['https://partner.example.com/']) {
+    return url.startsWith(prefix)
+  }
+  return false
+}
+
 const fileExtensions = ['.png', '.jpg', '.gif']
 
 // GOOD: substring checks against values that are not URLs
