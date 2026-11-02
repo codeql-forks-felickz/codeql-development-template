@@ -1,0 +1,9 @@
+| AuthSessionConfig.swift:46:5:46:86 | call to loadRequest(_:) | This web view loads content but has no navigation delegate restricting the URLs it may navigate to. |
+| AuthSessionConfig.swift:51:5:51:86 | call to loadRequest(_:) | This web view loads content but has no navigation delegate restricting the URLs it may navigate to. |
+| AuthSessionConfig.swift:59:9:59:43 | call to load(_:) | This web view loads content but has no navigation delegate restricting the URLs it may navigate to. |
+| AuthSessionConfig.swift:65:7:65:40 | call to load(_:) | This web view loads content but has no navigation delegate restricting the URLs it may navigate to. |
+| AuthSessionConfig.swift:84:9:84:42 | call to load(_:) | This web view loads content but has no navigation delegate restricting the URLs it may navigate to. |
+| AuthSessionConfig.swift:97:9:97:47 | call to load(_:) | This web view loads content but has no navigation delegate restricting the URLs it may navigate to. |
+| AuthSessionConfig.swift:178:5:178:32 | call to loadRequest(_:) | This web view loads content but has no navigation delegate restricting the URLs it may navigate to. |
+| AuthSessionConfig.swift:186:5:186:45 | call to loadRequest(_:) | This web view loads content but has no navigation delegate restricting the URLs it may navigate to. |
+| AuthSessionConfig.swift:201:9:201:42 | call to load(_:) | This web view loads content but has no navigation delegate restricting the URLs it may navigate to. |
