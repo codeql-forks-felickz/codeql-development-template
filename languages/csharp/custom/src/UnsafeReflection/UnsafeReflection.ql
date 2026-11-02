@@ -101,14 +101,14 @@ private predicate isCollectionMembershipReceiver(Expr receiver) {
   exists(ValueOrRefType receiverType |
     receiverType = receiver.getType() and
     (
-      receiverType.getABaseType*().hasFullyQualifiedName("System.Collections", ["IList", "IDictionary"])
+      receiverType
+          .getABaseType*()
+          .hasFullyQualifiedName("System.Collections", ["IList", "IDictionary"])
       or
       exists(ConstructedType base |
         base = receiverType.getABaseType*() and
-        base.getUnboundGeneric().hasFullyQualifiedName(
-          "System.Collections.Generic",
-          ["ICollection`1", "ISet`1"]
-        )
+        base.getUnboundGeneric()
+            .hasFullyQualifiedName("System.Collections.Generic", ["ICollection`1", "ISet`1"])
       )
     )
   )
@@ -122,7 +122,8 @@ private predicate isDictionaryMembershipReceiver(Expr receiver) {
       or
       exists(ConstructedType base |
         base = receiverType.getABaseType*() and
-        base.getUnboundGeneric().hasFullyQualifiedName("System.Collections.Generic", "IDictionary`2")
+        base.getUnboundGeneric()
+            .hasFullyQualifiedName("System.Collections.Generic", "IDictionary`2")
       )
     )
   )
