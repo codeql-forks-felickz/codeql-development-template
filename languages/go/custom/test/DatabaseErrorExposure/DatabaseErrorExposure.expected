@@ -1,0 +1,63 @@
+#select
+| test.go:32:29:32:32 | data | test.go:19:2:19:49 | extract:1 ... := ... | test.go:32:29:32:32 | data | This response exposes the message of $@, which may reveal database internals. | test.go:19:2:19:49 | extract:1 ... := ... | an error from a database operation |
+| test.go:52:17:52:27 | call to Error | test.go:50:2:50:48 | extract:1 ... := ... | test.go:52:17:52:27 | call to Error | This response exposes the message of $@, which may reveal database internals. | test.go:50:2:50:48 | extract:1 ... := ... | an error from a database operation |
+| test.go:63:38:63:40 | err | test.go:61:9:61:89 | call to Scan | test.go:63:38:63:40 | err | This response exposes the message of $@, which may reveal database internals. | test.go:61:9:61:89 | call to Scan | an error from a database operation |
+| test.go:74:11:74:11 | b | test.go:71:2:71:58 | extract:1 ... := ... | test.go:74:11:74:11 | b | This response exposes the message of $@, which may reveal database internals. | test.go:71:2:71:58 | extract:1 ... := ... | an error from a database operation |
+edges
+| test.go:19:2:19:49 | extract:1 ... := ... | test.go:21:17:21:19 | err | provenance |  |
+| test.go:21:17:21:19 | err | test.go:38:2:38:27 | extract:1 ... := ... | provenance |  |
+| test.go:26:13:26:16 | SSA def(text) | test.go:27:9:27:27 | type conversion | provenance |  |
+| test.go:30:49:30:52 | SSA def(data) | test.go:32:29:32:32 | data | provenance |  |
+| test.go:30:49:30:52 | SSA def(data) [map.value] | test.go:32:29:32:32 | data | provenance |  |
+| test.go:38:2:38:27 | extract:1 ... := ... | test.go:40:77:40:79 | err | provenance |  |
+| test.go:40:11:40:88 | []type{args} [array] | test.go:40:11:40:88 | call to Sprintf | provenance | MaD:345 |
+| test.go:40:11:40:88 | call to Sprintf | test.go:41:26:41:29 | info | provenance |  |
+| test.go:40:77:40:79 | err | test.go:40:77:40:87 | call to Error | provenance | Config |
+| test.go:40:77:40:87 | call to Error | test.go:40:11:40:88 | []type{args} [array] | provenance |  |
+| test.go:40:77:40:87 | call to Error | test.go:40:11:40:88 | call to Sprintf | provenance | FunctionModel |
+| test.go:41:3:41:6 | data [postupdate] [map.value] | test.go:45:21:45:24 | data [map.value] | provenance |  |
+| test.go:41:19:41:30 | call to toHTML | test.go:41:3:41:6 | data [postupdate] [map.value] | provenance |  |
+| test.go:41:19:41:30 | call to toHTML | test.go:45:21:45:24 | data | provenance |  |
+| test.go:41:26:41:29 | info | test.go:26:13:26:16 | SSA def(text) | provenance |  |
+| test.go:41:26:41:29 | info | test.go:41:19:41:30 | call to toHTML | provenance |  |
+| test.go:45:21:45:24 | data | test.go:30:49:30:52 | SSA def(data) | provenance |  |
+| test.go:45:21:45:24 | data [map.value] | test.go:30:49:30:52 | SSA def(data) [map.value] | provenance |  |
+| test.go:50:2:50:48 | extract:1 ... := ... | test.go:52:17:52:19 | err | provenance |  |
+| test.go:52:17:52:19 | err | test.go:52:17:52:27 | call to Error | provenance | Config |
+| test.go:61:9:61:89 | call to Scan | test.go:63:38:63:40 | err | provenance |  |
+| test.go:71:2:71:58 | extract:1 ... := ... | test.go:73:68:73:70 | err | provenance |  |
+| test.go:73:3:73:80 | extract:0 ... := ... | test.go:74:11:74:11 | b | provenance |  |
+| test.go:73:24:73:79 | map literal | test.go:73:3:73:80 | extract:0 ... := ... | provenance | MaD:273 |
+| test.go:73:68:73:70 | err | test.go:73:68:73:78 | call to Error | provenance | Config |
+| test.go:73:68:73:78 | call to Error | test.go:73:24:73:79 | map literal | provenance |  |
+nodes
+| test.go:19:2:19:49 | extract:1 ... := ... | semmle.label | extract:1 ... := ... |
+| test.go:21:17:21:19 | err | semmle.label | err |
+| test.go:26:13:26:16 | SSA def(text) | semmle.label | SSA def(text) |
+| test.go:27:9:27:27 | type conversion | semmle.label | type conversion |
+| test.go:30:49:30:52 | SSA def(data) | semmle.label | SSA def(data) |
+| test.go:30:49:30:52 | SSA def(data) [map.value] | semmle.label | SSA def(data) [map.value] |
+| test.go:32:29:32:32 | data | semmle.label | data |
+| test.go:38:2:38:27 | extract:1 ... := ... | semmle.label | extract:1 ... := ... |
+| test.go:40:11:40:88 | []type{args} [array] | semmle.label | []type{args} [array] |
+| test.go:40:11:40:88 | call to Sprintf | semmle.label | call to Sprintf |
+| test.go:40:77:40:79 | err | semmle.label | err |
+| test.go:40:77:40:87 | call to Error | semmle.label | call to Error |
+| test.go:41:3:41:6 | data [postupdate] [map.value] | semmle.label | data [postupdate] [map.value] |
+| test.go:41:19:41:30 | call to toHTML | semmle.label | call to toHTML |
+| test.go:41:26:41:29 | info | semmle.label | info |
+| test.go:45:21:45:24 | data | semmle.label | data |
+| test.go:45:21:45:24 | data [map.value] | semmle.label | data [map.value] |
+| test.go:50:2:50:48 | extract:1 ... := ... | semmle.label | extract:1 ... := ... |
+| test.go:52:17:52:19 | err | semmle.label | err |
+| test.go:52:17:52:27 | call to Error | semmle.label | call to Error |
+| test.go:61:9:61:89 | call to Scan | semmle.label | call to Scan |
+| test.go:63:38:63:40 | err | semmle.label | err |
+| test.go:71:2:71:58 | extract:1 ... := ... | semmle.label | extract:1 ... := ... |
+| test.go:73:3:73:80 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
+| test.go:73:24:73:79 | map literal | semmle.label | map literal |
+| test.go:73:68:73:70 | err | semmle.label | err |
+| test.go:73:68:73:78 | call to Error | semmle.label | call to Error |
+| test.go:74:11:74:11 | b | semmle.label | b |
+subpaths
+| test.go:41:26:41:29 | info | test.go:26:13:26:16 | SSA def(text) | test.go:27:9:27:27 | type conversion | test.go:41:19:41:30 | call to toHTML |

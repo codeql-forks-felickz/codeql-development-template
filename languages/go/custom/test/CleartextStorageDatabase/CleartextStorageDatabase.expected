@@ -1,0 +1,23 @@
+#select
+| test.go:31:11:31:11 | q | test.go:30:84:30:91 | selection of SSN | test.go:31:11:31:11 | q | This SQL statement stores $@ in cleartext. | test.go:30:84:30:91 | selection of SSN | sensitive data (SSN) |
+| test.go:37:78:37:85 | selection of DOB | test.go:37:78:37:85 | selection of DOB | test.go:37:78:37:85 | selection of DOB | This SQL statement stores $@ in cleartext. | test.go:37:78:37:85 | selection of DOB | sensitive data (DOB) |
+| test.go:42:10:42:86 | ...+... | test.go:42:48:42:63 | selection of DateOfBirth | test.go:42:10:42:86 | ...+... | This SQL statement stores $@ in cleartext. | test.go:42:48:42:63 | selection of DateOfBirth | sensitive data (DateOfBirth) |
+| test.go:48:12:48:17 | salary | test.go:48:12:48:17 | salary | test.go:48:12:48:17 | salary | This SQL statement stores $@ in cleartext. | test.go:48:12:48:17 | salary | sensitive data (salary) |
+| test.go:55:82:55:89 | password | test.go:55:82:55:89 | password | test.go:55:82:55:89 | password | This SQL statement stores $@ in cleartext. | test.go:55:82:55:89 | password | sensitive data (password) |
+edges
+| test.go:30:8:30:92 | []type{args} [array] | test.go:30:8:30:92 | call to Sprintf | provenance | MaD:345 |
+| test.go:30:8:30:92 | call to Sprintf | test.go:31:11:31:11 | q | provenance | Sink:MaD:182 |
+| test.go:30:84:30:91 | selection of SSN | test.go:30:8:30:92 | []type{args} [array] | provenance |  |
+| test.go:30:84:30:91 | selection of SSN | test.go:30:8:30:92 | call to Sprintf | provenance | FunctionModel |
+| test.go:42:48:42:63 | selection of DateOfBirth | test.go:42:10:42:86 | ...+... | provenance | Sink:MaD:182 |
+nodes
+| test.go:30:8:30:92 | []type{args} [array] | semmle.label | []type{args} [array] |
+| test.go:30:8:30:92 | call to Sprintf | semmle.label | call to Sprintf |
+| test.go:30:84:30:91 | selection of SSN | semmle.label | selection of SSN |
+| test.go:31:11:31:11 | q | semmle.label | q |
+| test.go:37:78:37:85 | selection of DOB | semmle.label | selection of DOB |
+| test.go:42:10:42:86 | ...+... | semmle.label | ...+... |
+| test.go:42:48:42:63 | selection of DateOfBirth | semmle.label | selection of DateOfBirth |
+| test.go:48:12:48:17 | salary | semmle.label | salary |
+| test.go:55:82:55:89 | password | semmle.label | password |
+subpaths
