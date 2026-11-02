@@ -1,0 +1,2 @@
+query: HtmlTemplateEscapingBypassXss/HtmlTemplateEscapingBypassXss.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,78 @@
+#select
+| util/template.go:12:29:12:32 | data | xss.go:17:10:17:28 | call to FormValue | util/template.go:12:29:12:32 | data | Data from an $@ will not be auto-escaped because it was converted to template.HTML | xss.go:17:10:17:28 | call to FormValue | untrusted source |
+| util/template.go:12:29:12:32 | data | xss.go:31:9:31:26 | call to FormValue | util/template.go:12:29:12:32 | data | Data from an $@ will not be auto-escaped because it was converted to template.HTML | xss.go:31:9:31:26 | call to FormValue | untrusted source |
+| util/template.go:12:29:12:32 | data | xss.go:45:10:45:28 | call to FormValue | util/template.go:12:29:12:32 | data | Data from an $@ will not be auto-escaped because it was converted to template.HTML | xss.go:45:10:45:28 | call to FormValue | untrusted source |
+edges
+| util/template.go:9:70:9:73 | SSA def(data) | util/template.go:12:29:12:32 | data | provenance |  |
+| util/template.go:9:70:9:73 | SSA def(data) [map.value] | util/template.go:12:29:12:32 | data | provenance |  |
+| xss.go:17:10:17:28 | call to FormValue | xss.go:21:25:21:28 | term | provenance | Src:MaD:1994  |
+| xss.go:21:9:21:29 | call to removeScriptTag | xss.go:22:56:22:59 | term | provenance |  |
+| xss.go:21:25:21:28 | term | xss.go:21:9:21:29 | call to removeScriptTag | provenance | MaD:2206 |
+| xss.go:21:25:21:28 | term | xss.go:79:22:79:25 | SSA def(text) | provenance |  |
+| xss.go:22:14:22:60 | []type{args} [array] | xss.go:22:14:22:60 | call to Sprintf | provenance | MaD:345 |
+| xss.go:22:14:22:60 | call to Sprintf | xss.go:23:31:23:38 | notFound | provenance |  |
+| xss.go:22:56:22:59 | term | xss.go:22:14:22:60 | []type{args} [array] | provenance |  |
+| xss.go:22:56:22:59 | term | xss.go:22:14:22:60 | call to Sprintf | provenance | FunctionModel |
+| xss.go:23:2:23:5 | data [postupdate] [map.value] | xss.go:24:41:24:44 | data [map.value] | provenance |  |
+| xss.go:23:17:23:39 | type conversion | xss.go:23:2:23:5 | data [postupdate] [map.value] | provenance |  |
+| xss.go:23:17:23:39 | type conversion | xss.go:24:41:24:44 | data | provenance |  |
+| xss.go:23:31:23:38 | notFound | xss.go:23:17:23:39 | type conversion | provenance | Config |
+| xss.go:24:41:24:44 | data | util/template.go:9:70:9:73 | SSA def(data) | provenance |  |
+| xss.go:24:41:24:44 | data [map.value] | util/template.go:9:70:9:73 | SSA def(data) [map.value] | provenance |  |
+| xss.go:31:9:31:26 | call to FormValue | xss.go:39:51:39:53 | uid | provenance | Src:MaD:1994  |
+| xss.go:39:2:39:5 | data [postupdate] [map.value] | xss.go:40:41:40:44 | data [map.value] | provenance |  |
+| xss.go:39:21:39:55 | type conversion | xss.go:39:2:39:5 | data [postupdate] [map.value] | provenance |  |
+| xss.go:39:21:39:55 | type conversion | xss.go:40:41:40:44 | data | provenance |  |
+| xss.go:39:35:39:54 | []type{args} [array] | xss.go:39:35:39:54 | call to Sprintf | provenance | MaD:345 |
+| xss.go:39:35:39:54 | call to Sprintf | xss.go:39:21:39:55 | type conversion | provenance | Config |
+| xss.go:39:51:39:53 | uid | xss.go:39:35:39:54 | []type{args} [array] | provenance |  |
+| xss.go:39:51:39:53 | uid | xss.go:39:35:39:54 | call to Sprintf | provenance | FunctionModel |
+| xss.go:40:41:40:44 | data | util/template.go:9:70:9:73 | SSA def(data) | provenance |  |
+| xss.go:40:41:40:44 | data [map.value] | util/template.go:9:70:9:73 | SSA def(data) [map.value] | provenance |  |
+| xss.go:45:10:45:28 | call to FormValue | xss.go:47:75:47:78 | term | provenance | Src:MaD:1994  |
+| xss.go:47:10:47:85 | map literal [map.value] | xss.go:48:48:48:51 | data [map.value] | provenance |  |
+| xss.go:47:41:47:84 | type conversion | xss.go:47:10:47:85 | map literal [map.value] | provenance |  |
+| xss.go:47:41:47:84 | type conversion | xss.go:48:48:48:51 | data | provenance |  |
+| xss.go:47:55:47:83 | call to ReplaceAllString | xss.go:47:41:47:84 | type conversion | provenance | Config |
+| xss.go:47:75:47:78 | term | xss.go:47:55:47:83 | call to ReplaceAllString | provenance | MaD:2206 |
+| xss.go:48:48:48:51 | data | util/template.go:9:70:9:73 | SSA def(data) | provenance |  |
+| xss.go:48:48:48:51 | data [map.value] | util/template.go:9:70:9:73 | SSA def(data) [map.value] | provenance |  |
+| xss.go:79:22:79:25 | SSA def(text) | xss.go:81:36:81:39 | text | provenance |  |
+| xss.go:81:12:81:44 | call to ReplaceAllString | xss.go:82:9:82:14 | output | provenance |  |
+| xss.go:81:36:81:39 | text | xss.go:81:12:81:44 | call to ReplaceAllString | provenance | MaD:2206 |
+nodes
+| util/template.go:9:70:9:73 | SSA def(data) | semmle.label | SSA def(data) |
+| util/template.go:9:70:9:73 | SSA def(data) [map.value] | semmle.label | SSA def(data) [map.value] |
+| util/template.go:12:29:12:32 | data | semmle.label | data |
+| xss.go:17:10:17:28 | call to FormValue | semmle.label | call to FormValue |
+| xss.go:21:9:21:29 | call to removeScriptTag | semmle.label | call to removeScriptTag |
+| xss.go:21:25:21:28 | term | semmle.label | term |
+| xss.go:22:14:22:60 | []type{args} [array] | semmle.label | []type{args} [array] |
+| xss.go:22:14:22:60 | call to Sprintf | semmle.label | call to Sprintf |
+| xss.go:22:56:22:59 | term | semmle.label | term |
+| xss.go:23:2:23:5 | data [postupdate] [map.value] | semmle.label | data [postupdate] [map.value] |
+| xss.go:23:17:23:39 | type conversion | semmle.label | type conversion |
+| xss.go:23:31:23:38 | notFound | semmle.label | notFound |
+| xss.go:24:41:24:44 | data | semmle.label | data |
+| xss.go:24:41:24:44 | data [map.value] | semmle.label | data [map.value] |
+| xss.go:31:9:31:26 | call to FormValue | semmle.label | call to FormValue |
+| xss.go:39:2:39:5 | data [postupdate] [map.value] | semmle.label | data [postupdate] [map.value] |
+| xss.go:39:21:39:55 | type conversion | semmle.label | type conversion |
+| xss.go:39:35:39:54 | []type{args} [array] | semmle.label | []type{args} [array] |
+| xss.go:39:35:39:54 | call to Sprintf | semmle.label | call to Sprintf |
+| xss.go:39:51:39:53 | uid | semmle.label | uid |
+| xss.go:40:41:40:44 | data | semmle.label | data |
+| xss.go:40:41:40:44 | data [map.value] | semmle.label | data [map.value] |
+| xss.go:45:10:45:28 | call to FormValue | semmle.label | call to FormValue |
+| xss.go:47:10:47:85 | map literal [map.value] | semmle.label | map literal [map.value] |
+| xss.go:47:41:47:84 | type conversion | semmle.label | type conversion |
+| xss.go:47:55:47:83 | call to ReplaceAllString | semmle.label | call to ReplaceAllString |
+| xss.go:47:75:47:78 | term | semmle.label | term |
+| xss.go:48:48:48:51 | data | semmle.label | data |
+| xss.go:48:48:48:51 | data [map.value] | semmle.label | data [map.value] |
+| xss.go:79:22:79:25 | SSA def(text) | semmle.label | SSA def(text) |
+| xss.go:81:12:81:44 | call to ReplaceAllString | semmle.label | call to ReplaceAllString |
+| xss.go:81:36:81:39 | text | semmle.label | text |
+| xss.go:82:9:82:14 | output | semmle.label | output |
+subpaths
+| xss.go:21:25:21:28 | term | xss.go:79:22:79:25 | SSA def(text) | xss.go:82:9:82:14 | output | xss.go:21:9:21:29 | call to removeScriptTag |
