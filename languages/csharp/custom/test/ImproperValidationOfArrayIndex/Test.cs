@@ -55,6 +55,29 @@ public class ImproperValidationOfArrayIndexTest
         }
     }
 
+    // An inclusive check against Length still allows the out-of-bounds index Length.
+    public void BadInclusiveUpperBound(HttpRequest req, HttpResponse resp)
+    {
+        int data = int.Parse(req.QueryString["id"]); // $ Source
+        int[] array = { 0, 1, 2, 3, 4 };
+        if (data >= 0 && data <= array.Length)
+        {
+            array[data] = 42; // $ Alert
+        }
+    }
+
+    // Returning only for indexes greater than Length still allows Length itself.
+    public void BadInclusiveEarlyReturn(HttpRequest req, HttpResponse resp)
+    {
+        int data = int.Parse(req.QueryString["id"]); // $ Source
+        int[] array = { 0, 1, 2, 3, 4 };
+        if (data < 0 || data > array.Length)
+        {
+            return;
+        }
+        array[data] = 42; // $ Alert
+    }
+
     // Only the lower bound is checked: large values still fail.
     public void BadLowerBoundOnly(HttpRequest req, HttpResponse resp)
     {
@@ -63,6 +86,17 @@ public class ImproperValidationOfArrayIndexTest
         if (data >= 0)
         {
             array[data] = 42; // $ Alert
+        }
+    }
+
+    // GOOD: an inclusive upper bound against Length - 1 excludes Length.
+    public void GoodInclusiveUpperBound(HttpRequest req, HttpResponse resp)
+    {
+        int data = int.Parse(req.QueryString["id"]);
+        int[] array = { 0, 1, 2, 3, 4 };
+        if (data >= 0 && data <= array.Length - 1)
+        {
+            array[data] = 42;
         }
     }
 
@@ -118,6 +152,17 @@ public class ImproperValidationOfArrayIndexTest
         uint data = (uint)int.Parse(req.QueryString["id"]);
         int[] array = { 0, 1, 2, 3, 4 };
         if (data < array.Length)
+        {
+            array[data] = 42;
+        }
+    }
+
+    // GOOD: casting the index and Length to uint rejects negative indexes too.
+    public void GoodUnsignedCastsUpperBound(HttpRequest req, HttpResponse resp)
+    {
+        int data = int.Parse(req.QueryString["id"]);
+        int[] array = { 0, 1, 2, 3, 4 };
+        if ((uint)data < (uint)array.Length)
         {
             array[data] = 42;
         }
