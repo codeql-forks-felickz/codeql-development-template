@@ -4,11 +4,15 @@ Rails strong parameters (`params.require(...).permit(...)`) restrict which reque
 
 An explicit allowlist is still insecure when it contains an attribute that identifies the owner of a record (such as `creator_id`, `user_id` or `owner_id`) or grants privileges (such as `admin` or `role`). An authenticated user can then create or update records on behalf of another user, or escalate their own privileges (CWE-639, authorization bypass through user-controlled key).
 
-This query reports ActiveRecord mass-assignment calls (`create`, `new`, `update`, ...) whose argument comes from a `permit` call on request parameters that allows such a field, unless the field is overridden server-side (`merge(creator_id: current_user.id)`, `record.creator_id = ...` in the same method) or removed (`except(:creator_id)`).
+This query reports ActiveRecord mass-assignment calls (`create`, `new`, `update`, ...) whose argument comes from a `permit` call on request parameters that allows such a field, unless the field is overridden server-side (`merge(creator_id: current_user.id)`, `record.creator_id = ...` on the mass-assigned record in the same method) or removed (`except(:creator_id)`).
 
 ## Recommendation
 
 Do not permit ownership or privilege attributes from the request. Set them on the server from the authenticated user, for example with `current_user.id`, or build the record through an association of the current user.
+
+## Known limitations
+
+`merge` and `except` barriers apply to the whole permit result rather than individual fields, so overriding or removing one sensitive field can suppress reporting for other permitted sensitive fields. Creating through an association, such as `current_user.messages.create(...)`, is not exempted.
 
 ## Example
 

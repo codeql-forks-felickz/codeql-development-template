@@ -30,6 +30,20 @@ class MessagesController < ApplicationController
     message.update(message_params) # $ Alert
   end
 
+  # BAD: setting a sensitive field on another record does not override this one.
+  def create_with_unrelated_override
+    user = User.new
+    user.creator_id = current_user.id
+    Message.create(message_params) # $ Alert
+  end
+
+  # GOOD: the ownership field is overridden on the updated record.
+  def update_overridden
+    message = Message.find(params[:id])
+    message.update(message_params)
+    message.creator_id = current_user.id
+  end
+
   # GOOD: the ownership field is overridden server-side.
   def create_merged
     Message.create(message_params.merge(creator_id: current_user.id))

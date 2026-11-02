@@ -91,13 +91,21 @@ module SensitiveFieldMassAssignmentFlow = TaintTracking::Global<SensitiveFieldMa
 import SensitiveFieldMassAssignmentFlow::PathGraph
 
 /**
- * Holds if the sensitive field `name` is explicitly assigned in the same method as `sink`,
- * e.g. `record.creator_id = current_user.id`, which overrides the client-supplied value.
+ * Holds if the sensitive field `name` is explicitly assigned to the mass-assigned record
+ * in the same method as `sink`, e.g. `record.creator_id = current_user.id`.
  */
 predicate overriddenInSameMethod(DataFlow::Node sink, string name) {
-  exists(SetterMethodCall set |
-    set.getMethodName() = name + "=" and
-    set.getEnclosingCallable() = sink.asExpr().getExpr().getEnclosingCallable()
+  exists(DataFlow::CallNode set, DataFlow::CallNode massAssignment |
+    set.asExpr().getExpr().(SetterMethodCall).getMethodName() = name + "=" and
+    set.asExpr().getExpr().getEnclosingCallable() = sink.asExpr().getExpr().getEnclosingCallable() and
+    massAssignment.getArgument(_) = sink and
+    (
+      massAssignment.getMethodName() = ["update", "update!"] and
+      DataFlow::localFlow(massAssignment.getReceiver(), set.getReceiver())
+      or
+      not massAssignment.getMethodName() = ["update", "update!"] and
+      DataFlow::localFlow(massAssignment, set.getReceiver())
+    )
   )
 }
 
