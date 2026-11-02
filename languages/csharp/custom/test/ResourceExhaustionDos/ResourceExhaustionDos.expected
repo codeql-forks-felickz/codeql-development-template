@@ -1,0 +1,184 @@
+#select
+| Allocation.cs:14:38:14:41 | access to local variable size | Allocation.cs:13:34:13:48 | access to property QueryString : NameValueCollection | Allocation.cs:14:38:14:41 | access to local variable size | This allocation size depends on a $@ without an upper bound check. | Allocation.cs:13:34:13:48 | access to property QueryString | user-provided value |
+| Allocation.cs:21:41:21:44 | access to local variable size | Allocation.cs:20:34:20:48 | access to property QueryString : NameValueCollection | Allocation.cs:21:41:21:44 | access to local variable size | This allocation size depends on a $@ without an upper bound check. | Allocation.cs:20:34:20:48 | access to property QueryString | user-provided value |
+| Allocation.cs:28:40:28:43 | access to local variable size | Allocation.cs:27:34:27:48 | access to property QueryString : NameValueCollection | Allocation.cs:28:40:28:43 | access to local variable size | This allocation size depends on a $@ without an upper bound check. | Allocation.cs:27:34:27:48 | access to property QueryString | user-provided value |
+| Allocation.cs:35:40:35:43 | access to local variable size | Allocation.cs:34:34:34:48 | access to property QueryString : NameValueCollection | Allocation.cs:35:40:35:43 | access to local variable size | This allocation size depends on a $@ without an upper bound check. | Allocation.cs:34:34:34:48 | access to property QueryString | user-provided value |
+| Allocation.cs:42:48:42:51 | access to local variable size | Allocation.cs:41:34:41:48 | access to property QueryString : NameValueCollection | Allocation.cs:42:48:42:51 | access to local variable size | This allocation size depends on a $@ without an upper bound check. | Allocation.cs:41:34:41:48 | access to property QueryString | user-provided value |
+| Allocation.cs:49:33:49:36 | access to local variable size | Allocation.cs:48:34:48:48 | access to property QueryString : NameValueCollection | Allocation.cs:49:33:49:36 | access to local variable size | This loop bound depends on a $@ without an upper bound check. | Allocation.cs:48:34:48:48 | access to property QueryString | user-provided value |
+| Allocation.cs:53:38:53:41 | access to local variable size | Allocation.cs:48:34:48:48 | access to property QueryString : NameValueCollection | Allocation.cs:53:38:53:41 | access to local variable size | This allocation size depends on a $@ without an upper bound check. | Allocation.cs:48:34:48:48 | access to property QueryString | user-provided value |
+| Allocation.cs:89:38:89:57 | call to method Min | Allocation.cs:88:34:88:48 | access to property QueryString : NameValueCollection | Allocation.cs:89:38:89:57 | call to method Min | This allocation size depends on a $@ without an upper bound check. | Allocation.cs:88:34:88:48 | access to property QueryString | user-provided value |
+| Allocation.cs:96:38:96:62 | call to method Clamp | Allocation.cs:95:34:95:48 | access to property QueryString : NameValueCollection | Allocation.cs:96:38:96:62 | call to method Clamp | This allocation size depends on a $@ without an upper bound check. | Allocation.cs:95:34:95:48 | access to property QueryString | user-provided value |
+| LoopBound.cs:21:33:21:45 | access to local variable numberOfLoops | LoopBound.cs:11:27:11:36 | access to property Params : NameValueCollection | LoopBound.cs:21:33:21:45 | access to local variable numberOfLoops | This loop bound depends on a $@ without an upper bound check. | LoopBound.cs:11:27:11:36 | access to property Params | user-provided value |
+| LoopBound.cs:31:24:31:28 | access to local variable count | LoopBound.cs:29:35:29:49 | access to property QueryString : NameValueCollection | LoopBound.cs:31:24:31:28 | access to local variable count | This loop bound depends on a $@ without an upper bound check. | LoopBound.cs:29:35:29:49 | access to property QueryString | user-provided value |
+| LoopBound.cs:41:29:41:33 | access to local variable count | LoopBound.cs:40:41:40:55 | access to property QueryString : NameValueCollection | LoopBound.cs:41:29:41:33 | access to local variable count | This loop bound depends on a $@ without an upper bound check. | LoopBound.cs:40:41:40:55 | access to property QueryString | user-provided value |
+| LoopBound.cs:50:20:50:24 | access to local variable count | LoopBound.cs:49:35:49:49 | access to property QueryString : NameValueCollection | LoopBound.cs:50:20:50:24 | access to local variable count | This loop bound depends on a $@ without an upper bound check. | LoopBound.cs:49:35:49:49 | access to property QueryString | user-provided value |
+| LoopBound.cs:65:27:65:31 | access to local variable count | LoopBound.cs:59:35:59:44 | access to property Params : NameValueCollection | LoopBound.cs:65:27:65:31 | access to local variable count | This loop bound depends on a $@ without an upper bound check. | LoopBound.cs:59:35:59:44 | access to property Params | user-provided value |
+| LoopBound.cs:151:26:151:30 | access to local variable count | LoopBound.cs:149:35:149:49 | access to property QueryString : NameValueCollection | LoopBound.cs:151:26:151:30 | access to local variable count | This loop bound depends on a $@ without an upper bound check. | LoopBound.cs:149:35:149:49 | access to property QueryString | user-provided value |
+| LoopBound.cs:160:20:160:24 | access to local variable count | LoopBound.cs:159:35:159:49 | access to property QueryString : NameValueCollection | LoopBound.cs:160:20:160:24 | access to local variable count | This loop bound depends on a $@ without an upper bound check. | LoopBound.cs:159:35:159:49 | access to property QueryString | user-provided value |
+edges
+| Allocation.cs:13:17:13:20 | access to local variable size : Int32 | Allocation.cs:14:38:14:41 | access to local variable size | provenance |  |
+| Allocation.cs:13:24:13:57 | call to method Parse : Int32 | Allocation.cs:13:17:13:20 | access to local variable size : Int32 | provenance |  |
+| Allocation.cs:13:34:13:48 | access to property QueryString : NameValueCollection | Allocation.cs:13:34:13:56 | access to indexer : String | provenance |  |
+| Allocation.cs:13:34:13:48 | access to property QueryString : NameValueCollection | Allocation.cs:13:34:13:56 | access to indexer : String | provenance | MaD:12744 |
+| Allocation.cs:13:34:13:56 | access to indexer : String | Allocation.cs:13:24:13:57 | call to method Parse : Int32 | provenance | MaD:2808 |
+| Allocation.cs:20:17:20:20 | access to local variable size : Int32 | Allocation.cs:21:41:21:44 | access to local variable size | provenance |  |
+| Allocation.cs:20:24:20:57 | call to method Parse : Int32 | Allocation.cs:20:17:20:20 | access to local variable size : Int32 | provenance |  |
+| Allocation.cs:20:34:20:48 | access to property QueryString : NameValueCollection | Allocation.cs:20:34:20:56 | access to indexer : String | provenance |  |
+| Allocation.cs:20:34:20:48 | access to property QueryString : NameValueCollection | Allocation.cs:20:34:20:56 | access to indexer : String | provenance | MaD:12744 |
+| Allocation.cs:20:34:20:56 | access to indexer : String | Allocation.cs:20:24:20:57 | call to method Parse : Int32 | provenance | MaD:2808 |
+| Allocation.cs:27:17:27:20 | access to local variable size : Int32 | Allocation.cs:28:40:28:43 | access to local variable size | provenance |  |
+| Allocation.cs:27:24:27:57 | call to method Parse : Int32 | Allocation.cs:27:17:27:20 | access to local variable size : Int32 | provenance |  |
+| Allocation.cs:27:34:27:48 | access to property QueryString : NameValueCollection | Allocation.cs:27:34:27:56 | access to indexer : String | provenance |  |
+| Allocation.cs:27:34:27:48 | access to property QueryString : NameValueCollection | Allocation.cs:27:34:27:56 | access to indexer : String | provenance | MaD:12744 |
+| Allocation.cs:27:34:27:56 | access to indexer : String | Allocation.cs:27:24:27:57 | call to method Parse : Int32 | provenance | MaD:2808 |
+| Allocation.cs:34:17:34:20 | access to local variable size : Int32 | Allocation.cs:35:40:35:43 | access to local variable size | provenance |  |
+| Allocation.cs:34:24:34:57 | call to method Parse : Int32 | Allocation.cs:34:17:34:20 | access to local variable size : Int32 | provenance |  |
+| Allocation.cs:34:34:34:48 | access to property QueryString : NameValueCollection | Allocation.cs:34:34:34:56 | access to indexer : String | provenance |  |
+| Allocation.cs:34:34:34:48 | access to property QueryString : NameValueCollection | Allocation.cs:34:34:34:56 | access to indexer : String | provenance | MaD:12744 |
+| Allocation.cs:34:34:34:56 | access to indexer : String | Allocation.cs:34:24:34:57 | call to method Parse : Int32 | provenance | MaD:2808 |
+| Allocation.cs:41:17:41:20 | access to local variable size : Int32 | Allocation.cs:42:48:42:51 | access to local variable size | provenance |  |
+| Allocation.cs:41:24:41:57 | call to method Parse : Int32 | Allocation.cs:41:17:41:20 | access to local variable size : Int32 | provenance |  |
+| Allocation.cs:41:34:41:48 | access to property QueryString : NameValueCollection | Allocation.cs:41:34:41:56 | access to indexer : String | provenance |  |
+| Allocation.cs:41:34:41:48 | access to property QueryString : NameValueCollection | Allocation.cs:41:34:41:56 | access to indexer : String | provenance | MaD:12744 |
+| Allocation.cs:41:34:41:56 | access to indexer : String | Allocation.cs:41:24:41:57 | call to method Parse : Int32 | provenance | MaD:2808 |
+| Allocation.cs:48:17:48:20 | access to local variable size : Int32 | Allocation.cs:49:33:49:36 | access to local variable size | provenance |  |
+| Allocation.cs:48:17:48:20 | access to local variable size : Int32 | Allocation.cs:53:38:53:41 | access to local variable size | provenance |  |
+| Allocation.cs:48:24:48:57 | call to method Parse : Int32 | Allocation.cs:48:17:48:20 | access to local variable size : Int32 | provenance |  |
+| Allocation.cs:48:34:48:48 | access to property QueryString : NameValueCollection | Allocation.cs:48:34:48:56 | access to indexer : String | provenance |  |
+| Allocation.cs:48:34:48:48 | access to property QueryString : NameValueCollection | Allocation.cs:48:34:48:56 | access to indexer : String | provenance | MaD:12744 |
+| Allocation.cs:48:34:48:56 | access to indexer : String | Allocation.cs:48:24:48:57 | call to method Parse : Int32 | provenance | MaD:2808 |
+| Allocation.cs:88:17:88:20 | access to local variable size : Int32 | Allocation.cs:89:47:89:50 | access to local variable size : Int32 | provenance |  |
+| Allocation.cs:88:24:88:57 | call to method Parse : Int32 | Allocation.cs:88:17:88:20 | access to local variable size : Int32 | provenance |  |
+| Allocation.cs:88:34:88:48 | access to property QueryString : NameValueCollection | Allocation.cs:88:34:88:56 | access to indexer : String | provenance |  |
+| Allocation.cs:88:34:88:48 | access to property QueryString : NameValueCollection | Allocation.cs:88:34:88:56 | access to indexer : String | provenance | MaD:12744 |
+| Allocation.cs:88:34:88:56 | access to indexer : String | Allocation.cs:88:24:88:57 | call to method Parse : Int32 | provenance | MaD:2808 |
+| Allocation.cs:89:47:89:50 | access to local variable size : Int32 | Allocation.cs:89:38:89:57 | call to method Min | provenance | Config |
+| Allocation.cs:89:47:89:50 | access to local variable size : Int32 | Allocation.cs:89:53:89:56 | access to local variable size : Int32 | provenance |  |
+| Allocation.cs:89:53:89:56 | access to local variable size : Int32 | Allocation.cs:89:38:89:57 | call to method Min | provenance | Config |
+| Allocation.cs:95:17:95:20 | access to local variable size : Int32 | Allocation.cs:96:49:96:52 | access to local variable size : Int32 | provenance |  |
+| Allocation.cs:95:24:95:57 | call to method Parse : Int32 | Allocation.cs:95:17:95:20 | access to local variable size : Int32 | provenance |  |
+| Allocation.cs:95:34:95:48 | access to property QueryString : NameValueCollection | Allocation.cs:95:34:95:56 | access to indexer : String | provenance |  |
+| Allocation.cs:95:34:95:48 | access to property QueryString : NameValueCollection | Allocation.cs:95:34:95:56 | access to indexer : String | provenance | MaD:12744 |
+| Allocation.cs:95:34:95:56 | access to indexer : String | Allocation.cs:95:24:95:57 | call to method Parse : Int32 | provenance | MaD:2808 |
+| Allocation.cs:96:49:96:52 | access to local variable size : Int32 | Allocation.cs:96:38:96:62 | call to method Clamp | provenance | Config |
+| Allocation.cs:96:49:96:52 | access to local variable size : Int32 | Allocation.cs:96:58:96:61 | access to local variable size : Int32 | provenance |  |
+| Allocation.cs:96:58:96:61 | access to local variable size : Int32 | Allocation.cs:96:38:96:62 | call to method Clamp | provenance | Config |
+| LoopBound.cs:11:20:11:23 | access to local variable data : String | LoopBound.cs:15:43:15:46 | access to local variable data : String | provenance |  |
+| LoopBound.cs:11:27:11:36 | access to property Params : NameValueCollection | LoopBound.cs:11:27:11:48 | call to method Get : String | provenance | MaD:12750 |
+| LoopBound.cs:11:27:11:48 | call to method Get : String | LoopBound.cs:11:20:11:23 | access to local variable data : String | provenance |  |
+| LoopBound.cs:15:17:15:29 | access to local variable numberOfLoops : Int32 | LoopBound.cs:21:33:21:45 | access to local variable numberOfLoops | provenance |  |
+| LoopBound.cs:15:33:15:47 | call to method Parse : Int32 | LoopBound.cs:15:17:15:29 | access to local variable numberOfLoops : Int32 | provenance |  |
+| LoopBound.cs:15:43:15:46 | access to local variable data : String | LoopBound.cs:15:33:15:47 | call to method Parse : Int32 | provenance | MaD:2808 |
+| LoopBound.cs:29:17:29:21 | access to local variable count : Int32 | LoopBound.cs:31:24:31:28 | access to local variable count | provenance |  |
+| LoopBound.cs:29:25:29:59 | call to method Parse : Int32 | LoopBound.cs:29:17:29:21 | access to local variable count : Int32 | provenance |  |
+| LoopBound.cs:29:35:29:49 | access to property QueryString : NameValueCollection | LoopBound.cs:29:35:29:58 | access to indexer : String | provenance |  |
+| LoopBound.cs:29:35:29:49 | access to property QueryString : NameValueCollection | LoopBound.cs:29:35:29:58 | access to indexer : String | provenance | MaD:12744 |
+| LoopBound.cs:29:35:29:58 | access to indexer : String | LoopBound.cs:29:25:29:59 | call to method Parse : Int32 | provenance | MaD:2808 |
+| LoopBound.cs:40:17:40:21 | access to local variable count : Int32 | LoopBound.cs:41:29:41:33 | access to local variable count | provenance |  |
+| LoopBound.cs:40:25:40:65 | call to method ToInt32 : Int32 | LoopBound.cs:40:17:40:21 | access to local variable count : Int32 | provenance |  |
+| LoopBound.cs:40:41:40:55 | access to property QueryString : NameValueCollection | LoopBound.cs:40:41:40:64 | access to indexer : String | provenance |  |
+| LoopBound.cs:40:41:40:55 | access to property QueryString : NameValueCollection | LoopBound.cs:40:41:40:64 | access to indexer : String | provenance | MaD:12744 |
+| LoopBound.cs:40:41:40:64 | access to indexer : String | LoopBound.cs:40:25:40:65 | call to method ToInt32 : Int32 | provenance | MaD:2643 |
+| LoopBound.cs:49:17:49:21 | access to local variable count : Int32 | LoopBound.cs:50:20:50:24 | access to local variable count | provenance |  |
+| LoopBound.cs:49:25:49:59 | call to method Parse : Int32 | LoopBound.cs:49:17:49:21 | access to local variable count : Int32 | provenance |  |
+| LoopBound.cs:49:35:49:49 | access to property QueryString : NameValueCollection | LoopBound.cs:49:35:49:58 | access to indexer : String | provenance |  |
+| LoopBound.cs:49:35:49:49 | access to property QueryString : NameValueCollection | LoopBound.cs:49:35:49:58 | access to indexer : String | provenance | MaD:12744 |
+| LoopBound.cs:49:35:49:58 | access to indexer : String | LoopBound.cs:49:25:49:59 | call to method Parse : Int32 | provenance | MaD:2808 |
+| LoopBound.cs:59:17:59:21 | access to local variable count : Int32 | LoopBound.cs:65:27:65:31 | access to local variable count | provenance |  |
+| LoopBound.cs:59:25:59:58 | call to method Parse : Int32 | LoopBound.cs:59:17:59:21 | access to local variable count : Int32 | provenance |  |
+| LoopBound.cs:59:35:59:44 | access to property Params : NameValueCollection | LoopBound.cs:59:35:59:57 | call to method Get : String | provenance | MaD:12750 |
+| LoopBound.cs:59:35:59:57 | call to method Get : String | LoopBound.cs:59:25:59:58 | call to method Parse : Int32 | provenance | MaD:2808 |
+| LoopBound.cs:149:17:149:21 | access to local variable count : Int32 | LoopBound.cs:151:26:151:30 | access to local variable count | provenance |  |
+| LoopBound.cs:149:25:149:59 | call to method Parse : Int32 | LoopBound.cs:149:17:149:21 | access to local variable count : Int32 | provenance |  |
+| LoopBound.cs:149:35:149:49 | access to property QueryString : NameValueCollection | LoopBound.cs:149:35:149:58 | access to indexer : String | provenance |  |
+| LoopBound.cs:149:35:149:49 | access to property QueryString : NameValueCollection | LoopBound.cs:149:35:149:58 | access to indexer : String | provenance | MaD:12744 |
+| LoopBound.cs:149:35:149:58 | access to indexer : String | LoopBound.cs:149:25:149:59 | call to method Parse : Int32 | provenance | MaD:2808 |
+| LoopBound.cs:159:17:159:21 | access to local variable count : Int32 | LoopBound.cs:160:20:160:24 | access to local variable count | provenance |  |
+| LoopBound.cs:159:25:159:59 | call to method Parse : Int32 | LoopBound.cs:159:17:159:21 | access to local variable count : Int32 | provenance |  |
+| LoopBound.cs:159:35:159:49 | access to property QueryString : NameValueCollection | LoopBound.cs:159:35:159:58 | access to indexer : String | provenance |  |
+| LoopBound.cs:159:35:159:49 | access to property QueryString : NameValueCollection | LoopBound.cs:159:35:159:58 | access to indexer : String | provenance | MaD:12744 |
+| LoopBound.cs:159:35:159:58 | access to indexer : String | LoopBound.cs:159:25:159:59 | call to method Parse : Int32 | provenance | MaD:2808 |
+nodes
+| Allocation.cs:13:17:13:20 | access to local variable size : Int32 | semmle.label | access to local variable size : Int32 |
+| Allocation.cs:13:24:13:57 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Allocation.cs:13:34:13:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Allocation.cs:13:34:13:56 | access to indexer : String | semmle.label | access to indexer : String |
+| Allocation.cs:14:38:14:41 | access to local variable size | semmle.label | access to local variable size |
+| Allocation.cs:20:17:20:20 | access to local variable size : Int32 | semmle.label | access to local variable size : Int32 |
+| Allocation.cs:20:24:20:57 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Allocation.cs:20:34:20:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Allocation.cs:20:34:20:56 | access to indexer : String | semmle.label | access to indexer : String |
+| Allocation.cs:21:41:21:44 | access to local variable size | semmle.label | access to local variable size |
+| Allocation.cs:27:17:27:20 | access to local variable size : Int32 | semmle.label | access to local variable size : Int32 |
+| Allocation.cs:27:24:27:57 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Allocation.cs:27:34:27:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Allocation.cs:27:34:27:56 | access to indexer : String | semmle.label | access to indexer : String |
+| Allocation.cs:28:40:28:43 | access to local variable size | semmle.label | access to local variable size |
+| Allocation.cs:34:17:34:20 | access to local variable size : Int32 | semmle.label | access to local variable size : Int32 |
+| Allocation.cs:34:24:34:57 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Allocation.cs:34:34:34:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Allocation.cs:34:34:34:56 | access to indexer : String | semmle.label | access to indexer : String |
+| Allocation.cs:35:40:35:43 | access to local variable size | semmle.label | access to local variable size |
+| Allocation.cs:41:17:41:20 | access to local variable size : Int32 | semmle.label | access to local variable size : Int32 |
+| Allocation.cs:41:24:41:57 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Allocation.cs:41:34:41:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Allocation.cs:41:34:41:56 | access to indexer : String | semmle.label | access to indexer : String |
+| Allocation.cs:42:48:42:51 | access to local variable size | semmle.label | access to local variable size |
+| Allocation.cs:48:17:48:20 | access to local variable size : Int32 | semmle.label | access to local variable size : Int32 |
+| Allocation.cs:48:24:48:57 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Allocation.cs:48:34:48:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Allocation.cs:48:34:48:56 | access to indexer : String | semmle.label | access to indexer : String |
+| Allocation.cs:49:33:49:36 | access to local variable size | semmle.label | access to local variable size |
+| Allocation.cs:53:38:53:41 | access to local variable size | semmle.label | access to local variable size |
+| Allocation.cs:88:17:88:20 | access to local variable size : Int32 | semmle.label | access to local variable size : Int32 |
+| Allocation.cs:88:24:88:57 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Allocation.cs:88:34:88:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Allocation.cs:88:34:88:56 | access to indexer : String | semmle.label | access to indexer : String |
+| Allocation.cs:89:38:89:57 | call to method Min | semmle.label | call to method Min |
+| Allocation.cs:89:47:89:50 | access to local variable size : Int32 | semmle.label | access to local variable size : Int32 |
+| Allocation.cs:89:53:89:56 | access to local variable size : Int32 | semmle.label | access to local variable size : Int32 |
+| Allocation.cs:95:17:95:20 | access to local variable size : Int32 | semmle.label | access to local variable size : Int32 |
+| Allocation.cs:95:24:95:57 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| Allocation.cs:95:34:95:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Allocation.cs:95:34:95:56 | access to indexer : String | semmle.label | access to indexer : String |
+| Allocation.cs:96:38:96:62 | call to method Clamp | semmle.label | call to method Clamp |
+| Allocation.cs:96:49:96:52 | access to local variable size : Int32 | semmle.label | access to local variable size : Int32 |
+| Allocation.cs:96:58:96:61 | access to local variable size : Int32 | semmle.label | access to local variable size : Int32 |
+| LoopBound.cs:11:20:11:23 | access to local variable data : String | semmle.label | access to local variable data : String |
+| LoopBound.cs:11:27:11:36 | access to property Params : NameValueCollection | semmle.label | access to property Params : NameValueCollection |
+| LoopBound.cs:11:27:11:48 | call to method Get : String | semmle.label | call to method Get : String |
+| LoopBound.cs:15:17:15:29 | access to local variable numberOfLoops : Int32 | semmle.label | access to local variable numberOfLoops : Int32 |
+| LoopBound.cs:15:33:15:47 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| LoopBound.cs:15:43:15:46 | access to local variable data : String | semmle.label | access to local variable data : String |
+| LoopBound.cs:21:33:21:45 | access to local variable numberOfLoops | semmle.label | access to local variable numberOfLoops |
+| LoopBound.cs:29:17:29:21 | access to local variable count : Int32 | semmle.label | access to local variable count : Int32 |
+| LoopBound.cs:29:25:29:59 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| LoopBound.cs:29:35:29:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| LoopBound.cs:29:35:29:58 | access to indexer : String | semmle.label | access to indexer : String |
+| LoopBound.cs:31:24:31:28 | access to local variable count | semmle.label | access to local variable count |
+| LoopBound.cs:40:17:40:21 | access to local variable count : Int32 | semmle.label | access to local variable count : Int32 |
+| LoopBound.cs:40:25:40:65 | call to method ToInt32 : Int32 | semmle.label | call to method ToInt32 : Int32 |
+| LoopBound.cs:40:41:40:55 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| LoopBound.cs:40:41:40:64 | access to indexer : String | semmle.label | access to indexer : String |
+| LoopBound.cs:41:29:41:33 | access to local variable count | semmle.label | access to local variable count |
+| LoopBound.cs:49:17:49:21 | access to local variable count : Int32 | semmle.label | access to local variable count : Int32 |
+| LoopBound.cs:49:25:49:59 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| LoopBound.cs:49:35:49:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| LoopBound.cs:49:35:49:58 | access to indexer : String | semmle.label | access to indexer : String |
+| LoopBound.cs:50:20:50:24 | access to local variable count | semmle.label | access to local variable count |
+| LoopBound.cs:59:17:59:21 | access to local variable count : Int32 | semmle.label | access to local variable count : Int32 |
+| LoopBound.cs:59:25:59:58 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| LoopBound.cs:59:35:59:44 | access to property Params : NameValueCollection | semmle.label | access to property Params : NameValueCollection |
+| LoopBound.cs:59:35:59:57 | call to method Get : String | semmle.label | call to method Get : String |
+| LoopBound.cs:65:27:65:31 | access to local variable count | semmle.label | access to local variable count |
+| LoopBound.cs:149:17:149:21 | access to local variable count : Int32 | semmle.label | access to local variable count : Int32 |
+| LoopBound.cs:149:25:149:59 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| LoopBound.cs:149:35:149:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| LoopBound.cs:149:35:149:58 | access to indexer : String | semmle.label | access to indexer : String |
+| LoopBound.cs:151:26:151:30 | access to local variable count | semmle.label | access to local variable count |
+| LoopBound.cs:159:17:159:21 | access to local variable count : Int32 | semmle.label | access to local variable count : Int32 |
+| LoopBound.cs:159:25:159:59 | call to method Parse : Int32 | semmle.label | call to method Parse : Int32 |
+| LoopBound.cs:159:35:159:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| LoopBound.cs:159:35:159:58 | access to indexer : String | semmle.label | access to indexer : String |
+| LoopBound.cs:160:20:160:24 | access to local variable count | semmle.label | access to local variable count |
+subpaths
