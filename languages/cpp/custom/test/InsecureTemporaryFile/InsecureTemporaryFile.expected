@@ -1,0 +1,56 @@
+#select
+| test.c:37:8:37:11 | call to open | test.c:32:14:32:19 | *call to tmpnam | test.c:37:13:37:20 | *filename | This call creates a file at a path from $@, which generates a predictable temporary file name, without exclusive creation. | test.c:32:14:32:19 | *call to tmpnam | this temporary-name generator |
+| test.c:52:8:52:11 | call to open | test.c:48:14:48:19 | *call to mktemp | test.c:52:13:52:20 | *filename | This call creates a file at a path from $@, which generates a predictable temporary file name, without exclusive creation. | test.c:48:14:48:19 | *call to mktemp | this temporary-name generator |
+| test.c:63:8:63:11 | call to open | test.c:62:10:62:13 | mktemp output argument | test.c:63:13:63:16 | *tmpl | This call creates a file at a path from $@, which generates a predictable temporary file name, without exclusive creation. | test.c:62:10:62:13 | mktemp output argument | this temporary-name generator |
+| test.c:74:8:74:11 | call to open | test.c:73:10:73:12 | tmpnam output argument | test.c:74:13:74:15 | *buf | This call creates a file at a path from $@, which generates a predictable temporary file name, without exclusive creation. | test.c:73:10:73:12 | tmpnam output argument | this temporary-name generator |
+| test.c:86:8:86:13 | call to openat | test.c:83:16:83:18 | tmpnam_r output argument | test.c:86:22:86:24 | *buf | This call creates a file at a path from $@, which generates a predictable temporary file name, without exclusive creation. | test.c:83:16:83:18 | tmpnam_r output argument | this temporary-name generator |
+| test.c:94:12:94:16 | call to creat | test.c:93:20:93:26 | *call to tempnam | test.c:94:18:94:25 | *filename | This call creates a file at a path from $@, which generates a predictable temporary file name, without exclusive creation. | test.c:93:20:93:26 | *call to tempnam | this temporary-name generator |
+| test.c:102:13:102:17 | call to fopen | test.c:101:20:101:25 | *call to tmpnam | test.c:102:19:102:26 | *filename | This call creates a file at a path from $@, which generates a predictable temporary file name, without exclusive creation. | test.c:101:20:101:25 | *call to tmpnam | this temporary-name generator |
+| test.c:109:12:109:15 | call to open | test.c:123:20:123:25 | *call to tmpnam | test.c:109:17:109:20 | *path | This call creates a file at a path from $@, which generates a predictable temporary file name, without exclusive creation. | test.c:123:20:123:25 | *call to tmpnam | this temporary-name generator |
+| test.c:161:12:161:15 | call to open | test.c:160:20:160:25 | *call to tmpnam | test.c:161:17:161:24 | *filename | This call creates a file at a path from $@, which generates a predictable temporary file name, without exclusive creation. | test.c:160:20:160:25 | *call to tmpnam | this temporary-name generator |
+edges
+| test.c:32:3:32:25 | *... = ... | test.c:37:13:37:20 | *filename | provenance |  |
+| test.c:32:14:32:19 | *call to tmpnam | test.c:32:3:32:25 | *... = ... | provenance |  |
+| test.c:48:3:48:25 | *... = ... | test.c:52:13:52:20 | *filename | provenance |  |
+| test.c:48:14:48:19 | *call to mktemp | test.c:48:3:48:25 | *... = ... | provenance |  |
+| test.c:62:10:62:13 | mktemp output argument | test.c:63:13:63:16 | *tmpl | provenance |  |
+| test.c:73:10:73:12 | tmpnam output argument | test.c:74:13:74:15 | *buf | provenance |  |
+| test.c:83:16:83:18 | tmpnam_r output argument | test.c:86:22:86:24 | *buf | provenance |  |
+| test.c:93:20:93:26 | *call to tempnam | test.c:93:20:93:26 | *call to tempnam | provenance |  |
+| test.c:93:20:93:26 | *call to tempnam | test.c:94:18:94:25 | *filename | provenance |  |
+| test.c:101:20:101:25 | *call to tmpnam | test.c:101:20:101:25 | *call to tmpnam | provenance |  |
+| test.c:101:20:101:25 | *call to tmpnam | test.c:102:19:102:26 | *filename | provenance |  |
+| test.c:108:37:108:40 | *path | test.c:109:17:109:20 | *path | provenance |  |
+| test.c:123:20:123:25 | *call to tmpnam | test.c:123:20:123:25 | *call to tmpnam | provenance |  |
+| test.c:123:20:123:25 | *call to tmpnam | test.c:124:15:124:22 | *filename | provenance |  |
+| test.c:124:15:124:22 | *filename | test.c:108:37:108:40 | *path | provenance |  |
+| test.c:160:20:160:25 | *call to tmpnam | test.c:160:20:160:25 | *call to tmpnam | provenance |  |
+| test.c:160:20:160:25 | *call to tmpnam | test.c:161:17:161:24 | *filename | provenance |  |
+nodes
+| test.c:32:3:32:25 | *... = ... | semmle.label | *... = ... |
+| test.c:32:14:32:19 | *call to tmpnam | semmle.label | *call to tmpnam |
+| test.c:37:13:37:20 | *filename | semmle.label | *filename |
+| test.c:48:3:48:25 | *... = ... | semmle.label | *... = ... |
+| test.c:48:14:48:19 | *call to mktemp | semmle.label | *call to mktemp |
+| test.c:52:13:52:20 | *filename | semmle.label | *filename |
+| test.c:62:10:62:13 | mktemp output argument | semmle.label | mktemp output argument |
+| test.c:63:13:63:16 | *tmpl | semmle.label | *tmpl |
+| test.c:73:10:73:12 | tmpnam output argument | semmle.label | tmpnam output argument |
+| test.c:74:13:74:15 | *buf | semmle.label | *buf |
+| test.c:83:16:83:18 | tmpnam_r output argument | semmle.label | tmpnam_r output argument |
+| test.c:86:22:86:24 | *buf | semmle.label | *buf |
+| test.c:93:20:93:26 | *call to tempnam | semmle.label | *call to tempnam |
+| test.c:93:20:93:26 | *call to tempnam | semmle.label | *call to tempnam |
+| test.c:94:18:94:25 | *filename | semmle.label | *filename |
+| test.c:101:20:101:25 | *call to tmpnam | semmle.label | *call to tmpnam |
+| test.c:101:20:101:25 | *call to tmpnam | semmle.label | *call to tmpnam |
+| test.c:102:19:102:26 | *filename | semmle.label | *filename |
+| test.c:108:37:108:40 | *path | semmle.label | *path |
+| test.c:109:17:109:20 | *path | semmle.label | *path |
+| test.c:123:20:123:25 | *call to tmpnam | semmle.label | *call to tmpnam |
+| test.c:123:20:123:25 | *call to tmpnam | semmle.label | *call to tmpnam |
+| test.c:124:15:124:22 | *filename | semmle.label | *filename |
+| test.c:160:20:160:25 | *call to tmpnam | semmle.label | *call to tmpnam |
+| test.c:160:20:160:25 | *call to tmpnam | semmle.label | *call to tmpnam |
+| test.c:161:17:161:24 | *filename | semmle.label | *filename |
+subpaths
