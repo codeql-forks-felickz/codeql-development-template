@@ -39,4 +39,11 @@ module Todo
 
   # BAD: a literal options hash still lacks Secure
   Rails.application.config.session_store :cookie_store, { key: "_app_session" } # $ Alert
+
+  # GOOD: reading the session-store configuration does not configure a cookie
+  store = Rails.application.config.session_store
+  store = Rails.application.config.session_store(nil)
+
+  # BAD: selecting a store without options still lacks Secure
+  Rails.application.config.session_store :cookie_store # $ Alert
 end

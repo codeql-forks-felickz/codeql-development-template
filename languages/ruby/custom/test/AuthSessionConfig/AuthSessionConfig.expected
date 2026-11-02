@@ -4,6 +4,7 @@
 | config/initializers/session_store.rb:13:1:13:73 | call to session_store | Session store cookie is insecure: the Secure attribute is missing. |
 | config/initializers/session_store.rb:30:5:30:91 | call to session_store | Session store cookie is insecure: the HttpOnly attribute is disabled. |
 | config/initializers/session_store.rb:41:3:41:79 | call to session_store | Session store cookie is insecure: the Secure attribute is missing. |
+| config/initializers/session_store.rb:48:3:48:54 | call to session_store | Session store cookie is insecure: the Secure attribute is missing. |
 | server/goat_server.rb:6:5:6:79 | call to set_cookie | Cookie 'SessionID' is insecure: the HttpOnly attribute is missing and the Secure attribute is missing. |
 | server/goat_server.rb:9:5:9:67 | call to set_cookie | Cookie 'auth_token' is insecure: the Secure attribute is missing. |
 | server/goat_server.rb:12:5:12:70 | call to set_cookie | Cookie 'remember_me' is insecure: the HttpOnly attribute is missing. |

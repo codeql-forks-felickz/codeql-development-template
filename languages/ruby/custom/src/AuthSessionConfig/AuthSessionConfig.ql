@@ -51,6 +51,8 @@ class SessionStoreCall extends MethodCall {
   SessionStoreCall() {
     this.getMethodName() = "session_store" and
     this.getReceiver().(MethodCall).getMethodName() = "config" and
+    exists(this.getArgument(0)) and
+    not this.getArgument(0) instanceof NilLiteral and
     not this.getArgument(0).getConstantValue().isStringlikeValue("disabled")
   }
 
