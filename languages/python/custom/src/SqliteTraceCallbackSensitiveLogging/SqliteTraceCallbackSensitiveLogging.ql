@@ -17,6 +17,8 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.ApiGraphs
+import LegacyPointsTo
+import semmle.python.types.FunctionObject
 import semmle.python.security.dataflow.CleartextLoggingCustomizations
 
 /** Gets a call to `sqlite3.connect`. */
@@ -31,7 +33,48 @@ DataFlow::CallCfgNode sqliteConnect() {
 predicate enablesTracing(DataFlow::CallCfgNode connect, DataFlow::MethodCallNode trace) {
   connect = sqliteConnect() and
   trace = connect.(DataFlow::LocalSourceNode).getAMethodCall("set_trace_callback") and
-  not trace.getArg(0).asExpr() instanceof None
+  not trace.getArg(0).asExpr() instanceof None and
+  not knownNonLoggingCallback(trace)
+}
+
+private predicate knownNonLoggingCallback(DataFlow::MethodCallNode trace) {
+  exists(DataFlow::Node callback, Expr callbackExpr, Function func |
+    callback = trace.getArg(0) and
+    callbackExpr = callback.asExpr() and
+    (
+      exists(Lambda lambda |
+        callbackExpr = lambda and
+        func = lambda.getInnerScope()
+      )
+      or
+      exists(PyFunctionObject functionObject |
+        callback.asCfgNode().(ControlFlowNodeWithPointsTo).refersTo(functionObject) and
+        func = functionObject.getFunction()
+      )
+    ) and
+    func.getEnclosingModule() = callbackExpr.getEnclosingModule() and
+    (
+      not exists(Name use |
+        use = func.getArg(0).getVariable().getALoad() and
+        func.contains(use)
+      )
+      or
+      exists(Pass pass |
+        func.getStmt(0) = pass and
+        not exists(func.getStmt(1))
+      )
+      or
+      exists(AugAssign increment |
+        func.getStmt(0) = increment and
+        not exists(func.getStmt(1))
+      )
+      or
+      exists(Lambda lambda |
+        func = lambda.getInnerScope() and
+        lambda.getExpression() instanceof None
+      )
+    )
+  )
 }
 
 /**
@@ -61,6 +104,12 @@ class TracedSqlArgument extends DataFlow::Node {
       enablesTracing(connect, trace) and
       exec = sqlExecution(connect) and
       trace.asCfgNode().strictlyReaches(exec.asCfgNode()) and
+      not exists(DataFlow::MethodCallNode disable |
+        disable = connect.(DataFlow::LocalSourceNode).getAMethodCall("set_trace_callback") and
+        disable.getArg(0).asExpr() instanceof None and
+        trace.asCfgNode().strictlyReaches(disable.asCfgNode()) and
+        disable.asCfgNode().strictlyDominates(exec.asCfgNode())
+      ) and
       this in [exec.getArg(_), exec.getArgByName(_)]
     )
   }

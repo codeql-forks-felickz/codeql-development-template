@@ -2,6 +2,18 @@ import logging
 import sqlite3
 
 import pyotp
+from unknown_trace_module import trace_callback
+
+
+query_count = [0]
+
+
+def noop_trace(statement):
+    pass
+
+
+def count_trace(statement):
+    query_count[0] += len(statement)
 
 
 def login(username, password):  # $ Source[py/sqlite-trace-callback-sensitive-logging]
@@ -68,3 +80,42 @@ def other_connection(password):
     traced.set_trace_callback(print)
     conn = sqlite3.connect("db_users.sqlite")
     return conn.execute("SELECT * FROM users WHERE password = ?", (password,)).fetchone()
+
+
+def non_logging_callbacks(password):
+    conn = sqlite3.connect("db_users.sqlite")
+    conn.set_trace_callback(lambda statement: None)
+    conn.execute("SELECT * FROM users WHERE password = ?", (password,))
+    conn.set_trace_callback(noop_trace)
+    conn.execute("SELECT * FROM users WHERE password = ?", (password,))
+    conn.set_trace_callback(count_trace)
+    conn.execute("SELECT * FROM users WHERE password = ?", (password,))
+
+
+def login_trace_disabled_before_execution(password):
+    conn = sqlite3.connect("db_users.sqlite")
+    conn.set_trace_callback(print)
+    conn.set_trace_callback(None)
+    conn.execute("SELECT * FROM users WHERE password = ?", (password,))
+
+
+def login_trace_disabled_on_one_branch(password, disable):  # $ Source[py/sqlite-trace-callback-sensitive-logging]
+    conn = sqlite3.connect("db_users.sqlite")
+    conn.set_trace_callback(print)
+    if disable:
+        conn.set_trace_callback(None)
+    conn.execute("SELECT * FROM users WHERE password = ?", (password,))  # $ Alert[py/sqlite-trace-callback-sensitive-logging]
+
+
+def login_trace_reenabled_after_disable(password):  # $ Source[py/sqlite-trace-callback-sensitive-logging]
+    conn = sqlite3.connect("db_users.sqlite")
+    conn.set_trace_callback(print)
+    conn.set_trace_callback(None)
+    conn.set_trace_callback(print)
+    conn.execute("SELECT * FROM users WHERE password = ?", (password,))  # $ Alert[py/sqlite-trace-callback-sensitive-logging]
+
+
+def login_imported_trace(password):  # $ Source[py/sqlite-trace-callback-sensitive-logging]
+    conn = sqlite3.connect("db_users.sqlite")
+    conn.set_trace_callback(trace_callback)
+    conn.execute("SELECT * FROM users WHERE password = ?", (password,))  # $ Alert[py/sqlite-trace-callback-sensitive-logging]
