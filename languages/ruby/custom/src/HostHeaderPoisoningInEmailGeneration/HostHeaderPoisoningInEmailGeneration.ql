@@ -78,7 +78,7 @@ class ActionMailerDefaultUrlOptionsHashSink extends DataFlow::Node {
     exists(DataFlow::CallNode write |
       defaultUrlOptionsRead().(DataFlow::LocalSourceNode).flowsTo(write.getReceiver()) and
       write.getMethodName() = mergeMethodName() and
-      this = write.getPositionalArgument(0)
+      this = write.getPositionalArgument(_)
     )
     or
     // ActionMailer::Base.default_url_options = { host: value }

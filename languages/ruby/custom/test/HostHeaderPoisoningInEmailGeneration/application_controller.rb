@@ -22,6 +22,16 @@ class ApplicationController < ActionController::Base
     ActionMailer::Base.default_url_options.merge!(host: host) # $ Alert
   end
 
+  # BAD: request data in the second positional hash is merged into the options.
+  def mailer_options_merge_second_hash
+    ActionMailer::Base.default_url_options.merge!({ protocol: "https" }, { host: request.host }) # $ Alert
+  end
+
+  # GOOD: a constant host in the second positional hash.
+  def mailer_options_merge_second_hash_constant
+    ActionMailer::Base.default_url_options.merge!({ protocol: "https" }, { host: "example.com" })
+  end
+
   # BAD: set on a mailer subclass.
   def mailer_options_subclass
     UserMailer.default_url_options[:host] = request.domain # $ Alert
