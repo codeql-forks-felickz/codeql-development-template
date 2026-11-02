@@ -75,6 +75,24 @@ private predicate trustsAllProxies(Express::RouterDefinition app) {
   )
 }
 
+/** Holds if the Express application `app` explicitly configures `trust proxy`. */
+private predicate configuresTrustProxy(Express::RouterDefinition app) {
+  exists(DataFlow::MethodCallNode call |
+    app.ref().flowsTo(call.getReceiver()) and
+    call.getArgument(0).getStringValue() = "trust proxy" and
+    (
+      call.getMethodName() = "set" and call.getNumArgument() = 2
+      or
+      call.getMethodName() in ["enable", "disable"] and call.getNumArgument() = 1
+    )
+  )
+}
+
+/** Holds if `app` is created by `express()` rather than `express.Router()`. */
+private predicate isExpressApp(Express::RouterDefinition app) {
+  app = Express::appCreation()
+}
+
 /** Gets a reference to the rate-limiting middleware created by `limiter`. */
 private DataFlow::SourceNode limiterRef(RateLimiterCreation limiter, DataFlow::TypeTracker t) {
   t.start() and
@@ -97,16 +115,27 @@ private predicate installedIn(RateLimiterCreation limiter, Express::RouterDefini
  * it cannot be linked to an application, some application trusts all proxies.
  */
 private predicate usesSpoofableIp(RateLimiterCreation limiter) {
-  exists(Express::RouterDefinition app | trustsAllProxies(app) |
-    installedIn(limiter, app)
+  exists(Express::RouterDefinition app |
+    isExpressApp(app) and trustsAllProxies(app)
+  |
+    installedIn(limiter, app) and
+    not exists(Express::RouterDefinition subApp |
+      isExpressApp(subApp) and
+      configuresTrustProxy(subApp) and
+      installedIn(limiter, subApp) and
+      app.getASubRouter+() = subApp
+    )
     or
-    not installedIn(limiter, _)
+    not exists(Express::RouterDefinition hostingApp |
+      isExpressApp(hostingApp) and installedIn(limiter, hostingApp)
+    )
   )
 }
 
 /** A client-controlled value read from the request passed to a rate-limiter key generator. */
 class SpoofableClientAddress extends DataFlow::Node {
   string description;
+  boolean isIpAddress;
 
   SpoofableClientAddress() {
     exists(RateLimiterCreation limiter, DataFlow::SourceNode req |
@@ -120,18 +149,23 @@ class SpoofableClientAddress extends DataFlow::Node {
           this = req.getAMethodCall(["get", "header"]) and
           this.(DataFlow::MethodCallNode).getArgument(0).getStringValue().toLowerCase() = header
         ) and
-        description = "the client-supplied '" + header + "' header"
+        description = "the client-supplied '" + header + "' header" and
+        isIpAddress = false
       )
       or
       usesSpoofableIp(limiter) and
       this = req.getAPropertyRead(["ip", "ips"]) and
       description =
-        "the client address, which is taken from the client-supplied 'X-Forwarded-For' header because all proxies are trusted"
+        "the client address, which is taken from the client-supplied 'X-Forwarded-For' header because all proxies are trusted" and
+      isIpAddress = true
     )
   }
 
   /** Gets a description of this value for use in an alert message. */
   string getDescription() { result = description }
+
+  /** Holds if this source is a request IP property rather than a header. */
+  boolean getIsIpAddress() { result = isIpAddress }
 }
 
 module RateLimitSpoofableKeyConfig implements DataFlow::ConfigSig {
@@ -153,7 +187,12 @@ from
   RateLimiterCreation limiter
 where
   RateLimitSpoofableKeyFlow::flowPath(source, sink) and
-  sink.getNode() = limiter.getKeyGenerator().getAReturn()
+  sink.getNode() = limiter.getKeyGenerator().getAReturn() and
+  (
+    source.getNode().(SpoofableClientAddress).getIsIpAddress() = false
+    or
+    usesSpoofableIp(limiter)
+  )
 select sink.getNode(), source, sink,
   "This rate-limiting key depends on $@, so a client can evade the $@ by changing it.",
   source.getNode(), source.getNode().(SpoofableClientAddress).getDescription(), limiter,
