@@ -29,3 +29,31 @@ void aes_encrypt_good(HCRYPTPROV hProv, HCRYPTHASH hHash, BYTE *payload, DWORD *
   CryptDeriveKey(hProv, CALG_AES_256, hHash, 0, &hKey);
   CryptEncrypt(hKey, 0, 1, 0, payload, payloadLen, 200);
 }
+
+void rsa_then_aes_encrypt_good(HCRYPTPROV hProv, HCRYPTHASH hHash, BYTE *payload, DWORD *payloadLen) {
+  HCRYPTKEY hKey;
+  CryptGenKey(hProv, CALG_RSA_KEYX, 0, &hKey);
+  CryptDeriveKey(hProv, CALG_AES_256, hHash, 0, &hKey);
+  CryptEncrypt(hKey, 0, 1, 0, payload, payloadLen, 200);
+}
+
+void aes_then_rsa_encrypt_good(HCRYPTPROV hProv, HCRYPTHASH hHash, BYTE *payload, DWORD *payloadLen) {
+  HCRYPTKEY hKey;
+  CryptDeriveKey(hProv, CALG_AES_256, hHash, 0, &hKey);
+  CryptEncrypt(hKey, 0, 1, 0, payload, payloadLen, 200);
+  CryptGenKey(hProv, CALG_RSA_KEYX, 0, &hKey);
+}
+
+void copied_rsa_handle_bad(HCRYPTPROV hProv, BYTE *payload, DWORD *payloadLen) {
+  HCRYPTKEY rsaKey;
+  HCRYPTKEY copiedKey;
+  CryptGenKey(hProv, CALG_RSA_KEYX, 0, &rsaKey);
+  copiedKey = rsaKey;
+  CryptEncrypt(copiedKey, 0, 1, 0, payload, payloadLen, 200); // $ Alert
+}
+
+void rsa_encrypt_sizing_good(HCRYPTPROV hProv, BYTE *payload, DWORD *payloadLen) {
+  HCRYPTKEY hKey;
+  CryptGenKey(hProv, CALG_RSA_KEYX, 0, &hKey);
+  CryptEncrypt(hKey, 0, 1, 0, 0, payloadLen, 200);
+}
