@@ -335,7 +335,7 @@ predicate wildcardOriginHeaderWrite(AllowOriginHeaderWrite hw, string message) {
 
 /**
  * Holds if field `fieldName` of type `pkg.tp` is a CORS middleware configuration field of the
- * given `kind`: `origins`, `allOrigins`, `methods` or `credentials`.
+ * given `kind`: `origins`, `allOrigins`, `methods`, `credentials` or `originFunc`.
  */
 predicate corsConfigField(string pkg, string tp, string kind, string fieldName) {
   pkg = package("github.com/labstack/echo", "middleware") and
@@ -369,6 +369,22 @@ predicate corsConfigField(string pkg, string tp, string kind, string fieldName) 
     or
     kind = "credentials" and fieldName = "AllowCredentials"
   )
+  or
+  pkg = package("github.com/rs/cors", "") and
+  tp = "Options" and
+  kind = "originFunc" and
+  (
+    fieldName = "AllowOriginFunc"
+    or
+    fieldName = "AllowOriginRequestFunc"
+    or
+    fieldName = "AllowOriginVaryRequestFunc"
+  )
+  or
+  pkg = package("github.com/go-chi/cors", "") and
+  tp = "Options" and
+  kind = "originFunc" and
+  fieldName = "AllowOriginFunc"
 }
 
 /** A write to a field of a CORS middleware configuration struct. */
@@ -396,17 +412,25 @@ class CorsConfigFieldWrite extends DataFlow::Node {
   /** Holds if `true` is written to this field. */
   predicate isTrue() { this.asExpr().getBoolValue() = true }
 
-  /** Gets the local variable holding the configuration struct written by this field write. */
-  Variable getConfigVariable() {
-    exists(SsaVariable v | result = v.getSourceVariable() |
+  /** Gets the SSA definition of the configuration struct written by this field write. */
+  SsaDefinition getConfigDefinition() {
+    exists(SsaVariable v | result = v.getDefinition() |
       v.getDefinition().(SsaExplicitDefinition).getRhs() = base.asInstruction() or
       v.getAUse() = base.asInstruction()
     )
   }
 
-  /** Holds if this field write and `other` write to the same configuration struct. */
+  /** Holds if these writes target a compatible path for the same configuration value. */
   predicate sameConfig(CorsConfigFieldWrite other) {
-    base = other.getBase() or this.getConfigVariable() = other.getConfigVariable()
+    (
+      base = other.getBase() or
+      this.getConfigDefinition() = other.getConfigDefinition()
+    ) and
+    (
+      this.getBasicBlock() = other.getBasicBlock() or
+      this.getBasicBlock().getASuccessor*() = other.getBasicBlock() or
+      other.getBasicBlock().getASuccessor*() = this.getBasicBlock()
+    )
   }
 }
 
@@ -421,6 +445,10 @@ predicate wildcardOriginConfigWrite(CorsConfigFieldWrite w, string message) {
       origin = min(string o | o = w.getAStringElement() and isWildcardOrigin(o))
       or
       w.getKind() = "allOrigins" and w.isTrue() and origin = "*"
+    ) and
+    not exists(CorsConfigFieldWrite callback |
+      callback.getKind() = "originFunc" and
+      callback.sameConfig(w)
     ) and
     (
       if

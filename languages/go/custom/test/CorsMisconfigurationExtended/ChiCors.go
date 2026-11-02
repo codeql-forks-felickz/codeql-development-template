@@ -22,3 +22,13 @@ func chiFixedOrigin() func(http.Handler) http.Handler {
 		AllowCredentials: true,
 	})
 }
+
+func chiRestrictiveOriginFunc() func(http.Handler) http.Handler {
+	return chicors.Handler(chicors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
+		AllowOriginFunc: func(_ *http.Request, origin string) bool {
+			return origin == "https://example.com"
+		},
+	})
+}

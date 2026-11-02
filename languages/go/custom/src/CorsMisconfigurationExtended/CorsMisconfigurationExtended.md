@@ -15,7 +15,10 @@ Both the `net/http` header form (`w.Header().Set("Access-Control-Allow-Origin", 
 
 - Echo (`github.com/labstack/echo/middleware` and `github.com/labstack/echo/v4/middleware`): `CORSConfig.AllowOrigins`, `AllowMethods`, `AllowCredentials`
 - `github.com/gin-contrib/cors`: `Config.AllowOrigins`, `AllowAllOrigins`, `AllowMethods`, `AllowCredentials`
-- `github.com/rs/cors` and `github.com/go-chi/cors`: `Options.AllowedOrigins`, `AllowedMethods`, `AllowCredentials`
+- `github.com/rs/cors`: `Options.AllowedOrigins`, `AllowedMethods`, `AllowCredentials`, `AllowOriginFunc`, `AllowOriginRequestFunc`, `AllowOriginVaryRequestFunc`
+- `github.com/go-chi/cors`: `Options.AllowedOrigins`, `AllowedMethods`, `AllowCredentials`, `AllowOriginFunc`
+
+For `github.com/rs/cors` and `github.com/go-chi/cors`, an explicitly configured origin callback takes precedence over the allowed-origins list. When one is present, wildcard findings for that configuration are suppressed; callback bodies are not analyzed.
 
 A wildcard origin combined with credentials shows that the developer intends any website to read authenticated responses. Depending on the browser and middleware, the origin may be reflected instead of sent as `*`, which makes the misconfiguration directly exploitable. Explicitly allowing `PUT`, `PATCH` or `DELETE` from any origin lets any website send state-changing requests that would otherwise be blocked by the CORS preflight check.
 

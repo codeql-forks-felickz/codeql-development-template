@@ -9,6 +9,7 @@ type Options struct {
 	AllowedMethods   []string
 	AllowedHeaders   []string
 	AllowCredentials bool
+	AllowOriginFunc  func(r *http.Request, origin string) bool
 }
 
 type Cors struct{}
