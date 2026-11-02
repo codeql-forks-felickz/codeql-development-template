@@ -20,19 +20,52 @@ import codeql.rust.security.CleartextLoggingExtensions
 import common.CryptoKeyMaterial
 
 /**
- * A buffer that has just been filled with random bytes, such as `key` after
- * `rng.fill(&mut key)`, or a key returned by a key generation function.
+ * A buffer that has just been filled with random bytes.
  */
-class GeneratedKeyMaterial extends DataFlow::Node {
-  GeneratedKeyMaterial() {
+private class RandomlyFilledBuffer extends DataFlow::PostUpdateNode {
+  RandomlyFilledBuffer() {
     exists(Expr buffer, Expr filled |
       randomFillCall(_, buffer) and
       (if buffer instanceof RefExpr then filled = buffer.(RefExpr).getExpr() else filled = buffer) and
-      this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = filled
+      this.getPreUpdateNode().asExpr() = filled
     )
-    or
+  }
+
+  /** Holds if this buffer flows locally to a return value of `wrapper`. */
+  predicate isReturnedBy(Callable wrapper) {
+    exists(DataFlow::Node returned |
+      returned.asExpr() = wrapper.getBody()
+      or
+      exists(ReturnExpr ret |
+        ret.getEnclosingCfgScope() = wrapper and returned.asExpr() = ret.getExpr()
+      )
+    |
+      DataFlow::localFlow(this, returned)
+    )
+  }
+}
+
+/** A key returned by an API that specifically generates cryptographic keys. */
+private class GeneratedCryptographicKey extends DataFlow::Node {
+  GeneratedCryptographicKey() {
     this.asExpr().(Call).getStaticTarget().getCanonicalPath() =
       ["<crypto_common::KeyInit>::generate_key", "<crypto_common::KeyIvInit>::generate_key"]
+  }
+}
+
+/**
+ * Generated material, with returned random buffers sourced at each wrapper call
+ * rather than conflating independent generated values at the fill in the helper.
+ */
+class GeneratedKeyMaterial extends DataFlow::Node {
+  GeneratedKeyMaterial() {
+    this instanceof GeneratedCryptographicKey
+    or
+    exists(RandomlyFilledBuffer buffer |
+      this = buffer and not buffer.isReturnedBy(_)
+      or
+      buffer.isReturnedBy(this.asExpr().(Call).getStaticTarget())
+    )
   }
 }
 
@@ -82,9 +115,14 @@ from
 where
   CleartextLoggingOfKeyMaterialFlow::flowPath(source, sink) and
   sink.getNode() instanceof CleartextLogging::Sink and
-  // the generated value is used as a cryptographic key
-  exists(CryptographicKeySink keySink | keySink.getKind() = ["key", "password"] |
-    CleartextLoggingOfKeyMaterialFlow::flow(source.getNode(), keySink)
+  (
+    // Key-generation APIs already establish that the value is a key.
+    source.getNode() instanceof GeneratedCryptographicKey
+    or
+    // Generic random buffers, including wrapper results, still require key use.
+    exists(CryptographicKeySink keySink | keySink.getKind() = ["key", "password"] |
+      CleartextLoggingOfKeyMaterialFlow::flow(source.getNode(), keySink)
+    )
   )
 select sink.getNode(), source, sink, "This operation writes $@ to a log.", source,
   "generated cryptographic key material"

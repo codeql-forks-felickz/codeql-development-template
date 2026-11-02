@@ -20,3 +20,19 @@ pub fn test_aes_gcm_good(plaintext: &[u8]) -> Vec<u8> {
     println!("ciphertext: {}", hex::encode(&ciphertext));
     ciphertext
 }
+
+pub fn test_generate_key_logged_and_returned() -> aes_gcm::Key<Aes256Gcm> {
+    let key = Aes256Gcm::generate_key(OsRng); // $ Source[rust/cleartext-logging-key-material]
+    println!("generated key: {}", hex::encode(key)); // $ Alert[rust/cleartext-logging-key-material]
+    key
+}
+
+pub fn test_generate_key_returned_without_logging() -> aes_gcm::Key<Aes256Gcm> {
+    Aes256Gcm::generate_key(OsRng)
+}
+
+pub fn test_generate_key_length_logged() -> aes_gcm::Key<Aes256Gcm> {
+    let key = Aes256Gcm::generate_key(OsRng);
+    println!("key length: {}", key.len());
+    key
+}

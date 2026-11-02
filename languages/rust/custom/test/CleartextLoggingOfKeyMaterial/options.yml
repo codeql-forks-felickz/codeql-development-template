@@ -6,3 +6,4 @@ qltest_dependencies:
     - getrandom = { version = "0.2.15" }
     - log = { version = "0.4.25" }
     - aes-gcm = { version = "0.10.3" }
+    - rand = { version = "=0.8.5" }

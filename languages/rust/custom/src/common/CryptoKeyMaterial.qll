@@ -82,8 +82,8 @@ class CryptographicKeySink extends DataFlow::Node {
 predicate randomFillCall(Call call, Expr buffer) {
   callTo(call,
     [
-      "<_ as ring::rand::SecureRandom>::fill", "<_ as rand_core::RngCore>::fill_bytes",
-      "<_ as rand_core::RngCore>::try_fill_bytes", "<_ as rand::rng::Rng>::fill",
+      "<_ as ring::rand::SecureRandom>::fill", "<[^>]+ as rand_core::RngCore>::fill_bytes",
+      "<[^>]+ as rand_core::RngCore>::try_fill_bytes", "<_ as rand::rng::Rng>::fill",
       "<_ as rand::rng::Rng>::try_fill", "getrandom::fill", "getrandom::getrandom"
     ]) and
   buffer = call.getPositionalArgument(0)

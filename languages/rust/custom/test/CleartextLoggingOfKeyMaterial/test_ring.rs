@@ -49,3 +49,29 @@ pub fn test_random_not_key() -> Result<(), Unspecified> {
     println!("request id = {}", hex::encode(request_id));
     Ok(())
 }
+
+fn random_bytes() -> [u8; 32] {
+    let mut bytes = [0u8; 32];
+    SystemRandom::new().fill(&mut bytes).unwrap();
+    bytes
+}
+
+pub fn test_independent_wrapper_results() {
+    let key = random_bytes();
+    let _ = UnboundKey::new(&AES_256_GCM, &key);
+    let request_id = random_bytes();
+    // This is a different generated value, not the key above.
+    println!("request id = {}", hex::encode(request_id));
+}
+
+pub fn test_logged_wrapper_key() {
+    let key = random_bytes(); // $ Source[rust/cleartext-logging-key-material]
+    println!("key = {}", hex::encode(key)); // $ Alert[rust/cleartext-logging-key-material]
+    let _ = UnboundKey::new(&AES_256_GCM, &key);
+}
+
+pub fn test_logged_wrapper_non_key() {
+    let request_id = random_bytes();
+    // A wrapper call is not inherently a key generation API.
+    println!("request id = {}", hex::encode(request_id));
+}

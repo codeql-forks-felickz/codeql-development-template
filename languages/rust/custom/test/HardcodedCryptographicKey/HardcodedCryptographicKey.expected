@@ -9,6 +9,9 @@
 | test_orion.rs:4:21:4:27 | [3; 32] | test_orion.rs:4:21:4:27 | [3; 32] | test_orion.rs:5:49:5:58 | &key_bytes | This hard-coded value is used as $@. | test_orion.rs:5:49:5:58 | &key_bytes | a key |
 | test_orion.rs:13:43:13:77 | b"Hardcoded insecure secret!!!... | test_orion.rs:13:43:13:77 | b"Hardcoded insecure secret!!!... | test_orion.rs:13:43:13:77 | b"Hardcoded insecure secret!!!... | This hard-coded value is used as $@. | test_orion.rs:13:43:13:77 | b"Hardcoded insecure secret!!!... | a key |
 | test_orion.rs:26:49:26:58 | b"hunter2" | test_orion.rs:26:49:26:58 | b"hunter2" | test_orion.rs:26:49:26:58 | b"hunter2" | This hard-coded value is used as $@. | test_orion.rs:26:49:26:58 | b"hunter2" | a password |
+| test_rand.rs:17:15:17:23 | [7u8; 32] | test_rand.rs:17:15:17:23 | [7u8; 32] | test_rand.rs:20:43:20:46 | &key | This hard-coded value is used as $@. | test_rand.rs:20:43:20:46 | &key | a key |
+| test_rand.rs:24:15:24:23 | [7u8; 32] | test_rand.rs:24:15:24:23 | [7u8; 32] | test_rand.rs:27:43:27:46 | &key | This hard-coded value is used as $@. | test_rand.rs:27:43:27:46 | &key | a key |
+| test_rand.rs:37:15:37:23 | [7u8; 32] | test_rand.rs:37:15:37:23 | [7u8; 32] | test_rand.rs:40:43:40:46 | &key | This hard-coded value is used as $@. | test_rand.rs:40:43:40:46 | &key | a key |
 | test_ring.rs:15:21:15:29 | [7u8; 32] | test_ring.rs:15:21:15:29 | [7u8; 32] | test_ring.rs:16:43:16:52 | &key_bytes | This hard-coded value is used as $@. | test_ring.rs:16:43:16:52 | &key_bytes | a key |
 | test_ring.rs:20:49:20:76 | b"shared authentication key" | test_ring.rs:20:49:20:76 | b"shared authentication key" | test_ring.rs:20:49:20:76 | b"shared authentication key" | This hard-coded value is used as $@. | test_ring.rs:20:49:20:76 | b"shared authentication key" | a key |
 edges
@@ -51,6 +54,15 @@ edges
 | test_orion.rs:4:9:4:17 | key_bytes | test_orion.rs:5:50:5:58 | key_bytes | provenance |  |
 | test_orion.rs:4:21:4:27 | [3; 32] | test_orion.rs:4:9:4:17 | key_bytes | provenance |  |
 | test_orion.rs:5:50:5:58 | key_bytes | test_orion.rs:5:49:5:58 | &key_bytes | provenance |  |
+| test_rand.rs:17:9:17:11 | key | test_rand.rs:20:44:20:46 | key | provenance |  |
+| test_rand.rs:17:15:17:23 | [7u8; 32] | test_rand.rs:17:9:17:11 | key | provenance |  |
+| test_rand.rs:20:44:20:46 | key | test_rand.rs:20:43:20:46 | &key | provenance |  |
+| test_rand.rs:24:9:24:11 | key | test_rand.rs:27:44:27:46 | key | provenance |  |
+| test_rand.rs:24:15:24:23 | [7u8; 32] | test_rand.rs:24:9:24:11 | key | provenance |  |
+| test_rand.rs:27:44:27:46 | key | test_rand.rs:27:43:27:46 | &key | provenance |  |
+| test_rand.rs:37:9:37:11 | key | test_rand.rs:40:44:40:46 | key | provenance |  |
+| test_rand.rs:37:15:37:23 | [7u8; 32] | test_rand.rs:37:9:37:11 | key | provenance |  |
+| test_rand.rs:40:44:40:46 | key | test_rand.rs:40:43:40:46 | &key | provenance |  |
 | test_ring.rs:15:9:15:17 | key_bytes | test_ring.rs:16:44:16:52 | key_bytes | provenance |  |
 | test_ring.rs:15:21:15:29 | [7u8; 32] | test_ring.rs:15:9:15:17 | key_bytes | provenance |  |
 | test_ring.rs:16:44:16:52 | key_bytes | test_ring.rs:16:43:16:52 | &key_bytes | provenance |  |
@@ -104,6 +116,18 @@ nodes
 | test_orion.rs:5:50:5:58 | key_bytes | semmle.label | key_bytes |
 | test_orion.rs:13:43:13:77 | b"Hardcoded insecure secret!!!... | semmle.label | b"Hardcoded insecure secret!!!... |
 | test_orion.rs:26:49:26:58 | b"hunter2" | semmle.label | b"hunter2" |
+| test_rand.rs:17:9:17:11 | key | semmle.label | key |
+| test_rand.rs:17:15:17:23 | [7u8; 32] | semmle.label | [7u8; 32] |
+| test_rand.rs:20:43:20:46 | &key | semmle.label | &key |
+| test_rand.rs:20:44:20:46 | key | semmle.label | key |
+| test_rand.rs:24:9:24:11 | key | semmle.label | key |
+| test_rand.rs:24:15:24:23 | [7u8; 32] | semmle.label | [7u8; 32] |
+| test_rand.rs:27:43:27:46 | &key | semmle.label | &key |
+| test_rand.rs:27:44:27:46 | key | semmle.label | key |
+| test_rand.rs:37:9:37:11 | key | semmle.label | key |
+| test_rand.rs:37:15:37:23 | [7u8; 32] | semmle.label | [7u8; 32] |
+| test_rand.rs:40:43:40:46 | &key | semmle.label | &key |
+| test_rand.rs:40:44:40:46 | key | semmle.label | key |
 | test_ring.rs:15:9:15:17 | key_bytes | semmle.label | key_bytes |
 | test_ring.rs:15:21:15:29 | [7u8; 32] | semmle.label | [7u8; 32] |
 | test_ring.rs:16:43:16:52 | &key_bytes | semmle.label | &key_bytes |

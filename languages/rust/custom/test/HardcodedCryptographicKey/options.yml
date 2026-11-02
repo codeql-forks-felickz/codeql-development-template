@@ -7,3 +7,4 @@ qltest_dependencies:
     - ring = { version = "0.17.8" }
     - hex = { version = "0.4.3" }
     - getrandom = { version = "0.2.15" }
+    - rand = { version = "=0.8.5" }

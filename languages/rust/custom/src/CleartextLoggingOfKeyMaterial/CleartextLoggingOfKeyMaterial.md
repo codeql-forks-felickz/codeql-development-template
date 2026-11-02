@@ -1,7 +1,7 @@
 # Cleartext logging of cryptographic key material
 Output written to the console or to a log is commonly retained in shared log storage, and is readable by operators, log aggregation services, and anyone else with access to those logs. If a cryptographic key is written to such output, an attacker who can read the logs can recover the key and use it to decrypt or forge the data that it protects.
 
-This query finds key material that is generated at runtime (for example by filling a buffer with random bytes, or by calling `generate_key`), that is used as a cryptographic key, and that is also written to a log or to standard output or standard error, possibly after hex encoding. The standard `rust/cleartext-logging` query relies on variable names to recognize sensitive data, and does not recognize names such as `key_bytes`.
+This query finds generated key material that is written to a log or to standard output or standard error, possibly after hex encoding. Results from key-generation APIs such as `KeyInit::generate_key` are already known to be keys, even when returned without being passed to a constructor. Generic randomly filled buffers, including results of helpers returning such buffers, must also flow to a cryptographic key API. The standard `rust/cleartext-logging` query relies on variable names to recognize sensitive data, and does not recognize names such as `key_bytes`.
 
 
 ## Recommendation
@@ -39,6 +39,12 @@ fn make_key() -> UnboundKey {
 }
 
 ```
+
+## Known limitations
+
+For generic random buffers, both key-use and logging flows must be available from the same source in the global data-flow graph. Data-flow state and operation order can prevent some combinations from being correlated. The query does not infer this relationship from variable names or use of the same helper.
+
+Helpers are recognized only when the filled buffer flows locally to a return value. Each call to such a helper is a separate source; logging inside that helper and deeper chains of returning helpers are not covered by this call-site model.
 
 ## References
 * MITRE: [CWE-532: Insertion of Sensitive Information into Log File](https://cwe.mitre.org/data/definitions/532.html).
