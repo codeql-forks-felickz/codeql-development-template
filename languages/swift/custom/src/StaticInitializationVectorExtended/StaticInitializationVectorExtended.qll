@@ -27,15 +27,53 @@ private predicate isCommonCryptoCall(CallExpr call, string name) {
 }
 
 /**
- * Holds if `e`, or an expression whose value flows to `e`, refers to a
- * declaration named `name`.
+ * Holds if `e` refers to a declaration named `name` through expressions that
+ * preserve its value.
  */
 bindingset[name]
 private predicate refersTo(Expr e, string name) {
-  exists(Expr src, DeclRefExpr ref |
-    DataFlow::localExprFlow(src, e) and
+  exists(DeclRefExpr ref |
     ref.getDecl().(VarDecl).getName() = name and
-    getImmediateParent*(ref) = src
+    valuePreservingReference(e, ref)
+  )
+}
+
+/**
+ * Holds if `e` is `ref`, or is an expression that preserves the value of `ref`.
+ */
+private predicate valuePreservingReference(Expr e, DeclRefExpr ref) {
+  e = ref
+  or
+  exists(ParenExpr parens |
+    e = parens and
+    valuePreservingReference(parens.getImmediateSubExpr(), ref)
+  )
+  or
+  exists(CallExpr conversion |
+    e = conversion and
+    conversion.getStaticTarget().(Initializer).getEnclosingDecl().asNominalTypeDecl().getName() =
+      ["CCOptions", "UInt32"] and
+    valuePreservingReference(conversion.getArgument(0).getExpr(), ref)
+  )
+  or
+  exists(OrBitwiseExpr bitwiseOr |
+    e = bitwiseOr and
+    valuePreservingReference(bitwiseOr.getAnOperand(), ref)
+  )
+  or
+  exists(DeclRefExpr localRef, VarDecl localVariable, Expr initializer |
+    e = localRef and
+    localRef.getDecl() = localVariable and
+    initializer = localVariable.getParentInitializer() and
+    DataFlow::localExprFlow(initializer, localRef) and
+    valuePreservingReference(initializer, ref)
+  )
+  or
+  exists(DeclRefExpr localRef, AssignExpr assignment |
+    e = localRef and
+    assignment.getDest() = localRef and
+    DataFlow::localExprFlow(assignment.getSource(), localRef) and
+    valuePreservingReference(assignment.getSource(), ref)
   )
 }
 

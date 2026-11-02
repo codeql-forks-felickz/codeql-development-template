@@ -165,6 +165,12 @@ func testCommonCrypto(key: [UInt8], dataIn: [UInt8], dataOut: UnsafeMutableRawPo
 	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(kCCOptionECBMode | kCCOptionPKCS7Padding), key, key.count, nil, dataIn, dataIn.count, dataOut, 64, &moved) // GOOD
 	let ecbOptions = CCOptions(kCCOptionECBMode)
 	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), ecbOptions, key, key.count, nil, dataIn, dataIn.count, dataOut, 64, &moved) // GOOD
+	let wrappedEcbOptions = CCOptions(UInt32((kCCOptionECBMode)) | UInt32(kCCOptionPKCS7Padding))
+	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), wrappedEcbOptions, key, key.count, nil, dataIn, dataIn.count, dataOut, 64, &moved) // GOOD
+	let cbcOptions = CCOptions(kCCOptionPKCS7Padding & ~kCCOptionECBMode)
+	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), cbcOptions, key, key.count, nil, dataIn, dataIn.count, dataOut, 64, &moved) // $ Alert
+	let conditionalOptions = CCOptions(dataIn.count > 0 ? kCCOptionECBMode : kCCOptionPKCS7Padding)
+	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), conditionalOptions, key, key.count, nil, dataIn, dataIn.count, dataOut, 64, &moved) // $ Alert
 	_ = CCCryptorCreateWithMode(CCOperation(kCCEncrypt), CCMode(kCCModeECB), CCAlgorithm(kCCAlgorithmAES), CCPadding(ccPKCS7Padding), nil, key, key.count, nil, 0, 0, 0, &cryptor) // GOOD
 
 	// the RC4 stream cipher ignores the IV (RC4 itself is a different weakness)

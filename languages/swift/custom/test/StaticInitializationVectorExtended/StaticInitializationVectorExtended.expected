@@ -7,6 +7,8 @@
 | test.swift:154:127:154:127 | nil | test.swift:154:127:154:127 | nil | test.swift:154:127:154:127 | nil | A nil initialization vector (all zero bytes) is used for encryption. |
 | test.swift:155:132:155:132 | nil | test.swift:155:132:155:132 | nil | test.swift:155:132:155:132 | nil | A nil initialization vector (all zero bytes) is used for encryption. |
 | test.swift:156:30:156:30 | nil | test.swift:156:30:156:30 | nil | test.swift:156:30:156:30 | nil | A nil initialization vector (all zero bytes) is used for encryption. |
+| test.swift:171:97:171:97 | nil | test.swift:171:97:171:97 | nil | test.swift:171:97:171:97 | nil | A nil initialization vector (all zero bytes) is used for encryption. |
+| test.swift:173:105:173:105 | nil | test.swift:173:105:173:105 | nil | test.swift:173:105:173:105 | nil | A nil initialization vector (all zero bytes) is used for encryption. |
 edges
 | test.swift:91:55:91:171 | ivData | test.swift:101:5:101:5 | ivData | provenance | Config |
 | test.swift:101:5:101:5 | ivData | test.swift:101:30:101:30 | ivBytes | provenance | Config |
