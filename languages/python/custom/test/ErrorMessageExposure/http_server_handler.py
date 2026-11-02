@@ -29,7 +29,7 @@ class ReqHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b"ok %d" % length)
 
-    def do_HEAD(self):
+    def do_PATCH(self):
         code, content = 200, "<html>"
         try:
             content += open("data.txt").read()
