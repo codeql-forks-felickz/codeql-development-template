@@ -1,0 +1,2 @@
+query: UnvalidatedUrlRedirection/UnvalidatedUrlRedirection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
