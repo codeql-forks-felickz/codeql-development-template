@@ -36,6 +36,21 @@ app.get('/ping', function (req, res) {
   res.jsonp('pong');
 });
 
+// OK: a third-party script cannot issue a POST request to this handler.
+app.post('/post-only-profile', function (req, res) {
+  res.jsonp({ email: req.session.email });
+});
+
+// Middleware is reachable through GET requests.
+app.use('/middleware-profile', function (req, res) {
+  res.jsonp({ email: req.session.email }); // $ Alert
+});
+
+// `all` handles GET requests as well as other methods.
+app.all('/all-profile', function (req, res) {
+  res.jsonp({ email: req.session.email }); // $ Alert
+});
+
 function lookupAccount(key) {
   return { key };
 }

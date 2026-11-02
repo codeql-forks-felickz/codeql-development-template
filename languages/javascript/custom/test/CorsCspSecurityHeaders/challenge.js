@@ -19,6 +19,11 @@ function send_message_restricted(message) {
   window_ref.postMessage(message, "https://scoreboard.example.com"); // OK: origin restricted
 }
 
+function send_message_to_self() {
+  var input = document.querySelector("#comment");
+  window.postMessage(input.value, "*"); // OK: the current window cannot expose its data cross-origin
+}
+
 function check_guess() {
   var guess = document.getElementById("guess").value;
   send_message("guess:" + guess);
