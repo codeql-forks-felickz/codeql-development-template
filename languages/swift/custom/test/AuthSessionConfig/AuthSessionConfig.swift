@@ -151,6 +151,63 @@ class StoryboardDelegateViewController: UIViewController, UIWebViewDelegate {
   }
 }
 
+class InheritedStoryboardDelegateBase: UIViewController {
+  func webView(
+    _ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: Int
+  ) -> Bool {
+    return request.url?.host == "example.com"
+  }
+}
+
+class InheritedStoryboardDelegateViewController: InheritedStoryboardDelegateBase {
+  var wv: UIWebView!
+
+  func show(url: URL) {
+    wv.loadRequest(URLRequest(url: url)) // GOOD: inherited callback restricts navigation
+  }
+}
+
+protocol CallbackRequirement {
+  func webView(
+    _ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: Int
+  ) -> Bool
+}
+
+extension CallbackRequirement {
+  func loadWithoutCallbackImplementation(_ webView: UIWebView, request: URLRequest) {
+    webView.loadRequest(request) // $ Alert
+  }
+}
+
+class WKPolicyButUILoadsController: UIViewController {
+  var webView = UIWebView()
+
+  func show(url: URL) {
+    webView.loadRequest(URLRequest(url: url)) // $ Alert
+  }
+
+  func webView(
+    _ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction,
+    decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+  ) {
+    decisionHandler(.cancel)
+  }
+}
+
+class UIPolicyButWKLoadsController: UIViewController {
+  var webView = WKWebView()
+
+  func show(url: URL) {
+    _ = webView.load(URLRequest(url: url)) // $ Alert
+  }
+
+  func webView(
+    _ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: Int
+  ) -> Bool {
+    return false
+  }
+}
+
 func showRestrictedLocalWebView(url: URL, policy: NavigationPolicy) -> WKWebView {
   let webView = WKWebView()
   webView.navigationDelegate = policy

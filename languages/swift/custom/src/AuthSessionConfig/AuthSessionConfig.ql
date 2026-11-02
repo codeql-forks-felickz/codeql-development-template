@@ -57,18 +57,28 @@ private predicate hasNavigationDelegateAssignment(VarDecl v) {
 }
 
 /**
- * Holds if `t` implements a web view callback that decides whether a
- * navigation is allowed.
+ * Holds if `t` implements a navigation-policy callback matching `loadMethod`.
  */
-private predicate implementsNavigationPolicy(NominalTypeDecl t) {
+private predicate implementsNavigationPolicy(NominalTypeDecl t, Method loadMethod) {
   exists(Method m |
-    m.getEnclosingDecl().asNominalTypeDecl() = t and
-    m.getName() =
-      [
-        "webView(_:shouldStartLoadWith:navigationType:)",
-        "webView(_:decidePolicyFor:decisionHandler:)",
-        "webView(_:decidePolicyFor:preferences:decisionHandler:)"
-      ]
+    m.getEnclosingDecl().asNominalTypeDecl() = t.getABaseTypeDecl*() and
+    (
+      m.getEnclosingDecl() instanceof ClassDecl
+      or
+      m.getEnclosingDecl() instanceof ExtensionDecl
+    ) and
+    m.hasBody() and
+    (
+      loadMethod.hasQualifiedName("UIWebView", "loadRequest(_:)") and
+      m.getName() = "webView(_:shouldStartLoadWith:navigationType:)"
+      or
+      loadMethod.hasQualifiedName("WKWebView", "load(_:)") and
+      m.getName() =
+        [
+          "webView(_:decidePolicyFor:decisionHandler:)",
+          "webView(_:decidePolicyFor:preferences:decisionHandler:)"
+        ]
+    )
   )
 }
 
@@ -76,6 +86,9 @@ from WebViewLoadRequestCall call, VarDecl webView
 where
   webView = getReferencedVar(call.getQualifier()) and
   not hasNavigationDelegateAssignment(webView) and
-  not implementsNavigationPolicy(call.getEnclosingFunction().getEnclosingDecl().asNominalTypeDecl())
+  not implementsNavigationPolicy(
+    call.getEnclosingFunction().getEnclosingDecl().asNominalTypeDecl(),
+    call.getStaticTarget().(Method)
+  )
 select call,
   "This web view loads content but has no navigation delegate restricting the URLs it may navigate to."
