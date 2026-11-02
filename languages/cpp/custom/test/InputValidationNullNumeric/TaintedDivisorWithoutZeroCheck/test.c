@@ -147,3 +147,11 @@ int process_image_overwrite_good(FILE *fp) {
   img.height = 4;
   return img.width / img.height;
 }
+
+// A field assignment before the input read does not overwrite the tainted value.
+int process_image_assign_before_read_bad(FILE *fp) {
+  struct Image img;
+  img.height = 1;
+  fread(&img, sizeof(img), 1, fp); // $ Source
+  return 100 / img.height; // $ Alert
+}

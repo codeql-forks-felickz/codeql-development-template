@@ -131,7 +131,12 @@ predicate isArgcChecked(ConstantArgvAccess access) {
   exists(Expr cond, Expr argc |
     isConditionallyEvaluated(access, cond) and
     isArgcRead(argc, access.getMain()) and
-    argc.getParent*() = cond
+    argc.getParent*() = cond and
+    (
+      not exists(Loop l | cond = l.getCondition())
+      or
+      dominates(argc, access)
+    )
   )
   or
   exists(IfStmt ifStmt, Expr argc |

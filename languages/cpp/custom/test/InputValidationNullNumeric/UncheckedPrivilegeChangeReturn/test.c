@@ -2,6 +2,7 @@ typedef int BOOL;
 typedef void *HANDLE;
 typedef unsigned int uid_t;
 typedef unsigned int gid_t;
+typedef unsigned int fsid_t;
 typedef enum { SecurityAnonymous, SecurityIdentification, SecurityImpersonation } SECURITY_IMPERSONATION_LEVEL;
 
 BOOL ImpersonateSelf(SECURITY_IMPERSONATION_LEVEL level);
@@ -13,6 +14,8 @@ int setuid(uid_t uid);
 int setgid(gid_t gid);
 int seteuid(uid_t uid);
 int setresuid(uid_t r, uid_t e, uid_t s);
+int setfsuid(fsid_t fsuid);
+int setfsgid(fsid_t fsgid);
 int printf(const char *fmt, ...);
 void exit(int status);
 
@@ -66,4 +69,13 @@ BOOL impersonate_return_good(HANDLE token) {
 // Explicitly discarding the result is still unsafe for privilege changes.
 void explicit_discard_bad(uid_t uid) {
   (void)setuid(uid); // $ Alert
+}
+
+void filesystem_ids_good(fsid_t fsuid, fsid_t fsgid) {
+  setfsuid(fsuid);
+  if (setfsuid((fsid_t)-1) != fsuid)
+    exit(1);
+  setfsgid(fsgid);
+  if (setfsgid((fsid_t)-1) != fsgid)
+    exit(1);
 }

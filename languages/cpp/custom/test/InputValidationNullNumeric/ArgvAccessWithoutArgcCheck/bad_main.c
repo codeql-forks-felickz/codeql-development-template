@@ -13,5 +13,8 @@ int main(int argc, char **argv) {
   ProcessImage(argv[1]); // $ Alert
   printf("%s\n", *(argv + 2)); // $ Alert
   printf("%s\n", argv[0]);
+  do {
+    ProcessImage(argv[1]); // $ Alert
+  } while (argc > 1);
   return 0;
 }

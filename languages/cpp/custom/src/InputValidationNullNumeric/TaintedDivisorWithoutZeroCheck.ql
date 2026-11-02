@@ -81,14 +81,18 @@ predicate fieldAccessOf(FieldAccess fa, VariableAccess base, Field f) {
 
 /**
  * Holds if field `f` of variable `v` is assigned by `assign`, which dominates
- * the field read `fa`, so that `fa` no longer reads the originally written
- * value.
+ * the field read `fa` or is itself the assignment's lvalue.
  */
 predicate overwrittenBefore(FieldAccess fa, Variable v, Field f) {
   exists(Assignment assign, VariableAccess otherBase |
     fieldAccessOf(assign.getLValue(), otherBase, f) and
     otherBase.getTarget() = v and
-    dominates(assign, fa)
+    exists(FunctionCall write |
+      write.getTarget().hasGlobalName(["fread", "recv"]) and
+      write.passesByReference(_, otherBase) and
+      dominates(write, assign)
+    ) and
+    (dominates(assign, fa) or fa = assign.getLValue())
   )
 }
 

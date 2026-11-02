@@ -27,7 +27,7 @@ class PrivilegeChangeFunction extends Function {
         "SetThreadToken",
         // POSIX credential APIs
         "setuid", "setgid", "seteuid", "setegid", "setreuid", "setregid", "setresuid", "setresgid",
-        "setgroups", "initgroups", "setfsuid", "setfsgid"
+        "setgroups", "initgroups"
       ])
   }
 }
