@@ -39,7 +39,7 @@ predicate appliesToProduction(AstNode n, Folder root) {
     top.getBaseName() = ["config", "app", "lib"] and
     n.getFile().getParentContainer+() = top
   ) and
-  not exists(string env | isEnvironmentFile(n.getFile(), root, env) and env != "production")
+  not exists(string env | isEnvironmentFile(n.getFile(), _, env) and env != "production")
 }
 
 /** An assignment of the form `config.force_ssl = value`. */
@@ -61,13 +61,17 @@ class ForceSslAssignment extends AssignExpr {
 
 /**
  * A construct (other than `config.force_ssl`) that enforces HTTPS for the application:
- * a controller-level `force_ssl` call or an SSL-enforcing Rack middleware reference.
+ * an unconditional `force_ssl` call in an application controller or an SSL-enforcing
+ * Rack middleware reference.
  */
 class AlternativeSslEnforcement extends AstNode {
   AlternativeSslEnforcement() {
     exists(MethodCall c | c = this |
       c.getMethodName() = "force_ssl" and
-      (not exists(c.getReceiver()) or c.getReceiver() instanceof SelfVariableAccess)
+      c.getNumberOfArguments() = 0 and
+      (not exists(c.getReceiver()) or c.getReceiver() instanceof SelfVariableAccess) and
+      c.getEnclosingModule().getModule().getQualifiedName() =
+        ["ApplicationController", "ActionController::Base"]
     )
     or
     exists(ConstantReadAccess c | c = this |
@@ -100,9 +104,22 @@ predicate isAddedMiddleware(Expr e) {
   )
 }
 
+/** Holds if the production environment file contains a `config.force_ssl` assignment. */
+predicate hasProductionForceSslAssignment(Folder root) {
+  exists(ForceSslAssignment a | isProductionFile(a.getFile(), root))
+}
+
 /** Holds if the Rails application in `root` enforces SSL in production by some means. */
 predicate hasSslEnforcement(Folder root) {
-  exists(ForceSslAssignment a | appliesToProduction(a, root) and not a.isDisabled())
+  exists(ForceSslAssignment a |
+    appliesToProduction(a, root) and
+    not a.isDisabled() and
+    (
+      isProductionFile(a.getFile(), root)
+      or
+      not hasProductionForceSslAssignment(root)
+    )
+  )
   or
   exists(AlternativeSslEnforcement e | appliesToProduction(e, root))
 }
