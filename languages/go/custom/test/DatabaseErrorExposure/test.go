@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"database/sql"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"html/template"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
@@ -105,6 +107,21 @@ func safeSetupViewHandler(w http.ResponseWriter, r *http.Request) {
 		data["error"] = "Database is not available"
 	}
 	render(w, "setup", data)
+}
+
+// SAFE: template output written to a discard writer is not an HTTP response.
+func safeDiscardTemplate() {
+	_, err := db.Exec("SELECT 1 FROM users LIMIT 1")
+	t := template.New("setup")
+	t.Execute(io.Discard, err)
+}
+
+// SAFE: template output written to a buffer is not an HTTP response.
+func safeBufferedTemplate() {
+	_, err := db.Exec("SELECT 1 FROM users LIMIT 1")
+	var buffer bytes.Buffer
+	t := template.New("setup")
+	t.ExecuteTemplate(&buffer, "setup", err)
 }
 
 func main() {}

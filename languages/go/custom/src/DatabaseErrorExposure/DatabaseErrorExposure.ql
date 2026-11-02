@@ -42,9 +42,13 @@ class TemplateExecutionData extends DataFlow::Node {
       call.getTarget().hasQualifiedName(pkg, "Template", m) and
       pkg = ["text/template", "html/template"]
     |
-      m = "Execute" and this = call.getArgument(1)
+      m = "Execute" and
+      exists(Http::ResponseWriter writer | writer.getANode() = call.getArgument(0)) and
+      this = call.getArgument(1)
       or
-      m = "ExecuteTemplate" and this = call.getArgument(2)
+      m = "ExecuteTemplate" and
+      exists(Http::ResponseWriter writer | writer.getANode() = call.getArgument(0)) and
+      this = call.getArgument(2)
     )
   }
 }

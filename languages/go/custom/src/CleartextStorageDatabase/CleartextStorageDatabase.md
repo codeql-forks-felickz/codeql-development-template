@@ -4,6 +4,10 @@ Personal data such as social security numbers, dates of birth and salaries, as w
 
 This query reports SQL `INSERT`, `UPDATE`, `REPLACE`, `UPSERT` and `MERGE` statements executed through `database/sql` (or another modeled SQL library) whose query text or bind parameters contain data whose name suggests it is sensitive, unless the data was first passed through a hashing or encryption function.
 
+## Known limitations
+
+SQL write statements are classified using local flow. A write statement passed to a helper function that executes it may not be recognized when the statement text and database call are in different functions.
+
 ## Recommendation
 
 Hash passwords with a password-specific adaptive hash function such as Argon2id, bcrypt or scrypt. Encrypt other sensitive data that must be recoverable, for example with an authenticated cipher such as AES-GCM and a key that is not stored alongside the data. Avoid storing sensitive data at all if the application does not need it.

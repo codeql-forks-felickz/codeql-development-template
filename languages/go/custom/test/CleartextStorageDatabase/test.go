@@ -66,6 +66,18 @@ func seedEncrypted(user User) {
 	db.Exec("INSERT INTO user (first_name, ssn) VALUES (?, ?)", user.FirstName, encryptField(user.SSN))
 }
 
+// SAFE: encrypted sensitive data remains protected when stored through a sensitive-named local.
+func seedEncryptedLocal(user User) {
+	ssn := encryptField(user.SSN)
+	db.Exec("INSERT INTO user (ssn) VALUES (?)", ssn)
+}
+
+// SAFE: SQL text in a format string is not a sensitive-value lookup key.
+func seedEncryptedFormatted(user User) {
+	q := fmt.Sprintf("INSERT INTO employees (ssn) VALUES ('%s')", encryptField(user.SSN))
+	db.Exec(q)
+}
+
 // SAFE: the SSN is only used to look up a row, not stored.
 func lookup(user User) int {
 	var id int

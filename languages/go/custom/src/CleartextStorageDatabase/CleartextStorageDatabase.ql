@@ -44,13 +44,18 @@ class SensitiveDataSource extends DataFlow::Node {
 
   SensitiveDataSource() {
     exists(Variable v | this = v.getARead() |
-      isPrivateDataName(v.getName()) and description = v.getName()
+      isPrivateDataName(v.getName()) and
+      description = v.getName() and
+      not exists(ProtectingCall c | DataFlow::localFlow(c.getResult(_), this))
     )
     or
     exists(DataFlow::CallNode call | this = call.getResult() |
       isPrivateDataName(call.getCalleeName()) and description = call.getCalleeName()
       or
       exists(string s | s = call.getAnArgument().getStringValue() |
+        s.regexpMatch("(?i)[a-z_][a-z_0-9]*") and
+        not call.getTarget().hasQualifiedName("fmt", "Sprintf") and
+        not exists(SQL::QueryString qs | qs = call.getAnArgument()) and
         isPrivateDataName(s) and description = s
       )
     )
