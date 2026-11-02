@@ -102,6 +102,31 @@ class ModelWriteSink extends DataFlow::Node {
   }
 }
 
+/** Holds if a Sequelize write call has a statically specified `fields` allow-list. */
+predicate hasSequelizeFieldsAllowList(DataFlow::CallNode call) {
+  exists(ObjectExpr options, Property fields, ArrayExpr allowedFields |
+    options = call.getArgument(1).asExpr() and
+    fields = options.getPropertyByName("fields") and
+    allowedFields = fields.getInit() and
+    forall(Expr field | field = allowedFields.getAnElement() | field instanceof StringLiteral)
+  )
+}
+
+/** Holds if `write` is the values argument to a Sequelize write call with a `fields` allow-list. */
+predicate isSequelizeFieldsAllowListedWrite(DataFlow::Node write) {
+  exists(DataFlow::CallNode call |
+    call = sequelizeModelCall(["create", "bulkCreate", "update", "upsert"]) and
+    write = call.getArgument(0) and
+    hasSequelizeFieldsAllowList(call)
+  )
+  or
+  exists(DataFlow::CallNode call |
+    call = sequelizeInstance().getAMethodCall("update") and
+    write = call.getArgument(0) and
+    hasSequelizeFieldsAllowList(call)
+  )
+}
+
 /**
  * A data-flow node that is used as a Sequelize `where` condition, or as the value
  * of a property in such a condition. A user-controlled object or array in this
@@ -135,7 +160,14 @@ module OrmUserControlledObjectConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
-    (sink instanceof ModelWriteSink or sink instanceof QueryConditionSink) and
+    (
+      sink instanceof ModelWriteSink and
+      not isSequelizeFieldsAllowListedWrite(sink) and
+      not sink instanceof PropertyProjection and
+      not sink.getALocalSource() instanceof PropertyProjection
+      or
+      sink instanceof QueryConditionSink
+    ) and
     state.isTaintedObject() and
     // Already reported by `js/sql-injection` (NoSQL injection).
     not sink instanceof NoSql::Query
@@ -150,10 +182,7 @@ module OrmUserControlledObjectConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2) and
-    // Projecting an allow-list of properties (for example `_.pick(obj, [...])`) is the
-    // recommended mitigation for mass assignment.
-    not node2 instanceof PropertyProjection
+    TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2)
     or
     TaintTracking::defaultTaintStep(node1, node2) and
     state1.isTaint() and

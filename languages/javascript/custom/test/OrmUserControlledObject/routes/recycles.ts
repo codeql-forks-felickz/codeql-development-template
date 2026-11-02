@@ -58,3 +58,13 @@ export const createRecycleSafe = () => (req: Request, res: Response) => {
     return res.send(recycle)
   })
 }
+
+export const buildRecycleWithFields = () => (req: Request, res: Response) => {
+  RecycleModel.build(req.body, { fields: ['quantity'] }) // $ Alert
+  res.end()
+}
+
+export const constructRecycleWithFields = () => (req: Request, res: Response) => {
+  new RecycleModel(req.body, { fields: ['quantity'] }) // $ Alert
+  res.end()
+}
