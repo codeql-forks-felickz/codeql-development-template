@@ -64,11 +64,23 @@ private class JsonFormatCall extends JsonTextConstruction, FormatCall {
   JsonFormatCall() { isJsonLikeText(this.getFormatExpr().getValue()) }
 
   override Expr getAnInsertedValue() {
-    exists(int i |
-      i >= this.getFirstArgument() and
-      result = this.getArgument(i) and
-      not result instanceof JsonTextConstruction
-    )
+    (
+      exists(ValidFormatString format, int i |
+        format = this.getFormatExpr() and
+        i = format.getAnInsert() and
+        result = this.getSuppliedExpr(i)
+      )
+      or
+      (
+        this.hasCollectionExpr() or
+        not exists(ValidFormatString format | format = this.getFormatExpr())
+      ) and
+      exists(int i |
+        i >= this.getFirstArgument() and
+        result = this.getArgument(i)
+      )
+    ) and
+    not result instanceof JsonTextConstruction
   }
 }
 
@@ -77,7 +89,7 @@ abstract class JsonTextSink extends DataFlow::ExprNode { }
 
 /** Holds if `e` is, or creates, a media type that mentions JSON. */
 private predicate isJsonMediaType(Expr e) {
-  e.getValue().toLowerCase().matches("%json%")
+  e.getValue().regexpMatch("(?i)\\s*[^/;\\s]+/([^;/]*\\+)?json\\s*(;.*)?")
   or
   e.(ObjectCreation)
       .getObjectType()
@@ -136,6 +148,9 @@ private class JsonEncodingCall extends MethodCall {
       m.getDeclaringType()
           .getABaseType*()
           .hasFullyQualifiedName("System.Text.Encodings.Web", "TextEncoder") and
+      this.getQualifier()
+          .getType()
+          .hasFullyQualifiedName("System.Text.Encodings.Web", "JavaScriptEncoder") and
       m.getUndecoratedName() = "Encode"
       or
       m.getDeclaringType().hasFullyQualifiedName("System.Web", "HttpUtility") and

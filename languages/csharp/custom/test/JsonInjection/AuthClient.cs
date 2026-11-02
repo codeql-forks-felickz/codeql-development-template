@@ -63,6 +63,14 @@ namespace JsonInjectionTest
             await httpClient.PostAsync("http://auth/check",
                 new StringContent("{\"token\":\"" + jwt + "\"}", Encoding.UTF8, new MediaTypeHeaderValue("application/json"))); // $ Alert
 
+            // JSON media types include the JSON subtype and structured syntax suffixes.
+            await httpClient.PostAsync("http://auth/check",
+                new StringContent("{\"token\":\"" + jwt + "\"}", Encoding.UTF8, "text/json")); // $ Alert
+            await httpClient.PostAsync("http://auth/check",
+                new StringContent("{\"token\":\"" + jwt + "\"}", Encoding.UTF8, "application/merge-patch+json; charset=utf-8")); // $ Alert
+            await httpClient.PostAsync("http://auth/check",
+                new StringContent("{\"token\":\"" + jwt + "\"}", Encoding.UTF8, "application/notjson"));
+
             // Newtonsoft.Json parsing and deserialization.
             var jobj = JObject.Parse("{\"file\":\"" + fileName + "\"}"); // $ Alert
             var session = JsonConvert.DeserializeObject<Session>("{\"role\":\"user\",\"name\":\"" + jwt + "\"}"); // $ Alert
@@ -84,7 +92,11 @@ namespace JsonInjectionTest
             // GOOD: the value is encoded as a JSON string before it is inserted.
             JsonDocument.Parse("{\"jwt\":" + System.Text.Json.JsonSerializer.Serialize(jwt) + "}");
             JsonDocument.Parse("{\"jwt\":\"" + JavaScriptEncoder.Default.Encode(jwt) + "\"}");
+            JsonDocument.Parse("{\"jwt\":\"" + HtmlEncoder.Default.Encode(jwt) + "\"}"); // $ Alert
             JsonDocument.Parse("{\"jwt\":" + JsonConvert.SerializeObject(jwt) + "}");
+
+            // GOOD: the format string does not reference the user-controlled argument.
+            JsonDocument.Parse(string.Format("{{\"name\":\"{0}\"}}", "fixed", jwt));
 
             // GOOD: not JSON text.
             await httpClient.PostAsync("http://auth/form",
