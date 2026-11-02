@@ -52,24 +52,14 @@ app.post('/profile/image/https', (req, res) => {
 // BAD: response event handler of a Node.js https request.
 app.post('/profile/image/https-event', (req, res) => {
   https.request(req.query.url as string).on('response', (download) => {
-    pipeline(download, fs.createWriteStream('uploads/avatar.jpg')) // $ Alert
+    if (req.body.limited) {
+      pipeline(download, createByteLimitTransform(), fs.createWriteStream('uploads/avatar.jpg'))
+    } else if (req.body.limitedPipe) {
+      download.pipe(createByteLimitTransform()).pipe(fs.createWriteStream('uploads/avatar.jpg'))
+    } else {
+      pipeline(download, fs.createWriteStream('uploads/avatar.jpg')) // $ Alert
+    }
   }).end()
-  res.redirect('/profile')
-})
-
-// GOOD: a byte-limiting transform sits between the response and file.
-app.post('/profile/image/limited', (req, res) => {
-  https.get(req.query.url as string, (download) => {
-    pipeline(download, createByteLimitTransform(), fs.createWriteStream('uploads/avatar.jpg'))
-  })
-  res.redirect('/profile')
-})
-
-// GOOD: a chained intermediate stream prevents reporting the final pipe.
-app.post('/profile/image/limited-pipe', (req, res) => {
-  https.get(req.query.url as string, (download) => {
-    download.pipe(createByteLimitTransform()).pipe(fs.createWriteStream('uploads/avatar.jpg'))
-  })
   res.redirect('/profile')
 })
 
