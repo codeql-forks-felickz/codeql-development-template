@@ -83,15 +83,20 @@ predicate fieldAccessOf(FieldAccess fa, VariableAccess base, Field f) {
  * Holds if field `f` of variable `v` is assigned by `assign`, which dominates
  * the field read `fa` or is itself the assignment's lvalue.
  */
-predicate overwrittenBefore(FieldAccess fa, Variable v, Field f) {
-  exists(Assignment assign, VariableAccess otherBase |
+predicate overwrittenBefore(
+  DataFlow::Node aggregate, VariableAccess base, FieldAccess fa, Field f
+) {
+  exists(Assignment assign, VariableAccess otherBase, FunctionCall write, VariableAccess writeBase |
     fieldAccessOf(assign.getLValue(), otherBase, f) and
-    otherBase.getTarget() = v and
-    exists(FunctionCall write |
-      write.getTarget().hasGlobalName(["fread", "recv"]) and
-      write.passesByReference(_, otherBase) and
-      dominates(write, assign)
+    otherBase.getTarget() = base.getTarget() and
+    (
+      aggregate.asIndirectExpr().(VariableAccess).getTarget() = base.getTarget()
+      or aggregate.asExpr().(VariableAccess).getTarget() = base.getTarget()
     ) and
+    write.getTarget().hasGlobalName(["fread", "recv"]) and
+    writeBase.getParent*() = write.getAnArgument() and
+    writeBase.getTarget() = base.getTarget() and
+    dominates(write, assign) and
     (dominates(assign, fa) or fa = assign.getLValue())
   )
 }
@@ -104,7 +109,7 @@ predicate aggregateToFieldStep(DataFlow::Node aggregate, DataFlow::Node fieldRea
   exists(FieldAccess fa, VariableAccess base, Field f |
     fieldRead.asExpr() = fa and
     fieldAccessOf(fa, base, f) and
-    not overwrittenBefore(fa, base.getTarget(), f) and
+    not overwrittenBefore(aggregate, base, fa, f) and
     (
       aggregate.asIndirectExpr() = base
       or
