@@ -1,0 +1,18 @@
+| archive.ts:10:27:10:54 | unzippe ... buffer) | This archive is extracted without a limit on the expanded size of its entries. |
+| archive.ts:46:11:46:26 | unzipper.Parse() | This archive is extracted without a limit on the expanded size of its entries. |
+| archive.ts:68:11:68:29 | unzipper.ParseOne() | This archive is extracted without a limit on the expanded size of its entries. |
+| archive.ts:85:38:85:85 | unzippe ... nts' }) | This archive is extracted without a limit on the expanded size of its entries. |
+| download.ts:31:20:31:74 | Readabl ... Stream) | The response from a user-controlled URL is written to a file without a size limit. |
+| download.ts:38:3:40:53 | request ... .jpg')) | The response from a user-controlled URL is written to a file without a size limit. |
+| download.ts:47:5:47:61 | downloa ... .jpg')) | The response from a user-controlled URL is written to a file without a size limit. |
+| download.ts:60:7:60:68 | pipelin ... .jpg')) | The response from a user-controlled URL is written to a file without a size limit. |
+| graphql.ts:14:20:14:37 | [ depthLimit(10) ] | These GraphQL validation rules do not limit query cost, complexity or aliases. |
+| graphql.ts:26:20:26:36 | [ depthLimit(5) ] | These GraphQL validation rules do not limit query cost, complexity or aliases. |
+| multer.js:8:14:8:41 | multer( ... ds/' }) | This multer upload handler accepts files without file type validation (fileFilter) or file size limit (limits.fileSize). |
+| multer.js:11:20:11:27 | multer() | This multer upload handler accepts files without file type validation (fileFilter) or file size limit (limits.fileSize). |
+| multer.js:14:16:14:78 | multer( ... 24 } }) | This multer upload handler accepts files without file type validation (fileFilter). |
+| multer.js:17:14:17:103 | multer( ... lter }) | This multer upload handler accepts files without file size limit (limits.fileSize). |
+| multer.js:24:13:24:20 | multer() | This multer upload handler accepts files without file type validation (fileFilter) or file size limit (limits.fileSize). |
+| multer.js:29:14:29:21 | multer() | This multer upload handler accepts files without file type validation (fileFilter) or file size limit (limits.fileSize). |
+| multer.js:34:16:34:23 | multer() | This multer upload handler accepts files without file type validation (fileFilter) or file size limit (limits.fileSize). |
+| session.js:9:9:13:2 | session ... /' }\\n}) | This session middleware uses the default in-memory store, which has no capacity limit. |
