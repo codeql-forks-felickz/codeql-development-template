@@ -3,3 +3,6 @@
 | UncheckedSubstringRange/test.swift:43:11:43:26 | call to range(of:) | This search result is used to compute a substring range without checking that the text was found. |
 | UncheckedSubstringRange/test.swift:49:15:49:42 | call to range(of:options:) | This search result is used to compute a substring range without checking that the text was found. |
 | UncheckedSubstringRange/test.swift:55:26:55:41 | call to range(of:) | This search result is used to compute a substring range without checking that the text was found. |
+| UncheckedSubstringRange/test.swift:96:11:96:26 | call to range(of:) | This search result is used to compute a substring range without checking that the text was found. |
+| UncheckedSubstringRange/test.swift:108:11:108:26 | call to range(of:) | This search result is used to compute a substring range without checking that the text was found. |
+| UncheckedSubstringRange/test.swift:115:11:115:26 | call to range(of:) | This search result is used to compute a substring range without checking that the text was found. |

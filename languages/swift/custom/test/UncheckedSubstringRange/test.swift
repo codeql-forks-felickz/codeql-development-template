@@ -25,6 +25,7 @@ class NSString {
   func substring(with range: NSRange) -> String { return "" }
   func substring(from: Int) -> String { return "" }
   func substring(to: Int) -> String { return "" }
+  func replacingCharacters(in range: NSRange, with replacement: String) -> String { return "" }
 }
 
 // --- tests ---
@@ -88,4 +89,31 @@ func hasDelimiter(_ s: NSString) -> Bool {
 func delimiterPosition(_ s: NSString) -> Int {
   let r = s.range(of: "=")
   return r.location
+}
+
+// BAD: the range argument of `replacingCharacters(in:with:)` is unchecked.
+func replaceUsingUncheckedRange(_ s: NSString) -> String {
+  let r = s.range(of: "=") // $ Alert
+  return s.replacingCharacters(in: r, with: "replacement")
+}
+
+// GOOD: the lookup is only used to build replacement text, not the range.
+func replaceUsingLookupInReplacement(_ s: NSString) -> String {
+  let r = s.range(of: "=")
+  return s.replacingCharacters(in: NSRange(location: 0, length: 1), with: "\(r.location)")
+}
+
+// BAD: an ordering check does not establish that the delimiter was found.
+func orderingCheckIsNotPresence(_ s: NSString) -> String? {
+  let r = s.range(of: "=") // $ Alert
+  guard r.location > 0 else { return nil }
+  return s.substring(from: r.location + r.length)
+}
+
+// BAD: the lookup is used before the presence check.
+func presenceCheckAfterUse(_ s: NSString) -> String? {
+  let r = s.range(of: "=") // $ Alert
+  let value = s.substring(from: r.location + r.length)
+  guard r.location != NSNotFound else { return nil }
+  return value
 }

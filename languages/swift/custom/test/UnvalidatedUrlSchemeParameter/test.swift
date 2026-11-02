@@ -226,3 +226,20 @@ class AppDelegate6 : UIResponder, UIApplicationDelegate {
     return true
   }
 }
+
+class AppDelegate7 : UIResponder, UIApplicationDelegate {
+  // BAD: the validated mutable value is replaced with unvalidated input.
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool { // $ Source
+    guard let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems else {
+      return false
+    }
+    var text = items.last?.value ?? ""
+    guard allowedMessages.contains(text) else {
+      return false
+    }
+    text = items.first?.value ?? ""
+    let composer = MFMessageComposeViewController()
+    composer.body = text // $ Alert
+    return true
+  }
+}

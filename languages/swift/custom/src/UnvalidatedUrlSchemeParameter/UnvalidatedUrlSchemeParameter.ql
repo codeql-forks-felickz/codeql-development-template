@@ -15,6 +15,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.Ssa
 import codeql.swift.dataflow.TaintTracking
 import codeql.swift.controlflow.BasicBlocks
 import codeql.swift.controlflow.ControlFlowGraph
@@ -123,8 +124,8 @@ private Expr stripped(Expr e) {
  * `allowed.contains(v)`, `v.allSatisfy(...)` or `v == "expected"`), and `v` has
  * passed the check when `check` evaluates to `passing`.
  */
-private predicate validatesVariable(Expr check, VarDecl v, boolean passing) {
-  exists(Expr operand | operand.(DeclRefExpr).getDecl() = v |
+private predicate validatesVariable(Expr check, VarDecl v, Expr validatedRead, boolean passing) {
+  exists(Expr operand | operand.(DeclRefExpr).getDecl() = v and validatedRead = operand |
     check.getType().getName() = "Bool" and
     (
       operand = stripped(check.(CallExpr).getAnArgument().getExpr())
@@ -150,10 +151,17 @@ private predicate validatesVariable(Expr check, VarDecl v, boolean passing) {
  */
 class ValidatedVariableBarrier extends DataFlow::Node {
   ValidatedVariableBarrier() {
-    exists(ConditionBlock bb, Expr check, VarDecl v, boolean passing |
+    exists(
+      ConditionBlock bb, Expr check, VarDecl v, Expr validatedRead, boolean passing,
+      Ssa::Definition def, ControlFlowNode checkRead, ControlFlowNode barrierRead
+    |
       check = bb.getLastNode().getNode().asAstNode() and
-      validatesVariable(check, v, passing) and
+      validatesVariable(check, v, validatedRead, passing) and
       this.asExpr().(DeclRefExpr).getDecl() = v and
+      checkRead = def.getARead() and
+      checkRead.getNode().asAstNode() = validatedRead and
+      barrierRead = def.getARead() and
+      barrierRead.getNode().asAstNode() = this.asExpr() and
       bb.edgeDominates(this.getCfgNode().getBasicBlock(),
         any(BooleanSuccessor s | s.getValue() = passing))
     )
