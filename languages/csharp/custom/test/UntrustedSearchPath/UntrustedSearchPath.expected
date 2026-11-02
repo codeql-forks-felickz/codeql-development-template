@@ -1,0 +1,33 @@
+#select
+| Test.cs:27:38:27:49 | access to local variable badOsCommand | Test.cs:16:32:16:35 | "ls" : String | Test.cs:27:38:27:49 | access to local variable badOsCommand | This process is started using the bare program name $@, which is resolved through the untrusted search path. | Test.cs:16:32:16:35 | "ls" | ls |
+| Test.cs:27:38:27:49 | access to local variable badOsCommand | Test.cs:21:32:21:40 | "cmd.exe" : String | Test.cs:27:38:27:49 | access to local variable badOsCommand | This process is started using the bare program name $@, which is resolved through the untrusted search path. | Test.cs:21:32:21:40 | "cmd.exe" | cmd.exe |
+| Test.cs:62:27:62:34 | "whoami" | Test.cs:62:27:62:34 | "whoami" | Test.cs:62:27:62:34 | "whoami" | This process is started using the bare program name $@, which is resolved through the untrusted search path. | Test.cs:62:27:62:34 | "whoami" | whoami |
+| Test.cs:63:27:63:32 | "ping" | Test.cs:63:27:63:32 | "ping" | Test.cs:63:27:63:32 | "ping" | This process is started using the bare program name $@, which is resolved through the untrusted search path. | Test.cs:63:27:63:32 | "ping" | ping |
+| Test.cs:64:27:64:38 | "python3.11" | Test.cs:64:27:64:38 | "python3.11" | Test.cs:64:27:64:38 | "python3.11" | This process is started using the bare program name $@, which is resolved through the untrusted search path. | Test.cs:64:27:64:38 | "python3.11" | python3.11 |
+| Test.cs:65:27:65:35 | "RUN.BAT" | Test.cs:65:27:65:35 | "RUN.BAT" | Test.cs:65:27:65:35 | "RUN.BAT" | This process is started using the bare program name $@, which is resolved through the untrusted search path. | Test.cs:65:27:65:35 | "RUN.BAT" | RUN.BAT |
+| Test.cs:70:45:70:49 | "git" | Test.cs:70:45:70:49 | "git" | Test.cs:70:45:70:49 | "git" | This process is started using the bare program name $@, which is resolved through the untrusted search path. | Test.cs:70:45:70:49 | "git" | git |
+| Test.cs:72:58:72:66 | "netstat" | Test.cs:72:58:72:66 | "netstat" | Test.cs:72:58:72:66 | "netstat" | This process is started using the bare program name $@, which is resolved through the untrusted search path. | Test.cs:72:58:72:66 | "netstat" | netstat |
+| Test.cs:83:27:83:33 | access to parameter program | Test.cs:78:17:78:26 | "hostname" : String | Test.cs:83:27:83:33 | access to parameter program | This process is started using the bare program name $@, which is resolved through the untrusted search path. | Test.cs:78:17:78:26 | "hostname" | hostname |
+edges
+| Test.cs:16:17:16:28 | access to local variable badOsCommand : String | Test.cs:27:38:27:49 | access to local variable badOsCommand | provenance |  |
+| Test.cs:16:32:16:35 | "ls" : String | Test.cs:16:17:16:28 | access to local variable badOsCommand : String | provenance |  |
+| Test.cs:21:17:21:28 | access to local variable badOsCommand : String | Test.cs:27:38:27:49 | access to local variable badOsCommand | provenance |  |
+| Test.cs:21:32:21:40 | "cmd.exe" : String | Test.cs:21:17:21:28 | access to local variable badOsCommand : String | provenance |  |
+| Test.cs:78:17:78:26 | "hostname" : String | Test.cs:81:40:81:46 | program : String | provenance |  |
+| Test.cs:81:40:81:46 | program : String | Test.cs:83:27:83:33 | access to parameter program | provenance |  |
+nodes
+| Test.cs:16:17:16:28 | access to local variable badOsCommand : String | semmle.label | access to local variable badOsCommand : String |
+| Test.cs:16:32:16:35 | "ls" : String | semmle.label | "ls" : String |
+| Test.cs:21:17:21:28 | access to local variable badOsCommand : String | semmle.label | access to local variable badOsCommand : String |
+| Test.cs:21:32:21:40 | "cmd.exe" : String | semmle.label | "cmd.exe" : String |
+| Test.cs:27:38:27:49 | access to local variable badOsCommand | semmle.label | access to local variable badOsCommand |
+| Test.cs:62:27:62:34 | "whoami" | semmle.label | "whoami" |
+| Test.cs:63:27:63:32 | "ping" | semmle.label | "ping" |
+| Test.cs:64:27:64:38 | "python3.11" | semmle.label | "python3.11" |
+| Test.cs:65:27:65:35 | "RUN.BAT" | semmle.label | "RUN.BAT" |
+| Test.cs:70:45:70:49 | "git" | semmle.label | "git" |
+| Test.cs:72:58:72:66 | "netstat" | semmle.label | "netstat" |
+| Test.cs:78:17:78:26 | "hostname" : String | semmle.label | "hostname" : String |
+| Test.cs:81:40:81:46 | program : String | semmle.label | program : String |
+| Test.cs:83:27:83:33 | access to parameter program | semmle.label | access to parameter program |
+subpaths
