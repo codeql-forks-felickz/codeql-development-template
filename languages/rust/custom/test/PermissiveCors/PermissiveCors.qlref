@@ -1,0 +1,2 @@
+query: PermissiveCors/PermissiveCors.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

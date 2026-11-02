@@ -1,0 +1,5 @@
+name: languages-rust-custom-test
+version: 0.0.2
+dependencies:
+  languages-rust-custom-src: ${workspace}
+extractor: rust
