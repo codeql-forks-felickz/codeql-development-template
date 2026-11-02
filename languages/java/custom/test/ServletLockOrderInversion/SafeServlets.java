@@ -83,6 +83,42 @@ class NotAServlet {
       synchronized (lock2) {
       }
     }
+
+    class SharedLockServletBase extends HttpServlet {
+      private final Object lock1 = new Object();
+      private final Object lock2 = new Object();
+
+      protected void lock12() {
+        synchronized (lock1) {
+          synchronized (lock2) {
+          }
+        }
+      }
+
+      protected void lock21() {
+        synchronized (lock2) {
+          synchronized (lock1) {
+          }
+        }
+      }
+    }
+
+    // GOOD: sibling servlet instances inherit the same fields but never share their lock objects.
+    @WebServlet("/instance-one")
+    class FirstInstanceServlet extends SharedLockServletBase {
+      @Override
+      protected void service(HttpServletRequest req, HttpServletResponse res) {
+        lock12();
+      }
+    }
+
+    @WebServlet("/instance-two")
+    class SecondInstanceServlet extends SharedLockServletBase {
+      @Override
+      protected void service(HttpServletRequest req, HttpServletResponse res) {
+        lock21();
+      }
+    }
   }
 
   void b() {

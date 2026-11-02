@@ -56,13 +56,16 @@ predicate acquiredWhileHolding(SynchronizedStmt outer, SynchronizedStmt inner) {
  * and `outer` can be reached from a request handler of a class that declares or inherits both
  * fields.
  */
-predicate lockOrder(SynchronizedStmt outer, Field first, SynchronizedStmt inner, Field second) {
+predicate lockOrder(
+  SynchronizedStmt outer, Field first, SynchronizedStmt inner, Field second, RefType handlerType
+) {
   acquiredWhileHolding(outer, inner) and
   first = sharedLockField(outer) and
   second = sharedLockField(inner) and
   first != second and
   exists(RequestHandlerMethod handler |
     handler.polyCalls*(outer.getEnclosingCallable()) and
+    handlerType = handler.getDeclaringType() and
     handler.getDeclaringType().getASourceSupertype*() = first.getDeclaringType() and
     handler.getDeclaringType().getASourceSupertype*() = second.getDeclaringType()
   )
@@ -70,10 +73,17 @@ predicate lockOrder(SynchronizedStmt outer, Field first, SynchronizedStmt inner,
 
 from
   SynchronizedStmt outer, Field first, SynchronizedStmt inner, Field second,
-  SynchronizedStmt otherOuter
+  SynchronizedStmt otherOuter, RefType handlerType, RefType otherHandlerType
 where
-  lockOrder(outer, first, inner, second) and
-  lockOrder(otherOuter, second, _, first)
+  lockOrder(outer, first, inner, second, handlerType) and
+  lockOrder(otherOuter, second, _, first, otherHandlerType) and
+  (
+    first.isStatic() and second.isStatic()
+    or
+    handlerType.getASourceSupertype*() = otherHandlerType
+    or
+    otherHandlerType.getASourceSupertype*() = handlerType
+  )
 select outer.getExpr(),
   "This acquires lock '" + first.getName() +
     "' and then $@ while handling a request, but $@ acquires them in the opposite order, so concurrent requests can deadlock.",

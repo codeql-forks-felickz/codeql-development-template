@@ -32,20 +32,44 @@ class ServletHandlerMethod extends Method {
 }
 
 /** Gets a URL pattern that `servlet` is mapped to, using `@WebServlet` or `web.xml`. */
-string servletUrlPattern(Class servlet) {
+predicate servletUrlPattern(Class servlet, string pattern, File mappingFile, boolean isXml) {
   exists(Annotation a |
     a = servlet.getAnAnnotation() and
     a.getType().hasQualifiedName(["javax", "jakarta"] + ".servlet.annotation", "WebServlet") and
-    result = a.getAStringArrayValue(["value", "urlPatterns"])
+    pattern = a.getAStringArrayValue(["value", "urlPatterns"]) and
+    mappingFile = servlet.getFile() and
+    isXml = false
   )
   or
   exists(WebServlet decl, WebXmlElement mapping, string name |
     servlet = decl.getAChild().(WebServletClass).getClass() and
     name = decl.getAChild("servlet-name").(WebXmlElement).getValue() and
     mapping.getName() = "servlet-mapping" and
+    decl.getFile() = mapping.getFile() and
     mapping.getAChild("servlet-name").(WebXmlElement).getValue() = name and
-    result = mapping.getAChild("url-pattern").(WebXmlElement).getValue()
+    pattern = mapping.getAChild("url-pattern").(WebXmlElement).getValue() and
+    mappingFile = decl.getFile() and
+    isXml = true
   )
+}
+
+/** Holds if `first` has higher servlet mapping priority than `second`. */
+bindingset[first, second]
+predicate patternOutranks(string first, string second) {
+  (not first.matches("%/*") and not first.matches("*.%")) and
+  (second.matches("%/*") or second.matches("*.%"))
+  or
+  first.matches("%/*") and second.matches("*.%")
+  or
+  first.matches("%/*") and second.matches("%/*") and first.length() > second.length()
+}
+
+/** Gets the scope shared by annotation mappings or the scope of one web.xml descriptor. */
+bindingset[mappingFile, isXml]
+predicate servletMappingScope(File mappingFile, boolean isXml, string scope) {
+  isXml = false and scope = "annotations"
+  or
+  isXml = true and scope = "web.xml:" + mappingFile.getRelativePath()
 }
 
 /** Holds if the context-relative `path` (without query string) matches the URL `pattern`. */
@@ -88,22 +112,51 @@ predicate unconditionalDispatch(ServletHandlerMethod handler, MethodCall dispatc
  * Holds if `handler` unconditionally dispatches requests to `path` at `dispatch`, and `path` is
  * handled by servlet `target`.
  */
-predicate dispatchEdge(ServletHandlerMethod handler, MethodCall dispatch, string path, Class target) {
+predicate dispatchEdge(
+  ServletHandlerMethod handler, MethodCall dispatch, string path, Class target, string mappingScope
+) {
   unconditionalDispatch(handler, dispatch, path) and
-  pathMatchesPattern(path, servletUrlPattern(target))
-}
-
-/** Holds if servlet `source` unconditionally dispatches requests to servlet `target`. */
-predicate servletDispatches(Class source, Class target) {
-  exists(ServletHandlerMethod handler |
-    dispatchEdge(handler, _, _, target) and source = handler.getDeclaringType()
+  exists(string pattern, File targetFile, boolean targetIsXml |
+    servletUrlPattern(target, pattern, targetFile, targetIsXml) and
+    servletMappingScope(targetFile, targetIsXml, mappingScope) and
+    pathMatchesPattern(path, pattern) and
+    not exists(Class other, string otherPattern, File otherFile, boolean otherIsXml |
+      servletUrlPattern(other, otherPattern, otherFile, otherIsXml) and
+      servletMappingScope(otherFile, otherIsXml, mappingScope) and
+      pathMatchesPattern(path, otherPattern) and
+      patternOutranks(otherPattern, pattern)
+    )
+  ) and
+  exists(string sourcePattern, File sourceFile, boolean sourceIsXml |
+    servletUrlPattern(handler.getDeclaringType(), sourcePattern, sourceFile, sourceIsXml) and
+    servletMappingScope(sourceFile, sourceIsXml, mappingScope)
   )
 }
 
-from ServletHandlerMethod handler, MethodCall dispatch, string path, Class target, string suffix
+/** Holds if servlet `source` unconditionally dispatches requests to servlet `target`. */
+predicate servletDispatches(Class source, Class target, string mappingScope) {
+  exists(ServletHandlerMethod handler |
+    dispatchEdge(handler, _, _, target, mappingScope) and
+    source = handler.getDeclaringType()
+  )
+}
+
+/** Holds if `source` dispatches to `target` within one annotation set or web.xml descriptor. */
+predicate servletDispatchesInScope(Class source, Class target, string mappingScope) {
+  servletDispatches(source, target, mappingScope)
+  or
+  exists(Class intermediate |
+    servletDispatches(source, intermediate, mappingScope) and
+    servletDispatchesInScope(intermediate, target, mappingScope)
+  )
+}
+
+from
+  ServletHandlerMethod handler, MethodCall dispatch, string path, Class target, string suffix,
+  string mappingScope
 where
-  dispatchEdge(handler, dispatch, path, target) and
-  servletDispatches*(target, handler.getDeclaringType()) and
+  dispatchEdge(handler, dispatch, path, target, mappingScope) and
+  servletDispatchesInScope(target, handler.getDeclaringType(), mappingScope) and
   (
     if target = handler.getDeclaringType()
     then suffix = " (this servlet)"

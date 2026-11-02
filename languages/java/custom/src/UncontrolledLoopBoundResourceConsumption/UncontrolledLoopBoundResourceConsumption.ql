@@ -59,10 +59,20 @@ predicate costlyLoopCarriedUpdate(LoopStmt loop, Variable v, Expr update, string
   )
 }
 
+/** Holds if `conjunct` is the condition or a top-level conjunct of `condition`. */
+predicate topLevelConjunct(Expr condition, Expr conjunct) {
+  condition = conjunct
+  or
+  exists(AndLogicalExpr andExpr |
+    condition = andExpr and
+    topLevelConjunct(andExpr.getAnOperand(), conjunct)
+  )
+}
+
 /** Holds if the condition of `loop` compares a value against a small constant upper bound. */
 predicate hasSmallConstantBound(LoopStmt loop) {
   exists(ComparisonExpr c |
-    c = loop.getCondition().getAChildExpr*() and
+    topLevelConjunct(loop.getCondition(), c) and
     isSmallConstant(c.getGreaterOperand())
   )
 }

@@ -15,7 +15,9 @@ unauthenticated user can do this on purpose to make the application stop respond
 This query reports `synchronized` statements on shared fields that are reachable from a
 servlet `service`/`do*` method or a Spring request mapping method, where the second lock is
 taken while the first is held (directly or through a called method), and another statement
-takes the same two locks in the opposite order.
+takes the same two locks in the opposite order. For instance fields, the two handler types must
+be related by inheritance so they can refer to locks on the same instance; static fields are
+matched globally.
 
 The standard `java/lock-order-inconsistency` query also finds some of these cases, but it has
 `recommendation` severity and `medium` precision, so it is not part of the default or

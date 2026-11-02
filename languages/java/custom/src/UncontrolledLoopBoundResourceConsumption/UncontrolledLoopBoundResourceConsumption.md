@@ -15,8 +15,14 @@ loop:
   string, so the total work grows with the square of the number of iterations.
 - updates a boxed number (`Long sum; sum += i`). Each iteration allocates a new boxed object.
 
-A loop is not reported if its condition also compares against a constant of at most 10,000,
-or if the user-provided value is first checked against such a constant.
+A loop is not reported if a top-level conjunct of its condition compares against a constant of
+at most 10,000, or if the user-provided value is first checked against such a constant.
+
+## Known limitations
+
+- The condition check does not correlate a small-constant comparison with the loop's
+  induction variable. A separate top-level conjunct can therefore suppress a finding even
+  when it does not actually bound the iteration count.
 
 ## Recommendation
 

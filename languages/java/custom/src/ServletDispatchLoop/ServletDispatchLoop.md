@@ -15,7 +15,17 @@ This query reports `forward` and `include` calls in a servlet `service` or `do*`
 - are not guarded by a condition, a `switch` case or an early return, and are not in a
   `catch` block, and
 - target a servlet (mapped with `@WebServlet` or in `web.xml`) that dispatches back to the
-  calling servlet in the same unconditional way, or the calling servlet itself.
+  calling servlet in the same unconditional way, or the calling servlet itself. Servlet
+  mappings are resolved by exact match, longest path-prefix match, then extension match.
+
+## Known limitations
+
+- XML mappings are scoped to their `web.xml` descriptor. Annotated servlet mappings are grouped
+  together because the deployment they belong to cannot be inferred from source alone. The
+  query does not resolve precedence between annotations and XML mappings, and may connect or
+  suppress routes between annotated servlets from separate applications in a database containing
+  multiple applications.
+- Overlapping extension mappings are not ordered relative to each other.
 
 ## Recommendation
 

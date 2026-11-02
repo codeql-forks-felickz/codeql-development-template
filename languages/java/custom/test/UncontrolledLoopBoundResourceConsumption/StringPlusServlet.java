@@ -34,6 +34,10 @@ public class StringPlusServlet extends HttpServlet {
       s += "x";
       i++;
     }
+    int n = Integer.parseInt(req.getParameter("n")); // $ Source
+    for (int j = 0; j < n || j < 10; j++) { // $ Alert
+      s += "x";
+    }
     res.toString();
   }
 }
