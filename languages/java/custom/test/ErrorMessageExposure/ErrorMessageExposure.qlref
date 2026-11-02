@@ -1,0 +1,2 @@
+query: ErrorMessageExposure/ErrorMessageExposure.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
