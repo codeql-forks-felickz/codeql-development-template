@@ -1,0 +1,2 @@
+query: AiohttpDebugMode/AiohttpDebugMode.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
