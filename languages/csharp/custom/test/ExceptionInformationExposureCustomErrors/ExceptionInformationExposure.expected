@@ -1,0 +1,6 @@
+#select
+| OffSite/Handler.cs:9:33:9:52 | access to property UserName | OffSite/Handler.cs:9:33:9:52 | access to property UserName | OffSite/Handler.cs:9:33:9:52 | access to property UserName | This information exposed to the user depends on $@. | OffSite/Handler.cs:9:33:9:52 | access to property UserName | system information |
+edges
+nodes
+| OffSite/Handler.cs:9:33:9:52 | access to property UserName | semmle.label | access to property UserName |
+subpaths

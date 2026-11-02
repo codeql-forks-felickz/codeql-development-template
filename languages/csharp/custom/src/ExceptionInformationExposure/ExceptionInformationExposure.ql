@@ -4,6 +4,10 @@
  *              information about the server environment, to an external user can expose
  *              implementation details that are useful to an attacker for developing a
  *              subsequent exploit.
+ * Known limitations:
+ * - Locally caught throws are excluded lexically; interprocedural exception escape is not modeled.
+ * - customErrors resolution uses the nearest ancestor Web.config with a root-level customErrors
+ *   element. Location elements, machine-level defaults and configuration transforms are ignored.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 5.4
@@ -81,35 +85,6 @@ class ActionMethodReturnSink extends DataFlow::ExprNode {
   }
 }
 
-/**
- * A response body argument to an ASP.NET Core controller helper method, such as
- * `Ok(value)`, `StatusCode(500, value)` or `Json(data)`, or to an action result constructor.
- */
-class ControllerResponseSink extends DataFlow::ExprNode {
-  ControllerResponseSink() {
-    exists(Call c, Parameter p |
-      (
-        c.getTarget().getUnboundDeclaration().getDeclaringType() instanceof
-          MicrosoftAspNetCoreMvcControllerBaseClass and
-        c.getTarget()
-            .hasName([
-                "Ok", "Json", "Content", "StatusCode", "BadRequest", "NotFound", "Conflict",
-                "UnprocessableEntity", "Problem", "ValidationProblem"
-              ])
-        or
-        c instanceof ObjectCreation and
-        c.getTarget()
-            .getDeclaringType()
-            .getABaseType*()
-            .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", ["ObjectResult", "JsonResult"])
-      ) and
-      p = c.getTarget().getAParameter() and
-      p.getName() = ["value", "error", "data", "content", "detail", "title"] and
-      this.asExpr() = c.getArgumentForParameter(p)
-    )
-  }
-}
-
 /** A value written to the response by a Razor view, for example `@Model.Error.Message`. */
 class RazorWriteSink extends DataFlow::ExprNode {
   RazorWriteSink() {
@@ -123,6 +98,27 @@ class RazorWriteSink extends DataFlow::ExprNode {
       this.asExpr() = mc.getArgument(0)
     )
   }
+}
+
+/** Holds if `c` passes a response body value in parameter `p`. */
+predicate isControllerResponseArgument(Call c, Parameter p) {
+  (
+    c.getTarget().getUnboundDeclaration().getDeclaringType() instanceof
+      MicrosoftAspNetCoreMvcControllerBaseClass and
+    c.getTarget()
+        .hasName([
+            "Ok", "Json", "Content", "StatusCode", "BadRequest", "NotFound", "Conflict",
+            "UnprocessableEntity", "Problem", "ValidationProblem"
+          ])
+    or
+    c instanceof ObjectCreation and
+    c.getTarget()
+        .getDeclaringType()
+        .getABaseType*()
+        .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", ["ObjectResult", "JsonResult"])
+  ) and
+  p = c.getTarget().getAParameter() and
+  p.getName() = ["value", "error", "data", "content", "detail", "title"]
 }
 
 /** A type whose methods handle ASP.NET (System.Web) requests. */
@@ -141,13 +137,47 @@ class SystemWebRequestHandlerType extends RefType {
 class UnhandledExceptionMessageSink extends DataFlow::ExprNode {
   UnhandledExceptionMessageSink() {
     exists(ThrowElement t, ObjectCreation oc |
-      oc = t.getExpr() and
+      DataFlow::localExprFlow(oc, t.getExpr()) and
       oc.getType().(RefType).getABaseType*() instanceof SystemExceptionClass and
       this.asExpr() = oc.getAnArgument() and
       t.getEnclosingCallable().getDeclaringType() instanceof SystemWebRequestHandlerType and
-      exists(CustomErrorsXmlElement ce | ce.getAttributeValue("mode").toLowerCase() = "off")
+      not isLocallyHandledThrow(t, oc) and
+      customErrorsAreOffForHandler(t)
     )
   }
+}
+
+/** Holds if `t` is caught by a local try statement that does not rethrow from its catch. */
+predicate isLocallyHandledThrow(ThrowElement t, ObjectCreation oc) {
+  exists(TryStmt ts, CatchClause cc |
+    t.getParent*() = ts.getBlock() and
+    cc = ts.getACatchClause() and
+    (
+      cc instanceof GeneralCatchClause
+      or
+      oc.getType().(RefType).getABaseType*() = cc.getCaughtExceptionType()
+    ) and
+    not exists(ThrowElement rethrow | rethrow.getParent*() = cc)
+  )
+}
+
+/** Holds if the nearest root-level customErrors setting for `t` disables custom errors. */
+predicate customErrorsAreOffForHandler(ThrowElement t) {
+  exists(CustomErrorsXmlElement ce, SystemWebXmlElement sw |
+    ce.getFile() instanceof WebConfigXml and
+    ce.getParent() = sw and
+    sw.getParent() instanceof ConfigurationXmlElement and
+    ce.getAttributeValue("mode").toLowerCase() = "off" and
+    t.getFile().getParentContainer*() = ce.getFile().getParentContainer() and
+    not exists(CustomErrorsXmlElement closer, SystemWebXmlElement closerSw |
+      closer.getFile() instanceof WebConfigXml and
+      closer.getParent() = closerSw and
+      closerSw.getParent() instanceof ConfigurationXmlElement and
+      t.getFile().getParentContainer*() = closer.getFile().getParentContainer() and
+      closer.getFile().getParentContainer().getParentContainer+() =
+        ce.getFile().getParentContainer()
+    )
+  )
 }
 
 /**
@@ -175,20 +205,34 @@ module ExceptionInformationExposureConfig implements DataFlow::ConfigSig {
       source.asExpr() = oc.getAnArgument() and
       sink.asExpr() = oc
     )
+    or
+    // The response body is exposed only if the resulting value is returned or written.
+    exists(Call c, Parameter p |
+      isControllerResponseArgument(c, p) and
+      source.asExpr() = c.getArgumentForParameter(p) and
+      sink.asExpr() = c
+    )
   }
 
   predicate isSink(DataFlow::Node sink) {
     sink instanceof RemoteFlowSink or
     sink instanceof WebMethodReturnSink or
     sink instanceof ActionMethodReturnSink or
-    sink instanceof ControllerResponseSink or
     sink instanceof RazorWriteSink or
     sink instanceof UnhandledExceptionMessageSink
   }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     // Objects returned to, or serialized for, the user expose their fields and properties.
-    isSink(node) and
+    (
+      isSink(node) or
+      exists(Expr e | e = node.asExpr() |
+        exists(Call call, Parameter p |
+          isControllerResponseArgument(call, p) and
+          e = call.getArgumentForParameter(p)
+        )
+      )
+    ) and
     (
       c.isField(_) or
       c.isProperty(_)

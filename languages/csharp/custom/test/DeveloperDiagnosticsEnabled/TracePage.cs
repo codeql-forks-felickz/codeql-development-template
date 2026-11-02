@@ -62,4 +62,19 @@ namespace WebGoat
             Trace.IsEnabled = Request["trace"] == "true"; // $ Alert
         }
     }
+
+    public class TraceSettings
+    {
+        public bool IsLocal => true;
+    }
+
+    public class UnrelatedLocalTracePage : Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            var settings = new TraceSettings();
+            if (settings.IsLocal)
+                Trace.IsEnabled = true; // $ Alert
+        }
+    }
 }

@@ -123,6 +123,33 @@ namespace Blog
         }
     }
 
+    public class BadStartupNotStaging
+    {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (!env.IsStaging())
+                app.UseDeveloperExceptionPage(); // $ Alert
+        }
+    }
+
+    public class BadStartupNotStagingEnvironment
+    {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (!env.IsEnvironment("Staging"))
+                app.UseDeveloperExceptionPage(); // $ Alert
+        }
+    }
+
+    public class BadStartupStagingEnvironmentName
+    {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.EnvironmentName != "Staging")
+                app.UseDeveloperExceptionPage(); // $ Alert
+        }
+    }
+
     public class GoodStartupConjunction
     {
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, bool verbose)
@@ -139,6 +166,57 @@ namespace Blog
         public void ConfigureDevelopment(IApplicationBuilder app)
         {
             app.UseDeveloperExceptionPage();
+        }
+    }
+
+    public class GoodStartupGuardedHelper
+    {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+                ConfigureDiagnostics(app);
+        }
+
+        private void ConfigureDiagnostics(IApplicationBuilder app)
+        {
+            app.UseDeveloperExceptionPage();
+        }
+    }
+
+    public class BadStartupMixedHelperCallers
+    {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+                ConfigureDiagnostics(app);
+        }
+
+        public void ConfigureProduction(IApplicationBuilder app)
+        {
+            ConfigureDiagnostics(app);
+        }
+
+        private void ConfigureDiagnostics(IApplicationBuilder app)
+        {
+            app.UseDeveloperExceptionPage(); // $ Alert
+        }
+    }
+
+    public class FeatureFlags
+    {
+        public bool IsDevelopment() => false;
+        public string EnvironmentName => "Development";
+    }
+
+    public class BadStartupUnrelatedEnvironmentChecks
+    {
+        public void Configure(IApplicationBuilder app, FeatureFlags flags)
+        {
+            if (flags.IsDevelopment())
+                app.UseDeveloperExceptionPage(); // $ Alert
+
+            if (flags.EnvironmentName != "Production")
+                app.UseDeveloperExceptionPage(); // $ Alert
         }
     }
 

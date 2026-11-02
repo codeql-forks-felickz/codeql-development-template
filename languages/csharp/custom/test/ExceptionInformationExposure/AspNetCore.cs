@@ -125,6 +125,35 @@ namespace AspNetCoreApp
             }
         }
 
+        public IActionResult LogObjectResult(string userid)
+        {
+            try
+            {
+                return Ok("FREE");
+            }
+            catch (Exception ex)
+            {
+                var result = new ObjectResult(ex.Message);
+                Log(result);
+                return StatusCode(500);
+            }
+        }
+
+        public IActionResult DiscardedOk(string userid)
+        {
+            try
+            {
+                return Ok("FREE");
+            }
+            catch (Exception ex)
+            {
+                Ok(ex.Message);
+                return StatusCode(500);
+            }
+        }
+
+        private void Log(object value) { }
+
         public IActionResult SetMembershipStatusSafe(string userid)
         {
             try

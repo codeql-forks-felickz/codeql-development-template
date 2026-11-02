@@ -64,5 +64,7 @@ namespace Microsoft.AspNetCore.Hosting
         public static bool IsEnvironment(this IWebHostEnvironment env, string name) => false;
 
         public static bool IsProduction(this IWebHostEnvironment env) => false;
+
+        public static bool IsStaging(this IWebHostEnvironment env) => false;
     }
 }

@@ -94,6 +94,36 @@ namespace WebFormsApp
             throw new InvalidOperationException("Operation failed.");
         }
 
+        protected void btnCaught_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                throw new Exception(Environment.UserName);
+            }
+            catch (Exception)
+            {
+                // GOOD: the exception is handled locally.
+            }
+        }
+
+        protected void btnRethrowCaught_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                throw new Exception(Environment.UserName); // $ Alert
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        protected void btnThrowVariable_Click(object sender, EventArgs e)
+        {
+            var error = new Exception(Environment.UserName); // $ Alert
+            throw error;
+        }
+
         protected void btnWrap_Click(object sender, EventArgs e)
         {
             try

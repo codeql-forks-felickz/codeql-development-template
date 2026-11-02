@@ -22,6 +22,19 @@ predicate isNonProductionEnvironmentName(string name) {
   not name.toLowerCase() = ["production", "staging"]
 }
 
+/** Holds if `receiver` has a hosting-environment type. */
+predicate isHostingEnvironmentReceiver(Expr receiver) {
+  exists(RefType t |
+    t = receiver.getType() and
+    (
+      t.getABaseType*().hasFullyQualifiedName("Microsoft.AspNetCore.Hosting",
+        ["IHostingEnvironment", "IWebHostEnvironment"])
+      or
+      t.getABaseType*().hasFullyQualifiedName("Microsoft.Extensions.Hosting", "IHostEnvironment")
+    )
+  )
+}
+
 /**
  * Holds if `g` evaluating to `v` implies that the application runs in a non-production hosting
  * environment, for example `env.IsDevelopment()` being `true` or `env.IsProduction()` being
@@ -29,15 +42,30 @@ predicate isNonProductionEnvironmentName(string name) {
  */
 predicate isNonProductionEnvironmentGuard(Guard g, boolean v) {
   exists(MethodCall mc | mc = g |
+    (
+      isHostingEnvironmentReceiver(mc.getQualifier())
+      or
+      isHostingEnvironmentReceiver(mc.getArgument(0))
+    ) and
     mc.getTarget().hasName("IsDevelopment") and v = true
     or
-    mc.getTarget().hasName(["IsProduction", "IsStaging"]) and v = false
+    (
+      isHostingEnvironmentReceiver(mc.getQualifier())
+      or
+      isHostingEnvironmentReceiver(mc.getArgument(0))
+    ) and
+    mc.getTarget().hasName("IsProduction") and v = false
     or
+    (
+      isHostingEnvironmentReceiver(mc.getQualifier())
+      or
+      isHostingEnvironmentReceiver(mc.getArgument(0))
+    ) and
     mc.getTarget().hasName("IsEnvironment") and
     exists(string name | name = mc.getArgument(mc.getNumberOfArguments() - 1).getValue() |
       isNonProductionEnvironmentName(name) and v = true
       or
-      not isNonProductionEnvironmentName(name) and v = false
+      name.toLowerCase() = "production" and v = false
     )
   )
   or
@@ -45,40 +73,62 @@ predicate isNonProductionEnvironmentGuard(Guard g, boolean v) {
     eq = g and
     pa = eq.getAnOperand() and
     pa.getTarget().hasName("EnvironmentName") and
+    isHostingEnvironmentReceiver(pa.getQualifier()) and
     name = eq.getAnOperand().getValue()
   |
     eq instanceof EQExpr and
     (
       isNonProductionEnvironmentName(name) and v = true
       or
-      not isNonProductionEnvironmentName(name) and v = false
+      name.toLowerCase() = "production" and v = false
     )
     or
     eq instanceof NEExpr and
     (
       isNonProductionEnvironmentName(name) and v = false
       or
-      not isNonProductionEnvironmentName(name) and v = true
+      name.toLowerCase() = "production" and v = true
     )
+  )
+}
+
+/** Holds if `e` is directly guarded by a non-production hosting-environment check. */
+predicate isEnvironmentGuarded(Expr e) {
+  exists(Guard g, GuardValue v |
+    isNonProductionEnvironmentGuard(g, v.asBooleanValue()) and
+    g.controlsNode(e.getControlFlowNode(), v)
   )
 }
 
 /** Holds if `e` is only evaluated in a non-production hosting environment. */
 predicate isNonProductionOnly(Expr e) {
-  exists(Guard g, GuardValue v |
-    isNonProductionEnvironmentGuard(g, v.asBooleanValue()) and
-    g.controlsNode(e.getControlFlowNode(), v)
-  )
+  isEnvironmentGuarded(e)
   or
   // Environment-specific startup conventions, which ASP.NET Core only invokes in the
   // `Development` environment.
   e.getEnclosingCallable().getName().toLowerCase() = "configuredevelopment"
   or
   e.getEnclosingCallable().getDeclaringType().getName().toLowerCase() = "startupdevelopment"
+  or
+  exists(Method m |
+    m = e.getEnclosingCallable() and
+    exists(MethodCall caller | caller.getTarget() = m) and
+    not exists(MethodCall caller |
+      caller.getTarget() = m and
+      not isEnvironmentGuarded(caller)
+    )
+  )
 }
 
 /** Holds if `e` is a check that the request comes from the local machine (`Request.IsLocal`). */
-predicate isLocalRequestCheck(Expr e) { e.(PropertyAccess).getTarget().hasName("IsLocal") }
+predicate isLocalRequestCheck(Expr e) {
+  exists(Property p |
+    p = e.(PropertyAccess).getTarget() and
+    p.hasName("IsLocal") and
+    p.getDeclaringType().getABaseType*().hasFullyQualifiedName("System.Web",
+      ["HttpRequest", "HttpRequestBase"])
+  )
+}
 
 /** Holds if `e` is only evaluated for requests from the local machine. */
 predicate isLocalRequestOnly(Expr e) {
