@@ -1,0 +1,2 @@
+query: WinCryptWeakAlgorithm/WinCryptWeakAlgorithm.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

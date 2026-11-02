@@ -1,0 +1,2 @@
+query: WinCryptRsaWithoutOaep/WinCryptRsaWithoutOaep.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

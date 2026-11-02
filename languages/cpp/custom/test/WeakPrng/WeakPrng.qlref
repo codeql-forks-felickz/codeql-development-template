@@ -1,0 +1,2 @@
+query: WeakPrng/WeakPrng.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
