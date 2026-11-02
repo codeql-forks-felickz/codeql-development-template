@@ -1,0 +1,24 @@
+#select
+| package_template.py:20:15:20:17 | ControlFlowNode for cmd | package_template.py:13:12:13:30 | ControlFlowNode for Attribute() | package_template.py:20:15:20:17 | ControlFlowNode for cmd | This command line depends on a $@. | package_template.py:13:12:13:30 | ControlFlowNode for Attribute() | user-provided value |
+| package_template.py:25:15:25:17 | ControlFlowNode for cmd | package_template.py:13:12:13:30 | ControlFlowNode for Attribute() | package_template.py:25:15:25:17 | ControlFlowNode for cmd | This command line depends on a $@. | package_template.py:13:12:13:30 | ControlFlowNode for Attribute() | user-provided value |
+edges
+| package_template.py:13:12:13:30 | ControlFlowNode for Attribute() | package_template.py:17:12:17:21 | ControlFlowNode for get_args() | provenance | Src:MaD:60  |
+| package_template.py:17:5:17:8 | ControlFlowNode for args | package_template.py:19:5:19:7 | ControlFlowNode for cmd | provenance | AdditionalTaintStep |
+| package_template.py:17:5:17:8 | ControlFlowNode for args | package_template.py:22:5:22:7 | ControlFlowNode for cmd | provenance | AdditionalTaintStep |
+| package_template.py:17:5:17:8 | ControlFlowNode for args | package_template.py:23:5:23:7 | ControlFlowNode for cmd | provenance | AdditionalTaintStep |
+| package_template.py:17:12:17:21 | ControlFlowNode for get_args() | package_template.py:17:5:17:8 | ControlFlowNode for args | provenance |  |
+| package_template.py:19:5:19:7 | ControlFlowNode for cmd | package_template.py:20:15:20:17 | ControlFlowNode for cmd | provenance |  |
+| package_template.py:22:5:22:7 | ControlFlowNode for cmd | package_template.py:23:5:23:7 | ControlFlowNode for cmd | provenance |  |
+| package_template.py:23:5:23:7 | ControlFlowNode for cmd | package_template.py:24:5:24:7 | ControlFlowNode for cmd | provenance |  |
+| package_template.py:24:5:24:7 | ControlFlowNode for cmd | package_template.py:25:15:25:17 | ControlFlowNode for cmd | provenance |  |
+nodes
+| package_template.py:13:12:13:30 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| package_template.py:17:5:17:8 | ControlFlowNode for args | semmle.label | ControlFlowNode for args |
+| package_template.py:17:12:17:21 | ControlFlowNode for get_args() | semmle.label | ControlFlowNode for get_args() |
+| package_template.py:19:5:19:7 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+| package_template.py:20:15:20:17 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+| package_template.py:22:5:22:7 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+| package_template.py:23:5:23:7 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+| package_template.py:24:5:24:7 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+| package_template.py:25:15:25:17 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+subpaths

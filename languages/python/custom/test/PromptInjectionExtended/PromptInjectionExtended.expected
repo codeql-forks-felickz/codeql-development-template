@@ -1,0 +1,65 @@
+#select
+| rag.py:21:49:21:60 | ControlFlowNode for final_prompt | classification.py:14:25:14:28 | ControlFlowNode for post | rag.py:21:49:21:60 | ControlFlowNode for final_prompt | This LLM prompt depends on a $@. | classification.py:14:25:14:28 | ControlFlowNode for post | user-provided value |
+| rag.py:26:55:26:60 | ControlFlowNode for prompt | classification.py:19:31:19:34 | ControlFlowNode for post | rag.py:26:55:26:60 | ControlFlowNode for prompt | This LLM prompt depends on a $@. | classification.py:19:31:19:34 | ControlFlowNode for post | user-provided value |
+| rag.py:29:48:29:91 | ControlFlowNode for Fstring | classification.py:24:33:24:36 | ControlFlowNode for post | rag.py:29:48:29:91 | ControlFlowNode for Fstring | This LLM prompt depends on a $@. | classification.py:24:33:24:36 | ControlFlowNode for post | user-provided value |
+edges
+| classification.py:14:25:14:28 | ControlFlowNode for post | classification.py:15:60:15:68 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| classification.py:15:60:15:68 | ControlFlowNode for Attribute | rag.py:15:29:15:37 | ControlFlowNode for user_post | provenance |  |
+| classification.py:19:31:19:34 | ControlFlowNode for post | classification.py:20:72:20:80 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| classification.py:20:72:20:80 | ControlFlowNode for Attribute | rag.py:24:41:24:49 | ControlFlowNode for user_post | provenance |  |
+| classification.py:24:33:24:36 | ControlFlowNode for post | classification.py:25:68:25:76 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| classification.py:25:68:25:76 | ControlFlowNode for Attribute | rag.py:28:37:28:45 | ControlFlowNode for user_post | provenance |  |
+| prepare_prompt.py:1:40:1:48 | ControlFlowNode for user_post | prepare_prompt.py:3:95:3:103 | ControlFlowNode for user_post | provenance |  |
+| prepare_prompt.py:1:40:1:48 | ControlFlowNode for user_post | prepare_prompt.py:3:95:3:103 | ControlFlowNode for user_post | provenance |  |
+| prepare_prompt.py:3:39:3:104 | ControlFlowNode for Dict [Dictionary element at key user_post] | prepare_prompt.py:3:12:3:105 | ControlFlowNode for Attribute() | provenance | Config |
+| prepare_prompt.py:3:39:3:104 | ControlFlowNode for Dict [Dictionary element at key user_post] | prepare_prompt.py:3:12:3:105 | ControlFlowNode for Attribute() | provenance | Config |
+| prepare_prompt.py:3:95:3:103 | ControlFlowNode for user_post | prepare_prompt.py:3:39:3:104 | ControlFlowNode for Dict [Dictionary element at key user_post] | provenance |  |
+| prepare_prompt.py:3:95:3:103 | ControlFlowNode for user_post | prepare_prompt.py:3:39:3:104 | ControlFlowNode for Dict [Dictionary element at key user_post] | provenance |  |
+| prepare_prompt.py:6:36:6:44 | ControlFlowNode for user_post | prepare_prompt.py:7:54:7:62 | ControlFlowNode for user_post | provenance |  |
+| prepare_prompt.py:7:54:7:62 | ControlFlowNode for user_post | prepare_prompt.py:7:12:7:63 | ControlFlowNode for Attribute() | provenance | Config |
+| rag.py:15:29:15:37 | ControlFlowNode for user_post | rag.py:18:23:18:31 | ControlFlowNode for user_post | provenance |  |
+| rag.py:16:9:16:20 | ControlFlowNode for final_prompt | rag.py:21:49:21:60 | ControlFlowNode for final_prompt | provenance |  |
+| rag.py:16:24:20:9 | ControlFlowNode for prepare_prompt() | rag.py:16:9:16:20 | ControlFlowNode for final_prompt | provenance |  |
+| rag.py:18:23:18:31 | ControlFlowNode for user_post | prepare_prompt.py:1:40:1:48 | ControlFlowNode for user_post | provenance |  |
+| rag.py:18:23:18:31 | ControlFlowNode for user_post | prepare_prompt.py:1:40:1:48 | ControlFlowNode for user_post | provenance |  |
+| rag.py:18:23:18:31 | ControlFlowNode for user_post | rag.py:16:24:20:9 | ControlFlowNode for prepare_prompt() | provenance | Config |
+| rag.py:24:41:24:49 | ControlFlowNode for user_post | rag.py:25:49:25:57 | ControlFlowNode for user_post | provenance |  |
+| rag.py:25:9:25:14 | ControlFlowNode for prompt | rag.py:26:55:26:60 | ControlFlowNode for prompt | provenance |  |
+| rag.py:25:18:25:75 | ControlFlowNode for prepare_prompt_safe_substitute() | rag.py:25:9:25:14 | ControlFlowNode for prompt | provenance |  |
+| rag.py:25:49:25:57 | ControlFlowNode for user_post | prepare_prompt.py:6:36:6:44 | ControlFlowNode for user_post | provenance |  |
+| rag.py:25:49:25:57 | ControlFlowNode for user_post | rag.py:25:18:25:75 | ControlFlowNode for prepare_prompt_safe_substitute() | provenance | Config |
+| rag.py:28:37:28:45 | ControlFlowNode for user_post | rag.py:29:48:29:91 | ControlFlowNode for Fstring | provenance |  |
+nodes
+| classification.py:14:25:14:28 | ControlFlowNode for post | semmle.label | ControlFlowNode for post |
+| classification.py:15:60:15:68 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| classification.py:19:31:19:34 | ControlFlowNode for post | semmle.label | ControlFlowNode for post |
+| classification.py:20:72:20:80 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| classification.py:24:33:24:36 | ControlFlowNode for post | semmle.label | ControlFlowNode for post |
+| classification.py:25:68:25:76 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| prepare_prompt.py:1:40:1:48 | ControlFlowNode for user_post | semmle.label | ControlFlowNode for user_post |
+| prepare_prompt.py:1:40:1:48 | ControlFlowNode for user_post | semmle.label | ControlFlowNode for user_post |
+| prepare_prompt.py:3:12:3:105 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| prepare_prompt.py:3:12:3:105 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| prepare_prompt.py:3:39:3:104 | ControlFlowNode for Dict [Dictionary element at key user_post] | semmle.label | ControlFlowNode for Dict [Dictionary element at key user_post] |
+| prepare_prompt.py:3:39:3:104 | ControlFlowNode for Dict [Dictionary element at key user_post] | semmle.label | ControlFlowNode for Dict [Dictionary element at key user_post] |
+| prepare_prompt.py:3:95:3:103 | ControlFlowNode for user_post | semmle.label | ControlFlowNode for user_post |
+| prepare_prompt.py:3:95:3:103 | ControlFlowNode for user_post | semmle.label | ControlFlowNode for user_post |
+| prepare_prompt.py:6:36:6:44 | ControlFlowNode for user_post | semmle.label | ControlFlowNode for user_post |
+| prepare_prompt.py:7:12:7:63 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| prepare_prompt.py:7:54:7:62 | ControlFlowNode for user_post | semmle.label | ControlFlowNode for user_post |
+| rag.py:15:29:15:37 | ControlFlowNode for user_post | semmle.label | ControlFlowNode for user_post |
+| rag.py:16:9:16:20 | ControlFlowNode for final_prompt | semmle.label | ControlFlowNode for final_prompt |
+| rag.py:16:24:20:9 | ControlFlowNode for prepare_prompt() | semmle.label | ControlFlowNode for prepare_prompt() |
+| rag.py:18:23:18:31 | ControlFlowNode for user_post | semmle.label | ControlFlowNode for user_post |
+| rag.py:21:49:21:60 | ControlFlowNode for final_prompt | semmle.label | ControlFlowNode for final_prompt |
+| rag.py:24:41:24:49 | ControlFlowNode for user_post | semmle.label | ControlFlowNode for user_post |
+| rag.py:25:9:25:14 | ControlFlowNode for prompt | semmle.label | ControlFlowNode for prompt |
+| rag.py:25:18:25:75 | ControlFlowNode for prepare_prompt_safe_substitute() | semmle.label | ControlFlowNode for prepare_prompt_safe_substitute() |
+| rag.py:25:49:25:57 | ControlFlowNode for user_post | semmle.label | ControlFlowNode for user_post |
+| rag.py:26:55:26:60 | ControlFlowNode for prompt | semmle.label | ControlFlowNode for prompt |
+| rag.py:28:37:28:45 | ControlFlowNode for user_post | semmle.label | ControlFlowNode for user_post |
+| rag.py:29:48:29:91 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+subpaths
+| rag.py:18:23:18:31 | ControlFlowNode for user_post | prepare_prompt.py:1:40:1:48 | ControlFlowNode for user_post | prepare_prompt.py:3:12:3:105 | ControlFlowNode for Attribute() | rag.py:16:24:20:9 | ControlFlowNode for prepare_prompt() |
+| rag.py:18:23:18:31 | ControlFlowNode for user_post | prepare_prompt.py:1:40:1:48 | ControlFlowNode for user_post | prepare_prompt.py:3:12:3:105 | ControlFlowNode for Attribute() | rag.py:16:24:20:9 | ControlFlowNode for prepare_prompt() |
+| rag.py:25:49:25:57 | ControlFlowNode for user_post | prepare_prompt.py:6:36:6:44 | ControlFlowNode for user_post | prepare_prompt.py:7:12:7:63 | ControlFlowNode for Attribute() | rag.py:25:18:25:75 | ControlFlowNode for prepare_prompt_safe_substitute() |

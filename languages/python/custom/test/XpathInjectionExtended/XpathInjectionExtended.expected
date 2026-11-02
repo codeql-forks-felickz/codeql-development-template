@@ -1,0 +1,89 @@
+#select
+| server.py:21:23:21:66 | ControlFlowNode for BinaryExpr | server.py:12:16:12:19 | ControlFlowNode for self | server.py:21:23:21:66 | ControlFlowNode for BinaryExpr | XPath expression depends on a $@. | server.py:12:16:12:19 | ControlFlowNode for self | user-provided value |
+| server.py:31:30:31:59 | ControlFlowNode for BinaryExpr | server.py:25:17:25:20 | ControlFlowNode for self | server.py:31:30:31:59 | ControlFlowNode for BinaryExpr | XPath expression depends on a $@. | server.py:25:17:25:20 | ControlFlowNode for self | user-provided value |
+| server.py:39:27:39:53 | ControlFlowNode for BinaryExpr | server.py:35:16:35:19 | ControlFlowNode for self | server.py:39:27:39:53 | ControlFlowNode for BinaryExpr | XPath expression depends on a $@. | server.py:35:16:35:19 | ControlFlowNode for self | user-provided value |
+| server.py:51:26:51:52 | ControlFlowNode for BinaryExpr | server.py:47:18:47:21 | ControlFlowNode for self | server.py:51:26:51:52 | ControlFlowNode for BinaryExpr | XPath expression depends on a $@. | server.py:47:18:47:21 | ControlFlowNode for self | user-provided value |
+edges
+| server.py:12:16:12:19 | ControlFlowNode for self | server.py:14:9:14:19 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| server.py:12:16:12:19 | ControlFlowNode for self | server.py:14:9:14:19 | IterableElement | provenance | AdditionalTaintStep |
+| server.py:12:16:12:19 | ControlFlowNode for self | server.py:14:15:14:19 | ControlFlowNode for query | provenance | AdditionalTaintStep |
+| server.py:14:9:14:19 | ControlFlowNode for Tuple | server.py:14:15:14:19 | ControlFlowNode for query | provenance |  |
+| server.py:14:9:14:19 | ControlFlowNode for Tuple [Tuple element at index 1] | server.py:14:15:14:19 | ControlFlowNode for query | provenance |  |
+| server.py:14:9:14:19 | IterableElement | server.py:14:9:14:19 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| server.py:14:15:14:19 | ControlFlowNode for query | server.py:16:116:16:120 | ControlFlowNode for query | provenance | Config |
+| server.py:15:9:15:14 | ControlFlowNode for params [Any dictionary element] | server.py:21:53:21:58 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| server.py:15:18:18:9 | ControlFlowNode for dict() [Any dictionary element] | server.py:15:9:15:14 | ControlFlowNode for params [Any dictionary element] | provenance |  |
+| server.py:16:13:17:63 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | server.py:15:18:18:9 | ControlFlowNode for dict() [Any dictionary element] | provenance | builtins.dict |
+| server.py:16:14:16:123 | ControlFlowNode for Tuple [Tuple element at index 1] | server.py:16:14:16:123 | ControlFlowNode for Yield [List element, Tuple element at index 1] | provenance |  |
+| server.py:16:14:16:123 | ControlFlowNode for Yield [List element, Tuple element at index 1] | server.py:16:13:17:63 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | provenance |  |
+| server.py:16:31:16:123 | ControlFlowNode for Attribute() | server.py:16:14:16:123 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| server.py:16:52:16:122 | ControlFlowNode for Attribute() | server.py:16:31:16:123 | ControlFlowNode for Attribute() | provenance | MaD:129 |
+| server.py:16:61:16:121 | ControlFlowNode for Attribute() | server.py:16:52:16:122 | ControlFlowNode for Attribute() | provenance | str.join |
+| server.py:16:61:16:121 | ControlFlowNode for Attribute() [List element] | server.py:16:52:16:122 | ControlFlowNode for Attribute() | provenance | str.join |
+| server.py:16:116:16:120 | ControlFlowNode for query | server.py:16:61:16:121 | ControlFlowNode for Attribute() | provenance | re.findall |
+| server.py:16:116:16:120 | ControlFlowNode for query | server.py:16:61:16:121 | ControlFlowNode for Attribute() [List element] | provenance | re.findall |
+| server.py:21:53:21:58 | ControlFlowNode for params [Any dictionary element] | server.py:21:53:21:66 | ControlFlowNode for Subscript | provenance |  |
+| server.py:21:53:21:66 | ControlFlowNode for Subscript | server.py:21:23:21:66 | ControlFlowNode for BinaryExpr | provenance |  |
+| server.py:25:17:25:20 | ControlFlowNode for self | server.py:27:9:27:16 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| server.py:25:17:25:20 | ControlFlowNode for self | server.py:27:9:27:16 | IterableElement | provenance | AdditionalTaintStep |
+| server.py:25:17:25:20 | ControlFlowNode for self | server.py:27:12:27:16 | ControlFlowNode for value | provenance | AdditionalTaintStep |
+| server.py:27:9:27:16 | ControlFlowNode for Tuple | server.py:27:12:27:16 | ControlFlowNode for value | provenance |  |
+| server.py:27:9:27:16 | ControlFlowNode for Tuple [Tuple element at index 1] | server.py:27:12:27:16 | ControlFlowNode for value | provenance |  |
+| server.py:27:9:27:16 | IterableElement | server.py:27:9:27:16 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| server.py:27:12:27:16 | ControlFlowNode for value | server.py:31:48:31:52 | ControlFlowNode for value | provenance | Config |
+| server.py:31:48:31:52 | ControlFlowNode for value | server.py:31:30:31:59 | ControlFlowNode for BinaryExpr | provenance |  |
+| server.py:35:16:35:19 | ControlFlowNode for self | server.py:37:9:37:16 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| server.py:35:16:35:19 | ControlFlowNode for self | server.py:37:9:37:16 | IterableElement | provenance | AdditionalTaintStep |
+| server.py:35:16:35:19 | ControlFlowNode for self | server.py:37:12:37:16 | ControlFlowNode for value | provenance | AdditionalTaintStep |
+| server.py:37:9:37:16 | ControlFlowNode for Tuple | server.py:37:12:37:16 | ControlFlowNode for value | provenance |  |
+| server.py:37:9:37:16 | ControlFlowNode for Tuple [Tuple element at index 1] | server.py:37:12:37:16 | ControlFlowNode for value | provenance |  |
+| server.py:37:9:37:16 | IterableElement | server.py:37:9:37:16 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| server.py:37:12:37:16 | ControlFlowNode for value | server.py:39:49:39:53 | ControlFlowNode for value | provenance | Config |
+| server.py:39:49:39:53 | ControlFlowNode for value | server.py:39:27:39:53 | ControlFlowNode for BinaryExpr | provenance |  |
+| server.py:47:18:47:21 | ControlFlowNode for self | server.py:49:9:49:16 | ControlFlowNode for Tuple | provenance | AdditionalTaintStep |
+| server.py:47:18:47:21 | ControlFlowNode for self | server.py:49:9:49:16 | IterableElement | provenance | AdditionalTaintStep |
+| server.py:47:18:47:21 | ControlFlowNode for self | server.py:49:12:49:16 | ControlFlowNode for value | provenance | AdditionalTaintStep |
+| server.py:49:9:49:16 | ControlFlowNode for Tuple | server.py:49:12:49:16 | ControlFlowNode for value | provenance |  |
+| server.py:49:9:49:16 | ControlFlowNode for Tuple [Tuple element at index 1] | server.py:49:12:49:16 | ControlFlowNode for value | provenance |  |
+| server.py:49:9:49:16 | IterableElement | server.py:49:9:49:16 | ControlFlowNode for Tuple [Tuple element at index 1] | provenance |  |
+| server.py:49:12:49:16 | ControlFlowNode for value | server.py:51:26:51:52 | ControlFlowNode for BinaryExpr | provenance |  |
+nodes
+| server.py:12:16:12:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| server.py:14:9:14:19 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| server.py:14:9:14:19 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| server.py:14:9:14:19 | IterableElement | semmle.label | IterableElement |
+| server.py:14:15:14:19 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| server.py:15:9:15:14 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| server.py:15:18:18:9 | ControlFlowNode for dict() [Any dictionary element] | semmle.label | ControlFlowNode for dict() [Any dictionary element] |
+| server.py:16:13:17:63 | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for GeneratorExp [List element, Tuple element at index 1] |
+| server.py:16:14:16:123 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| server.py:16:14:16:123 | ControlFlowNode for Yield [List element, Tuple element at index 1] | semmle.label | ControlFlowNode for Yield [List element, Tuple element at index 1] |
+| server.py:16:31:16:123 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| server.py:16:52:16:122 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| server.py:16:61:16:121 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| server.py:16:61:16:121 | ControlFlowNode for Attribute() [List element] | semmle.label | ControlFlowNode for Attribute() [List element] |
+| server.py:16:116:16:120 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| server.py:21:23:21:66 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| server.py:21:53:21:58 | ControlFlowNode for params [Any dictionary element] | semmle.label | ControlFlowNode for params [Any dictionary element] |
+| server.py:21:53:21:66 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| server.py:25:17:25:20 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| server.py:27:9:27:16 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| server.py:27:9:27:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| server.py:27:9:27:16 | IterableElement | semmle.label | IterableElement |
+| server.py:27:12:27:16 | ControlFlowNode for value | semmle.label | ControlFlowNode for value |
+| server.py:31:30:31:59 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| server.py:31:48:31:52 | ControlFlowNode for value | semmle.label | ControlFlowNode for value |
+| server.py:35:16:35:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| server.py:37:9:37:16 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| server.py:37:9:37:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| server.py:37:9:37:16 | IterableElement | semmle.label | IterableElement |
+| server.py:37:12:37:16 | ControlFlowNode for value | semmle.label | ControlFlowNode for value |
+| server.py:39:27:39:53 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| server.py:39:49:39:53 | ControlFlowNode for value | semmle.label | ControlFlowNode for value |
+| server.py:47:18:47:21 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| server.py:49:9:49:16 | ControlFlowNode for Tuple | semmle.label | ControlFlowNode for Tuple |
+| server.py:49:9:49:16 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| server.py:49:9:49:16 | IterableElement | semmle.label | IterableElement |
+| server.py:49:12:49:16 | ControlFlowNode for value | semmle.label | ControlFlowNode for value |
+| server.py:51:26:51:52 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths
