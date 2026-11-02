@@ -13,8 +13,9 @@
  * This step resolves such unresolved calls with a field-based approximation: a call
  * through field `f` may invoke any function value that flows into a write of `f`
  * anywhere in the program. Argument `i` of the call flows to parameter `i` of each
- * such function, and result `i` of each such function flows to result `i` of the
- * call.
+ * such function, except for method expressions, where argument zero flows to the
+ * receiver and later arguments flow to the corresponding parameters. Result `i` of
+ * each such function flows to result `i` of the call.
  */
 
 import go
@@ -88,11 +89,34 @@ private predicate fieldCallTarget(DataFlow::CallNode call, DataFlow::Node fn) {
   )
 }
 
-/** Holds if `p` is the `i`th parameter of the function value `fn`. */
-private predicate functionValueParameter(DataFlow::Node fn, int i, DataFlow::ParameterNode p) {
-  p = fn.(DataFlow::FunctionNode).getParameter(i)
+/** Holds if `fn` is a method expression: its read is a selector with a type-expression base. */
+private predicate isMethodExpression(Function f, DataFlow::Node fn) {
+  f instanceof Method and
+  exists(SelectorExpr sel |
+    fn = f.getARead() and
+    sel = fn.asExpr() and
+    sel.getBase() instanceof TypeExpr
+  )
+}
+
+/** Holds if `p` is the node initialized by the `i`th argument of the function value `fn`. */
+private predicate functionValueParameter(DataFlow::Node fn, int i, DataFlow::Node p) {
+  p = fn.(DataFlow::FunctionNode).getParameter(i) and
+  not exists(Function f | isMethodExpression(f, fn))
   or
-  exists(Function f | fn = f.getARead() and p = DataFlow::parameterNode(f.getParameter(i)))
+  exists(Function f |
+    fn = f.getARead() and
+    not isMethodExpression(f, fn) and
+    p = DataFlow::parameterNode(f.getParameter(i))
+  )
+  or
+  exists(Function f |
+    isMethodExpression(f, fn)
+  |
+    i = 0 and p = DataFlow::receiverNode(f.(Method).getReceiver())
+    or
+    i > 0 and p = DataFlow::parameterNode(f.getParameter(i - 1))
+  )
 }
 
 /** Holds if `res` is the `i`th result of the function value `fn`. */

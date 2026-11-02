@@ -1,5 +1,7 @@
 #select
 | results/results.go:21:23:21:28 | target | results/results.go:18:8:18:26 | call to FormValue | results/results.go:21:23:21:28 | target | This path to an untrusted URL redirection depends on a $@. | results/results.go:18:8:18:26 | call to FormValue | user-provided value |
+| results/results.go:31:26:31:31 | target | results/results.go:44:8:44:12 | selection of URL | results/results.go:31:26:31:31 | target | This path to an untrusted URL redirection depends on a $@. | results/results.go:44:8:44:12 | selection of URL | user-provided value |
+| results/results.go:35:26:35:31 | target | results/results.go:44:8:44:12 | selection of URL | results/results.go:35:26:35:31 | target | This path to an untrusted URL redirection depends on a $@. | results/results.go:44:8:44:12 | selection of URL | user-provided value |
 | servechi/servechi.go:36:24:36:30 | payload | common/common.go:58:10:58:14 | selection of URL | servechi/servechi.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | common/common.go:58:10:58:14 | selection of URL | user-provided value |
 | servechi/servechi.go:36:24:36:30 | payload | common/common.go:61:10:61:29 | call to FormValue | servechi/servechi.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | common/common.go:61:10:61:29 | call to FormValue | user-provided value |
 | servechi/servechi.go:36:24:36:30 | payload | servegin/servegin.go:28:10:28:25 | call to Query | servechi/servechi.go:36:24:36:30 | payload | This path to an untrusted URL redirection depends on a $@. | servegin/servegin.go:28:10:28:25 | call to Query | user-provided value |
@@ -66,6 +68,14 @@ edges
 | results/results.go:18:8:18:26 | call to FormValue | results/results.go:20:28:20:29 | in | provenance | Src:MaD:1995  |
 | results/results.go:20:3:20:30 | extract:0 ... := ... | results/results.go:21:23:21:28 | target | provenance | Sink:MaD:1969 |
 | results/results.go:20:28:20:29 | in | results/results.go:11:18:11:18 | SSA def(s) | provenance | Config |
+| results/results.go:30:36:30:41 | SSA def(target) | results/results.go:31:26:31:31 | target | provenance | Sink:MaD:1969 |
+| results/results.go:34:41:34:46 | SSA def(target) | results/results.go:35:26:35:31 | target | provenance | Sink:MaD:1969 |
+| results/results.go:44:8:44:12 | selection of URL | results/results.go:44:8:44:20 | call to Query | provenance | Src:MaD:2007 Config |
+| results/results.go:44:8:44:20 | call to Query | results/results.go:44:8:44:32 | call to Get | provenance | Config |
+| results/results.go:44:8:44:32 | call to Get | results/results.go:50:16:50:17 | in | provenance |  |
+| results/results.go:50:16:50:17 | in | results/results.go:30:36:30:41 | SSA def(target) | provenance | Config |
+| results/results.go:50:16:50:17 | in | results/results.go:51:33:51:34 | in | provenance |  |
+| results/results.go:51:33:51:34 | in | results/results.go:34:41:34:46 | SSA def(target) | provenance | Config |
 | servechi/servechi.go:20:10:20:31 | call to GetUserInput | servechi/servechi.go:21:29:21:30 | in | provenance |  |
 | servechi/servechi.go:21:29:21:30 | in | common/common.go:45:29:45:35 | SSA def(payload) | provenance | Config |
 | servechi/servechi.go:30:49:30:55 | SSA def(payload) | servechi/servechi.go:36:24:36:30 | payload | provenance | Sink:MaD:1969 |
@@ -120,6 +130,15 @@ nodes
 | results/results.go:20:3:20:30 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
 | results/results.go:20:28:20:29 | in | semmle.label | in |
 | results/results.go:21:23:21:28 | target | semmle.label | target |
+| results/results.go:30:36:30:41 | SSA def(target) | semmle.label | SSA def(target) |
+| results/results.go:31:26:31:31 | target | semmle.label | target |
+| results/results.go:34:41:34:46 | SSA def(target) | semmle.label | SSA def(target) |
+| results/results.go:35:26:35:31 | target | semmle.label | target |
+| results/results.go:44:8:44:12 | selection of URL | semmle.label | selection of URL |
+| results/results.go:44:8:44:20 | call to Query | semmle.label | call to Query |
+| results/results.go:44:8:44:32 | call to Get | semmle.label | call to Get |
+| results/results.go:50:16:50:17 | in | semmle.label | in |
+| results/results.go:51:33:51:34 | in | semmle.label | in |
 | servechi/servechi.go:20:10:20:31 | call to GetUserInput | semmle.label | call to GetUserInput |
 | servechi/servechi.go:21:29:21:30 | in | semmle.label | in |
 | servechi/servechi.go:30:49:30:55 | SSA def(payload) | semmle.label | SSA def(payload) |

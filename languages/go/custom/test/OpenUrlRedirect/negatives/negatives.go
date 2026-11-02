@@ -48,3 +48,22 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	actions.Check(p, in)
 	http.Redirect(w, r, actions.Clean(in), http.StatusFound)
 }
+
+type redirectReceiver string
+
+func (redirectReceiver) Redirect(target string) {
+	http.Redirect(nil, nil, target, http.StatusFound)
+}
+
+type receiverActions struct {
+	Redirect func(redirectReceiver, string)
+}
+
+var methodExpressionActions = &receiverActions{
+	Redirect: redirectReceiver.Redirect,
+}
+
+func methodExpressionReceiverIsNotTarget(r *http.Request) {
+	in := r.URL.Query().Get("next")
+	methodExpressionActions.Redirect(redirectReceiver(in), "/home")
+}
