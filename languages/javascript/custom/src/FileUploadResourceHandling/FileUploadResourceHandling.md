@@ -62,6 +62,7 @@ for (const entry of directory.files) {
 - GraphQL servers without any `validationRules` are not reported.
 - A read of `uncompressedSize` anywhere in the function that expands an entry (including nested callbacks) is treated as a sufficient expansion check.
 - Unbounded downloads are only reported when the request URL is user-controlled.
+- Downloads through `pipeline` with more than two arguments, or through a `pipe` whose receiver is another `pipe` call, are not reported. This conservatively skips pipelines with intermediate transforms, including byte-limiting stages that the query does not model.
 
 ## References
 

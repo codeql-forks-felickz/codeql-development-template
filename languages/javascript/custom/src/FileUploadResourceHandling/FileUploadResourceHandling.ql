@@ -33,12 +33,29 @@ predicate hasProperty(DataFlow::ObjectLiteralNode obj, string name) {
   obj.hasPropertyWrite(name, _)
 }
 
+/** Holds if a multer instance escapes through an argument or module export. */
+predicate multerInstanceEscapes(DataFlow::CallNode call) {
+  exists(DataFlow::CallNode argument |
+    argument.getAnArgument().getALocalSource() = call
+  )
+  or
+  exists(DataFlow::PropWrite export |
+    export.getPropertyName() = "exports" and
+    export.getRhs().getALocalSource() = call
+  )
+}
+
 /**
  * Holds if `call` configures a multer upload handler and `missing` describes the
  * validation that is absent from its options.
  */
 predicate unrestrictedMulterUpload(DataFlow::CallNode call, string missing) {
   call = moduleRef("multer").getACall() and
+  not (
+    exists(call.getAMethodCall("none")) and
+    not exists(call.getAMethodCall(["single", "array", "fields", "any"])) and
+    not multerInstanceEscapes(call)
+  ) and
   (
     not exists(call.getArgument(0)) and
     missing = "file type validation (fileFilter) or file size limit (limits.fileSize)"
@@ -135,6 +152,7 @@ predicate isCostLimitingRule(DataFlow::Node rule) {
 predicate graphQLWithoutCostLimit(DataFlow::ArrayCreationNode rules) {
   exists(DataFlow::ObjectLiteralNode config |
     config = graphQLServerConfig() and
+    isClosedObjectLiteral(config) and
     config.hasPropertyWrite("validationRules", rules.getALocalUse()) and
     not rules.asExpr().(ArrayExpr).getAnElement() instanceof SpreadElement and
     not isCostLimitingRule(rules.getAnElement()) and
@@ -199,6 +217,12 @@ predicate unboundedArchiveExtraction(DataFlow::CallNode call) {
     expandsEntry(handler.getParameter(0), use) and
     not checksExpandedSize(use)
   )
+  or
+  exists(DataFlow::SourceNode stream, DataFlow::MethodCallNode use |
+    call = moduleRef("unzipper").getMember("ParseOne").getACall() and
+    isParseStream(stream, call) and
+    use = stream.getAMethodCall(["pipe", "buffer"])
+  )
 }
 
 /** Holds if `node` is a writable file stream. */
@@ -213,9 +237,14 @@ predicate isFileWriteStream(DataFlow::Node node) {
 predicate writesStreamToFile(DataFlow::CallNode call, DataFlow::Node data) {
   call.(DataFlow::MethodCallNode).getMethodName() = "pipe" and
   isFileWriteStream(call.getArgument(0)) and
+  not exists(DataFlow::MethodCallNode previousPipe |
+    previousPipe.getMethodName() = "pipe" and
+    call.(DataFlow::MethodCallNode).getReceiver().getALocalSource() = previousPipe
+  ) and
   data = call.(DataFlow::MethodCallNode).getReceiver()
   or
   call.getCalleeName() = "pipeline" and
+  not exists(call.getArgument(2)) and
   isFileWriteStream(call.getAnArgument()) and
   data = call.getArgument(0)
 }

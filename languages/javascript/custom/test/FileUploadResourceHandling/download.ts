@@ -1,11 +1,23 @@
 import fs from 'node:fs'
 import { Readable } from 'node:stream'
 import { finished, pipeline } from 'node:stream/promises'
+import { Transform } from 'node:stream'
 import express, { type Request, type Response, type NextFunction } from 'express'
 import request from 'request'
 import https from 'node:https'
 
 const app = express()
+const MAX_DOWNLOAD_BYTES = 1024 * 1024
+
+function createByteLimitTransform () {
+  let downloadedBytes = 0
+  return new Transform({
+    transform (chunk, encoding, callback) {
+      downloadedBytes += chunk.length
+      callback(downloadedBytes > MAX_DOWNLOAD_BYTES ? new Error('download too large') : null, chunk)
+    }
+  })
+}
 
 // BAD: response from a user-selected URL is streamed to disk with no byte limit.
 export function profileImageUrlUpload () {
@@ -42,6 +54,22 @@ app.post('/profile/image/https-event', (req, res) => {
   https.request(req.query.url as string).on('response', (download) => {
     pipeline(download, fs.createWriteStream('uploads/avatar.jpg')) // $ Alert
   }).end()
+  res.redirect('/profile')
+})
+
+// GOOD: a byte-limiting transform sits between the response and file.
+app.post('/profile/image/limited', (req, res) => {
+  https.get(req.query.url as string, (download) => {
+    pipeline(download, createByteLimitTransform(), fs.createWriteStream('uploads/avatar.jpg'))
+  })
+  res.redirect('/profile')
+})
+
+// GOOD: a chained intermediate stream prevents reporting the final pipe.
+app.post('/profile/image/limited-pipe', (req, res) => {
+  https.get(req.query.url as string, (download) => {
+    download.pipe(createByteLimitTransform()).pipe(fs.createWriteStream('uploads/avatar.jpg'))
+  })
   res.redirect('/profile')
 })
 

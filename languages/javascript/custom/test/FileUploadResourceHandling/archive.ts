@@ -62,6 +62,18 @@ export function extractStreamBounded (tempFile: string) {
     })
 }
 
+// BAD: ParseOne's output stream is expanded directly without a size check.
+export function extractOne (tempFile: string) {
+  return fs.createReadStream(tempFile)
+    .pipe(unzipper.ParseOne()) // $ Alert
+    .pipe(fs.createWriteStream('uploads/complaints/entry'))
+}
+
+// GOOD: an unconsumed ParseOne output is not expanded.
+export function parseOneWithoutConsumer (tempFile: string) {
+  return fs.createReadStream(tempFile).pipe(unzipper.ParseOne())
+}
+
 // GOOD: entries are only inspected, never expanded.
 export async function listEntries (buffer: Buffer) {
   const directory = await unzipper.Open.buffer(buffer)

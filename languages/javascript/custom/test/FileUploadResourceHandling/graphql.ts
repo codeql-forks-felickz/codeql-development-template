@@ -32,6 +32,14 @@ export const apolloSafe = new ApolloServer({
   validationRules: [ depthLimit(5), costAnalysis({ maximumCost: 1000 }) ]
 })
 
+// GOOD: unknown options from the spread may include a cost limit.
+declare const securityOptions: Record<string, unknown>
+export const apolloWithSpread = new ApolloServer({
+  schema,
+  validationRules: [ depthLimit(5) ],
+  ...securityOptions
+})
+
 // GOOD: rules are not statically known.
 const rules = getRules()
 export const apolloDynamic = new ApolloServer({

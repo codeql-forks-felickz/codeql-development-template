@@ -16,6 +16,25 @@ var noFilter = multer({ dest: 'uploads/', limits: { fileSize: 1024 * 1024 } }); 
 // BAD: file type validation, but no per-file size limit.
 var noSize = multer({ storage: multer.memoryStorage(), limits: { files: 1 }, fileFilter: imageFilter }); // $ Alert
 
+// GOOD: `.none()` rejects every file.
+var textOnly = multer();
+textOnly.none();
+
+// BAD: this instance also creates file-accepting middleware.
+var mixed = multer(); // $ Alert
+mixed.none();
+mixed.single('file');
+
+// BAD: an instance that escapes through an argument may be used elsewhere.
+var passed = multer(); // $ Alert
+passed.none();
+consume(passed);
+
+// BAD: an instance that is exported may be used elsewhere.
+var exported = multer(); // $ Alert
+exported.none();
+module.exports = exported;
+
 // GOOD: file type validation and size limit.
 var safe = multer({ dest: 'uploads/', limits: { fileSize: 1024 * 1024 }, fileFilter: imageFilter });
 
