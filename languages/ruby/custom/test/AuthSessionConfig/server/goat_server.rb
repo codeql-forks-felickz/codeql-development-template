@@ -26,5 +26,16 @@ class GoatServer < Sinatra::Base
     # GOOD: options cannot be determined statically
     response.set_cookie("SessionID", cookie_options)
     response.set_cookie("SessionID", value: token, **cookie_options)
+
+    # GOOD: later splats may override the disabled flags
+    response.set_cookie("SessionID", value: token, secure: false, httponly: false, **cookie_options)
+    response.set_cookie("SessionID", { value: token, secure: nil, httponly: nil, **cookie_options })
+
+    # BAD: explicit disabled flags override earlier splats
+    response.set_cookie("SessionID", value: token, **cookie_options, secure: false, httponly: false) # $ Alert
+    response.set_cookie("SessionID", { **cookie_options, value: token, secure: nil, httponly: nil }) # $ Alert
+
+    # GOOD: unsupported options beginning with a splat are not inspected
+    response.set_cookie("SessionID", **cookie_options, secure: false, httponly: false)
   end
 end

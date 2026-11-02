@@ -38,6 +38,30 @@ predicate isFalsy(Expr e) {
   e instanceof NilLiteral
 }
 
+/** Holds if a later options splat may override the option value `value`. */
+predicate hasOverridingSplat(Call call, Expr value) {
+  exists(int i, int j |
+    i < j and
+    (
+      value = call.getArgument(i).(Pair).getValue() and
+      call.getArgument(j) instanceof HashSplatExpr
+      or
+      exists(HashLiteral hash | hash = call.getAnArgument() |
+        value = hash.getElement(i).(Pair).getValue() and
+        hash.getElement(j) instanceof HashSplatExpr
+      )
+    )
+  )
+}
+
+/** Holds if an option is disabled and cannot be overridden by a later splat. */
+predicate hasDisabledOption(Call call, string attribute) {
+  exists(Expr value | value = getOption(call, attribute) |
+    isFalsy(value) and
+    not hasOverridingSplat(call, value)
+  )
+}
+
 /** Holds if the application enables `config.force_ssl`, which marks all cookies as `Secure`. */
 predicate forcesSsl() {
   exists(AssignExpr a |
@@ -96,7 +120,7 @@ predicate insecureAttribute(Call call, string attribute, string reason) {
   (
     call instanceof SessionStoreCall and
     (
-      isFalsy(getOption(call, attribute)) and reason = "disabled"
+      hasDisabledOption(call, attribute) and reason = "disabled"
       or
       attribute = "secure" and
       not exists(getOption(call, attribute)) and
@@ -111,7 +135,7 @@ predicate insecureAttribute(Call call, string attribute, string reason) {
       or
       c.hasOptionsHash() and
       (
-        isFalsy(getOption(c, attribute)) and reason = "disabled"
+        hasDisabledOption(c, attribute) and reason = "disabled"
         or
         not exists(getOption(c, attribute)) and
         not hasUnknownOptions(c) and

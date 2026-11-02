@@ -46,4 +46,12 @@ module Todo
 
   # BAD: selecting a store without options still lacks Secure
   Rails.application.config.session_store :cookie_store # $ Alert
+
+  # GOOD: later splats may override the disabled flags
+  config.session_store :cookie_store, secure: false, httponly: false, **SESSION_OPTIONS
+  config.session_store :cookie_store, { secure: false, httponly: false, **SESSION_OPTIONS }
+
+  # BAD: explicit disabled flags override earlier splats
+  config.session_store :cookie_store, **SESSION_OPTIONS, secure: false, httponly: false # $ Alert
+  config.session_store :cookie_store, { **SESSION_OPTIONS, secure: false, httponly: false } # $ Alert
 end

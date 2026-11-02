@@ -33,6 +33,10 @@ Similarly, a session cookie set from a Sinatra or Rack handler should include th
 response.set_cookie("SessionID", value: token, secure: true, httponly: true, same_site: :strict)
 ```
 
+## Known limitations
+
+The query does not inspect `set_cookie` options when the first options argument is a splat rather than a keyword pair or hash literal, even if explicit disabled flags follow it.
+
 ## References
 
 - OWASP: [Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#cookies).
