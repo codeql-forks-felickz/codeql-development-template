@@ -21,8 +21,11 @@
 
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
+import semmle.code.cpp.ir.internal.ASTValueNumbering
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.controlflow.Guards
+import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
+import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 
 /**
  * A constant recursion depth that is considered unbounded in practice
@@ -42,6 +45,12 @@ predicate loopBound(Loop loop, RelationalOperation cmp, Expr bound) {
   exists(Variable v |
     cmp.getLesserOperand().(VariableAccess).getTarget() = v and
     not bound.(VariableAccess).getTarget() = v and
+    not exists(RelationalOperation cap |
+      cap != cmp and
+      cap.getParent*() = loop.getCondition() and
+      cap.getLesserOperand().(VariableAccess).getTarget() = v and
+      hasFiniteUpperBound(cap.getGreaterOperand())
+    ) and
     exists(Expr update |
       update.getEnclosingStmt().getParentStmt*() = loop and
       (
@@ -49,6 +58,22 @@ predicate loopBound(Loop loop, RelationalOperation cmp, Expr bound) {
         update.(AssignArithmeticOperation).getLValue().(VariableAccess).getTarget() = v
       )
     )
+  )
+}
+
+/** Holds if `e` has an independently established finite upper bound. */
+predicate hasFiniteUpperBound(Expr e) {
+  upperBound(e.getFullyConverted()) < typeUpperBound(e.getFullyConverted().getType())
+}
+
+/** Holds if `e` is known to be nonnegative where it is used. */
+predicate isNonnegativeAt(Expr e) {
+  lowerBound(e) >= 0.0
+  or
+  exists(VariableAccess a, GuardCondition g |
+    a.getTarget() = e.(VariableAccess).getTarget() and
+    globalValueNumber(a) = globalValueNumber(e) and
+    g.ensuresLt(a, 0, e.getBasicBlock(), false)
   )
 }
 
@@ -62,22 +87,55 @@ predicate assertedExpr(Expr e) {
   )
 }
 
-/** Holds if `f` recurses on parameter `p`, i.e. it passes a value derived from `p` to itself. */
+/** Holds if `arg` updates `p` additively. */
+predicate additiveRecursionArgument(Expr arg, Parameter p) {
+  exists(AddExpr add |
+    arg.getAChild*() = add and
+    (
+      add.getLeftOperand().(VariableAccess).getTarget() = p and
+      add.getRightOperand().isConstant()
+      or
+      add.getRightOperand().(VariableAccess).getTarget() = p and
+      add.getLeftOperand().isConstant()
+    )
+  )
+  or
+  exists(SubExpr sub |
+    arg.getAChild*() = sub and
+    sub.getLeftOperand().(VariableAccess).getTarget() = p and
+    sub.getRightOperand().isConstant()
+  )
+  or
+  exists(CrementOperation crement |
+    arg.getAChild*() = crement and
+    crement.getOperand().(VariableAccess).getTarget() = p
+  )
+}
+
+/** Holds if `f` recurses on parameter `p` using an additive update. */
 predicate recursesOnParameter(Function f, Parameter p, int i) {
   p = f.getParameter(i) and
   exists(FunctionCall rc |
     rc.getTarget() = f and
     rc.getEnclosingFunction() = f and
-    rc.getArgument(i).getAChild*().(VariableAccess).getTarget() = p
+    additiveRecursionArgument(rc.getArgument(i), p)
   )
 }
 
-/** Holds if `f` compares parameter `p` against an upper limit (for example `p > MAX`). */
+/**
+ * Holds if the value passed to a recursive call is bounded to a practical
+ * depth, rather than only having a base-case check.
+ */
 predicate hasUpperDepthCheck(Function f, Parameter p) {
   p.getFunction() = f and
-  exists(RelationalOperation cmp |
-    cmp.getEnclosingFunction() = f and
-    cmp.getGreaterOperand().(VariableAccess).getTarget() = p
+  not exists(FunctionCall rc, int i |
+    rc.getTarget() = f and
+    rc.getEnclosingFunction() = f and
+    additiveRecursionArgument(rc.getArgument(i), p) and
+    not exists(float ub |
+      ub = upperBound(rc.getArgument(i).getFullyConverted()) and
+      ub < 1048576.0
+    )
   )
 }
 
@@ -95,13 +153,28 @@ predicate unboundedRecursionDepth(FunctionCall call, Expr arg, Function f) {
   )
 }
 
-/** Holds if `e` reads a variable whose value is bounded above in the basic block of `e`. */
+/** Holds if `e` is a signed value that reaches an unsigned resource sink. */
+predicate needsNonnegativeBound(Expr e) {
+  not e.getType().getUnderlyingType().(IntegralType).isUnsigned() and
+  (
+    sleepDuration(e) or
+    allocationSize(e) or
+    loopBound(_, _, e) and
+    e.getFullyConverted().getType().getUnderlyingType().(IntegralType).isUnsigned()
+  )
+}
+
+/** Holds if `e` reads a value bounded above in its basic block without reassignment. */
 predicate isUpperBounded(Expr e) {
   exists(Variable v, VariableAccess a, GuardCondition g |
     e.(VariableAccess).getTarget() = v and
     a.getTarget() = v and
+    globalValueNumber(a) = globalValueNumber(e) and
     (
-      g.ensuresLt(a, _, _, e.getBasicBlock(), true)
+      exists(Expr limit |
+        g.ensuresLt(a, limit, _, e.getBasicBlock(), true) and
+        hasFiniteUpperBound(limit)
+      )
       or
       g.ensuresLt(a, _, e.getBasicBlock(), true)
     )
@@ -152,7 +225,11 @@ module UntrustedResourceConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { taintSink(sink.asExpr(), _) }
 
-  predicate isBarrier(DataFlow::Node node) { isUpperBounded(node.asExpr()) }
+  predicate isBarrier(DataFlow::Node node) {
+    not assertedExpr(node.asExpr()) and
+    isUpperBounded(node.asExpr()) and
+    (not needsNonnegativeBound(node.asExpr()) or isNonnegativeAt(node.asExpr()))
+  }
 }
 
 module UntrustedResourceFlow = TaintTracking::Global<UntrustedResourceConfig>;
@@ -208,9 +285,10 @@ class UnlockCall extends FunctionCall {
 
 /** Gets the function-local lock variable referenced by the first argument of `call`. */
 LocalVariable lockVariable(FunctionCall call) {
-  exists(Expr arg | arg = call.getArgument(0) |
-    arg.(VariableAccess).getTarget() = result or
-    arg.(AddressOfExpr).getOperand().(VariableAccess).getTarget() = result
+  exists(AddressOfExpr arg |
+    arg = call.getArgument(0) and
+    arg.getOperand().(VariableAccess).getTarget() = result and
+    not result.getType().getUnderlyingType() instanceof PointerType
   )
 }
 

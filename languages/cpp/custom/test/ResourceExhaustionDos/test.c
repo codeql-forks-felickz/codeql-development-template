@@ -119,6 +119,57 @@ void loop_bound_early_exit_good(int sock)
     sink(count);
 }
 
+void loop_bound_expression_bad(int sock)
+{
+    char nBuf[32];
+    char limitBuf[32];
+    int i, n, limit, count = 0;
+    if (fgets(nBuf, sizeof(nBuf), stdin) == 0 ||
+        fgets(limitBuf, sizeof(limitBuf), stdin) == 0)
+        return;
+    n = atoi(nBuf);
+    limit = atoi(limitBuf);
+    if (n < limit)
+    {
+        for (i = 0; i < n; i++) // $ Alert
+        {
+            count++;
+        }
+    }
+    sink(count);
+}
+
+void loop_bound_expression_checked_good(int sock)
+{
+    char buf[32];
+    int i, n, limit = 100, count = 0;
+    if (fgets(buf, sizeof(buf), stdin) == 0)
+        return;
+    n = atoi(buf);
+    if (n < limit)
+    {
+        for (i = 0; i < n; i++)
+        {
+            count++;
+        }
+    }
+    sink(count);
+}
+
+void loop_bound_capped_good(int sock)
+{
+    char buf[32];
+    int i, n, count = 0;
+    if (fgets(buf, sizeof(buf), stdin) == 0)
+        return;
+    n = atoi(buf);
+    for (i = 0; i < n && i < 100; i++)
+    {
+        count++;
+    }
+    sink(count);
+}
+
 void loop_bound_constant_good(void)
 {
     char data[100] = "15";
@@ -178,7 +229,7 @@ void loop_bound_cast_good(int sock)
         buf[r] = '\0';
         count = atoi(buf);
     }
-    if (count > 0 && count <= 20)
+    if (count >= 0 && count <= 20)
     {
         for (i = 0; i < (size_t)count; i++)
         {
@@ -199,7 +250,7 @@ void sleep_duration_bad(void)
     sleep(i); // $ Alert
 }
 
-void sleep_duration_good(void)
+void sleep_duration_upper_bound_only_bad(void)
 {
     char inLine[64];
     int i;
@@ -208,7 +259,35 @@ void sleep_duration_good(void)
     i = atoi(inLine);
     if (i > 10)
         return;
+    sleep(i); // $ Alert
+}
+
+void sleep_duration_nonnegative_good(void)
+{
+    char inLine[64];
+    int i;
+    if (fgets(inLine, sizeof(inLine), stdin) == 0)
+        return;
+    i = atoi(inLine);
+    if (i < 0 || i > 10)
+        return;
     sleep(i);
+}
+
+void sleep_reassigned_after_check_bad(void)
+{
+    char first[64];
+    char second[64];
+    int i;
+    if (fgets(first, sizeof(first), stdin) == 0 ||
+        fgets(second, sizeof(second), stdin) == 0)
+        return;
+    i = atoi(first);
+    if (i < 100)
+    {
+        i = atoi(second);
+        sleep(i); // $ Alert
+    }
 }
 
 /* ---------- CWE-789: uncontrolled allocation size ---------- */
@@ -267,6 +346,36 @@ void alloc_size_checked_good(int sock)
     }
 }
 
+void alloc_size_signed_upper_bound_only_bad(int sock)
+{
+    char buf[32];
+    int data = 0;
+    ssize_t r = recv(sock, buf, sizeof(buf) - 1, 0);
+    if (r > 0)
+    {
+        buf[r] = '\0';
+        data = atoi(buf);
+    }
+    if (data > 100)
+        return;
+    free(malloc(data)); // $ Alert
+}
+
+void alloc_size_signed_nonnegative_good(int sock)
+{
+    char buf[32];
+    int data = 0;
+    ssize_t r = recv(sock, buf, sizeof(buf) - 1, 0);
+    if (r > 0)
+    {
+        buf[r] = '\0';
+        data = atoi(buf);
+    }
+    if (data < 0 || data > 100)
+        return;
+    free(malloc(data));
+}
+
 /* No comparison at all: reported by cpp/uncontrolled-allocation-size, not by this query. */
 void alloc_size_unchecked_other_query(int sock)
 {
@@ -300,6 +409,21 @@ void reachable_assertion_bad(int sock)
         buf[r] = '\0';
         data = atoi(buf);
     }
+    assert(data > ASSERT_VALUE); // $ Alert
+}
+
+void reachable_assertion_guarded_bad(int sock)
+{
+    char buf[32];
+    int data = -1;
+    ssize_t r = recv(sock, buf, sizeof(buf) - 1, 0);
+    if (r > 0)
+    {
+        buf[r] = '\0';
+        data = atoi(buf);
+    }
+    if (data > 10)
+        return;
     assert(data > ASSERT_VALUE); // $ Alert
 }
 
@@ -349,6 +473,29 @@ void tainted_recursion_bad(int sock)
     unbounded_helper_bad(atoi(buf)); // $ Alert
 }
 
+static void unbounded_helper_base_case_bad(unsigned level)
+{
+    if (level > 0)
+    {
+        unbounded_helper_base_case_bad(level - 1);
+    }
+}
+
+void tainted_base_case_recursion_bad(int sock)
+{
+    char buf[32];
+    ssize_t r = recv(sock, buf, sizeof(buf) - 1, 0);
+    if (r <= 0)
+        return;
+    buf[r] = '\0';
+    unbounded_helper_base_case_bad(atoi(buf)); // $ Alert
+}
+
+void huge_base_case_recursion_bad(void)
+{
+    unbounded_helper_base_case_bad(UINT_MAX); // $ Alert
+}
+
 static void bounded_helper_good(unsigned level)
 {
     if (level > MAX_RECURSION)
@@ -376,6 +523,18 @@ void bounded_recursion_good(int sock)
 void small_recursion_good(void)
 {
     unbounded_helper_bad(5);
+}
+
+static void halving_helper_good(unsigned level)
+{
+    if (level == 0)
+        return;
+    halving_helper_good(level / 2);
+}
+
+void halving_recursion_good(void)
+{
+    halving_helper_good(UINT_MAX);
 }
 
 /* Unbounded allocation loop: reported by cpp/memory-never-freed, not by this query. */
@@ -427,6 +586,20 @@ void lock_global_wrapper_good(void)
 void lock_param_wrapper_good(pthread_mutex_t *m)
 {
     pthread_mutex_lock(m);
+}
+
+void lock_param_alias_wrapper_good(pthread_mutex_t *m)
+{
+    pthread_mutex_t *local = m;
+    pthread_mutex_lock(local);
+}
+
+void lock_local_pointer_release_good(void)
+{
+    static pthread_mutex_t localLock;
+    pthread_mutex_t *local = &localLock;
+    pthread_mutex_lock(local);
+    pthread_mutex_unlock(&localLock);
 }
 
 /* ---------- CWE-401 / CWE-775: covered by existing queries ----------
