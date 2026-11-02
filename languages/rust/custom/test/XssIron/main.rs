@@ -63,4 +63,21 @@ fn main() {
     Iron::new(good_plain_text_handler).http("localhost:3004").unwrap();
     Iron::new(good_constant_handler).http("localhost:3005").unwrap();
     Iron::new(prelude_style::handler).http("localhost:3006").unwrap(); // $ Source[rust/xss-iron-response-modifier]=prelude
+    Iron::new(bad_named_tuple_handler).http("localhost:3007").unwrap(); // $ Source[rust/xss-iron-response-modifier]=named_tuple
+    Iron::new(bad_html_mime_handler).http("localhost:3008").unwrap(); // $ Source[rust/xss-iron-response-modifier]=html_mime
+}
+
+fn bad_named_tuple_handler(req: &mut Request) -> IronResult<Response> {
+    let res = req.url.path();
+    let response = format!("<h1>Assessing resource, {:?}!</h1>", res);
+    let modifiers = (status::Ok, response); // $ Alert[rust/xss-iron-response-modifier]=named_tuple
+    Ok(Response::with(modifiers))
+}
+
+fn bad_html_mime_handler(req: &mut Request) -> IronResult<Response> {
+    let res = req.url.path();
+    let response = format!("<h1>Assessing resource, {:?}!</h1>", res);
+    // BAD: an explicit `text/html` content type does not make the body safe.
+    let html: Mime = "text/html".parse().unwrap();
+    Ok(Response::with((status::Ok, html, response))) // $ Alert[rust/xss-iron-response-modifier]=html_mime
 }

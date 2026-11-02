@@ -21,23 +21,51 @@ import codeql.rust.security.XssExtensions
 private import codeql.rust.internal.typeinference.Type
 private import codeql.rust.internal.typeinference.TypeInference as TypeInference
 
+module MimeLiteralConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node.asExpr() instanceof StringLiteralExpr }
+
+  predicate isSink(DataFlow::Node node) {
+    exists(Expr expr |
+      node.asExpr() = expr and
+      TypeInference::inferType(expr).(StructType).getTypeItem().getCanonicalPath() = "mime::Mime"
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node barrier) { none() }
+}
+
+module MimeLiteralFlow = TaintTracking::Global<MimeLiteralConfig>;
+
 /**
  * An element of a modifier tuple passed to `iron::Response::with`, such as `body` in
  * `Response::with((status::Ok, body))`.
  *
- * Tuples that also contain a `Mime` modifier set an explicit `Content-Type` and are
- * not considered.
+ * Tuples that contain a `Mime` modifier built from a string literal that is clearly
+ * not HTML or XML set an explicit, safe `Content-Type` and are not considered sinks.
  */
 class IronResponseModifierTupleElement extends DataFlow::Node {
   IronResponseModifierTupleElement() {
-    exists(Call call, TupleExpr modifiers |
+    exists(Call call, TupleExpr modifiers, Expr argument |
       call.getStaticTarget().getCanonicalPath() = "<iron::response::Response>::with" and
-      modifiers = call.getPositionalArgument(0) and
+      argument = call.getPositionalArgument(0) and
+      exists(DataFlow::ExprNode tupleNode, DataFlow::ExprNode argumentNode |
+        tupleNode.asExpr() = modifiers and
+        argumentNode.asExpr() = argument and
+        DataFlow::localFlow(tupleNode, argumentNode)
+      ) and
       this.asExpr() = modifiers.getAField() and
-      not TypeInference::inferType(modifiers.getAField())
-          .(StructType)
-          .getTypeItem()
-          .getCanonicalPath() = "mime::Mime"
+      not exists(
+        Expr mimeModifier, StringLiteralExpr mimeLiteral, DataFlow::ExprNode literalNode,
+        DataFlow::ExprNode mimeNode
+      |
+        mimeModifier = modifiers.getAField() and
+        TypeInference::inferType(mimeModifier).(StructType).getTypeItem().getCanonicalPath() =
+          "mime::Mime" and
+        literalNode.asExpr() = mimeLiteral and
+        mimeNode.asExpr() = mimeModifier and
+        MimeLiteralFlow::flow(literalNode, mimeNode) and
+        not mimeLiteral.getTextValue().regexpMatch("(?i).*(html|xml).*")
+      )
     )
   }
 }
