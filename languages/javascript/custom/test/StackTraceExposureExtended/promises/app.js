@@ -2,6 +2,7 @@ const express = require('express')
 const db = require('./db')
 
 const app = express()
+const env = process.env.NODE_ENV
 
 app.get('/users', function (req, res) {
   db.query('SELECT * FROM users')
@@ -31,6 +32,21 @@ app.get('/legacy', function (req, res) {
   } catch (e) { // $ Source
     res.status(500).send(e.stack) // $ Alert
   }
+})
+
+if (env === 'development') {
+  app.get('/development-only', function (req, res) {
+    db.query('SELECT * FROM users')
+      .catch((err) => res.status(500).send(err.stack))
+  })
+}
+
+app.get('/request-controlled-development', function (req, res) {
+  db.query('SELECT * FROM users').catch((err) => { // $ Source
+    if (req.query.mode === 'development') {
+      res.status(500).send(err.stack) // $ Alert
+    }
+  })
 })
 
 app.listen(3002)

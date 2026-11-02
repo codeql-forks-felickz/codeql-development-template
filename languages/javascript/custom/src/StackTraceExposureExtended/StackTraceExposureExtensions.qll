@@ -12,7 +12,32 @@ private predicate isDevelopmentCheck(Expr cond) {
   exists(EqualityTest eq |
     eq = cond.getUnderlyingValue() and
     eq.getPolarity() = true and
-    eq.getAnOperand().getStringValue() = "development"
+    eq.getAnOperand().getStringValue() = "development" and
+    isApplicationEnvironmentValue(eq.getAnOperand())
+  )
+}
+
+/** Holds if `value` reads an application environment value. */
+private predicate isApplicationEnvironmentValue(Expr value) {
+  value.flow().getALocalSource() =
+    DataFlow::globalVarRef("process").getAPropertyRead("env").getAPropertyRead("NODE_ENV")
+  or
+  exists(DataFlow::MethodCallNode get |
+    get = value.flow().getALocalSource() and
+    get.getMethodName() = "get" and
+    get.getArgument(0).getStringValue() = "env" and
+    isExpressApplicationReference(get.getReceiver())
+  )
+}
+
+/** Holds if `receiver` refers to an Express application. */
+private predicate isExpressApplicationReference(DataFlow::Node receiver) {
+  receiver.getALocalSource() = Express::appCreation()
+  or
+  exists(PropAccess app |
+    app = receiver.asExpr() and
+    app.getPropertyName() = "app" and
+    Express::isRequest(DataFlow::valueNode(app.getBase()))
   )
 }
 
@@ -82,7 +107,8 @@ class ErrorHandlerMiddleware extends StackTraceExposure::Source, StackTraceExpos
     this = DataFlow::moduleImport("errorhandler").getACall() and
     exists(DataFlow::MethodCallNode use |
       use.getMethodName() = "use" and
-      this.flowsTo(use.getAnArgument())
+      this.flowsTo(use.getAnArgument()) and
+      not isDevelopmentOnly(use)
     )
   }
 }
