@@ -7,4 +7,6 @@ import java.lang.annotation.*;
 @RequestMapping
 public @interface GetMapping {
   String[] value() default {};
+
+  String[] produces() default {};
 }

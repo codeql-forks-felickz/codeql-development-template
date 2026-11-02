@@ -117,7 +117,7 @@ public class SpringRedirectView {
 
 @org.springframework.web.bind.annotation.RestController
 class SpringRestControllerRedirect {
-  @GetMapping("/responseBody")
+  @GetMapping(value = "/responseBody", produces = "text/plain")
   public String responseBody(@RequestParam("url") String url) {
     return "redirect:" + url;
   }
