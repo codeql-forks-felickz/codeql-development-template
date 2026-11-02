@@ -112,6 +112,8 @@ class TemplateContextSink extends ErrorMessageExposureSink {
       call = API::moduleImport("flask").getMember(["render_template", "stream_template"]).getACall()
     |
       this = call.getArgByName(_)
+      or
+      this = call.getKwargs()
     )
     or
     // django.shortcuts.render(request, template_name, context=None, ...)

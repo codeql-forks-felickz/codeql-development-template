@@ -5,6 +5,9 @@
 | django_views.py:23:48:23:71 | ControlFlowNode for Dict | django_views.py:22:27:22:35 | ControlFlowNode for exception | django_views.py:23:48:23:71 | ControlFlowNode for Dict | $@ flows to this template context and may be exposed to an external user. | django_views.py:22:27:22:35 | ControlFlowNode for exception | Exception information |
 | flask_templates.py:12:52:12:52 | ControlFlowNode for e | flask_templates.py:11:33:11:33 | ControlFlowNode for e | flask_templates.py:12:52:12:52 | ControlFlowNode for e | $@ flows to this template context and may be exposed to an external user. | flask_templates.py:11:33:11:33 | ControlFlowNode for e | Exception information |
 | flask_templates.py:20:52:20:73 | ControlFlowNode for Attribute() | flask_templates.py:20:52:20:73 | ControlFlowNode for Attribute() | flask_templates.py:20:52:20:73 | ControlFlowNode for Attribute() | $@ flows to this template context and may be exposed to an external user. | flask_templates.py:20:52:20:73 | ControlFlowNode for Attribute() | Exception information |
+| flask_templates.py:37:48:37:59 | ControlFlowNode for Dict | flask_templates.py:36:33:36:33 | ControlFlowNode for e | flask_templates.py:37:48:37:59 | ControlFlowNode for Dict | $@ flows to this template context and may be exposed to an external user. | flask_templates.py:36:33:36:33 | ControlFlowNode for e | Exception information |
+| flask_templates.py:46:48:46:50 | ControlFlowNode for ctx | flask_templates.py:44:33:44:33 | ControlFlowNode for e | flask_templates.py:46:48:46:50 | ControlFlowNode for ctx | $@ flows to this template context and may be exposed to an external user. | flask_templates.py:44:33:44:33 | ControlFlowNode for e | Exception information |
+| flask_templates.py:59:48:59:59 | ControlFlowNode for Dict | flask_templates.py:58:33:58:33 | ControlFlowNode for e | flask_templates.py:59:48:59:59 | ControlFlowNode for Dict | $@ flows to this template context and may be exposed to an external user. | flask_templates.py:58:33:58:33 | ControlFlowNode for e | Exception information |
 | http_server_handler.py:18:30:18:61 | ControlFlowNode for Attribute() | http_server_handler.py:13:23:13:44 | ControlFlowNode for Attribute() | http_server_handler.py:18:30:18:61 | ControlFlowNode for Attribute() | $@ flows to this HTTP response stream and may be exposed to an external user. | http_server_handler.py:13:23:13:44 | ControlFlowNode for Attribute() | Exception information |
 | http_server_handler.py:26:30:26:45 | ControlFlowNode for Attribute() | http_server_handler.py:23:30:23:31 | ControlFlowNode for ex | http_server_handler.py:26:30:26:45 | ControlFlowNode for Attribute() | $@ flows to this HTTP response stream and may be exposed to an external user. | http_server_handler.py:23:30:23:31 | ControlFlowNode for ex | Exception information |
 | http_server_handler.py:42:30:42:104 | ControlFlowNode for IfExp | http_server_handler.py:38:29:38:50 | ControlFlowNode for Attribute() | http_server_handler.py:42:30:42:104 | ControlFlowNode for IfExp | $@ flows to this HTTP response stream and may be exposed to an external user. | http_server_handler.py:38:29:38:50 | ControlFlowNode for Attribute() | Exception information |
@@ -18,6 +21,14 @@ edges
 | django_views.py:22:27:22:35 | ControlFlowNode for exception | django_views.py:23:62:23:70 | ControlFlowNode for exception | provenance |  |
 | django_views.py:23:62:23:70 | ControlFlowNode for exception | django_views.py:23:48:23:71 | ControlFlowNode for Dict | provenance |  |
 | flask_templates.py:11:33:11:33 | ControlFlowNode for e | flask_templates.py:12:52:12:52 | ControlFlowNode for e | provenance |  |
+| flask_templates.py:36:33:36:33 | ControlFlowNode for e | flask_templates.py:37:58:37:58 | ControlFlowNode for e | provenance |  |
+| flask_templates.py:37:58:37:58 | ControlFlowNode for e | flask_templates.py:37:48:37:59 | ControlFlowNode for Dict | provenance |  |
+| flask_templates.py:44:33:44:33 | ControlFlowNode for e | flask_templates.py:45:25:45:25 | ControlFlowNode for e | provenance |  |
+| flask_templates.py:45:9:45:11 | ControlFlowNode for ctx [Dictionary element at key error] | flask_templates.py:46:48:46:50 | ControlFlowNode for ctx | provenance |  |
+| flask_templates.py:45:15:45:26 | ControlFlowNode for Dict [Dictionary element at key error] | flask_templates.py:45:9:45:11 | ControlFlowNode for ctx [Dictionary element at key error] | provenance |  |
+| flask_templates.py:45:25:45:25 | ControlFlowNode for e | flask_templates.py:45:15:45:26 | ControlFlowNode for Dict [Dictionary element at key error] | provenance |  |
+| flask_templates.py:58:33:58:33 | ControlFlowNode for e | flask_templates.py:59:58:59:58 | ControlFlowNode for e | provenance |  |
+| flask_templates.py:59:58:59:58 | ControlFlowNode for e | flask_templates.py:59:48:59:59 | ControlFlowNode for Dict | provenance |  |
 | http_server_handler.py:13:13:13:19 | ControlFlowNode for content | http_server_handler.py:18:30:18:61 | ControlFlowNode for Attribute() | provenance |  |
 | http_server_handler.py:13:23:13:44 | ControlFlowNode for Attribute() | http_server_handler.py:13:13:13:19 | ControlFlowNode for content | provenance |  |
 | http_server_handler.py:23:30:23:31 | ControlFlowNode for ex | http_server_handler.py:26:30:26:45 | ControlFlowNode for Attribute() | provenance |  |
@@ -46,6 +57,17 @@ nodes
 | flask_templates.py:11:33:11:33 | ControlFlowNode for e | semmle.label | ControlFlowNode for e |
 | flask_templates.py:12:52:12:52 | ControlFlowNode for e | semmle.label | ControlFlowNode for e |
 | flask_templates.py:20:52:20:73 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| flask_templates.py:36:33:36:33 | ControlFlowNode for e | semmle.label | ControlFlowNode for e |
+| flask_templates.py:37:48:37:59 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| flask_templates.py:37:58:37:58 | ControlFlowNode for e | semmle.label | ControlFlowNode for e |
+| flask_templates.py:44:33:44:33 | ControlFlowNode for e | semmle.label | ControlFlowNode for e |
+| flask_templates.py:45:9:45:11 | ControlFlowNode for ctx [Dictionary element at key error] | semmle.label | ControlFlowNode for ctx [Dictionary element at key error] |
+| flask_templates.py:45:15:45:26 | ControlFlowNode for Dict [Dictionary element at key error] | semmle.label | ControlFlowNode for Dict [Dictionary element at key error] |
+| flask_templates.py:45:25:45:25 | ControlFlowNode for e | semmle.label | ControlFlowNode for e |
+| flask_templates.py:46:48:46:50 | ControlFlowNode for ctx | semmle.label | ControlFlowNode for ctx |
+| flask_templates.py:58:33:58:33 | ControlFlowNode for e | semmle.label | ControlFlowNode for e |
+| flask_templates.py:59:48:59:59 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| flask_templates.py:59:58:59:58 | ControlFlowNode for e | semmle.label | ControlFlowNode for e |
 | http_server_handler.py:13:13:13:19 | ControlFlowNode for content | semmle.label | ControlFlowNode for content |
 | http_server_handler.py:13:23:13:44 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | http_server_handler.py:18:30:18:61 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
