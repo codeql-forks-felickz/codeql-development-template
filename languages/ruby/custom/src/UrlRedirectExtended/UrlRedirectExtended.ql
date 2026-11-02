@@ -79,7 +79,10 @@ class SnippetRedirectSink extends DataFlow::Node {
         c.getMethodName() = "redirect_back" and
         this.asExpr().getExpr() = c.getKeywordArgument("fallback_location")
       ) and
-      not c.getKeywordArgument("allow_other_host").getConstantValue().isBoolean(false)
+      (
+        c.getMethodName() != "redirect_to" or
+        not c.getKeywordArgument("allow_other_host").getConstantValue().isBoolean(false)
+      )
     )
   }
 }
@@ -95,7 +98,13 @@ predicate isParamsCall(DataFlow::Node n) {
  */
 class RedirectTargetParamRead extends DataFlow::CallNode {
   RedirectTargetParamRead() {
-    isParamsCall(this.getReceiver()) and
+    (
+      isParamsCall(this.getReceiver()) or
+      exists(DataFlow::LocalSourceNode src |
+        src.flowsTo(this.getReceiver()) and
+        isParamsCall(src)
+      )
+    ) and
     this.getMethodName() = ["[]", "fetch", "dig"] and
     exists(string name |
       this.getArgument(0).getConstantValue().isStringlikeValue(name) and

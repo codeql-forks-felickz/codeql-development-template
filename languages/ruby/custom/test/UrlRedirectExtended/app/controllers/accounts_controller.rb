@@ -4,6 +4,10 @@ class AccountsController < ApplicationController
   def create
     account = Account.create(name: params[:name])
     redirect_to params[:name]
+
+    p = params
+    redirect_to p[:name]
+    redirect_to p[:url] # $ Alert
   end
 
   # Safe: constant-string comparison guard.
