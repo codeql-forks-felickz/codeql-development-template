@@ -33,7 +33,7 @@ private class ExceptionMessageCall extends MethodCall {
   ExceptionMessageCall() {
     this.getMethod().hasName(["getMessage", "getLocalizedMessage", "toString"]) and
     this.getMethod().hasNoParameters() and
-    isThrowable(this.getQualifier().getType())
+    isThrowable(this.getReceiverType())
   }
 }
 

@@ -8,3 +8,6 @@
 | LoginController.java:33:35:33:82 | ... + ... | $@ can be exposed to an external user. | LoginController.java:33:35:33:48 | getMessage(...) | Error information |
 | LoginController.java:43:35:43:48 | getMessage(...) | $@ can be exposed to an external user. | LoginController.java:43:35:43:48 | getMessage(...) | Error information |
 | LoginController.java:54:30:54:50 | displayErrorForWeb(...) | $@ can be exposed to an external user. | LoginController.java:22:5:22:5 | t | Error information |
+| UnqualifiedThrowableHelpers.java:13:12:15:16 | build(...) | $@ can be exposed to an external user. | UnqualifiedThrowableHelpers.java:25:12:25:23 | getMessage(...) | Error information |
+| UnqualifiedThrowableHelpers.java:13:12:15:16 | build(...) | $@ can be exposed to an external user. | UnqualifiedThrowableHelpers.java:29:12:29:32 | getLocalizedMessage(...) | Error information |
+| UnqualifiedThrowableHelpers.java:13:12:15:16 | build(...) | $@ can be exposed to an external user. | UnqualifiedThrowableHelpers.java:33:12:33:21 | toString(...) | Error information |
