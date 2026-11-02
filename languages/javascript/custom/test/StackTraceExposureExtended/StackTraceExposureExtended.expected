@@ -1,0 +1,56 @@
+#select
+| goatlin/accounts.js:35:29:35:37 | { error } | goatlin/accounts.js:29:12:29:12 | e | goatlin/accounts.js:35:29:35:37 | { error } | This information exposed to the user depends on $@. | goatlin/accounts.js:29:12:29:12 | e | error message or stack trace information |
+| goatlin/accounts.js:45:26:45:62 | 'Failed ... message | goatlin/accounts.js:44:12:44:12 | e | goatlin/accounts.js:45:26:45:62 | 'Failed ... message | This information exposed to the user depends on $@. | goatlin/accounts.js:44:12:44:12 | e | error message or stack trace information |
+| juiceshop/server.ts:7:9:7:22 | errorhandler() | juiceshop/server.ts:7:9:7:22 | errorhandler() | juiceshop/server.ts:7:9:7:22 | errorhandler() | This information exposed to the user depends on $@. | juiceshop/server.ts:7:9:7:22 | errorhandler() | error message or stack trace information |
+| nodegoat/error.js:10:12:10:14 | err | nodegoat/error.js:3:23:3:25 | err | nodegoat/error.js:10:12:10:14 | err | This information exposed to the user depends on $@. | nodegoat/error.js:3:23:3:25 | err | error message or stack trace information |
+| promises/app.js:10:42:10:50 | err.stack | promises/app.js:10:13:10:15 | err | promises/app.js:10:42:10:50 | err.stack | This information exposed to the user depends on $@. | promises/app.js:10:13:10:15 | err | error message or stack trace information |
+| promises/app.js:16:38:16:64 | { messa ... ssage } | promises/app.js:16:6:16:11 | reason | promises/app.js:16:38:16:64 | { messa ... ssage } | This information exposed to the user depends on $@. | promises/app.js:16:6:16:11 | reason | error message or stack trace information |
+| promises/app.js:33:26:33:32 | e.stack | promises/app.js:32:12:32:12 | e | promises/app.js:33:26:33:32 | e.stack | This information exposed to the user depends on $@. | promises/app.js:32:12:32:12 | e | error message or stack trace information |
+| promises/app.js:47:28:47:36 | err.stack | promises/app.js:45:42:45:44 | err | promises/app.js:47:28:47:36 | err.stack | This information exposed to the user depends on $@. | promises/app.js:45:42:45:44 | err | error message or stack trace information |
+| vuln_node_express/routes/api.js:9:16:9:18 | err | vuln_node_express/routes/api.js:7:52:7:54 | err | vuln_node_express/routes/api.js:9:16:9:18 | err | This information exposed to the user depends on $@. | vuln_node_express/routes/api.js:7:52:7:54 | err | error message or stack trace information |
+edges
+| goatlin/accounts.js:29:12:29:12 | e | goatlin/accounts.js:31:17:31:17 | e | provenance |  |
+| goatlin/accounts.js:31:9:31:13 | error | goatlin/accounts.js:35:31:35:35 | error | provenance |  |
+| goatlin/accounts.js:31:17:31:17 | e | goatlin/accounts.js:31:9:31:13 | error | provenance |  |
+| goatlin/accounts.js:35:31:35:35 | error | goatlin/accounts.js:35:29:35:37 | { error } | provenance |  |
+| goatlin/accounts.js:44:12:44:12 | e | goatlin/accounts.js:45:54:45:54 | e | provenance |  |
+| goatlin/accounts.js:45:54:45:54 | e | goatlin/accounts.js:45:26:45:62 | 'Failed ... message | provenance |  |
+| nodegoat/error.js:3:23:3:25 | err | nodegoat/error.js:10:12:10:14 | err | provenance |  |
+| promises/app.js:10:13:10:15 | err | promises/app.js:10:42:10:44 | err | provenance |  |
+| promises/app.js:10:42:10:44 | err | promises/app.js:10:42:10:50 | err.stack | provenance |  |
+| promises/app.js:16:6:16:11 | reason | promises/app.js:16:49:16:54 | reason | provenance |  |
+| promises/app.js:16:49:16:54 | reason | promises/app.js:16:49:16:62 | reason.message | provenance |  |
+| promises/app.js:16:49:16:62 | reason.message | promises/app.js:16:38:16:64 | { messa ... ssage } | provenance |  |
+| promises/app.js:32:12:32:12 | e | promises/app.js:33:26:33:26 | e | provenance |  |
+| promises/app.js:33:26:33:26 | e | promises/app.js:33:26:33:32 | e.stack | provenance |  |
+| promises/app.js:45:42:45:44 | err | promises/app.js:47:28:47:30 | err | provenance |  |
+| promises/app.js:47:28:47:30 | err | promises/app.js:47:28:47:36 | err.stack | provenance |  |
+| vuln_node_express/routes/api.js:7:52:7:54 | err | vuln_node_express/routes/api.js:9:16:9:18 | err | provenance |  |
+nodes
+| goatlin/accounts.js:29:12:29:12 | e | semmle.label | e |
+| goatlin/accounts.js:31:9:31:13 | error | semmle.label | error |
+| goatlin/accounts.js:31:17:31:17 | e | semmle.label | e |
+| goatlin/accounts.js:35:29:35:37 | { error } | semmle.label | { error } |
+| goatlin/accounts.js:35:31:35:35 | error | semmle.label | error |
+| goatlin/accounts.js:44:12:44:12 | e | semmle.label | e |
+| goatlin/accounts.js:45:26:45:62 | 'Failed ... message | semmle.label | 'Failed ... message |
+| goatlin/accounts.js:45:54:45:54 | e | semmle.label | e |
+| juiceshop/server.ts:7:9:7:22 | errorhandler() | semmle.label | errorhandler() |
+| nodegoat/error.js:3:23:3:25 | err | semmle.label | err |
+| nodegoat/error.js:10:12:10:14 | err | semmle.label | err |
+| promises/app.js:10:13:10:15 | err | semmle.label | err |
+| promises/app.js:10:42:10:44 | err | semmle.label | err |
+| promises/app.js:10:42:10:50 | err.stack | semmle.label | err.stack |
+| promises/app.js:16:6:16:11 | reason | semmle.label | reason |
+| promises/app.js:16:38:16:64 | { messa ... ssage } | semmle.label | { messa ... ssage } |
+| promises/app.js:16:49:16:54 | reason | semmle.label | reason |
+| promises/app.js:16:49:16:62 | reason.message | semmle.label | reason.message |
+| promises/app.js:32:12:32:12 | e | semmle.label | e |
+| promises/app.js:33:26:33:26 | e | semmle.label | e |
+| promises/app.js:33:26:33:32 | e.stack | semmle.label | e.stack |
+| promises/app.js:45:42:45:44 | err | semmle.label | err |
+| promises/app.js:47:28:47:30 | err | semmle.label | err |
+| promises/app.js:47:28:47:36 | err.stack | semmle.label | err.stack |
+| vuln_node_express/routes/api.js:7:52:7:54 | err | semmle.label | err |
+| vuln_node_express/routes/api.js:9:16:9:18 | err | semmle.label | err |
+subpaths
