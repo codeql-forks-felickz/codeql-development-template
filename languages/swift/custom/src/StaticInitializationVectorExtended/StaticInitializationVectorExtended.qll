@@ -51,8 +51,8 @@ private predicate valuePreservingReference(Expr e, DeclRefExpr ref) {
   or
   exists(CallExpr conversion |
     e = conversion and
-    conversion.getStaticTarget().(Initializer).getEnclosingDecl().asNominalTypeDecl().getName() =
-      ["CCOptions", "UInt32"] and
+    conversion.getStaticTarget() instanceof Initializer and
+    conversion.getType().getName() = ["CCOptions", "UInt32"] and
     valuePreservingReference(conversion.getArgument(0).getExpr(), ref)
   )
   or
