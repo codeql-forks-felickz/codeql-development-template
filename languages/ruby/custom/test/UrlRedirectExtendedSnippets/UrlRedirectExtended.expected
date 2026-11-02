@@ -1,0 +1,24 @@
+#select
+| example1.rb:2:13:2:40 | call to update | example1.rb:2:13:2:18 | call to params | example1.rb:2:13:2:40 | call to update | Untrusted URL redirection depends on a $@. | example1.rb:2:13:2:18 | call to params | user-provided value |
+| example1.rb:6:23:6:34 | ...[...] | example1.rb:6:23:6:28 | call to params | example1.rb:6:23:6:34 | ...[...] | Untrusted URL redirection depends on a $@. | example1.rb:6:23:6:28 | call to params | user-provided value |
+| example1.rb:10:36:10:47 | ...[...] | example1.rb:10:36:10:41 | call to params | example1.rb:10:36:10:47 | ...[...] | Untrusted URL redirection depends on a $@. | example1.rb:10:36:10:41 | call to params | user-provided value |
+| example2.rb:3:15:3:20 | target | example2.rb:2:12:2:17 | call to params | example2.rb:3:15:3:20 | target | Untrusted URL redirection depends on a $@. | example2.rb:2:12:2:17 | call to params | user-provided value |
+edges
+| example1.rb:2:13:2:18 | call to params | example1.rb:2:13:2:40 | call to update | provenance | Config |
+| example1.rb:6:23:6:28 | call to params | example1.rb:6:23:6:34 | ...[...] | provenance |  |
+| example1.rb:10:36:10:41 | call to params | example1.rb:10:36:10:47 | ...[...] | provenance |  |
+| example2.rb:2:3:2:8 | target | example2.rb:3:15:3:20 | target | provenance |  |
+| example2.rb:2:12:2:17 | call to params | example2.rb:2:12:2:23 | ...[...] | provenance |  |
+| example2.rb:2:12:2:23 | ...[...] | example2.rb:2:3:2:8 | target | provenance |  |
+nodes
+| example1.rb:2:13:2:18 | call to params | semmle.label | call to params |
+| example1.rb:2:13:2:40 | call to update | semmle.label | call to update |
+| example1.rb:6:23:6:28 | call to params | semmle.label | call to params |
+| example1.rb:6:23:6:34 | ...[...] | semmle.label | ...[...] |
+| example1.rb:10:36:10:41 | call to params | semmle.label | call to params |
+| example1.rb:10:36:10:47 | ...[...] | semmle.label | ...[...] |
+| example2.rb:2:3:2:8 | target | semmle.label | target |
+| example2.rb:2:12:2:17 | call to params | semmle.label | call to params |
+| example2.rb:2:12:2:23 | ...[...] | semmle.label | ...[...] |
+| example2.rb:3:15:3:20 | target | semmle.label | target |
+subpaths
