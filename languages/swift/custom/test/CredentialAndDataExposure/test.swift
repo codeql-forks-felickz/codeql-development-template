@@ -208,7 +208,7 @@ class KeyFetcher {
 
   func fetchKeyNoCache() {
     guard let url = URL(string: demoEndpoint) else { return }
-    var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData) // GOOD (no caching)
+    var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData) // GOOD (bypasses cache reads)
     urlRequest.httpBody = "token=key".data(using: 4)
   }
 
@@ -243,5 +243,46 @@ class MemoryManagementVC : UIViewController {
 
   func viewWillDisappear() {
     clearedCardNumber = ""
+  }
+}
+
+extension UIPasteboard {
+  func setObjects(_ objects: [Any], localOnly: Bool, expirationDate: Date?) {}
+}
+
+extension SecretItemViewController {
+  func copyWithCallSpecificOptions(password: String) {
+    UIPasteboard.general.setItems([["public.text": password]], options: [.localOnly: true]) // GOOD (protected write)
+    UIPasteboard.general.setObjects([password], localOnly: false, expirationDate: nil) // $ Alert[swift/credential-and-data-exposure]
+    UIPasteboard.general.setObjects([password], localOnly: true, expirationDate: nil) // GOOD (local-only)
+    UIPasteboard.general.setObjects([password], localOnly: false, expirationDate: Date(timeIntervalSinceNow: 60)) // GOOD (expiring)
+  }
+}
+
+class MemoryManagementRegressionVC : UIViewController {
+  var passwordString: String = ""
+  var clearedPassword: String = ""
+  var passwordData: Data = Data()
+  var passwordBytes: [UInt8] = []
+
+  func loadPassword() -> String { return "" }
+
+  func assignLoadedPassword() {
+    self.passwordString = loadPassword() // $ Alert[swift/credential-and-data-exposure]
+  }
+
+  func clearPassword(_ secret: String) {
+    self.clearedPassword = secret
+    self.clearedPassword = String()
+  }
+
+  func clearData(_ secret: Data) {
+    self.passwordData = secret
+    self.passwordData = Data()
+  }
+
+  func clearBytes(_ secret: [UInt8]) {
+    self.passwordBytes = secret
+    self.passwordBytes = [UInt8]()
   }
 }

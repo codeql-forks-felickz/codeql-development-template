@@ -19,7 +19,7 @@ All patterns are heuristic, so the query has `low` precision and is intended for
 - Use random, server-issued session tokens. Never derive a token from the user's credentials, even with encryption.
 - Obscure or clear sensitive views in `applicationDidEnterBackground(_:)`/`applicationWillResignActive(_:)` (or the scene delegate equivalents) so that the system snapshot does not capture them.
 - Always set a restrictive `kSecAttrAccessible` value, such as `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`, when adding keychain items.
-- Use `.reloadIgnoringLocalCacheData` (or an ephemeral `URLSession`) for requests that return sensitive data.
+- Disable the session URL cache for requests that return sensitive data, for example by setting `urlCache` to `nil` on the `URLSessionConfiguration` or returning `nil` from `willCacheResponse`. `.reloadIgnoringLocalCacheData` only bypasses cache reads, and an ephemeral session avoids disk caching but can still cache in memory.
 - Clear properties that hold sensitive values as soon as they are no longer needed.
 
 ## Example

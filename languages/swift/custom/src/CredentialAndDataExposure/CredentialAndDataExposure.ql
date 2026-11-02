@@ -64,6 +64,26 @@ private class SensitiveOrDecryptedExpr extends Expr {
  */
 
 /** Holds if `e` is written to the system pasteboard. */
+private predicate isCallArgumentExpr(Expr e, CallExpr call) {
+  exists(Location exprLocation, Location argLocation, Argument arg |
+    arg = call.getAnArgument() and
+    exprLocation = e.getLocation() and
+    argLocation = arg.getExpr().getLocation() and
+    not exprLocation instanceof UnknownLocation and
+    exprLocation.getFile() = argLocation.getFile() and
+    exprLocation.getStartLine() >= argLocation.getStartLine() and
+    exprLocation.getEndLine() <= argLocation.getEndLine() and
+    (
+      exprLocation.getStartLine() > argLocation.getStartLine()
+      or exprLocation.getStartColumn() >= argLocation.getStartColumn()
+    ) and
+    (
+      exprLocation.getEndLine() < argLocation.getEndLine()
+      or exprLocation.getEndColumn() <= argLocation.getEndColumn()
+    )
+  )
+}
+
 private predicate isPasteboardWrite(Expr e, Expr write) {
   exists(AssignExpr assign, FieldDecl f |
     assign.getDest().(MemberRefExpr).getMember() = f and
@@ -85,10 +105,23 @@ private predicate isPasteboardWrite(Expr e, Expr write) {
     write = call and
     // Writes that restrict the item to the local device or set an expiration date are safe.
     not exists(Expr opt |
-      opt.getEnclosingCallable() = call.getEnclosingCallable() and
+      isCallArgumentExpr(opt, call) and
       (
         opt.(MemberRefExpr).getMember().(VarDecl).getName() = ["localOnly", "expirationDate"] or
         opt.(DeclRefExpr).getDecl().(VarDecl).getName() = ["localOnly", "expirationDate"]
+      )
+    ) and
+    not (
+      call.getStaticTarget().(Method)
+          .hasQualifiedName("UIPasteboard", "setObjects(_:localOnly:expirationDate:)") and
+      (
+        not exists(BooleanLiteralExpr localOnly |
+          localOnly = call.getArgumentWithLabel("localOnly").getExpr() and localOnly.getValue() = false
+        )
+        or
+        not exists(NilLiteralExpr expirationDate |
+          expirationDate = call.getArgumentWithLabel("expirationDate").getExpr()
+        )
       )
     )
   )
@@ -274,7 +307,10 @@ private predicate isClearingValue(Expr e) {
   e instanceof NilLiteralExpr or
   e.(StringLiteralExpr).getValue() = "" or
   e.(ArrayExpr).getNumberOfElements() = 0 or
-  e.(CallExpr).getNumberOfArguments() = 0
+  (
+    e.(CallExpr).getStaticTarget() instanceof Initializer and
+    e.(CallExpr).getNumberOfArguments() = 0
+  )
 }
 
 /** Holds if `v` is cleared somewhere in the program. */
