@@ -56,8 +56,8 @@ class ThirdPartyScriptWithoutIntegrity extends HTML::ScriptElement {
   ThirdPartyScriptWithoutIntegrity() {
     exists(string url, string path |
       url = this.getSourcePath().trim() and
-      host = url.regexpCapture("(?i)^(?:https?:)?//([^/?#]+)([^?#]*).*", 1).toLowerCase() and
-      path = url.regexpCapture("(?i)^(?:https?:)?//([^/?#]+)([^?#]*).*", 2) and
+      host = url.regexpCapture("(?i)^(?:https?:)?//(\\[[^\\]]+\\]|[^:/?#]+)(?::[0-9]+)?([^?#]*).*", 1).toLowerCase() and
+      path = url.regexpCapture("(?i)^(?:https?:)?//(\\[[^\\]]+\\]|[^:/?#]+)(?::[0-9]+)?([^?#]*).*", 2) and
       not isLocalhost(host) and
       (isPublicPackageCdn(host) or isVersionPinnedScriptPath(path))
     ) and
