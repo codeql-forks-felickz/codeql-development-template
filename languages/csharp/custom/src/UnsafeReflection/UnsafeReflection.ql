@@ -63,8 +63,26 @@ class ReflectionTypeNameSink extends DataFlow::ExprNode {
  */
 private predicate allowListGuard(Guard guard, Expr e, GuardValue branch) {
   exists(MethodCall mc | mc = guard |
-    mc.getTarget().hasName(["Contains", "ContainsKey"]) and
-    mc.getAnArgument() = e and
+    (
+      exists(Expr receiver |
+        mc.getQualifier() = receiver and
+        mc.getArgument(0) = e and
+        mc.getTarget().hasName("Contains") and
+        not mc.getTarget().getDeclaringType().hasFullyQualifiedName("System", "String") and
+        isCollectionMembershipReceiver(receiver)
+      )
+      or
+      exists(Expr receiver |
+        mc.getQualifier() = receiver and
+        mc.getArgument(0) = e and
+        mc.getTarget().hasName("ContainsKey") and
+        isDictionaryMembershipReceiver(receiver)
+      )
+      or
+      mc.getTarget().getDeclaringType().hasFullyQualifiedName("System.Linq", "Enumerable") and
+      mc.getTarget().hasName("Contains") and
+      mc.getArgument(1) = e
+    ) and
     branch.asBooleanValue() = true
   )
   or
@@ -75,6 +93,37 @@ private predicate allowListGuard(Guard guard, Expr e, GuardValue branch) {
       ct.getComparisonKind().isEquality() and branch.asBooleanValue() = true
       or
       ct.getComparisonKind().isInequality() and branch.asBooleanValue() = false
+    )
+  )
+}
+
+private predicate isCollectionMembershipReceiver(Expr receiver) {
+  exists(ValueOrRefType receiverType |
+    receiverType = receiver.getType() and
+    (
+      receiverType.getABaseType*().hasFullyQualifiedName("System.Collections", ["IList", "IDictionary"])
+      or
+      exists(ConstructedType base |
+        base = receiverType.getABaseType*() and
+        base.getUnboundGeneric().hasFullyQualifiedName(
+          "System.Collections.Generic",
+          ["ICollection`1", "ISet`1"]
+        )
+      )
+    )
+  )
+}
+
+private predicate isDictionaryMembershipReceiver(Expr receiver) {
+  exists(ValueOrRefType receiverType |
+    receiverType = receiver.getType() and
+    (
+      receiverType.getABaseType*().hasFullyQualifiedName("System.Collections", "IDictionary")
+      or
+      exists(ConstructedType base |
+        base = receiverType.getABaseType*() and
+        base.getUnboundGeneric().hasFullyQualifiedName("System.Collections.Generic", "IDictionary`2")
+      )
     )
   )
 }

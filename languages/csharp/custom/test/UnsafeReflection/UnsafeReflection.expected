@@ -7,6 +7,7 @@
 | Tests.cs:38:53:38:60 | access to local variable typeName | Tests.cs:37:31:37:79 | call to method GetEnvironmentVariable : String | Tests.cs:38:53:38:60 | access to local variable typeName | This type name, which is used to load or instantiate a type through reflection, depends on a $@. | Tests.cs:37:31:37:79 | call to method GetEnvironmentVariable | user-provided value |
 | Tests.cs:45:60:45:79 | ... + ... | Tests.cs:44:31:44:48 | call to method ReadLine : String | Tests.cs:45:60:45:79 | ... + ... | This type name, which is used to load or instantiate a type through reflection, depends on a $@. | Tests.cs:44:31:44:48 | call to method ReadLine | user-provided value |
 | Tests.cs:51:77:51:84 | access to local variable typeName | Tests.cs:50:31:50:48 | call to method ReadLine : String | Tests.cs:51:77:51:84 | access to local variable typeName | This type name, which is used to load or instantiate a type through reflection, depends on a $@. | Tests.cs:50:31:50:48 | call to method ReadLine | user-provided value |
+| Tests.cs:76:39:76:42 | access to local variable name | Tests.cs:73:27:73:44 | call to method ReadLine : String | Tests.cs:76:39:76:42 | access to local variable name | This type name, which is used to load or instantiate a type through reflection, depends on a $@. | Tests.cs:73:27:73:44 | call to method ReadLine | user-provided value |
 edges
 | Program.cs:7:38:7:41 | args : String[] | Program.cs:14:38:14:44 | access to array element | provenance |  |
 | Program.cs:10:34:10:65 | call to method GetCommandLineArgs : String[] | Program.cs:10:34:10:68 | access to array element | provenance | Src:MaD:2455  |
@@ -22,6 +23,8 @@ edges
 | Tests.cs:44:31:44:48 | call to method ReadLine : String | Tests.cs:44:20:44:27 | access to local variable typeName : String | provenance | Src:MaD:2453  |
 | Tests.cs:50:20:50:27 | access to local variable typeName : String | Tests.cs:51:77:51:84 | access to local variable typeName | provenance |  |
 | Tests.cs:50:31:50:48 | call to method ReadLine : String | Tests.cs:50:20:50:27 | access to local variable typeName : String | provenance | Src:MaD:2453  |
+| Tests.cs:73:20:73:23 | access to local variable name : String | Tests.cs:76:39:76:42 | access to local variable name | provenance |  |
+| Tests.cs:73:27:73:44 | call to method ReadLine : String | Tests.cs:73:20:73:23 | access to local variable name : String | provenance | Src:MaD:2453  |
 nodes
 | Program.cs:7:38:7:41 | args : String[] | semmle.label | args : String[] |
 | Program.cs:10:34:10:65 | call to method GetCommandLineArgs : String[] | semmle.label | call to method GetCommandLineArgs : String[] |
@@ -45,4 +48,7 @@ nodes
 | Tests.cs:50:20:50:27 | access to local variable typeName : String | semmle.label | access to local variable typeName : String |
 | Tests.cs:50:31:50:48 | call to method ReadLine : String | semmle.label | call to method ReadLine : String |
 | Tests.cs:51:77:51:84 | access to local variable typeName | semmle.label | access to local variable typeName |
+| Tests.cs:73:20:73:23 | access to local variable name : String | semmle.label | access to local variable name : String |
+| Tests.cs:73:27:73:44 | call to method ReadLine : String | semmle.label | call to method ReadLine : String |
+| Tests.cs:76:39:76:42 | access to local variable name | semmle.label | access to local variable name |
 subpaths

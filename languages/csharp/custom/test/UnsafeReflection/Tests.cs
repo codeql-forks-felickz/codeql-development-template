@@ -67,6 +67,27 @@ namespace UnsafeReflectionTests
             }
         }
 
+        public void BadStringContains()
+        {
+            string input = Console.ReadLine();
+            string name = Console.ReadLine(); // $ Source
+            if (input.Contains(name))
+            {
+                Type t = Type.GetType(name); // $ Alert
+                Activator.CreateInstance(t);
+            }
+        }
+
+        public void GoodDictionaryContainsKey()
+        {
+            string name = Console.ReadLine();
+            if (TypeMap.ContainsKey(name))
+            {
+                Type t = Type.GetType(name);
+                Activator.CreateInstance(t);
+            }
+        }
+
         public void GoodAllowListEquality()
         {
             string name = Console.ReadLine();
