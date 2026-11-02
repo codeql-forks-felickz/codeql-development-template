@@ -44,7 +44,7 @@ fn make_key() -> UnboundKey {
 
 For generic random buffers, both key-use and logging flows must be available from the same source in the global data-flow graph. Data-flow state and operation order can prevent some combinations from being correlated. The query does not infer this relationship from variable names or use of the same helper.
 
-Helpers are recognized only when the filled buffer flows locally to a return value. Each call to such a helper is a separate source; logging inside that helper and deeper chains of returning helpers are not covered by this call-site model.
+Helpers are recognized only when the filled buffer flows locally to a return value, including explicit `return` expressions. Each call to such a helper is a separate source unless its result is itself locally returned by another wrapper. Those shared inner-call sources are suppressed to avoid correlating independent outer calls. Nested returning wrappers are not promoted to sources, so even logging and key use of the same outer-call result can be missed. Logging inside a helper that returns the filled buffer is also not covered by this call-site model.
 
 ## References
 * MITRE: [CWE-532: Insertion of Sensitive Information into Log File](https://cwe.mitre.org/data/definitions/532.html).

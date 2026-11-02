@@ -30,19 +30,19 @@ private class RandomlyFilledBuffer extends DataFlow::PostUpdateNode {
       this.getPreUpdateNode().asExpr() = filled
     )
   }
+}
 
-  /** Holds if this buffer flows locally to a return value of `wrapper`. */
-  predicate isReturnedBy(Callable wrapper) {
-    exists(DataFlow::Node returned |
-      returned.asExpr() = wrapper.getBody()
-      or
-      exists(ReturnExpr ret |
-        ret.getEnclosingCfgScope() = wrapper and returned.asExpr() = ret.getExpr()
-      )
-    |
-      DataFlow::localFlow(this, returned)
+/** Holds if `node` flows locally to a return value of `wrapper`. */
+private predicate isReturnedBy(DataFlow::Node node, Callable wrapper) {
+  exists(DataFlow::Node returned |
+    returned.asExpr() = wrapper.getBody()
+    or
+    exists(ReturnExpr ret |
+      ret.getEnclosingCfgScope() = wrapper and returned.asExpr() = ret.getExpr()
     )
-  }
+  |
+    DataFlow::localFlow(node, returned)
+  )
 }
 
 /** A key returned by an API that specifically generates cryptographic keys. */
@@ -62,9 +62,11 @@ class GeneratedKeyMaterial extends DataFlow::Node {
     this instanceof GeneratedCryptographicKey
     or
     exists(RandomlyFilledBuffer buffer |
-      this = buffer and not buffer.isReturnedBy(_)
+      this = buffer and not isReturnedBy(buffer, _)
       or
-      buffer.isReturnedBy(this.asExpr().(Call).getStaticTarget())
+      isReturnedBy(buffer, this.asExpr().(Call).getStaticTarget()) and
+      // Do not retain a shared inner-call source in unsupported nested wrappers.
+      not isReturnedBy(this, _)
     )
   }
 }

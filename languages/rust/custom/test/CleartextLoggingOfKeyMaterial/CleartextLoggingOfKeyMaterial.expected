@@ -8,6 +8,7 @@
 | test_rand.rs:34:14:34:40 | MacroExpr | test_rand.rs:33:31:33:33 | [post] key | test_rand.rs:34:14:34:40 | MacroExpr | This operation writes $@ to a log. | test_rand.rs:33:31:33:33 | [post] key | generated cryptographic key material |
 | test_ring.rs:23:14:23:54 | MacroExpr | test_ring.rs:22:20:22:28 | [post] key_bytes | test_ring.rs:23:14:23:54 | MacroExpr | This operation writes $@ to a log. | test_ring.rs:22:20:22:28 | [post] key_bytes | generated cryptographic key material |
 | test_ring.rs:69:14:69:41 | MacroExpr | test_ring.rs:68:15:68:28 | random_bytes(...) | test_ring.rs:69:14:69:41 | MacroExpr | This operation writes $@ to a log. | test_ring.rs:68:15:68:28 | random_bytes(...) | generated cryptographic key material |
+| test_ring.rs:99:14:99:41 | MacroExpr | test_ring.rs:98:15:98:48 | explicitly_returned_random_bytes(...) | test_ring.rs:99:14:99:41 | MacroExpr | This operation writes $@ to a log. | test_ring.rs:98:15:98:48 | explicitly_returned_random_bytes(...) | generated cryptographic key material |
 edges
 | test_aes.rs:7:31:7:39 | [post] key_bytes | test_aes.rs:8:11:8:42 | MacroExpr | provenance | Sink:MaD:130 |
 | test_aes.rs:7:31:7:39 | [post] key_bytes | test_aes.rs:9:54:9:62 | key_bytes | provenance |  |
@@ -98,6 +99,21 @@ edges
 | test_ring.rs:74:22:74:35 | random_bytes(...) | test_ring.rs:74:9:74:18 | request_id | provenance |  |
 | test_ring.rs:76:33:76:55 | ...::encode(...) | test_ring.rs:76:14:76:55 | MacroExpr | provenance | Sink:MaD:134 |
 | test_ring.rs:76:45:76:54 | request_id | test_ring.rs:76:33:76:55 | ...::encode(...) | provenance | Config |
+| test_ring.rs:98:9:98:11 | key | test_ring.rs:99:38:99:40 | key | provenance |  |
+| test_ring.rs:98:15:98:48 | explicitly_returned_random_bytes(...) | test_ring.rs:98:9:98:11 | key | provenance |  |
+| test_ring.rs:99:26:99:41 | ...::encode(...) | test_ring.rs:99:14:99:41 | MacroExpr | provenance | Sink:MaD:134 |
+| test_ring.rs:99:38:99:40 | key | test_ring.rs:99:26:99:41 | ...::encode(...) | provenance | Config |
+| test_ring.rs:99:38:99:40 | key | test_ring.rs:100:44:100:46 | key | provenance |  |
+| test_ring.rs:100:44:100:46 | key | test_ring.rs:100:43:100:46 | &key | provenance |  |
+| test_ring.rs:100:44:100:46 | key | test_ring.rs:100:43:100:46 | &key | provenance | Config |
+| test_ring.rs:104:9:104:11 | key | test_ring.rs:105:44:105:46 | key | provenance |  |
+| test_ring.rs:104:15:104:48 | explicitly_returned_random_bytes(...) | test_ring.rs:104:9:104:11 | key | provenance |  |
+| test_ring.rs:105:44:105:46 | key | test_ring.rs:105:43:105:46 | &key | provenance |  |
+| test_ring.rs:105:44:105:46 | key | test_ring.rs:105:43:105:46 | &key | provenance | Config |
+| test_ring.rs:106:9:106:18 | request_id | test_ring.rs:107:45:107:54 | request_id | provenance |  |
+| test_ring.rs:106:22:106:55 | explicitly_returned_random_bytes(...) | test_ring.rs:106:9:106:18 | request_id | provenance |  |
+| test_ring.rs:107:33:107:55 | ...::encode(...) | test_ring.rs:107:14:107:55 | MacroExpr | provenance | Sink:MaD:134 |
+| test_ring.rs:107:45:107:54 | request_id | test_ring.rs:107:33:107:55 | ...::encode(...) | provenance | Config |
 nodes
 | test_aes.rs:7:31:7:39 | [post] key_bytes | semmle.label | [post] key_bytes |
 | test_aes.rs:8:11:8:42 | MacroExpr | semmle.label | MacroExpr |
@@ -193,4 +209,20 @@ nodes
 | test_ring.rs:76:14:76:55 | MacroExpr | semmle.label | MacroExpr |
 | test_ring.rs:76:33:76:55 | ...::encode(...) | semmle.label | ...::encode(...) |
 | test_ring.rs:76:45:76:54 | request_id | semmle.label | request_id |
+| test_ring.rs:98:9:98:11 | key | semmle.label | key |
+| test_ring.rs:98:15:98:48 | explicitly_returned_random_bytes(...) | semmle.label | explicitly_returned_random_bytes(...) |
+| test_ring.rs:99:14:99:41 | MacroExpr | semmle.label | MacroExpr |
+| test_ring.rs:99:26:99:41 | ...::encode(...) | semmle.label | ...::encode(...) |
+| test_ring.rs:99:38:99:40 | key | semmle.label | key |
+| test_ring.rs:100:43:100:46 | &key | semmle.label | &key |
+| test_ring.rs:100:44:100:46 | key | semmle.label | key |
+| test_ring.rs:104:9:104:11 | key | semmle.label | key |
+| test_ring.rs:104:15:104:48 | explicitly_returned_random_bytes(...) | semmle.label | explicitly_returned_random_bytes(...) |
+| test_ring.rs:105:43:105:46 | &key | semmle.label | &key |
+| test_ring.rs:105:44:105:46 | key | semmle.label | key |
+| test_ring.rs:106:9:106:18 | request_id | semmle.label | request_id |
+| test_ring.rs:106:22:106:55 | explicitly_returned_random_bytes(...) | semmle.label | explicitly_returned_random_bytes(...) |
+| test_ring.rs:107:14:107:55 | MacroExpr | semmle.label | MacroExpr |
+| test_ring.rs:107:33:107:55 | ...::encode(...) | semmle.label | ...::encode(...) |
+| test_ring.rs:107:45:107:54 | request_id | semmle.label | request_id |
 subpaths

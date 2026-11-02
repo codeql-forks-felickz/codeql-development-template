@@ -52,8 +52,13 @@ relationship from variable names or use of the same helper.
 </p>
 <p>
 Helpers are recognized only when the filled buffer flows locally to a return
-value. Each call to such a helper is a separate source; logging inside that helper
-and deeper chains of returning helpers are not covered by this call-site model.
+value, including explicit <code>return</code> expressions. Each call to such a
+helper is a separate source unless its result is itself locally returned by
+another wrapper. Those shared inner-call sources are suppressed to avoid
+correlating independent outer calls. Nested returning wrappers are not promoted
+to sources, so even logging and key use of the same outer-call result can be
+missed. Logging inside a helper that returns the filled buffer is also not covered
+by this call-site model.
 </p>
 </section>
 
