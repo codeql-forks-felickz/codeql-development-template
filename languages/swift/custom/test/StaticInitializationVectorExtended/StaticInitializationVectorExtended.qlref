@@ -1,0 +1,2 @@
+query: StaticInitializationVectorExtended/StaticInitializationVectorExtended.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

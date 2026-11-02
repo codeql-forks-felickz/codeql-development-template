@@ -1,0 +1,35 @@
+#select
+| test.swift:78:101:78:101 | nil | test.swift:78:101:78:101 | nil | test.swift:78:101:78:101 | nil | A nil initialization vector (all zero bytes) is used for encryption. |
+| test.swift:103:99:103:99 | ivBytes | test.swift:134:18:134:18 | default ivData | test.swift:103:99:103:99 | ivBytes | The default value of parameter 'ivData' is used as an initialization vector for encryption. |
+| test.swift:149:119:149:119 | staticIv | test.swift:148:26:148:79 | [...] | test.swift:149:119:149:119 | staticIv | The static value '[...]' is used as an initialization vector for encryption. |
+| test.swift:150:119:150:119 | 0123456789abcdef | test.swift:150:119:150:119 | 0123456789abcdef | test.swift:150:119:150:119 | 0123456789abcdef | The static value '0123456789abcdef' is used as an initialization vector for encryption. |
+| test.swift:151:127:151:127 | staticIv | test.swift:148:26:148:79 | [...] | test.swift:151:127:151:127 | staticIv | The static value '[...]' is used as an initialization vector for encryption. |
+| test.swift:154:127:154:127 | nil | test.swift:154:127:154:127 | nil | test.swift:154:127:154:127 | nil | A nil initialization vector (all zero bytes) is used for encryption. |
+| test.swift:155:132:155:132 | nil | test.swift:155:132:155:132 | nil | test.swift:155:132:155:132 | nil | A nil initialization vector (all zero bytes) is used for encryption. |
+| test.swift:156:30:156:30 | nil | test.swift:156:30:156:30 | nil | test.swift:156:30:156:30 | nil | A nil initialization vector (all zero bytes) is used for encryption. |
+| test.swift:171:97:171:97 | nil | test.swift:171:97:171:97 | nil | test.swift:171:97:171:97 | nil | A nil initialization vector (all zero bytes) is used for encryption. |
+| test.swift:173:105:173:105 | nil | test.swift:173:105:173:105 | nil | test.swift:173:105:173:105 | nil | A nil initialization vector (all zero bytes) is used for encryption. |
+edges
+| test.swift:91:55:91:171 | ivData | test.swift:101:5:101:5 | ivData | provenance | Config |
+| test.swift:101:5:101:5 | ivData | test.swift:101:30:101:30 | ivBytes | provenance | Config |
+| test.swift:101:30:101:30 | ivBytes | test.swift:103:99:103:99 | ivBytes | provenance | Config |
+| test.swift:134:18:134:18 | default ivData | test.swift:91:55:91:171 | ivData | provenance |  |
+| test.swift:148:26:148:79 | [...] | test.swift:149:119:149:119 | staticIv | provenance |  |
+| test.swift:148:26:148:79 | [...] | test.swift:151:127:151:127 | staticIv | provenance |  |
+nodes
+| test.swift:78:101:78:101 | nil | semmle.label | nil |
+| test.swift:91:55:91:171 | ivData | semmle.label | ivData |
+| test.swift:101:5:101:5 | ivData | semmle.label | ivData |
+| test.swift:101:30:101:30 | ivBytes | semmle.label | ivBytes |
+| test.swift:103:99:103:99 | ivBytes | semmle.label | ivBytes |
+| test.swift:134:18:134:18 | default ivData | semmle.label | default ivData |
+| test.swift:148:26:148:79 | [...] | semmle.label | [...] |
+| test.swift:149:119:149:119 | staticIv | semmle.label | staticIv |
+| test.swift:150:119:150:119 | 0123456789abcdef | semmle.label | 0123456789abcdef |
+| test.swift:151:127:151:127 | staticIv | semmle.label | staticIv |
+| test.swift:154:127:154:127 | nil | semmle.label | nil |
+| test.swift:155:132:155:132 | nil | semmle.label | nil |
+| test.swift:156:30:156:30 | nil | semmle.label | nil |
+| test.swift:177:91:177:91 | nil | semmle.label | nil |
+| test.swift:180:14:180:67 | [...] | semmle.label | [...] |
+subpaths
