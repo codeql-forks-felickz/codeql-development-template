@@ -93,4 +93,32 @@ public class SpringRedirectView {
     System.out.println("redirect:" + url);
     return "home";
   }
+
+  @GetMapping("/appendedPath")
+  public String appendedPath(@RequestParam("url") String url) { // $ Source
+    return "redirect:" + url + "/login"; // $ Alert
+  }
+
+  @GetMapping("/appendedQuery")
+  public String appendedQuery(@RequestParam("url") String url) { // $ Source
+    return "redirect:" + url + "?next=home"; // $ Alert
+  }
+
+  @GetMapping("/modelAndViewAppendedPath")
+  public ModelAndView modelAndViewAppendedPath(@RequestParam("url") String url) { // $ Source
+    return new ModelAndView("redirect:" + url + "/login"); // $ Alert
+  }
+
+  @GetMapping("/modelAndViewAppendedQuery")
+  public ModelAndView modelAndViewAppendedQuery(@RequestParam("url") String url) { // $ Source
+    return new ModelAndView("redirect:" + url + "?next=home"); // $ Alert
+  }
+}
+
+@org.springframework.web.bind.annotation.RestController
+class SpringRestControllerRedirect {
+  @GetMapping("/responseBody")
+  public String responseBody(@RequestParam("url") String url) {
+    return "redirect:" + url;
+  }
 }

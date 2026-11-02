@@ -20,6 +20,7 @@ import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.controlflow.Guards
+import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.security.RequestForgery
 import semmle.code.java.security.Sanitizers
 import semmle.code.java.security.UrlRedirect
@@ -58,7 +59,12 @@ private predicate isSpringRedirectViewConcat(AddExpr add, Expr e) {
 
 /** Holds if `viewName` is used as a Spring MVC view name. */
 private predicate isSpringViewName(Expr viewName) {
-  viewName = any(ReturnStmt r).getExpr()
+  exists(ReturnStmt r |
+    viewName = r.getExpr() and
+    not exists(SpringRequestMappingMethod m |
+      m = r.getEnclosingCallable() and m.isResponseBody()
+    )
+  )
   or
   exists(ClassInstanceExpr cie |
     cie.getConstructedType().hasQualifiedName("org.springframework.web.servlet", "ModelAndView") and
@@ -81,7 +87,7 @@ private class SpringRedirectViewNameSink extends UrlRedirectSink {
   SpringRedirectViewNameSink() {
     exists(AddExpr add, Expr viewName |
       isSpringRedirectViewConcat(add, this.asExpr()) and
-      DataFlow::localExprFlow(add, viewName) and
+      TaintTracking::localExprTaint(add, viewName) and
       isSpringViewName(viewName)
     )
   }

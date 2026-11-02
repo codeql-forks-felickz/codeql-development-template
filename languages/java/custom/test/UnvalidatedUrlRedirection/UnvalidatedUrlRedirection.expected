@@ -16,25 +16,29 @@
 | SpringRedirectView.java:43:35:43:37 | url | SpringRedirectView.java:41:35:41:65 | url : String | SpringRedirectView.java:43:35:43:37 | url | Untrusted URL redirection depends on a $@. | SpringRedirectView.java:41:35:41:65 | url | user-provided value |
 | SpringRedirectView.java:50:27:50:30 | next | SpringRedirectView.java:49:23:49:55 | next : String | SpringRedirectView.java:50:27:50:30 | next | Untrusted URL redirection depends on a $@. | SpringRedirectView.java:49:23:49:55 | next | user-provided value |
 | SpringRedirectView.java:60:26:60:33 | location | SpringRedirectView.java:55:24:55:56 | next : String | SpringRedirectView.java:60:26:60:33 | location | Untrusted URL redirection depends on a $@. | SpringRedirectView.java:55:24:55:56 | next | user-provided value |
+| SpringRedirectView.java:99:26:99:28 | url | SpringRedirectView.java:98:30:98:60 | url : String | SpringRedirectView.java:99:26:99:28 | url | Untrusted URL redirection depends on a $@. | SpringRedirectView.java:98:30:98:60 | url | user-provided value |
+| SpringRedirectView.java:104:26:104:28 | url | SpringRedirectView.java:103:31:103:61 | url : String | SpringRedirectView.java:104:26:104:28 | url | Untrusted URL redirection depends on a $@. | SpringRedirectView.java:103:31:103:61 | url | user-provided value |
+| SpringRedirectView.java:109:43:109:45 | url | SpringRedirectView.java:108:48:108:78 | url : String | SpringRedirectView.java:109:43:109:45 | url | Untrusted URL redirection depends on a $@. | SpringRedirectView.java:108:48:108:78 | url | user-provided value |
+| SpringRedirectView.java:114:43:114:45 | url | SpringRedirectView.java:113:49:113:79 | url : String | SpringRedirectView.java:114:43:114:45 | url | Untrusted URL redirection depends on a $@. | SpringRedirectView.java:113:49:113:79 | url | user-provided value |
 edges
-| ServletRedirect.java:10:22:10:52 | getParameter(...) : String | ServletRedirect.java:13:31:13:37 | content | provenance | Src:MaD:48695  |
-| ServletRedirect.java:20:23:20:54 | getParameter(...) : String | ServletRedirect.java:21:36:21:43 | returnTo | provenance | Src:MaD:48695 Sink:MaD:48689 |
-| ServletSchemeRelative.java:16:24:16:56 | getParameter(...) : String | ServletSchemeRelative.java:24:29:24:54 | ... + ... | provenance | Src:MaD:48695  |
-| ServletSchemeRelative.java:31:24:31:56 | getParameter(...) : String | ServletSchemeRelative.java:33:15:33:23 | loginType : String | provenance | Src:MaD:48695  |
+| ServletRedirect.java:10:22:10:52 | getParameter(...) : String | ServletRedirect.java:13:31:13:37 | content | provenance | Src:MaD:48700  |
+| ServletRedirect.java:20:23:20:54 | getParameter(...) : String | ServletRedirect.java:21:36:21:43 | returnTo | provenance | Src:MaD:48700 Sink:MaD:48694 |
+| ServletSchemeRelative.java:16:24:16:56 | getParameter(...) : String | ServletSchemeRelative.java:24:29:24:54 | ... + ... | provenance | Src:MaD:48700  |
+| ServletSchemeRelative.java:31:24:31:56 | getParameter(...) : String | ServletSchemeRelative.java:33:15:33:23 | loginType : String | provenance | Src:MaD:48700  |
 | ServletSchemeRelative.java:33:5:33:6 | sb [post update] : StringBuilder | ServletSchemeRelative.java:35:27:35:28 | sb : StringBuilder | provenance |  |
-| ServletSchemeRelative.java:33:15:33:23 | loginType : String | ServletSchemeRelative.java:33:5:33:6 | sb [post update] : StringBuilder | provenance | MaD:46615 |
-| ServletSchemeRelative.java:35:27:35:28 | sb : StringBuilder | ServletSchemeRelative.java:35:27:35:39 | toString(...) | provenance | MaD:46630 |
+| ServletSchemeRelative.java:33:15:33:23 | loginType : String | ServletSchemeRelative.java:33:5:33:6 | sb [post update] : StringBuilder | provenance | MaD:46620 |
+| ServletSchemeRelative.java:35:27:35:28 | sb : StringBuilder | ServletSchemeRelative.java:35:27:35:39 | toString(...) | provenance | MaD:46635 |
 | SpringLocationHeader.java:20:40:20:59 | urlToRedirect : String | SpringLocationHeader.java:23:46:23:58 | urlToRedirect | provenance |  |
 | SpringLocationHeader.java:28:35:28:80 | urlToRedirect : String | SpringLocationHeader.java:29:28:29:40 | urlToRedirect : String | provenance |  |
 | SpringLocationHeader.java:29:28:29:40 | urlToRedirect : String | SpringLocationHeader.java:20:40:20:59 | urlToRedirect : String | provenance |  |
 | SpringLocationHeader.java:33:32:33:67 | url : String | SpringLocationHeader.java:35:29:35:31 | url | provenance |  |
 | SpringLocationHeader.java:40:32:40:67 | url : String | SpringLocationHeader.java:42:39:42:41 | url | provenance |  |
 | SpringLocationHeader.java:47:32:47:67 | url : String | SpringLocationHeader.java:49:55:49:57 | url : String | provenance |  |
-| SpringLocationHeader.java:49:55:49:57 | url : String | SpringLocationHeader.java:49:29:49:58 | singletonList(...) | provenance | MaD:47721 |
+| SpringLocationHeader.java:49:55:49:57 | url : String | SpringLocationHeader.java:49:29:49:58 | singletonList(...) | provenance | MaD:47726 |
 | SpringLocationHeader.java:54:40:54:75 | url : String | SpringLocationHeader.java:56:36:56:38 | url : String | provenance |  |
-| SpringLocationHeader.java:56:36:56:38 | url : String | SpringLocationHeader.java:56:25:56:39 | create(...) | provenance | MaD:46895 |
+| SpringLocationHeader.java:56:36:56:38 | url : String | SpringLocationHeader.java:56:25:56:39 | create(...) | provenance | MaD:46900 |
 | SpringLocationHeader.java:61:44:61:79 | url : String | SpringLocationHeader.java:62:72:62:74 | url : String | provenance |  |
-| SpringLocationHeader.java:62:72:62:74 | url : String | SpringLocationHeader.java:62:61:62:75 | create(...) | provenance | MaD:46895 |
+| SpringLocationHeader.java:62:72:62:74 | url : String | SpringLocationHeader.java:62:61:62:75 | create(...) | provenance | MaD:46900 |
 | SpringLocationHeader.java:66:42:66:77 | url : String | SpringLocationHeader.java:67:71:67:73 | url | provenance |  |
 | SpringRedirectView.java:14:25:14:67 | desk : String | SpringRedirectView.java:17:28:17:43 | helpDeskLocation | provenance |  |
 | SpringRedirectView.java:24:23:24:85 | target : String | SpringRedirectView.java:27:32:27:37 | target | provenance |  |
@@ -44,6 +48,10 @@ edges
 | SpringRedirectView.java:55:24:55:56 | next : String | SpringRedirectView.java:56:26:56:29 | next : String | provenance |  |
 | SpringRedirectView.java:56:26:56:29 | next : String | SpringRedirectView.java:59:32:59:46 | location : String | provenance |  |
 | SpringRedirectView.java:59:32:59:46 | location : String | SpringRedirectView.java:60:26:60:33 | location | provenance |  |
+| SpringRedirectView.java:98:30:98:60 | url : String | SpringRedirectView.java:99:26:99:28 | url | provenance |  |
+| SpringRedirectView.java:103:31:103:61 | url : String | SpringRedirectView.java:104:26:104:28 | url | provenance |  |
+| SpringRedirectView.java:108:48:108:78 | url : String | SpringRedirectView.java:109:43:109:45 | url | provenance |  |
+| SpringRedirectView.java:113:49:113:79 | url : String | SpringRedirectView.java:114:43:114:45 | url | provenance |  |
 nodes
 | ServletRedirect.java:10:22:10:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | ServletRedirect.java:13:31:13:37 | content | semmle.label | content |
@@ -89,4 +97,12 @@ nodes
 | SpringRedirectView.java:56:26:56:29 | next : String | semmle.label | next : String |
 | SpringRedirectView.java:59:32:59:46 | location : String | semmle.label | location : String |
 | SpringRedirectView.java:60:26:60:33 | location | semmle.label | location |
+| SpringRedirectView.java:98:30:98:60 | url : String | semmle.label | url : String |
+| SpringRedirectView.java:99:26:99:28 | url | semmle.label | url |
+| SpringRedirectView.java:103:31:103:61 | url : String | semmle.label | url : String |
+| SpringRedirectView.java:104:26:104:28 | url | semmle.label | url |
+| SpringRedirectView.java:108:48:108:78 | url : String | semmle.label | url : String |
+| SpringRedirectView.java:109:43:109:45 | url | semmle.label | url |
+| SpringRedirectView.java:113:49:113:79 | url : String | semmle.label | url : String |
+| SpringRedirectView.java:114:43:114:45 | url | semmle.label | url |
 subpaths
