@@ -53,6 +53,16 @@ class SessionStoreCall extends MethodCall {
     this.getReceiver().(MethodCall).getMethodName() = "config" and
     not this.getArgument(0).getConstantValue().isStringlikeValue("disabled")
   }
+
+  /** Holds if positional options cannot be inspected statically. */
+  predicate hasUnknownPositionalOptions() {
+    exists(int i, Expr options |
+      i > 0 and
+      options = this.getArgument(i) and
+      not options instanceof Pair and
+      not options instanceof Literal
+    )
+  }
 }
 
 /** A call to `set_cookie` that sets a session or authentication cookie. */
@@ -89,6 +99,7 @@ predicate insecureAttribute(Call call, string attribute, string reason) {
       attribute = "secure" and
       not exists(getOption(call, attribute)) and
       not hasUnknownOptions(call) and
+      not call.(SessionStoreCall).hasUnknownPositionalOptions() and
       not forcesSsl() and
       reason = "missing"
     )

@@ -32,4 +32,11 @@ module Todo
     # GOOD
     config.session_store :cookie_store, key: "_todo_session", secure: true
   end
+
+  # GOOD: positional options cannot be determined statically
+  Rails.application.config.session_store :cookie_store, SESSION_OPTIONS
+  Rails.application.config.session_store :cookie_store, session_options
+
+  # BAD: a literal options hash still lacks Secure
+  Rails.application.config.session_store :cookie_store, { key: "_app_session" } # $ Alert
 end
