@@ -26,3 +26,11 @@ def init_good_default():
 def init_env():
     # Safe: debug mode is controlled by configuration, not hard-coded on.
     return web.Application(debug=os.environ.get("DEBUG") == "1")
+
+
+def init_good_handler_override():
+    return web.Application(debug=True, handler_args={"debug": False})
+
+
+def init_bad_handler_override():
+    return web.Application(debug=True, handler_args={"debug": True})  # $ Alert

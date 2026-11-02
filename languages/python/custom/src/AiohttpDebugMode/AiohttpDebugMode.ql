@@ -24,6 +24,11 @@ where
       .getAValueReachingSink()
       .asExpr()
       .(ImmutableLiteral)
-      .booleanValue() = true
+      .booleanValue() = true and
+  not exists(KeyValuePair item |
+    item = call.getArgByName("handler_args").asExpr().(Dict).getAnItem() and
+    item.getKey().(StringLiteral).getText() = "debug" and
+    item.getValue().(ImmutableLiteral).booleanValue() = false
+  )
 select call,
   "An aiohttp application appears to be created in debug mode. This may expose stack traces and other internal details to remote users."

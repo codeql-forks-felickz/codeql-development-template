@@ -27,6 +27,10 @@ from aiohttp import web
 app = web.Application(debug=os.environ.get("APP_DEBUG") == "1")  # GOOD
 ```
 
+## Known limitations
+
+Only a dictionary literal passed as `handler_args` is checked for an explicit false `debug` override. Dynamically built `handler_args` dictionaries are not resolved.
+
 ## References
 
 - aiohttp: [Application](https://docs.aiohttp.org/en/stable/web_reference.html#application).

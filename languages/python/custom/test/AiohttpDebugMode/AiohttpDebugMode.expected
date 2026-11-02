@@ -1,2 +1,3 @@
 | app.py:7:11:7:49 | ControlFlowNode for Application() | An aiohttp application appears to be created in debug mode. This may expose stack traces and other internal details to remote users. |
 | app.py:13:12:13:39 | ControlFlowNode for Attribute() | An aiohttp application appears to be created in debug mode. This may expose stack traces and other internal details to remote users. |
+| app.py:36:12:36:68 | ControlFlowNode for Attribute() | An aiohttp application appears to be created in debug mode. This may expose stack traces and other internal details to remote users. |
