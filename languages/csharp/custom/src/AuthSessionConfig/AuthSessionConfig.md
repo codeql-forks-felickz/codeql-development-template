@@ -4,7 +4,7 @@ ASP.NET and ASP.NET Core applications configure authentication, session manageme
 
 - `<pages enableViewStateMac="false">` or `viewStateEncryptionMode="Never"` disables ViewState integrity or confidentiality, allowing ViewState tampering (CWE-554).
 - A membership provider `minRequiredPasswordLength`, or ASP.NET Core Identity `PasswordOptions.RequiredLength`, below 8 permits easily guessed passwords (CWE-521).
-- A `<sessionState>` or `<forms>` `timeout`, or `HttpSessionState.Timeout`, that is zero, negative or longer than one day (1440 minutes) means sessions never or only rarely expire, widening the window in which a stolen session can be used (CWE-613).
+- A `<sessionState>` or `<forms>` `timeout`, or `HttpSessionState.Timeout`, longer than one day (1440 minutes) means sessions only rarely expire, widening the window in which a stolen session can be used (CWE-613).
 - Setting `LockoutOptions.AllowedForNewUsers` to `false` disables account lockout, allowing unlimited password guessing (CWE-307).
 - Setting `ValidateIssuer`, `ValidateAudience`, `ValidateLifetime` or `RequireSignedTokens` of `TokenValidationParameters` to `false` makes the application accept tokens that were issued by other issuers, for other services, that have expired, or that are not signed (CWE-287).
 - Calling `Response.Redirect` without ending the request (ASP.NET Core always, or `Redirect(url, false)` / `Redirect(url)` in ASP.NET) lets the following code keep running; if that code performs privileged operations or writes sensitive data, an attacker who ignores the redirect still benefits from it (CWE-698).
@@ -20,7 +20,7 @@ The following configuration and code contain several of these weaknesses:
 ```xml
 <system.web>
   <pages enableViewStateMac="false" viewStateEncryptionMode="Never" />
-  <sessionState mode="InProc" timeout="-1" />
+  <sessionState mode="InProc" timeout="43200" />
 </system.web>
 ```
 

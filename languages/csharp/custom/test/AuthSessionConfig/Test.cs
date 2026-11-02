@@ -7,7 +7,7 @@ public class SessionTests
 {
     public void Bad()
     {
-        HttpContext.Current.Session.Timeout = -1; // BAD: session never expires
+        HttpContext.Current.Session.Timeout = -1; // GOOD: rejected by ASP.NET
     }
 
     public void BadLong()
@@ -73,6 +73,52 @@ public class RedirectTests
         resp.Redirect("/login", false); // GOOD: response ended explicitly
         resp.End();
     }
+
+    public void BadTryFinally(HttpResponse resp)
+    {
+        try
+        {
+            resp.Redirect("/login", false); // BAD: finally block still executes
+        }
+        finally
+        {
+            resp.Write("secret");
+        }
+    }
+
+    public void BadCompleteRequest(HttpResponse resp)
+    {
+        resp.Redirect("/login", false); // BAD: CompleteRequest does not stop execution
+        new HttpApplication().CompleteRequest();
+        resp.Write("secret");
+    }
+
+    public void BadUnrelatedEnd(HttpResponse resp)
+    {
+        resp.Redirect("/login", false); // BAD: unrelated End does not stop execution
+        new UnrelatedResponse().End();
+        resp.Write("secret");
+    }
+
+    public void GoodEmptyReturn(HttpResponse resp)
+    {
+        resp.Redirect("/login", false); // GOOD: followed by return
+        ;
+        return;
+    }
+
+    public void GoodEmptyLast(HttpResponse resp)
+    {
+        resp.Redirect("/login", false); // GOOD: nothing executes afterwards
+        ;
+    }
+
+    public void BadEmptyBeforeWrite(HttpResponse resp)
+    {
+        resp.Redirect("/login", false); // BAD: empty statement does not stop execution
+        ;
+        resp.Write("secret");
+    }
 }
 
 public class IdentityTests
@@ -93,6 +139,12 @@ public class IdentityTests
     {
         options.Password.RequiredLength = 12; // GOOD
         options.Lockout.AllowedForNewUsers = true; // GOOD
+    }
+
+    public void ConfigureCompoundAssignments(IdentityOptions options)
+    {
+        options.Password.RequiredLength += 2; // GOOD: compound assignment is not evaluated
+        options.Password.RequiredLength -= 2; // GOOD: compound assignment is not evaluated
     }
 }
 
@@ -124,4 +176,9 @@ public class TokenTests
             ValidIssuer = "https://issuer.example"
         };
     }
+}
+
+public class UnrelatedResponse
+{
+    public void End() { }
 }

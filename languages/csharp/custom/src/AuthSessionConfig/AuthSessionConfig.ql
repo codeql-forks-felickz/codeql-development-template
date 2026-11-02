@@ -32,7 +32,7 @@ int maxTimeoutMinutes() { result = 1440 }
 /** Holds if `value` is a timeout (in minutes) that never expires or is excessively long. */
 bindingset[value]
 predicate isInsecureTimeout(string value) {
-  exists(int t | t = value.trim().toInt() | t <= 0 or t > maxTimeoutMinutes())
+  exists(int t | t = value.trim().toInt() | t > maxTimeoutMinutes())
 }
 
 /** Gets an attribute `name` of a `<system.web>` child `element`, with lower-cased value `value`. */
@@ -90,13 +90,13 @@ Property propertyOf(string namespace, string type, string name) {
 }
 
 /** Holds if `a` assigns `value` to a property `p`. */
-predicate propertyAssignment(Assignment a, Property p, Expr value) {
+predicate propertyAssignment(AssignExpr a, Property p, Expr value) {
   a.getLeftOperand().(PropertyAccess).getTarget() = p and
   value = a.getRightOperand()
 }
 
 /** Holds if assignment `a` is an insecure authentication or session setting described by `msg`. */
-predicate insecureCodeSetting(Assignment a, string msg) {
+predicate insecureCodeSetting(AssignExpr a, string msg) {
   exists(Property p, Expr value | propertyAssignment(a, p, value) |
     (
       p = propertyOf("System.Web.SessionState", "HttpSessionState", "Timeout") or
@@ -152,23 +152,40 @@ class ResponseRedirectCall extends MethodCall {
 }
 
 /**
- * Gets the statement that executes next after `s` completes normally, following enclosing
- * blocks, `if`, `using`, `lock` and `try` statements, but not loops or callable bodies.
+ * Gets the next non-empty statement after `s` completes normally, following enclosing blocks,
+ * `if`, `using`, `lock` and `try` statements (including `finally` blocks), but not loops or
+ * callable bodies.
  */
 Stmt getFollowingStmt(Stmt s) {
-  exists(BlockStmt b, int i | b.getStmt(i) = s and result = b.getStmt(i + 1))
+  exists(BlockStmt b, int i, Stmt next |
+    b.getStmt(i) = s and
+    next = b.getStmt(i + 1) and
+    (
+      result = next and not next instanceof EmptyStmt
+      or
+      next instanceof EmptyStmt and result = getFollowingStmt(next)
+    )
+  )
   or
   not exists(BlockStmt b, int i | b.getStmt(i) = s and exists(b.getStmt(i + 1))) and
-  exists(Stmt parent | parent = s.getParent() |
+  exists(Stmt parent |
+    parent = s.getParent() and
     (
-      parent instanceof BlockStmt or
-      parent instanceof IfStmt or
-      parent instanceof UsingStmt or
-      parent instanceof LockStmt or
-      parent instanceof TryStmt or
-      parent instanceof CatchClause
-    ) and
-    result = getFollowingStmt(parent)
+      parent instanceof TryStmt and
+      parent.(TryStmt).hasFinally() and
+      s != parent.(TryStmt).getFinally() and
+      result = parent.(TryStmt).getFinally().getStmt(0)
+      or
+      (
+        parent instanceof BlockStmt or
+        parent instanceof IfStmt or
+        parent instanceof UsingStmt or
+        parent instanceof LockStmt or
+        parent instanceof TryStmt or
+        parent instanceof CatchClause
+      ) and
+      result = getFollowingStmt(parent)
+    )
   )
 }
 
@@ -178,10 +195,16 @@ predicate isTerminating(Stmt s) {
   or
   s instanceof ThrowStmt
   or
-  s instanceof EmptyStmt
-  or
-  exists(MethodCall c | c = s.(ExprStmt).getExpr() |
-    c.getTarget().hasName(["End", "CompleteRequest", "Abort"])
+  exists(MethodCall c, Method m |
+    c = s.(ExprStmt).getExpr() and
+    m = c.getTarget().getUnboundDeclaration() and
+    (
+      m.hasName("End") and
+      m.getDeclaringType().hasFullyQualifiedName("System.Web", ["HttpResponse", "HttpResponseBase"])
+      or
+      m.hasName("Abort") and
+      m.getDeclaringType().hasFullyQualifiedName("System.Threading", "Thread")
+    )
   )
 }
 

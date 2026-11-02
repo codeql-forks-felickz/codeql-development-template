@@ -14,6 +14,11 @@ namespace System.Web
         public SessionState.HttpSessionState Session => null;
         public HttpResponse Response => null;
     }
+
+    public class HttpApplication
+    {
+        public void CompleteRequest() { }
+    }
 }
 
 namespace System.Web.SessionState
