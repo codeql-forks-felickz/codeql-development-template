@@ -1,0 +1,58 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Rate limiters such as <code>express-rate-limit</code> and <code>express-slow-down</code> count
+requests per client, using a key computed by the <code>keyGenerator</code> option. If the key is
+taken from a value that the client controls, such as the <code>X-Forwarded-For</code> or
+<code>X-Real-IP</code> request header, a client can send a different value with each request and
+is never limited. This allows, for example, brute-force attacks on passwords, one-time codes or
+password-reset answers.
+</p>
+<p>
+The same applies to <code>req.ip</code> and <code>req.ips</code> when the Express application
+trusts all proxies (<code>app.enable('trust proxy')</code> or
+<code>app.set('trust proxy', true)</code>), because Express then takes the client address from the
+left-most, client-supplied, entry of the <code>X-Forwarded-For</code> header. Note that Node.js
+lower-cases the names of request headers, so a lookup such as
+<code>req.headers['X-Forwarded-For']</code> is always <code>undefined</code>; a key such as
+<code>req.headers['X-Forwarded-For'] ?? req.ip</code> therefore depends only on <code>req.ip</code>.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do not derive rate-limiting keys from request headers. Use <code>req.ip</code> and configure the
+Express <code>trust proxy</code> setting to trust only the proxies that are actually in front of
+the application (for example a fixed number of hops, or specific addresses). If a reverse proxy
+overwrites a client address header, make sure the application can't be reached without that
+proxy before relying on the header.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, all proxies are trusted and the limiter is keyed on the raw
+<code>X-Forwarded-For</code> header, falling back to <code>req.ip</code>. Both values are chosen
+by the client, so the limit can be evaded by changing the header on every request.
+</p>
+<sample src="examples/RateLimitSpoofableKeyBad.js" />
+
+<p>
+In the following example, only the single reverse proxy in front of the application is trusted,
+so <code>req.ip</code> is the address of the client as seen by that proxy.
+</p>
+<sample src="examples/RateLimitSpoofableKeyGood.js" />
+</example>
+
+<references>
+<li>Express: <a href="https://expressjs.com/en/guide/behind-proxies.html">Express behind proxies</a>.</li>
+<li>express-rate-limit: <a href="https://express-rate-limit.mintlify.app/guides/troubleshooting-proxy-issues">Troubleshooting proxy issues</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-community/controls/Blocking_Brute_Force_Attacks">Blocking Brute Force Attacks</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/307.html">CWE-307</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/348.html">CWE-348</a>.</li>
+</references>
+</qhelp>

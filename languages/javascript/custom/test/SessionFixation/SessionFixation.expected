@@ -1,0 +1,2 @@
+| goof/app.js:7:1:7:39 | app.pos ... andler) | Route handler does not invalidate session following login. |
+| nodegoat/routes/index.js:9:3:9:55 | app.pos ... equest) | Route handler does not invalidate session following login. |

@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Reusing a session could allow an attacker to gain unauthorized access to another account.
+Always ensure that, when a user logs in or out, the current session is abandoned so that a new
+session may be started.
+</p>
+<p>
+This query also recognizes login handlers that pass the session object to a helper function,
+which then marks the session as authenticated without regenerating it.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Always use <code>req.session.regenerate(...);</code> to start a new session when a user logs in or out.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example passes the existing session to a helper that stores the authenticated user
+in it. An attacker who planted or learned the session ID before the user logged in can use it to
+access the user's account afterwards.
+</p>
+<sample src="examples/SessionFixationBad.js" />
+
+<p>
+The following example solves the problem by calling <code>req.session.regenerate()</code> before
+storing the authenticated user, so that the previous session is not reused.
+</p>
+<sample src="examples/SessionFixationGood.js" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Session_fixation">Session fixation</a>.</li>
+<li>Stack Overflow: <a href="https://stackoverflow.com/questions/22209354/creating-a-new-session-after-authentication-with-passport/30468384#30468384">Creating a new session after authentication with Passport</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/384.html">CWE-384</a>.</li>
+</references>
+</qhelp>
