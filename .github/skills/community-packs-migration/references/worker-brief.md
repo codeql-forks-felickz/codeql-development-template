@@ -1,7 +1,7 @@
 # Worker brief: migrate one template fix into a local Community Packs branch
 
 You are a worker. You migrate exactly **one** tracker issue (one template pull
-request) into a **local** branch of a Community Packs (CP) worktree and leave a
+request) into a **local** branch of a CodeQL Community Packs (CCP) worktree and leave a
 reviewable packet for the human. You never publish anything.
 
 Read [`migration-guide.md`](./migration-guide.md) completely
@@ -16,7 +16,7 @@ rules for a worker.
    only `gh api` and `gh search` calls are fine. Do not touch the template repo
    or its pull request.
 2. Work only in your own worktree (`<wt>`) and your own work directory (`<work>`).
-   Never touch another worktree, the main CP checkout, the shared corpora
+   Never touch another worktree, the main CCP checkout, the shared corpora
    (read only), or the skill's `scripts/` and `references/`. If the
    script has a bug, work around it by hand in your worktree and report the bug.
 3. Never kill processes by name. Other sessions may run `codeql` and `java` on the same
@@ -37,7 +37,7 @@ rules for a worker.
    pull requests, the tracker, any internal repository, any customer, or the
    synthetic applications. Replace their identifiers at plan time (`--replace`)
    and let `check` and `scan` deny them (`--deny-file <work>\deny.txt`). Names that
-   are not public come from `CPM_EXTRA_DENY`, which every gate applies.
+   are not public come from `CCP_EXTRA_DENY`, which every gate applies.
 7. No em dashes and no en dashes anywhere in text you write. Use commas, periods
    or parentheses.
 8. Use the real, current files. Do not rely on the triage text where it can be
@@ -54,7 +54,7 @@ rules for a worker.
 - Issue number, template pull request number, language, the triage entry key and
   the **tier** (1: assessed precision high or very-high; 2: the rest, see the
   guide's evidence tiers).
-- `<wt>`: your CP worktree (created by `prepare`, on a temporary branch `wip/<unit>`,
+- `<wt>`: your CCP worktree (created by `prepare`, on a temporary branch `wip/<unit>`,
   with the `codeql` stubs junction in place).
 - `<work>`: your work directory, with `deny.txt` (names that must not appear
   anywhere) already in it. Keep the spec, reports and packet there.
@@ -74,7 +74,8 @@ read the diff), renames every file that carries the query name, applies
 (`--placement audit`), and keeps the line endings of `qlpack.yml`. `check` runs
 the CI commands with the user config hidden, compares formatting on LF content, compiles the
 test queries strictly, renders the help, scans every changed file for denied
-names, and reports which suites select the query. `measure` is plain and capped,
+names, reports which suites select the query, and fails a query that the suite for its group does not
+select or a language pack that the configs do not name. `measure` is plain and capped,
 and judges only the query's own predicates. If one of them is wrong, report a
 script bug.
 
@@ -102,7 +103,11 @@ script bug.
    `measure` on it (`--out <work>\measure`). Read the top predicates even when it
    passes. If it fails because the query's own predicates are slow, fix the query
    (see the performance notes in the guide) and measure again; use
-   `--tuple-counting` only to find the cause. Classify **every** row on the corpus
+   `--tuple-counting` only to find the cause. Copy the `cost_class` and its notes into
+   the packet. When it is not `low`, follow the guide's Performance risk steps (fix,
+   narrow, audit only if it is audit-grade, a suite change for the maintainers, or
+   withhold) and stop with `NEEDS_DECISION` rather than choose a suite change or a
+   withdrawal yourself. Classify **every** row on the corpus
    as true positive, false positive or unclear, fix systematic false positive
    classes, and add negative tests for them. A model-only unit has no query to
    measure: follow the guide's Gate 2 for model-only units.
@@ -115,10 +120,17 @@ script bug.
    there is no true positive, write "no true positive found in <N> repositories".
    Keep permalinks in the local packet. Never cite a live unpatched vulnerability
    or a live leak, and never paste a secret.
-8. **Suite effect.** `check` reports which suites select the query. Record it and
-   do not edit suites.
+8. **Suites and configs.** `check` reports which suites select the query and fails when the suite for its
+   group does not (`<lang>.qls` for a security query, `<lang>-audit.qls` for an audit query), when the
+   language pack is not named in `configs/default.yml` and `configs/synthetics.yml` (or the ext pack in
+   `synthetics.yml`, for model rows), or when an audit query has no audit suite. Fix it with
+   `python scripts/community_packs_onboard.py --ccp <wt> --language <lang> --apply`, which adds the pack
+   lines and creates the missing audit suite, then run `check` again. Do not change what an existing suite
+   selects: that is a maintainer decision (`NEEDS_DECISION`). The `audit.yml` line and the lines of a pack
+   that was never published are listed as `after_release` in the report: do not add them, copy them into the
+   packet, because a config line that names something the latest release lacks breaks every scan.
 9. **Finish.** Rename the branch to `<lang>/<id-name>` with `git branch -m`.
-   Make one commit. Run `check` again on the committed tree, then `scan --cp <wt>
+   Make one commit. Run `check` again on the committed tree, then `scan --ccp <wt>
    --deny-file <work>\deny.txt --pr-body <work>\pr-body.md`, which must have no
    `fail`. Write `<work>\packet.md` (local only), `<work>\pr-body.md` (the public
    draft) and `<work>\report.json`.
@@ -128,7 +140,7 @@ script bug.
 - `@precision` is the assessed precision from the triage. A query you had to
   weaken stays at the lower value.
 - Tag `experimental` for everything the tracker labels `tags:experimental`
-  (every item sent to CP).
+  (every item sent to CCP).
 - Security-grade goes to `src/security/CWE-NNN/`. Audit-grade only when the query
   cannot claim reachability (guide section 4). Say which and why.
 - One branch per unit (a query with its help and tests, or the model files with
@@ -152,9 +164,10 @@ script bug.
   "branch": "", "commit": "", "files": 0,
   "id": "", "precision": "", "placement": "",
   "check": {"ok": true}, "scan": {"ok": true, "warnings": 0},
-  "measure": {"ok": true, "own_s": 0, "wall_s": 0, "rows": 0, "tp": 0, "fp": 0, "unclear": 0},
+  "measure": {"ok": true, "cost_class": "low | moderate | high", "own_s": 0, "wall_s": 0, "rows": 0, "tp": 0, "fp": 0, "unclear": 0},
   "readiness": [{"item": "", "status": "resolved | accepted | blocked", "how": ""}],
-  "suite": {"selected_by_default": true},
+  "suite": {"selected_by_default": true, "audit_suite_added": false},
+  "configs": {"added": [], "after_release": []},
   "timeline": [{"step": "plan", "minutes": 0}],
   "script_bugs": [], "decisions_needed": []
 }

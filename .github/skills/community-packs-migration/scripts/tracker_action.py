@@ -11,8 +11,10 @@ comment as it is.
     tracker_action.py set 230 "<markdown>"      replace the Action of issue 230
     tracker_action.py refresh                   add the state of every pull request in an Action:
                                                 draft, open, merged DATE or closed DATE
+    tracker_action.py counts                    set the "Actions recorded" cell (N of M) of each
+                                                language row in the issue body from its comment
 
-``set`` and ``refresh`` print what would change and write nothing unless you add ``--apply``.
+``set``, ``refresh`` and ``counts`` print what would change and write nothing unless you add ``--apply``.
 The tracker is issue 64 of codeql-forks-felickz/codeql-development-template unless ``--repo``
 and ``--issue`` say otherwise. It needs the gh CLI, signed in with access to that repository.
 """
@@ -39,6 +41,8 @@ PR_LINK = re.compile(
     r"\[([^\]]+)\]\((https://github\.com/([^/\s)]+)/([^/\s)]+)/pull/(\d+))\)"
     r"(?: (?:draft|open|merged \d{4}-\d{2}-\d{2}|closed \d{4}-\d{2}-\d{2})<!--prs-->)?"
 )
+# A language row of the table in the issue body: the language links its comment, and the last cell is "N of M".
+COUNT_ROW = re.compile(r"^(\|\s*\[[^\]]+\]\([^)\s]*#issuecomment-(\d+)\)\s*\|.*\|\s*)(\d+) of (\d+)(\s*\|)$")
 
 
 def gh(*args: str, payload: dict | None = None) -> str:
@@ -148,11 +152,63 @@ def show_diff(language: str, old: str, new: str) -> None:
         print(f"[{language}] {line}")
 
 
+def edit_counts(body: str, counts: dict[int, tuple[int, int]]) -> tuple[str, list[int], list[int]]:
+    """Set the "Actions recorded" cell (``N of M``) of each language row of the issue body.
+
+    ``counts`` maps the id of a language comment to (rows with an Action, rows). The row of the body that
+    links that comment gets the new N. A row whose M differs from the number of rows of its comment is left
+    alone, because the body would need to be regenerated. Only the text of that cell changes.
+    Returns the new body, the comment ids that changed and the comment ids that were skipped.
+    """
+    out: list[str] = []
+    changed: list[int] = []
+    skipped: list[int] = []
+    for raw in body.splitlines(keepends=True):
+        line = raw.rstrip("\r\n")
+        ending = raw[len(line):]
+        found = COUNT_ROW.match(line)
+        if found and int(found.group(2)) in counts:
+            comment_id = int(found.group(2))
+            done, rows = counts[comment_id]
+            if int(found.group(4)) != rows:
+                skipped.append(comment_id)
+            elif int(found.group(3)) != done:
+                line = f"{found.group(1)}{done} of {rows}{found.group(5)}"
+                changed.append(comment_id)
+        out.append(line + ending)
+    return "".join(out), changed, skipped
+
+
+def update_counts(args: argparse.Namespace, comments: list[dict]) -> int:
+    counts = {}
+    for comment in comments:
+        rows = actions(comment["body"])
+        counts[comment["id"]] = (sum(1 for action in rows.values() if action), len(rows))
+    body = json.loads(gh("api", f"repos/{args.repo}/issues/{args.issue}"))["body"]
+    new_body, changed, skipped = edit_counts(body, counts)
+    for comment_id in skipped:
+        print(f"the body row of comment {comment_id} counts a different number of rows than the comment has, not touched",
+              file=sys.stderr)
+    if not changed:
+        print("nothing to change")
+        return 1 if skipped else 0
+    show_diff("body", body, new_body)
+    if args.apply:
+        gh("api", "-X", "PATCH", f"repos/{args.repo}/issues/{args.issue}", payload={"body": new_body})
+        print(f"updated the body of {args.repo}#{args.issue}")
+    else:
+        print(f"{len(changed)} row(s) would change; add --apply to write them")
+    return 0
+
+
 def run(args: argparse.Namespace) -> int:
     comments = language_comments(args.repo, args.issue)
     if not comments:
         print(f"no tracker comment (marker '<!-- tracker-language: ... -->') on {args.repo}#{args.issue}", file=sys.stderr)
         return 2
+
+    if args.command == "counts":
+        return update_counts(args, comments)
 
     if args.command == "show":
         for comment in comments:
@@ -208,6 +264,8 @@ def main(argv: list[str] | None = None) -> int:
     set_p.add_argument("--apply", action="store_true", help="write the change")
     refresh_p = sub.add_parser("refresh", help="add the state of every pull request in an Action")
     refresh_p.add_argument("--apply", action="store_true", help="write the change")
+    counts_p = sub.add_parser("counts", help="set the Actions recorded count of each language row in the issue body")
+    counts_p.add_argument("--apply", action="store_true", help="write the change")
     try:
         return run(parser.parse_args(argv))
     except RuntimeError as exc:

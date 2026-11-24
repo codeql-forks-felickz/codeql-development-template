@@ -84,5 +84,38 @@ class Refresh(unittest.TestCase):
         self.assertIn("merged 2026-11-19<!--prs-->", new)
 
 
+class Counts(unittest.TestCase):
+    ROWS = [
+        "| Language | Create | Update | Data extension | Total | Linked alerts | github/codeql candidates | Decision needed | Community Packs | No upstream change | Actions recorded |",
+        "|---|---|---|---|---|---|---|---|---|---|---|",
+        "| [Rust](https://github.com/o/t/issues/64#issuecomment-111) | 3 | 0 | 2 | **5** | 21 | 1 | 0 | 4 | 0 | 0 of 5 |",
+        "| [GitHub Actions](https://github.com/o/t/issues/64#issuecomment-222) | 1 | 1 | 0 | **2** | 4 | 0 | 0 | 1 | 1 | 2 of 2 |",
+    ]
+
+    def body(self, eol: str = "\n") -> str:
+        return eol.join(["intro", *self.ROWS, "", "outro"]) + eol
+
+    def test_only_the_count_cell_of_the_matching_row_changes(self):
+        new, changed, skipped = ta.edit_counts(self.body(), {111: (4, 5), 222: (2, 2)})
+        self.assertEqual((changed, skipped), ([111], []))
+        old_lines, new_lines = self.body().split("\n"), new.split("\n")
+        differing = [i for i, (a, b) in enumerate(zip(old_lines, new_lines)) if a != b]
+        self.assertEqual(differing, [3])
+        self.assertEqual(new_lines[3], self.ROWS[2].replace("| 0 of 5 |", "| 4 of 5 |"))
+
+    def test_crlf_line_endings_are_kept(self):
+        new, changed, _ = ta.edit_counts(self.body("\r\n"), {111: (1, 5)})
+        self.assertEqual(changed, [111])
+        self.assertEqual(new.count("\r\n"), self.body("\r\n").count("\r\n"))
+
+    def test_a_row_that_counts_other_rows_than_its_comment_is_left_alone(self):
+        new, changed, skipped = ta.edit_counts(self.body(), {111: (4, 6)})
+        self.assertEqual((new, changed, skipped), (self.body(), [], [111]))
+
+    def test_unknown_comments_and_equal_counts_change_nothing(self):
+        new, changed, skipped = ta.edit_counts(self.body(), {999: (1, 1), 111: (0, 5)})
+        self.assertEqual((new, changed, skipped), (self.body(), [], []))
+
+
 if __name__ == "__main__":
     unittest.main()

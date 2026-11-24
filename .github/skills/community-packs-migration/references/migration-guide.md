@@ -3,8 +3,8 @@
 This is the playbook for turning a prototype fix from the synthetic-app pipeline
 into a contribution to
 [GitHubSecurityLab/CodeQL-Community-Packs](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs)
-(Community Packs, CP). It covers mechanics and the quality bar. Whether an item
-belongs in CP at all is decided by the triage on the gap issue (its destination
+(CodeQL Community Packs, CCP). It covers mechanics and the quality bar. Whether an item
+belongs in CCP at all is decided by the triage on the gap issue (its destination
 and assessed precision), and
 [section 4](#4-security-grade-or-audit-grade-and-what-a-suite-does-with-it) says how
 an audit query is framed.
@@ -17,7 +17,7 @@ item. The **triage** holds the assessed precision, the destination and the
 readiness items. The **tracker** is the template repo's tracking issue, whose
 per-language tables have an Action column.
 
-Everything in CP is public. Read [Disclosure](#disclosure) before you copy a
+Everything in CCP is public. Read [Disclosure](#disclosure) before you copy a
 file.
 
 Commands run from the skill directory (`.github/skills/community-packs-migration`).
@@ -30,9 +30,10 @@ Locations on your machine are written as `<work-root>`, `<wt-root>`, `<corpus-ro
 | --- | --- | --- |
 | Size the backlog | `plan-all` | A spec for every triaged pull request, and a tally of what needs a person. |
 | Plan one item | `plan` | The spec for one pull request. Change a flag and plan again, do not hand edit the spec. |
-| Port | `apply` | Copies files into a CP worktree, rewrites `@id`, `@precision` and `@tags`. It leaves pack versions alone. |
+| Port | `apply` | Copies files into a CCP worktree, rewrites `@id`, `@precision` and `@tags`. It leaves pack versions alone. |
 | Hand edit | | Readiness items, neutral fixtures, negative tests. |
-| Gate 1 | `check` | The CP rules, formatting, compile with `--warnings=error`, tests. |
+| Gate 1 | `check` | The CCP rules, formatting, compile with `--warnings=error`, tests, the suite for the query's group, the pack lines in the configs. |
+| Configs | `community_packs_onboard.py` | Reports (and with `--apply` fixes) the pack lines and the audit suite that make a query run, and with `--published` the lines that name something the latest release lacks. |
 | Corpus | `community_packs_corpus.py sample` or `targeted` | A database of real public code, built once per language and shared, read only. |
 | Gate 2 | `measure` | Runs the query on a corpus, profiles it, keeps every row for triage. |
 | Evidence | `community_packs_corpus.py links` | Commit pinned permalinks and repository metadata for the rows. |
@@ -42,6 +43,7 @@ Locations on your machine are written as `<work-root>`, `<wt-root>`, `<corpus-ro
 
 The commands live in [`scripts/community_packs_migrate.py`](../scripts/community_packs_migrate.py),
 [`scripts/community_packs_corpus.py`](../scripts/community_packs_corpus.py),
+[`scripts/community_packs_onboard.py`](../scripts/community_packs_onboard.py),
 [`scripts/tracker_action.py`](../scripts/tracker_action.py) and
 [`scripts/verify_alerts.py`](../scripts/verify_alerts.py).
 Nothing in the pipeline pushes, opens a pull request or comments. The one script that can write
@@ -58,10 +60,10 @@ time.
 
 | Question | Decision | Why |
 | --- | --- | --- |
-| Suite posture | Ship security-grade with the `experimental` tag and leave the query in the default suite: experimental is what Community Packs is for, and a non-experimental query belongs in `github/codeql`. **Do not edit suites in a query pull request.** The packet records what `<lang>.qls` selects. | Confirmed by the maintainer (2026-11-18). The existing experimental queries in CP are in the default suites, so the tag is informational there. |
+| Suite posture | Ship security-grade with the `experimental` tag and leave the query in the default suite: experimental is what Community Packs is for, and a non-experimental query belongs in `github/codeql`. **Do not change what an existing suite selects in a query pull request.** The first audit query of a language brings its audit suite (`community_packs_onboard.py --apply` creates it), and every query needs its pack named in the configs ([section 4](#what-makes-a-query-run)). The packet records what `<lang>.qls` selects. | Confirmed by the maintainer (2026-11-18). The existing experimental queries in CCP are in the default suites, so the tag is informational there. The configs and the audit suite were missed for Actions and again for Rust (2026-11-24), so `check` now fails on both. |
 | Language segment of `@id` | Always, following the stock prefixes in section 3. | Matches the requested `githubsecuritylab/java/...` form. Shipped ids stay as they are. |
 | Pull request granularity | One pull request per tracker issue (confirmed by the maintainer, 2026-11-18). A worker builds one branch per **unit**: a query with its help and tests, or the model files with the tests no query owns. `plan-all` splits a template pull request into units (and a multi-language one by language), and the units of one issue are combined into one pull request when it is published. | Independent units can be reviewed or reworked alone, a worker's scope stays small, and the tracker Action cell holds one link per issue. |
-| `decision_needed` items | Proceed when the recommended destination is CP. | CP is the conservative default for anything doubtful, and a later move to `github/codeql` stays possible. |
+| `decision_needed` items | Proceed when the recommended destination is CCP. | CCP is the conservative default for anything doubtful, and a later move to `github/codeql` stays possible. |
 | Model rows for a language without an ext pack | A separate pull request adds the data extension pack first (confirmed by the maintainer, 2026-11-18). [GitHubSecurityLab/CodeQL-Community-Packs#254](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs/pull/254) added the empty packs for JavaScript, Ruby and C++ (the languages with pending model rows) and merged on 2026-11-18, so those languages now take model rows. Swift and Actions have no ext pack and no pending model rows. | Creating an ext pack is its own change. |
 | Example to cite | None by default. A pull request does not cite a live project. | A true positive on a live project is an unpatched vulnerability or a leak. The packet keeps the evidence for the maintainer. |
 | Evidence per unit | Two tiers (section 7): a true positive on a real project for precision high and above, the shared corpus measure with every row classified for the rest. | The true positive search took 1 to 3 hours per unit in the first batch. The maintainer can still require it for any unit. |
@@ -101,7 +103,7 @@ migrates into `javascript`.
 | Model tests | `<lang>/test/security/CWE-NNN/<library>/` with a test `.ql` that imports the real flow module |
 | Query library `.qll` | `<lang>/lib/...` |
 | Pack version | not changed: a release sets every version (see the note below the table) |
-| Change notes | not applicable, CP has none |
+| Change notes | not applicable, CCP has none |
 
 **A pull request does not change any pack version** (decision of 2026-11-18: the
 maintainer cuts a release when everything is ready to publish). Merging never publishes
@@ -118,6 +120,12 @@ release version (0.9.0 for the JavaScript, Ruby and C++ ext packs).
 
 Do not reuse `github/codeql` paths such as `<lang>/ql/...`. A `.qlref` points at
 the query relative to the `src` pack: `query: security/CWE-NNN/<Name>.ql`.
+
+A shared library of the template pack (a `.qll` outside every query directory, for example
+`common/Keys.qll`) is planned with the unit: `plan` follows the `import` lines of the unit's queries
+(and of the libraries they import) and `apply` copies each library to `<lang>/src/<same path>`, so the
+imports keep resolving. The plan warns `shared library`; move it to a `<lang>/lib` pack only for a
+language that has one.
 
 ## 3. Query identity and metadata
 
@@ -143,13 +151,13 @@ Example: `githubsecuritylab/java/uncontrolled-file-decompression`.
 | `rust` | `rust` |
 | `swift` | `swift` |
 
-The language segment follows the stock CodeQL id prefixes. Existing ids in CP
+The language segment follows the stock CodeQL id prefixes. Existing ids in CCP
 are mixed (62 of 95 Java queries have a `java/` segment, Python, Ruby and C++
-queries have none, and CP's audit ids omit the language). The rule applies to
+queries have none, and the CCP audit ids omit the language). The rule applies to
 new queries. Do not rename shipped ids: an id is part of a published pack.
 
 The name describes the weakness. It never carries the gap key, an issue number or
-an application name. The id must not clash with any id in CP. `check` tests this.
+an application name. The id must not clash with any id in CCP. `check` tests this.
 
 ### The rest of the header
 
@@ -179,12 +187,12 @@ measurement that disqualifies a security query, such as a candidate sink firing 
 the safe and the unsafe route, is often exactly the intended behavior for an audit
 query, because it honestly reports what the database cannot distinguish.
 
-Then check what CP's suites will do with the result, because that is what users get.
+Then check what the CCP suites will do with the result, because that is what users get.
 
 | Posture | Placement | Metadata | Selected by |
 | --- | --- | --- | --- |
 | Security-grade | `src/security/CWE-NNN/` | `@precision` very-high to low | `<lang>.qls` |
-| Audit-grade | `src/audit/CWE-NNN/` | `@precision very-low`, tag `audit` | `<lang>-audit.qls` only (cpp, csharp, go, java, javascript, python have one) |
+| Audit-grade | `src/audit/CWE-NNN/` | `@precision very-low`, tag `audit` | `<lang>-audit.qls` only (cpp, csharp, go, java, javascript, python and rust have one; actions, ruby and swift do not, and a query of kind `table` or `treemap` is an exploration query that no audit suite selects) |
 
 **The `experimental` tag does not keep a query out of the default suite.** The
 `<lang>.qls` suites select by kind and precision (very-high, high, medium, low)
@@ -192,7 +200,61 @@ and exclude only the `audit` and `debugging` tags. A medium-precision query
 tagged `experimental` is part of `actions.qls`, `java.qls` and the rest from the
 moment it ships. `codeql resolve queries --additional-packs <lang> <lang>/src/suites/<lang>.qls`
 shows it. If a query must not run by default, make it audit-grade, or raise a separate
-suite change, and say which in the packet. Do not assume the tag does it.
+suite change, and say which in the packet. Do not assume the tag does it. Audit-grade is for a
+query that cannot claim reachability, not for a slow one: a slow security query is handled under
+[Performance risk](#performance-risk-and-what-to-do-with-it).
+
+### What makes a query run
+
+A merged query runs for nobody until all of these hold. A migration forgot the first two for Actions
+and again for Rust, which is why `check` now fails on them.
+
+| Needed | Where | Checked by |
+| --- | --- | --- |
+| The queries pack is named in `configs/default.yml` and `configs/synthetics.yml`, and the ext pack in `synthetics.yml` when it has data extensions (`default.yml` and `audit.yml` name the ext packs that were chosen on purpose) | `configs/` | `check`, `community_packs_onboard.py` |
+| A suite selects the query: `<lang>.qls` for a security query, `<lang>-audit.qls` for an audit query and not `<lang>.qls`. The audit suite is a new file in the same pull request as the first audit query of the language. | `<lang>/src/suites/` | `check` |
+| `configs/audit.yml` names `<pack>:suites/<lang>-audit.qls` | `configs/audit.yml` | `community_packs_onboard.py` |
+| A release has published the pack, and every path that a config names in it | the registry | `community_packs_onboard.py --published` |
+| The repository's default setup lists the language, and the config's `query-filters` keep the query | the repository, the config | [verify-detection.md](./verify-detection.md), sections 3 and 4 |
+
+Which lines go in the query pull request and which wait: a config on `main` is read at scan time and resolves
+against the **latest published pack**, so a line is safe only when the release already holds what it names. The
+pack lines of a pack that is already published (the bare `githubsecuritylab/codeql-<lang>-queries` and
+`-extensions`) are safe and go in the query pull request. **Checked** (2026-11-24): every pack that the configs name, and the
+extension packs of cpp, javascript and ruby (which no config names yet), download at `0.9.2`. The `audit.yml` line names a suite that exists only
+after the release, and the lines for a pack that was never published wait for its first release too (the configs
+README says so). A line that names a path the latest release lacks cannot be resolved by the CLI, so a scan that uses
+that config would fail on it (the Action itself was not tried).
+**Checked** (2026-11-24): `configs/audit.yml` on `main` named `suites/rust-audit.qls` while the published `0.9.2`
+pack had no such file, and `codeql resolve queries githubsecuritylab/codeql-rust-queries:suites/rust-audit.qls`
+against that pack failed with `Could not read ...\suites\rust-audit.qls` (a scan that uses the config would resolve
+the same way; not tried). `community_packs_onboard.py --published` reported exactly that one line on `main` and no other
+(it takes about 3.5 minutes with four downloads at a time).
+
+```powershell
+python scripts/community_packs_onboard.py --ccp <checkout> [--language <lang>]                 # report: queries, suites, names, gaps
+python scripts/community_packs_onboard.py --ccp <checkout> --language <lang> --apply           # what is safe now
+python scripts/community_packs_onboard.py --ccp <checkout> --apply --published --codeql <cli>  # after a release
+```
+
+The report lists, for every language, the security, audit and exploration queries, the suites, the pack names and the
+gaps, each with `when` it can be fixed (`now` or `after-release`). `--apply` adds the missing pack lines beside the
+lines of the same kind in language order, with the comment and the line endings of the file, switches on a commented
+out line (`audit.yml` keeps one for Ruby), and creates a missing audit suite in the shape of the others; it never
+overwrites a suite. With `--published` the script downloads the latest published pack of every name the configs
+mention (each comes with its dependencies, four at a time, so expect minutes), fails on a pack or a path that is not
+there, and treats an `audit.yml` line as safe when the release holds
+its suite, so `--apply --published` after a release adds exactly those lines. `--after-release` forces the lines
+that wait for a release without asking the registry, for the pull request that is itself the release. Themed
+configs (`hardcoded-credentials.yml`, `quality.yml`) name queries on purpose: adding a credential query there is a
+decision, not a gate.
+
+**Checked** (2026-11-24, the report on three checkouts of `main`): on the parent of the Actions configs pull request it
+listed the Actions pack as missing from `default.yml` and `synthetics.yml` (and the Rust ext pack from
+`synthetics.yml`). On the parent of the Rust configs pull request it listed, for Rust and for no other language, the
+pack in both configs, the ext pack, `rust-audit.qls`, and the `audit.yml` line as `after-release`. On `main` after
+that pull request no language has a gap. Ruby has audit tagged queries but none of a kind that an audit suite
+selects (they are `table` and `treemap` explorations), which is why its `audit.yml` line stays commented out.
 
 ## 5. Data extensions by language
 
@@ -212,6 +274,13 @@ A model-only change has no query to measure, so Gate 2 for it is different
 
 - Positive and negative controls for every behavior. A negative control for every
   false positive class found in [Gate 2](#7-quality-bar).
+- **A positive control has the imports of the real code and nothing more.** The extraction of a crate
+  that is used through a glob import of its prelude can leave every call into it without a target
+  (`use iron::prelude::*;` does, in the test harness and in a scan database), and the same file resolves
+  once the names are also imported explicitly elsewhere in it. A fixture that does both passes while the
+  real sample finds nothing. For a model or a query that matches the canonical path of a library call,
+  list the call targets of the fixture (`getStaticTarget().getCanonicalPath()`) once, and copy the
+  import style of the sample ([verify-detection.md](./verify-detection.md), section 6).
 - Neutral identifiers only: no application names, no domain vocabulary from the
   synthetic app. Use `--replace OLD=NEW` when you plan and `--deny` when you check.
 - Learn `.expected` only after you have read the diff. Never commit an `.actual`
@@ -223,16 +292,21 @@ A model-only change has no query to measure, so Gate 2 for it is different
 
 A migrated query is done when all of these hold.
 
-1. `check` passes. It runs the CP rules (metadata, help file present, forbidden
+1. `check` passes. It runs the CCP rules (metadata, help file present, forbidden
    constructs, id uniqueness, denied names in every changed file and file name,
    no `postprocess:` line) and the same commands CI does: a format check on the
    LF content (a Windows checkout may have CRLF), `codeql pack install
    --additional-packs <lang> <lang>/{lib,src,test}`, `codeql query compile
    --check-only --warnings=error` over the queries **and the test queries**, the
    help renders, `codeql test run --additional-packs <lang>`, and for model rows
-   `codeql pack create` on the ext pack and a test pack that depends on it. It also
-   fails on lock file churn, and reports which of the language's suites select the
-   query. It runs with the user CodeQL config hidden (see [Tooling](#9-tooling)).
+   `codeql pack create` on the ext pack and a test pack that depends on it. It fails
+   when a lock file already differs before the gates run (the unit must not touch
+   lock files unless `--allow-lock` names the file), restores any lock file that `codeql pack install` rewrites, and reports which of the language's suites select the
+   query. It fails a query that the suite for its group does not select (`<lang>.qls` for a security
+   query, `<lang>-audit.qls` for an audit query; `--allow-unselected` accepts it) and a language pack that
+   the configs do not name or an audit query that has no audit suite (`--allow-config-gap NOTE` accepts it,
+   and the note goes to the packet). The lines that must wait for the release are listed under
+   `after_release` in the report ([section 4](#what-makes-a-query-run)). It runs with the user CodeQL config hidden (see [Tooling](#9-tooling)).
 2. The query meets `CONTRIBUTING.md`: no internal libraries, no `getAQlClass`, no
    regexp matching on `toString`, resilient to later library changes.
 3. Evidence on a real project, by tier (below).
@@ -276,7 +350,7 @@ small relation first (`pragma[nomagic]`, a predicate of its own). The test
 database could not show it.
 
 ```text
-measure --spec S --cp <worktree> --codeql <cli> --db <corpus database> --out <dir>
+measure --spec S --ccp <worktree> --codeql <cli> --db <corpus database> --out <dir>
 ```
 
 `measure` runs the query with an evaluator log, then reports the wall time, the
@@ -299,6 +373,16 @@ top predicates even when it passes.
   maintainer decide, do not hide it.
 - At most 3 heavy evaluations run at once on the machine (`--slots`). `measure`
   waits for a slot, so start it early and write the packet while it runs.
+- **Measure again after every fix, and copy the new figure into the pull request body.**
+  Review fixes change the query: the cost line of one published body (about 0.3 s) was
+  three times lower than the next measurement (about 0.9 s). Run to run variation is real
+  too (the same query took 1.7, 0.8 and 0.7 s), so say "about" and cite the largest corpus.
+  Measure on an otherwise idle machine: with a test run and another gate going at the same
+  time, one query took 1.5 s (and an unchanged one 4.6 s instead of 3.1 s) against 1.0 s alone.
+- **A run that evaluated 0 predicates is a cache hit, not a cost.** The CLI keeps results
+  in the database's cache, and an identical earlier evaluation makes the next one free
+  (`predicates` is 0 and `own_ms` is 0 in `measure.json`). Quote the figure from a run in
+  which the query's own predicates were evaluated.
 
 Corpus rules:
 
@@ -317,6 +401,69 @@ Corpus rules:
 - Actions databases need the workflow files flattened to `.github/workflows` at
   the source root.
 - Corpora and results stay local. Never commit them.
+
+### Performance risk and what to do with it
+
+The CCP CI runs a query only on test databases of a few files and has no time limit for it, so
+`measure` is the only performance check a query ever gets. Nothing after it protects users: the
+default suites (`<lang>.qls`) run every query they select on every database that uses the pack,
+and the `experimental` tag does not exclude a query from them (section 4). The stock CodeQL packs
+work differently: their default suites leave out queries under `experimental/` by path
+(`code-scanning-selectors.yml`), and an opt-in suite such as `python-security-experimental.qls`
+brings them back. The CCP suites have no such exclusion, so a slow query is not contained by being
+experimental. The tag does not change that, and neither does the precision.
+
+`measure` gives every query a **cost class** (`cost_class` and `cost_notes` in `measure.json`,
+and the worst class of the unit at the top of the report):
+
+| Class | When | What to do |
+| --- | --- | --- |
+| `low` | The own predicates take at most 10 s, none of them takes more than 5 s, and the whole run, library included, takes at most 10 minutes. | Record the figures. |
+| `moderate` | It passes the gate but exceeds one of those three limits. | A bigger database makes it slower: 10 s on a corpus of about 19,000 files is minutes on a large monorepo. Do the scaling check, then decide (below). |
+| `high` | It fails the gate: the run did not finish within `--max-wall`, the own predicates contain a cartesian product (visible with `--tuple-counting`), or they take more than `--budget` (60 s). | It does not ship as it is. |
+
+The class is a floor, not a verdict. Three things raise the risk and are not measured: a language
+without a corpus on your platform (C/C++ and Swift, and Go is built by hand), so treat that query
+as moderate until someone has measured it; a source or sink that matches by a very common name or
+over every call of a database, which is cheap on one corpus and costly on another; and a database
+much larger than the corpus.
+
+**The scaling check.** Measure on two corpora of clearly different size and compare. Own cost that
+grows faster than the database, or one predicate that dominates the profile, is the sign of a join
+that will not scale. Measure on an idle machine and quote the larger corpus.
+
+**What to do with a `moderate` or `high` query**, in this order. Stop at the first step that works.
+
+1. **Fix it.** Most cases are a join the compiler cannot narrow: a free variable that is inlined
+   into a cartesian product, a regular expression run over every row, a flow configuration whose
+   source or sink is every call. Materialize the small relation first (`pragma[nomagic]`, a
+   predicate of its own), bind the variable, restrict the sink by what makes it a sink, and
+   measure again (add `--tuple-counting` to see the product).
+2. **Narrow it.** Make the query ask for less: a specific library or argument instead of every
+   call, with a negative fixture for what it no longer reports.
+3. **Make it audit-grade, only if it is one.** The `audit` tag takes the query out of
+   `<lang>.qls` and puts it in `<lang>-audit.qls` (where the language has one), so it stops costing
+   everyone. It is not a performance flag. Audit means "review this construct" at
+   `@precision very-low`, with the framing of section 4. A security query that is only slow does
+   not become an audit query, because that hides a finding from the default run.
+4. **Propose a suite change to the maintainers.** For a valuable, expensive security query the
+   honest options are an exclusion tag with an opt-in suite, or the stock packs' `experimental/`
+   split. That is a maintainer decision and its own pull request, never an edit to a suite inside
+   a query pull request.
+5. **Do not ship it.** Keep the query in the template repository, or ship only the model rows.
+   Say which in the packet.
+
+The packet records, for every query: the cost class and its notes, the figures on both corpora
+(wall time, own-predicate time, the top predicate), the suites that select it (`check` reports
+them) and the step taken, or "low, nothing to do". A query that `<lang>.qls` selects and whose class
+is not `low` needs that decision written down before the pull request leaves draft.
+
+**The release is the real test.** `measure` ran on public corpora, not on the repositories that scan with the pack.
+After the release, `scripts/scan_timing.py` compares the code scanning job times of the synthetic repositories before
+and after it and, for a pair that got much slower, reads the logs to see whether the new queries, other new queries of
+the same release, or something unrelated caused it
+([verify-detection.md](./verify-detection.md), section 7). A query that measured `low` should not show up there. One
+that does goes back to the steps above.
 
 ### Choose the true positive
 
@@ -407,12 +554,18 @@ the keyboard (a signing agent that asks for approval), so the human approves eac
 public write, and the session performs it while they are present. The packet is what
 makes that quick.
 
-An `Upstream publication packet` for CP contains:
+An `Upstream publication packet` for CCP contains:
 
 - Destination, branch name and the exact files and test location (no pack version change).
 - Change note: not applicable.
-- Suite behavior: what `<lang>.qls` does with the query, and the decision taken.
-- Evidence: corpus, size, wall time, own-predicate time, row counts, true and
+- Suite behavior: what `<lang>.qls` does with the query, and the decision taken. For a query
+  whose cost class is not `low`, the decision from
+  [Performance risk](#performance-risk-and-what-to-do-with-it).
+- Configs and suites ([section 4](#what-makes-a-query-run)): the pack lines and the audit suite that
+  the pull request adds, and the `after_release` lines from `check`, which a follow-up pull request
+  adds once the release holds them (`community_packs_onboard.py --apply --published`). Say so in
+  the packet, because nobody else will remember.
+- Evidence: corpus, size, wall time, own-predicate time and cost class, row counts, true and
   false positive classes, and the permalinks (local only).
 - The readiness items from the triage, each marked resolved or accepted.
 - The drafted public title and body, checked against [Disclosure](#disclosure).
@@ -436,7 +589,11 @@ first (one statement per fixture step, because alerts are per script), fix them,
 reply once to each thread with the fix and resolve it. For a finding that has no thread,
 reply with one pull request comment. Prove that the new negative fixtures can fail by
 mutating the query (make the new rule accept everything) and that the new fixtures fail on
-the previous query, then say so in the reply. If the signing agent does not answer (it
+the previous query, then say so in the reply. Every behavior that the reply or the body
+states needs a fixture of its own: write the sentence first and look for the test that backs
+it (a nested tuple that is held in a variable and a helper that wraps another helper were both
+described and neither was tested), and remove the clause that a fixture is meant to guard to
+see the fixture fail. If the signing agent does not answer (it
 needs the maintainer at the machine), a fix can be pushed as a GitHub-verified commit
 with the `createCommitOnBranch` GraphQL mutation, after which the local branch is reset
 to it. Rounds keep finding small things in a heuristic query, so stop when a review lists
@@ -450,13 +607,16 @@ Record the pull request link in the Action column of the tracker with
 the maintainer: the script changes only that cell and leaves every other character of
 the comment alone. When a pull request merges or closes,
 `python scripts/tracker_action.py refresh --apply` adds its state after each link
-(`draft`, `open`, `merged <date>`, `closed <date>`). The maintainer's standing rule is one
+(`draft`, `open`, `merged <date>`, `closed <date>`). The issue body has an "Actions recorded"
+count (`N of M`) for each language, and `python scripts/tracker_action.py counts --apply` sets it
+from the language comments (it leaves a row alone when its M differs from the rows of the
+comment, because the body would need to be regenerated). The maintainer's standing rule is one
 batch comment on the tracker issue that lists what was created, merged or changed, with
-full links. Without `--apply` both commands print what would change and write nothing.
+full links. Without `--apply` all three commands print what would change and write nothing.
 
 ## 9. Tooling
 
-- Pin the CLI to the version in `.codeqlversion` of the CP checkout. A different
+- Pin the CLI to the version in `.codeqlversion` of the CCP checkout. A different
   CLI resolves different library versions and makes results incomparable.
 - Use short paths and one git worktree per issue (for example
   `<wt-root>\<issue>`). Windows long paths break pack resolution.
@@ -482,13 +642,28 @@ full links. Without `--apply` both commands print what would change and write no
   repositories over HTTPS with a `GIT_CONFIG_GLOBAL` that has no `insteadOf`
   rewrite, and commit local work with `git -c commit.gpgsign=false`. Sign before
   anything is pushed.
-- Local diagnostics leave lock file churn. `check` fails on it. Revert it.
+- `scripts/community_packs_onboard.py` (offline except with `--published`) answers "will this pack's
+  queries run for anyone?" for one language or all of them, and `check` runs the same logic for the
+  unit's language. Run it on a fresh `origin/main` after every release too: a pack or an audit suite that
+  nobody added to the configs shows up there.
+- `codeql pack install` rewrites a lock file when the pinned CLI bundles the locked packs (the Rust
+  libraries of CLI 2.27.5 do), and CI never commits that. `check` restores such files itself and fails only
+  for a lock file that the unit changed. A unit that changes one on purpose, for example for a new test pack
+  dependency, declares it with `--allow-lock <path>` (repeatable): it is not a finding, and the gates put the
+  file back to its content from before they ran when `pack install` rewrites it. Edit such a lock by hand,
+  because a local `pack install` writes `dependencies: {}` for packs that the CLI bundles (the Ruby test lock
+  shows the layout: the stock queries pack and `codeql/suite-helpers` are listed).
+- **Two test directories in one Rust pull request fail CI.** The CI test step slices by test directory and
+  runs the slices in parallel, the Rust extractor installs its toolchain with rustup on demand, and on a fresh
+  runner two slices download it into the same `~/.rustup` at once (`could not rename 'downloaded' file`).
+  Keep one test directory per pull request or run Rust as a single slice (the `num_slices` line of the CI
+  test step).
 - **A user level CodeQL config changes results.** `~/.config/codeql/config` with
   `--threat-model all` applies to `codeql test run` and
   `codeql query run`, so local sources (files, environment, standard input) become
   active and results differ from CI. The scripts run every gate with
   `CODEQL_CONFIG_FILE` pointing at an empty config file
-  (created under the temp directory, or `CPM_EMPTY_CONFIG`), which replaces the user config and leaves
+  (created under the temp directory, or `CCP_EMPTY_CONFIG`), which replaces the user config and leaves
   the user profile alone. Overriding `USERPROFILE` instead also hides it but
   breaks the Python extractor (the `py` launcher then finds no Python), and
   `HOME`, `XDG_CONFIG_HOME` and JVM properties do nothing. If you run `codeql`
@@ -500,7 +675,7 @@ full links. Without `--apply` both commands print what would change and write no
   `codeql query format --in-place` on every `.ql` and `.qll` you touch.
   `apply` keeps the line endings of `qlpack.yml`.
 - `apply` drops a `postprocess: utils/test/InlineExpectationsTestQuery.ql` line
-  from a `.qlref`: CP's test packs cannot compile it, so the `.expected` file is the
+  from a `.qlref`: the CCP test packs cannot compile it, so the `.expected` file is the
   only oracle. Re-learn it and read the diff. `apply` also renames every file that
   carries the query name (`.qlref`, `.expected`, `.ext.yml`), applies `--replace`
   to file names and every text file in every casing, converts Markdown help to
@@ -528,14 +703,15 @@ full links. Without `--apply` both commands print what would change and write no
 ```powershell
 python scripts/community_packs_migrate.py plan-all --template <template clone> --triage <triage.json> --out-dir <specs>
 python scripts/community_packs_migrate.py next-batch --specs-dir <specs> --work-root <work-root> --corpus-root <corpus-root> --size 8
-python scripts/community_packs_migrate.py prepare --spec <specs>\<unit>.spec.json --cp <cp-checkout> --wt-root <wt-root> --work-root <work-root> --stubs <stubs> --deny-source <deny-by-pr.json> [--extra-deny NAME]
+python scripts/community_packs_migrate.py prepare --spec <specs>\<unit>.spec.json --ccp <ccp-checkout> --wt-root <wt-root> --work-root <work-root> --stubs <stubs> --deny-source <deny-by-pr.json> [--extra-deny NAME]
 python scripts/community_packs_migrate.py status --specs-dir <specs> --work-root <work-root>
 python scripts/community_packs_migrate.py plan <pr> --template <template clone> --triage <triage.json> --out <spec> --replace OLD=NEW [--only NAME] [--test-name NAME]
-python scripts/community_packs_migrate.py apply --spec <spec> --cp <worktree> --codeql <cli>
-python scripts/community_packs_migrate.py check --spec <spec> --cp <worktree> --codeql <cli> --deny-file <work>\deny.txt
-python scripts/community_packs_migrate.py measure --spec <spec> --cp <worktree> --codeql <cli> --db <db> --out <work>\measure
-python scripts/community_packs_migrate.py scan --cp <worktree> --deny-file <work>\deny.txt --pr-body <work>\pr-body.md
-python scripts/community_packs_migrate.py baseline --cp <main worktree> --codeql <cli> --out <work-root>\baseline
+python scripts/community_packs_migrate.py apply --spec <spec> --ccp <worktree> --codeql <cli>
+python scripts/community_packs_migrate.py check --spec <spec> --ccp <worktree> --codeql <cli> --deny-file <work>\deny.txt [--skip-tests] [--allow-lock <path>]
+python scripts/community_packs_migrate.py measure --spec <spec> --ccp <worktree> --codeql <cli> --db <db> --out <work>\measure
+python scripts/community_packs_migrate.py commit --spec <spec> --ccp <worktree> --message-file <work>\commit-message.txt [--include <path>] [--amend]
+python scripts/community_packs_migrate.py scan --ccp <worktree> --deny-file <work>\deny.txt --pr-body <work>\pr-body.md
+python scripts/community_packs_migrate.py baseline --ccp <main worktree> --codeql <cli> --out <work-root>\baseline
 ```
 
 `next-batch` skips units that need a decision first (model rows for a language
@@ -546,7 +722,16 @@ the worktree on `wip/<unit>`, the `codeql` stubs junction, the work directory an
 `report.json` each worker leaves in `<work-root>\<unit>`. `scan` is the last gate:
 it reads the commit messages, the branch name, every changed file and file name,
 and the drafted pull request text for denied names, template and pipeline
-references, local paths, tokens, placeholders and dashes, and lists links to check.
+references, local paths (the user profile and, on Windows, the top directory the checkout lives in), tokens, placeholders and dashes, and lists links to check.
+
+`check --skip-tests` leaves out `codeql test run` for crates that are too slow to build
+locally (CI runs them); the report records `tests_run: false` and the packet must say so.
+`commit` stages exactly the files that the unit changes and commits them unsigned (sign
+when publication is approved). It leaves out what a local test run generated in a test
+directory (for Rust `Cargo.toml`, `lib.rs`, `target` and similar) and an untracked
+`Cargo.lock` that no spec supplies, unless `--include` names it. A review fix goes on top of
+the published commits as a new commit (no `--amend`), and a pull request branch that is
+already pushed is never force pushed.
 
 Run `apply` once on a clean worktree. It refuses to overwrite existing files, so
 it never destroys hand edits. Edit by hand, then run `check` again.
@@ -554,7 +739,7 @@ it never destroys hand edits. Edit by hand, then run `check` again.
 ## 10. Working in bulk
 
 One session can run a single pilot. The backlog is large: `plan-all` splits the issues
-sent to CP into units, and `summary.json` shows which of them carry a warning that needs
+sent to CCP into units, and `summary.json` shows which of them carry a warning that needs
 a person (most of them did at the start).
 
 ### What the first batch cost

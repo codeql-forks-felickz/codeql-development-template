@@ -78,8 +78,8 @@ def _rm_readonly(func, path, _exc) -> None:
 
 def clone(repo: str, ref: str | None, dest: Path, env: dict) -> str | None:
     """Shallow clone ``repo`` at ``ref`` into ``dest``. Returns the commit, or None when it failed."""
-    if (dest / ".cpm-commit").exists():
-        return (dest / ".cpm-commit").read_text().strip()
+    if (dest / ".ccp-commit").exists():
+        return (dest / ".ccp-commit").read_text().strip()
     if dest.exists():
         shutil.rmtree(dest, onerror=_rm_readonly)
     dest.mkdir(parents=True)
@@ -96,7 +96,7 @@ def clone(repo: str, ref: str | None, dest: Path, env: dict) -> str | None:
             return None
     sha = run(["git", "rev-parse", "HEAD"], cwd=dest).stdout.strip()
     shutil.rmtree(dest / ".git", onerror=_rm_readonly)
-    (dest / ".cpm-commit").write_text(sha)
+    (dest / ".ccp-commit").write_text(sha)
     return sha
 
 

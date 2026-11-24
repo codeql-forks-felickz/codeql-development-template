@@ -1,14 +1,14 @@
 ---
 name: community-packs-migration
-description: Move a gap-issue query or data extension model from a Copilot pull request in this repository into GitHubSecurityLab/CodeQL-Community-Packs as a neutral, tested, reviewable pull request, then verify that the released query detects the original finding. Use when asked to migrate, port, upstream or contribute a gap issue to Community Packs, to check or measure a Community Packs unit, to run the Copilot code review loop on such a pull request, to update the tracker after one merges, or to verify and count detections after a release. Runs in a local, human-gated session. Do not use it from the cloud agent.
+description: Move a gap-issue query or data extension model from a Copilot pull request in this repository into GitHubSecurityLab/CodeQL-Community-Packs as a neutral, tested, reviewable pull request, then verify that the released query detects the original finding and that the scans did not get much slower. Use when asked to migrate, port, upstream or contribute a gap issue to Community Packs, to check or measure a Community Packs unit, to run the Copilot code review loop on such a pull request, to update the tracker after one merges, to check that a language pack and its audit suite are named in the configs and selected by a suite, to verify and count detections after a release, or to compare the code scanning job times before and after a release. Runs in a local, human-gated session. Do not use it from the cloud agent.
 ---
 
 # Community Packs migration
 
 A gap issue in this repository has a Copilot draft pull request with a prototype query or model
 rows. When the triage says the destination is
-[Community Packs](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs) (CP), this skill turns
-the prototype into a CP pull request that stands on its own, and afterwards checks that the released
+[CodeQL Community Packs](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs) (CCP), this skill turns
+the prototype into a CCP pull request that stands on its own, and afterwards checks that the released
 query finds what it was written for.
 
 Develop and test the prototype with the `ql-tdd-agent`. Use this skill once a prototype exists.
@@ -29,24 +29,43 @@ Paths are relative to this skill's directory (`.github/skills/community-packs-mi
    it for you.
 2. **Public text is neutral.** It never mentions this repository, its issues or pull requests, the
    tracker, any internal repository, any customer or the synthetic applications. Replace their
-   identifiers at plan time (`--replace OLD=NEW`) and deny them at check time. Set `CPM_EXTRA_DENY`
+   identifiers at plan time (`--replace OLD=NEW`) and deny them at check time. Set `CCP_EXTRA_DENY`
    (comma separated) to the names that are not public; every gate applies it.
 3. **Never change a pack `version:`.** A release sets every version, and merging never publishes.
-   `check` fails on it. (CP's `CONTRIBUTING.md` still lists a version bump in its checklist. This
+   `check` fails on it. (The CCP `CONTRIBUTING.md` still lists a version bump in its checklist. This
    skill does not follow that line.)
 4. **One pull request per gap issue**, opened as a draft. Experimental queries stay in the default
-   suite (do not edit suites). `@precision` is the assessed value from the triage, never the
-   prototype's.
-5. **Hide the user CodeQL config for every local gate** (`CODEQL_CONFIG_FILE` pointing at an empty
-   file; the scripts do it). Use the CLI version in `.codeqlversion` of CP.
-6. **Read Copilot code review in full.** Findings in unchanged code appear only in the review body,
+   suite: do not change what an existing suite selects. `@precision` is the assessed value from
+   the triage, never the prototype's.
+5. **A merged query does not run until a config names its pack and a suite selects it.** Adding
+   queries does not add the pack to `configs/default.yml` and `configs/synthetics.yml`, and an
+   audit query is selected only by `<language>-audit.qls`, which `configs/audit.yml` names after
+   the release that carries the suite. This was missed for Actions and again for Rust. `check`
+   fails on both, `community_packs_onboard.py` reports every language and fixes them with
+   `--apply`, and a config on `main` must not name a suite or pack that the latest release lacks:
+   the CLI cannot read it, and a scan that uses that config would fail (`--published` finds those)
+   ([guide](references/migration-guide.md), section 4).
+6. **Hide the user CodeQL config for every local gate** (`CODEQL_CONFIG_FILE` pointing at an empty
+   file; the scripts do it). Use the CLI version in `.codeqlversion` of CCP.
+7. **Read Copilot code review in full.** Findings in unchanged code appear only in the review body,
    with no thread. Reply once to each, fix the real ones test first, and stop when a review lists
    nothing open.
+8. **Cost is yours to judge.** The pack's CI runs queries only on tiny databases and `experimental`
+   does not keep a query out of the default suite, so `measure` is the only performance check.
+   Record the cost class it reports. A query that is not `low` needs a decision (fix, narrow, audit
+   only when it is audit-grade, a maintainer suite change, or withhold) before it leaves draft
+   ([guide](references/migration-guide.md), Performance risk).
+9. **Passing tests do not prove detection.** A test database and a scan database can resolve the same
+   code differently, and a fixture that imports the same names explicitly elsewhere in the file
+   resolves what the real code does not (the Iron prelude, which `check` cannot see). Give a library
+   model a fixture with the imports of the real sample and nothing more. After the release, look for
+   the alert in the scan, and when it is missing read the call resolution of that database before
+   blaming the query ([verify-detection.md](references/verify-detection.md), section 6).
 
 ## Setup, once
 
-- `gh` signed in, the `codeql` CLI at the version in CP's `.codeqlversion`, Python 3.
-- A clone of CP (fetch `origin/main`), and a sparse clone of `github/codeql` for stubs
+- `gh` signed in, the `codeql` CLI at the version in the CCP `.codeqlversion`, Python 3.
+- A clone of CCP (fetch `origin/main`), and a sparse clone of `github/codeql` for stubs
   ([guide](references/migration-guide.md), Tooling).
 - A clone of this repository with the pull request heads fetched, because `plan` reads them from
   `refs/prs/*`: `git fetch origin '+refs/pull/*/head:refs/prs/*'`.
@@ -59,23 +78,30 @@ Paths are relative to this skill's directory (`.github/skills/community-packs-mi
 | 1. Read | The gap issue (labels `precision:*`, `tags:experimental`, the CWE, and the triage comment that starts with `<!-- upstream-triage -->`) and its pull request. Go or no-go. | Guide, section 1 |
 | 2. Plan | `plan <pr> --template <clone> --triage ... --replace OLD=NEW` (or the flags `--precision --experimental --placement --cwe --id-name` when there is no triage file) | Guide, sections 2 to 5 |
 | 3. Port | `prepare`, then `apply`, then hand edits: readiness items, neutral fixtures, negative tests | Guide, section 6 |
-| 4. Gate 1 | `check`: CP rules, format, strict compile, tests | Guide, section 7 |
-| 5. Gate 2 | `measure` on a real corpus (`community_packs_corpus.py`), classify every row | Guide, section 7 |
+| 4. Gate 1 | `check`: CCP rules, format, strict compile, tests | Guide, section 7 |
+| 5. Gate 2 | `measure` on a real corpus (`community_packs_corpus.py`), classify every row, record the cost class | Guide, section 7 |
 | 6. Packet | The evidence and the drafted pull request text; `scan` must have no `fail` | Guide, Human gate |
 | 7. Publish | Human approves, then sign, push the branch, `gh pr create --draft` | Guide, Human gate |
 | 8. Review | Copilot code review loop until a review lists nothing open | Guide, Human gate |
 | 9. Track | `tracker_action.py set <issue> "<link>" --apply` | Guide, Tracker |
-| 10. Verify | After the release: predict locally, enable the language, point the scan at the pack, count | [verify-detection.md](references/verify-detection.md) |
+| 10. Verify | After the release: run `community_packs_onboard.py --apply --published` on a fresh `main` (a pack or an audit suite that no config names is the usual reason nothing shows up), then predict locally, enable the language, point the scan at the pack, count. A linked alert that is missing although the query ran: read the scan database ([verify-detection.md](references/verify-detection.md), section 6) | [verify-detection.md](references/verify-detection.md), sections 1 to 6 |
+| 11. Time | Last check, before recording: save the scan times before the release, then confirm that every repository uses the new pack (`packs`), compare the job times before and after (`compare`), and for a pair that got much slower read the logs (`explain`): new queries, other new queries of the release, or something else | [verify-detection.md](references/verify-detection.md), section 7 |
 
 ```powershell
 python scripts/community_packs_migrate.py plan <pr> --template <clone> --out <work>\spec.json --replace OLD=NEW
-python scripts/community_packs_migrate.py prepare --spec <work>\spec.json --cp <cp-checkout> --wt-root <wt-root> --work-root <work-root> --stubs <stubs>
-python scripts/community_packs_migrate.py apply --spec <spec> --cp <worktree> --codeql <cli>
-python scripts/community_packs_migrate.py check --spec <spec> --cp <worktree> --codeql <cli> --deny-file <work>\deny.txt
-python scripts/community_packs_migrate.py measure --spec <spec> --cp <worktree> --codeql <cli> --db <db> --out <work>\measure
-python scripts/community_packs_migrate.py scan --cp <worktree> --deny-file <work>\deny.txt --pr-body <work>\pr-body.md
+python scripts/community_packs_migrate.py prepare --spec <work>\spec.json --ccp <ccp-checkout> --wt-root <wt-root> --work-root <work-root> --stubs <stubs>
+python scripts/community_packs_migrate.py apply --spec <spec> --ccp <worktree> --codeql <cli>
+python scripts/community_packs_migrate.py check --spec <spec> --ccp <worktree> --codeql <cli> --deny-file <work>\deny.txt
+python scripts/community_packs_onboard.py --ccp <worktree> --language <language> [--apply]   # pack lines in the configs, the audit suite
+python scripts/community_packs_migrate.py measure --spec <spec> --ccp <worktree> --codeql <cli> --db <db> --out <work>\measure
+python scripts/community_packs_migrate.py scan --ccp <worktree> --deny-file <work>\deny.txt --pr-body <work>\pr-body.md
 python scripts/tracker_action.py set <issue> "<link>" --apply
 python scripts/verify_alerts.py gap --issue <issue> --rule <released query id>
+python scripts/scan_timing.py collect --out <work>\scan-before.json   # before the release, and again after it
+python scripts/trigger_scans.py --property Synthetic=true --language <language> --apply   # scan again after the release
+python scripts/scan_timing.py packs --jobs <work>\scan-after.json --version <release> --since <published at> --ours <rule id>
+python scripts/scan_timing.py compare --jobs <work>\scan-before.json --jobs <work>\scan-after.json --cutoff <published at> --version <release>
+python scripts/scan_timing.py explain --jobs <work>\scan-before.json --jobs <work>\scan-after.json --cutoff <published at> --version <release> --ours <rule id>
 ```
 
 `apply` never overwrites, `plan` is deterministic (change a flag and plan again, do not edit the
@@ -83,7 +109,7 @@ spec), and `check`, `measure`, `scan` and `baseline` run with the user config hi
 unit has no query to measure; the guide says what replaces it. All options: `--help` on each
 command.
 
-## Handing a unit to the Copilot coding agent in CP
+## Handing a unit to the Copilot coding agent in CCP
 
 The agent sees only the repository it runs in, not this one. Write the task yourself, with no name
 of this repository, the tracker or a synthetic application: the weakness, what the query must
@@ -100,8 +126,8 @@ request as you would your own, and run `scan` against its branch before it leave
 - [references/worker-brief.md](references/worker-brief.md): the operating rules for one delegated
   worker that migrates a single issue into a local branch.
 - [references/verify-detection.md](references/verify-detection.md): after the release, closing the
-  loop and counting alerts.
-- `scripts/`: `community_packs_migrate.py`, `community_packs_corpus.py`, `tracker_action.py`,
-  `verify_alerts.py`, `rule_value.py`, `gap_overlap.py`, `default_setup_languages.py`,
+  loop, counting alerts and timing the scans before and after.
+- `scripts/`: `community_packs_migrate.py`, `community_packs_corpus.py`, `community_packs_onboard.py`, `tracker_action.py`,
+  `verify_alerts.py`, `scan_timing.py`, `trigger_scans.py`, `rule_value.py`, `gap_overlap.py`, `default_setup_languages.py`,
   `enable_workflows.browser.js` (run in a signed-in browser page) and their offline tests
   (`python -m unittest` in that directory).
