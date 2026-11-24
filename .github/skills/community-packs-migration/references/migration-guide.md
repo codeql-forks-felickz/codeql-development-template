@@ -280,7 +280,9 @@ A model-only change has no query to measure, so Gate 2 for it is different
   once the names are also imported explicitly elsewhere in it. A fixture that does both passes while the
   real sample finds nothing. For a model or a query that matches the canonical path of a library call,
   list the call targets of the fixture (`getStaticTarget().getCanonicalPath()`) once, and copy the
-  import style of the sample ([verify-detection.md](./verify-detection.md), section 6).
+  import style of the sample ([verify-detection.md](./verify-detection.md), section 6). When the real code
+  does not resolve, the fix is a fallback by name, tested as in
+  [A fallback for calls that have no target](#a-fallback-for-calls-that-have-no-target).
 - Neutral identifiers only: no application names, no domain vocabulary from the
   synthetic app. Use `--replace OLD=NEW` when you plan and `--deny` when you check.
 - Learn `.expected` only after you have read the diff. Never commit an `.actual`
@@ -425,7 +427,8 @@ and the worst class of the unit at the top of the report):
 The class is a floor, not a verdict. Three things raise the risk and are not measured: a language
 without a corpus on your platform (C/C++ and Swift, and Go is built by hand), so treat that query
 as moderate until someone has measured it; a source or sink that matches by a very common name or
-over every call of a database, which is cheap on one corpus and costly on another; and a database
+over every call of a database, which is cheap on one corpus and costly on another (a fallback by name that has no
+file guard is one, see [A fallback for calls that have no target](#a-fallback-for-calls-that-have-no-target)); and a database
 much larger than the corpus.
 
 **The scaling check.** Measure on two corpora of clearly different size and compare. Own cost that
@@ -489,6 +492,58 @@ Classify each result as true positive, false positive or unclear.
 The pilot found 14 rows. Eight were decode-to-file steps (`base64 --decode -o`,
 process substitution). The six others were real leaks (one duplicate). After the
 fixes the corpus gives five alerts and every one is a true positive.
+
+### A fallback for calls that have no target
+
+When the extraction leaves the calls into a library without a target (the Iron prelude,
+[verify-detection.md](./verify-detection.md), section 6), the data extension rows and every sink that is
+written as a canonical path stop applying, and the way out is a fallback in the query that recognizes the API
+by its names. It is a precision trade, so it follows rules. **Checked** (2026-11-24, `IronResponseXss`, Rust,
+CLI 2.27.5, rust-all 0.2.26):
+
+- **Match only what has no target, and only in files that use the library.** A step or a sink of the fallback
+  requires `not exists(call.getStaticTarget())` (for a field read, `not exists(field.getStructField())`) and a
+  file guard (a `use` whose root segment is the crate, or `extern crate`). Resolved code then keeps its
+  results: the learned `.expected` of the existing fixture gained the rows of the one case that was added and
+  lost none. With the file guard made true everywhere (a mutation), the query took more than two minutes on the
+  four file test database instead of 13 s, because the database also holds the dependency sources.
+- **A source by the shape of the API.** A parameter whose type is named `Request`, `&Request` or `&mut Request`
+  is the request of a handler when its file uses the crate. The type cannot be resolved, so the name is all
+  there is: say so under "Known limitations". It is a source in resolved code too, where it also finds a
+  handler that nothing registers (a router registers it, for example).
+- **Steps over what has no target.** A method call with no target passes its receiver on to its result, except
+  for the methods that tell a property and no content (`len`, `is_empty`, `contains`, ...) and the names that
+  suggest encoding (`escape`, `encode`: the stock `HeuristicHtmlEncodingBarrier` makes a call of a function with
+  such a name a barrier, and the fallback takes a method with such a name the same way). A function call is not
+  a step of the fallback. A fixture whose sanitizer call (`clean(&body)`) has no target gives no alert, because
+  the analysis does not follow data through a call that it cannot resolve. On the scan database the real
+  sanitizer (`ammonia::clean`) resolves, and the sample that uses it gives no alert either, because no taint
+  comes out of its body. The query has no barrier for it.
+- **Report one path.** The modelled source (the handler that `Iron::new` receives) and the fallback source (its
+  parameter) reach the same sink. Leave out the fallback path when a modelled source reaches that sink and the
+  fallback node is not itself a modelled source, or every handler is reported twice (26 rows instead of 17 in
+  the fixture).
+- **Test it as a fallback.**
+  1. A fixture file with only the glob import, in a file of its own. The files of a Rust test directory are
+     modules of one generated library crate and `main.rs` is a binary, so the glob-only file stays apart from the
+     explicit imports in `main.rs` that would make it resolve.
+  2. A premise test that lists the calls of that file that have no target (`GlobCalls.ql`). If the extraction
+     resolves them some day its expected file changes, and the fixture no longer exercises the fallback.
+  3. A file with the same names from another framework and no `use` of the crate, which must give no alert.
+  4. The negative cases of the original fixture again, in the glob-only form, a handler that nothing
+     registers, and a sanitizer call.
+  5. Mutation checks, each reverted: without the file guard the other framework's file alerts, without the
+     method step every glob alert goes, without the one-path clause the rows double, without the field guard the
+     path edges and nodes of the existing rows change, and without the `escape` exclusion the encoded handler
+     alerts. The file guard is used by the source, the steps and the sink, and a flow needs all three, so the
+     mutation makes it hold everywhere: the fixture cannot show which single use was removed.
+- **Check the result on the scan database** ([verify-detection.md](./verify-detection.md), section 6) before the
+  pull request opens: the original finding is reported, the safe sample is not, and every other new row is read.
+- **QL gotchas** (rust-all 0.2.26): `getStaticTarget()` and `getPositionalArgument(i)` are members of `Call`, not
+  of `CallExpr`, so reach the callee with `call.(CallExpr).getFunction().(PathExpr).getPath()`.
+  `FieldExpr.getStructField()` tells whether a field resolved. `check` forbids importing anything `internal`, so
+  the type inference predicates are out of reach and these three signals (no target, no field, the file) are what
+  there is.
 
 ### Gate 2 for model-only units
 

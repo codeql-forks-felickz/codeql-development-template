@@ -1457,6 +1457,18 @@ def local_root_pattern(path: str) -> re.Pattern | None:
     return re.compile(re.escape(win.drive) + r"[\\/]" + re.escape(win.parts[1]) + r"(?!\w)", re.I)
 
 
+def commit_has_signature(ccp: Path, sha: str) -> bool:
+    """Whether the commit object carries a signature header (``gpgsig``), whoever made it.
+
+    ``git log --format=%G?`` is no help here: it says ``N`` for an SSH signature that this machine cannot
+    verify (that needs an allowed signers file), so every commit that a 1Password SSH key signed looked
+    unsigned. A header says that something signed it. Whether GitHub shows "Verified" is up to the keys of the
+    account. Only the header block counts, not a message that happens to start a line with the word.
+    """
+    header = git_bytes(ccp, "cat-file", "commit", sha).split(b"\n\n", 1)[0]
+    return any(line.startswith(b"gpgsig") for line in header.split(b"\n"))
+
+
 def scan(ccp: Path, base: str, deny: list[str], pr_body: Path | None) -> dict:
     """The last gate before anything is published: every outbound string and every changed file."""
     findings: list[dict] = []
@@ -1490,16 +1502,17 @@ def scan(ccp: Path, base: str, deny: list[str], pr_body: Path | None) -> dict:
             elif not host_path.startswith(URL_ALLOWED):
                 add("warn", where, f"link to check that it is public and meant to be cited: {url}")
 
-    log = git_bytes(ccp, "log", "--format=%an <%ae>|%cn <%ce>|%G?%n%B%x00", f"{base}..HEAD").decode("utf-8", "replace")
+    log = git_bytes(ccp, "log", "--format=%H|%an <%ae>|%cn <%ce>%n%B%x00", f"{base}..HEAD").decode("utf-8", "replace")
     commits = [c for c in log.split("\0") if c.strip()]
     if not commits:
         add("warn", "commits", f"no commit on top of {base}: the scan covers the working tree only")
     for n, commit in enumerate(commits):
         head, _, message = commit.strip().partition("\n")
+        sha, _, head = head.partition("|")
         for who in re.findall(r"<([^>]+)>", head):
             if not who.endswith("users.noreply.github.com") and not who.startswith("223556219+Copilot"):
                 add("warn", f"commit {n} author or committer", f"an email that is not a GitHub noreply address: {who}")
-        if head.rstrip().endswith("|N"):
+        if not commit_has_signature(ccp, sha):
             add("info", f"commit {n}", "unsigned: sign it before it is pushed")
         scan_text(f"commit {n} message", message, prose=True)
     scan_text("branch name", git_bytes(ccp, "branch", "--show-current").decode().strip(), prose=True)

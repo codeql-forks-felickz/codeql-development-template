@@ -299,17 +299,23 @@ have no match, so those queries are still needed.
   version (the analysis list shows it), the resolved pack version, and whether the config applied (section 4).
 - `NOT_COVERED` although the query ran (its evaluation is in the job log) and its tests pass: the scan's database may
   not resolve what the query matches, and the fixture may not have the imports of the real code (a default setup scan
-  builds the real code with `buildMode: none`). Download the database of the scan (`gh api` has no `--output` and PowerShell
-  redirection corrupts a zip, so use curl), run the query on it with the released pack and the ext pack
-  (`--additional-packs <checkout>\<lang> --model-packs githubsecuritylab/codeql-<lang>-extensions`), and list the calls
-  of the file with `getStaticTarget().getCanonicalPath()`. A call that has no target is unresolved, and a model or a
-  query that matches a canonical path cannot see it.
+  builds the real code with `buildMode: none`). `scripts/scan_database.py download` fetches the database of the newest
+  scan of the language (`gh api` has no `--output` and PowerShell redirection corrupts a zip, so the script writes the
+  bytes itself), and `calls` lists the calls of the files that match a pattern, each with the canonical path of its
+  target or `<unresolved>` (Rust only). A call that has no target is unresolved, and a model or a query that matches
+  a canonical path cannot see it. Then run the query on that database with the pack under test and the ext pack as a
+  model pack.
 
   ```powershell
-  curl.exe -sS -L -H "Authorization: Bearer $(gh auth token)" -H "Accept: application/zip" -o <work>\db.zip https://api.github.com/repos/<owner>/<repo>/code-scanning/codeql/databases/<language>
-  Expand-Archive <work>\db.zip <work>\db
-  codeql query run --database <work>\db\<language> --additional-packs <checkout>\<language> --model-packs githubsecuritylab/codeql-<language>-extensions --output <work>\r.bqrs <query.ql>
+  python scripts/scan_database.py download --repo <owner>/<repo> --language rust --out <work>\scan-db
+  python scripts/scan_database.py calls --db <work>\scan-db\db\rust --codeql <cli> --file "%<file>%" --unresolved
+  codeql query run --database <work>\scan-db\db\rust --additional-packs <checkout>\rust --model-packs githubsecuritylab/codeql-rust-extensions --output <work>\r.bqrs <query.ql>
   ```
+
+  The first query on a fresh scan database computes the shared libraries and takes minutes (**checked** 2026-11-24:
+  3.5 minutes on a database of 60 crates), the next ones take seconds (11 s and 17 s for the Iron query before and
+  after its fix), so compare warm runs. Two runs cannot use one database at the same time (the evaluator cache is
+  locked: `Error initializing the IMB disk cache`).
 - Alerts that are not the original finding: classify each as true or false positive. A class of false positives is a
   follow-up pull request for the query, with a negative test, as in the guide's quality bar.
 
@@ -375,10 +381,22 @@ fixture of the pull request has a handler that imports the prelude with a glob i
 the same file imports the same names explicitly at its root (the fifth row). So a fixture that proves a library model must
 copy the imports of the real code and nothing more.
 
-Options, for the maintainer: add the root level glob fixture (it fails first) and a syntactic fallback in the rule for the
+Options that were open: add the root level glob fixture (it fails first) and a syntactic fallback in the rule for the
 unresolved `Iron::new`, `Response::with` and the handler parameter (the way `keyMaterialConversionStep` handles an
-unresolved `From`), which can only be audit or low precision grade; report the resolution to github/codeql with the 10
-line crate; or accept it and say so under "Known limitations" in the query help.
+unresolved `From`); report the resolution to github/codeql with the 10 line crate; or accept it and say so under
+"Known limitations" in the query help.
+
+**Fixed in a pull request** (2026-11-24, [CCP 264](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs/pull/264),
+draft): the fallback, tested as in the guide's
+[A fallback for calls that have no target](./migration-guide.md#a-fallback-for-calls-that-have-no-target). On the
+downloaded scan database of the 2026-11-24 scan the released rule reports 0 alerts and the changed rule 3:
+the Iron XSS of the gap issue (the sink is the `Response::with` line, one line below the AI alert, so the match is
+near and not exact), a second AI alert of the same CWE that no gap issue listed (the same line), and the same flow in
+a sample that is safe for another weakness (the body is the text of a response to an outbound request, a remote
+source of the standard query, so it is a finding of the rule and not a mistake of the fallback). The sample that
+sanitizes the body with `ammonia::clean` reports nothing, because `clean` resolves there and no taint comes out of
+its body. The measure on both Rust corpora is `low` (the whole run 11 s and 30 s, own predicates 0.12 s and
+0.45 s). The alerts show up live after a release that carries the pull request and a new scan.
 
 ## 7. Time the scan, before and after
 

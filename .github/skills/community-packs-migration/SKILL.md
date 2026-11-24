@@ -59,8 +59,12 @@ Paths are relative to this skill's directory (`.github/skills/community-packs-mi
    code differently, and a fixture that imports the same names explicitly elsewhere in the file
    resolves what the real code does not (the Iron prelude, which `check` cannot see). Give a library
    model a fixture with the imports of the real sample and nothing more. After the release, look for
-   the alert in the scan, and when it is missing read the call resolution of that database before
-   blaming the query ([verify-detection.md](references/verify-detection.md), section 6).
+   the alert in the scan, and when it is missing read the call resolution of that database
+   (`scripts/scan_database.py`) before blaming the query
+   ([verify-detection.md](references/verify-detection.md), section 6). When the calls turn out to have
+   no target, the fix is a fallback by name with its own test pattern
+   ([guide](references/migration-guide.md), "A fallback for calls that have no target"), and its result
+   is checked on that scan database before the pull request opens.
 
 ## Setup, once
 
@@ -84,7 +88,7 @@ Paths are relative to this skill's directory (`.github/skills/community-packs-mi
 | 7. Publish | Human approves, then sign, push the branch, `gh pr create --draft` | Guide, Human gate |
 | 8. Review | Copilot code review loop until a review lists nothing open | Guide, Human gate |
 | 9. Track | `tracker_action.py set <issue> "<link>" --apply` | Guide, Tracker |
-| 10. Verify | After the release: run `community_packs_onboard.py --apply --published` on a fresh `main` (a pack or an audit suite that no config names is the usual reason nothing shows up), then predict locally, enable the language, point the scan at the pack, count. A linked alert that is missing although the query ran: read the scan database ([verify-detection.md](references/verify-detection.md), section 6) | [verify-detection.md](references/verify-detection.md), sections 1 to 6 |
+| 10. Verify | After the release: run `community_packs_onboard.py --apply --published` on a fresh `main` (a pack or an audit suite that no config names is the usual reason nothing shows up), then predict locally, enable the language, point the scan at the pack, count. A linked alert that is missing although the query ran: read the scan database (`scan_database.py download`, then `calls`; [verify-detection.md](references/verify-detection.md), section 6) | [verify-detection.md](references/verify-detection.md), sections 1 to 6 |
 | 11. Time | Last check, before recording: save the scan times before the release, then confirm that every repository uses the new pack (`packs`), compare the job times before and after (`compare`), and for a pair that got much slower read the logs (`explain`): new queries, other new queries of the release, or something else | [verify-detection.md](references/verify-detection.md), section 7 |
 
 ```powershell
@@ -97,6 +101,8 @@ python scripts/community_packs_migrate.py measure --spec <spec> --ccp <worktree>
 python scripts/community_packs_migrate.py scan --ccp <worktree> --deny-file <work>\deny.txt --pr-body <work>\pr-body.md
 python scripts/tracker_action.py set <issue> "<link>" --apply
 python scripts/verify_alerts.py gap --issue <issue> --rule <released query id>
+python scripts/scan_database.py download --repo <owner/repo> --language rust --out <work>\scan-db   # the database of the newest scan
+python scripts/scan_database.py calls --db <work>\scan-db\db\rust --codeql <cli> --file "%<file>%" --unresolved   # the calls that have no target (Rust)
 python scripts/scan_timing.py collect --out <work>\scan-before.json   # before the release, and again after it
 python scripts/trigger_scans.py --property Synthetic=true --language <language> --apply   # scan again after the release
 python scripts/scan_timing.py packs --jobs <work>\scan-after.json --version <release> --since <published at> --ours <rule id>
@@ -111,13 +117,34 @@ command.
 
 ## Handing a unit to the Copilot coding agent in CCP
 
-The agent sees only the repository it runs in, not this one. Write the task yourself, with no name
-of this repository, the tracker or a synthetic application: the weakness, what the query must
+The maintainer asked (2026-11-24) that work for CCP go to the coding agent (CCA) next time rather than be
+done locally for hours. Do that when the design is clear: a fix with a failing test, a query with its
+cases written down. The agent sees only the repository it runs in, not this one. Write the task yourself,
+with no name of this repository, the tracker or a synthetic application: the weakness, what the query must
 report and must not, the positive and negative cases as code, the contract in
 [the guide](references/migration-guide.md) (ids, metadata, tests, no version change, experimental
-tag), and the Copilot review rule above. Then
+tag, one Rust test directory per pull request), and the Copilot review rule above. Then
 `gh agent-task create -R GitHubSecurityLab/CodeQL-Community-Packs -F <task.md>`. Review the pull
 request as you would your own, and run `scan` against its branch before it leaves draft.
+
+What the agent has and lacks (**checked** 2026-11-24 in its run logs, `gh run view <id> -R
+GitHubSecurityLab/CodeQL-Community-Packs --log`, the `GITHUB_COPILOT_MCP_JSON_FROM_INPUT` value decoded from base64):
+
+- It has the pinned CodeQL CLI, the pack dependencies and the `github/codeql` test stubs, which
+  `.github/workflows/copilot-setup-steps.yml` installs, so it can run `codeql test run` and
+  `codeql query compile`. Its instructions (`.github/copilot-instructions.md`) cover releases and CLI
+  bumps, not writing queries, so the task has to carry the query rules.
+- **It has no CodeQL Development MCP server.** The MCP configuration of its 2026-11-19 run was only the
+  built in Playwright server. The template repository's agent has one (`ql-mcp`: `"type": "local"`,
+  `"command": "codeql-development-mcp-server"`, `"tools": ["*"]`), installed by setup steps: Node 26, then
+  `npm install --global codeql-development-mcp-server@<version>` and `codeql-development-mcp-server-setup-packs`.
+  Giving the CCP agent the same takes a pull request for `copilot-setup-steps.yml` and the MCP configuration
+  in the repository settings (an admin, no API). Neither is done. Look again before relying on it.
+- It cannot see a scan database, the org that scans, or this repository, so the diagnosis that needs them
+  (why a query found nothing live), the tracker, and the check after the release stay local. Give the agent the
+  small reproduction and the cases instead.
+- A Rust test run takes 3 to 4 minutes wherever it runs (the extractor builds the crate and extracts its
+  dependency sources). A hand-off does not make it faster, it moves the wait to a place where nobody is waiting.
 
 ## References
 
@@ -128,6 +155,6 @@ request as you would your own, and run `scan` against its branch before it leave
 - [references/verify-detection.md](references/verify-detection.md): after the release, closing the
   loop, counting alerts and timing the scans before and after.
 - `scripts/`: `community_packs_migrate.py`, `community_packs_corpus.py`, `community_packs_onboard.py`, `tracker_action.py`,
-  `verify_alerts.py`, `scan_timing.py`, `trigger_scans.py`, `rule_value.py`, `gap_overlap.py`, `default_setup_languages.py`,
+  `verify_alerts.py`, `scan_database.py`, `scan_timing.py`, `trigger_scans.py`, `rule_value.py`, `gap_overlap.py`, `default_setup_languages.py`,
   `enable_workflows.browser.js` (run in a signed-in browser page) and their offline tests
   (`python -m unittest` in that directory).

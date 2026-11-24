@@ -321,5 +321,50 @@ class UnitGaps(unittest.TestCase):
         self.assertEqual(migrate.unit_gaps(self.spec([(SSRF, False)]), self.repo, "HEAD"), [])
 
 
+class ScanSignature(unittest.TestCase):
+    """`scan` tells a signed commit from an unsigned one by the signature header of the commit object.
+
+    `git log --format=%G?` says N for an SSH signature that this machine cannot verify (it needs an allowed
+    signers file), so it called every commit that a 1Password SSH key signed unsigned.
+    """
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.repo = Path(self.tmp.name)
+        git(self.repo, "init", "-q", "-b", "main")
+        (self.repo / "a.txt").write_text("a\n")
+        git(self.repo, "add", "-A")
+        git(self.repo, "commit", "-q", "-m", "base")
+        git(self.repo, "checkout", "-q", "-b", "topic")
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def commit_with_header(self, header: str, message: str) -> None:
+        """Make HEAD a commit whose object has `header` (not a valid signature, only its shape)."""
+        tree = migrate.git_bytes(self.repo, "write-tree").decode().strip()
+        parent = migrate.git_bytes(self.repo, "rev-parse", "HEAD").decode().strip()
+        who = "t <1+t@users.noreply.github.com> 1700000000 +0000"
+        raw = f"tree {tree}\nparent {parent}\nauthor {who}\ncommitter {who}\n{header}\n{message}\n"
+        made = subprocess.run(["git", "-C", str(self.repo), "hash-object", "-t", "commit", "-w", "--stdin"],
+                              input=raw.encode(), capture_output=True, check=True).stdout.decode().strip()
+        git(self.repo, "reset", "-q", "--hard", made)
+
+    def unsigned(self):
+        return [f for f in migrate.scan(self.repo, "main", ["nothing"], None)["findings"] if "unsigned" in f["what"]]
+
+    def test_a_commit_with_a_signature_header_is_not_reported(self):
+        self.commit_with_header("gpgsig -----BEGIN SSH SIGNATURE-----\n AAAA\n -----END SSH SIGNATURE-----\n", "signed")
+        self.assertEqual(self.unsigned(), [])
+
+    def test_a_commit_without_one_is_reported(self):
+        git(self.repo, "commit", "-q", "--allow-empty", "-m", "plain")
+        self.assertEqual([f["where"] for f in self.unsigned()], ["commit 0"])
+
+    def test_the_word_in_a_message_is_not_a_signature(self):
+        self.commit_with_header("", "gpgsig -----BEGIN SSH SIGNATURE-----\nnot a header")
+        self.assertEqual([f["where"] for f in self.unsigned()], ["commit 0"])
+
+
 if __name__ == "__main__":
     unittest.main()
