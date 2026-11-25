@@ -527,14 +527,25 @@ CLI 2.27.5, rust-all 0.2.26):
   comes out of its body. The query has no barrier for it.
 - **Give the fallback source every sink, resolved ones too.** A fallback source (a parameter by its type) also
   reaches sinks that do resolve, and nothing else reports that flow when the handler is not registered, because the
-  data extension source needs the registration. Add the resolved version of each sink class and leave the flows
-  of modelled sources to the standard query with a clause, or the handler that a router registers is missed
-  (Copilot code review caught the body on its own).
-- **Report one path.** The modelled source (the handler that `Iron::new` receives) and the fallback source (its
-  parameter) reach the same sink. Leave out the fallback path when a modelled source reaches that sink and the
-  fallback node is not itself a modelled source, or every handler is reported twice (26 rows instead of 17 in
-  the fixture). Leave out the flow of a modelled source to a resolved sink that the standard query reports, or
-  the registered handler is reported by both queries (20 rows instead of 19).
+  data extension source needs the registration. Add the resolved version of each sink class, or the handler that a
+  router registers is missed (Copilot code review caught the body on its own).
+- **Report one path, and leave a flow to the standard query only when its analysis reaches it.** The modelled
+  source (the handler that `Iron::new` receives) and the fallback source (its parameter) reach the same sink.
+  Leave out the fallback path when a modelled source reaches that sink and the fallback node is not itself a
+  modelled source, or every handler is reported twice (26 rows instead of 17 in the fixture). A resolved sink
+  that the standard query reports (a registered handler, every call in between resolved) is reported by both
+  queries unless this one leaves it out (20 rows instead of 19). But a clause that tests the class of the
+  source ("a modelled source, so the standard query has it") is wrong: a call without a target between the
+  modelled source and the sink makes the standard analysis miss what this query's extra step finds, and the
+  clause then removes the only report. Copilot code review found that on the third round, and it reproduced: the
+  pushed query missed a registered handler whose body went through a call that has no target. The clause has to
+  test what the standard analysis reaches. **Open** at the time of writing (fix in progress in the Iron pull
+  request): two facts are checked, the rest is not. The sink of a data extension row is a flow summary node, not
+  the expression node of the argument (a class that extends the expression node and `Xss::Sink` has no
+  instance, and `sinkNode(n, ...)` with `n.asExpr()` fails to compile with `TFlowSummaryNode is incompatible
+  with TExprNode`), so an auxiliary configuration cannot name the argument as its sink. And the standard query
+  does not live in a library (its configuration is in `XSS.ql`), so a mirror of it has to be written in the
+  query.
 - **Test it as a fallback.**
   1. A fixture file with only the glob import, in a file of its own. The files of a Rust test directory are
      modules of one generated library crate and `main.rs` is a binary, so the glob-only file stays apart from the
@@ -545,7 +556,10 @@ CLI 2.27.5, rust-all 0.2.26):
   4. The negative cases of the original fixture again, in the glob-only form, a handler that nothing
      registers (with a tuple, and with a body on its own to a call that resolves), a sanitizer call, a method
      that says that it encodes for HTML, and a method that only looks like it does (`escape_default`), which
-     alerts.
+     alerts. And a registered handler whose value goes through a call that has no target before a resolved
+     sink: put that call directly on the modelled value (`req.url.path()` and then the call), because taint
+     stops at a resolved call that has no summary (a fixture with `Vec::join` in between gave no alert in
+     either query, which looked like the bug and was the fixture).
   5. Mutation checks, each reverted: without the file guard the other framework's file alerts, without the
      method step every glob alert goes, without the one-path clause the rows double, without the field guard the
      path edges and nodes of the existing rows change, with a substring encoder match the `escape_default`

@@ -39,8 +39,8 @@ class Query(unittest.TestCase):
         self.assertEqual(sd.ql_string('a"b\\c%'), '"a\\"b\\\\c%"')
 
     def test_the_query_holds_the_pattern_once_and_both_target_cases(self):
-        ql = sd.calls_query("%xss_002%")
-        self.assertEqual(ql.count('"%xss_002%"'), 1)
+        ql = sd.calls_query("%handlers%")
+        self.assertEqual(ql.count('"%handlers%"'), 1)
         self.assertIn("call.getStaticTarget().getCanonicalPath()", ql)
         self.assertIn('target = "<unresolved>"', ql)
 
