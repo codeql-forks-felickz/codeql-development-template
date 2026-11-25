@@ -123,7 +123,7 @@ cases written down. The agent sees only the repository it runs in, not this one.
 with no name of this repository, the tracker or a synthetic application: the weakness, what the query must
 report and must not, the positive and negative cases as code, the contract in
 [the guide](references/migration-guide.md) (ids, metadata, tests, no version change, experimental
-tag, one Rust test directory per pull request), and the Copilot review rule above. Then
+tag), and the Copilot review rule above. Then
 `gh agent-task create -R GitHubSecurityLab/CodeQL-Community-Packs -F <task.md>`. Review the pull
 request as you would your own, and run `scan` against its branch before it leaves draft.
 
@@ -144,7 +144,9 @@ GitHubSecurityLab/CodeQL-Community-Packs --log`, the `GITHUB_COPILOT_MCP_JSON_FR
   (why a query found nothing live), the tracker, and the check after the release stay local. Give the agent the
   small reproduction and the cases instead.
 - A Rust test run takes 3 to 4 minutes wherever it runs (the extractor builds the crate and extracts its
-  dependency sources). A hand-off does not make it faster, it moves the wait to a place where nobody is waiting.
+  dependency sources), and the CCP CI runs all of the language's tests when a pull request changes a file that
+  is not a query (8 Rust tests took 17 minutes on 2026-11-24). A hand-off does not make either faster, it moves
+  the wait to a place where nobody is waiting, so ask the agent for one batch of fixes per review round.
 
 ## References
 

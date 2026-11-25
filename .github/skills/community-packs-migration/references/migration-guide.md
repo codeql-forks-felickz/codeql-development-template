@@ -286,7 +286,10 @@ A model-only change has no query to measure, so Gate 2 for it is different
 - Neutral identifiers only: no application names, no domain vocabulary from the
   synthetic app. Use `--replace OLD=NEW` when you plan and `--deny` when you check.
 - Learn `.expected` only after you have read the diff. Never commit an `.actual`
-  file.
+  file. A learn run of a query that does not compile can write the error into the `.expected` file instead of
+  failing (**checked** 2026-11-24: a 67 byte file, `ERROR: 'name' is not bound to a value`), so compile with
+  `--warnings=error` first, as `check` does, and look at the size and the removed lines of the diff
+  (`git diff -U0 origin/main -- <test dir>`: an unchanged fixture must not lose a row).
 - Small fixtures. Tests that need stubs use the stubs CI makes available (see
   [Tooling](#9-tooling)).
 
@@ -512,17 +515,26 @@ CLI 2.27.5, rust-all 0.2.26):
   there is: say so under "Known limitations". It is a source in resolved code too, where it also finds a
   handler that nothing registers (a router registers it, for example).
 - **Steps over what has no target.** A method call with no target passes its receiver on to its result, except
-  for the methods that tell a property and no content (`len`, `is_empty`, `contains`, ...) and the names that
-  suggest encoding (`escape`, `encode`: the stock `HeuristicHtmlEncodingBarrier` makes a call of a function with
-  such a name a barrier, and the fallback takes a method with such a name the same way). A function call is not
+  for the methods that tell a property and no content (`len`, `is_empty`, `contains`, ...) and the methods whose
+  name says that they encode for HTML (`escape_html`, `html_escape`, `encode_html`). Match the name against that
+  shape and not against the words `escape` or `encode` anywhere in it: Copilot code review caught that a
+  substring match also hides `escape_default` (it keeps `<` and `>`) and `unescape_html` (it undoes the
+  encoding), which locked a false negative into the test. The stock `HeuristicHtmlEncodingBarrier` is broad for
+  resolved calls, but the fallback has no type to fall back on, so it has to be stricter. A function call is not
   a step of the fallback. A fixture whose sanitizer call (`clean(&body)`) has no target gives no alert, because
   the analysis does not follow data through a call that it cannot resolve. On the scan database the real
   sanitizer (`ammonia::clean`) resolves, and the sample that uses it gives no alert either, because no taint
   comes out of its body. The query has no barrier for it.
+- **Give the fallback source every sink, resolved ones too.** A fallback source (a parameter by its type) also
+  reaches sinks that do resolve, and nothing else reports that flow when the handler is not registered, because the
+  data extension source needs the registration. Add the resolved version of each sink class and leave the flows
+  of modelled sources to the standard query with a clause, or the handler that a router registers is missed
+  (Copilot code review caught the body on its own).
 - **Report one path.** The modelled source (the handler that `Iron::new` receives) and the fallback source (its
   parameter) reach the same sink. Leave out the fallback path when a modelled source reaches that sink and the
   fallback node is not itself a modelled source, or every handler is reported twice (26 rows instead of 17 in
-  the fixture).
+  the fixture). Leave out the flow of a modelled source to a resolved sink that the standard query reports, or
+  the registered handler is reported by both queries (20 rows instead of 19).
 - **Test it as a fallback.**
   1. A fixture file with only the glob import, in a file of its own. The files of a Rust test directory are
      modules of one generated library crate and `main.rs` is a binary, so the glob-only file stays apart from the
@@ -531,17 +543,23 @@ CLI 2.27.5, rust-all 0.2.26):
      resolves them some day its expected file changes, and the fixture no longer exercises the fallback.
   3. A file with the same names from another framework and no `use` of the crate, which must give no alert.
   4. The negative cases of the original fixture again, in the glob-only form, a handler that nothing
-     registers, and a sanitizer call.
+     registers (with a tuple, and with a body on its own to a call that resolves), a sanitizer call, a method
+     that says that it encodes for HTML, and a method that only looks like it does (`escape_default`), which
+     alerts.
   5. Mutation checks, each reverted: without the file guard the other framework's file alerts, without the
      method step every glob alert goes, without the one-path clause the rows double, without the field guard the
-     path edges and nodes of the existing rows change, and without the `escape` exclusion the encoded handler
-     alerts. The file guard is used by the source, the steps and the sink, and a flow needs all three, so the
-     mutation makes it hold everywhere: the fixture cannot show which single use was removed.
+     path edges and nodes of the existing rows change, with a substring encoder match the `escape_default`
+     alert goes, without the resolved body sink the unregistered body-only alert goes, and without the clause
+     for modelled sources the registered body-only handler is reported twice. The file guard is used by the
+     source, the steps and the sink, and a flow needs all three, so the mutation makes it hold everywhere: the
+     fixture cannot show which single use was removed.
 - **Check the result on the scan database** ([verify-detection.md](./verify-detection.md), section 6) before the
   pull request opens: the original finding is reported, the safe sample is not, and every other new row is read.
 - **QL gotchas** (rust-all 0.2.26): `getStaticTarget()` and `getPositionalArgument(i)` are members of `Call`, not
   of `CallExpr`, so reach the callee with `call.(CallExpr).getFunction().(PathExpr).getPath()`.
-  `FieldExpr.getStructField()` tells whether a field resolved. `check` forbids importing anything `internal`, so
+  `FieldExpr.getStructField()` tells whether a field resolved. A predicate with a `string` parameter that
+  its body only tests (a `regexpMatch` on the name) needs `bindingset[name]`, or the query fails with `'name' is
+  not bound to a value`. `check` forbids importing anything `internal`, so
   the type inference predicates are out of reach and these three signals (no target, no field, the file) are what
   there is.
 
@@ -708,11 +726,16 @@ full links. Without `--apply` all three commands print what would change and wri
   file back to its content from before they ran when `pack install` rewrites it. Edit such a lock by hand,
   because a local `pack install` writes `dependencies: {}` for packs that the CLI bundles (the Ruby test lock
   shows the layout: the stock queries pack and `codeql/suite-helpers` are listed).
-- **Two test directories in one Rust pull request fail CI.** The CI test step slices by test directory and
-  runs the slices in parallel, the Rust extractor installs its toolchain with rustup on demand, and on a fresh
-  runner two slices download it into the same `~/.rustup` at once (`could not rename 'downloaded' file`).
-  Keep one test directory per pull request or run Rust as a single slice (the `num_slices` line of the CI
-  test step).
+- **Rust test directories run one after the other in CI, and a pull request that touches a file other than a
+  query runs all of them.** The CI test step used to slice by test directory and run the slices in parallel, and
+  two Rust slices on a fresh runner downloaded the toolchain into the same `~/.rustup` at once (`could not rename
+  'downloaded' file`), so a Rust pull request could change only one test directory. Pull request 259 made Rust run
+  a single slice (`num_slices = 1 if language == "rust"` in `.github/workflows/ci.yml`, **checked** 2026-11-24 on
+  `main` and in the log of a later pull request), so several test directories are fine now. The other half: the step
+  runs only the tests of the queries that a pull request touches when the pull request changes nothing but `.ql`
+  files. Any other changed file (a `.qll`, a `.qhelp`, an `.expected`, a fixture) logs `not a leaf .ql file,
+  compiling everything in rust`, and all the language's tests run: 8 tests in 5 directories took 17 minutes
+  (against 4 to 9 minutes for a pull request that touched one query), so expect a wait and push fixes in batches.
 - **A user level CodeQL config changes results.** `~/.config/codeql/config` with
   `--threat-model all` applies to `codeql test run` and
   `codeql query run`, so local sources (files, environment, standard input) become

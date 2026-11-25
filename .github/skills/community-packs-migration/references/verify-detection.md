@@ -391,7 +391,8 @@ draft): the fallback, tested as in the guide's
 [A fallback for calls that have no target](./migration-guide.md#a-fallback-for-calls-that-have-no-target). On the
 downloaded scan database of the 2026-11-24 scan the released rule reports 0 alerts and the changed rule 3:
 the Iron XSS of the gap issue (the sink is the `Response::with` line, one line below the AI alert, so the match is
-near and not exact), a second AI alert of the same CWE that no gap issue listed (the same line), and the same flow in
+near and not exact), a second AI alert of the same CWE (alert 33, which the gap issue of the Iron query does not
+list; the same line), and the same flow in
 a sample that is safe for another weakness (the body is the text of a response to an outbound request, a remote
 source of the standard query, so it is a finding of the rule and not a mistake of the fallback). The sample that
 sanitizes the body with `ammonia::clean` reports nothing, because `clean` resolves there and no taint comes out of
