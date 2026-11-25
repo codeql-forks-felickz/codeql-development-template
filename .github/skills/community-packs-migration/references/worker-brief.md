@@ -131,7 +131,7 @@ script bug.
    packet, because a config line that names something the latest release lacks breaks every scan.
 9. **Finish.** Rename the branch to `<lang>/<id-name>` with `git branch -m`.
    Make one commit. Run `check` again on the committed tree, then `scan --ccp <wt>
-   --deny-file <work>\deny.txt --pr-body <work>\pr-body.md`, which must have no
+--deny-file <work>\deny.txt --pr-body <work>\pr-body.md`, which must have no
    `fail`. Write `<work>\packet.md` (local only), `<work>\pr-body.md` (the public
    draft) and `<work>\report.json`.
 
@@ -160,16 +160,35 @@ script bug.
 
 ```json
 {
-  "issue": 0, "pr": 0, "unit": "", "tier": 1, "status": "READY_FOR_REVIEW | BLOCKED | NEEDS_DECISION",
-  "branch": "", "commit": "", "files": 0,
-  "id": "", "precision": "", "placement": "",
-  "check": {"ok": true}, "scan": {"ok": true, "warnings": 0},
-  "measure": {"ok": true, "cost_class": "low | moderate | high", "own_s": 0, "wall_s": 0, "rows": 0, "tp": 0, "fp": 0, "unclear": 0},
-  "readiness": [{"item": "", "status": "resolved | accepted | blocked", "how": ""}],
-  "suite": {"selected_by_default": true, "audit_suite_added": false},
-  "configs": {"added": [], "after_release": []},
-  "timeline": [{"step": "plan", "minutes": 0}],
-  "script_bugs": [], "decisions_needed": []
+  "issue": 0,
+  "pr": 0,
+  "unit": "",
+  "tier": 1,
+  "status": "READY_FOR_REVIEW | BLOCKED | NEEDS_DECISION",
+  "branch": "",
+  "commit": "",
+  "files": 0,
+  "id": "",
+  "precision": "",
+  "placement": "",
+  "check": { "ok": true },
+  "scan": { "ok": true, "warnings": 0 },
+  "measure": {
+    "ok": true,
+    "cost_class": "low | moderate | high",
+    "own_s": 0,
+    "wall_s": 0,
+    "rows": 0,
+    "tp": 0,
+    "fp": 0,
+    "unclear": 0
+  },
+  "readiness": [{ "item": "", "status": "resolved | accepted | blocked", "how": "" }],
+  "suite": { "selected_by_default": true, "audit_suite_added": false },
+  "configs": { "added": [], "after_release": [] },
+  "timeline": [{ "step": "plan", "minutes": 0 }],
+  "script_bugs": [],
+  "decisions_needed": []
 }
 ```
 

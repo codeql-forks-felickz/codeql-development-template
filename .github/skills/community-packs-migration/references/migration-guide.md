@@ -26,20 +26,20 @@ Locations on your machine are written as `<work-root>`, `<wt-root>`, `<corpus-ro
 
 ## The pipeline
 
-| Step | Command | What it does |
-| --- | --- | --- |
-| Size the backlog | `plan-all` | A spec for every triaged pull request, and a tally of what needs a person. |
-| Plan one item | `plan` | The spec for one pull request. Change a flag and plan again, do not hand edit the spec. |
-| Port | `apply` | Copies files into a CCP worktree, rewrites `@id`, `@precision` and `@tags`. It leaves pack versions alone. |
-| Hand edit | | Readiness items, neutral fixtures, negative tests. |
-| Gate 1 | `check` | The CCP rules, formatting, compile with `--warnings=error`, tests, the suite for the query's group, the pack lines in the configs. |
-| Configs | `community_packs_onboard.py` | Reports (and with `--apply` fixes) the pack lines and the audit suite that make a query run, and with `--published` the lines that name something the latest release lacks. |
-| Corpus | `community_packs_corpus.py sample` or `targeted` | A database of real public code, built once per language and shared, read only. |
-| Gate 2 | `measure` | Runs the query on a corpus, profiles it, keeps every row for triage. |
-| Evidence | `community_packs_corpus.py links` | Commit pinned permalinks and repository metadata for the rows. |
-| Packet | | A package for the human to review and publish. |
-| Track | `tracker_action.py` | Records the pull request and its state in the tracker's Action column (see [Tracker](#tracker)). |
-| Verify | `verify_alerts.py` | After the release: does the query find the original finding, and how many alerts does it raise. See [verify-detection.md](./verify-detection.md). |
+| Step             | Command                                          | What it does                                                                                                                                                                |
+| ---------------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Size the backlog | `plan-all`                                       | A spec for every triaged pull request, and a tally of what needs a person.                                                                                                  |
+| Plan one item    | `plan`                                           | The spec for one pull request. Change a flag and plan again, do not hand edit the spec.                                                                                     |
+| Port             | `apply`                                          | Copies files into a CCP worktree, rewrites `@id`, `@precision` and `@tags`. It leaves pack versions alone.                                                                  |
+| Hand edit        |                                                  | Readiness items, neutral fixtures, negative tests.                                                                                                                          |
+| Gate 1           | `check`                                          | The CCP rules, formatting, compile with `--warnings=error`, tests, the suite for the query's group, the pack lines in the configs.                                          |
+| Configs          | `community_packs_onboard.py`                     | Reports (and with `--apply` fixes) the pack lines and the audit suite that make a query run, and with `--published` the lines that name something the latest release lacks. |
+| Corpus           | `community_packs_corpus.py sample` or `targeted` | A database of real public code, built once per language and shared, read only.                                                                                              |
+| Gate 2           | `measure`                                        | Runs the query on a corpus, profiles it, keeps every row for triage.                                                                                                        |
+| Evidence         | `community_packs_corpus.py links`                | Commit pinned permalinks and repository metadata for the rows.                                                                                                              |
+| Packet           |                                                  | A package for the human to review and publish.                                                                                                                              |
+| Track            | `tracker_action.py`                              | Records the pull request and its state in the tracker's Action column (see [Tracker](#tracker)).                                                                            |
+| Verify           | `verify_alerts.py`                               | After the release: does the query find the original finding, and how many alerts does it raise. See [verify-detection.md](./verify-detection.md).                           |
 
 The commands live in [`scripts/community_packs_migrate.py`](../scripts/community_packs_migrate.py),
 [`scripts/community_packs_corpus.py`](../scripts/community_packs_corpus.py),
@@ -58,17 +58,17 @@ These were open after the pilot and are settled as below. If the maintainers dec
 differently, change this table and the affected packets, not one pull request at a
 time.
 
-| Question | Decision | Why |
-| --- | --- | --- |
-| Suite posture | Ship security-grade with the `experimental` tag and leave the query in the default suite: experimental is what Community Packs is for, and a non-experimental query belongs in `github/codeql`. **Do not change what an existing suite selects in a query pull request.** The first audit query of a language brings its audit suite (`community_packs_onboard.py --apply` creates it), and every query needs its pack named in the configs ([section 4](#what-makes-a-query-run)). The packet records what `<lang>.qls` selects. | Confirmed by the maintainer (2026-11-18). The existing experimental queries in CCP are in the default suites, so the tag is informational there. The configs and the audit suite were missed for Actions and again for Rust (2026-11-24), so `check` now fails on both. |
-| Language segment of `@id` | Always, following the stock prefixes in section 3. | Matches the requested `githubsecuritylab/java/...` form. Shipped ids stay as they are. |
-| Pull request granularity | One pull request per tracker issue (confirmed by the maintainer, 2026-11-18). A worker builds one branch per **unit**: a query with its help and tests, or the model files with the tests no query owns. `plan-all` splits a template pull request into units (and a multi-language one by language), and the units of one issue are combined into one pull request when it is published. | Independent units can be reviewed or reworked alone, a worker's scope stays small, and the tracker Action cell holds one link per issue. |
-| `decision_needed` items | Proceed when the recommended destination is CCP. | CCP is the conservative default for anything doubtful, and a later move to `github/codeql` stays possible. |
-| Model rows for a language without an ext pack | A separate pull request adds the data extension pack first (confirmed by the maintainer, 2026-11-18). [GitHubSecurityLab/CodeQL-Community-Packs#254](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs/pull/254) added the empty packs for JavaScript, Ruby and C++ (the languages with pending model rows) and merged on 2026-11-18, so those languages now take model rows. Swift and Actions have no ext pack and no pending model rows. | Creating an ext pack is its own change. |
-| Example to cite | None by default. A pull request does not cite a live project. | A true positive on a live project is an unpatched vulnerability or a leak. The packet keeps the evidence for the maintainer. |
-| Evidence per unit | Two tiers (section 7): a true positive on a real project for precision high and above, the shared corpus measure with every row classified for the rest. | The true positive search took 1 to 3 hours per unit in the first batch. The maintainer can still require it for any unit. |
-| CodeQL config for gates | Empty (`CODEQL_CONFIG_FILE`, no user config) for `check`, `measure` and every test run. | A user config can enable every threat model, which CI does not. |
-| A language whose tests cannot run on your platform (Swift has no extractor on Windows) | Migrate the files, record "tests not run locally", and let CI run them. | The gate cannot be met locally, so the packet says so instead of pretending. |
+| Question                                                                               | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Why                                                                                                                                                                                                                                                                     |
+| -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Suite posture                                                                          | Ship security-grade with the `experimental` tag and leave the query in the default suite: experimental is what Community Packs is for, and a non-experimental query belongs in `github/codeql`. **Do not change what an existing suite selects in a query pull request.** The first audit query of a language brings its audit suite (`community_packs_onboard.py --apply` creates it), and every query needs its pack named in the configs ([section 4](#what-makes-a-query-run)). The packet records what `<lang>.qls` selects. | Confirmed by the maintainer (2026-11-18). The existing experimental queries in CCP are in the default suites, so the tag is informational there. The configs and the audit suite were missed for Actions and again for Rust (2026-11-24), so `check` now fails on both. |
+| Language segment of `@id`                                                              | Always, following the stock prefixes in section 3.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Matches the requested `githubsecuritylab/java/...` form. Shipped ids stay as they are.                                                                                                                                                                                  |
+| Pull request granularity                                                               | One pull request per tracker issue (confirmed by the maintainer, 2026-11-18). A worker builds one branch per **unit**: a query with its help and tests, or the model files with the tests no query owns. `plan-all` splits a template pull request into units (and a multi-language one by language), and the units of one issue are combined into one pull request when it is published.                                                                                                                                         | Independent units can be reviewed or reworked alone, a worker's scope stays small, and the tracker Action cell holds one link per issue.                                                                                                                                |
+| `decision_needed` items                                                                | Proceed when the recommended destination is CCP.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | CCP is the conservative default for anything doubtful, and a later move to `github/codeql` stays possible.                                                                                                                                                              |
+| Model rows for a language without an ext pack                                          | A separate pull request adds the data extension pack first (confirmed by the maintainer, 2026-11-18). [GitHubSecurityLab/CodeQL-Community-Packs#254](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs/pull/254) added the empty packs for JavaScript, Ruby and C++ (the languages with pending model rows) and merged on 2026-11-18, so those languages now take model rows. Swift and Actions have no ext pack and no pending model rows.                                                                             | Creating an ext pack is its own change.                                                                                                                                                                                                                                 |
+| Example to cite                                                                        | None by default. A pull request does not cite a live project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | A true positive on a live project is an unpatched vulnerability or a leak. The packet keeps the evidence for the maintainer.                                                                                                                                            |
+| Evidence per unit                                                                      | Two tiers (section 7): a true positive on a real project for precision high and above, the shared corpus measure with every row classified for the rest.                                                                                                                                                                                                                                                                                                                                                                          | The true positive search took 1 to 3 hours per unit in the first batch. The maintainer can still require it for any unit.                                                                                                                                               |
+| CodeQL config for gates                                                                | Empty (`CODEQL_CONFIG_FILE`, no user config) for `check`, `measure` and every test run.                                                                                                                                                                                                                                                                                                                                                                                                                                           | A user config can enable every threat model, which CI does not.                                                                                                                                                                                                         |
+| A language whose tests cannot run on your platform (Swift has no extractor on Windows) | Migrate the files, record "tests not run locally", and let CI run them.                                                                                                                                                                                                                                                                                                                                                                                                                                                           | The gate cannot be met locally, so the packet says so instead of pretending.                                                                                                                                                                                            |
 
 ## 1. Go or no-go
 
@@ -94,16 +94,16 @@ Stop and send the item back if any of these hold:
 `javascript`, `python`, `ruby`, `rust`, `swift`). The template language `html`
 migrates into `javascript`.
 
-| Template pull request | Community Packs |
-| --- | --- |
-| Query `.ql` | `<lang>/src/<group>/CWE-NNN/<Name>.ql`, where `<group>` is `security` or `audit` |
-| Query help `.md` or `.qhelp` | same directory and stem as the query |
-| Query tests | `<lang>/test/<group>/CWE-NNN/<Name>/` with `<Name>.qlref`, `<Name>.expected` and the fixtures |
-| Model rows `.model.yml` | `<lang>/ext/manual/<library>.model.yml` |
-| Model tests | `<lang>/test/security/CWE-NNN/<library>/` with a test `.ql` that imports the real flow module |
-| Query library `.qll` | `<lang>/lib/...` |
-| Pack version | not changed: a release sets every version (see the note below the table) |
-| Change notes | not applicable, CCP has none |
+| Template pull request        | Community Packs                                                                               |
+| ---------------------------- | --------------------------------------------------------------------------------------------- |
+| Query `.ql`                  | `<lang>/src/<group>/CWE-NNN/<Name>.ql`, where `<group>` is `security` or `audit`              |
+| Query help `.md` or `.qhelp` | same directory and stem as the query                                                          |
+| Query tests                  | `<lang>/test/<group>/CWE-NNN/<Name>/` with `<Name>.qlref`, `<Name>.expected` and the fixtures |
+| Model rows `.model.yml`      | `<lang>/ext/manual/<library>.model.yml`                                                       |
+| Model tests                  | `<lang>/test/security/CWE-NNN/<library>/` with a test `.ql` that imports the real flow module |
+| Query library `.qll`         | `<lang>/lib/...`                                                                              |
+| Pack version                 | not changed: a release sets every version (see the note below the table)                      |
+| Change notes                 | not applicable, CCP has none                                                                  |
 
 **A pull request does not change any pack version** (decision of 2026-11-18: the
 maintainer cuts a release when everything is ready to publish). Merging never publishes
@@ -139,17 +139,17 @@ githubsecuritylab/audit/<lang>/<kebab-name>       audit-grade
 Example: `githubsecuritylab/java/uncontrolled-file-decompression`.
 
 | Pack directory | `<lang>` in the id |
-| --- | --- |
-| `actions` | `actions` |
-| `cpp` | `cpp` |
-| `csharp` | `cs` |
-| `go` | `go` |
-| `java` | `java` |
-| `javascript` | `js` |
-| `python` | `py` |
-| `ruby` | `rb` |
-| `rust` | `rust` |
-| `swift` | `swift` |
+| -------------- | ------------------ |
+| `actions`      | `actions`          |
+| `cpp`          | `cpp`              |
+| `csharp`       | `cs`               |
+| `go`           | `go`               |
+| `java`         | `java`             |
+| `javascript`   | `js`               |
+| `python`       | `py`               |
+| `ruby`         | `rb`               |
+| `rust`         | `rust`             |
+| `swift`        | `swift`            |
 
 The language segment follows the stock CodeQL id prefixes. Existing ids in CCP
 are mixed (62 of 95 Java queries have a `java/` segment, Python, Ruby and C++
@@ -161,22 +161,22 @@ an application name. The id must not clash with any id in CCP. `check` tests thi
 
 ### The rest of the header
 
-| Tag | Rule |
-| --- | --- |
-| `@name`, `@description`, `@kind`, `@problem.severity` | Required. The description says what is reported, not how. |
-| `@precision` | The **assessed** precision from the triage, never the value the prototype declared. Never raise it to reach a suite. |
-| `@tags` | `security`, `external/cwe/cwe-NNN`, and `experimental` for every item the tracker labels `tags:experimental`. Audit queries add `audit`. |
+| Tag                                                   | Rule                                                                                                                                     |
+| ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `@name`, `@description`, `@kind`, `@problem.severity` | Required. The description says what is reported, not how.                                                                                |
+| `@precision`                                          | The **assessed** precision from the triage, never the value the prototype declared. Never raise it to reach a suite.                     |
+| `@tags`                                               | `security`, `external/cwe/cwe-NNN`, and `experimental` for every item the tracker labels `tags:experimental`. Audit queries add `audit`. |
 
 ## 4. Security-grade or audit-grade, and what a suite does with it
 
 Decide first. Complete this table before you implement or migrate:
 
-| Question | Security query | Audit query |
-| --- | --- | --- |
-| Requires an attacker-controlled source to reach a sensitive sink | Yes | No |
-| Acceptable in default suites | Yes | Usually not |
-| Precision expectation | High | Explicitly lower |
-| Alert framing | "This is exploitable" | "Review this construct" |
+| Question                                                         | Security query        | Audit query             |
+| ---------------------------------------------------------------- | --------------------- | ----------------------- |
+| Requires an attacker-controlled source to reach a sensitive sink | Yes                   | No                      |
+| Acceptable in default suites                                     | Yes                   | Usually not             |
+| Precision expectation                                            | High                  | Explicitly lower        |
+| Alert framing                                                    | "This is exploitable" | "Review this construct" |
 
 Detection without provable reachability is often a legitimate audit query. Say so
 plainly and label it as such rather than lowering the precision of a default security
@@ -189,10 +189,10 @@ query, because it honestly reports what the database cannot distinguish.
 
 Then check what the CCP suites will do with the result, because that is what users get.
 
-| Posture | Placement | Metadata | Selected by |
-| --- | --- | --- | --- |
-| Security-grade | `src/security/CWE-NNN/` | `@precision` very-high to low | `<lang>.qls` |
-| Audit-grade | `src/audit/CWE-NNN/` | `@precision very-low`, tag `audit` | `<lang>-audit.qls` only (cpp, csharp, go, java, javascript, python and rust have one; actions, ruby and swift do not, and a query of kind `table` or `treemap` is an exploration query that no audit suite selects) |
+| Posture        | Placement               | Metadata                           | Selected by                                                                                                                                                                                                         |
+| -------------- | ----------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Security-grade | `src/security/CWE-NNN/` | `@precision` very-high to low      | `<lang>.qls`                                                                                                                                                                                                        |
+| Audit-grade    | `src/audit/CWE-NNN/`    | `@precision very-low`, tag `audit` | `<lang>-audit.qls` only (cpp, csharp, go, java, javascript, python and rust have one; actions, ruby and swift do not, and a query of kind `table` or `treemap` is an exploration query that no audit suite selects) |
 
 **The `experimental` tag does not keep a query out of the default suite.** The
 `<lang>.qls` suites select by kind and precision (very-high, high, medium, low)
@@ -209,13 +209,13 @@ query that cannot claim reachability, not for a slow one: a slow security query 
 A merged query runs for nobody until all of these hold. A migration forgot the first two for Actions
 and again for Rust, which is why `check` now fails on them.
 
-| Needed | Where | Checked by |
-| --- | --- | --- |
-| The queries pack is named in `configs/default.yml` and `configs/synthetics.yml`, and the ext pack in `synthetics.yml` when it has data extensions (`default.yml` and `audit.yml` name the ext packs that were chosen on purpose) | `configs/` | `check`, `community_packs_onboard.py` |
-| A suite selects the query: `<lang>.qls` for a security query, `<lang>-audit.qls` for an audit query and not `<lang>.qls`. The audit suite is a new file in the same pull request as the first audit query of the language. | `<lang>/src/suites/` | `check` |
-| `configs/audit.yml` names `<pack>:suites/<lang>-audit.qls` | `configs/audit.yml` | `community_packs_onboard.py` |
-| A release has published the pack, and every path that a config names in it | the registry | `community_packs_onboard.py --published` |
-| The repository's default setup lists the language, and the config's `query-filters` keep the query | the repository, the config | [verify-detection.md](./verify-detection.md), sections 3 and 4 |
+| Needed                                                                                                                                                                                                                           | Where                      | Checked by                                                     |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | -------------------------------------------------------------- |
+| The queries pack is named in `configs/default.yml` and `configs/synthetics.yml`, and the ext pack in `synthetics.yml` when it has data extensions (`default.yml` and `audit.yml` name the ext packs that were chosen on purpose) | `configs/`                 | `check`, `community_packs_onboard.py`                          |
+| A suite selects the query: `<lang>.qls` for a security query, `<lang>-audit.qls` for an audit query and not `<lang>.qls`. The audit suite is a new file in the same pull request as the first audit query of the language.       | `<lang>/src/suites/`       | `check`                                                        |
+| `configs/audit.yml` names `<pack>:suites/<lang>-audit.qls`                                                                                                                                                                       | `configs/audit.yml`        | `community_packs_onboard.py`                                   |
+| A release has published the pack, and every path that a config names in it                                                                                                                                                       | the registry               | `community_packs_onboard.py --published`                       |
+| The repository's default setup lists the language, and the config's `query-filters` keep the query                                                                                                                               | the repository, the config | [verify-detection.md](./verify-detection.md), sections 3 and 4 |
 
 Which lines go in the query pull request and which wait: a config on `main` is read at scan time and resolves
 against the **latest published pack**, so a line is safe only when the release already holds what it names. The
@@ -262,10 +262,10 @@ Only `cpp`, `csharp`, `go`, `java`, `javascript`, `python`, `ruby` and `rust` ha
 `ext` pack (`EXT_LANGUAGES` in the script). `plan` warns when model rows target any
 other language.
 
-| Language | Options for model rows |
-| --- | --- |
+| Language                                                              | Options for model rows                                                                                                                                                 |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `cpp`, `csharp`, `go`, `java`, `javascript`, `python`, `ruby`, `rust` | `<lang>/ext/manual/<library>.model.yml`. Keep `extensionTargets` as `'*'`. The test pack must depend on the ext pack. Do not run `codeql pack install` on an ext pack. |
-| `swift`, `actions` | Model the API in QL inside the query pack or `lib`, or ask the maintainers to create an ext pack first. This is a maintainer decision, not a worker's. |
+| `swift`, `actions`                                                    | Model the API in QL inside the query pack or `lib`, or ask the maintainers to create an ext pack first. This is a maintainer decision, not a worker's.                 |
 
 A model-only change has no query to measure, so Gate 2 for it is different
 (see [Gate 2 for model-only units](#gate-2-for-model-only-units)).
@@ -301,8 +301,8 @@ A migrated query is done when all of these hold.
    constructs, id uniqueness, denied names in every changed file and file name,
    no `postprocess:` line) and the same commands CI does: a format check on the
    LF content (a Windows checkout may have CRLF), `codeql pack install
-   --additional-packs <lang> <lang>/{lib,src,test}`, `codeql query compile
-   --check-only --warnings=error` over the queries **and the test queries**, the
+--additional-packs <lang> <lang>/{lib,src,test}`, `codeql query compile
+--check-only --warnings=error` over the queries **and the test queries**, the
    help renders, `codeql test run --additional-packs <lang>`, and for model rows
    `codeql pack create` on the ext pack and a test pack that depends on it. It fails
    when a lock file already differs before the gates run (the unit must not touch
@@ -327,10 +327,10 @@ The true positive on a real project is the slowest step (it needs a database of
 the right project, and building one took 1 to 3 hours in the first batch). Spend
 it where it matters.
 
-| Tier | Units | Evidence required |
-| --- | --- | --- |
-| 1 | Assessed precision very-high or high | A true positive on a real project, from the shared corpus or one small targeted database (at most 3 repositories, at most 45 minutes of build time). |
-| 2 | Medium, low, or audit-grade | The measure on the shared corpus with every row classified. A true positive is welcome. If there is none after that, the packet says "no true positive found in <N> repositories" and the maintainer decides. |
+| Tier | Units                                | Evidence required                                                                                                                                                                                             |
+| ---- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | Assessed precision very-high or high | A true positive on a real project, from the shared corpus or one small targeted database (at most 3 repositories, at most 45 minutes of build time).                                                          |
+| 2    | Medium, low, or audit-grade          | The measure on the shared corpus with every row classified. A true positive is welcome. If there is none after that, the packet says "no true positive found in <N> repositories" and the maintainer decides. |
 
 Never exceed the build budget for a targeted database. Stop and report instead.
 
@@ -343,9 +343,9 @@ real corpus the same join is unbounded.
 The pilot query (an Actions query, 329 public workflow files, about 84,000
 lines) shows it:
 
-| | Original port | After the fix |
-| --- | --- | --- |
-| 40 workflow files | 8 min 15 s | 30 s |
+|                    | Original port                  | After the fix                                                  |
+| ------------------ | ------------------------------ | -------------------------------------------------------------- |
+| 40 workflow files  | 8 min 15 s                     | 30 s                                                           |
 | 329 workflow files | did not finish in 20 min, 8 GB | about 2 min, of which the query's own predicates are about 3 s |
 
 The cause was a predicate with a free variable that the compiler inlined into a
@@ -421,11 +421,11 @@ experimental. The tag does not change that, and neither does the precision.
 `measure` gives every query a **cost class** (`cost_class` and `cost_notes` in `measure.json`,
 and the worst class of the unit at the top of the report):
 
-| Class | When | What to do |
-| --- | --- | --- |
-| `low` | The own predicates take at most 10 s, none of them takes more than 5 s, and the whole run, library included, takes at most 10 minutes. | Record the figures. |
-| `moderate` | It passes the gate but exceeds one of those three limits. | A bigger database makes it slower: 10 s on a corpus of about 19,000 files is minutes on a large monorepo. Do the scaling check, then decide (below). |
-| `high` | It fails the gate: the run did not finish within `--max-wall`, the own predicates contain a cartesian product (visible with `--tuple-counting`), or they take more than `--budget` (60 s). | It does not ship as it is. |
+| Class      | When                                                                                                                                                                                       | What to do                                                                                                                                           |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `low`      | The own predicates take at most 10 s, none of them takes more than 5 s, and the whole run, library included, takes at most 10 minutes.                                                     | Record the figures.                                                                                                                                  |
+| `moderate` | It passes the gate but exceeds one of those three limits.                                                                                                                                  | A bigger database makes it slower: 10 s on a corpus of about 19,000 files is minutes on a large monorepo. Do the scaling check, then decide (below). |
+| `high`     | It fails the gate: the run did not finish within `--max-wall`, the own predicates contain a cartesian product (visible with `--tuple-counting`), or they take more than `--budget` (60 s). | It does not ship as it is.                                                                                                                           |
 
 The class is a floor, not a verdict. Three things raise the risk and are not measured: a language
 without a corpus on your platform (C/C++ and Swift, and Go is built by hand), so treat that query
@@ -543,7 +543,7 @@ CLI 2.27.5, rust-all 0.2.26):
   request): two facts are checked, the rest is not. The sink of a data extension row is a flow summary node, not
   the expression node of the argument (a class that extends the expression node and `Xss::Sink` has no
   instance, and `sinkNode(n, ...)` with `n.asExpr()` fails to compile with `TFlowSummaryNode is incompatible
-  with TExprNode`), so an auxiliary configuration cannot name the argument as its sink. And the standard query
+with TExprNode`), so an auxiliary configuration cannot name the argument as its sink. And the standard query
   does not live in a library (its configuration is in `XSS.ql`), so a mirror of it has to be written in the
   query.
 - **Test it as a fallback.**
@@ -573,7 +573,7 @@ CLI 2.27.5, rust-all 0.2.26):
   of `CallExpr`, so reach the callee with `call.(CallExpr).getFunction().(PathExpr).getPath()`.
   `FieldExpr.getStructField()` tells whether a field resolved. A predicate with a `string` parameter that
   its body only tests (a `regexpMatch` on the name) needs `bindingset[name]`, or the query fails with `'name' is
-  not bound to a value`. `check` forbids importing anything `internal`, so
+not bound to a value`. `check` forbids importing anything `internal`, so
   the type inference predicates are out of reach and these three signals (no target, no field, the file) are what
   there is.
 
@@ -722,6 +722,7 @@ full links. Without `--apply` all three commands print what would change and wri
 
   Add a directory with `git -C <stubs> sparse-checkout add <path>`. `prepare --stubs <stubs>`
   makes the junction for you.
+
 - Warm the pack cache once per language (`codeql pack install` for `lib`, `src`
   and `test` in a throwaway worktree) before starting workers. Concurrent first
   installs race on the shared cache.
@@ -743,12 +744,12 @@ full links. Without `--apply` all three commands print what would change and wri
 - **Rust test directories run one after the other in CI, and a pull request that touches a file other than a
   query runs all of them.** The CI test step used to slice by test directory and run the slices in parallel, and
   two Rust slices on a fresh runner downloaded the toolchain into the same `~/.rustup` at once (`could not rename
-  'downloaded' file`), so a Rust pull request could change only one test directory. Pull request 259 made Rust run
+'downloaded' file`), so a Rust pull request could change only one test directory. Pull request 259 made Rust run
   a single slice (`num_slices = 1 if language == "rust"` in `.github/workflows/ci.yml`, **checked** 2026-11-24 on
   `main` and in the log of a later pull request), so several test directories are fine now. The other half: the step
   runs only the tests of the queries that a pull request touches when the pull request changes nothing but `.ql`
   files. Any other changed file (a `.qll`, a `.qhelp`, an `.expected`, a fixture) logs `not a leaf .ql file,
-  compiling everything in rust`, and all the language's tests run: 8 tests in 5 directories took 17 minutes
+compiling everything in rust`, and all the language's tests run: 8 tests in 5 directories took 17 minutes
   (against 4 to 9 minutes for a pull request that touched one query), so expect a wait and push fixes in batches.
 - **A user level CodeQL config changes results.** `~/.config/codeql/config` with
   `--threat-model all` applies to `codeql test run` and
@@ -840,21 +841,21 @@ Six units (Ruby, Go, C#, Java query, Python, Java model rows) ran in parallel on
 a machine shared with other sessions. Each took 3.7 to 6.3 hours, and almost all of
 it was waiting for the machine, not thinking:
 
-| Cost | Examples |
-| --- | --- |
-| Corpus builds | Java 3 h 28, C# 79 min, Go autobuild 36 min for one module, Maven resolution 99 min for 7 repositories |
-| Evaluations on large databases | Ruby 55 and 82 minutes, a Java run of 23 minutes that took 36 seconds without tuple counting |
+| Cost                                  | Examples                                                                                                                                                                           |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Corpus builds                         | Java 3 h 28, C# 79 min, Go autobuild 36 min for one module, Maven resolution 99 min for 7 repositories                                                                             |
+| Evaluations on large databases        | Ruby 55 and 82 minutes, a Java run of 23 minutes that took 36 seconds without tuple counting                                                                                       |
 | Every worker hit the same script gaps | user CodeQL config applied, `postprocess:` in qlrefs, `--threads=0`, fixtures not scanned for app names, library blowups failing the gate, audit metadata, `.md` to `.qhelp`, CRLF |
 
 The scripts now fix those once. The shared corpora exist, `measure` is plain and
 capped, and the evidence tiers limit the true positive search. Plan for 1 to 2
 hours per unit on a quiet machine.
 
-| Role | Does |
-| --- | --- |
-| Coordinator | Owns this guide and the scripts, picks and orders batches, builds the corpora and the shared stubs clone, creates the worktrees, reviews every packet (and has the diffs reviewed independently), fixes script bugs centrally, keeps the tally. |
-| Worker (one background agent per tracker issue) | Follows the [worker brief](./worker-brief.md): `plan`, `apply`, hand edits, `check` and `measure`, row triage, the evidence for its tier, and the packet. |
-| Human | Decides what the guide leaves open, approves, signs and publishes. |
+| Role                                            | Does                                                                                                                                                                                                                                            |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Coordinator                                     | Owns this guide and the scripts, picks and orders batches, builds the corpora and the shared stubs clone, creates the worktrees, reviews every packet (and has the diffs reviewed independently), fixes script bugs centrally, keeps the tally. |
+| Worker (one background agent per tracker issue) | Follows the [worker brief](./worker-brief.md): `plan`, `apply`, hand edits, `check` and `measure`, row triage, the evidence for its tier, and the packet.                                                                                       |
+| Human                                           | Decides what the guide leaves open, approves, signs and publishes.                                                                                                                                                                              |
 
 A worker must:
 

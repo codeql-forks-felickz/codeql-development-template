@@ -157,10 +157,10 @@ access with a passkey before it saves, which only the signed-in person can do.
 Its value is a config file address, the same as the `config-file` input of `codeql-action/init`. The CodeQL
 Action reads these forms (`src/config/remote-file.ts`):
 
-| Form | Example |
-| --- | --- |
+| Form                               | Example                                                                    |
+| ---------------------------------- | -------------------------------------------------------------------------- |
 | `remote=[OWNER/]REPO[@REF][:PATH]` | `remote=GitHubSecurityLab/CodeQL-Community-Packs@main:configs/default.yml` |
-| `OWNER/REPO/PATH@REF` | `GitHubSecurityLab/CodeQL-Community-Packs/configs/default.yml@main` |
+| `OWNER/REPO/PATH@REF`              | `GitHubSecurityLab/CodeQL-Community-Packs/configs/default.yml@main`        |
 
 Defaults of the first form: `OWNER` is the owner of the analyzed repository, `REF` is `main`, `PATH` is
 `.github/codeql-config.yml`. A public repository needs no registry or token. A tag (`@v0.9.1`) pins the file.
@@ -213,10 +213,10 @@ Defaults of the first form: `OWNER` is the owner of the analyzed repository, `RE
   is on. Both default to off in the Action and are set by GitHub. The log of the `Initialize CodeQL` step says
   which: look for `Using configuration file input from repository property: ...` and make sure that neither
   `Ignoring configuration file input from repository property` nor `Both a config file and config input were
-  provided. Ignoring config file.` appears. **Checked** (2026-11-20): the `Initialize CodeQL` step of the
+provided. Ignoring config file.` appears. **Checked** (2026-11-20): the `Initialize CodeQL` step of the
   `Analyze (actions)` job on the DVWA fork logged `Using configuration file input from repository property:
-  GitHubSecurityLab/CodeQL-Community-Packs/configs/default.yml@main` and then `Writing augmented user configuration
-  file`, so both flags were on there. A job log is readable through the API
+GitHubSecurityLab/CodeQL-Community-Packs/configs/default.yml@main` and then `Writing augmented user configuration
+file`, so both flags were on there. A job log is readable through the API
   (`gh api repos/<owner>/<repo>/actions/jobs/<job id>/logs`).
 
 **Checked** (2026-11-20, the DVWA fork, `configs/default.yml@main`): the property was created in the organization and
@@ -293,6 +293,7 @@ query, in 117 gap issues): 14 findings in 10 issues are now exact or near duplic
 possible. Ten of the 14 come from Community Packs rules and four from stock rules of high or medium precision. None
 comes from the low-precision CodeQL queries. Two issues (one finding each) are fully covered. The other 452 findings
 have no match, so those queries are still needed.
+
 - `COVERED` for every linked alert: the gap is closed. Say so on the tracker.
 - `NOT_ANALYZED`: fix section 3 or 4. The query has not been tested yet.
 - `NOT_COVERED` although section 2 predicted a hit: the live scan differs from the local one. Compare the CodeQL
@@ -316,6 +317,7 @@ have no match, so those queries are still needed.
   3.5 minutes on a database of 60 crates), the next ones take seconds (11 s and 17 s for the Iron query before and
   after its fix), so compare warm runs. Two runs cannot use one database at the same time (the evaluator cache is
   locked: `Error initializing the IMB disk cache`).
+
 - Alerts that are not the original finding: classify each as true or false positive. A class of false positives is a
   follow-up pull request for the query, with a negative test, as in the guide's quality bar.
 
@@ -323,13 +325,13 @@ have no match, so those queries are still needed.
 repository; the alerts were matched to the AI scan alerts of the gap issues by file and line). The four Community Packs
 Rust rules raised 15 alerts, and nothing else changed (17 open alerts, 2 of them stock and old).
 
-| Gap issue | AI scan alerts | Result |
-| --- | --- | --- |
-| SSRF through reflection (`ssrf-reflection-injection`) | 2 | 2 of 2, on the same lines. |
-| Hard-coded key or passphrase (`hardcoded-cryptographic-key`) | 7 | 7 of 7 covered: 6 by the rule on the same lines and 1 by the stock `rust/hard-coded-cryptographic-value` (an untyped integer array passed to `new_from_slice`), which the test file leaves to the stock query on purpose. The rule also raised 6 alerts on samples that the AI scan did not flag, all in `bad` directories. |
-| Key printed to the log (`cleartext-logging-of-key-material`) | 1 | 1 of 1, on the same line (in a `good` sample of the hard-coded key theme, which the AI scan flagged for the log line). |
-| Iron response XSS (`iron-response-xss`) and the Iron models | 4 CWE-79 alerts (Iron, warp, a reqwest response, sqlx); the Iron one is the target of the query and the models | **0 of 4.** No CodeQL alert on any of the four lines. See below. |
-| CORS (the audit query) | 3 | Not in the scan, by design: it is an audit query, `synthetics.yml` excludes the audit tag, and the audit suite is in the next release. |
+| Gap issue                                                    | AI scan alerts                                                                                                 | Result                                                                                                                                                                                                                                                                                                                      |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SSRF through reflection (`ssrf-reflection-injection`)        | 2                                                                                                              | 2 of 2, on the same lines.                                                                                                                                                                                                                                                                                                  |
+| Hard-coded key or passphrase (`hardcoded-cryptographic-key`) | 7                                                                                                              | 7 of 7 covered: 6 by the rule on the same lines and 1 by the stock `rust/hard-coded-cryptographic-value` (an untyped integer array passed to `new_from_slice`), which the test file leaves to the stock query on purpose. The rule also raised 6 alerts on samples that the AI scan did not flag, all in `bad` directories. |
+| Key printed to the log (`cleartext-logging-of-key-material`) | 1                                                                                                              | 1 of 1, on the same line (in a `good` sample of the hard-coded key theme, which the AI scan flagged for the log line).                                                                                                                                                                                                      |
+| Iron response XSS (`iron-response-xss`) and the Iron models  | 4 CWE-79 alerts (Iron, warp, a reqwest response, sqlx); the Iron one is the target of the query and the models | **0 of 4.** No CodeQL alert on any of the four lines. See below.                                                                                                                                                                                                                                                            |
+| CORS (the audit query)                                       | 3                                                                                                              | Not in the scan, by design: it is an audit query, `synthetics.yml` excludes the audit tag, and the audit suite is in the next release.                                                                                                                                                                                      |
 
 **Why the Iron rule found nothing.** The rule ran (it is in the job log), and the same query run locally on the downloaded
 database of that scan, with the ext pack as a model pack, finds nothing either. In that database the calls that go through
@@ -342,14 +344,14 @@ the C#, Go, Java and Python ones, not reported as unused. All four Iron samples 
 **Reproduced locally** (CLI 2.27.5, `--build-mode none`, `iron = "0.6.1"`, edition 2021, a crate of about 10 lines, the
 call targets listed with `getStaticTarget().getCanonicalPath()`):
 
-| Imports | Iron calls (`Iron::new`, `.http`, `Response::with`, `.path()`) |
-| --- | --- |
-| `use iron::prelude::*;` at the crate root, in `main.rs` or in `lib.rs` | no target |
-| `use iron::prelude::*;` inside a module, nothing else imported | no target |
-| `use iron::prelude::{IronResult, Request, Response};` | no target |
-| `use iron::{Iron, IronResult, Request, Response};` | all resolve (`<iron::response::Response>::with`, ...) |
-| the same explicit import at the crate root and `use iron::prelude::*;` inside a module | all resolve, in the module too |
-| `use std::io::prelude::*;` (control) | resolves (`<& as alloc::io::read::Read>::read_to_string`) |
+| Imports                                                                                | Iron calls (`Iron::new`, `.http`, `Response::with`, `.path()`) |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `use iron::prelude::*;` at the crate root, in `main.rs` or in `lib.rs`                 | no target                                                      |
+| `use iron::prelude::*;` inside a module, nothing else imported                         | no target                                                      |
+| `use iron::prelude::{IronResult, Request, Response};`                                  | no target                                                      |
+| `use iron::{Iron, IronResult, Request, Response};`                                     | all resolve (`<iron::response::Response>::with`, ...)          |
+| the same explicit import at the crate root and `use iron::prelude::*;` inside a module | all resolve, in the module too                                 |
+| `use std::io::prelude::*;` (control)                                                   | resolves (`<& as alloc::io::read::Read>::read_to_string`)      |
 
 The crate of the first row (`Cargo.toml` has only `iron = "0.6.1"` under `[dependencies]`, edition 2021):
 
@@ -450,15 +452,15 @@ and finalizing, then queries, then results is upload and processing); how many q
 Community Packs queries before and after with their share of the evaluation time; the new and the slower queries with
 their evaluation time; and a verdict.
 
-| Verdict | Meaning | What to do |
-| --- | --- | --- |
-| `new_queries` | The query phase grew and new queries are most of the extra evaluation time. The text says whether they are yours (`--ours`), other new Community Packs queries, or stock queries. | Yours: the guide's ladder (fix, narrow, audit only if it is audit-grade, a maintainer suite change, withhold). Other Community Packs queries: tell the maintainer which ones, it is not the cost of this query. |
-| `slower_queries` | Queries that were already there got slower. | Look at the bundle on the first line. A CodeQL upgrade changes the stock queries, which is not the release. A bigger repository does too. |
-| `repository` | The database build got longer and the tree or the number of files changed. | The code grew, not the queries. |
-| `database_variance` | The database build got longer and nothing changed. | Runner variance. Scan again and compare again. |
-| `setup` | Tools, packs and checkout got longer. | More packs in the configuration cost every language job one download each, and the full CodeQL bundle takes longer than a per-language one. Not a query cost. |
-| `results` | Uploading and processing the results got longer. | GitHub's side. |
-| `spread` | No phase is half of the increase. | Several small changes or runner variance. Scan again and compare again. |
+| Verdict             | Meaning                                                                                                                                                                           | What to do                                                                                                                                                                                                      |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `new_queries`       | The query phase grew and new queries are most of the extra evaluation time. The text says whether they are yours (`--ours`), other new Community Packs queries, or stock queries. | Yours: the guide's ladder (fix, narrow, audit only if it is audit-grade, a maintainer suite change, withhold). Other Community Packs queries: tell the maintainer which ones, it is not the cost of this query. |
+| `slower_queries`    | Queries that were already there got slower.                                                                                                                                       | Look at the bundle on the first line. A CodeQL upgrade changes the stock queries, which is not the release. A bigger repository does too.                                                                       |
+| `repository`        | The database build got longer and the tree or the number of files changed.                                                                                                        | The code grew, not the queries.                                                                                                                                                                                 |
+| `database_variance` | The database build got longer and nothing changed.                                                                                                                                | Runner variance. Scan again and compare again.                                                                                                                                                                  |
+| `setup`             | Tools, packs and checkout got longer.                                                                                                                                             | More packs in the configuration cost every language job one download each, and the full CodeQL bundle takes longer than a per-language one. Not a query cost.                                                   |
+| `results`           | Uploading and processing the results got longer.                                                                                                                                  | GitHub's side.                                                                                                                                                                                                  |
+| `spread`            | No phase is half of the increase.                                                                                                                                                 | Several small changes or runner variance. Scan again and compare again.                                                                                                                                         |
 
 Queries run on several threads and many wait for the same shared computation, so the summed evaluation time of a job
 can be many times its query phase. The verdict says **Caution** when it is more than 5 times. Then a long time says
